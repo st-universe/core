@@ -43,20 +43,18 @@ class RpgPlotMember implements RpgPlotMemberInterface
     private int $user_id = 0;
 
     /**
-     * @var RpgPlotInterface
      *
      * @ManyToOne(targetEntity="RpgPlot", inversedBy="members")
      * @JoinColumn(name="plot_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $rpgPlot;
+    private RpgPlotInterface $rpgPlot;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

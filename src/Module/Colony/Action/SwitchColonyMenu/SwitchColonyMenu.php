@@ -154,7 +154,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
         }
     }
 
-    private function hasSpecialBuilding(ColonyInterface $colony, $function)
+    private function hasSpecialBuilding(ColonyInterface $colony, int $function): int
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $colony->getId(),

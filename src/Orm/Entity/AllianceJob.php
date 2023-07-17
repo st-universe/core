@@ -50,20 +50,18 @@ class AllianceJob implements AllianceJobInterface
     private int $type = 0;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private AllianceInterface $alliance;
 
     /**
-     * @var UserInterface
      *
      * @OneToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

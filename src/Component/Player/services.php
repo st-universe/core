@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Player;
 
+use Stu\Component\Player\Deletion\Handler\AllianceDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\ColonyDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\KnPostDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\RpgPlotDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\TradepostDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\CrewDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\ShipDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\FleetDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\ShipBuildplanDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\UserMapDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\UserDeletionHandler;
 use JBBCode\Parser;
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
@@ -45,18 +57,18 @@ return [
         get(LoggerUtilFactoryInterface::class),
         get(Parser::class),
         [
-            autowire(Handler\AllianceDeletionHandler::class),
-            autowire(Handler\ColonyDeletionHandler::class),
-            autowire(Handler\PrivateMessageDeletionHandler::class),
-            autowire(Handler\KnPostDeletionHandler::class),
-            autowire(Handler\RpgPlotDeletionHandler::class),
-            autowire(Handler\TradepostDeletionHandler::class),
-            autowire(Handler\CrewDeletionHandler::class),
-            autowire(Handler\ShipDeletionHandler::class),
-            autowire(Handler\FleetDeletionHandler::class),
-            autowire(Handler\ShipBuildplanDeletionHandler::class),
-            autowire(Handler\UserMapDeletionHandler::class),
-            autowire(Handler\UserDeletionHandler::class)
+            autowire(AllianceDeletionHandler::class),
+            autowire(ColonyDeletionHandler::class),
+            autowire(PrivateMessageDeletionHandler::class),
+            autowire(KnPostDeletionHandler::class),
+            autowire(RpgPlotDeletionHandler::class),
+            autowire(TradepostDeletionHandler::class),
+            autowire(CrewDeletionHandler::class),
+            autowire(ShipDeletionHandler::class),
+            autowire(FleetDeletionHandler::class),
+            autowire(ShipBuildplanDeletionHandler::class),
+            autowire(UserMapDeletionHandler::class),
+            autowire(UserDeletionHandler::class)
         ]
     ),
     LocalPlayerCreator::class => autowire(),

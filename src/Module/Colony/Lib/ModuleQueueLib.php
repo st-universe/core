@@ -23,14 +23,14 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
         $this->colonyStorageManager = $colonyStorageManager;
     }
 
-    public function cancelModuleQueues(ColonyInterface $colony, int $buildingFunctionId)
+    public function cancelModuleQueues(ColonyInterface $colony, int $buildingFunctionId): void
     {
         $functionIds = [$buildingFunctionId];
 
         $this->cancelModuleQueuesForBuildingFunctions($colony, $functionIds);
     }
 
-    public function cancelModuleQueuesForBuilding(ColonyInterface $colony, BuildingInterface $building)
+    public function cancelModuleQueuesForBuilding(ColonyInterface $colony, BuildingInterface $building): void
     {
         $this->cancelModuleQueuesForBuildingFunctions($colony, $building->getFunctions()->getKeys());
     }
@@ -38,7 +38,7 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
     /**
      * @param list<int> $functionIds
      */
-    private function cancelModuleQueuesForBuildingFunctions(ColonyInterface $colony, array $functionIds)
+    private function cancelModuleQueuesForBuildingFunctions(ColonyInterface $colony, array $functionIds): void
     {
         $queues = $this->moduleQueueRepository->getByColonyAndBuilding($colony->getId(), $functionIds);
 

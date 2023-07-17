@@ -64,12 +64,11 @@ class AllianceBoard implements AllianceBoardInterface
     private Collection $posts;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private AllianceInterface $alliance;
 
     public function __construct()
     {

@@ -15,7 +15,7 @@ final class StuBbCodeImageValidator implements InputValidator
      * @param string $input  the string to validate
      * @return boolean
      */
-    public function validate($input)
+    public function validate($input): bool
     {
         $urlValidator = new UrlValidator();
 

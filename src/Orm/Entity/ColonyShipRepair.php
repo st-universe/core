@@ -46,20 +46,18 @@ class ColonyShipRepair implements ColonyShipRepairInterface
     private int $field_id;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ColonyInterface $colony;
 
     /**
-     * @var ShipInterface
      *
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     public function getId(): int
     {

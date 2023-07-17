@@ -104,11 +104,6 @@ parameters:
 			path: src/Component/Ship/Repair/RepairUtilInterface.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\AbstractSystemData\\:\\:getTalStatusBar\\(\\) has parameter \\$color with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/AbstractSystemData.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\AbstractSystemData\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Data/AbstractSystemData.php
@@ -199,11 +194,6 @@ parameters:
 			path: src/Component/Station/StationUtility.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Station\\\\StationUtility\\:\\:createTradepostAndLicense\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Station/StationUtility.php
-
-		-
 			message: "#^Parameter \\#1 \\$shipRump of method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:setRump\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
 			count: 1
 			path: src/Component/Station/StationUtility.php
@@ -267,42 +257,7 @@ parameters:
 			path: src/Lib/ModuleScreen/ModuleSelectWrapper.php
 
 		-
-			message: "#^Method NavPanel\\:\\:getDown\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
-			message: "#^Method NavPanel\\:\\:getLeft\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
-			message: "#^Method NavPanel\\:\\:getMapBorders\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
-			message: "#^Method NavPanel\\:\\:getRight\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
 			message: "#^Method NavPanel\\:\\:getShip\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
-			message: "#^Method NavPanel\\:\\:getShipPosition\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
-			message: "#^Method NavPanel\\:\\:getUp\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
-			message: "#^Property NavPanel\\:\\:\\$ship has no type specified\\.$#"
 			count: 1
 			path: src/Lib/NavPanel.php
 
@@ -377,11 +332,6 @@ parameters:
 			path: src/Lib/SignatureWrapper.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\SignatureWrapper\\:\\:getAge\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/SignatureWrapper.php
-
-		-
 			message: "#^Method Stu\\\\Lib\\\\SignatureWrapper\\:\\:getRump\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Lib/SignatureWrapper.php
@@ -397,7 +347,7 @@ parameters:
 			path: src/Lib/SignatureWrapper.php
 
 		-
-			message: "#^Property Stu\\\\Lib\\\\StuBbCodeDefinitionSet\\:\\:\\$definitions has no type specified\\.$#"
+			message: "#^Property Stu\\\\Lib\\\\StuBbCodeDefinitionSet\\:\\:\\$definitions type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Lib/StuBbCodeDefinitionSet.php
 
@@ -682,32 +632,7 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:loadLSS\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:\\$headRow has no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:\\$rows has no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:\\$viewport has no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:\\$viewportForFont has no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:\\$viewportPerColumn has no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
 
@@ -718,11 +643,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:__construct\\(\\) has parameter \\$entry with no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$cssClass has no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
 
@@ -742,11 +662,6 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:addEntry\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:addEntry\\(\\) has parameter \\$data with no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
@@ -757,7 +672,7 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:\\$entries has no type specified\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:\\$entries type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
 
@@ -838,16 +753,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\EditDetails\\\\EditDetails\\:\\:validHex\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\EditDetails\\\\EditDetails\\:\\:validHex\\(\\) has parameter \\$hex with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
 
@@ -1122,54 +1027,9 @@ parameters:
 			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\DisassembleShip\\\\DisassembleShip\\:\\:retrieveLoadedTorpedos\\(\\) has parameter \\$colony with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\DisassembleShip\\\\DisassembleShip\\:\\:retrieveLoadedTorpedos\\(\\) has parameter \\$game with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\DisassembleShip\\\\DisassembleShip\\:\\:retrieveSomeIntactModules\\(\\) has parameter \\$colony with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\DisassembleShip\\\\DisassembleShip\\:\\:retrieveSomeIntactModules\\(\\) has parameter \\$game with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\DisassembleShip\\\\DisassembleShip\\:\\:retrieveSomeIntactModules\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\DisassembleShip\\\\DisassembleShip\\:\\:retrieveWarpcoreLoad\\(\\) has parameter \\$colony with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\DisassembleShip\\\\DisassembleShip\\:\\:retrieveWarpcoreLoad\\(\\) has parameter \\$game with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\LandShip\\\\LandShip\\:\\:retrieveLoadedTorpedos\\(\\) has parameter \\$colony with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/LandShip/LandShip.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\LandShip\\\\LandShip\\:\\:retrieveLoadedTorpedos\\(\\) has parameter \\$game with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/LandShip/LandShip.php
 
 		-
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
@@ -1262,16 +1122,6 @@ parameters:
 			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\SwitchColonyMenu\\\\SwitchColonyMenu\\:\\:hasSpecialBuilding\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/SwitchColonyMenu/SwitchColonyMenu.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\SwitchColonyMenu\\\\SwitchColonyMenu\\:\\:hasSpecialBuilding\\(\\) has parameter \\$function with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/SwitchColonyMenu/SwitchColonyMenu.php
-
-		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Colony/Action/Terraform/Terraform.php
@@ -1362,11 +1212,6 @@ parameters:
 			path: src/Module/Colony/Lib/ColonyGuiHelper.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyGuiHelper\\:\\:register\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonyGuiHelper.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyGuiHelperInterface\\:\\:register\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonyGuiHelperInterface.php
@@ -1405,21 +1250,6 @@ parameters:
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/CommodityConsumption.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLib\\:\\:cancelModuleQueues\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ModuleQueueLib.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLib\\:\\:cancelModuleQueuesForBuilding\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ModuleQueueLib.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLib\\:\\:cancelModuleQueuesForBuildingFunctions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ModuleQueueLib.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLibInterface\\:\\:cancelModuleQueues\\(\\) has no return type specified\\.$#"
@@ -1497,32 +1327,12 @@ parameters:
 			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFab.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has no return type specified\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesCloaked type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has parameter \\$field with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has parameter \\$ignoreId with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has parameter \\$isSystem with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesCloaked has no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesUncloaked has no type specified\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesUncloaked type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
 
@@ -1677,11 +1487,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getBenchmarkResult\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getContactlistModes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -1718,16 +1523,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:sendInformation\\(\\) has parameter \\$sender_id with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setMacroAndTemplate\\(\\) has parameter \\$macro with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setMacroInAjaxWindow\\(\\) has parameter \\$macro with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -1832,16 +1627,6 @@ parameters:
 			path: src/Module/Control/GameControllerInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setMacroAndTemplate\\(\\) has parameter \\$macro with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setMacroInAjaxWindow\\(\\) has parameter \\$macro with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setTemplateVar\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
@@ -1942,37 +1727,12 @@ parameters:
 			path: src/Module/Database/Lib/GraphInfo.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\PlotInfo\\:\\:\\$fillColor has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/PlotInfo.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\PlotInfo\\:\\:\\$legend has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/PlotInfo.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\PlotInfo\\:\\:\\$lineColor has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/PlotInfo.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\PlotInfo\\:\\:\\$method has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/PlotInfo.php
-
-		-
 			message: "#^Cannot call method getDate\\(\\) on Stu\\\\Orm\\\\Entity\\\\DatabaseUserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryEntryTal\\:\\:getObject\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryEntryTal\\:\\:\\$wasEntryDiscovered has no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
 
@@ -2017,11 +1777,6 @@ parameters:
 			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\DatabaseEntry\\\\DatabaseEntry\\:\\:addSpecialVars\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowCommoditiesLocations/ShowCommoditiesLocations.php
@@ -2042,17 +1797,7 @@ parameters:
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:configureXAxis\\(\\) has parameter \\$graph with no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:configureXAxis\\(\\) has parameter \\$stats with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:configureYAxis\\(\\) has parameter \\$graph with no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 
@@ -2112,11 +1857,6 @@ parameters:
 			path: src/Module/History/View/Overview/OverviewRequestInterface.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Logging\\\\LoggerUtil\\:\\:\\$logger has no type specified\\.$#"
-			count: 1
-			path: src/Module/Logging/LoggerUtil.php
-
-		-
 			message: "#^Cannot call method getStartBuildingId\\(\\) on Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Maindesk/Action/FirstColony/FirstColony.php
@@ -2150,11 +1890,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Maintenance/EndLotteryPeriod.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Maintenance\\\\MapCycle\\:\\:cycle\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Maintenance/MapCycle.php
 
 		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null\\.$#"
@@ -2242,21 +1977,6 @@ parameters:
 			path: src/Module/Message/Lib/PrivateMessageListItem.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Message\\\\Lib\\\\PrivateMessageListItem\\:\\:\\$sender has no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Lib/PrivateMessageListItem.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Message\\\\Lib\\\\PrivateMessageListItem\\:\\:\\$sendercontact has no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Lib/PrivateMessageListItem.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Message\\\\Lib\\\\PrivateMessageListItem\\:\\:\\$senderignore has no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Lib/PrivateMessageListItem.php
-
-		-
 			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Message/View/Overview/Overview.php
@@ -2327,16 +2047,6 @@ parameters:
 			path: src/Module/Notes/View/ShowNote/ShowNote.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeRgbCode\\\\ChangeRgbCode\\:\\:validHex\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeRgbCode/ChangeRgbCode.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeRgbCode\\\\ChangeRgbCode\\:\\:validHex\\(\\) has parameter \\$hex with no type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeRgbCode/ChangeRgbCode.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\UserInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/View/Overview/Overview.php
@@ -2372,22 +2082,17 @@ parameters:
 			path: src/Module/Research/TalSelectedTech.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$dependencies has no type specified\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$dependencies type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Research/TalSelectedTech.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$excludes has no type specified\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$excludes type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Research/TalSelectedTech.php
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$state has no type specified\\.$#"
 			count: 1
 			path: src/Module/Research/TalSelectedTech.php
 
@@ -2415,11 +2120,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Research\\\\TechlistRetriever\\:\\:loadExcludes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Research/TechlistRetriever.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AstroMapping\\\\PlanAstroMapping\\:\\:obtainMeasurementFields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AstroMapping/PlanAstroMapping.php
 
 		-
 			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
@@ -2569,11 +2269,6 @@ parameters:
 		-
 			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 2
-			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\Selfrepair\\\\Selfrepair\\:\\:consumeCommodities\\(\\) has parameter \\$neededSparePartCount with no type specified\\.$#"
-			count: 1
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
 
 		-
@@ -2828,11 +2523,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator\\:\\:__construct\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipNfsIterator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator\\:\\:__construct\\(\\) has parameter \\$userId with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipNfsIterator.php
 
@@ -3187,16 +2877,6 @@ parameters:
 			path: src/Module/Station/View/ShowStationCosts/ShowStationCosts.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\View\\\\ShowStationCosts\\\\StationCostWrapper\\:\\:\\$buildplanModule has no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowStationCosts/StationCostWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\View\\\\ShowStationCosts\\\\StationCostWrapper\\:\\:\\$shipStorage has no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowStationCosts/StationCostWrapper.php
-
-		-
 			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Station/View/ShowStationInfo/ShowStationInfo.php
@@ -3532,11 +3212,6 @@ parameters:
 			path: src/Module/Trade/Lib/DealAccountTal.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactory\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/TradeLibFactory.php
@@ -3557,44 +3232,9 @@ parameters:
 			path: src/Module/Trade/Lib/TradeLibFactoryInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManager\\:\\:getStorage\\(\\) has invalid return type Stu\\\\Module\\\\Trade\\\\Lib\\\\StorageInterface\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManager.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManager\\:\\:getStorage\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManager.php
-
-		-
 			message: "#^Parameter \\#1 \\$commodity of method Stu\\\\Orm\\\\Entity\\\\StorageInterface\\:\\:setCommodity\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/TradePostStorageManager.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManager\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManager.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManager\\:\\:\\$storageSum has no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManager.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\StorageInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManager.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManagerInterface\\:\\:getStorage\\(\\) has invalid return type Stu\\\\Module\\\\Trade\\\\Lib\\\\StorageInterface\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManagerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManagerInterface\\:\\:getStorage\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManagerInterface.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
@@ -3607,17 +3247,7 @@ parameters:
 			path: src/Module/Trade/View/ShowOfferMenuNewOffer/ShowOfferMenuNewOffer.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction \\(Stu\\\\Orm\\\\Entity\\\\FactionInterface\\) does not accept Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Faction\\|null but property expects Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Alliance.php
 
@@ -4127,12 +3757,7 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
@@ -4467,12 +4092,7 @@ parameters:
 			path: src/Orm/Entity/CrewTraining.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Award\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AwardInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AwardInterface but database expects Stu\\\\Orm\\\\Entity\\\\Award\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AwardInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Award\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseCategory.php
 
@@ -4597,27 +4217,42 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$blockedColony has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$blockedColony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$defendedColony has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$defendedColony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$fleetLeader has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$fleetLeader type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$shiplist has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$fleetLeader type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$user has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$shiplist type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$shiplist with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
@@ -4640,11 +4275,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:unsetParameter\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurn\\:\\:\\$stats type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\GameTurnStatsInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\|null\\.$#"
@@ -5102,6 +4732,11 @@ parameters:
 			path: src/Orm/Entity/RepairTask.php
 
 		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getDatabaseEntryIds\\(\\) should return array\\<int\\> but returns array\\<int\\>\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AwardInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Award\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
@@ -5202,17 +4837,12 @@ parameters:
 			path: src/Orm/Entity/RpgPlotMember.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:getDate\\(\\) should return DateTimeInterface but returns DateTimeInterface\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$date type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTimeInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/SessionString.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
 
@@ -5472,12 +5102,7 @@ parameters:
 			path: src/Orm/Entity/ShipInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipLog.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipLog.php
 
@@ -5567,7 +5192,12 @@ parameters:
 			path: src/Orm/Entity/ShipRumpSpecial.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$user has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpUser.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpUser.php
 
@@ -5652,12 +5282,7 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Map\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
 
@@ -5678,11 +5303,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemMap.php
 
@@ -5762,11 +5382,6 @@ parameters:
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
@@ -5787,12 +5402,7 @@ parameters:
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
@@ -5972,11 +5582,6 @@ parameters:
 			path: src/Orm/Entity/TradeLicenseInfo.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicenseInfo.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$tradePost type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TradePost\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeLicenseInfo.php
@@ -6147,12 +5752,7 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$faction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Faction\\|null but property expects Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
@@ -6232,11 +5832,6 @@ parameters:
 			path: src/Orm/Entity/UserLock.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cy has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Layer\\|null but property expects Stu\\\\Orm\\\\Entity\\\\LayerInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
@@ -6275,6 +5870,11 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserProfileVisitor.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$date type mapping mismatch\\: property can contain DateTimeInterface\\|null but database expects DateTimeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserTag.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"

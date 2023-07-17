@@ -29,7 +29,7 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
@@ -62,20 +62,18 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
     private int $date = 0;
 
     /**
-     * @var TradePostInterface
      *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradePost;
+    private TradePostInterface $tradePost;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     public function getId(): int
     {

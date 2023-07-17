@@ -34,7 +34,7 @@ class StarSystemMap implements StarSystemMapInterface
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="smallint")
@@ -61,34 +61,30 @@ class StarSystemMap implements StarSystemMapInterface
     private int $field_id = 0;
 
     /**
-     * @var StarSystemInterface
      *
      * @ManyToOne(targetEntity="StarSystem", inversedBy="fields")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
-    private $starSystem;
+    private StarSystemInterface $starSystem;
 
     /**
-     * @var null|ColonyInterface
-     *
      * @OneToOne(targetEntity="Colony", mappedBy="starsystem_map")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
     /**
-     * @var MapFieldTypeInterface
      *
      * @ManyToOne(targetEntity="MapFieldType")
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
-    private $mapFieldType;
+    private MapFieldTypeInterface $mapFieldType;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
      */
-    private $ships;
+    private Collection $ships;
 
     /**
      * @var ArrayCollection<int, FlightSignatureInterface>
@@ -96,21 +92,21 @@ class StarSystemMap implements StarSystemMapInterface
      * @OneToMany(targetEntity="FlightSignature", mappedBy="starsystem_map")
      * @OrderBy({"time": "DESC"})
      */
-    private $signatures;
+    private Collection $signatures;
 
     /**
      * @var ArrayCollection<int, AnomalyInterface>
      *
      * @OneToMany(targetEntity="Anomaly", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
      */
-    private $anomalies;
+    private Collection $anomalies;
 
     /**
      * @var ArrayCollection<int, WormholeEntryInterface>
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="systemMap")
      */
-    private $wormholeEntries;
+    private ArrayCollection $wormholeEntries;
 
     public function __construct()
     {

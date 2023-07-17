@@ -11,8 +11,8 @@ use JBBCode\validators\CssColorValidator;
 
 final class StuBbCodeWithImageDefinitionSet implements CodeDefinitionSet
 {
-    /** @var array<CodeDefinition> */
-    private $definitions;
+    /** @var CodeDefinition[]|null */
+    private ?array $definitions = null;
 
     public function getCodeDefinitions(): array
     {

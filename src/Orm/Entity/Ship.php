@@ -308,14 +308,14 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="Ship", mappedBy="dockedTo", indexBy="id")
      * @OrderBy({"fleets_id": "DESC", "is_fleet_leader": "DESC"})
      */
-    private $dockedShips;
+    private Collection $dockedShips;
 
     /**
      * @var ArrayCollection<int, DockingPrivilegeInterface>
      *
      * @OneToMany(targetEntity="DockingPrivilege", mappedBy="ship")
      */
-    private $dockingPrivileges;
+    private Collection $dockingPrivileges;
 
     /**
      * @OneToOne(targetEntity="Ship")
@@ -346,7 +346,7 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id")
      * @OrderBy({"id": "ASC"})
      */
-    private $crew;
+    private Collection $crew;
 
     /**
      * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship")
@@ -359,7 +359,7 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type")
      * @OrderBy({"system_type": "ASC"})
      */
-    private $systems;
+    private Collection $systems;
 
     /**
      * @ManyToOne(targetEntity="ShipRump")
@@ -379,7 +379,7 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
      * @OrderBy({"commodity_id": "ASC"})
      */
-    private $storage;
+    private Collection $storage;
 
     /**
      * @ManyToOne(targetEntity="Map")
@@ -405,7 +405,7 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="ShipLog", mappedBy="ship", fetch="EXTRA_LAZY")
      * @OrderBy({"id": "DESC"})
      */
-    private $logbook;
+    private Collection $logbook;
 
     public function __construct()
     {
@@ -1779,7 +1779,7 @@ class Ship implements ShipInterface
         return false;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->id !== null) {
             return sprintf('id: %d, name: %s', $this->getId(), $this->getName());

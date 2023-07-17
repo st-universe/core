@@ -94,28 +94,25 @@ class PrivateMessage implements PrivateMessageInterface
     private ?int $deleted;
 
     /**
-     * @var PrivateMessageFolderInterface
      *
      * @ManyToOne(targetEntity="PrivateMessageFolder")
      * @JoinColumn(name="cat_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $category;
+    private PrivateMessageFolderInterface $category;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="send_user", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $sendingUser;
+    private UserInterface $sendingUser;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="recip_user", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $receivingUser;
+    private UserInterface $receivingUser;
 
     public function getId(): int
     {

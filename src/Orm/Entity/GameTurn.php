@@ -50,11 +50,9 @@ class GameTurn implements GameTurnInterface
     private int $enddate;
 
     /**
-     * @var null|GameTurnStatsInterface
-     *
      * @OneToOne(targetEntity="GameTurnStats", mappedBy="turn")
      */
-    private $stats;
+    private ?GameTurnStatsInterface $stats = null;
 
     public function getId(): int
     {

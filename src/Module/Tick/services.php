@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick;
 
+use Stu\Module\Tick\Process\FinishBuildJobs;
+use Stu\Module\Tick\Process\FinishShipBuildJobs;
+use Stu\Module\Tick\Process\FinishTerraformingJobs;
+use Stu\Module\Tick\Process\ShieldRegeneration;
+use Stu\Module\Tick\Process\RepairTaskJobs;
+use Stu\Module\Tick\Process\FinishTholianWebs;
 use Psr\Container\ContainerInterface;
 use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
@@ -39,12 +45,12 @@ return [
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
     'process_tick_handler' => [
-        autowire(Process\FinishBuildJobs::class),
-        autowire(Process\FinishShipBuildJobs::class),
-        autowire(Process\FinishTerraformingJobs::class),
-        autowire(Process\ShieldRegeneration::class),
-        autowire(Process\RepairTaskJobs::class),
-        autowire(Process\FinishTholianWebs::class)
+        autowire(FinishBuildJobs::class),
+        autowire(FinishShipBuildJobs::class),
+        autowire(FinishTerraformingJobs::class),
+        autowire(ShieldRegeneration::class),
+        autowire(RepairTaskJobs::class),
+        autowire(FinishTholianWebs::class)
     ],
     TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class),
     MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class),

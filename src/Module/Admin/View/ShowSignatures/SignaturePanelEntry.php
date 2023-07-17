@@ -90,7 +90,7 @@ class SignaturePanelEntry
     public $currentShipPosX = null;
     public $currentShipPosY = null;
 
-    private $cssClass = 'lss';
+    private string $cssClass = 'lss';
 
     public function setCSSClass(string $class): void
     {

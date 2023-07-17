@@ -33,7 +33,7 @@ abstract class AbstractSystemData
         $shipSystemRepository->save($system);
     }
 
-    protected function getTalStatusBar(string $label, int $value, int $maxValue, $color): TalStatusBarInterface
+    protected function getTalStatusBar(string $label, int $value, int $maxValue, string $color): TalStatusBarInterface
     {
         return (new TalStatusBar())
             ->setColor($color)

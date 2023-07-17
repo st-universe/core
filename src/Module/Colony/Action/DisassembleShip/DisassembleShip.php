@@ -123,7 +123,7 @@ final class DisassembleShip implements ActionControllerInterface
         $ship->getCrewlist()->clear();
     }
 
-    private function retrieveSomeIntactModules($ship, $colony, $game): void
+    private function retrieveSomeIntactModules(ShipInterface $ship, ColonyInterface $colony, GameControllerInterface $game): void
     {
         $intactModules = [];
 
@@ -163,7 +163,7 @@ final class DisassembleShip implements ActionControllerInterface
         }
     }
 
-    private function retrieveWarpcoreLoad(ShipInterface $ship, $colony, $game): void
+    private function retrieveWarpcoreLoad(ShipInterface $ship, ColonyInterface $colony, GameControllerInterface $game): void
     {
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
             return;
@@ -198,7 +198,7 @@ final class DisassembleShip implements ActionControllerInterface
         }
     }
 
-    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, $colony, $game): void
+    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, ColonyInterface $colony, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
         $torpedoStorage = $ship->getTorpedoStorage();

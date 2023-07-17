@@ -58,7 +58,7 @@ class ColonyClass implements ColonyClassInterface
      *
      * @var array<int>
      */
-    private $colonizeable_fields = [];
+    private array $colonizeable_fields = [];
 
     /**
      * @Column(type="smallint") *
@@ -91,7 +91,7 @@ class ColonyClass implements ColonyClassInterface
      *
      * @OneToMany(targetEntity="ColonyClassDeposit", mappedBy="colonyClass", indexBy="commodity_id")
      */
-    private $colonyClassDeposits;
+    private Collection $colonyClassDeposits;
 
     public function __construct()
     {

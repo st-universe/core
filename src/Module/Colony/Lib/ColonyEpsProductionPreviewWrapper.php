@@ -10,17 +10,15 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 class ColonyEpsProductionPreviewWrapper
 {
-    /** @var ColonyInterface */
-    private $colony;
+    private ColonyInterface $colony;
 
-    /** @var null|int */
-    private $buildingId = null;
+    private ?int $buildingId = null;
 
     /** @var array<int, ColonyEpsProductionPreviewWrapper> */
-    private $wrappers = [];
+    private array $wrappers = [];
 
     /** @var array<int, int> */
-    private $production = [];
+    private array $production = [];
 
     private BuildingRepositoryInterface $buildingRepository;
 

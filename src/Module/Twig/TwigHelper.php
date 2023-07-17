@@ -60,22 +60,22 @@ class TwigHelper
 
     private function registerFilters(): void
     {
-        $bbcode2txtFilter = new TwigFilter('bbcode2txt', function ($string) {
+        $bbcode2txtFilter = new TwigFilter('bbcode2txt', function ($string): string {
             return $this->parser->parse($string)->getAsText();
         });
         $this->environment->addFilter($bbcode2txtFilter);
 
-        $bbcodeFilter = new TwigFilter('bbcode', function ($string) {
+        $bbcodeFilter = new TwigFilter('bbcode', function ($string): string {
             return $this->parser->parse($string)->getAsHTML();
         }, ['is_safe' => ['html']]);
         $this->environment->addFilter($bbcodeFilter);
 
-        $jsquoteFilter = new TwigFilter('jsquote', function ($string) {
+        $jsquoteFilter = new TwigFilter('jsquote', function ($string): string {
             return TalHelper::jsquote($string);
         });
         $this->environment->addFilter($jsquoteFilter);
 
-        $addPlusCharacterFilter = new TwigFilter('addPlusCharacter', function ($value) {
+        $addPlusCharacterFilter = new TwigFilter('addPlusCharacter', function ($value): string {
             if (is_integer($value)) {
                 return TalHelper::addPlusCharacter(strval($value));
             }
@@ -83,7 +83,7 @@ class TwigHelper
         });
         $this->environment->addFilter($addPlusCharacterFilter);
 
-        $formatSecondsFilter = new TwigFilter('formatSeconds', function ($value) {
+        $formatSecondsFilter = new TwigFilter('formatSeconds', function ($value): string {
             if (is_integer($value)) {
                 return TalHelper::formatSeconds(strval($value));
             }
@@ -91,7 +91,7 @@ class TwigHelper
         });
         $this->environment->addFilter($formatSecondsFilter);
 
-        $datetimeFilter = new TwigFilter('datetime', function ($value) {
+        $datetimeFilter = new TwigFilter('datetime', function ($value): string {
             return sprintf(
                 '%s%s %s',
                 date('d.m.', $value),
@@ -104,7 +104,7 @@ class TwigHelper
 
     private function registerFunctions(): void
     {
-        $canAttackTargetFunction = new TwigFunction('canAttackTarget', function (ShipInterface $ship, ShipInterface|ShipNfsItem $target) {
+        $canAttackTargetFunction = new TwigFunction('canAttackTarget', function (ShipInterface $ship, ShipInterface|ShipNfsItem $target): bool {
             return $this->fightLib->canAttackTarget($ship, $target);
         });
         $this->environment->addFunction($canAttackTargetFunction);

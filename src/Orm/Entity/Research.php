@@ -54,9 +54,9 @@ class Research implements ResearchInterface
     /**
      * @Column(type="json")
      *
-     * @var array<int>
+     * @var int[]|null
      */
-    private $database_entries;
+    private ?array $database_entries = null;
 
     /**
      * @Column(type="smallint")
@@ -101,28 +101,25 @@ class Research implements ResearchInterface
     private ?int $upper_limit_colony_amount;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     /**
-     * @var null|ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="reward_buildplan_id", referencedColumnName="id")
      */
-    private $rewardBuildplan;
+    private ?ShipBuildplanInterface $rewardBuildplan = null;
 
     /**
-     * @var null|AwardInterface
      *
      * @ManyToOne(targetEntity="Award")
      * @JoinColumn(name="award_id", referencedColumnName="id")
      */
-    private $award;
+    private ?AwardInterface $award = null;
 
     public function getId(): int
     {

@@ -50,20 +50,18 @@ class TerraformingCost implements TerraformingCostInterface
     private int $count = 0;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     /**
-     * @var TerraformingInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Terraforming")
      * @JoinColumn(name="terraforming_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $terraforming;
+    private TerraformingInterface $terraforming;
 
     public function getId(): int
     {

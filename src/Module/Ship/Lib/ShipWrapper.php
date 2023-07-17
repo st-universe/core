@@ -60,7 +60,7 @@ final class ShipWrapper implements ShipWrapperInterface
     /**
      * @var array<int, AbstractSystemData>
      */
-    private $shipSystemDataCache = [];
+    private array $shipSystemDataCache = [];
 
     private ?int $epsUsage = null;
 

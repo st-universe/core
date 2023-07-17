@@ -82,52 +82,46 @@ class ShipCrew implements ShipCrewInterface
     private ?int $repair_task_id;
 
     /**
-     * @var CrewInterface
      *
      * @ManyToOne(targetEntity="Crew")
      * @JoinColumn(name="crew_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $crew;
+    private CrewInterface $crew;
 
     /**
-     * @var null|ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     /**
-     * @var null|ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
     /**
-     * @var null|TradePostInterface
      *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="tradepost_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradepost;
+    private ?TradePostInterface $tradepost = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var null|RepairTaskInterface
      *
      * @ManyToOne(targetEntity="RepairTask")
      * @JoinColumn(name="repair_task_id", referencedColumnName="id")
      */
-    private $repairTask;
+    private ?RepairTaskInterface $repairTask = null;
 
     public function getId(): int
     {

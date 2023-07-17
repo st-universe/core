@@ -11,7 +11,7 @@ final class FightMessageCollection implements FightMessageCollectionInterface
     /**
      * @var FightMessageInterface[]
      */
-    private $messages = [];
+    private array $messages = [];
 
     public function add(FightMessageInterface $msg): void
     {

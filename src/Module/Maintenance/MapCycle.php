@@ -41,7 +41,7 @@ final class MapCycle implements MaintenanceHandlerInterface
         }
     }
 
-    private function cycle(UserLayerInterface $userLayer)
+    private function cycle(UserLayerInterface $userLayer): void
     {
         $userLayer->setMappingType(MapEnum::MAPTYPE_LAYER_EXPLORED);
         $this->userLayerRepository->save($userLayer);

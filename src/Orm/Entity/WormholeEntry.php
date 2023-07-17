@@ -66,28 +66,25 @@ class WormholeEntry implements WormholeEntryInterface
     private ?int $cooldown;
 
     /**
-     * @var MapInterface
      *
      * @ManyToOne(targetEntity="Map", inversedBy="wormholeEntries")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private $map;
+    private MapInterface $map;
 
     /**
-     * @var StarSystemInterface
      *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="system_id", referencedColumnName="id")
      */
-    private $starSystem;
+    private StarSystemInterface $starSystem;
 
     /**
-     * @var StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap", inversedBy="wormholeEntries")
      * @JoinColumn(name="system_map_id", referencedColumnName="id")
      */
-    private $systemMap;
+    private StarSystemMapInterface $systemMap;
 
     public function getId(): int
     {

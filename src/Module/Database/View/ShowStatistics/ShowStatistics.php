@@ -227,7 +227,7 @@ final class ShowStatistics implements ViewControllerInterface
         return $plots;
     }
 
-    private function configureXAxis($graph, array $stats): void
+    private function configureXAxis(Graph $graph, array $stats): void
     {
         $fmt = new IntlDateFormatter(
             'de-DE',
@@ -255,7 +255,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetColor('white', 'white');
     }
 
-    private function configureYAxis($graph, bool $yAxisStartAtZero): void
+    private function configureYAxis(Graph $graph, bool $yAxisStartAtZero): void
     {
         if ($this->maxY - $this->minY < 10) {
             $yGrace = 50;

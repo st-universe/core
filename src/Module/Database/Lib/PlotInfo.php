@@ -6,10 +6,10 @@ namespace Stu\Module\Database\Lib;
 
 final class PlotInfo
 {
-    public $method;
-    public $lineColor;
-    public $fillColor;
-    public $legend;
+    public string $method;
+    public string $lineColor;
+    public string $fillColor;
+    public ?string $legend;
 
     public function __construct(
         string $method,

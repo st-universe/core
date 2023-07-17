@@ -9,7 +9,7 @@ final class GraphInfo
     public string $title;
 
     /** @var PlotInfo[] */
-    private $plotInfos;
+    private array $plotInfos;
 
     public bool $yAxisStartAtZero;
 

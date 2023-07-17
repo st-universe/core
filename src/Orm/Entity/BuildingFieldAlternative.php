@@ -56,20 +56,18 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
     private ?int $research_id;
 
     /**
-     * @var BuildingInterface
      *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $building;
+    private BuildingInterface $building;
 
     /**
-     * @var BuildingInterface
      *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="alternate_buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alternateBuilding;
+    private BuildingInterface $alternateBuilding;
 
     public function getId(): int
     {

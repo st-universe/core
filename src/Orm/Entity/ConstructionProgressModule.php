@@ -41,20 +41,18 @@ class ConstructionProgressModule implements ConstructionProgressModuleInterface
     private int $module_id = 0;
 
     /**
-     * @var ConstructionProgressInterface
      *
      * @ManyToOne(targetEntity="ConstructionProgress")
      * @JoinColumn(name="progress_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $progress;
+    private ConstructionProgressInterface $progress;
 
     /**
-     * @var ModuleInterface
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $module;
+    private ModuleInterface $module;
 
     public function getId(): int
     {

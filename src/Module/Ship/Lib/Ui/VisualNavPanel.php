@@ -16,37 +16,30 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class VisualNavPanel
 {
-    /** @var ShipInterface */
-    private $ship;
+    private ShipInterface $ship;
 
-    /** @var UserInterface */
-    private $user;
+    private UserInterface $user;
 
     private LoggerUtilInterface $loggerUtil;
 
-    /** @var bool */
-    private $isTachyonSystemActive;
+    private bool $isTachyonSystemActive;
 
-    /** @var bool */
-    private $tachyonFresh;
+    private bool $tachyonFresh;
 
-    /** @var StarSystemInterface|null */
-    private $systemForSensorScan;
+    private ?StarSystemInterface $systemForSensorScan;
 
     /** @var null|array<int, VisualNavPanelRow> */
-    private $rows = null;
+    private ?array $rows = null;
 
     /** @var null|array<array{value: int}> */
-    private $headRow = null;
+    private ?array $headRow = null;
 
-    /** @var null|int|float */
-    private $viewport = null;
+    /** @var null|float */
+    private ?float $viewport = null;
 
-    /** @var null|string */
-    private $viewportPerColumn = null;
+    private ?string $viewportPerColumn = null;
 
-    /** @var null|string */
-    private $viewportForFont = null;
+    private ?string $viewportForFont = null;
 
     private UserLayerRepositoryInterface $userLayerRepository;
 
@@ -114,7 +107,7 @@ class VisualNavPanel
      *     d4c?: int
      * }>
      */
-    public function getOuterSystemResult()
+    public function getOuterSystemResult(): iterable
     {
         $cx = $this->getShip()->getCX();
         $cy = $this->getShip()->getCY();
@@ -183,7 +176,7 @@ class VisualNavPanel
      *     d4c?: int
      * }>
      */
-    public function getInnerSystemResult()
+    public function getInnerSystemResult(): iterable
     {
         return $this->shipRepository->getSensorResultInnerSystem(
             $this->getShip(),

@@ -249,7 +249,7 @@ class GameRequest implements GameRequestInterface
         return $this->errors;
     }
 
-    private function unsetParameter($key): void
+    private function unsetParameter(string $key): void
     {
         unset($this->parameterArray[$key]);
     }

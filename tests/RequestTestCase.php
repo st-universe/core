@@ -44,7 +44,7 @@ abstract class RequestTestCase extends StuTestCase
         string $methodName,
         string $paramName,
         $testValue,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         if ($testValue !== null) {
             $_GET[$paramName] = $testValue;

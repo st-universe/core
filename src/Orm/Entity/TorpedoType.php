@@ -112,15 +112,14 @@ class TorpedoType implements TorpedoTypeInterface
      *
      * @OneToMany(targetEntity="TorpedoTypeCost", mappedBy="torpedoType")
      */
-    private $productionCosts;
+    private Collection $productionCosts;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     public function __construct()
     {

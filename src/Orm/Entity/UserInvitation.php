@@ -46,10 +46,8 @@ class UserInvitation implements UserInvitationInterface
 
     /**
      * @Column(type="datetime")
-     *
-     * @var DateTimeInterface
      */
-    private $date;
+    private DateTimeInterface $date;
 
     /**
      * @Column(type="string")

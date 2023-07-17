@@ -57,12 +57,11 @@ class DockingPrivilege implements DockingPrivilegeInterface
     private int $privilege_mode = 0;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship", inversedBy="dockingPrivileges")
      * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     public function getId(): int
     {

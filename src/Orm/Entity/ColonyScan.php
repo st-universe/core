@@ -69,21 +69,19 @@ class ColonyScan implements ColonyScanInterface
     private int $date = 0;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id")
      */
-    private $colony;
+    private ColonyInterface $colony;
 
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
 
     public function getId(): int

@@ -92,34 +92,28 @@ class StarSystem implements StarSystemInterface
     private bool $is_wormhole;
 
     /**
-     * @var StarSystemTypeInterface
      *
      * @ManyToOne(targetEntity="StarSystemType")
      * @JoinColumn(name="type", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $systemType;
+    private StarSystemTypeInterface $systemType;
 
     /**
-     * @var MapInterface
-     *
      * @OneToOne(targetEntity="Map", mappedBy="starSystem")
      */
-    private $map;
+    private ?MapInterface $map = null;
 
     /**
-     * @var null|DatabaseEntryInterface
      *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
-     * @var null|ShipInterface
-     *
      * @OneToOne(targetEntity="Ship", mappedBy="influenceArea")
      */
-    private $base;
+    private ?ShipInterface $base = null;
 
     /**
      * @var Collection<int, StarSystemMapInterface>

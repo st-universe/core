@@ -46,20 +46,18 @@ class ColonyClassDeposit implements ColonyClassDepositInterface
     private int $max_amount = 0;
 
     /**
-     * @var ColonyClassInterface
      *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colony_class_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colonyClass;
+    private ColonyClassInterface $colonyClass;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     public function getColonyClass(): ColonyClassInterface
     {

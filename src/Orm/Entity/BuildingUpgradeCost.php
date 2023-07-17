@@ -51,20 +51,18 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
     private int $amount;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     /**
-     * @var BuildingUpgradeInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\BuildingUpgrade")
      * @JoinColumn(name="buildings_upgrades_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $upgrade;
+    private BuildingUpgradeInterface $upgrade;
 
     public function getId(): int
     {

@@ -58,28 +58,25 @@ class ColonyTerraforming implements ColonyTerraformingInterface
     private int $finished = 0;
 
     /**
-     * @var TerraformingInterface
      *
      * @ManyToOne(targetEntity="Terraforming")
      * @JoinColumn(name="terraforming_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $terraforming;
+    private TerraformingInterface $terraforming;
 
     /**
-     * @var PlanetFieldInterface
      *
      * @ManyToOne(targetEntity="PlanetField")
      * @JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $field;
+    private PlanetFieldInterface $field;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ColonyInterface $colony;
 
     public function getId(): int
     {

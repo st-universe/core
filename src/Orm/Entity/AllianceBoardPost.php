@@ -76,28 +76,25 @@ class AllianceBoardPost implements AllianceBoardPostInterface
     private ?int $lastedit = null;
 
     /**
-     * @var AllianceBoardTopicInterface
      *
      * @ManyToOne(targetEntity="AllianceBoardTopic", inversedBy="posts")
      * @JoinColumn(name="topic_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $topic;
+    private AllianceBoardTopicInterface $topic;
 
     /**
-     * @var AllianceBoardInterface
      *
      * @ManyToOne(targetEntity="AllianceBoard", inversedBy="posts")
      * @JoinColumn(name="board_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $board;
+    private AllianceBoardInterface $board;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

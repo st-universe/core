@@ -45,20 +45,18 @@ class ResearchDependency implements ResearchDependencyInterface
     private int $mode;
 
     /**
-     * @var ResearchInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
      */
-    private $research;
+    private ResearchInterface $research;
 
     /**
-     * @var ResearchInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
      * @JoinColumn(name="depends_on", referencedColumnName="id")
      */
-    private $research_depends_on;
+    private ResearchInterface $research_depends_on;
 
     public function getId(): int
     {

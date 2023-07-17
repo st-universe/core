@@ -45,7 +45,7 @@ class UserMap implements UserMapInterface
      * @Column(type="integer")
      *
      */
-    private $cy = 0;
+    private int $cy = 0;
 
     /**
      * @Column(type="integer") *

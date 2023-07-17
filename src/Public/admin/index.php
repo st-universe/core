@@ -14,7 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-Init::run(function (ContainerInterface $dic) {
+Init::run(function (ContainerInterface $dic): void {
     $em = $dic->get(EntityManagerInterface::class);
 
     $em->beginTransaction();

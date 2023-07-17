@@ -12,7 +12,7 @@ final class LoggerUtil implements LoggerUtilInterface
 {
     private ConfigInterface $config;
 
-    private $logger;
+    private ?Logger $logger = null;
 
     private int $level;
 

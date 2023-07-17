@@ -69,20 +69,18 @@ class TradeTransaction implements TradeTransactionInterface
     private ?int $tradepost_id = 0;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="wg_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $wantedCommodity;
+    private CommodityInterface $wantedCommodity;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="gg_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $offeredCommodity;
+    private CommodityInterface $offeredCommodity;
 
     public function getId(): int
     {

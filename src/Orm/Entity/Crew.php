@@ -62,20 +62,18 @@ class Crew implements CrewInterface
     private int $race_id = 0;
 
     /**
-     * @var CrewRaceInterface
      *
      * @ManyToOne(targetEntity="CrewRace")
      * @JoinColumn(name="race_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $race;
+    private CrewRaceInterface $race;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

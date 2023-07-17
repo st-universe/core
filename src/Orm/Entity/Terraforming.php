@@ -76,7 +76,7 @@ class Terraforming implements TerraformingInterface
      *
      * @OneToMany(targetEntity="TerraformingCost", mappedBy="terraforming")
      */
-    private $costs;
+    private Collection $costs;
 
     public function __construct()
     {

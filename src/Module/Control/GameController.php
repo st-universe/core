@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use Throwable;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -128,7 +129,7 @@ final class GameController implements GameControllerInterface
     /** @var array<int, resource> */
     private array $semaphores = [];
 
-    /** @var array<int, GameConfigInterface> */
+    /** @var GameConfigInterface[]|null */
     private ?array $gameConfig = null;
 
     private ?GameRequestInterface $gameRequest = null;
@@ -210,13 +211,13 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    public function setMacroAndTemplate($macro, string $tpl): void
+    public function setMacroAndTemplate(string $macro, string $tpl): void
     {
         $this->macro = $macro;
         $this->setTemplateFile($tpl);
     }
 
-    public function setMacroInAjaxWindow($macro): void
+    public function setMacroInAjaxWindow(string $macro): void
     {
         $this->macro = $macro;
         $this->setTemplateFile('html/ajaxwindow.xhtml');
@@ -630,7 +631,7 @@ final class GameController implements GameControllerInterface
             } else {
                 $this->setTemplateFile('html/ship.twig', true);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw $e;
         }
 
@@ -801,6 +802,9 @@ final class GameController implements GameControllerInterface
         return $this->loginError;
     }
 
+    /**
+     * @return array{executionTime: float|string, memoryUsage: float|string, memoryPeakUsage: float|string}
+     */
     public function getBenchmarkResult(): array
     {
         $this->loggerUtil->log(sprintf('getBenchmarkResult, timestamp: %F', microtime(true)));

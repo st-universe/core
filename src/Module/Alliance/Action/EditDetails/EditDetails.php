@@ -147,7 +147,7 @@ final class EditDetails implements ActionControllerInterface
         $game->addInformation(_('Die Allianz wurde editiert'));
     }
 
-    private function validHex($hex)
+    private function validHex(string $hex): int|bool
     {
         return preg_match('/^#?(([a-f0-9]{3}){1,2})$/i', $hex);
     }

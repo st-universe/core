@@ -42,17 +42,15 @@ class UserTag implements UserTagInterface
     /**
      * @Column(type="datetime")
      *
-     * @var DateTimeInterface
      */
-    private $date;
+    private ?DateTimeInterface $date = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

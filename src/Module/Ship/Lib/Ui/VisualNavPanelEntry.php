@@ -20,8 +20,7 @@ class VisualNavPanelEntry
     /** @var null|int */
     public $currentShipSysId = null;
 
-    /** @var int */
-    public $row;
+    public ?int $row = null;
 
     /**
      * @var array{

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSectorScan;
 
+use Stu\Orm\Entity\StarSystemMapInterface;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Lib\SignatureWrapper;
@@ -23,8 +24,8 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
-    private $fadedSignaturesUncloaked = [];
-    private $fadedSignaturesCloaked = [];
+    private array $fadedSignaturesUncloaked = [];
+    private array $fadedSignaturesCloaked = [];
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -57,13 +58,20 @@ final class ShowSectorScan implements ViewControllerInterface
             $colony->getSy()
         );
 
+        if ($mapField === null) {
+            return;
+        }
+
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, true, $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('ERROR', false);
     }
 
-    private function getSignatures($field, $isSystem, $ignoreId)
+    /**
+     * @return array<string, SignatureWrapper>
+     */
+    private function getSignatures(StarSystemMapInterface $field, bool $isSystem, int $ignoreId): array
     {
         $allSigs = $this->flightSignatureRepository->getVisibleSignatures((int) $field->getId(), $isSystem, $ignoreId);
 

@@ -131,28 +131,28 @@ class Building implements BuildingInterface
      *
      * @OneToMany(targetEntity="BuildingCost", mappedBy="building")
      */
-    private $costs;
+    private Collection $costs;
 
     /**
      * @var ArrayCollection<int, BuildingFunctionInterface>
      *
      * @OneToMany(targetEntity="BuildingFunction", mappedBy="building", indexBy="function")
      */
-    private $functions;
+    private Collection $functions;
 
     /**
      * @var ArrayCollection<int, BuildingCommodityInterface>
      *
      * @OneToMany(targetEntity="BuildingCommodity", mappedBy="building")
      */
-    private $commodities;
+    private Collection $commodities;
 
     /**
      * @var ArrayCollection<int, PlanetFieldTypeBuildingInterface>
      *
      * @OneToMany(targetEntity="PlanetFieldTypeBuilding", mappedBy="building", indexBy="type")
      */
-    private $possibleFieldTypes;
+    private Collection $possibleFieldTypes;
 
     public function __construct()
     {
