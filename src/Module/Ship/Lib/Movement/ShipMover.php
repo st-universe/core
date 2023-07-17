@@ -395,6 +395,7 @@ final class ShipMover implements ShipMoverInterface
 
                     $this->addInformation(sprintf(_('Die %s deaktiviert den Warpantrieb'), $ship->getName()));
                 } catch (ShipSystemException $e) {
+                    //nothing to do here
                 }
             }
 
@@ -408,6 +409,7 @@ final class ShipMover implements ShipMoverInterface
 
                     $this->addInformation(sprintf(_('Die %s deaktiviert den Impulsantrieb'), $ship->getName()));
                 } catch (ShipSystemException $e) {
+                    //nothing to do here
                 }
             }
 
