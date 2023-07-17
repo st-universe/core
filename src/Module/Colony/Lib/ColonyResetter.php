@@ -108,9 +108,11 @@ final class ColonyResetter implements ColonyResetterInterface
             if ($sendMessage) {
                 $this->sendMessage($colony, $blockerFleet, false);
             }
+
             $blockerFleet->setBlockedColony(null);
             $this->fleetRepository->save($blockerFleet);
         }
+
         $colony->getBlockers()->clear();
     }
 
@@ -120,9 +122,11 @@ final class ColonyResetter implements ColonyResetterInterface
             if ($sendMessage) {
                 $this->sendMessage($colony, $defenderFleet, true);
             }
+
             $defenderFleet->setDefendedColony(null);
             $this->fleetRepository->save($defenderFleet);
         }
+
         $colony->getDefenders()->clear();
     }
 
@@ -154,7 +158,7 @@ final class ColonyResetter implements ColonyResetterInterface
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
-            (int) $fleet->getUserId(),
+            $fleet->getUserId(),
             $txt,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );

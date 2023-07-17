@@ -73,6 +73,7 @@ final class PlanetColonization implements PlanetColonizationInterface
             /** @var PlanetFieldInterface $field */
             $field = current($list);
         }
+
         $field->setBuilding($building);
 
         $colony->setWorkless($building->getHousing());

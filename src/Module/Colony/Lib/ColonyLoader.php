@@ -30,13 +30,16 @@ final class ColonyLoader implements ColonyLoaderInterface
         if ($checkForEntityLock && $this->lockManager->isLocked($colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)) {
             throw new EntityLockedException('Tick läuft gerade, Zugriff auf Kolonie ist daher blockiert');
         }
+
         $colony = $this->colonyRepository->find($colonyId);
         if ($colony === null) {
             throw new AccessViolation(sprintf("Colony not existent! Fool: %d", $userId));
         }
+
         if ($colony->getUserId() !== $userId) {
             throw new AccessViolation(sprintf("Colony owned by another user (%d)! Fool: %d", $colony->getUserId(), $userId));
         }
+
         return $colony;
     }
 }

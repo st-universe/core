@@ -27,12 +27,15 @@ class ColonyMenu
         if ($this->selectedColonyMenu === $value) {
             return 'selected';
         }
+
         if ($menuType === $value) {
             return 'selected';
         }
+
         if ($value === ColonyEnum::MENU_INFO && $menuType === 0 && $this->selectedColonyMenu === null) {
             return 'selected';
         }
+
         return false;
     }
 }

@@ -15,7 +15,7 @@ class ColonyProductionPreviewWrapper
 
 
     /** @var array<ColonyProduction> */
-    private array $production;
+    private array $production = [];
 
     /**
      * @param array<ColonyProduction> $production
@@ -45,7 +45,7 @@ class ColonyProductionPreviewWrapper
      */
     private function getPreview(int $buildingId): array
     {
-        $bcommodities = $this->buildingCommodityRepository->getByBuilding((int)$buildingId);
+        $bcommodities = $this->buildingCommodityRepository->getByBuilding($buildingId);
         $ret = [];
         foreach ($bcommodities as $commodityId => $prod) {
             $commodityId = $prod->getCommodityId();
@@ -59,8 +59,10 @@ class ColonyProductionPreviewWrapper
                 );
                 $ret[$commodityId] = $obj;
             }
+
             $ret[$commodityId]->setPreviewProduction($prod->getAmount());
         }
+
         return $ret;
     }
 }

@@ -30,8 +30,9 @@ final class CommodityConsumption implements CommodityConsumptionInterface
             if ($proc >= 0) {
                 continue;
             }
+
             /** @var CommodityInterface $commodity */
-            $commodity = $this->commodityRepository->find((int)$productionItem->getCommodityId());
+            $commodity = $this->commodityRepository->find($productionItem->getCommodityId());
             $ret[$commodityId]['commodity'] = $commodity;
             $ret[$commodityId]['production'] = $productionItem->getProduction();
 
@@ -43,6 +44,7 @@ final class CommodityConsumption implements CommodityConsumptionInterface
                 $ret[$commodityId]['turnsleft'] = (int) floor($stored / abs($proc));
             }
         }
+
         return $ret;
     }
 }
