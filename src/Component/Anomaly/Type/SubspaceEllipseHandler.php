@@ -214,12 +214,13 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     private function sendMessageDump(string $sectorString, FightMessageCollectionInterface $messageCollection, bool $isBase): void
     {
         foreach ($messageCollection->getRecipientIds() as $recipientId) {
-            $messageDump = $messageCollection->getMessageDump($recipientId);
+            $informations = $messageCollection->getInformationDump($recipientId);
 
-            $pm = sprintf("[b][color=red]Subraumellipse in Sektor %s[/color][/b]\n\n", $sectorString);
-            foreach ($messageDump as $value) {
-                $pm .= $value . "\n";
-            }
+            $pm = sprintf(
+                "[b][color=red]Subraumellipse in Sektor %s[/color][/b]\n\n%s",
+                $sectorString,
+                $informations->getInformationsAsString()
+            );
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,

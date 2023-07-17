@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
+use Stu\Lib\InformationWrapper;
+
 final class FightMessageCollection implements FightMessageCollectionInterface
 {
     /**
@@ -42,9 +44,9 @@ final class FightMessageCollection implements FightMessageCollectionInterface
         return $recipientIds;
     }
 
-    public function getMessageDump(?int $userId = null): array
+    public function getInformationDump(?int $userId = null): InformationWrapper
     {
-        $result = [];
+        $result = new InformationWrapper();
 
         foreach ($this->messages as $message) {
             if (
@@ -53,7 +55,7 @@ final class FightMessageCollection implements FightMessageCollectionInterface
                 || $message->getRecipientId() === null
                 || $message->getRecipientId() === $userId
             ) {
-                $result = array_merge($result, $message->getMessage());
+                $result->addInformationArray($message->getMessage());
             }
         }
 

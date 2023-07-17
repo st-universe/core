@@ -140,7 +140,10 @@ class ShipAttackCycleTest extends StuTestCase
 
         $collection = $this->subject->cycle($attackers, $defenders);
 
-        $this->assertEquals(['ready1', 'ready2', 'ready3', 'ready4'], $collection->getMessageDump());
+        $this->assertEquals(
+            new InformationWrapper(['ready1', 'ready2', 'ready3', 'ready4']),
+            $collection->getInformationDump()
+        );
     }
 
     public function testCycleExpectTwoRoundsToHappen(): void
@@ -209,6 +212,6 @@ class ShipAttackCycleTest extends StuTestCase
 
         $collection = $this->subject->cycle($attackers, $defenders, true, true);
 
-        $this->assertEquals(['energy', 'projectile'], $collection->getMessageDump());
+        $this->assertEquals(['energy', 'projectile'], $collection->getInformationDump()->getInformations());
     }
 }

@@ -71,7 +71,7 @@ class DirectedMovementTest extends StuTestCase
     ): void {
         $userId = 666;
         $shipId = 42;
-        $message = 'some-message';
+        $informations = $this->mock(InformationWrapper::class);
 
         $ship = $this->mock(ShipInterface::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
@@ -149,17 +149,12 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($informationWrapper);
 
-        $informationWrapper->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$message]);
-
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformationMerge')
-            ->with([$message])
+        $game->shouldReceive('addInformationWrapper')
+            ->with($informationWrapper)
             ->once();
         $game->shouldReceive('setView')
             ->with(ShowShip::VIEW_IDENTIFIER)
@@ -413,17 +408,12 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($informationWrapper);
 
-        $informationWrapper->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$message]);
-
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformationMerge')
-            ->with([$message])
+        $game->shouldReceive('addInformationWrapper')
+            ->with($informationWrapper)
             ->once();
 
         $subject->handle($game);
@@ -437,7 +427,7 @@ class DirectedMovementTest extends StuTestCase
     {
         $userId = 666;
         $shipId = 42;
-        $message = 'some-message';
+        $informationWrapper = $this->mock(InformationWrapper::class);
         $destX = 6;
         $destY = 5;
 
@@ -512,17 +502,12 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($informationWrapper);
 
-        $informationWrapper->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$message]);
-
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformationMerge')
-            ->with([$message])
+        $game->shouldReceive('addInformationWrapper')
+            ->with($informationWrapper)
             ->once();
         $game->shouldReceive('setView')
             ->with(ShowShip::VIEW_IDENTIFIER)

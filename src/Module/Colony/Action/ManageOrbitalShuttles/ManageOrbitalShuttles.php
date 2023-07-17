@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShuttles;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
@@ -121,7 +122,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             }
         }
 
-        $msgArray = [];
+        $informations = new InformationWrapper();
 
         foreach ($commodities as $commodityId) {
             if (!is_numeric($commodityId)) {
@@ -151,29 +152,28 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             }
 
             if ($smi->getCurrentLoad() !== $wantedCount) {
-                $msgArray[] = $this->transferShuttles(
+                $this->transferShuttles(
                     $commodity,
                     $smi->getCurrentLoad(),
                     $wantedCount,
                     $ship,
-                    $colony
+                    $colony,
+                    $informations
                 );
             }
         }
 
-        $game->addInformationMerge($msgArray);
+        $game->addInformationWrapper($informations);
 
-        if ($isForeignShip && !empty($msgArray)) {
+        if ($isForeignShip && !empty($informations->getInformations())) {
             $pm = sprintf(
-                _('Die Kolonie %s des Spielers %s transferiert Shuttles in Sektor %d|%d') . "\n",
+                _("Die Kolonie %s des Spielers %s transferiert Shuttles in Sektor %d|%d\n%s"),
                 $colony->getName(),
                 $colony->getUser()->getName(),
                 $ship->getPosX(),
-                $ship->getPosY()
+                $ship->getPosY(),
+                $informations->getInformationsAsString()
             );
-            foreach ($msgArray as $value) {
-                $pm .= $value . "\n";
-            }
             $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
             $this->privateMessageSender->send(
                 $userId,
@@ -190,8 +190,9 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         int $current,
         int $wanted,
         ShipInterface $ship,
-        ColonyInterface $colony
-    ): string {
+        ColonyInterface $colony,
+        InformationWrapper $informations
+    ): void {
         $diff = (int)abs($wanted - $current);
 
         if ($current < $wanted) {
@@ -206,12 +207,12 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             $msg = _('Es wurden %d %s von der %s transferiert');
         }
 
-        return sprintf(
+        $informations->addInformation(sprintf(
             $msg,
             $diff,
             $commodity->getName(),
             $ship->getName()
-        );
+        ));
     }
 
     public function performSessionCheck(): bool

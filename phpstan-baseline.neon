@@ -2177,26 +2177,6 @@ parameters:
 			path: src/Module/Maintenance/OldTradeLicenseDeletion.php
 
 		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Maintenance/OldTradeOffersDeletion.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Maintenance\\\\OldTradeOffersDeletion\\:\\:sendMessage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Maintenance/OldTradeOffersDeletion.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Maintenance\\\\OldTradeOffersDeletion\\:\\:sendMessage\\(\\) has parameter \\$pmArray with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Maintenance/OldTradeOffersDeletion.php
-
-		-
-			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Maintenance/OldTradeOffersDeletion.php
-
-		-
 			message: "#^Variable \\$storageManager might not be defined\\.$#"
 			count: 1
 			path: src/Module/Maintenance/OldTradeOffersDeletion.php

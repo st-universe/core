@@ -56,4 +56,20 @@ class InformationWrapper
     {
         return $this->informations;
     }
+
+    public function getInformationsAsString(): string
+    {
+        $result = '';
+
+        foreach ($this->getInformations() as $value) {
+            $result .= $value . "\n";
+        }
+
+        return $result;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->getInformations());
+    }
 }

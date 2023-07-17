@@ -220,10 +220,12 @@ final class AttackBuilding implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $pm = sprintf(_('Kampf in Sektor %s, Kolonie %s') . "\n", $ship->getSectorString(), $colony->getName());
-        foreach ($this->informations->getInformations() as $value) {
-            $pm .= $value . "\n";
-        }
+        $pm = sprintf(
+            _("Kampf in Sektor %s, Kolonie %s\n%s"),
+            $ship->getSectorString(),
+            $colony->getName(),
+            $this->informations->getInformationsAsString()
+        );
         $this->privateMessageSender->send(
             $userId,
             $colony->getUserId(),

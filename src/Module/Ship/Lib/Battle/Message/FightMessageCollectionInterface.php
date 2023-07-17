@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
+use Stu\Lib\InformationWrapper;
+
 interface FightMessageCollectionInterface
 {
     public function add(FightMessageInterface $msg): void;
@@ -9,6 +11,7 @@ interface FightMessageCollectionInterface
     /**
      * @param FightMessageInterface[] $messages
      */
+    //TODO use InformationWrapper
     public function addMultiple(array $messages): void;
 
     /**
@@ -16,8 +19,5 @@ interface FightMessageCollectionInterface
      */
     public function getRecipientIds(): array;
 
-    /**
-     * @return array<string>
-     */
-    public function getMessageDump(?int $userId = null): array;
+    public function getInformationDump(?int $userId = null): InformationWrapper;
 }

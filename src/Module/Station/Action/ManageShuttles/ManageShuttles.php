@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\ManageShuttles;
 
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -111,7 +112,7 @@ final class ManageShuttles implements ActionControllerInterface
             }
         }
 
-        $msgArray = [];
+        $informations = new InformationWrapper();
 
         foreach ($commodities as $commodityId) {
             $wantedCount = (int)$shuttlecount[$commodityId];
@@ -127,30 +128,28 @@ final class ManageShuttles implements ActionControllerInterface
             }
 
             if ($smi->getCurrentLoad() !== $wantedCount) {
-                $msgArray[] = $this->transferShuttles(
+                $informations->addInformation($this->transferShuttles(
                     (int)$commodityId,
                     $smi->getCurrentLoad(),
                     $wantedCount,
                     $ship,
                     $station
-                );
+                ));
             }
         }
 
-        $game->addInformationMerge($msgArray);
+        $game->addInformationWrapper($informations);
 
-        if ($isForeignShip && !empty($msgArray)) {
+        if ($isForeignShip && !$informations->isEmpty()) {
             $pm = sprintf(
-                _('Die %s %s des Spielers %s transferiert Shuttles in Sektor %d|%d') . "\n",
+                _("Die %s %s des Spielers %s transferiert Shuttles in Sektor %d|%d\n%s"),
                 $station->getRump()->getName(),
                 $station->getName(),
                 $station->getUser()->getName(),
                 $ship->getPosX(),
-                $ship->getPosY()
+                $ship->getPosY(),
+                $informations->getInformationsAsString()
             );
-            foreach ($msgArray as $value) {
-                $pm .= $value . "\n";
-            }
             $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
             $this->privateMessageSender->send(
                 $userId,

@@ -152,7 +152,7 @@ final class AttackShip implements ActionControllerInterface
             !$isWebSituation && $isTargetBase
         );
 
-        $informations = new InformationWrapper($fightMessageCollection->getMessageDump());
+        $informations = $fightMessageCollection->getInformationDump();
 
         if ($this->isActiveTractorShipWarped($ship, $target)) {
             //Alarm-Rot check for ship
@@ -223,12 +223,13 @@ final class AttackShip implements ActionControllerInterface
         bool $isTargetBase
     ): void {
         foreach ($messageCollection->getRecipientIds() as $recipientId) {
-            $messageDump = $messageCollection->getMessageDump($recipientId);
+            $messageDump = $messageCollection->getInformationDump($recipientId);
 
-            $pm = sprintf(_('Kampf in Sektor %s') . "\n", $sectorString);
-            foreach ($messageDump as $value) {
-                $pm .= $value . "\n";
-            }
+            $pm = sprintf(
+                _("Kampf in Sektor %s\n%s"),
+                $sectorString,
+                $messageDump->getInformationsAsString()
+            );
 
             $this->privateMessageSender->send(
                 $userId,
