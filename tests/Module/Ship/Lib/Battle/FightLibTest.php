@@ -10,6 +10,7 @@ use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -69,7 +70,7 @@ class FightLibTest extends StuTestCase
 
         $result = $this->subject->ready($this->wrapper);
 
-        $this->assertEquals([], $result);
+        $this->assertEquals([], $result->getInformations());
     }
 
     public function testReadyExpectNoActionsWhenEscapePod(): void
@@ -85,7 +86,7 @@ class FightLibTest extends StuTestCase
 
         $result = $this->subject->ready($this->wrapper);
 
-        $this->assertEquals([], $result);
+        $this->assertEquals([], $result->getInformations());
     }
 
     public function testReadyExpectNoActionsWhenNoBuildplan(): void
@@ -105,7 +106,7 @@ class FightLibTest extends StuTestCase
 
         $result = $this->subject->ready($this->wrapper);
 
-        $this->assertEquals([], $result);
+        $this->assertEquals([], $result->getInformations());
     }
 
     public function testReadyExpectNoActionsWhenNotEnoughCrew(): void
@@ -129,7 +130,7 @@ class FightLibTest extends StuTestCase
 
         $result = $this->subject->ready($this->wrapper);
 
-        $this->assertEquals([], $result);
+        $this->assertEquals([], $result->getInformations());
     }
 
     public function testReadyExpectSuccessWhenNoErrors(): void
@@ -173,7 +174,7 @@ class FightLibTest extends StuTestCase
         $this->alertLevelBasedReaction->shouldReceive('react')
             ->with($this->wrapper)
             ->once()
-            ->andReturn(['test']);
+            ->andReturn(new InformationWrapper(['test']));
 
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -182,7 +183,7 @@ class FightLibTest extends StuTestCase
 
         $result = $this->subject->ready($this->wrapper);
 
-        $this->assertEquals(['Aktionen der shipname', '- Das Schiff hat abgedockt', 'test'], $result);
+        $this->assertEquals(['Aktionen der shipname', '- Das Schiff hat abgedockt', 'test'], $result->getInformations());
     }
 
     public function testReadyExpectSuccessWhenErrors(): void
@@ -225,11 +226,11 @@ class FightLibTest extends StuTestCase
         $this->alertLevelBasedReaction->shouldReceive('react')
             ->with($this->wrapper)
             ->once()
-            ->andReturn([]);
+            ->andReturn(new InformationWrapper());
 
         $result = $this->subject->ready($this->wrapper);
 
-        $this->assertEquals([], $result);
+        $this->assertEquals([], $result->getInformations());
     }
 
     public function testFilterInactiveShips(): void

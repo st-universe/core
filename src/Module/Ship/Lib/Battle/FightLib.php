@@ -8,6 +8,7 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -30,27 +31,28 @@ final class FightLib implements FightLibInterface
         $this->alertLevelBasedReaction = $alertLevelBasedReaction;
     }
 
-    public function ready(ShipWrapperInterface $wrapper): array
+    public function ready(ShipWrapperInterface $wrapper): InformationWrapper
     {
         $ship = $wrapper->get();
+
+        $informations = new InformationWrapper();
 
         if (
             $ship->isDestroyed()
             || $ship->getRump()->isEscapePods()
         ) {
-            return [];
+            return $informations;
         }
         if ($ship->getBuildplan() === null) {
-            return [];
+            return $informations;
         }
         if (!$ship->hasEnoughCrew()) {
-            return [];
+            return $informations;
         }
 
-        $msg = [];
         if ($ship->getDockedTo() !== null) {
             $ship->setDockedTo(null);
-            $msg[] = "- Das Schiff hat abgedockt";
+            $informations->addInformation("- Das Schiff hat abgedockt");
         }
 
         try {
@@ -64,13 +66,13 @@ final class FightLib implements FightLibInterface
 
         $this->cancelRepair->cancelRepair($ship);
 
-        $msg = array_merge($msg, $this->alertLevelBasedReaction->react($wrapper));
+        $informations->addInformationMerge($this->alertLevelBasedReaction->react($wrapper)->getInformations());
 
-        if ($msg !== []) {
-            $msg = array_merge([sprintf(_('Aktionen der %s'), $ship->getName())], $msg);
+        if ($informations->getInformations() !== []) {
+            $informations->addInformationMerge([sprintf(_('Aktionen der %s'), $ship->getName())], true);
         }
 
-        return $msg;
+        return $informations;
     }
 
     public function filterInactiveShips(array $base): array

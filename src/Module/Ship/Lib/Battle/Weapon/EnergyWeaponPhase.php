@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -71,7 +72,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setIsPhaserDamage(true);
             $this->setWeaponShieldModificator($target, $weapon, $damage_wrapper);
 
-            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
+            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
 
             if ($target->isDestroyed()) {
                 if ($isAlertRed) {
@@ -120,14 +121,14 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         EnergyAttackerInterface $attacker,
         PlanetFieldInterface $target,
         bool $isOrbitField
-    ): array {
-        $msg = [];
+    ): InformationWrapper {
+        $informations = new InformationWrapper();
 
         $building = $target->getBuilding();
         if ($building === null) {
-            $msg[] = _("Kein Gebäude vorhanden");
+            $informations->addInformation(_("Kein Gebäude vorhanden"));
 
-            return $msg;
+            return $informations;
         }
 
         for ($i = 1; $i <= $attacker->getPhaserVolleys(); $i++) {
@@ -137,12 +138,18 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $attacker->reduceEps($this->getEnergyWeaponEnergyCosts());
 
             $weapon = $attacker->getWeapon();
-            $msg[] = sprintf(_("Die %s feuert mit einem %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $weapon->getName(), $building->getName(), $target->getFieldId());
+            $informations->addInformation(sprintf(
+                _("Die %s feuert mit einem %s auf das Gebäude %s auf Feld %d"),
+                $attacker->getName(),
+                $weapon->getName(),
+                $building->getName(),
+                $target->getFieldId()
+            ));
 
             if (
                 $attacker->getHitChance() < rand(1, 100)
             ) {
-                $msg[] = _("Das Gebäude wurde verfehlt");
+                $informations->addInformation(_("Das Gebäude wurde verfehlt"));
                 continue;
             }
 
@@ -157,7 +164,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setIsPhaserDamage(true);
 
 
-            $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
+            $informations->addInformationMerge($this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField)->getInformations());
 
             if ($target->getIntegrity() === 0) {
                 $this->entryCreator->addColonyEntry(
@@ -178,7 +185,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             }
         }
 
-        return $msg;
+        return $informations;
     }
 
     private function isCritical(WeaponInterface $weapon, bool $isTargetCloaked): bool

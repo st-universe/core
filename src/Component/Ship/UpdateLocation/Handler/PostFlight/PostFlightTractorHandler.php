@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\UpdateLocation\Handler\PostFlight;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Component\Ship\UpdateLocation\Handler\AbstractUpdateLocationHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -35,9 +36,9 @@ final class PostFlightTractorHandler extends AbstractUpdateLocationHandler imple
         }
 
         //check for tractor system health
-        $msg = [];
-        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($wrapper, $tractoredShip, $msg);
-        $this->addMessagesInternal($msg);
+        $informations = new InformationWrapper();
+        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($wrapper, $tractoredShip, $informations);
+        $this->addMessagesInternal($informations->getInformations());
 
         // colony stuff
         $msg = $this->cancelColonyBlockOrDefend->work($ship, true);

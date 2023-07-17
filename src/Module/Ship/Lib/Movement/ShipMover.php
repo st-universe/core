@@ -592,12 +592,13 @@ final class ShipMover implements ShipMoverInterface
             );
 
             //check for tractor system health
-            $msg = [];
-            $tractorSystemSurvived = $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($wrapper, $tractoredShip, $msg);
+            $tractorSystemSurvived = $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing(
+                $wrapper,
+                $tractoredShip,
+                $this->informations
+            );
             if (!$tractorSystemSurvived) {
-                $this->deactivateTractorBeam($wrapper, current($msg));
-            } else {
-                $this->addInformationMerge($msg);
+                $this->deactivateTractorBeam($wrapper, null);
             }
 
             $this->addInformationMerge($this->cancelColonyBlockOrDefend->work($ship, true));
@@ -662,11 +663,10 @@ final class ShipMover implements ShipMoverInterface
             $dmg = $isAbsolutDmg ? $damage : $tractoredShip->getMaxHull() * $damage / 100;
 
             $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $tractoredShip->getName(), $ship->getPosX(), $ship->getPosY()));
-            $damageMsg = $this->applyDamage->damage(
+            $this->addInformationMerge($this->applyDamage->damage(
                 new DamageWrapper((int) ceil($dmg)),
                 $tractoredShipWrapper
-            );
-            $this->addInformationMerge($damageMsg);
+            )->getInformations());
 
             if ($tractoredShip->isDestroyed()) {
                 $this->entryCreator->addShipEntry(sprintf(
@@ -683,8 +683,7 @@ final class ShipMover implements ShipMoverInterface
         //ship itself
         $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $ship->getName(), $ship->getPosX(), $ship->getPosY()));
         $dmg = $isAbsolutDmg ? $damage : $ship->getMaxHull() * $damage / 100;
-        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $wrapper);
-        $this->addInformationMerge($damageMsg);
+        $this->addInformationMerge($this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $wrapper)->getInformations());
 
         if ($ship->isDestroyed()) {
             $this->entryCreator->addShipEntry(sprintf(

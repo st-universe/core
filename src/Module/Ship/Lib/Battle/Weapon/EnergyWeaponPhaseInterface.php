@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -22,12 +23,9 @@ interface EnergyWeaponPhaseInterface
         bool $isAlertRed = false
     ): array;
 
-    /**
-     * @return array<string>
-     */
     public function fireAtBuilding(
         EnergyAttackerInterface $attacker,
         PlanetFieldInterface $target,
         bool $isOrbitField
-    ): array;
+    ): InformationWrapper;
 }

@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -68,7 +69,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setIsTorpedoDamage(true);
             $this->setTorpedoHullModificator($target, $torpedo, $damage_wrapper);
 
-            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
+            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
 
             if ($target->isDestroyed()) {
                 unset($targetPool[$target->getId()]);
@@ -111,13 +112,15 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         PlanetFieldInterface $target,
         bool $isOrbitField,
         int &$antiParticleCount
-    ): array {
+    ): InformationWrapper {
+        $informations = new InformationWrapper();
+
         $building = $target->getBuilding();
         if ($building === null) {
-            return [];
+            return $informations;
         }
 
-        $msg = [];
+
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
             $torpedo = $attacker->getTorpedo();
 
@@ -132,21 +135,21 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $attacker->lowerTorpedoCount(1);
             $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
 
-            $msg[] = sprintf(
+            $informations->addInformation(sprintf(
                 _("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"),
                 $attacker->getName(),
                 $torpedo->getName(),
                 $building->getName(),
                 $target->getFieldId()
-            );
+            ));
 
             if ($antiParticleCount > 0) {
                 $antiParticleCount--;
-                $msg[] = "Der Torpedo wurde vom orbitalem Torpedoabwehrsystem abgefangen";
+                $informations->addInformation("Der Torpedo wurde vom orbitalem Torpedoabwehrsystem abgefangen");
                 continue;
             }
             if ($attacker->getHitChance() < rand(1, 100)) {
-                $msg[] = "Das Gebäude wurde verfehlt";
+                $informations->addInformation("Das Gebäude wurde verfehlt");
                 continue;
             }
             $isCritical = rand(1, 100) <= $torpedo->getCriticalChance();
@@ -158,7 +161,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
 
-            $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
+            $informations->addInformationMerge($this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField)->getInformations());
 
             if ($target->getIntegrity() === 0) {
                 $this->entryCreator->addColonyEntry(
@@ -179,7 +182,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             }
         }
 
-        return $msg;
+        return $informations;
     }
 
     private function getProjectileWeaponEnergyCosts(): int

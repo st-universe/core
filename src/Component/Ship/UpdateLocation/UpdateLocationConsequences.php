@@ -61,7 +61,7 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
 
     /**
      * @param array<string, UpdateLocationHandlerInterface> $handler
-     * @param list<string> $msgToPlayer
+     * @param array<string> $msgToPlayer
      */
     private function walkHandler(array $handler, ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip, array &$msgToPlayer): void
     {
@@ -80,8 +80,8 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
     }
 
     /**
-     * @param list<string> $msgToSchedule
-     * @param null|list<string> $msgToPlayer
+     * @param array<string> $msgToSchedule
+     * @param null|array<string> $msgToPlayer
      */
     private function scheduleMsgToOwnerOrPlayer(ShipInterface $ship, ?ShipInterface $tractoringShip, array $msgToSchedule, ?array &$msgToPlayer = null): void
     {
@@ -102,7 +102,7 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
     }
 
     /**
-     * @param list<string> $msg
+     * @param array<string> $msg
      */
     private function informOwnerOfTractoredShip(array $msg): void
     {

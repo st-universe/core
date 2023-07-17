@@ -11,7 +11,7 @@ interface UpdateLocationConsequencesInterface
 {
     /**
      * @param StarSystemMapInterface|MapInterface $nextField
-     * @param null|list<string> $msgToPlayer
+     * @param null|array<string> $msgToPlayer
      */
     public function updateLocationWithConsequences(
         ShipWrapperInterface $wrapper,

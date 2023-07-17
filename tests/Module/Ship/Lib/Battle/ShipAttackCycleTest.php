@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ShipAttacker;
@@ -105,19 +106,19 @@ class ShipAttackCycleTest extends StuTestCase
         $this->fightLib->shouldReceive('ready')
             ->with($attacker1)
             ->once()
-            ->andReturn(['ready1']);
+            ->andReturn(new InformationWrapper(['ready1']));
         $this->fightLib->shouldReceive('ready')
             ->with($attacker2)
             ->once()
-            ->andReturn(['ready2']);
+            ->andReturn(new InformationWrapper(['ready2']));
         $this->fightLib->shouldReceive('ready')
             ->with($defender1)
             ->once()
-            ->andReturn(['ready3']);
+            ->andReturn(new InformationWrapper(['ready3']));
         $this->fightLib->shouldReceive('ready')
             ->with($defender2)
             ->once()
-            ->andReturn(['ready4']);
+            ->andReturn(new InformationWrapper(['ready4']));
 
         $this->attackMatchup->shouldReceive('getMatchup')
             ->with($attackers, $defenders, [], true, false)

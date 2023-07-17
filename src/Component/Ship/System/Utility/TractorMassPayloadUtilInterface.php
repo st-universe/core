@@ -2,15 +2,20 @@
 
 namespace Stu\Component\Ship\System\Utility;
 
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface TractorMassPayloadUtilInterface
 {
-    public function tryToTow(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip): ?string;
+    public function tryToTow(
+        ShipWrapperInterface $wrapper,
+        ShipInterface $tractoredShip
+    ): ?string;
 
-    /**
-     * @param list<string> $informations
-     */
-    public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, array &$informations): bool;
+    public function tractorSystemSurvivedTowing(
+        ShipWrapperInterface $wrapper,
+        ShipInterface $tractoredShip,
+        InformationWrapper $informations
+    ): bool;
 }
