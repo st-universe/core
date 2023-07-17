@@ -5,25 +5,26 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Lib\DamageWrapper;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 //TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
 {
-    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): array
+    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): InformationWrapper
     {
-        $msg = [];
+        $informations = new InformationWrapper();
 
         $user = $game->getUser();
         $userId = $user->getId();
         $ship = $wrapper->get();
 
-        $msg[] = sprintf(
+        $$informations->addInformation(sprintf(
             "Das Energienetz um die %s in Sektor %s ist implodiert",
             $ship->getName(),
             $ship->getSectorString()
-        );
+        ));
 
         $damage_wrapper = new DamageWrapper(
             (int)ceil(rand(65, 85) * $wrapper->get()->getMaxHull() / 100)
@@ -33,7 +34,7 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         $damage_wrapper->setHullDamageFactor(100);
         $damage_wrapper->setIsPhaserDamage(true);
 
-        $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $wrapper));
+        $informations->addInformationMerge($this->applyDamage->damage($damage_wrapper, $wrapper)->getInformations());
 
         if ($ship->isDestroyed()) {
             $entryMsg = sprintf(
@@ -56,12 +57,9 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
 
             $this->checkForPrestige($user, $ship);
 
-            $destroyMsg = $this->shipRemover->destroy($wrapper);
-            if ($destroyMsg !== null) {
-                $msg[] = $destroyMsg;
-            }
+            $informations->addInformation($this->shipRemover->destroy($wrapper));
         }
 
-        return $msg;
+        return $informations;
     }
 }

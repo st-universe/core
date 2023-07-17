@@ -2,16 +2,14 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface FightLibInterface
 {
-    /**
-     * @return string[]
-     */
-    public function ready(ShipWrapperInterface $wrapper): array;
+    public function ready(ShipWrapperInterface $wrapper): InformationWrapper;
 
     /**
      * @param ShipWrapperInterface[] $base

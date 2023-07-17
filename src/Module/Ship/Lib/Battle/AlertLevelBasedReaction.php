@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
@@ -21,48 +22,45 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
         $this->shipSystemManager = $shipSystemManager;
     }
 
-    public function react(ShipWrapperInterface $wrapper): array
+    public function react(ShipWrapperInterface $wrapper): InformationWrapper
     {
         $ship = $wrapper->get();
-        $msg = [];
+        $informations = new InformationWrapper();
 
-        if ($this->changeFromGreenToYellow($wrapper, $msg)) {
-            return $msg;
+        if ($this->changeFromGreenToYellow($wrapper, $informations)) {
+            return $informations;
         }
 
         if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_YELLOW) {
-            if ($this->doAlertYellowReactions($wrapper, $msg)) {
-                return $msg;
+            if ($this->doAlertYellowReactions($wrapper, $informations)) {
+                return $informations;
             }
         }
 
         if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_RED) {
-            if ($this->doAlertYellowReactions($wrapper, $msg)) {
-                return $msg;
+            if ($this->doAlertYellowReactions($wrapper, $informations)) {
+                return $informations;
             }
-            $this->doAlertRedReactions($wrapper, $msg);
+            $this->doAlertRedReactions($wrapper, $informations);
         }
 
-        return $msg;
+        return $informations;
     }
 
-    /**
-     * @param array<string> $msg
-     */
-    private function changeFromGreenToYellow(ShipWrapperInterface $wrapper, array &$msg): bool
+    private function changeFromGreenToYellow(ShipWrapperInterface $wrapper, InformationWrapper $informations): bool
     {
         $ship = $wrapper->get();
 
         if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
             try {
                 $alertMsg = $wrapper->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
-                $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
+                $informations->addInformation("- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb");
                 if ($alertMsg !== null) {
-                    $msg[] = "- " . $alertMsg;
+                    $informations->addInformation("- " . $alertMsg);
                 }
                 return true;
             } catch (InsufficientEnergyException $e) {
-                $msg[] = "- Nicht genügend Energie vorhanden um auf Alarm-Gelb zu wechseln";
+                $informations->addInformation("- Nicht genügend Energie vorhanden um auf Alarm-Gelb zu wechseln");
                 return true;
             }
         }
@@ -70,17 +68,14 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
         return false;
     }
 
-    /**
-     * @param array<string> $msg
-     */
-    private function doAlertYellowReactions(ShipWrapperInterface $wrapper, array &$msg): bool
+    private function doAlertYellowReactions(ShipWrapperInterface $wrapper, InformationWrapper $informations): bool
     {
         $ship = $wrapper->get();
 
         if ($ship->getCloakState()) {
             try {
                 $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_CLOAK);
-                $msg[] = "- Die Tarnung wurde deaktiviert";
+                $informations->addInformation("- Die Tarnung wurde deaktiviert");
             } catch (ShipSystemException $e) {
             }
 
@@ -91,38 +86,35 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             try {
                 $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
 
-                $msg[] = "- Die Schilde wurden aktiviert";
+                $informations->addInformation("- Die Schilde wurden aktiviert");
             } catch (ShipSystemException $e) {
             }
         } else {
-            $msg[] = "- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden";
+            $informations->addInformation("- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden");
         }
         try {
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_NBS);
 
-            $msg[] = "- Die Nahbereichssensoren wurden aktiviert";
+            $informations->addInformation("- Die Nahbereichssensoren wurden aktiviert");
         } catch (ShipSystemException $e) {
         }
 
         try {
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_PHASER);
 
-            $msg[] = "- Die Energiewaffe wurde aktiviert";
+            $informations->addInformation("- Die Energiewaffe wurde aktiviert");
         } catch (ShipSystemException $e) {
         }
 
         return false;
     }
 
-    /**
-     * @param array<string> $msg
-     */
-    private function doAlertRedReactions(ShipWrapperInterface $wrapper, array &$msg): void
+    private function doAlertRedReactions(ShipWrapperInterface $wrapper, InformationWrapper $informations): void
     {
         try {
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TORPEDO);
 
-            $msg[] = "- Der Torpedowerfer wurde aktiviert";
+            $informations->addInformation("- Der Torpedowerfer wurde aktiviert");
         } catch (ShipSystemException $e) {
         }
     }

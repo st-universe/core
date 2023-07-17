@@ -6,10 +6,12 @@ namespace Stu\Component\Ship\System\Utility;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
+//TODO unit tests
 final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 {
     private ApplyDamageInterface $applyDamage;
@@ -45,8 +47,11 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return null;
     }
 
-    public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, array &$informations): bool
-    {
+    public function tractorSystemSurvivedTowing(
+        ShipWrapperInterface $wrapper,
+        ShipInterface $tractoredShip,
+        InformationWrapper $informations
+    ): bool {
         $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
         $payload = $ship->getTractorPayload();
@@ -55,22 +60,22 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         if (($mass > 0.9 * $payload) && rand(1, 10) === 1) {
             $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
 
-            if ($this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $msg)) {
+            if ($this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $informations)) {
                 //tractor destroyed
-                $informations[] = sprintf(
+                $informations->addInformation(sprintf(
                     _('Traktoremitter der %s wurde zerstört. Die %s wird nicht weiter gezogen'),
                     $ship->getName(),
                     $tractoredShip->getName()
-                );
+                ));
                 $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
                 return false;
             } else {
-                $informations[] = sprintf(
+                $informations->addInformation(sprintf(
                     _('Traktoremitter der %s ist überbelastet und wurde dadurch beschädigt, Status: %d%%'),
                     $ship->getName(),
                     $system->getStatus()
-                );
+                ));
             }
         }
 

@@ -7,6 +7,7 @@ namespace Stu\Component\Anomaly\Type;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -98,8 +99,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         foreach ($spacecrafts as $spacecraft) {
 
-            if ($spacecraft->getUser()->isVacationRequestOldEnough())
-            {
+            if ($spacecraft->getUser()->isVacationRequestOldEnough()) {
                 continue;
             }
 
@@ -130,10 +130,15 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
             if ($shieldSystem->getStatus() > 0) {
                 $wrapper = $this->shipWrapperFactory->wrapShip($spacecraft);
-                $msg = [];
-                $damage = $this->generateRandomValue(); // 
-                $this->applyDamage->damageShipSystem($wrapper, $shieldSystem, $damage, $msg);
-                $fightMessage->addMessageMerge($msg);
+
+                $informations = new InformationWrapper();
+                $this->applyDamage->damageShipSystem(
+                    $wrapper,
+                    $shieldSystem,
+                    $this->generateRandomValue(),
+                    $informations
+                );
+                $fightMessage->addMessageMerge($informations->getInformations());
             }
 
             if ($spacecraft->isBase()) {

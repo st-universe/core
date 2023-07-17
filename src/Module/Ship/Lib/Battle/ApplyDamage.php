@@ -9,10 +9,12 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
+//TODO unit tests
 final class ApplyDamage implements ApplyDamageInterface
 {
     private ShipSystemManagerInterface $shipSystemManager;
@@ -30,26 +32,27 @@ final class ApplyDamage implements ApplyDamageInterface
     public function damage(
         DamageWrapper $damageWrapper,
         ShipWrapperInterface $shipWrapper
-    ): array {
+    ): InformationWrapper {
         $ship = $shipWrapper->get();
         $ship->setShieldRegenerationTimer(time());
-        $msg = [];
+
+        $informations = new InformationWrapper();
         if ($ship->getShieldState()) {
             $damage = (int) $damageWrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage >= $ship->getShield()) {
-                $msg[] = "- Schildschaden: " . $ship->getShield();
-                $msg[] = "-- Schilde brechen zusammen!";
+                $informations->addInformation("- Schildschaden: " . $ship->getShield());
+                $informations->addInformation("-- Schilde brechen zusammen!");
 
                 $this->shipSystemManager->deactivate($shipWrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
 
                 $ship->setShield(0);
             } else {
                 $ship->setShield($ship->getShield() - $damage);
-                $msg[] = "- Schildschaden: " . $damage . " - Status: " . $ship->getShield();
+                $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $ship->getShield());
             }
         }
         if ($damageWrapper->getNetDamage() <= 0) {
-            return $msg;
+            return $informations;
         }
         $disablemessage = false;
         $damage = (int) $damageWrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_HULL);
@@ -63,70 +66,84 @@ final class ApplyDamage implements ApplyDamageInterface
                 $systemName = $this->destroyRandomShipSystem($shipWrapper);
 
                 if ($systemName !== null) {
-                    $msg[] = "- Kritischer Hüllen-Treffer zerstört System: " . $systemName;
+                    $informations->addInformation("- Kritischer Hüllen-Treffer zerstört System: " . $systemName);
                 }
             }
             $huelleVorher = $ship->getHull();
             $ship->setHuell($huelleVorher - $damage);
-            $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHull();
+            $informations->addInformation("- Hüllenschaden: " . $damage . " - Status: " . $ship->getHull());
 
-            if (!$this->checkForDamagedShipSystems($shipWrapper, $huelleVorher, $msg)) {
-                $this->damageRandomShipSystem($shipWrapper, $msg, (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHull()));
+            if (!$this->checkForDamagedShipSystems(
+                $shipWrapper,
+                $huelleVorher,
+                $informations
+            )) {
+                $this->damageRandomShipSystem(
+                    $shipWrapper,
+                    $informations,
+                    (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHull())
+                );
             }
 
             if ($disablemessage) {
-                $msg[] = $disablemessage;
+                $informations->addInformation($disablemessage);
             }
 
             if ($ship->isDestroyed()) {
-                $msg[] = "-- Das Schiff wurde zerstört!";
+                $informations->addInformation("-- Das Schiff wurde zerstört!");
             }
 
-            return $msg;
+            return $informations;
         }
-        $msg[] = "- Hüllenschaden: " . $damage;
-        $msg[] = "-- Das Schiff wurde zerstört!";
+        $informations->addInformation("- Hüllenschaden: " . $damage);
+        $informations->addInformation("-- Das Schiff wurde zerstört!");
         $ship->setIsDestroyed(true);
-        return $msg;
+
+        return $informations;
     }
 
     public function damageBuilding(
         DamageWrapper $damageWrapper,
         PlanetFieldInterface $target,
         bool $isOrbitField
-    ): array {
-        $msg = [];
+    ): InformationWrapper {
+        $informations = new InformationWrapper();
+
         $colony = $target->getColony();
         if (!$isOrbitField && $this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
             $damage = (int) $damageWrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage > $colony->getShields()) {
-                $msg[] = "- Schildschaden: " . $colony->getShields();
-                $msg[] = "-- Schilde brechen zusammen!";
+                $informations->addInformation("- Schildschaden: " . $colony->getShields());
+                $informations->addInformation("-- Schilde brechen zusammen!");
 
                 $colony->setShields(0);
             } else {
                 $colony->setShields($colony->getShields() - $damage);
-                $msg[] = "- Schildschaden: " . $damage . " - Status: " . $colony->getShields();
+                $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $colony->getShields());
             }
         }
         if ($damageWrapper->getNetDamage() <= 0) {
-            return $msg;
+            return $informations;
         }
         $damage = (int) $damageWrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_HULL);
         if ($target->getIntegrity() > $damage) {
             $target->setIntegrity($target->getIntegrity() - $damage);
-            $msg[] = "- Gebäudeschaden: " . $damage . " - Status: " . $target->getIntegrity();
+            $informations->addInformation("- Gebäudeschaden: " . $damage . " - Status: " . $target->getIntegrity());
 
-            return $msg;
+            return $informations;
         }
-        $msg[] = "- Gebäudeschaden: " . $damage;
-        $msg[] = "-- Das Gebäude wurde zerstört!";
+        $informations->addInformation("- Gebäudeschaden: " . $damage);
+        $informations->addInformation("-- Das Gebäude wurde zerstört!");
         $target->setIntegrity(0);
-        return $msg;
+
+        return $informations;
     }
 
-    private function checkForDamagedShipSystems(ShipWrapperInterface $wrapper, int $huelleVorher, &$msg): bool
-    {
+    private function checkForDamagedShipSystems(
+        ShipWrapperInterface $wrapper,
+        int $huelleVorher,
+        InformationWrapper $informations
+    ): bool {
         $ship = $wrapper->get();
         $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHull()) -
             ceil($ship->getHull() * 6 / $ship->getMaxHull());
@@ -136,7 +153,7 @@ final class ApplyDamage implements ApplyDamageInterface
         }
 
         for ($i = 1; $i <= $systemsToDamage; $i++) {
-            $this->damageRandomShipSystem($wrapper, $msg);
+            $this->damageRandomShipSystem($wrapper, $informations);
         }
 
         return true;
@@ -158,15 +175,18 @@ final class ApplyDamage implements ApplyDamageInterface
         return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
     }
 
-    private function damageRandomShipSystem(ShipWrapperInterface $wrapper, &$msg, $percent = null): void
-    {
+    private function damageRandomShipSystem(
+        ShipWrapperInterface $wrapper,
+        InformationWrapper $informations,
+        $percent = null
+    ): void {
         $healthySystems = $wrapper->get()->getHealthySystems();
         shuffle($healthySystems);
 
         if (count($healthySystems) > 0) {
             $system = $healthySystems[0];
 
-            $this->damageShipSystem($wrapper, $system, $percent ?? rand(1, 70), $msg);
+            $this->damageShipSystem($wrapper, $system, $percent ?? rand(1, 70), $informations);
         }
     }
 
@@ -174,7 +194,7 @@ final class ApplyDamage implements ApplyDamageInterface
         ShipWrapperInterface $wrapper,
         $system,
         $dmg,
-        &$msg
+        InformationWrapper $informations
     ): bool {
         $status = $system->getStatus();
         $systemName = ShipSystemTypeEnum::getDescription($system->getSystemType());
@@ -182,14 +202,14 @@ final class ApplyDamage implements ApplyDamageInterface
         if ($status > $dmg) {
             $system->setStatus($status - $dmg);
             $this->shipSystemManager->handleDamagedSystem($wrapper, $system->getSystemType());
-            $msg[] = "- Folgendes System wurde beschädigt: " . $systemName;
+            $informations->addInformation("- Folgendes System wurde beschädigt: " . $systemName);
 
             return false;
         } else {
             $system->setStatus(0);
             $system->setMode(ShipSystemModeEnum::MODE_OFF);
             $this->shipSystemManager->handleDestroyedSystem($wrapper, $system->getSystemType());
-            $msg[] = "- Der Schaden zerstört folgendes System: " . $systemName;
+            $informations->addInformation("- Der Schaden zerstört folgendes System: " . $systemName);
 
             return true;
         }

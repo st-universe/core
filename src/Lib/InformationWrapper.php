@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-//TODO use everywhere instead of string array
 class InformationWrapper
 {
     /** @var array<string> */
@@ -30,9 +29,13 @@ class InformationWrapper
     /**
      * @param array<string> $informations
      */
-    public function addInformationMerge(array $informations): InformationWrapper
+    public function addInformationMerge(array $informations, bool $isHead = false): InformationWrapper
     {
-        $this->informations = array_merge($this->informations, $informations);
+        if ($isHead) {
+            $this->informations = array_merge($informations, $this->informations);
+        } else {
+            $this->informations = array_merge($this->informations, $informations);
+        }
 
         return $this;
     }

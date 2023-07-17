@@ -108,12 +108,20 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         FightMessageCollectionInterface $fightMessages
     ): void {
         foreach ($attackers as $attacker) {
-            $fightMessage = new FightMessage($attacker->get()->getUser()->getId(), null, $this->fightLib->ready($attacker));
+            $fightMessage = new FightMessage(
+                $attacker->get()->getUser()->getId(),
+                null,
+                $this->fightLib->ready($attacker)->getInformations()
+            );
             $fightMessages->add($fightMessage);
         }
         if (!$oneWay) {
             foreach ($defenders as $defender) {
-                $fightMessage = new FightMessage($defender->get()->getUser()->getId(), null, $this->fightLib->ready($defender));
+                $fightMessage = new FightMessage(
+                    $defender->get()->getUser()->getId(),
+                    null,
+                    $this->fightLib->ready($defender)->getInformations()
+                );
                 $fightMessages->add($fightMessage);
             }
         }

@@ -60,7 +60,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
         $result = $this->subject->react($this->wrapper);
 
-        $this->assertEquals(['- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb', '- alertMsg'], $result);
+        $this->assertEquals(['- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb', '- alertMsg'], $result->getInformations());
     }
 
     public function testReactExpectUncloakWhenYellowAndCloaked(): void
@@ -79,7 +79,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
         $result = $this->subject->react($this->wrapper);
 
-        $this->assertEquals(['- Die Tarnung wurde deaktiviert'], $result);
+        $this->assertEquals(['- Die Tarnung wurde deaktiviert'], $result->getInformations());
     }
 
     public function testReactExpectShieldsNbsAndPhaserActivationWhenNotCloaked(): void
@@ -117,7 +117,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
             '- Die Schilde wurden aktiviert',
             '- Die Nahbereichssensoren wurden aktiviert',
             '- Die Energiewaffe wurde aktiviert'
-        ], $result);
+        ], $result->getInformations());
     }
 
     public function testReactExpectNoShieldActivationWhenTractoring(): void
@@ -148,7 +148,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
             '- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden',
             '- Die Nahbereichssensoren wurden aktiviert',
             '- Die Energiewaffe wurde aktiviert'
-        ], $result);
+        ], $result->getInformations());
     }
 
     public function testReactExpectNoShieldActivationWhenTractored(): void
@@ -183,7 +183,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
             '- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden',
             '- Die Nahbereichssensoren wurden aktiviert',
             '- Die Energiewaffe wurde aktiviert'
-        ], $result);
+        ], $result->getInformations());
     }
 
     public function testReactExpectNothingWhenErrorsOnActivation(): void
@@ -220,7 +220,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
         $result = $this->subject->react($this->wrapper);
 
-        $this->assertEquals([], $result);
+        $this->assertEquals([], $result->getInformations());
     }
 
     public function testReactExpectShieldsNbsPhaserAndTorpedoActivation(): void
@@ -261,6 +261,6 @@ class AlertLevelBasedReactionTest extends StuTestCase
             '- Die Nahbereichssensoren wurden aktiviert',
             '- Die Energiewaffe wurde aktiviert',
             '- Der Torpedowerfer wurde aktiviert'
-        ], $result);
+        ], $result->getInformations());
     }
 }

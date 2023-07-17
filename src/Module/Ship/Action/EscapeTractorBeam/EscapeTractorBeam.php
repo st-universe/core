@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -163,14 +164,13 @@ final class EscapeTractorBeam implements ActionControllerInterface
         ShipWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
-        $msg = [];
-        $msg[] = _('Der Fluchtversuch ist fehlgeschlagen:');
+        $informations = new InformationWrapper([_('Der Fluchtversuch ist fehlgeschlagen:')]);
 
         $ship = $wrapper->get();
         $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
-        $this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $msg);
+        $this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $informations);
 
-        $game->addInformationMergeDown($msg);
+        $game->addInformationMergeDown($informations->getInformations());
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
@@ -194,8 +194,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
-        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * rand(10, 25) / 100)), $wrapper);
-        $game->addInformationMergeDown($damageMsg);
+        $informations = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * rand(10, 25) / 100)), $wrapper);
+        $game->addInformationMergeDown($informations->getInformations());
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 

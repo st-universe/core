@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -20,13 +21,10 @@ interface ProjectileWeaponPhaseInterface
         bool $isAlertRed = false
     ): array;
 
-    /**
-     * @return array<string>
-     */
     public function fireAtBuilding(
         ProjectileAttackerInterface $attacker,
         PlanetFieldInterface $target,
         bool $isOrbitField,
         int &$antiParticleCount
-    ): array;
+    ): InformationWrapper;
 }

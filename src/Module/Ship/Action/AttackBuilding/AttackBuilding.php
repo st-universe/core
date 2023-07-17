@@ -155,7 +155,7 @@ final class AttackBuilding implements ActionControllerInterface
         }
 
         foreach ($attacker as $attackship) {
-            $this->informations->addInformationMerge($this->fightLib->ready($attackship));
+            $this->informations->addInformationMerge($this->fightLib->ready($attackship)->getInformations());
         }
 
         // DEFENDING FLEETS
