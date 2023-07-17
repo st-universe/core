@@ -88,13 +88,10 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         try {
             $this->updateSurface();
-        } catch (PlanetGeneratorException $e) {
+        } catch (PlanetGeneratorException $planetGeneratorException) {
             return $this->colony->getPlanetFields()->toArray();
         }
 
-        /**
-         * @var PlanetFieldInterface[]
-         */
         $fields = $this->colony->getPlanetFields()->toArray();
 
         if (!$this->showUnderground) {
@@ -119,10 +116,10 @@ final class ColonySurface implements ColonySurfaceInterface
                 function (PlanetFieldInterface $field) use ($building, $researchedArray): void {
                     if (
                         $field->getTerraformingId() === null &&
-                        $building->getBuildableFields()->containsKey((int) $field->getFieldType())
+                        $building->getBuildableFields()->containsKey($field->getFieldType())
                     ) {
                         //PlanetFieldTypeBuildingInterface
-                        $fieldBuilding = $building->getBuildableFields()->get((int) $field->getFieldType());
+                        $fieldBuilding = $building->getBuildableFields()->get($field->getFieldType());
 
                         $researchId = $fieldBuilding->getResearchId();
                         if ($researchId == null || $this->isResearched($researchId, $researchedArray)) {
@@ -154,6 +151,7 @@ final class ColonySurface implements ColonySurfaceInterface
         for ($i = 0; $i < $width; $i++) {
             $gridArray[] = '43px';
         }
+
         return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
@@ -166,9 +164,11 @@ final class ColonySurface implements ColonySurfaceInterface
         if ($this->colony->getEps() + $energyProduction < 0) {
             $forecast = 0;
         }
+
         if ($this->colony->getEps() + $energyProduction > $this->colony->getMaxEps()) {
             $forecast = $this->colony->getMaxEps();
         }
+
         if ($energyProduction > 0) {
             $energyProduction = sprintf('+%d', $energyProduction);
         }
@@ -231,6 +231,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 $fields[$fieldId]->setFieldId($fieldId);
                 $this->colony->getPlanetFields()->set($fieldId, $newField);
             }
+
             $fields[$fieldId]->setBuilding(null);
             $fields[$fieldId]->setIntegrity(0);
             $fields[$fieldId]->setFieldType((int) $type);
@@ -269,6 +270,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 $this->colony->getId()
             );
         }
+
         return $this->energyProduction;
     }
 
@@ -307,6 +309,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 $this->getProduction()
             );
         }
+
         return $this->colonyPopulationCalculator;
     }
 
@@ -318,6 +321,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if ($this->production === null) {
             $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
         }
+
         return $this->production;
     }
 }

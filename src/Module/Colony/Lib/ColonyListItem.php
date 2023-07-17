@@ -172,12 +172,15 @@ final class ColonyListItem implements ColonyListItemInterface
         if ($lifeStandardPercentage === 100) {
             return "color: green;";
         }
+
         if ($lifeStandardPercentage > 75) {
             return "color: yellow;";
         }
+
         if ($lifeStandardPercentage > 50) {
             return "color: orange;";
         }
+
         return "color: red;";
     }
 
@@ -209,6 +212,7 @@ final class ColonyListItem implements ColonyListItemInterface
         if ($this->production === null) {
             $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
         }
+
         return $this->production;
     }
 

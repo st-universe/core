@@ -51,13 +51,14 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
                 if ($colony->getStorageSum() >= $colony->getMaxStorage()) {
                     break;
                 }
+
                 if ($cost->getAmount() * $count > $colony->getMaxStorage() - $colony->getStorageSum()) {
                     $gc = $colony->getMaxStorage() - $colony->getStorageSum();
                 } else {
                     $gc = $count * $cost->getAmount();
                 }
 
-                $this->colonyStorageManager->upperStorage($colony, $cost->getCommodity(), (int) $gc);
+                $this->colonyStorageManager->upperStorage($colony, $cost->getCommodity(), $gc);
             }
         }
     }
