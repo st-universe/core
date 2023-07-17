@@ -101,16 +101,11 @@ final class ImplodeTholianWeb implements ActionControllerInterface
 
             $informations = $this->tholianWebWeaponPhase->damageCapturedShip($targetWrapper, $game);
 
-            $pm = '';
-            foreach ($informations->getInformations() as $value) {
-                $pm .= $value . "\n";
-            }
-
             //notify target owner
             $this->privateMessageSender->send(
                 $userId,
                 $targetUserId,
-                $pm,
+                $informations->getInformationsAsString(),
                 $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
 

@@ -331,17 +331,19 @@ final class AlertRedHelper implements AlertRedHelperInterface
             true
         );
 
-        $messages = $fightMessageCollection->getMessageDump();
+        $fightInformations = $fightMessageCollection->getInformationDump();
 
-        if (empty($messages)) {
+        if (empty($fightInformations->getInformations())) {
             //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
             //$this->loggerUtil->log(sprintf('attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
         }
 
-        $pm = sprintf(_('Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getSectorString());
-        foreach ($messages as $value) {
-            $pm .= $value . "\n";
-        }
+        $pm = sprintf(
+            _("Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s\n%s"),
+            $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot',
+            $leadShip->getSectorString(),
+            $fightInformations->getInformationsAsString()
+        );
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $alertShip->getId());
         $this->privateMessageSender->send(
             $lead_user_id,
@@ -350,10 +352,12 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $isAlertShipBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $alertShip->isDestroyed() ? null : $href
         );
-        $pm = sprintf(_('Fremde Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getSectorString());
-        foreach ($messages as $value) {
-            $pm .= $value . "\n";
-        }
+        $pm = sprintf(
+            _("Fremde Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s\n%s"),
+            $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot',
+            $leadShip->getSectorString(),
+            $fightInformations->getInformationsAsString()
+        );
         $this->privateMessageSender->send(
             $alert_user_id,
             $lead_user_id,
@@ -362,7 +366,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         );
 
         if ($leadShip->isDestroyed()) {
-            $informations->addInformationArray($messages);
+            $informations->addInformationWrapper($fightInformations);
             return;
         }
 
@@ -372,6 +376,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $leadShip->getPosX(),
             $leadShip->getPosY()
         ));
-        $informations->addInformationArray($messages);
+        $informations->addInformationWrapper($fightInformations);
     }
 }

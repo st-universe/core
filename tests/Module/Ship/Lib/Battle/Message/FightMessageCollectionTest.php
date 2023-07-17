@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
+use Stu\Lib\InformationWrapper;
 use Stu\StuTestCase;
 
 class FightMessageCollectionTest extends StuTestCase
@@ -37,7 +38,7 @@ class FightMessageCollectionTest extends StuTestCase
         $this->assertEquals([42, 5], $result);
     }
 
-    public function testGetMessageDumpExpectEverythingWhenParameterIsNull(): void
+    public function testGetInformationDumpExpectEverythingWhenParameterIsNull(): void
     {
         $fightMessage1 = $this->mock(FightMessageInterface::class);
         $fightMessage2 = $this->mock(FightMessageInterface::class);
@@ -53,12 +54,12 @@ class FightMessageCollectionTest extends StuTestCase
 
         $this->subject->addMultiple([$fightMessage1, $fightMessage2]);
 
-        $result = $this->subject->getMessageDump();
+        $result = $this->subject->getInformationDump();
 
-        $this->assertEquals(['message1-a', 'message1-b', 'message2-a', 'message2-b'], $result);
+        $this->assertEquals(['message1-a', 'message1-b', 'message2-a', 'message2-b'], $result->getInformations());
     }
 
-    public function testGetMessageDumpExpectFilteredResultWhenParameterIsNotNull(): void
+    public function testGetInformationDumpExpectFilteredResultWhenParameterIsNotNull(): void
     {
         $fightMessage5to42 = $this->mock(FightMessageInterface::class);
         $fightMessage2 = $this->mock(FightMessageInterface::class);
@@ -114,7 +115,7 @@ class FightMessageCollectionTest extends StuTestCase
         $this->subject->add($fightMessage5to666);
         $this->subject->add($fightMessage42to5);
 
-        $result = $this->subject->getMessageDump(42);
+        $result = $this->subject->getInformationDump(42);
 
         $this->assertEquals([
             'message5to42-a',
@@ -122,6 +123,6 @@ class FightMessageCollectionTest extends StuTestCase
             'message2-a',
             'message2-b',
             'message42to5'
-        ], $result);
+        ], $result->getInformations());
     }
 }

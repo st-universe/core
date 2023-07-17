@@ -3,13 +3,13 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\TimeConstants;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 {
@@ -21,21 +21,17 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private TradePostRepositoryInterface $tradePostRepository;
-
     private StorageRepositoryInterface $storageRepository;
 
     public function __construct(
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         PrivateMessageSenderInterface $privateMessageSender,
-        TradePostRepositoryInterface $tradePostRepository,
         StorageRepositoryInterface $storageRepository
     ) {
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->privateMessageSender = $privateMessageSender;
-        $this->tradePostRepository = $tradePostRepository;
         $this->storageRepository = $storageRepository;
     }
 
@@ -43,44 +39,44 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
     {
         $offersToDelete = $this->tradeOfferRepository->getOldOffers(OldTradeOffersDeletion::OFFER_MAX_AGE);
 
-        $pm = [];
+        $pm = new InformationWrapper();
         $userId = 0;
         $postId = 0;
 
         foreach ($offersToDelete as $offer) {
             // send message to user
-            if (!empty($pm) && $userId != $offer->getUserId()) {
+            if (!$pm->isEmpty() && $userId != $offer->getUserId()) {
                 $this->sendMessage($userId, $pm);
-                $pm = [];
+                $pm = new InformationWrapper();
                 $userId = 0;
                 $postId = 0;
             }
 
             // intro
-            if (empty($pm)) {
-                $pm[] = _('Deine folgenden Angebote wurden gelöscht und der Inhalt wieder deinen lagernden Waren zugeschrieben.');
+            if ($pm->isEmpty()) {
+                $pm->addInformation(_('Deine folgenden Angebote wurden gelöscht und der Inhalt wieder deinen lagernden Waren zugeschrieben.'));
             }
 
             //trade post change
             if ($postId != $offer->getTradePostId()) {
-                $post = $this->tradePostRepository->find($offer->getTradePostId());
+                $post = $offer->getTradePost();
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager(
                     $post,
                     $offer->getUser(),
                 );
-                $pm[] = "\n" . sprintf(_('%s:'), $post->getName());
+                $pm->addInformation("\n" . sprintf(_('%s:'), $post->getName()));
             }
             $userId = $offer->getUserId();
             $postId = $offer->getTradePostId();
 
-            $pm[] = sprintf(
+            $pm->addInformation(sprintf(
                 _('%d x angeboten: %d %s, verlangt: %d %s'),
                 $offer->getOfferCount(),
                 $offer->getOfferedCommodityCount(),
                 $offer->getOfferedCommodity()->getName(),
                 $offer->getWantedCommodityCount(),
                 $offer->getWantedCommodity()->getName()
-            );
+            ));
 
             // update post storage
             $storageManager->upperStorage(
@@ -92,22 +88,17 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             $this->tradeOfferRepository->delete($offer);
         }
 
-        if (!empty($pm)) {
+        if (!$pm->isEmpty()) {
             $this->sendMessage($userId, $pm);
         }
     }
 
-    private function sendMessage(int $userId, array $pmArray)
+    private function sendMessage(int $userId, InformationWrapper $pm): void
     {
-        $pm = '';
-
-        foreach ($pmArray as $value) {
-            $pm .= $value . "\n";
-        }
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
             $userId,
-            $pm,
+            $pm->getInformationsAsString(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
     }
