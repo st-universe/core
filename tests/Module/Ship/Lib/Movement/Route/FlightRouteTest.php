@@ -60,7 +60,7 @@ class FlightRouteTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $informationWrapper);
+        $this->subject->enterNextWaypoint($ship, $map, $informationWrapper);
 
         $this->subject->stepForward();
 
@@ -88,7 +88,7 @@ class FlightRouteTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $informationWrapper);
+        $this->subject->enterNextWaypoint($ship, $map, $informationWrapper);
 
         $this->subject->stepForward();
 
@@ -120,7 +120,7 @@ class FlightRouteTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $informationWrapper);
+        $this->subject->enterNextWaypoint($ship, $systemMap, $informationWrapper);
 
         $this->subject->stepForward();
 
@@ -152,7 +152,7 @@ class FlightRouteTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $informationWrapper);
+        $this->subject->enterNextWaypoint($ship, $map, $informationWrapper);
 
         $this->subject->stepForward();
 
@@ -216,6 +216,8 @@ class FlightRouteTest extends StuTestCase
 
         $this->assertTrue($this->subject->isDestinationArrived());
         $this->assertEquals(RouteModeEnum::ROUTE_MODE_FLIGHT, $this->subject->getRouteMode());
+
+        $this->subject->stepForward();
     }
 
     public function testGetNextWaypointExpectExceptionWhenWaypointsEmpty(): void
@@ -224,14 +226,6 @@ class FlightRouteTest extends StuTestCase
         static::expectException(RuntimeException::class);
 
         $this->subject->getNextWaypoint();
-    }
-
-    public function testStepForwardExpectExceptionWhenWaypointsEmpty(): void
-    {
-        static::expectExceptionMessage('isDestinationArrived has to be called beforehand');
-        static::expectException(RuntimeException::class);
-
-        $this->subject->stepForward();
     }
 
     public function testAbortFlightExpectWaypointClearance(): void

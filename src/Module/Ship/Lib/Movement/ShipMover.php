@@ -20,8 +20,10 @@ use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipMover implements ShipMoverInterface
@@ -178,6 +180,7 @@ final class ShipMover implements ShipMoverInterface
         // fly until destination arrived
         while (!$flightRoute->isDestinationArrived()) {
             $this->leaderMovedToNextField = false;
+            $nextWaypoint = $flightRoute->getNextWaypoint();
 
             if ($isFixedFleetMode) {
                 $reasons = $this->shipMovementComponentsFactory->createShipMovementBlockingDeterminator()->determine($wrappers);
@@ -196,7 +199,13 @@ final class ShipMover implements ShipMoverInterface
                     !array_key_exists($wrapper->get()->getId(), $this->lostShips)
                     && ($wrapper->get() === $leadShip || $this->leaderMovedToNextField)
                 ) {
-                    $this->moveOneField($leadShip, $wrapper, $flightRoute, $isFixedFleetMode);
+                    $this->moveOneField(
+                        $leadShip,
+                        $wrapper,
+                        $nextWaypoint,
+                        $flightRoute,
+                        $isFixedFleetMode
+                    );
                 }
             }
 
@@ -266,12 +275,21 @@ final class ShipMover implements ShipMoverInterface
             }
         }
 
-        $this->shipMovementInformationAdder->reachedDestination(
-            $leadShip,
-            $this->isFleetMode(),
-            $flightRoute->getRouteMode(),
-            $this->informations
-        );
+        if ($this->areAllShipsDestroyed($wrappers)) {
+            $this->shipMovementInformationAdder->reachedDestinationDestroyed(
+                $leadShip,
+                $this->isFleetMode(),
+                $flightRoute->getRouteMode(),
+                $this->informations
+            );
+        } else {
+            $this->shipMovementInformationAdder->reachedDestination(
+                $leadShip,
+                $this->isFleetMode(),
+                $flightRoute->getRouteMode(),
+                $this->informations
+            );
+        }
 
         //add info about anomalies
         foreach ($leadShipWrapper->get()->getLocation()->getAnomalies() as $anomaly) {
@@ -311,6 +329,20 @@ final class ShipMover implements ShipMoverInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param ShipWrapperInterface[] $wrappers
+     */
+    private function areAllShipsDestroyed(array $wrappers): bool
+    {
+        foreach ($wrappers as $wrapper) {
+            if (!$wrapper->get()->isDestroyed()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -459,6 +491,7 @@ final class ShipMover implements ShipMoverInterface
     private function moveOneField(
         ShipInterface $leadShip,
         ShipWrapperInterface $wrapper,
+        MapInterface|StarSystemMapInterface $nextWaypoint,
         FlightRouteInterface $flightRoute,
         bool $isFixedFleetMode
     ): void {
@@ -504,7 +537,6 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //nächstes Feld nicht passierbar
-        $nextWaypoint = $flightRoute->getNextWaypoint();
         $nextFieldType = $nextWaypoint->getFieldType();
         if (!$nextFieldType->getPassable()) {
             $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, $flightRoute, _('Das nächste Feld kann nicht passiert werden'));
@@ -532,7 +564,11 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //MOVE!
-        $flightRoute->enterNextWaypoint($ship, $this->informations);
+        $flightRoute->enterNextWaypoint(
+            $ship,
+            $nextWaypoint,
+            $this->informations
+        );
 
         $this->hasTravelled = true;
         if ($ship === $leadShip) {
@@ -549,7 +585,11 @@ final class ShipMover implements ShipMoverInterface
         $tractoredShip = $ship->getTractoredShip();
         if ($tractoredShip !== null) {
             $epsSystem->lowerEps($tractoredShip->getRump()->getFlightEcost());
-            $flightRoute->enterNextWaypoint($tractoredShip, $this->informations);
+            $flightRoute->enterNextWaypoint(
+                $tractoredShip,
+                $nextWaypoint,
+                $this->informations
+            );
 
             //check for tractor system health
             $msg = [];
