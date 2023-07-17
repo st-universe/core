@@ -115,7 +115,7 @@ final class ErrorHandler
             new StreamHandler($this->stuConfig->getDebugSettings()->getLogfilePath())
         );
 
-        return function (Throwable $e) use ($logger) {
+        return function (Throwable $e) use ($logger): void {
             $logger->error(
                 $e->getMessage(),
                 [

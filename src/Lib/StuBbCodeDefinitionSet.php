@@ -10,7 +10,7 @@ use JBBCode\validators\CssColorValidator;
 
 final class StuBbCodeDefinitionSet implements CodeDefinitionSet
 {
-    private $definitions;
+    private ?array $definitions = null;
 
     public function getCodeDefinitions(): array
     {

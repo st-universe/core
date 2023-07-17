@@ -68,20 +68,18 @@ class DatabaseEntry implements DatabaseEntryInterface
     private int $object_id;
 
     /**
-     * @var DatabaseTypeInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseType")
      * @JoinColumn(name="type", referencedColumnName="id")
      */
-    private $type_object;
+    private DatabaseTypeInterface $type_object;
 
     /**
-     * @var DatabaseCategoryInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseCategory", inversedBy="entries")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      */
-    private $category;
+    private DatabaseCategoryInterface $category;
 
     public function getId(): int
     {

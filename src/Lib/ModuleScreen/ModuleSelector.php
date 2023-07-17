@@ -24,8 +24,8 @@ class ModuleSelector implements ModuleSelectorInterface
     private const MACRO = 'html/modulescreen.xhtml/moduleselector';
     private const TEMPLATE = 'html/ajaxempty.xhtml';
 
-    /** @var ModuleSelectorWrapperInterface[] */
-    private $moduleSelectorWrappers;
+    /** @var ModuleSelectorWrapperInterface[]|null */
+    private ?array $moduleSelectorWrappers = null;
     private int $moduleType;
     private ShipRumpInterface $rump;
     private int $userId;

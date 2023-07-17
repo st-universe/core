@@ -11,7 +11,7 @@ use MPScholten\RequestParser\RequestParserFactory;
 final class CustomRequestParserFactory implements RequestParserFactory
 {
     /** @var array<mixed> */
-    private $request;
+    private array $request;
 
     private $config;
 
@@ -28,7 +28,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     /**
      * @return RequestParser
      */
-    public function createQueryParser()
+    public function createQueryParser(): RequestParser
     {
         return new RequestParser(
             function ($parameterName) {
@@ -44,7 +44,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     /**
      * @return RequestParser
      */
-    public function createBodyParser()
+    public function createBodyParser(): RequestParser
     {
         return new RequestParser(
             function ($parameterName) {

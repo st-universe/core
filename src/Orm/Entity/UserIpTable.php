@@ -63,24 +63,21 @@ class UserIpTable implements UserIpTableInterface
     /**
      * @Column(type="datetime", nullable=true)
      *
-     * @var DateTimeInterface|null
      */
-    private $startDate;
+    private ?DateTimeInterface $startDate = null;
 
     /**
      * @Column(type="datetime", nullable=true)
      *
-     * @var DateTimeInterface|null
      */
-    private $endDate;
+    private ?DateTimeInterface $endDate = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

@@ -57,20 +57,18 @@ class ModuleQueue implements ModuleQueueInterface
     private int $buildingfunction = 0;
 
     /**
-     * @var ModuleInterface
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $module;
+    private ModuleInterface $module;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ColonyInterface $colony;
 
     public function getId(): int
     {

@@ -51,20 +51,18 @@ class AuctionBid implements AuctionBidInterface
     private int $max_amount;
 
     /**
-     * @var DealsInterface
      *
      * @ManyToOne(targetEntity="Deals")
      * @JoinColumn(name="auction_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $auction;
+    private DealsInterface $auction;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

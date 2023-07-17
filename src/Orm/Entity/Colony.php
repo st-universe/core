@@ -162,28 +162,25 @@ class Colony implements ColonyInterface
     private int $surface_width = 0;
 
     /**
-     * @var ColonyClassInterface
      *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */
-    private $colonyClass;
+    private ColonyClassInterface $colonyClass;
 
     /**
-     * @var StarSystemMapInterface
      *
      * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, PlanetFieldInterface>
@@ -191,7 +188,7 @@ class Colony implements ColonyInterface
      * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
      * @OrderBy({"field_id": "ASC"})
      */
-    private $planetFields;
+    private Collection $planetFields;
 
     /**
      * @var ArrayCollection<int, StorageInterface>
@@ -199,43 +196,42 @@ class Colony implements ColonyInterface
      * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
      * @OrderBy({"commodity_id": "ASC"})
      */
-    private $storage;
+    private Collection $storage;
 
     /**
-     * @var null|TorpedoTypeInterface
      *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
-    private $torpedo;
+    private ?TorpedoTypeInterface $torpedo = null;
 
     /**
      * @var ArrayCollection<int, FleetInterface>
      *
      * @OneToMany(targetEntity="Fleet", mappedBy="defendedColony")
      */
-    private $defenders;
+    private Collection $defenders;
 
     /**
      * @var ArrayCollection<int, FleetInterface>
      *
      * @OneToMany(targetEntity="Fleet", mappedBy="blockedColony")
      */
-    private $blockers;
+    private Collection $blockers;
 
     /**
      * @var ArrayCollection<int, ShipCrewInterface>
      *
      * @OneToMany(targetEntity="ShipCrew", mappedBy="colony")
      */
-    private $crewAssignments;
+    private Collection $crewAssignments;
 
     /**
      * @var ArrayCollection<int, ShipCrewInterface>
      *
      * @OneToMany(targetEntity="CrewTraining", mappedBy="colony")
      */
-    private $crewTrainings;
+    private ArrayCollection $crewTrainings;
 
     /**
      * @var Collection<int, ColonyDepositMiningInterface>

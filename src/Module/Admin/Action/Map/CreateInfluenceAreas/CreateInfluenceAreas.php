@@ -23,13 +23,13 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     /** @var array<int, array<int, bool>> */
-    private $usedMaps = [];
+    private array $usedMaps = [];
 
     /** @var array<int, array<int, MapInterface>> */
-    private $spreader = [];
+    private array $spreader = [];
 
     /** @var array<int, array<int, MapInterface>> */
-    private $mapsByCoords = [];
+    private array $mapsByCoords = [];
 
     public function __construct(
         MapRepositoryInterface $mapRepository,

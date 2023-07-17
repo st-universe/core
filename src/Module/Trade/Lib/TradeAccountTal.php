@@ -27,9 +27,9 @@ final class TradeAccountTal implements TradeAccountTalInterface
     private int $userId;
 
     /**
-     * @var array<StorageInterface>
+     * @var StorageInterface[]|null
      */
-    private $storage;
+    private ?array $storage = null;
 
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,

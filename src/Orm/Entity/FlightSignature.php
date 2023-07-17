@@ -96,28 +96,25 @@ class FlightSignature implements FlightSignatureInterface
     private bool $is_cloaked = false;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id")
      */
-    private $rump;
+    private ShipRumpInterface $rump;
 
     /**
-     * @var null|MapInterface
      *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private $map;
+    private ?MapInterface $map = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int
     {

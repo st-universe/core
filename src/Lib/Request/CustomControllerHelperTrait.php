@@ -26,7 +26,7 @@ trait CustomControllerHelperTrait
      * @param callable|Config $config
      * @return CustomRequestParserFactory
      */
-    final protected function createRequestParserFactory($request, $config)
+    final protected function createRequestParserFactory($request, $config): CustomRequestParserFactory
     {
         return new CustomRequestParserFactory($request, $config);
     }

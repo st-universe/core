@@ -30,7 +30,7 @@ final class TalHelper
     private static function getDic(): ContainerInterface
     {
         if (self::$dic === null) {
-            throw new Exception\DiContainerNotSetException();
+            throw new DiContainerNotSetException();
         }
 
         return self::$dic;

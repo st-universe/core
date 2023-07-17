@@ -78,20 +78,18 @@ class ShipBuildplan implements ShipBuildplanInterface
     private Collection $ships;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipRump;
+    private ShipRumpInterface $shipRump;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
      * @var Collection<int, BuildplanModuleInterface>

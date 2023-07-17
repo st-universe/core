@@ -57,12 +57,11 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
     private ?int $deleted = null;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     public function getId(): int
     {

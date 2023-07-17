@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
+use Stu\Component\Alliance\Event\Listener\DiplomaticRelationProposalCreationSubscriber;
 use Stu\Component\Alliance\Relations\Renderer\AllianceDataToGraphAttributeConverter;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRenderer;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
@@ -23,5 +24,5 @@ return [
                 )
         ),
     AllianceDescriptionRendererInterface::class => autowire(AllianceDescriptionRenderer::class),
-    Event\Listener\DiplomaticRelationProposalCreationSubscriber::class => autowire(),
+    DiplomaticRelationProposalCreationSubscriber::class => autowire(),
 ];

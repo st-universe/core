@@ -233,20 +233,18 @@ class User implements UserInterface
     private string $css = 'schwarz';
 
     /**
-     * @var null|AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
      */
-    private $alliance;
+    private ?AllianceInterface $alliance = null;
 
     /**
-     * @var FactionInterface
      *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="race", referencedColumnName="id")
      */
-    private $faction;
+    private ?FactionInterface $faction = null;
 
     /**
      * @var ArrayCollection<int, UserAwardInterface>
@@ -254,7 +252,7 @@ class User implements UserInterface
      * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id")
      * @OrderBy({"award_id": "ASC"})
      */
-    private $awards;
+    private Collection $awards;
 
     /**
      * @var ArrayCollection<int, ColonyInterface>
@@ -262,21 +260,19 @@ class User implements UserInterface
      * @OneToMany(targetEntity="Colony", mappedBy="user")
      * @OrderBy({"colonies_classes_id": "ASC", "id": "ASC"})
      */
-    private $colonies;
+    private Collection $colonies;
 
     /**
      * @var ArrayCollection<int, UserLayerInterface>
      *
      * @OneToMany(targetEntity="UserLayer", mappedBy="user", indexBy="layer_id")
      */
-    private $userLayers;
+    private Collection $userLayers;
 
     /**
-     * @var null|UserLockInterface
-     *
      * @OneToOne(targetEntity="UserLock", mappedBy="user")
      */
-    private $userLock;
+    private ?UserLockInterface $userLock = null;
 
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
@@ -748,7 +744,7 @@ class User implements UserInterface
         return $this->userLock;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('userName: %s', $this->getName());
     }

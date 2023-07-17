@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
+use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayerRequest;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequestInterface;
@@ -178,7 +179,7 @@ return [
         DemotePlayer::ACTION_IDENTIFIER => autowire(DemotePlayer::class)
             ->constructorParameter(
                 'demotePlayerRequest',
-                autowire(Action\DemotePlayer\DemotePlayerRequest::class),
+                autowire(DemotePlayerRequest::class),
             ),
     ],
     'ALLIANCE_VIEWS' => [

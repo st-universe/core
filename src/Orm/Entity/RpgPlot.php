@@ -71,22 +71,21 @@ class RpgPlot implements RpgPlotInterface
      *
      * @OneToMany(targetEntity="KnPost", mappedBy="rpgPlot")
      */
-    private $posts;
+    private Collection $posts;
 
     /**
      * @var ArrayCollection<int, RpgPlotMemberInterface>
      *
      * @OneToMany(targetEntity="RpgPlotMember", mappedBy="rpgPlot", indexBy="user_id")
      */
-    private $members;
+    private Collection $members;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private UserInterface $user;
 
     public function __construct()
     {
@@ -188,7 +187,7 @@ class RpgPlot implements RpgPlotInterface
         return $this->members;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('title: %s', $this->getTitle());
     }

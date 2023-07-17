@@ -254,12 +254,11 @@ class ShipRump implements ShipRumpInterface
     private int $prestige;
 
     /**
-     * @var null|ShipRumpRoleInterface
      *
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="role_id", referencedColumnName="id")
      */
-    private $shipRumpRole;
+    private ?ShipRumpRoleInterface $shipRumpRole = null;
 
     /**
      * @var Collection<int, ShipRumpSpecialInterface>
@@ -269,42 +268,39 @@ class ShipRump implements ShipRumpInterface
     private Collection $specialAbilities;
 
     /**
-     * @var ShipRumpCategoryInterface
      *
      * @ManyToOne(targetEntity="ShipRumpCategory")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      */
-    private $shipRumpCategory;
+    private ShipRumpCategoryInterface $shipRumpCategory;
 
     /**
-     * @var null|CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id")
      */
-    private $commodity;
+    private ?CommodityInterface $commodity = null;
 
     /**
-     * @var null|DatabaseEntryInterface
      *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
      * @var ArrayCollection<int, ShipRumpCostInterface>
      *
      * @OneToMany(targetEntity="ShipRumpCost", mappedBy="shipRump")
      */
-    private $buildingCosts;
+    private Collection $buildingCosts;
 
     /**
      * @var ArrayCollection<int, BuildplanHangarInterface>
      *
      * @OneToMany(targetEntity="BuildplanHangar", mappedBy="shipRump")
      */
-    private $startHangar;
+    private Collection $startHangar;
 
     public function __construct()
     {

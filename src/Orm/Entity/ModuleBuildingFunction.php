@@ -45,12 +45,11 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
     private int $buildingfunction = 0;
 
     /**
-     * @var ModuleInterface
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $module;
+    private ModuleInterface $module;
 
     public function getId(): int
     {

@@ -99,12 +99,11 @@ class GameTurnStats implements GameTurnStatsInterface
     private int $flight_sig_system_24h;
 
     /**
-     * @var GameTurnInterface
      *
      * @OneToOne(targetEntity="GameTurn")
      * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $turn;
+    private GameTurnInterface $turn;
 
     public function getId(): int
     {

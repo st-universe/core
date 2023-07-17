@@ -9,9 +9,9 @@ use Stu\StuTestCase;
 class KnBbCodeDefinitionSetTest extends StuTestCase
 {
     /**
-     * @var null|KnBbCodeDefinitionSet
+     * @var KnBbCodeDefinitionSet
      */
-    private $set;
+    private KnBbCodeDefinitionSet $set;
 
     public function setUp(): void
     {

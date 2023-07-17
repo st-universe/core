@@ -37,7 +37,8 @@ class SignaturePanel
         $this->loggerUtil = $loggerUtil;
     }
 
-    private $rows = null;
+    /** @var array<SignaturePanelRow>|null */
+    private ?array $rows = null;
 
     public function getRows()
     {
@@ -70,7 +71,7 @@ class SignaturePanel
         }
     }
 
-    public function loadLSS()
+    public function loadLSS(): void
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -133,9 +134,9 @@ class SignaturePanel
     }
 
 
-    private $viewport;
-    private $viewportPerColumn;
-    private $viewportForFont;
+    private int|float|null $viewport = null;
+    private ?string $viewportPerColumn = null;
+    private ?string $viewportForFont = null;
 
     private function getViewport()
     {

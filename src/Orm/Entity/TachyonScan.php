@@ -59,28 +59,25 @@ class TachyonScan implements TachyonScanInterface
     private ?int $starsystem_map_id;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var null|MapInterface
      *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private $map;
+    private ?MapInterface $map = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int
     {

@@ -75,28 +75,25 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
     private bool $sticky = false;
 
     /**
-     * @var AllianceBoardInterface
      *
      * @ManyToOne(targetEntity="AllianceBoard", inversedBy="topics")
      * @JoinColumn(name="board_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $board;
+    private AllianceBoardInterface $board;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private AllianceInterface $alliance;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, AllianceBoardPostInterface>

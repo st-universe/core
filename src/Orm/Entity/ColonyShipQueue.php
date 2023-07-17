@@ -83,28 +83,25 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     private int $building_function_id = 0;
 
     /**
-     * @var ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipBuildplan;
+    private ShipBuildplanInterface $shipBuildplan;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipRump;
+    private ShipRumpInterface $shipRump;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ColonyInterface $colony;
 
     public function getId(): int
     {

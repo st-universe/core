@@ -75,20 +75,18 @@ class BasicTrade implements BasicTradeInterface
     private ?int $user_id;
 
     /**
-     * @var FactionInterface
      *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
      */
-    private $faction;
+    private FactionInterface $faction;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     public function getId(): int
     {

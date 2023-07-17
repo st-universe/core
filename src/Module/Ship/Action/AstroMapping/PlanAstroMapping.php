@@ -76,7 +76,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         $game->addInformation("Kartographie-Messpunkte wurden ermittelt");
     }
 
-    private function obtainMeasurementFields(AstronomicalEntryInterface $entry)
+    private function obtainMeasurementFields(AstronomicalEntryInterface $entry): void
     {
         $idArray = $this->starSystemMapRepository->getRandomFieldsForAstroMeasurement($entry->getSystem()->getId());
 

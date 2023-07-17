@@ -88,12 +88,11 @@ class TradePost implements TradePostInterface
     private int $storage = 0;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, TradeLicenseInfoInterface>
@@ -101,15 +100,14 @@ class TradePost implements TradePostInterface
      * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost")
      * @OrderBy({"id": "DESC"})
      */
-    private $licenseInfos;
+    private ArrayCollection $licenseInfos;
 
     /**
-     * @var ShipInterface
      *
      * @OneToOne(targetEntity="Ship", inversedBy="tradePost")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     /**
      * @var Collection<int, ShipCrewInterface>
@@ -274,7 +272,7 @@ class TradePost implements TradePostInterface
         return $this->getUserId() < UserEnum::USER_FIRST_ID;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

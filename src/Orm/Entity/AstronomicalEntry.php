@@ -88,60 +88,53 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     private ?int $starsystem_map_id_5;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var StarSystemInterface
      *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
-    private $starSystem;
+    private StarSystemInterface $starSystem;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_1", referencedColumnName="id")
      */
-    private $starsystem_map_1;
+    private ?StarSystemMapInterface $starsystem_map_1 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_2", referencedColumnName="id")
      */
-    private $starsystem_map_2;
+    private ?StarSystemMapInterface $starsystem_map_2 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_3", referencedColumnName="id")
      */
-    private $starsystem_map_3;
+    private ?StarSystemMapInterface $starsystem_map_3 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_4", referencedColumnName="id")
      */
-    private $starsystem_map_4;
+    private ?StarSystemMapInterface $starsystem_map_4 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_5", referencedColumnName="id")
      */
-    private $starsystem_map_5;
+    private ?StarSystemMapInterface $starsystem_map_5 = null;
 
     public function getId(): int
     {

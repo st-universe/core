@@ -6,9 +6,9 @@ namespace Stu\Module\Admin\View\ShowSignatures;
 
 class SignaturePanelRow
 {
-    private $entries = [];
+    private array $entries = [];
 
-    public function addEntry(&$data)
+    public function addEntry(&$data): void
     {
         $this->entries[] = $data;
     }

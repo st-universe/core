@@ -57,12 +57,11 @@ class UserLock implements UserLockInterface
     private string $reason = '';
 
     /**
-     * @var null|UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

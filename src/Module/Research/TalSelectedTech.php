@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Stu\Orm\Entity\ResearchedInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -33,11 +34,11 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    private $state;
+    private ?ResearchedInterface $state = null;
 
-    private $excludes;
+    private ?array $excludes = null;
 
-    private $dependencies;
+    private ?array $dependencies = null;
 
     public function __construct(
         ResearchRepositoryInterface $researchRepository,

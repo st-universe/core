@@ -70,15 +70,14 @@ class BuildingUpgrade implements BuildingUpgradeInterface
      *
      * @OneToMany(targetEntity="BuildingUpgradeCost", mappedBy="upgrade")
      */
-    private $upgradeCosts;
+    private ArrayCollection $upgradeCosts;
 
     /**
-     * @var BuildingInterface
      *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="upgrade_to", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $upgradeToBuilding;
+    private BuildingInterface $upgradeToBuilding;
 
     /**
      * @var BuildingInterface

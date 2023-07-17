@@ -59,20 +59,18 @@ class TradeLicense implements TradeLicenseInterface
     private int $expired = 0;
 
     /**
-     * @var TradePostInterface
      *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradePost;
+    private TradePostInterface $tradePost;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

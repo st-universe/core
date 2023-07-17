@@ -12,7 +12,7 @@ final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
 
     private GradientColorInterface $gradientColor;
 
-    /** @var array<int> */
+    /** @var array<int>|null */
     private ?array $interval = null;
 
     public function __construct(

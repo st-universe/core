@@ -7,8 +7,8 @@ use Stu\Orm\Entity\StorageInterface;
 
 class StationCostWrapper
 {
-    private $buildplanModule;
-    private $shipStorage;
+    private BuildplanModuleInterface $buildplanModule;
+    private ?StorageInterface $shipStorage;
 
     public function __construct(BuildplanModuleInterface $buildplanModule, ?StorageInterface $shipStorage)
     {

@@ -87,12 +87,11 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     private int $job_7_crew = 0;
 
     /**
-     * @var ShipRumpRoleInterface
      *
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="rump_role_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shiprumpRole;
+    private ShipRumpRoleInterface $shiprumpRole;
 
     public function getId(): int
     {

@@ -43,7 +43,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         $this->user = $user;
     }
 
-    private $wasEntryDiscovered;
+    private ?bool $wasEntryDiscovered = null;
 
     /**
      * @var DatabaseUserInterface|null

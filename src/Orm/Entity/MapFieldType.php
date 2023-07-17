@@ -93,12 +93,11 @@ class MapFieldType implements MapFieldTypeInterface
     private bool $passable = false;
 
     /**
-     * @var null|ColonyClassInterface
      *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */
-    private $colonyClass;
+    private ?ColonyClassInterface $colonyClass = null;
 
     public function getId(): int
     {

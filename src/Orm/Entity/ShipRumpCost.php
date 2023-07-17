@@ -51,12 +51,11 @@ class ShipRumpCost implements ShipRumpCostInterface
     private int $count = 0;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     /**
      * @var ShipRumpInterface

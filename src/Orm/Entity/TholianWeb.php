@@ -48,19 +48,18 @@ class TholianWeb implements TholianWebInterface
     private int $ship_id = 0;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $webShip;
+    private ShipInterface $webShip;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb")
      */
-    private $capturedShips;
+    private Collection $capturedShips;
 
     public function __construct()
     {

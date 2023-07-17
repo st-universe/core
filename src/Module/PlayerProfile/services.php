@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile;
 
+use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistration;
 use Stu\Module\Control\GameController;
 use Stu\Module\PlayerProfile\View\Overview\Overview;
 use Stu\Module\PlayerProfile\View\Overview\OverviewRequest;
@@ -20,7 +21,7 @@ return [
             )
             ->constructorParameter(
                 'profileVisitorRegistration',
-                autowire(Lib\ProfileVisitorRegistration::class)
+                autowire(ProfileVisitorRegistration::class)
             ),
     ],
 ];

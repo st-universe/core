@@ -124,28 +124,25 @@ class Deals implements DealsInterface
     private ?int $auction_amount;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="want_commodity", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $wantedCommodity;
+    private CommodityInterface $wantedCommodity;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="give_commodity", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $giveCommodity;
+    private CommodityInterface $giveCommodity;
 
     /**
-     * @var null|ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id")
      */
-    private $buildplan;
+    private ?ShipBuildplanInterface $buildplan = null;
 
     /**
      * @var ArrayCollection<int, AuctionBidInterface>
@@ -153,7 +150,7 @@ class Deals implements DealsInterface
      * @OneToMany(targetEntity="AuctionBid", mappedBy="auction")
      * @OrderBy({"max_amount": "ASC"})
      */
-    private $auctionBids;
+    private Collection $auctionBids;
 
     public function __construct()
     {

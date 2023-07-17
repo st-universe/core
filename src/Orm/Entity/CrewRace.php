@@ -60,12 +60,11 @@ class CrewRace implements CrewRaceInterface
     private string $define = '';
 
     /**
-     * @var FactionInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $faction;
+    private FactionInterface $faction;
 
     public function getId(): int
     {

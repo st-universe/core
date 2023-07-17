@@ -24,11 +24,11 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
 
     private int $currentUserId;
 
-    private $sender;
+    private ?UserInterface $sender = null;
 
-    private $senderignore;
+    private ?bool $senderignore = null;
 
-    private $sendercontact;
+    private ?ContactInterface $sendercontact = null;
 
     public function __construct(
         PrivateMessageRepositoryInterface $privateMessageRepository,

@@ -58,20 +58,18 @@ class AllianceRelation implements AllianceRelationInterface
     private int $date = 0;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private AllianceInterface $alliance;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $opponent;
+    private AllianceInterface $opponent;
 
     public function getId(): int
     {

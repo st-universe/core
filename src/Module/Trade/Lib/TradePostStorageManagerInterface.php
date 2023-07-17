@@ -2,7 +2,9 @@
 
 namespace Stu\Module\Trade\Lib;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
 
 interface TradePostStorageManagerInterface
@@ -14,7 +16,7 @@ interface TradePostStorageManagerInterface
     public function getFreeStorage(): int;
 
     /**
-     * @return StorageInterface[]|Collection
+     * @return ArrayCollection<int, StorageInterface>
      */
     public function getStorage(): Collection;
 

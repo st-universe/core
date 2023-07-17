@@ -119,12 +119,11 @@ class Module implements ModuleInterface
     private $research;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     /**
      * @var ShipRumpRoleInterface
@@ -140,14 +139,14 @@ class Module implements ModuleInterface
      * @OneToMany(targetEntity="ModuleSpecial", mappedBy="module")
      * @OrderBy({"special_id": "ASC"})
      */
-    private $moduleSpecials;
+    private Collection $moduleSpecials;
 
     /**
      * @var ArrayCollection<int, ModuleCostInterface>
      *
      * @OneToMany(targetEntity="ModuleCost", mappedBy="module")
      */
-    private $buildingCosts;
+    private Collection $buildingCosts;
 
     /**
      * @var ArrayCollection<int, TorpedoHullInterface>
@@ -155,7 +154,7 @@ class Module implements ModuleInterface
      * @OneToMany(targetEntity="TorpedoHull", mappedBy="module", indexBy="torpedo_type")
      * @OrderBy({"torpedo_type": "ASC"})
      */
-    private $torpedoHull;
+    private Collection $torpedoHull;
 
     /**
      * @var ArrayCollection<int, WeaponShieldInterface>
@@ -163,7 +162,7 @@ class Module implements ModuleInterface
      * @OneToMany(targetEntity="WeaponShield", mappedBy="module", indexBy="weapon_id")
      * @OrderBy({"weapon_id": "ASC"})
      */
-    private $weaponShield;
+    private Collection $weaponShield;
 
     /**
      * @OneToOne(targetEntity="Weapon", mappedBy="module")
@@ -171,7 +170,7 @@ class Module implements ModuleInterface
     private ?WeaponInterface $weapon;
 
     /** @var null|array<int> */
-    private $specialAbilities;
+    private ?array $specialAbilities = null;
 
     public function __construct()
     {

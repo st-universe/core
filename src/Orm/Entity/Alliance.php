@@ -84,12 +84,11 @@ class Alliance implements AllianceInterface
     private string $rgb_code = '';
 
     /**
-     * @var FactionInterface
      *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
      */
-    private $faction;
+    private ?FactionInterface $faction = null;
 
     /**
      * @var ArrayCollection<int, UserInterface>
@@ -253,7 +252,7 @@ class Alliance implements AllianceInterface
         return $this->jobs;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

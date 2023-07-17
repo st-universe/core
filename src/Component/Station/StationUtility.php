@@ -207,7 +207,7 @@ final class StationUtility implements StationUtilityInterface
         $this->constructionProgressRepository->save($progress);
     }
 
-    private function createTradepostAndLicense(ShipInterface $station)
+    private function createTradepostAndLicense(ShipInterface $station): void
     {
         $owner = $station->getUser();
         $tradepost = $this->tradePostRepository->prototype();

@@ -79,38 +79,37 @@ class Fleet implements FleetInterface
      */
     private bool $is_fixed = false;
 
-    /** @var string */
-    private $hiddenStyle;
+    private string $hiddenStyle;
 
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="fleet", indexBy="id")
      * @OrderBy({"is_fleet_leader": "DESC", "name": "ASC"})
      */
-    private $shiplist;
+    private Collection $shiplist;
 
     /**
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="ships_id", referencedColumnName="id")
      */
-    private $fleetLeader;
+    private ShipInterface $fleetLeader;
 
     /**
      * @ManyToOne(targetEntity="Colony", inversedBy="defenders")
      * @JoinColumn(name="defended_colony_id", referencedColumnName="id")
      */
-    private $defendedColony;
+    private ?ColonyInterface $defendedColony = null;
 
     /**
      * @ManyToOne(targetEntity="Colony", inversedBy="blockers")
      * @JoinColumn(name="blocked_colony_id", referencedColumnName="id")
      */
-    private $blockedColony;
+    private ?ColonyInterface $blockedColony = null;
 
     public function __construct()
     {
@@ -237,7 +236,7 @@ class Fleet implements FleetInterface
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

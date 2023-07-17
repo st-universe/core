@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Storage;
 
+use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
+use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -24,13 +26,13 @@ final class ShipStorageManager implements ShipStorageManagerInterface
 
         $storageItem = $storage[$commodity->getId()] ?? null;
         if ($storageItem === null) {
-            throw new Exception\CommodityMissingException();
+            throw new CommodityMissingException();
         }
 
         $storedAmount = $storageItem->getAmount();
 
         if ($storedAmount < $amount) {
-            throw new Exception\QuantityTooSmallException();
+            throw new QuantityTooSmallException();
         }
 
         if ($storedAmount === $amount) {

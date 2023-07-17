@@ -210,14 +210,14 @@ final class TholianWebUtil implements TholianWebUtilInterface
         //initialize by weight of targets and spinners
         $targetWeightSum = array_reduce(
             $web->getCapturedShips()->toArray(),
-            function (int $sum, ShipInterface $ship) {
+            function (int $sum, ShipInterface $ship): int {
                 return $sum + $ship->getRump()->getTractorMass();
             },
             0
         );
         $webSpinnerWeightSum = array_reduce(
             $this->shipSystemRepository->getWebConstructingShipSystems($web->getId()),
-            function (int $sum, ShipSystemInterface $shipSystem) {
+            function (int $sum, ShipSystemInterface $shipSystem): int {
                 return $sum + $shipSystem->getShip()->getRump()->getTractorMass();
             },
             0

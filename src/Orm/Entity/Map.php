@@ -102,67 +102,60 @@ class Map implements MapInterface
     private ?int $admin_region_id;
 
     /**
-     * @var LayerInterface
      *
      * @ManyToOne(targetEntity="Layer")
      * @JoinColumn(name="layer_id", referencedColumnName="id")
      */
-    private $layer;
+    private LayerInterface $layer;
 
     /**
-     * @var null|StarSystemInterface
      *
      * @OneToOne(targetEntity="StarSystem", inversedBy="map")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
-    private $starSystem;
+    private ?StarSystemInterface $starSystem = null;
 
     /**
-     * @var null|StarSystemInterface
      *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
      */
-    private $influenceArea;
+    private ?StarSystemInterface $influenceArea = null;
 
     /**
-     * @var MapFieldTypeInterface
      *
      * @ManyToOne(targetEntity="MapFieldType")
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
-    private $mapFieldType;
+    private MapFieldTypeInterface $mapFieldType;
 
     /**
-     * @var null|MapBorderTypeInterface
      *
      * @ManyToOne(targetEntity="MapBorderType")
      * @JoinColumn(name="bordertype_id", referencedColumnName="id")
      */
-    private $mapBorderType;
+    private ?MapBorderTypeInterface $mapBorderType = null;
 
     /**
-     * @var null|MapRegionInterface
      *
      * @ManyToOne(targetEntity="MapRegion")
      * @JoinColumn(name="region_id", referencedColumnName="id")
      */
-    private $mapRegion;
+    private ?MapRegionInterface $mapRegion = null;
 
     /**
-     * @var null|MapRegionInterface
      *
      * @ManyToOne(targetEntity="MapRegion")
      * @JoinColumn(name="admin_region_id", referencedColumnName="id")
      */
-    private $administratedRegion;
+    private ?MapRegionInterface $administratedRegion = null;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="map", fetch="EXTRA_LAZY")
      */
-    private $ships;
+    private Collection $ships;
 
     /**
      * @var ArrayCollection<int, FlightSignatureInterface>
@@ -170,21 +163,21 @@ class Map implements MapInterface
      * @OneToMany(targetEntity="FlightSignature", mappedBy="map")
      * @OrderBy({"time": "DESC"})
      */
-    private $signatures;
+    private Collection $signatures;
 
     /**
      * @var ArrayCollection<int, AnomalyInterface>
      *
      * @OneToMany(targetEntity="Anomaly", mappedBy="map", fetch="EXTRA_LAZY")
      */
-    private $anomalies;
+    private Collection $anomalies;
 
     /**
      * @var ArrayCollection<int, WormholeEntryInterface>
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="map")
      */
-    private $wormholeEntries;
+    private ArrayCollection $wormholeEntries;
 
 
     public function __construct()

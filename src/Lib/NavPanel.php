@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 use Stu\Lib\NavPanelButton;
+use Stu\Lib\NavPanelButtonInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 class NavPanel
 {
-    private $ship;
+    private ShipInterface $ship;
 
     public function __construct(ShipInterface $ship)
     {
@@ -19,7 +20,8 @@ class NavPanel
         return $this->ship;
     }
 
-    public function getShipPosition()
+    /** @return array{cx: int, cy: int} */
+    public function getShipPosition(): array
     {
         if ($this->getShip()->getSystem() !== null) {
             return [
@@ -33,7 +35,8 @@ class NavPanel
         ];
     }
 
-    public function getMapBorders()
+    /** @return array{mx: int, my: int} */
+    public function getMapBorders(): array
     {
         $starSystem = $this->getShip()->getSystem();
 
@@ -51,7 +54,7 @@ class NavPanel
         ];
     }
 
-    public function getLeft()
+    public function getLeft(): NavPanelButtonInterface
     {
         $coords = $this->getShipPosition();
         if ($coords['cx'] - 1 < 1) {
@@ -60,7 +63,7 @@ class NavPanel
         return new NavPanelButton(($coords['cx'] - 1) . "|" . $coords['cy']);
     }
 
-    public function getRight()
+    public function getRight(): NavPanelButtonInterface
     {
         $coords = $this->getShipPosition();
         $borders = $this->getMapBorders();
@@ -70,7 +73,7 @@ class NavPanel
         return new NavPanelButton(($coords['cx'] + 1) . "|" . $coords['cy']);
     }
 
-    public function getUp()
+    public function getUp(): NavPanelButtonInterface
     {
         $coords = $this->getShipPosition();
         if ($coords['cy'] - 1 < 1) {
@@ -79,7 +82,7 @@ class NavPanel
         return new NavPanelButton($coords['cx'] . "|" . ($coords['cy'] - 1));
     }
 
-    public function getDown()
+    public function getDown(): NavPanelButtonInterface
     {
         $coords = $this->getShipPosition();
         $borders = $this->getMapBorders();

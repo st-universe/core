@@ -70,20 +70,18 @@ class KnComment implements KnCommentInterface
     private ?int $deleted = null;
 
     /**
-     * @var KnPostInterface
      *
      * @ManyToOne(targetEntity="KnPost")
      * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $post;
+    private KnPostInterface $post;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

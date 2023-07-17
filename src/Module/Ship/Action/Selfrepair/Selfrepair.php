@@ -164,7 +164,7 @@ final class Selfrepair implements ActionControllerInterface
         return $result;
     }
 
-    private function consumeCommodities(ShipInterface $ship, int $repairType, $neededSparePartCount, GameControllerInterface $game): void
+    private function consumeCommodities(ShipInterface $ship, int $repairType, int $neededSparePartCount, GameControllerInterface $game): void
     {
         if (
             $repairType === RepairTaskEnum::SPARE_PARTS_ONLY

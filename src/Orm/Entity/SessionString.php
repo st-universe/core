@@ -49,17 +49,16 @@ class SessionString implements SessionStringInterface
     /**
      * @Column(type="datetime", nullable=true)
      *
-     * @var DateTimeInterface|null
+     * @var DateTimeInterface
      */
-    private $date;
+    private DateTimeInterface $date;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

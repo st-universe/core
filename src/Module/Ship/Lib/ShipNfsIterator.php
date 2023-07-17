@@ -14,7 +14,7 @@ final class ShipNfsIterator implements Iterator
 
     private int $userId;
 
-    public function __construct(array $ships, $userId)
+    public function __construct(array $ships, int $userId)
     {
         $this->ships = $ships;
         $this->userId = $userId;

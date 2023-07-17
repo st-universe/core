@@ -52,15 +52,14 @@ class ConstructionProgress implements ConstructionProgressInterface
      *
      * @OneToMany(targetEntity="ConstructionProgressModule", mappedBy="progress")
      */
-    private $specialModules;
+    private Collection $specialModules;
 
     /**
-     * @var ShipInterface
      *
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     public function __construct()
     {
@@ -106,7 +105,7 @@ class ConstructionProgress implements ConstructionProgressInterface
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getId !== null ? sprintf('constructionProgressId: %d, shipId: %d', $this->getId(), $this->getShipId()) :
             sprintf('constructionProgressId: null, shipId: %d', $this->getShipId());

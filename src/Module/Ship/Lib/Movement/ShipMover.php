@@ -56,12 +56,12 @@ final class ShipMover implements ShipMoverInterface
     /**
      * @var array<int, ShipInterface>
      */
-    private $lostShips = [];
+    private array $lostShips = [];
 
     /**
      * @var array<int, array<ShipInterface>>
      */
-    private $tractoredShips = [];
+    private array $tractoredShips = [];
 
     private bool $leaderMovedToNextField = false;
     private bool $hasTravelled = false;

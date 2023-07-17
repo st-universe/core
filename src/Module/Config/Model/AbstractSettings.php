@@ -69,7 +69,7 @@ abstract class AbstractSettings implements SettingsInterface
     }
 
     /**
-     * @param array<string> $default
+     * @param string[]|null $default
      *
      * @return array<string>
      */
@@ -90,11 +90,11 @@ abstract class AbstractSettings implements SettingsInterface
     }
 
     /**
-     * @param int|string|bool $default
+     * @param int|string|bool|null $default
      *
      * @return int|string|bool
      */
-    private function getConfigValue(string $path, $default = null)
+    private function getConfigValue(string $path, int|null|string|bool $default = null)
     {
         $value = $this->getConfig()->get($path);
 
@@ -111,7 +111,7 @@ abstract class AbstractSettings implements SettingsInterface
     }
 
     /**
-     * @param array<string> $default
+     * @param string[]|null $default
      *
      * @return array<string>
      */

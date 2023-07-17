@@ -130,7 +130,7 @@ final class LandShip implements ActionControllerInterface
         $ship->getCrewlist()->clear();
     }
 
-    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, $colony, $game): void
+    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, ColonyInterface $colony, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
         $torpedoStorage = $ship->getTorpedoStorage();

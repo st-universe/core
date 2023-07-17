@@ -47,20 +47,18 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
     private int $count = 0;
 
     /**
-     * @var TorpedoTypeInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\TorpedoType")
      * @JoinColumn(name="torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $torpedoType;
+    private TorpedoTypeInterface $torpedoType;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     public function getId(): int
     {

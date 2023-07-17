@@ -19,13 +19,13 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
 
     $rectorConfig->sets([
-        SetList::CODE_QUALITY,
-        SetList::CODING_STYLE,
-        SetList::DEAD_CODE,
-        //NAMING
-        //PRIVATIZATION
-        //TYPE_DECLARATION
-        LevelSetList::UP_TO_PHP_74, //UP_TO_PHP_82
+        //SetList::CODE_QUALITY,
+        //SetList::CODING_STYLE,
+        //SetList::DEAD_CODE,
+        //SetList::NAMING, //TODO
+        //SetList::PRIVATIZATION, //lots of errors
+        //SetList::TYPE_DECLARATION, //last 2023-07-17
+        //LevelSetList::UP_TO_PHP_74, //UP_TO_PHP_82
     ]);
 
     $rectorConfig->skip([

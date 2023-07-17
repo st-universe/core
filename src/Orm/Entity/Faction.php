@@ -77,14 +77,12 @@ class Faction implements FactionInterface
     private ?int $start_map_id;
 
     //TODO survivor_rate to escape pods
-
     /**
-     * @var null|ResearchInterface
      *
      * @ManyToOne(targetEntity="Research")
      * @JoinColumn(name="start_research_id", referencedColumnName="id")
      */
-    private $start_research;
+    private ?ResearchInterface $start_research = null;
 
     /**
      * @ManyToOne(targetEntity="Map")

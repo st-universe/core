@@ -41,20 +41,18 @@ class UserLayer implements UserLayerInterface
     private int $map_type = MapEnum::MAPTYPE_INSERT;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var LayerInterface
      *
      * @ManyToOne(targetEntity="Layer")
      * @JoinColumn(name="layer_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $layer;
+    private LayerInterface $layer;
 
     public function getUser(): UserInterface
     {

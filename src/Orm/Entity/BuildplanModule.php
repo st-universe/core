@@ -61,20 +61,18 @@ class BuildplanModule implements BuildplanModuleInterface
     private int $module_count = 1;
 
     /**
-     * @var ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $buildplan;
+    private ShipBuildplanInterface $buildplan;
 
     /**
-     * @var ModuleInterface
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $module;
+    private ModuleInterface $module;
 
     public function getId(): int
     {

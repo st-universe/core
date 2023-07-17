@@ -22,7 +22,8 @@ final class DealAccountTal implements DealAccountTalInterface
 
     private int $userId;
 
-    private $storage;
+    /** @var array<StorageInterface> */
+    private ?array $storage = null;
 
     private CommodityRepositoryInterface $commodityRepository;
 

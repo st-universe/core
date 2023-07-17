@@ -85,31 +85,27 @@ class PlanetField implements PlanetFieldInterface
     private bool $activate_after_build = true;
 
     /**
-     * @var null|BuildingInterface
      *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="buildings_id", referencedColumnName="id")
      */
-    private $building;
+    private ?BuildingInterface $building = null;
 
     /**
-     * @var null|TerraformingInterface
      *
      * @ManyToOne(targetEntity="Terraforming")
      * @JoinColumn(name="terraforming_id", referencedColumnName="id")
      */
-    private $terraforming;
+    private ?TerraformingInterface $terraforming = null;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ColonyInterface $colony;
 
-    /** @var bool */
-    private $buildmode = false;
+    private bool $buildmode = false;
 
     public function getId(): int
     {

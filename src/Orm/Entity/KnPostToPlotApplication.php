@@ -47,20 +47,18 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
     private int $time = 0;
 
     /**
-     * @var KnPostInterface
      *
      * @ManyToOne(targetEntity="KnPost")
      * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $knPost;
+    private KnPostInterface $knPost;
 
     /**
-     * @var RpgPlotInterface
      *
      * @ManyToOne(targetEntity="RpgPlot")
      * @JoinColumn(name="plot_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $rpgPlot;
+    private RpgPlotInterface $rpgPlot;
 
     public function getId(): int
     {

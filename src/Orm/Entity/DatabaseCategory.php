@@ -71,15 +71,14 @@ class DatabaseCategory implements DatabaseCategoryInterface
      * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
      * @OrderBy({"sort": "ASC"})
      */
-    private $entries;
+    private ArrayCollection $entries;
 
     /**
-     * @var AwardInterface
      *
      * @ManyToOne(targetEntity="Award")
      * @JoinColumn(name="award_id", referencedColumnName="id")
      */
-    private $award;
+    private ?AwardInterface $award = null;
 
     public function __construct()
     {

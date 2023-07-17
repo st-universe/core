@@ -51,20 +51,18 @@ class Researched implements ResearchedInterface
     private int $finished = 0;
 
     /**
-     * @var ResearchInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
      */
-    private $research;
+    private ResearchInterface $research;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

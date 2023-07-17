@@ -86,7 +86,7 @@ class KnPost implements KnPostInterface
      *
      * @var array<mixed>
      */
-    private $ratings = [];
+    private array $ratings = [];
 
     /**
      * @var ArrayCollection<int, KnCommentInterface>
@@ -94,23 +94,21 @@ class KnPost implements KnPostInterface
      * @OneToMany(targetEntity="KnComment", mappedBy="post")
      * @OrderBy({"id": "ASC"})
      */
-    private $comments;
+    private Collection $comments;
 
     /**
-     * @var null|RpgPlotInterface
      *
      * @ManyToOne(targetEntity="RpgPlot", inversedBy="posts")
      * @JoinColumn(name="plot_id", referencedColumnName="id")
      */
-    private $rpgPlot;
+    private ?RpgPlotInterface $rpgPlot = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private UserInterface $user;
 
     public function __construct()
     {

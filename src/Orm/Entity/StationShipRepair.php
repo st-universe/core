@@ -39,20 +39,18 @@ class StationShipRepair implements StationShipRepairInterface
     private int $ship_id;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $station;
+    private ShipInterface $station;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     public function getId(): int
     {
