@@ -79,9 +79,7 @@ final class ResetManager implements ResetManagerInterface
         MapResetInterface $mapReset,
         TradeResetInterface $tradeReset,
         UserResetInterface $userReset,
-
         GameRequestRepositoryInterface $gameRequestRepository,
-
         GameConfigRepositoryInterface $gameConfigRepository,
         PlayerDeletionInterface $playerDeletion,
         ColonyRepositoryInterface $colonyRepository,

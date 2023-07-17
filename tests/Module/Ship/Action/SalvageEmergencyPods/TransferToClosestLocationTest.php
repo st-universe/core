@@ -51,7 +51,7 @@ class TransferToClosestLocationTest extends StuTestCase
     public static function transferTestData()
     {
         return [
-            //?coloDistance, ?coloName, ?coloSector, ?stationDistance, ?stationName, ?stationSector, tradePostDistance, tradePostName, tradePostSector, expectedMessage 
+            //?coloDistance, ?coloName, ?coloSector, ?stationDistance, ?stationName, ?stationSector, tradePostDistance, tradePostName, tradePostSector, expectedMessage
             [null, null, null, null, null, null, 42, 'TP', 'T|P', 'Deine Crew wurde geborgen und an den Handelsposten "TP" (T|P) überstellt'],
             [43,   'C', 'C|C', null, null, null, 42, 'TP', 'T|P', 'Deine Crew wurde geborgen und an den Handelsposten "TP" (T|P) überstellt'],
             [42,   'C', 'C|C', null, null, null, 42, 'TP', 'T|P', 'Deine Crew wurde geborgen und an die Kolonie "C" (C|C) überstellt'],

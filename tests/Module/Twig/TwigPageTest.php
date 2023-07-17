@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Twig\TwigPage;
 use Stu\Module\Twig\TwigPageInterface;

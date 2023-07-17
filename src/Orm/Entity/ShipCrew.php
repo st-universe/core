@@ -15,8 +15,6 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Component\Crew\CrewEnum;
 
-
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(

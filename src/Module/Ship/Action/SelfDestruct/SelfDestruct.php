@@ -8,13 +8,13 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SelfDestruct implements ActionControllerInterface

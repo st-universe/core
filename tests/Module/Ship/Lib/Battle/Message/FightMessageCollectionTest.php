@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
-use Stu\Lib\InformationWrapper;
 use Stu\StuTestCase;
 
 class FightMessageCollectionTest extends StuTestCase

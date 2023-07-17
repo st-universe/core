@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;

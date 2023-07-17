@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
-use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;

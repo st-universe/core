@@ -11,7 +11,6 @@ use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;

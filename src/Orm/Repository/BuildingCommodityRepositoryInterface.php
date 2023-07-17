@@ -12,22 +12,22 @@ use Stu\Orm\Entity\UserInterface;
  */
 interface BuildingCommodityRepositoryInterface extends ObjectRepository
 {
-     /**
-      * @return array<BuildingCommodityInterface>
-      */
-     public function getByBuilding(int $buildingId): array;
+    /**
+     * @return array<BuildingCommodityInterface>
+     */
+    public function getByBuilding(int $buildingId): array;
 
-     /**
-      * @return iterable<array{commodity_id: int, production: int, pc: int}>
-      */
-     public function getProductionByColony(int $colonyId, int $colonyClassId): iterable;
+    /**
+     * @return iterable<array{commodity_id: int, production: int, pc: int}>
+     */
+    public function getProductionByColony(int $colonyId, int $colonyClassId): iterable;
 
-     /**
-      * Returns the production sum of default commodities of all colonies for the given user
-      *
-      * @return iterable<array{commodity_id: int, commodity_name: string, gc: int}> Production data, ordered by commodity
-      */
-     public function getProductionSumForAllUserColonies(UserInterface $user): iterable;
+    /**
+     * Returns the production sum of default commodities of all colonies for the given user
+     *
+     * @return iterable<array{commodity_id: int, commodity_name: string, gc: int}> Production data, ordered by commodity
+     */
+    public function getProductionSumForAllUserColonies(UserInterface $user): iterable;
 
-     public function getProductionByCommodityAndUser(int $commodityId, UserInterface $user): int;
+    public function getProductionByCommodityAndUser(int $commodityId, UserInterface $user): int;
 }

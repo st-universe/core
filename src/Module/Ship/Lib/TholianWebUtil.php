@@ -9,7 +9,6 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -192,7 +191,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
             return;
         }
 
-        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());;
+        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
         $time = $this->stuTime->time();
 
         //adjust by modified web spinner count

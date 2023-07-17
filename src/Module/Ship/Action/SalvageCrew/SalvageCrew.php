@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Action\SalvageCrew;
 use request;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
-use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Orm\Entity\WeaponShieldInterface;
 use Stu\Orm\Entity\WeaponShield;
+use Stu\Orm\Entity\WeaponShieldInterface;
 
 /**
  * @extends EntityRepository<WeaponShield>

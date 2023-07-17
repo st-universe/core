@@ -6,7 +6,6 @@ namespace Stu\Component\Anomaly;
 
 use Mockery\MockInterface;
 use RuntimeException;
-use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\AnomalyTypeInterface;
 use Stu\Orm\Entity\MapInterface;
