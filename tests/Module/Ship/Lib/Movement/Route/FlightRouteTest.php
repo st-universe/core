@@ -185,6 +185,7 @@ class FlightRouteTest extends StuTestCase
         $first = $this->mock(MapInterface::class);
         $destination = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
+        $informations = $this->mock(InformationWrapper::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($first);
@@ -207,6 +208,12 @@ class FlightRouteTest extends StuTestCase
         $this->subject->setDestinationViaCoordinates($ship, 42, 5);
 
         $this->assertEquals($first, $this->subject->getNextWaypoint());
+
+        $this->enterWaypoint->shouldReceive('enterNextWaypoint')
+            ->with($ship, true, $first, null, $informations)
+            ->once();
+
+        $this->subject->enterNextWaypoint($ship, $first, $informations);
 
         $this->subject->stepForward();
 
