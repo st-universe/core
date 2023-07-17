@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeleteFleet;
 
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
@@ -38,16 +39,19 @@ final class DeleteFleet implements ActionControllerInterface
     {
         $ship = $this->shipLoader->getByIdAndUser($this->deleteFleetRequest->getShipId(), $game->getUser()->getId());
 
-        if (!$ship->getFleetId()) {
+        $fleet = $ship->getFleet();
+        if ($fleet === null) {
             return;
         }
         if (!$ship->isFleetLeader()) {
             return;
         }
 
-        $fleet = $ship->getFleet();
 
-        $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship));
+        $informations = new InformationWrapper();
+        $this->cancelColonyBlockOrDefend->work($ship, $informations);
+
+        $game->addInformationMergeDown($informations->getInformations());
 
         foreach ($fleet->getShips() as $fleetShip) {
             $fleetShip->setFleet(null);

@@ -601,7 +601,7 @@ final class ShipMover implements ShipMoverInterface
                 $this->deactivateTractorBeam($wrapper, null);
             }
 
-            $this->addInformationMerge($this->cancelColonyBlockOrDefend->work($ship, true));
+            $this->cancelColonyBlockOrDefend->work($ship, $this->informations, true);
         }
 
         //Einflugschaden Feldschaden

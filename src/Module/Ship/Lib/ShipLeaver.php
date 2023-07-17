@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Lib\InformationWrapper;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -132,6 +133,9 @@ final class ShipLeaver implements ShipLeaverInterface
     public function dumpCrewman(ShipCrewInterface $shipCrew): string
     {
         $ship = $shipCrew->getShip();
+        if ($ship === null) {
+            throw new RuntimeException('can only dump crewman on ship');
+        }
 
         //create pods entity
         $pods = $this->launchEscapePods($ship);
@@ -196,9 +200,14 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private function changeFleetLeader(ShipInterface $oldLeader): void
     {
+        $fleet = $oldLeader->getFleet();
+        if ($fleet === null) {
+            throw new RuntimeException('no fleet available');
+        }
+
         $ship = current(
             array_filter(
-                $oldLeader->getFleet()->getShips()->toArray(),
+                $fleet->getShips()->toArray(),
                 function (ShipInterface $ship) use ($oldLeader): bool {
                     return $ship !== $oldLeader;
                 }
@@ -206,9 +215,8 @@ final class ShipLeaver implements ShipLeaverInterface
         );
 
         if (!$ship) {
-            $this->cancelColonyBlockOrDefend->work($oldLeader);
+            $this->cancelColonyBlockOrDefend->work($oldLeader, new InformationWrapper());
         }
-        $fleet = $oldLeader->getFleet();
 
         $oldLeader->setFleet(null);
         $oldLeader->setIsFleetLeader(false);
@@ -237,7 +245,7 @@ final class ShipLeaver implements ShipLeaverInterface
         }
     }
 
-    private function returnToSafety(ShipInterface $pods, ShipInterface $ship)
+    private function returnToSafety(ShipInterface $pods, ShipInterface $ship): void
     {
         $field = $pods->getCurrentMapField();
 
@@ -266,25 +274,37 @@ final class ShipLeaver implements ShipLeaverInterface
         }
     }
 
-    //flee upwardss
+    //flee upwards
+    /**
+     * @return array<int>
+     */
     private function fly2(ShipInterface $pods): array
     {
         return [$pods->getPosX(), $pods->getPosY() - 1];
     }
 
     //flee downwards
+    /**
+     * @return array<int>
+     */
     private function fly4(ShipInterface $pods): array
     {
         return [$pods->getPosX(), $pods->getPosY() + 1];
     }
 
     //flee right
+    /**
+     * @return array<int>
+     */
     private function fly3(ShipInterface $pods): array
     {
         return [$pods->getPosX() - 1, $pods->getPosY()];
     }
 
     //flee left
+    /**
+     * @return array<int>
+     */
     private function fly1(ShipInterface $pods): array
     {
         return [$pods->getPosX() + 1, $pods->getPosY()];

@@ -29,7 +29,8 @@ final class LeaveFleet implements ActionControllerInterface
     {
         $ship = $this->shipLoader->getByIdAndUser($this->leaveFleetRequest->getShipId(), $game->getUser()->getId());
 
-        if (!$ship->getFleetId()) {
+        $fleet = $ship->getFleet();
+        if ($fleet === null) {
             return;
         }
         if ($ship->isFleetLeader()) {
@@ -40,7 +41,7 @@ final class LeaveFleet implements ActionControllerInterface
         $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $ship->getFleetId()));
         $game->addExecuteJS('refreshShiplistSingles();');
 
-        $ship->getFleet()->getShips()->removeElement($ship);
+        $fleet->getShips()->removeElement($ship);
         $ship->setFleet(null);
 
         $this->shipLoader->save($ship);
