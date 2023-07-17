@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\GameRequestInterface;
@@ -37,6 +38,8 @@ interface GameControllerInterface
     public function addInformationMerge(array $info): void;
 
     public function addInformationMergeDown(array $info): void;
+
+    public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
 
     public function getInformation(): array;
 

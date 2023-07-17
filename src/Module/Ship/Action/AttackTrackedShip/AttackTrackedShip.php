@@ -145,7 +145,7 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
 
         if ($ship->isDestroyed()) {
-            $game->addInformationMerge($informations->getInformations());
+            $game->addInformationWrapper($informations);
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -154,7 +154,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->addInformationMerge($informations->getInformations());
+            $game->addInformationWrapper($informations);
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }
