@@ -82,6 +82,7 @@ final class FlightRoute implements FlightRouteInterface
 
         if ($start !== $destination) {
             $this->waypoints = $this->loadWaypoints->load($start, $destination);
+            $this->isTraversing = true;
         }
 
         return $this;
