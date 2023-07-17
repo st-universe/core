@@ -29,12 +29,21 @@ class InformationWrapper
     /**
      * @param array<string> $informations
      */
-    public function addInformationMerge(array $informations, bool $isHead = false): InformationWrapper
+    public function addInformationArray(array $informations, bool $isHead = false): InformationWrapper
     {
         if ($isHead) {
             $this->informations = array_merge($informations, $this->informations);
         } else {
             $this->informations = array_merge($this->informations, $informations);
+        }
+
+        return $this;
+    }
+
+    public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): InformationWrapper
+    {
+        if ($informations !== null) {
+            $this->addInformationArray($informations->getInformations(), $isHead);
         }
 
         return $this;

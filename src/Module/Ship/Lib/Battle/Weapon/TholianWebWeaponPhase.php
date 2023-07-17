@@ -34,7 +34,7 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         $damage_wrapper->setHullDamageFactor(100);
         $damage_wrapper->setIsPhaserDamage(true);
 
-        $informations->addInformationMerge($this->applyDamage->damage($damage_wrapper, $wrapper)->getInformations());
+        $informations->addInformationWrapper($this->applyDamage->damage($damage_wrapper, $wrapper));
 
         if ($ship->isDestroyed()) {
             $entryMsg = sprintf(

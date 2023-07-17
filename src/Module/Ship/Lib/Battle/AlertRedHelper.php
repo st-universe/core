@@ -362,7 +362,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         );
 
         if ($leadShip->isDestroyed()) {
-            $informations->addInformationMerge($messages);
+            $informations->addInformationArray($messages);
             return;
         }
 
@@ -372,6 +372,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $leadShip->getPosX(),
             $leadShip->getPosY()
         ));
-        $informations->addInformationMerge($messages);
+        $informations->addInformationArray($messages);
     }
 }

@@ -131,7 +131,7 @@ final class ShipMover implements ShipMoverInterface
      */
     private function addInformationMerge(array $value): void
     {
-        $this->informations->addInformationMerge($value);
+        $this->informations->addInformationArray($value);
     }
 
     public function checkAndMove(
