@@ -187,7 +187,7 @@ final class ShipWrapper implements ShipWrapperInterface
         $fleet = $this->get()->getFleet();
 
         if ($fleet !== null) {
-            $fleet->getShips()->removeElement($this);
+            $fleet->getShips()->removeElement($this->get());
 
             $this->get()->setFleet(null);
             $this->get()->setIsFleetLeader(false);

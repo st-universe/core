@@ -2442,21 +2442,6 @@ parameters:
 			path: src/Module/Ship/Action/AstroMapping/PlanAstroMapping.php
 
 		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
-
-		-
-			message: "#^Cannot call method getFieldId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
-
-		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
-
-		-
 			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/Colonize/Colonize.php
@@ -2648,11 +2633,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/TholianWeb/ImplodeTholianWeb.php
-
-		-
-			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TholianWeb/RemoveTholianWeb.php
 
@@ -2737,26 +2717,6 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/AlertRedHelper.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:checkForDamagedShipSystems\\(\\) has parameter \\$msg with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageRandomShipSystem\\(\\) has parameter \\$msg with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageRandomShipSystem\\(\\) has parameter \\$percent with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
@@ -2767,32 +2727,12 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageShipSystem\\(\\) has parameter \\$msg with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageShipSystem\\(\\) has parameter \\$dmg with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageShipSystem\\(\\) has parameter \\$msg with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
 
@@ -4777,11 +4717,6 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:getShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$blockedColony has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
@@ -4805,11 +4740,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\FleetInterface\\:\\:getShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/FleetInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"

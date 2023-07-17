@@ -15,7 +15,7 @@ interface FleetInterface
     public function getUserId(): int;
 
     /**
-     * @return ShipInterface[]|Collection
+     * @return Collection<int, ShipInterface>
      */
     public function getShips(): Collection;
 

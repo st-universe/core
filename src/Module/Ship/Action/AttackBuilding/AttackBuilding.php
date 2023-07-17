@@ -22,7 +22,6 @@ use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -49,8 +48,6 @@ final class AttackBuilding implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private InformationWrapper $informations;
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
@@ -71,7 +68,6 @@ final class AttackBuilding implements ActionControllerInterface
         AlertRedHelperInterface $alertRedHelper,
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         ColonyFunctionManagerInterface $colonyFunctionManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
         AttackerProviderFactoryInterface $attackerProviderFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -83,7 +79,6 @@ final class AttackBuilding implements ActionControllerInterface
         $this->projectileWeaponPhase = $projectileWeaponPhase;
         $this->privateMessageSender = $privateMessageSender;
         $this->alertRedHelper = $alertRedHelper;
-        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->attackerProviderFactory = $attackerProviderFactory;
@@ -106,14 +101,14 @@ final class AttackBuilding implements ActionControllerInterface
 
 
         $field = $this->planetFieldRepository->find($fieldId);
-        if ($field->getFieldId() >= 80) {
-            $game->addInformation(_('Der Untergrund kann nicht attackiert werden'));
-            return;
-        }
-
         $colony = $this->colonyRepository->find($colonyId);
         if ($field === null || $colony === null) {
             $game->addInformation(_('Feld oder Kolonie nicht vorhanden'));
+            return;
+        }
+
+        if ($field->getFieldId() >= 80) {
+            $game->addInformation(_('Der Untergrund kann nicht attackiert werden'));
             return;
         }
 
@@ -130,7 +125,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         $epsSystem = $wrapper->getEpsSystemData();
 
-        if ($epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() == 0) {
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
@@ -146,15 +141,16 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        $fleet = false;
-        if ($ship->isFleetLeader()) {
-            $attacker = $this->shipWrapperFactory->wrapShips($ship->getFleet()->getShips()->toArray());
-            $fleet = true;
+        $isFleetAttack = false;
+        $fleetWrapper = $wrapper->getFleetWrapper();
+        if ($ship->isFleetLeader() && $fleetWrapper !== null) {
+            $attackers = $fleetWrapper->getShipWrappers();
+            $isFleetAttack = true;
         } else {
-            $attacker = $this->shipWrapperFactory->wrapShips([$ship->getId() => $ship]);
+            $attackers = [$ship->getId() => $wrapper];
         }
 
-        foreach ($attacker as $attackship) {
+        foreach ($attackers as $attackship) {
             $this->informations->addInformationMerge($this->fightLib->ready($attackship)->getInformations());
         }
 
@@ -172,7 +168,7 @@ final class AttackBuilding implements ActionControllerInterface
         $defendingPhalanx =  $this->attackerProviderFactory->getEnergyPhalanxAttacker($colony);
 
         for ($i = 0; $i < $count; $i++) {
-            $attackerPool = $this->fightLib->filterInactiveShips($attacker);
+            $attackerPool = $this->fightLib->filterInactiveShips($attackers);
 
             if (count($attackerPool) === 0) {
                 break;
@@ -188,7 +184,7 @@ final class AttackBuilding implements ActionControllerInterface
         $defendingPhalanx = $this->attackerProviderFactory->getProjectilePhalanxAttacker($colony);
 
         for ($i = 0; $i < $count; $i++) {
-            $attackerPool = $this->fightLib->filterInactiveShips($attacker);
+            $attackerPool = $this->fightLib->filterInactiveShips($attackers);
 
             if (count($attackerPool) === 0) {
                 break;
@@ -198,7 +194,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         // OFFENSE OF ATTACKING SHIPS
         $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
-        $attackerPool = $this->fightLib->filterInactiveShips($attacker);
+        $attackerPool = $this->fightLib->filterInactiveShips($attackers);
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
             BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
@@ -209,13 +205,13 @@ final class AttackBuilding implements ActionControllerInterface
             $shipAttacker = $this->attackerProviderFactory->getShipAttacker($attackerWrapper);
 
             if ($isOrbitField) {
-                $this->informations->addInformationMerge($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField));
+                $this->informations->addInformationMerge($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField)->getInformations());
 
                 if ($field->getIntegrity() === 0) {
                     break;
                 }
             }
-            $this->informations->addInformationMerge($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count));
+            $this->informations->addInformationMerge($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count)->getInformations());
 
             if ($field->getIntegrity() === 0) {
                 break;
@@ -241,7 +237,7 @@ final class AttackBuilding implements ActionControllerInterface
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        if ($fleet) {
+        if ($isFleetAttack) {
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $this->informations->getInformations());
         } else {
