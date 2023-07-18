@@ -54,7 +54,7 @@ final class KnCommentTal implements KnCommentTalInterface
     public function getDisplayUserName(): string
     {
         $commentUserName = $this->comment->getUserName();
-        if ($commentUserName !== '' && $commentUserName !== '0') {
+        if ($commentUserName !== '') {
             return $commentUserName;
         }
 
@@ -63,7 +63,7 @@ final class KnCommentTal implements KnCommentTalInterface
 
     public function getUserAvatarPath(): string
     {
-        if ($this->comment->getUserName() !== '' && $this->comment->getUserName() !== '0') {
+        if ($this->comment->getUserName() !== '') {
             return '';
         }
 
