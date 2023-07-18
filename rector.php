@@ -24,7 +24,8 @@ return static function (RectorConfig $rectorConfig): void {
         //SetList::DEAD_CODE,
         //SetList::PRIVATIZATION, //lots of errors
         //SetList::TYPE_DECLARATION, //last 2023-07-17
-        LevelSetList::UP_TO_PHP_74, //UP_TO_PHP_82
+        //LevelSetList::UP_TO_PHP_74, //last 2023-07-18
+        //LevelSetList::UP_TO_PHP_82,
     ]);
 
     $rectorConfig->skip([
