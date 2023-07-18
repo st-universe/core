@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -62,32 +62,25 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
     public function getStartingByFaction(int $factionId): array
     {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT c FROM %s c INDEX BY c.id
-                     JOIN %s sm
-                     WITH c.starsystem_map_id = sm.id
-                     WHERE c.user_id = :userId AND c.colonies_classes_id IN (
-                        SELECT pt.id FROM %s pt WHERE pt.allow_start = :allowStart
-                    ) AND sm.systems_id IN (
-                        SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
-                            SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
-                        )
-                    )',
-                    Colony::class,
-                    StarSystemMap::class,
-                    ColonyClass::class,
-                    Map::class,
-                    MapRegionSettlement::class
-                )
-            )
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        return $qb->select('colony')
+            ->from(Colony::class, 'colony', 'colony.id')
+            ->join('colony.colonyClass', 'colonyClass')
+            ->join('colony.starsystem_map', 'starSystemMap')
+            ->join('starSystemMap.starSystem', 'starSystem')
+            ->join('starSystem.map', 'map')
+            ->join(MapRegionSettlement::class, 'mapRegionSettlement', Join::WITH, 'mapRegionSettlement.region_id = map.admin_region_id')
+            ->where('colony.user_id = :userId')
+            ->andWhere('colonyClass.allow_start = :allowStart')
+            ->andWhere('mapRegionSettlement.faction_id = :factionId')
+            ->orderBy('map.cy, map.cx')
             ->setParameters([
-                'allowStart' => 1,
                 'userId' => UserEnum::USER_NOONE,
+                'allowStart' => 1,
                 'factionId' => $factionId
             ])
-            ->getResult();
+            ->getQuery()->getResult();
     }
 
     public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface
