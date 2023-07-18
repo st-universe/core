@@ -54,7 +54,8 @@ final class CreateOffer implements ActionControllerInterface
 
         $storage = $this->storageRepository->find($this->createOfferRequest->getStorageId());
         if ($storage === null) {
-            throw new AccessViolation(sprintf("Storage not existent! Fool: %d", $userId));
+            $game->addInformation(_('Waren zum Erstellen des Angebots nicht gefunden'));
+            return;
         }
         if ($storage->getUserId() !== $userId) {
             throw new AccessViolation(sprintf("Storage belongs to other user! Fool: %d", $userId));
