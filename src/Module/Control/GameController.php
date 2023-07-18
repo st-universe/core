@@ -738,7 +738,7 @@ final class GameController implements GameControllerInterface
     private function executeCallback(array $actions, GameRequestInterface $gameRequest): void
     {
         foreach ($actions as $actionIdentifier => $actionController) {
-            if (request::indString($actionIdentifier) !== '' && request::indString($actionIdentifier) !== '0') {
+            if (request::has($actionIdentifier)) {
                 $gameRequest->setAction($actionIdentifier);
 
                 if ($actionController->performSessionCheck() === true && !request::isPost() && !$this->sessionStringRepository->isValid(
