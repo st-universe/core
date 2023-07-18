@@ -79,19 +79,19 @@ class PrivateMessage implements PrivateMessageInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $inbox_pm_id;
+    private ?int $inbox_pm_id = null;
 
     /**
      * @Column(type="string", nullable=true)
      *
      */
-    private ?string $href;
+    private ?string $href = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $deleted;
+    private ?int $deleted = null;
 
     /**
      *

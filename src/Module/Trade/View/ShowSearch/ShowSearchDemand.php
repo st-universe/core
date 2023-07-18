@@ -80,9 +80,7 @@ final class ShowSearchDemand implements ViewControllerInterface
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(
-                function (TradeOfferInterface $tradeOffer) use ($user): TradeOfferItemInterface {
-                    return new TradeOfferItem($tradeOffer, $user);
-                },
+                fn(TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
                 $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, TradeEnum::FILTER_COMMODITY_IN_DEMAND)
             )
         );

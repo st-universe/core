@@ -57,7 +57,7 @@ class Colony implements ColonyInterface
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id;
+    private ?int $starsystem_map_id = null;
 
     /**
      * @Column(type="string")
@@ -111,13 +111,13 @@ class Colony implements ColonyInterface
      * @Column(type="text", nullable=true)
      *
      */
-    private ?string $mask;
+    private ?string $mask = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $database_id;
+    private ?int $database_id = null;
 
     /**
      * @Column(type="integer", length=5)
@@ -147,7 +147,7 @@ class Colony implements ColonyInterface
      * @Column(type="integer", length=3, nullable=true)
      *
      */
-    private ?int $torpedo_type;
+    private ?int $torpedo_type = null;
 
     /**
      * @Column(type="integer", length=3)
@@ -231,7 +231,7 @@ class Colony implements ColonyInterface
      *
      * @OneToMany(targetEntity="CrewTraining", mappedBy="colony")
      */
-    private ArrayCollection $crewTrainings;
+    private Collection $crewTrainings;
 
     /**
      * @var Collection<int, ColonyDepositMiningInterface>
@@ -521,6 +521,7 @@ class Colony implements ColonyInterface
 
     public function getDayTimePrefix(): ?int
     {
+        $daytimeprefix = null;
         $daypercent = (int) (($this->getColonyTimeSeconds() / $this->getRotationTime()) * 100);
         if ($daypercent > 25 && $daypercent <= 37.5) {
             $daytimeprefix = 1; //Sonnenaufgang
@@ -539,6 +540,7 @@ class Colony implements ColonyInterface
 
     public function getDayTimeName(): ?string
     {
+        $daytimename = null;
         if ($this->getDayTimePrefix() == 1) {
             $daytimename = 'Morgen';
         }
@@ -583,9 +585,7 @@ class Colony implements ColonyInterface
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            function (int $sum, StorageInterface $storage): int {
-                return $sum + $storage->getAmount();
-            },
+            fn (int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -627,9 +627,7 @@ class Colony implements ColonyInterface
     {
         $filteredArray = array_filter(
             $this->getStorage()->getValues(),
-            function (StorageInterface $storage): bool {
-                return $storage->getCommodity()->isBeamable() === true;
-            }
+            fn (StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
 
         return $filteredArray;

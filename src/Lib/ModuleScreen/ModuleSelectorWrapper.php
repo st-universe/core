@@ -25,9 +25,7 @@ final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
     {
         if ($this->buildplan !== null) {
             $module_id_list = array_map(
-                function (BuildplanModuleInterface $buildplanModule): int {
-                    return $buildplanModule->getModuleId();
-                },
+                fn(BuildplanModuleInterface $buildplanModule): int => $buildplanModule->getModuleId(),
                 $this->buildplan->getModulesByType($this->module->getType())
             );
             if (in_array($this->module->getId(), $module_id_list)) {

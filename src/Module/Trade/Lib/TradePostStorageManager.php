@@ -51,9 +51,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         if ($this->storageSum === null) {
             $this->storageSum = array_reduce(
                 $this->getStorage()->toArray(),
-                function (int $value, StorageInterface $storage): int {
-                    return $value + $storage->getAmount();
-                },
+                fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
                 0
             );
         }

@@ -60,7 +60,7 @@ class ShipLog implements ShipLogInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $deleted;
+    private ?int $deleted = null;
 
     /**
      *

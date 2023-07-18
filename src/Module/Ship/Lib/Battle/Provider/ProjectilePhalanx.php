@@ -109,7 +109,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
 
         $basedamage = $torpedo->getBaseDamage();
         $variance = (int) round($basedamage / 100 * $torpedo->getVariance());
-        $damage = rand($basedamage - $variance, $basedamage + $variance);
+        $damage = random_int($basedamage - $variance, $basedamage + $variance);
 
         return $isCritical ? $damage * 2 : $damage;
     }

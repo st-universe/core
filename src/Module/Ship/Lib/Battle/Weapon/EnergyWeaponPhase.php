@@ -57,7 +57,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             ));
 
             if (
-                $attacker->getHitChance() * (100 - $target->getEvadeChance()) < rand(1, 10000)
+                $attacker->getHitChance() * (100 - $target->getEvadeChance()) < random_int(1, 10000)
             ) {
                 $fightMessage->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
@@ -147,13 +147,13 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             ));
 
             if (
-                $attacker->getHitChance() < rand(1, 100)
+                $attacker->getHitChance() < random_int(1, 100)
             ) {
                 $informations->addInformation(_("Das Gebäude wurde verfehlt"));
                 continue;
             }
 
-            $isCritical = rand(1, 100) <= $weapon->getCriticalChance();
+            $isCritical = random_int(1, 100) <= $weapon->getCriticalChance();
 
             $damage_wrapper = new DamageWrapper(
                 $attacker->getWeaponDamage($isCritical)
@@ -191,7 +191,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     private function isCritical(WeaponInterface $weapon, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $weapon->getCriticalChance() * 2 : $weapon->getCriticalChance();
-        if (rand(1, 100) <= $critChance) {
+        if (random_int(1, 100) <= $critChance) {
             return true;
         }
         return false;

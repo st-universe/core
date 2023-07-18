@@ -79,7 +79,7 @@ class KnPost implements KnPostInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $plot_id;
+    private ?int $plot_id = null;
 
     /**
      * @Column(type="json")

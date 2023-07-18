@@ -146,7 +146,7 @@ final class Session implements SessionInterface
         if (!$result->isSaveLogin()) {
             $cookieString = $this->buildCookieString($result);
             $this->loggerUtil->log(sprintf('noSaveLogin, set cookieString: %s', $cookieString));
-            setcookie('sstr', $cookieString, (time() + TimeConstants::TWO_DAYS_IN_SECONDS));
+            setcookie('sstr', $cookieString, ['expires' => time() + TimeConstants::TWO_DAYS_IN_SECONDS]);
         }
 
         // Login verzeichnen
@@ -176,7 +176,7 @@ final class Session implements SessionInterface
 
         if ($user === null) {
             $this->destroyLoginCookies();
-            setcookie(session_name(), '', time() - 42000);
+            setcookie(session_name(), '', ['expires' => time() - 42000]);
             if (@session_destroy() === false) {
                 throw new RuntimeException('The session could not be destroyed');
             }

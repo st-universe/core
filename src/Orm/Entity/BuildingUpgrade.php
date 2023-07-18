@@ -70,7 +70,7 @@ class BuildingUpgrade implements BuildingUpgradeInterface
      *
      * @OneToMany(targetEntity="BuildingUpgradeCost", mappedBy="upgrade")
      */
-    private ArrayCollection $upgradeCosts;
+    private Collection $upgradeCosts;
 
     /**
      *

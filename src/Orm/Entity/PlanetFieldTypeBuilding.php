@@ -49,7 +49,7 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $research_id;
+    private ?int $research_id = null;
 
     /**
      * @Column(type="boolean")

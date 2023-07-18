@@ -63,13 +63,13 @@ class FlightSignature implements FlightSignatureInterface
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $map_id;
+    private ?int $map_id = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id;
+    private ?int $starsystem_map_id = null;
 
     /**
      * @Column(type="smallint", length=1)

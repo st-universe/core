@@ -61,7 +61,7 @@ final class UserReset implements UserResetInterface
         echo "  - archive blocked users\n";
 
         foreach ($this->blockedUserRepository->findAll() as $blockedUser) {
-            $blockedUser->setId($blockedUser->getId() + 10000000);
+            $blockedUser->setId($blockedUser->getId() + 10_000_000);
             $this->blockedUserRepository->save($blockedUser);
         }
 

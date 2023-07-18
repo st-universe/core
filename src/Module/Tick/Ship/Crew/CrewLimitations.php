@@ -187,6 +187,7 @@ final class CrewLimitations implements CrewLimitationsInterface
 
     private function letShipAssignmentsQuit(int $userId, int $crewToQuit): int
     {
+        $wipedShipsIds = [];
         $amount = 0;
 
         $wipedShipIds = [];

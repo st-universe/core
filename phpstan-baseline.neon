@@ -109,17 +109,7 @@ parameters:
 			path: src/Component/Ship/System/Data/AbstractSystemData.php
 
 		-
-			message: "#^Parameter \\#1 \\$data of method Stu\\\\Orm\\\\Entity\\\\ShipSystemInterface\\:\\:setData\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/AbstractSystemData.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\AbstractShipSystemType\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
-
-		-
-			message: "#^Parameter \\#1 \\$data of method Stu\\\\Orm\\\\Entity\\\\ShipSystemInterface\\:\\:setData\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
 
@@ -247,7 +237,12 @@ parameters:
 			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
 
 		-
-			message: "#^Property Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:\\$tabs has no type specified\\.$#"
+			message: "#^Offset mixed might not exist on array\\|null\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
+
+		-
+			message: "#^Property Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:\\$tabs type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
 
@@ -602,11 +597,6 @@ parameters:
 			path: src/Module/Admin/View/Playerlist/Playerlist.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getHeadRow\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getOuterSystemResult\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
@@ -628,11 +618,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getViewportPerColumn\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:\\$headRow has no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
 
@@ -973,7 +958,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 1
+			count: 2
 			path: src/Module/Colony/Action/BuildShip/BuildShip.php
 
 		-
@@ -994,11 +979,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$module of method Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\:\\:setModule\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface, Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null given\\.$#"
 			count: 1
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Variable \\$mod might not be defined\\.$#"
-			count: 2
 			path: src/Module/Colony/Action/BuildShip/BuildShip.php
 
 		-
@@ -1992,11 +1972,6 @@ parameters:
 			path: src/Module/Message/View/Overview/Overview.php
 
 		-
-			message: "#^Parameter \\#2 \\$array of function array_map expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\PrivateMessageInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Message/View/Overview/Overview.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\NoteInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Notes/Action/DeleteNotes/DeleteNotes.php
@@ -2707,17 +2682,7 @@ parameters:
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$adminRegion is never written, only read\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$adminRegion type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapRegionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapRegion\\|null\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$influenceArea is never written, only read\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
@@ -2727,22 +2692,7 @@ parameters:
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$mapBorderType is never written, only read\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$mapBorderType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapBorderTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapBorderType\\|null\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$system_name is never written, only read\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$tradepost_id is never written, only read\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
@@ -3778,16 +3728,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Variable \\$daytimename might not be defined\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Variable \\$daytimeprefix might not be defined\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 

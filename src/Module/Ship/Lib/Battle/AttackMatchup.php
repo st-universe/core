@@ -111,17 +111,13 @@ final class AttackMatchup implements AttackMatchupInterface
     ): ?Matchup {
         $readyAttackers = array_filter(
             $attackers,
-            function (ShipWrapperInterface $wrapper) use ($usedShipIds): bool {
-                return !in_array($wrapper->get()->getId(), $usedShipIds)
-                    && $this->fightLib->canFire($wrapper);
-            }
+            fn(ShipWrapperInterface $wrapper): bool => !in_array($wrapper->get()->getId(), $usedShipIds)
+                && $this->fightLib->canFire($wrapper)
         );
         $readyDefenders = array_filter(
             $defenders,
-            function (ShipWrapperInterface $wrapper) use ($usedShipIds, $oneWay): bool {
-                return !$oneWay && !in_array($wrapper->get()->getId(), $usedShipIds)
-                    && $this->fightLib->canFire($wrapper);
-            }
+            fn(ShipWrapperInterface $wrapper): bool => !$oneWay && !in_array($wrapper->get()->getId(), $usedShipIds)
+                && $this->fightLib->canFire($wrapper)
         );
         if (empty($readyAttackers) && empty($readyDefenders)) {
             return null;

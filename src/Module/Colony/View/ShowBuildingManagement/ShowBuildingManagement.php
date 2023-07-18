@@ -63,9 +63,7 @@ final class ShowBuildingManagement implements ViewControllerInterface
 
         usort(
             $list,
-            function (PlanetFieldInterface $a, PlanetFieldInterface $b): int {
-                return strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName());
-            }
+            fn(PlanetFieldInterface $a, PlanetFieldInterface $b): int => strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName())
         );
 
         $game->showMacro('html/colonymacros.xhtml/cm_building_mgmt');

@@ -217,9 +217,7 @@ final class BuildOnField implements ActionControllerInterface
 
                 $result = array_filter(
                     $currentBuildingCost,
-                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getCommodityId();
-                    }
+                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
 
                 if (
@@ -253,9 +251,7 @@ final class BuildOnField implements ActionControllerInterface
             if ($field->hasBuilding()) {
                 $result = array_filter(
                     $currentBuildingCost,
-                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getCommodityId();
-                    }
+                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if ($result !== []) {
                     $amount += current($result)->getHalfAmount();

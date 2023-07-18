@@ -180,7 +180,7 @@ final class Colonize implements ActionControllerInterface
             $depositMining->setUser($colony->getUser());
             $depositMining->setColony($colony);
             $depositMining->setCommodity($deposit->getCommodity());
-            $depositMining->setAmountLeft(rand($deposit->getMinAmount(), $deposit->getMaxAmount()));
+            $depositMining->setAmountLeft(random_int($deposit->getMinAmount(), $deposit->getMaxAmount()));
 
             $this->colonyDepositMiningRepository->save($depositMining);
         }

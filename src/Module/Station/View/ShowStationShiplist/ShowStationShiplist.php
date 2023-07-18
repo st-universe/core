@@ -45,9 +45,7 @@ final class ShowStationShiplist implements ViewControllerInterface
         }
 
         $shipList = array_map(
-            function (ShipInterface $ship): ShipWrapperInterface {
-                return $this->shipWrapperFactory->wrapShip($ship);
-            },
+            fn(ShipInterface $ship): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($ship),
             $station->getDockedShips()->toArray()
         );
 

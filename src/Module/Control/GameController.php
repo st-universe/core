@@ -572,8 +572,8 @@ final class GameController implements GameControllerInterface
             }
             $viewMs = hrtime(true) - $startTime;
 
-            $gameRequest->setActionMs((int)$actionMs / 1000000);
-            $gameRequest->setViewMs((int)$viewMs / 1000000);
+            $gameRequest->setActionMs((int)$actionMs / 1_000_000);
+            $gameRequest->setViewMs((int)$viewMs / 1_000_000);
         } catch (SessionInvalidException $e) {
             session_destroy();
 
@@ -660,7 +660,7 @@ final class GameController implements GameControllerInterface
         ob_end_flush();
 
         // SAVE META DATA
-        $gameRequest->setRenderMs((int)$renderMs / 1000000);
+        $gameRequest->setRenderMs((int)$renderMs / 1_000_000);
 
         $this->gameRequestSaver->save($gameRequest);
     }

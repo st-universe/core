@@ -63,7 +63,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
             $tradepost !== null ? $this->getTradepostTitle($tradepost) : '',
             $tradepost !== null && $this->exploreableStarMap->getMapped() !== null ? ' über ' : '',
             $this->exploreableStarMap->getMapped() !== null ? $this->exploreableStarMap->getSystemName() . '-System' : '',
-            $this->exploreableStarMap->getRegionDescription() !== null ? $this->exploreableStarMap->getRegionDescription() : ''
+            $this->exploreableStarMap->getRegionDescription() ?? ''
         );
     }
 

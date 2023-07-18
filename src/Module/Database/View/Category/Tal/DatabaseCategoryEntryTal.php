@@ -48,7 +48,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
     /**
      * @var DatabaseUserInterface|null
      */
-    private ?DatabaseUserInterface $userDiscovery;
+    private ?DatabaseUserInterface $userDiscovery = null;
 
     /**
      * @todo Refactor this

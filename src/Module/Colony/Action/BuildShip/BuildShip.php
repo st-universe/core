@@ -90,6 +90,7 @@ final class BuildShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $mod = null;
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()

@@ -46,7 +46,7 @@ class BuildplanHangar implements BuildplanHangarInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $default_torpedo_type_id;
+    private ?int $default_torpedo_type_id = null;
 
     /**
      * @Column(type="integer")
@@ -58,7 +58,7 @@ class BuildplanHangar implements BuildplanHangarInterface
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="default_torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?TorpedoTypeInterface $defaultTorpedoType;
+    private ?TorpedoTypeInterface $defaultTorpedoType = null;
 
     /**
      * @ManyToOne(targetEntity="ShipBuildplan")

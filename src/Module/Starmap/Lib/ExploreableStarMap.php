@@ -43,7 +43,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     private ?int $mapped = 0;
 
     /** @Column(type="string", nullable=true) * */
-    private ?string $system_name;
+    private ?string $system_name = null;
 
     /** @Column(type="integer", nullable=true) * */
     private ?int $influence_area_id = 0;
@@ -52,31 +52,31 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     private ?int $region_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private ?int $tradepost_id;
+    private ?int $tradepost_id = null;
 
     /** @Column(type="string", nullable=true) * */
-    private ?string $region_description;
+    private ?string $region_description = null;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\MapBorderType")
      * @JoinColumn(name="bordertype_id", referencedColumnName="id")
      * @var null|MapBorderTypeInterface
      */
-    private ?MapBorderTypeInterface $mapBorderType;
+    private ?MapBorderTypeInterface $mapBorderType = null;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
      * @var null|StarSystemInterface
      */
-    private ?StarSystemInterface $influenceArea;
+    private ?StarSystemInterface $influenceArea = null;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\MapRegion")
      * @JoinColumn(name="region_id", referencedColumnName="id")
      * @var null|MapRegionInterface
      */
-    private ?MapRegionInterface $adminRegion;
+    private ?MapRegionInterface $adminRegion = null;
 
     public function getId(): int
     {

@@ -101,8 +101,8 @@ final class TransferToClosestLocation
     private function getMinimumDistance(?int $colonyDistance, ?int $stationDistance, int $tradePostDistance): int
     {
         return min(
-            $colonyDistance === null ? PHP_INT_MAX : $colonyDistance,
-            $stationDistance === null ? PHP_INT_MAX : $stationDistance,
+            $colonyDistance ?? PHP_INT_MAX,
+            $stationDistance ?? PHP_INT_MAX,
             $tradePostDistance
         );
     }

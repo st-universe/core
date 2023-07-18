@@ -208,9 +208,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $ship = current(
             array_filter(
                 $fleet->getShips()->toArray(),
-                function (ShipInterface $ship) use ($oldLeader): bool {
-                    return $ship !== $oldLeader;
-                }
+                fn(ShipInterface $ship): bool => $ship !== $oldLeader
             )
         );
 

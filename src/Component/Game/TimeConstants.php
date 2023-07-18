@@ -15,5 +15,5 @@ final class TimeConstants
     public const SEVEN_DAYS_IN_SECONDS = 604800;
 
     //weeks
-    public const TWO_WEEKS_IN_SECONDS = 1209600;
+    public const TWO_WEEKS_IN_SECONDS = 1_209_600;
 }

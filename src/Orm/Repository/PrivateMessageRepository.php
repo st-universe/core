@@ -40,7 +40,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         int $recipientUserId,
         array $specialIds,
         int $limit
-    ): iterable {
+    ): array {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -65,7 +65,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             ->getResult();
     }
 
-    public function getBySender(int $userId): iterable
+    public function getBySender(int $userId): array
     {
         return $this->findBy(
             ['send_user' => $userId]
@@ -77,7 +77,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         int $folderId,
         int $offset,
         int $limit
-    ): iterable {
+    ): array {
         return $this->findBy(
             ['recip_user' => $userId, 'cat_id' => $folderId, 'deleted' => null],
             ['date' => 'desc', 'id' => 'desc'],

@@ -20,16 +20,16 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         $userId = $user->getId();
         $ship = $wrapper->get();
 
-        $$informations->addInformation(sprintf(
+        $informations->addInformation(sprintf(
             "Das Energienetz um die %s in Sektor %s ist implodiert",
             $ship->getName(),
             $ship->getSectorString()
         ));
 
         $damage_wrapper = new DamageWrapper(
-            (int)ceil(rand(65, 85) * $wrapper->get()->getMaxHull() / 100)
+            (int)ceil(random_int(65, 85) * $wrapper->get()->getMaxHull() / 100)
         );
-        $damage_wrapper->setCrit(rand(0, 3) === 0);
+        $damage_wrapper->setCrit(random_int(0, 3) === 0);
         $damage_wrapper->setShieldDamageFactor(100);
         $damage_wrapper->setHullDamageFactor(100);
         $damage_wrapper->setIsPhaserDamage(true);

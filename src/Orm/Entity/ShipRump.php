@@ -191,7 +191,7 @@ class ShipRump implements ShipRumpInterface
      * @column(type="smallint", nullable=true)
      *
      */
-    private ?int $needed_workbees;
+    private ?int $needed_workbees = null;
 
     /**
      * @column(type="smallint")

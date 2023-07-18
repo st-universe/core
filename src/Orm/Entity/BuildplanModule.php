@@ -52,7 +52,7 @@ class BuildplanModule implements BuildplanModuleInterface
      * @Column(type="smallint", nullable=true)
      *
      */
-    private ?int $module_special;
+    private ?int $module_special = null;
 
     /**
      * @Column(type="smallint")

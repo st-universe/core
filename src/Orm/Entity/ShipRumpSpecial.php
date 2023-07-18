@@ -48,7 +48,7 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
      * @ManyToOne(targetEntity="ShipRump", inversedBy="specialAbilities")
      * @JoinColumn(name="rumps_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?ShipRumpInterface $shipRump;
+    private ?ShipRumpInterface $shipRump = null;
 
     public function getId(): int
     {

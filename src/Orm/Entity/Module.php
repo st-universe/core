@@ -167,7 +167,7 @@ class Module implements ModuleInterface
     /**
      * @OneToOne(targetEntity="Weapon", mappedBy="module")
      */
-    private ?WeaponInterface $weapon;
+    private ?WeaponInterface $weapon = null;
 
     /** @var null|array<int> */
     private ?array $specialAbilities = null;
@@ -338,9 +338,7 @@ class Module implements ModuleInterface
     {
         if ($this->specialAbilities === null) {
             $this->specialAbilities = array_map(
-                function (ModuleSpecialInterface $moduleSpecial): int {
-                    return (int)$moduleSpecial->getSpecialId();
-                },
+                fn(ModuleSpecialInterface $moduleSpecial): int => (int)$moduleSpecial->getSpecialId(),
                 $this->getSpecials()->toArray()
             );
         }
@@ -363,12 +361,7 @@ class Module implements ModuleInterface
 
         usort(
             $array,
-            function (ModuleCostInterface $a, ModuleCostInterface $b): int {
-                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
-                    return 0;
-                }
-                return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
-            }
+            fn(ModuleCostInterface $a, ModuleCostInterface $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
         );
 
         return array_values($array);

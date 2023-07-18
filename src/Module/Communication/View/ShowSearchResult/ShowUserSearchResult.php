@@ -53,12 +53,10 @@ final class ShowUserSearchResult implements ViewControllerInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                function (KnPostInterface $knPost) use ($user): KnItemInterface {
-                    return $this->knFactory->createKnItem(
-                        $knPost,
-                        $user
-                    );
-                },
+                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                    $knPost,
+                    $user
+                ),
                 $posts
             )
         );

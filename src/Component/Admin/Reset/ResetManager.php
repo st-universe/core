@@ -199,7 +199,7 @@ final class ResetManager implements ResetManagerInterface
 
         $resetMs = hrtime(true) - $startTime;
 
-        $io->info(sprintf('finished game reset, milliseconds: %d', (int) $resetMs / 1000000), true);
+        $io->info(sprintf('finished game reset, milliseconds: %d', (int) $resetMs / 1_000_000), true);
     }
 
     private function setGameState(int $stateId, Interactor $io): void

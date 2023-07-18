@@ -80,9 +80,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     ): BasicTradeAccountTalInterface {
         $filteredBasicTrades = array_filter(
             $basicTrades,
-            function (BasicTradeInterface $basicTrade) use ($tradePost): bool {
-                return $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork();
-            }
+            fn(BasicTradeInterface $basicTrade): bool => $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork()
         );
 
         return new BasicTradeAccountTal(

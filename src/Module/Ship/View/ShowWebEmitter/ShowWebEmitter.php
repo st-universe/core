@@ -89,9 +89,7 @@ final class ShowWebEmitter implements ViewControllerInterface
                             $ship->getStarsystemMap(),
                             $ship->getMap()
                         ),
-                        function (ShipInterface $target) use ($ship): bool {
-                            return !$target->getCloakState() && !$target->getWarpState() && $target !== $ship;
-                        }
+                        fn(ShipInterface $target): bool => !$target->getCloakState() && !$target->getWarpState() && $target !== $ship
                     );
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);

@@ -136,9 +136,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     public function wrapFleets(array $fleets): array
     {
         return array_map(
-            function (FleetInterface $fleet): FleetWrapperInterface {
-                return $this->wrapFleet($fleet);
-            },
+            fn(FleetInterface $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
             $fleets
         );
     }

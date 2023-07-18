@@ -40,7 +40,7 @@ class BlockedUser implements BlockedUserInterface
      * @Column(type="string", length=255, nullable=true)
      *
      */
-    private ?string $mobile_hash;
+    private ?string $mobile_hash = null;
 
     public function getId(): int
     {

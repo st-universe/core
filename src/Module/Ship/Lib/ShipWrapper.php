@@ -218,10 +218,7 @@ final class ShipWrapper implements ShipWrapperInterface
             $damagedSystems,
             function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
                 if ($a->getStatus() == $b->getStatus()) {
-                    if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
-                        return 0;
-                    }
-                    return ($prioArray[$a->getSystemType()] > $prioArray[$b->getSystemType()]) ? -1 : 1;
+                    return $prioArray[$b->getSystemType()] <=> $prioArray[$a->getSystemType()];
                 }
                 return ($a->getStatus() < $b->getStatus()) ? -1 : 1;
             }

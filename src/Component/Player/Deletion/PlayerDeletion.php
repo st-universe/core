@@ -19,10 +19,10 @@ final class PlayerDeletion implements PlayerDeletionInterface
     public const USER_IDLE_REGISTRATION = 259200;
 
     //3 months
-    public const USER_IDLE_TIME = 7905600;
+    public const USER_IDLE_TIME = 7_905_600;
 
     //6 months
-    public const USER_IDLE_TIME_VACATION = 15811200;
+    public const USER_IDLE_TIME_VACATION = 15_811_200;
 
     private UserRepositoryInterface $userRepository;
 

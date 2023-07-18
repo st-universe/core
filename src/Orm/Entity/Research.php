@@ -74,31 +74,31 @@ class Research implements ResearchInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $reward_buildplan_id;
+    private ?int $reward_buildplan_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $award_id;
+    private ?int $award_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $needed_award;
+    private ?int $needed_award = null;
 
     /**
      * @Column(type="smallint", nullable=true)
      *
      */
-    private ?int $upper_limit_colony_type;
+    private ?int $upper_limit_colony_type = null;
 
     /**
      * @Column(type="smallint", nullable=true)
      *
      */
-    private ?int $upper_limit_colony_amount;
+    private ?int $upper_limit_colony_amount = null;
 
     /**
      *

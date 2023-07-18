@@ -83,7 +83,7 @@ class ShipSystem implements ShipSystemInterface
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?ModuleInterface $module;
+    private ?ModuleInterface $module = null;
 
     /**
      * @ManyToOne(targetEntity="Ship")

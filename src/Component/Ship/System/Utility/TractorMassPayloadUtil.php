@@ -57,10 +57,10 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         $payload = $ship->getTractorPayload();
 
         // damage tractor system if mass over 90% of max
-        if (($mass > 0.9 * $payload) && rand(1, 10) === 1) {
+        if (($mass > 0.9 * $payload) && random_int(1, 10) === 1) {
             $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
 
-            if ($this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $informations)) {
+            if ($this->applyDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations)) {
                 //tractor destroyed
                 $informations->addInformation(sprintf(
                     _('Traktoremitter der %s wurde zerstört. Die %s wird nicht weiter gezogen'),

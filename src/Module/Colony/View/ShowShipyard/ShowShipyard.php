@@ -66,12 +66,10 @@ final class ShowShipyard implements ViewControllerInterface
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
             array_map(
-                function (ShipRumpInterface $shipRump) use ($user): BuildableRumpListItemInterface {
-                    return $this->colonyLibFactory->createBuildableRumpItem(
-                        $shipRump,
-                        $user
-                    );
-                },
+                fn(ShipRumpInterface $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
+                    $shipRump,
+                    $user
+                ),
                 $this->shipRumpRepository->getBuildableByUserAndBuildingFunction($userId, $function->getFunction())
             )
         );

@@ -51,7 +51,7 @@ class ColonyClass implements ColonyClassInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $database_id;
+    private ?int $database_id = null;
 
     /**
      * @Column(type="json")

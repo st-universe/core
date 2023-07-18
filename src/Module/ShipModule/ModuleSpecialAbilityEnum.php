@@ -61,7 +61,7 @@ final class ModuleSpecialAbilityEnum
         $result = 0;
 
         foreach ($specials as $special) {
-            $result += pow(2, $special->getSpecialId() - 1);
+            $result += 2 ** ($special->getSpecialId() - 1);
         }
 
         return $result == 0 ? null : $result;

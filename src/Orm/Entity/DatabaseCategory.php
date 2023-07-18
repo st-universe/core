@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -63,7 +64,7 @@ class DatabaseCategory implements DatabaseCategoryInterface
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $award_id;
+    private ?int $award_id = null;
 
     /**
      * @var ArrayCollection<int, DatabaseEntryInterface>
@@ -71,7 +72,7 @@ class DatabaseCategory implements DatabaseCategoryInterface
      * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
      * @OrderBy({"sort": "ASC"})
      */
-    private ArrayCollection $entries;
+    private Collection $entries;
 
     /**
      *

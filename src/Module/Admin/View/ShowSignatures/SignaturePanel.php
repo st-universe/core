@@ -116,9 +116,12 @@ class SignaturePanel
         $this->rows = $rows;
     }
 
-    private $headRow = null;
+    /** @var array<array{value: int}>|null */
+    private ?array $headRow = null;
 
-    public function getHeadRow()
+    /** @return array<array{value: int}>
+     */
+    public function getHeadRow(): array
     {
         if ($this->headRow === null) {
             $min = $this->data['minx'];
