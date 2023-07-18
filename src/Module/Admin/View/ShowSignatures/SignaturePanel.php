@@ -50,7 +50,7 @@ class SignaturePanel
 
     public function getOuterSystemResult()
     {
-        if ($this->userId) {
+        if ($this->userId !== 0) {
             return $this->shipRepository->getSignaturesOuterSystemOfUser(
                 $this->data['minx'],
                 $this->data['maxx'],
@@ -59,7 +59,7 @@ class SignaturePanel
                 MapEnum::LAYER_ID_CRAGGANMORE,
                 $this->userId
             );
-        } elseif ($this->allyId) {
+        } elseif ($this->allyId !== 0) {
             return $this->shipRepository->getSignaturesOuterSystemOfAlly(
                 $this->data['minx'],
                 $this->data['maxx'],

@@ -28,7 +28,7 @@ final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
         foreach ($privileges as $priv) {
             switch ($priv->getPrivilegeType()) {
                 case ShipEnum::DOCK_PRIVILEGE_USER:
-                    if ($priv->getTargetId() == $user->getId()) {
+                    if ($priv->getTargetId() === $user->getId()) {
                         if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
                             return false;
                         }
@@ -36,7 +36,7 @@ final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
                     }
                     break;
                 case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
-                    if ($user->getAlliance() !== null && $priv->getTargetId() == $user->getAlliance()->getId()) {
+                    if ($user->getAlliance() !== null && $priv->getTargetId() === $user->getAlliance()->getId()) {
                         if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
                             return false;
                         }

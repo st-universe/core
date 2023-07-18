@@ -43,22 +43,20 @@ final class SendBroadcast implements ActionControllerInterface
     {
         $ship = $this->shipLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
 
-        if (!request::postStringFatal('text')) {
-            return;
-        }
+        $text = request::postStringFatal('text');
 
         $usersToBroadcast = array_merge(
             $this->searchBroadcastableColoniesInRange($ship),
             $this->searchBroadcastableStationsInRange($ship)
         );
 
-        if (empty($usersToBroadcast)) {
+        if ($usersToBroadcast === []) {
             $game->addInformation(_("Keine Ziele in Reichweite"));
         } else {
             $this->privateMessageSender->sendBroadcast(
                 $ship->getUser(),
                 $usersToBroadcast,
-                request::postStringFatal('text')
+                $text
             );
             $game->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
         }
@@ -79,7 +77,7 @@ final class SendBroadcast implements ActionControllerInterface
 
         $colonies = $this->colonyRepository->getForeignColoniesInBroadcastRange($systemMap, $ship->getUser());
 
-        if (empty($colonies)) {
+        if ($colonies === []) {
             return [];
         }
 
@@ -98,7 +96,7 @@ final class SendBroadcast implements ActionControllerInterface
     {
         $stations = $this->shipRepository->getForeignStationsInBroadcastRange($ship);
 
-        if (empty($stations)) {
+        if ($stations === []) {
             return [];
         }
 

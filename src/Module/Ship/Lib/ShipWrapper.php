@@ -217,7 +217,7 @@ final class ShipWrapper implements ShipWrapperInterface
         usort(
             $damagedSystems,
             function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
-                if ($a->getStatus() == $b->getStatus()) {
+                if ($a->getStatus() === $b->getStatus()) {
                     return $prioArray[$b->getSystemType()] <=> $prioArray[$a->getSystemType()];
                 }
                 return ($a->getStatus() < $b->getStatus()) ? -1 : 1;
@@ -466,11 +466,7 @@ final class ShipWrapper implements ShipWrapperInterface
             $systemData = $this->shipSystemDataFactory->createSystemData($systemType, $this->shipWrapperFactory);
             $systemData->setShip($this->get());
 
-            if ($systemType === ShipSystemTypeEnum::SYSTEM_HULL) {
-                $data = null;
-            } else {
-                $data = $this->get()->getShipSystem($systemType)->getData();
-            }
+            $data = $systemType === ShipSystemTypeEnum::SYSTEM_HULL ? null : $this->get()->getShipSystem($systemType)->getData();
 
             if ($data === null) {
                 $this->shipSystemDataCache[$systemType] = $systemData;

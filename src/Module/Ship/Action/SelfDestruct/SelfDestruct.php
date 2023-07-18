@@ -64,9 +64,13 @@ final class SelfDestruct implements ActionControllerInterface
             return;
         }
 
-        $code = trim(request::postString('destructioncode'));
+        $code = request::postString('destructioncode');
+        if ($code === false) {
+            return;
+        }
 
-        if ($code !== substr(md5($ship->getName()), 0, 6)) {
+        $trimmedCode = trim($code);
+        if ($trimmedCode !== substr(md5($ship->getName()), 0, 6)) {
             $game->addInformation(_('Der Selbstzerstörungscode war fehlerhaft'));
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;

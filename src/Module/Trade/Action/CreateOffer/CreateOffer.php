@@ -205,7 +205,7 @@ final class CreateOffer implements ActionControllerInterface
         $offers = $this->tradeOfferRepository->getByTradePostAndUserAndCommodities($tradePostId, $userId, $giveCommodityId, $wantedCommodityId);
 
         foreach ($offers as $offer) {
-            if (round($giveAmount / $wantedAmount, 2) == round($offer->getOfferedCommodityCount() / $offer->getWantedCommodityCount(), 2)) {
+            if (round($giveAmount / $wantedAmount, 2) === round($offer->getOfferedCommodityCount() / $offer->getWantedCommodityCount(), 2)) {
                 return true;
             }
         }

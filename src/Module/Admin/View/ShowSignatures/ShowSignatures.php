@@ -46,16 +46,18 @@ final class ShowSignatures implements ViewControllerInterface
 
         $game->showMacro('html/admin/adminmacros.xhtml/signaturescan');
 
-        if ($shipId) {
+        $signatureRange = [];
+
+        if ($shipId !== 0) {
             $game->addInformation(_('Aktion noch nicht möglich für Einzelschiff'));
             return;
-        } elseif ($userId) {
+        } elseif ($userId !== 0) {
             $signatureRange = $this->flightSignatureRepository->getSignatureRangeForUser($userId);
-        } elseif ($allyId) {
+        } elseif ($allyId !== 0) {
             $signatureRange = $this->flightSignatureRepository->getSignatureRangeForAlly($allyId);
         }
 
-        if (empty($signatureRange)) {
+        if ($signatureRange === []) {
             return;
         }
 

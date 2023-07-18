@@ -942,46 +942,6 @@ parameters:
 			path: src/Module/Colony/Action/BuildOnField/BuildOnField.php
 
 		-
-			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Cannot call method getCommodityId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Cannot call method getSpecials\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Cannot call method getType\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$module of method Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\:\\:setModule\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface, Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/BuildShip/BuildShip.php
-
-		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Colony/Action/BuildTorpedos/BuildTorpedos.php
@@ -2227,16 +2187,6 @@ parameters:
 			path: src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php
 
 		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Ship\\\\Action\\\\LoadReactor\\\\LoadReactor\\:\\:\\$shipRepository\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LoadReactor/LoadReactor.php
-
-		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LoadReactor/LoadReactor.php
-
-		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
@@ -2767,41 +2717,6 @@ parameters:
 			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
-			message: "#^Cannot call method getModules\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
-			message: "#^Cannot call method setRemainingTicks\\(\\) on Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\Action\\\\Scrapping\\\\Scrapping\\:\\:retrieveSomeIntactModules\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
-			message: "#^Parameter \\#1 \\$constructionProgress of method Stu\\\\Orm\\\\Repository\\\\ConstructionProgressRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface, Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
-			message: "#^Parameter \\#1 \\$progress of method Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModuleInterface\\:\\:setConstructionProgress\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface, Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\Action\\\\Scrapping\\\\Scrapping\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Station\\\\Action\\\\StationRepair\\\\StationRepair\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Station/Action/StationRepair/StationRepair.php
@@ -2942,11 +2857,6 @@ parameters:
 			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
 
 		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Trade\\\\Action\\\\DealsBidAuction\\\\DealsBidAuction\\:\\:\\$tradeTransactionRepository\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
-
-		-
 			message: "#^Cannot call method getAuctionAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\DealsInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
@@ -2997,11 +2907,6 @@ parameters:
 			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
 
 		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuction\\:\\:\\$tradeTransactionRepository\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
@@ -3045,11 +2950,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuction\\:\\:createShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
-
-		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeOffer\\\\DealsTakeOffer\\:\\:\\$tradeTransactionRepository\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
 
 		-
 			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
@@ -3920,11 +3820,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$terraforming type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TerraformingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Terraforming\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyTerraforming.php
-
-		-
-			message: "#^Access to an undefined property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$getId\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgress.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"

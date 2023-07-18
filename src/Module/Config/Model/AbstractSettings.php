@@ -76,9 +76,8 @@ abstract class AbstractSettings implements SettingsInterface
     protected function getArrayConfigValue(string $setting, array $default = null): array
     {
         $path = $this->getSettingPath($setting);
-        $array = $this->getConfigArray($path, $default);
 
-        return $array;
+        return $this->getConfigArray($path, $default);
     }
 
     protected function exists(string $setting): bool

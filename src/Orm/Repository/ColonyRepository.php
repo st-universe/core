@@ -168,7 +168,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                sprintf('SELECT c.id AS colonyid, cc.id AS classid, cc.type AS type,
+                'SELECT c.id AS colonyid, cc.id AS classid, cc.type AS type,
                             concat(c.name, \' \', sm.sx, \'|\', sm.sy, \' (\', s.name, \'-\',
                                     CASE WHEN s.is_wormhole
                                         THEN \'Wurmloch\'
@@ -182,7 +182,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                         JOIN stu_systems s
                             ON sm.systems_id = s.id
                         WHERE c.user_id = :userId
-                        ORDER BY cc.id ASC, c.id ASC'),
+                        ORDER BY cc.id ASC, c.id ASC',
                 $rsm
             )
             ->setParameter('userId', $user->getId())

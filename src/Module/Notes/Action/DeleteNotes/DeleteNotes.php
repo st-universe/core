@@ -28,7 +28,7 @@ final class DeleteNotes implements ActionControllerInterface
     {
         $delnotesString = request::indString('delnotes');
 
-        if (!$delnotesString) {
+        if ($delnotesString === false) {
             return;
         }
         $delnotes = explode(',', $delnotesString);

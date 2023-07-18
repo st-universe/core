@@ -83,14 +83,14 @@ final class BeamFrom implements ActionControllerInterface
 
         if (
             $target->getShieldState()
-            && $target->getUser()->getId() != $userId
+            && $target->getUser()->getId() !== $userId
         ) {
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
         }
         if (
             $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)
-            && $target->getUser()->getId() != $userId
+            && $target->getUser()->getId() !== $userId
         ) {
             $game->addInformation(sprintf(_('Die %s hat einen Beamblocker aktiviert. Transfer nicht möglich.'), $target->getName()));
             return;
@@ -153,11 +153,7 @@ final class BeamFrom implements ActionControllerInterface
                 $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }
-            if ($count == "max") {
-                $count = $storage->getAmount();
-            } else {
-                $count = (int) $count;
-            }
+            $count = $count == "max" ? $storage->getAmount() : (int) $count;
             if ($count < 1) {
                 continue;
             }

@@ -55,7 +55,7 @@ final class CheckInput implements ActionControllerInterface
                 if (strlen($value) < 6) {
                     break;
                 }
-                if ($this->userRepository->getByLogin($value)) {
+                if ($this->userRepository->getByLogin($value) !== null) {
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
@@ -65,11 +65,11 @@ final class CheckInput implements ActionControllerInterface
                 if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     break;
                 }
-                if ($this->userRepository->getByEmail($value)) {
+                if ($this->userRepository->getByEmail($value) !== null) {
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
-                if ($this->blockedUserRepository->getByEmailHash($this->stuHash->hash($value))) {
+                if ($this->blockedUserRepository->getByEmailHash($this->stuHash->hash($value)) !== null) {
                     $state = self::REGISTER_STATE_BLK;
                     break;
                 }
@@ -88,11 +88,11 @@ final class CheckInput implements ActionControllerInterface
                     $state = self::REGISTER_STATE_UPD;
                     break;
                 }
-                if ($this->userRepository->getByMobile($trimmedMobile, $trimmedMobileHash)) {
+                if ($this->userRepository->getByMobile($trimmedMobile, $trimmedMobileHash) !== null) {
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
-                if ($this->blockedUserRepository->getByMobileHash($trimmedMobileHash)) {
+                if ($this->blockedUserRepository->getByMobileHash($trimmedMobileHash) !== null) {
                     $state = self::REGISTER_STATE_BLK;
                     break;
                 }

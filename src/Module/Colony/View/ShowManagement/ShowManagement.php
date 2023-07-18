@@ -81,11 +81,11 @@ final class ShowManagement implements ViewControllerInterface
         $firstOrbitShip = null;
 
         $shipList = $this->orbitShipListRetriever->retrieve($colony);
-        if (!empty($shipList)) {
+        if ($shipList !== []) {
             // if selected, return the current target
             $target = request::postInt('target');
 
-            if ($target) {
+            if ($target !== 0) {
                 foreach ($shipList as $fleet) {
                     foreach ($fleet['ships'] as $idx => $ship) {
                         if ($idx == $target) {
@@ -113,7 +113,7 @@ final class ShowManagement implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_INFO));
         $game->setTemplateVar(
             'FIRST_ORBIT_SHIP',
-            !$firstOrbitShip ? null : $this->shipWrapperFactory->wrapShip($firstOrbitShip)
+            $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null
         );
         $game->setTemplateVar('COLONY_SURFACE', $surface);
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);

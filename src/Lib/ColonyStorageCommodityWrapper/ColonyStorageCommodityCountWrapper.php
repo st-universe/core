@@ -37,10 +37,7 @@ class ColonyStorageCommodityCountWrapper
         if ($count == self::CHECK_ONLY) {
             return true;
         }
-        if ($this->storage[$this->commodityId]->getAmount() < $count) {
-            return false;
-        }
-        return true;
+        return $this->storage[$this->commodityId]->getAmount() >= $count;
     }
 
     public function getAmount(): int

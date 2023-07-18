@@ -717,8 +717,7 @@ class ShipRump implements ShipRumpInterface
 
     public function getNeededRepairWorkbees(): ?int
     {
-        $needed_rep_workbees = $this->getNeededWorkbees() / 5;
-        return  $needed_rep_workbees;
+        return  $this->getNeededWorkbees() / 5;
     }
 
     public function getDatabaseEntry(): ?DatabaseEntryInterface

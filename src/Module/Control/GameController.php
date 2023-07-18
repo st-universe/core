@@ -339,7 +339,7 @@ final class GameController implements GameControllerInterface
         $this->privateMessageSender->send(
             (int) $sender_id,
             (int) $recipient_id,
-            join('<br />', $textOnlyArray),
+            implode('<br />', $textOnlyArray),
             $category_id,
             $href
         );
@@ -738,16 +738,14 @@ final class GameController implements GameControllerInterface
     private function executeCallback(array $actions, GameRequestInterface $gameRequest): void
     {
         foreach ($actions as $actionIdentifier => $actionController) {
-            if (request::indString($actionIdentifier)) {
+            if (request::indString($actionIdentifier) !== '' && request::indString($actionIdentifier) !== '0') {
                 $gameRequest->setAction($actionIdentifier);
 
-                if ($actionController->performSessionCheck() === true && !request::isPost()) {
-                    if (!$this->sessionStringRepository->isValid(
-                        (string)request::indString('sstr'),
-                        $this->getUser()->getId()
-                    )) {
-                        return;
-                    }
+                if ($actionController->performSessionCheck() === true && !request::isPost() && !$this->sessionStringRepository->isValid(
+                    (string)request::indString('sstr'),
+                    $this->getUser()->getId()
+                )) {
+                    return;
                 }
                 $actionController->handle($this);
 
@@ -762,7 +760,7 @@ final class GameController implements GameControllerInterface
     private function executeView(array $views, GameRequestInterface $gameRequest): void
     {
         foreach ($views as $viewIdentifier => $config) {
-            if (request::indString($viewIdentifier)) {
+            if (request::indString($viewIdentifier) !== false) {
                 $gameRequest->setView($viewIdentifier);
 
                 $config->handle($this);

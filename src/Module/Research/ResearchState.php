@@ -102,7 +102,7 @@ final class ResearchState implements ResearchStateInterface
 
         $userColonies = $state->getUser()->getColonies()->toArray();
 
-        if (empty($userColonies)) {
+        if ($userColonies === []) {
             return;
         }
 
@@ -143,7 +143,7 @@ final class ResearchState implements ResearchStateInterface
     private function createShipRumpEntries(ResearchedInterface $state): void
     {
         $shipRumpId = $state->getResearch()->getRumpId();
-        if (!$shipRumpId) {
+        if ($shipRumpId === 0) {
             return;
         }
         if ($this->shipRumpUserRepository->isAvailableForUser($shipRumpId, $state->getUserId()) === true) {

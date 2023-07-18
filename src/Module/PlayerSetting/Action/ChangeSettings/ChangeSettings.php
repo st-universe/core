@@ -35,32 +35,32 @@ final class ChangeSettings implements ActionControllerInterface
         $settings = [
             function (UserInterface $user): void {
                 $user->setEmailNotification(
-                    $this->changeSettingsRequest->getEmailNotification() === 1 ? true : false
+                    $this->changeSettingsRequest->getEmailNotification() === 1
                 );
             },
             function (UserInterface $user): void {
                 $user->setSaveLogin(
-                    $this->changeSettingsRequest->getSaveLogin() === 1 ? true : false
+                    $this->changeSettingsRequest->getSaveLogin() === 1
                 );
             },
             function (UserInterface $user): void {
                 $user->setStorageNotification(
-                    $this->changeSettingsRequest->getStorageNotification() === 1 ? true : false
+                    $this->changeSettingsRequest->getStorageNotification() === 1
                 );
             },
             function (UserInterface $user): void {
                 $user->setShowOnlineState(
-                    $this->changeSettingsRequest->getShowOnlineState() === 1 ? true : false
+                    $this->changeSettingsRequest->getShowOnlineState() === 1
                 );
             },
             function (UserInterface $user): void {
                 $user->setShowPmReadReceipt(
-                    $this->changeSettingsRequest->getPmReadReceipt() === 1 ? true : false
+                    $this->changeSettingsRequest->getPmReadReceipt() === 1
                 );
             },
             function (UserInterface $user): void {
                 $user->setFleetFixedDefault(
-                    $this->changeSettingsRequest->getFleetsFixedDefault() === 1 ? true : false
+                    $this->changeSettingsRequest->getFleetsFixedDefault() === 1
                 );
             },
             function (UserInterface $user): void {

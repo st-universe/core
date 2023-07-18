@@ -53,7 +53,7 @@ final class WritePm implements ActionControllerInterface
             $game->addInformation("Dieser Siedler existiert nicht");
             return;
         }
-        if ($recipient->getId() == $userId) {
+        if ($recipient->getId() === $userId) {
             $game->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
@@ -71,7 +71,7 @@ final class WritePm implements ActionControllerInterface
 
         $replyPm = $this->privateMessageRepository->find($this->writePmRequest->getReplyPmId());
 
-        if ($replyPm && $replyPm->getRecipientId() == $userId) {
+        if ($replyPm && $replyPm->getRecipientId() === $userId) {
             $replyPm->setReplied(true);
 
             $this->privateMessageRepository->save($replyPm);

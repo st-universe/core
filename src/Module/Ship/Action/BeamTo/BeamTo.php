@@ -159,11 +159,7 @@ final class BeamTo implements ActionControllerInterface
                 $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }
-            if ($count == "max") {
-                $count = $storage->getAmount();
-            } else {
-                $count = (int)$count;
-            }
+            $count = $count == "max" ? $storage->getAmount() : (int)$count;
             if ($count < 1) {
                 continue;
             }

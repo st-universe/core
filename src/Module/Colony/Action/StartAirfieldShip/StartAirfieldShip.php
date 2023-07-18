@@ -146,18 +146,14 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->crewCreator->createShipCrew($ship, $colony);
 
         $defaultTorpedoType = $hangar->getDefaultTorpedoType();
-        if ($defaultTorpedoType !== null) {
-            if ($storage->containsKey($defaultTorpedoType->getCommodityId())) {
-                $count = $ship->getMaxTorpedos();
-                if ($count > $storage[$defaultTorpedoType->getCommodityId()]->getAmount()) {
-                    $count = $storage[$defaultTorpedoType->getCommodityId()]->getAmount();
-                }
-                $this->shipTorpedoManager->changeTorpedo($wrapper, $count, $defaultTorpedoType);
-
-                $this->shipRepository->save($ship);
-
-                $this->colonyStorageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
+        if ($defaultTorpedoType !== null && $storage->containsKey($defaultTorpedoType->getCommodityId())) {
+            $count = $ship->getMaxTorpedos();
+            if ($count > $storage[$defaultTorpedoType->getCommodityId()]->getAmount()) {
+                $count = $storage[$defaultTorpedoType->getCommodityId()]->getAmount();
             }
+            $this->shipTorpedoManager->changeTorpedo($wrapper, $count, $defaultTorpedoType);
+            $this->shipRepository->save($ship);
+            $this->colonyStorageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
         }
         if ($hangar->getBuildplan()->getCrew() > 0) {
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);

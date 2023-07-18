@@ -145,16 +145,16 @@ final class ShipCreator implements ShipCreatorInterface
                 $this->loggerUtil->log(sprintf("moduleTypeId: %d", $moduleTypeId));
             }
             $buildplanModules = $buildplan->getModulesByType($moduleTypeId);
-            if (!empty($buildplanModules)) {
+            if ($buildplanModules !== []) {
                 if ($this->loggerUtil->doLog()) {
-                    $this->loggerUtil->log(sprintf("wrapperCallable!"));
+                    $this->loggerUtil->log("wrapperCallable!");
                 }
                 $moduleRumpWrapper = $wrapperCallable($buildplan, $wrapper);
                 $moduleRumpWrapper->apply($ship);
             }
         }
 
-        if ($ship->getName() == '' || $ship->getName() == sprintf('%s in Bau', $ship->getRump()->getName())) {
+        if ($ship->getName() == '' || $ship->getName() === sprintf('%s in Bau', $ship->getRump()->getName())) {
             $ship->setName($ship->getRump()->getName());
         }
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
@@ -162,7 +162,7 @@ final class ShipCreator implements ShipCreatorInterface
         $ship->setAlertStateGreen();
 
         $this->shipRepository->save($ship);
-        if ($colony) {
+        if ($colony !== null) {
             $starsystemMap = $this->starSystemMapRepository->getByCoordinates($colony->getSystem()->getId(), $colony->getSx(), $colony->getSy());
 
             $ship->setCx($colony->getSystem()->getCx());

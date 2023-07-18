@@ -57,7 +57,7 @@ final class UnloadBattery implements ActionControllerInterface
             return;
         }
 
-        if (request::postString('fleet')) {
+        if (request::postString('fleet') !== false) {
             $msg = [];
             $msg[] = _('Flottenbefehl ausgeführt: Ersatzbatterie entladen');
 
@@ -83,7 +83,7 @@ final class UnloadBattery implements ActionControllerInterface
         if ($eps === null) {
             return sprintf(_('%s: Kein Energiesystem installiert'), $ship->getName());
         }
-        if (!$eps->getBattery()) {
+        if ($eps->getBattery() === 0) {
             return sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName());
         }
         if (!$eps->isEBattUseable()) {

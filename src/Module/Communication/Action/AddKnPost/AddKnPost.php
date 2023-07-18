@@ -92,7 +92,7 @@ final class AddKnPost implements ActionControllerInterface
 
         $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
 
-        if ($mark) {
+        if ($mark !== 0) {
             $user->setKNMark($post->getId());
 
             $this->userRepository->save($user);

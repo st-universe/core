@@ -24,7 +24,6 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class DealsTakeAuction implements ActionControllerInterface
 {
@@ -58,7 +57,6 @@ final class DealsTakeAuction implements ActionControllerInterface
         DealsRepositoryInterface $dealsRepository,
         TradePostRepositoryInterface $tradepostRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeTransactionRepositoryInterface $tradeTransactionRepository,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipCreatorInterface $shipCreator,
@@ -72,7 +70,6 @@ final class DealsTakeAuction implements ActionControllerInterface
         $this->tradepostRepository = $tradepostRepository;
         $this->dealsRepository = $dealsRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->shipRepository = $shipRepository;
@@ -138,30 +135,27 @@ final class DealsTakeAuction implements ActionControllerInterface
                     $currentMaxAmount - $currentBidAmount
                 );
                 $this->createPrestigeLog->createLog($currentMaxAmount - $currentBidAmount, $description, $user, time());
-
                 $game->addInformation(sprintf(
                     _('Dir wurden %d Prestige gutgeschrieben'),
                     $currentMaxAmount - $currentBidAmount,
                 ));
+            } elseif ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
+                $game->addInformation(sprintf(
+                    _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
+                    $currentMaxAmount - $currentBidAmount,
+                    $auction->getWantedCommodity()->getName()
+                ));
+                return;
             } else {
-                if ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
-                    $game->addInformation(sprintf(
-                        _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
-                        $currentMaxAmount - $currentBidAmount,
-                        $auction->getWantedCommodity()->getName()
-                    ));
-                    return;
-                } else {
-                    $storageManagerUser->upperStorage(
-                        $auction->getwantCommodityId(),
-                        $currentMaxAmount - $currentBidAmount
-                    );
-                    $game->addInformation(sprintf(
-                        _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
-                        $currentMaxAmount - $currentBidAmount,
-                        $auction->getWantedCommodity()->getName()
-                    ));
-                }
+                $storageManagerUser->upperStorage(
+                    $auction->getwantCommodityId(),
+                    $currentMaxAmount - $currentBidAmount
+                );
+                $game->addInformation(sprintf(
+                    _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
+                    $currentMaxAmount - $currentBidAmount,
+                    $auction->getWantedCommodity()->getName()
+                ));
             }
         }
 
@@ -176,13 +170,13 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         if ($auction->getShip() == true) {
             $this->createShip($auction->getBuildplan(), $tradePost, $userId);
-            $game->addInformation(sprintf(_('Du hast dein Schiff erhalten')));
+            $game->addInformation(_('Du hast dein Schiff erhalten'));
         }
 
         if ($auction->getShip() == false && $auction->getBuildplanId() !== null) {
             $this->copyBuildplan($auction->getBuildplan(), $user);
 
-            $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten')));
+            $game->addInformation(_('Du hast deinen Bauplan erhalten'));
         }
 
         $auction->setTakenTime($this->stuTime->time());

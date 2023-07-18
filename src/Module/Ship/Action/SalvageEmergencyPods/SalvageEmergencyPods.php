@@ -181,24 +181,22 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $game->addInformation(_('Die fremden Crewman wurde geborgen und an den dichtesten Handelsposten überstellt'));
                     $sentGameInfoForForeignCrew = true;
                 }
-            } else {
-                if ($this->gotEnoughFreeTroopQuarters($ship, $count)) {
-                    foreach ($target->getCrewlist() as $crewAssignment) {
-                        if ($crewAssignment->getCrew()->getUser() === $game->getUser()) {
-                            $crewAssignment->setShip($ship);
-                            $ship->getCrewlist()->add($crewAssignment);
-                            $this->shipCrewRepository->save($crewAssignment);
-                        }
+            } elseif ($this->gotEnoughFreeTroopQuarters($ship, $count)) {
+                foreach ($target->getCrewlist() as $crewAssignment) {
+                    if ($crewAssignment->getCrew()->getUser() === $game->getUser()) {
+                        $crewAssignment->setShip($ship);
+                        $ship->getCrewlist()->add($crewAssignment);
+                        $this->shipCrewRepository->save($crewAssignment);
                     }
-                    $game->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
-                } else {
-                    $game->addInformation($this->transferToClosestLocation->transfer(
-                        $ship,
-                        $target,
-                        $count,
-                        $closestTradepost
-                    ));
                 }
+                $game->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
+            } else {
+                $game->addInformation($this->transferToClosestLocation->transfer(
+                    $ship,
+                    $target,
+                    $count,
+                    $closestTradepost
+                ));
             }
         }
     }

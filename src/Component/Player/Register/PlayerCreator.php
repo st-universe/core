@@ -57,7 +57,7 @@ class PlayerCreator implements PlayerCreatorInterface
         $mobileWithDoubleZero = str_replace('+', '00', $mobile);
         $this->checkForException($loginName, $emailAddress, $mobileWithDoubleZero);
 
-        $randomHash = substr(md5(uniqid(strval(random_int(0, mt_getrandmax())), true)), 16, 6);
+        $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
         $player = $this->createPlayer(
             $loginName,
@@ -88,10 +88,8 @@ class PlayerCreator implements PlayerCreatorInterface
         if ($mobile !== null && $this->userRepository->getByMobile($mobile, $this->stuHash->hash($mobile))) {
             throw new PlayerDuplicateException();
         }
-        if ($mobile !== null) {
-            if (!$this->isMobileNumberCountryAllowed($mobile) || !$this->isMobileFormatCorrect($mobile)) {
-                throw new MobileNumberInvalidException();
-            }
+        if ($mobile !== null && (!$this->isMobileNumberCountryAllowed($mobile) || !$this->isMobileFormatCorrect($mobile))) {
+            throw new MobileNumberInvalidException();
         }
     }
 
@@ -102,7 +100,7 @@ class PlayerCreator implements PlayerCreatorInterface
 
     private function isMobileFormatCorrect(string $mobile): bool
     {
-        return preg_match('/00..[1-9][0-9]/', $mobile) ? true : false;
+        return (bool) preg_match('/00..[1-9]\d/', $mobile);
     }
 
     public function createPlayer(

@@ -73,8 +73,8 @@ final class ShowShipDisassembly implements ViewControllerInterface
             $repairableShips = [];
             foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
                 /** @var ShipInterface $ship */
-                foreach ($fleet['ships'] as $ship_id => $ship) {
-                    if ($ship->getUser()->getId() != $userId) {
+                foreach ($fleet['ships'] as $ship) {
+                    if ($ship->getUser()->getId() !== $userId) {
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {

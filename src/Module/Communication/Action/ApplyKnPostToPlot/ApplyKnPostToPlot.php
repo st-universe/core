@@ -46,13 +46,13 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $plot = $this->rpgPlotRepository->find(request::postIntFatal('plotid'));
-        if ($plot === null || $plot->getUserId() != $userId || !$plot->isActive()) {
+        if ($plot === null || $plot->getUserId() !== $userId || !$plot->isActive()) {
             return;
         }
 
         $postId = request::postInt('addknid');
 
-        if (!$postId) {
+        if ($postId === 0) {
             return;
         }
 

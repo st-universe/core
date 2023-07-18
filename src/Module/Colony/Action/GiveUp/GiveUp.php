@@ -50,9 +50,13 @@ final class GiveUp implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $code = trim(request::postString('giveupcode'));
+        $code = request::postString('giveupcode');
+        if ($code === false) {
+            return;
+        }
+        $trimmedCode = trim($code);
 
-        if ($code !== substr(md5($colony->getName()), 0, 6)) {
+        if ($trimmedCode !== substr(md5($colony->getName()), 0, 6)) {
             $game->addInformation(_('Der Bestätigungscode war fehlerhaft'));
             return;
         }

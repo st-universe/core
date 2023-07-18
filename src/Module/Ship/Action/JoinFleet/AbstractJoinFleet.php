@@ -106,10 +106,6 @@ abstract class AbstractJoinFleet
         if ($fleetLeaderWeb !== null && $fleetLeaderWeb->isFinished()) {
             return true;
         }
-        if ($shipWeb !== null && $shipWeb->isFinished()) {
-            return true;
-        }
-
-        return false;
+        return $shipWeb !== null && $shipWeb->isFinished();
     }
 }

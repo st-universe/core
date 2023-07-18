@@ -39,7 +39,7 @@ final class IgnoreUser implements ActionControllerInterface
             $game->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
-        if ($recipient->getId() == $userId) {
+        if ($recipient->getId() === $userId) {
             $game->addInformation(_('Du kannst Dich nicht selbst ignorieren'));
             return;
         }

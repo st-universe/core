@@ -257,11 +257,7 @@ final class ShowStatistics implements ViewControllerInterface
 
     private function configureYAxis(Graph $graph, bool $yAxisStartAtZero): void
     {
-        if ($this->maxY - $this->minY < 10) {
-            $yGrace = 50;
-        } else {
-            $yGrace = 10;
-        }
+        $yGrace = $this->maxY - $this->minY < 10 ? 50 : 10;
 
         $graph->yaxis->scale->SetGrace($yGrace, $yAxisStartAtZero ? 0 : $yGrace);
         $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);

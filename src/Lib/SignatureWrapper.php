@@ -50,6 +50,6 @@ class SignatureWrapper
 
     public function getAge(): string
     {
-        return TalHelper::formatSeconds(strval(time() - $this->signature->getTime()));
+        return TalHelper::formatSeconds((string) (time() - $this->signature->getTime()));
     }
 }

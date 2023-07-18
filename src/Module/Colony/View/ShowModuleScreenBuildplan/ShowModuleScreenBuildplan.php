@@ -59,7 +59,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $plan = $this->shipBuildplanRepository->find(request::indInt('planid'));
         if ($plan === null || $plan->getUserId() !== $userId) {
-            throw new SanityCheckException(sprintf('This buildplan belongs to someone else'), null, self::VIEW_IDENTIFIER);
+            throw new SanityCheckException('This buildplan belongs to someone else', null, self::VIEW_IDENTIFIER);
         }
         $rump = $plan->getRump();
 

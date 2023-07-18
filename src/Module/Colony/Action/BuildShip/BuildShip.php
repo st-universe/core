@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildShip;
 
 use request;
-
+use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
@@ -158,6 +158,10 @@ final class BuildShip implements ActionControllerInterface
                 foreach ($module as $id) {
                     /** @var ModuleInterface[] $modules */
                     $specialMod = $this->moduleRepository->find((int) $id);
+                    if ($specialMod === null) {
+                        throw new RuntimeException(sprintf('moduleId %d does noe exist', $id));
+                    }
+
                     $crew_usage += $specialMod->getCrew();
                     $modules[$id] = $specialMod;
                     $sigmod[$id] = $id;
@@ -182,10 +186,11 @@ final class BuildShip implements ActionControllerInterface
                 } else {
                     $crew_usage += $mod->getCrew();
                 }
-            } else {
-                if (!$moduleLevels->{'getModuleLevel' . $i}()) {
-                    return;
-                }
+            } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
+                return;
+            }
+            if ($mod === null) {
+                throw new RuntimeException(sprintf('moduleId %d does not exist', (int)current($module)));
             }
             $modules[current($module)] = $mod;
             $sigmod[$i] = $mod->getId();
@@ -218,12 +223,13 @@ final class BuildShip implements ActionControllerInterface
         $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
+            $plannameFromRequest = request::indString('buildplanname');
             if (
-                request::has('buildplanname')
-                && request::indString('buildplanname') != ''
-                && request::indString('buildplanname') != 'Bauplanname'
+                $plannameFromRequest !== false
+                && $plannameFromRequest !== ''
+                && $plannameFromRequest !== 'Bauplanname'
             ) {
-                $planname = request::indString('buildplanname');
+                $planname = $plannameFromRequest;
             } else {
                 $planname = sprintf(
                     _('Bauplan %s %s'),

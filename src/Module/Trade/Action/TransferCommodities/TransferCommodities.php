@@ -95,7 +95,7 @@ final class TransferCommodities implements ActionControllerInterface
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradePostId)) {
             return;
         }
-        if ($targetpost->getTradeNetwork() != $tradepost->getTradeNetwork()) {
+        if ($targetpost->getTradeNetwork() !== $tradepost->getTradeNetwork()) {
             return;
         }
 

@@ -43,11 +43,9 @@ Init::run(function (ContainerInterface $dic): void {
 
     if ($rumpId !== 0) {
         $rump = $shipRumpRepo->find($rumpId);
-
         $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
             $rump->getId()
         );
-
         $specialModuleTypes = [
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
@@ -62,7 +60,6 @@ Init::run(function (ContainerInterface $dic): void {
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB
         ];
-
         $moduleTypes = [
             ShipModuleTypeEnum::MODULE_TYPE_HULL,
             ShipModuleTypeEnum::MODULE_TYPE_SHIELDS,
@@ -75,7 +72,6 @@ Init::run(function (ContainerInterface $dic): void {
         ];
         $moduleList = request::postArray('mod');
         $moduleSpecialList = request::postArray('special_mod');
-
         if (count($moduleList) >= $mod_level->getMandatoryModulesCount()) {
             $user = $userRepo->find($userId);
 
@@ -202,32 +198,30 @@ Init::run(function (ContainerInterface $dic): void {
                 '<br /><input type="submit" value="Bauplan erstellen" /></form>'
             );
         }
+    } elseif ($userId > 0) {
+        foreach ($shipRumpRepo->getList() as $shipRump) {
+            printf(
+                '<div><a href="?rumpId=%d&userId=%d"><img src="/assets/ships/%s.png" /> %s</a></div>',
+                $shipRump->getId(),
+                $userId,
+                $shipRump->getId(),
+                $shipRump->getName()
+            );
+        }
     } else {
-        if ($userId > 0) {
-            foreach ($shipRumpRepo->getList() as $shipRump) {
-                printf(
-                    '<div><a href="?rumpId=%d&userId=%d"><img src="/assets/ships/%s.png" /> %s</a></div>',
-                    $shipRump->getId(),
-                    $userId,
-                    $shipRump->getId(),
-                    $shipRump->getName()
-                );
-            }
-        } else {
-            foreach ($userRepo->getNpcList() as $user) {
-                printf(
-                    '<a href="?userId=%d">%s</a><br />',
-                    $user->getId(),
-                    $user->getName()
-                );
-            }
-            foreach ($userRepo->getNonNpcList() as $user) {
-                printf(
-                    '<a href="?userId=%d">%s</a><br />',
-                    $user->getId(),
-                    $user->getName()
-                );
-            }
+        foreach ($userRepo->getNpcList() as $user) {
+            printf(
+                '<a href="?userId=%d">%s</a><br />',
+                $user->getId(),
+                $user->getName()
+            );
+        }
+        foreach ($userRepo->getNonNpcList() as $user) {
+            printf(
+                '<a href="?userId=%d">%s</a><br />',
+                $user->getId(),
+                $user->getName()
+            );
         }
     }
     $db->commit();

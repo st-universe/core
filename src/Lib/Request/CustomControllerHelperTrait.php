@@ -13,11 +13,7 @@ trait CustomControllerHelperTrait
 
     public function __construct()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $request = $_GET;
-        } else {
-            $request = $_POST;
-        }
+        $request = $_SERVER['REQUEST_METHOD'] === 'GET' ? $_GET : $_POST;
         $this->initRequestParser($request);
     }
 

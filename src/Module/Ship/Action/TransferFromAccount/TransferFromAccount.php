@@ -106,11 +106,7 @@ final class TransferFromAccount implements ActionControllerInterface
                 continue;
             }
             $count = $gcount[$key];
-            if ($count == "max") {
-                $count = (int) $curCommodities[$value]->getAmount();
-            } else {
-                $count = (int) $count;
-            }
+            $count = $count == "max" ? (int) $curCommodities[$value]->getAmount() : (int) $count;
             if ($count < 1 || $ship->getStorageSum() >= $ship->getMaxStorage()) {
                 continue;
             }

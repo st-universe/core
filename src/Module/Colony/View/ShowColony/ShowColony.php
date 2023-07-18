@@ -81,11 +81,11 @@ final class ShowColony implements ViewControllerInterface
         $firstOrbitShip = null;
 
         $shipList = $this->orbitShipListRetriever->retrieve($colony);
-        if (!empty($shipList)) {
+        if ($shipList !== []) {
             // if selected, return the current target
             $target = request::indInt('target');
 
-            if ($target) {
+            if ($target !== 0) {
                 foreach ($shipList as $fleet) {
                     foreach ($fleet['ships'] as $idx => $ship) {
                         if ($idx == $target) {

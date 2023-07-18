@@ -33,7 +33,7 @@ final class DeleteKnPost implements ActionControllerInterface
 
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->deleteKnPostRequest->getPostId());
-        if ($post === null || $post->getUserId() != $userId) {
+        if ($post === null || $post->getUserId() !== $userId) {
             throw new AccessViolation();
         }
         if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {

@@ -77,7 +77,7 @@ class SignaturePanelEntry
     public function getDisplayCount(): string
     {
         if ($this->hasShips()) {
-            return strval($this->getShipCount());
+            return (string) $this->getShipCount();
         }
         return "";
     }

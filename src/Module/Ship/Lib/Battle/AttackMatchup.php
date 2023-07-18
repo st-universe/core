@@ -36,7 +36,7 @@ final class AttackMatchup implements AttackMatchupInterface
         $attackerPool = $this->fightLib->filterInactiveShips($attackers);
         $defenderPool = $this->fightLib->filterInactiveShips($defenders);
 
-        if (empty($attackerPool) || empty($defenderPool)) {
+        if ($attackerPool === [] || $defenderPool === []) {
             return null;
         }
 
@@ -84,7 +84,7 @@ final class AttackMatchup implements AttackMatchupInterface
      */
     private function getMatchupInternal(array $attackers, array $defenders, array &$usedShipIds): ?Matchup
     {
-        if (empty($attackers)) {
+        if ($attackers === []) {
             return null;
         }
 
@@ -119,17 +119,15 @@ final class AttackMatchup implements AttackMatchupInterface
             fn(ShipWrapperInterface $wrapper): bool => !$oneWay && !in_array($wrapper->get()->getId(), $usedShipIds)
                 && $this->fightLib->canFire($wrapper)
         );
-        if (empty($readyAttackers) && empty($readyDefenders)) {
+        if ($readyAttackers === [] && $readyDefenders === []) {
             return null;
         }
-        if (empty($readyAttackers)) {
+        if ($readyAttackers === []) {
             return $this->getMatchupInternal($readyDefenders, $attackers, $usedShipIds);
+        } elseif ($readyDefenders === [] || $this->stuRandom->rand(1, 2) === 1) {
+            return $this->getMatchupInternal($readyAttackers, $defenders, $usedShipIds);
         } else {
-            if (empty($readyDefenders) || $this->stuRandom->rand(1, 2) === 1) {
-                return $this->getMatchupInternal($readyAttackers, $defenders, $usedShipIds);
-            } else {
-                return $this->getMatchupInternal($readyDefenders, $attackers, $usedShipIds);
-            }
+            return $this->getMatchupInternal($readyDefenders, $attackers, $usedShipIds);
         }
     }
 }

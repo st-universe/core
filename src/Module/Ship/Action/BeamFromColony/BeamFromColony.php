@@ -81,14 +81,11 @@ final class BeamFromColony implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUserId() !== $userId && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()) {
-            if ($target->getShieldFrequency() !== 0) {
-                $frequency = (int) request::postInt('frequency');
-
-                if ($frequency !== $target->getShieldFrequency()) {
-                    $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
-                    return;
-                }
+        if ($target->getUserId() !== $userId && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getShieldFrequency() !== 0) {
+            $frequency = (int) request::postInt('frequency');
+            if ($frequency !== $target->getShieldFrequency()) {
+                $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
+                return;
             }
         }
 
@@ -168,11 +165,7 @@ final class BeamFromColony implements ActionControllerInterface
                 $game->addInformation(sprintf(_('%s ist nicht beambar'), $commodity->getCommodity()->getName()));
                 continue;
             }
-            if ($count == "max") {
-                $count = (int) $commodity->getAmount();
-            } else {
-                $count = (int) $count;
-            }
+            $count = $count == "max" ? (int) $commodity->getAmount() : (int) $count;
             if ($count < 1) {
                 continue;
             }

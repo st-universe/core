@@ -32,7 +32,7 @@ final class SortPmCategories implements ActionControllerInterface
 
         foreach ($this->sortPmCategoriesRequest->getCategoryIds() as $key => $value) {
             $cat = $this->privateMessageFolderRepository->find((int) $value);
-            if ($cat === null || $cat->getUserId() != $game->getUser()->getId()) {
+            if ($cat === null || $cat->getUserId() !== $game->getUser()->getId()) {
                 throw new AccessViolation();
             }
             $cat->setSort((int) $key);

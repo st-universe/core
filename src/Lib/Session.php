@@ -64,7 +64,7 @@ final class Session implements SessionInterface
     public function checkLoginCookie(): void
     {
         $sstr = $_COOKIE['sstr'] ?? '';
-        $uid = intval($_SESSION['uid'] ?? 0);
+        $uid = (int) ($_SESSION['uid'] ?? 0);
         if ($uid > 0) {
             $this->performCookieLogin($uid, $sstr);
         }
@@ -206,7 +206,7 @@ final class Session implements SessionInterface
             $this->destroySession();
             return;
         }
-        if ($this->buildCookieString($result) != $sstr) {
+        if ($this->buildCookieString($result) !== $sstr) {
             $this->destroySession();
             return;
         }
@@ -335,10 +335,7 @@ final class Session implements SessionInterface
         if (!array_key_exists($key, $data)) {
             return false;
         }
-        if (!array_key_exists($value, $data[$key])) {
-            return false;
-        }
-        return true;
+        return array_key_exists($value, $data[$key]);
     }
 
     /**

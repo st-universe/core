@@ -44,7 +44,7 @@ final class ChangeFleetFixation implements ActionControllerInterface
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        if (request::postString('fleetfixed')) {
+        if (request::postString('fleetfixed') !== false) {
             $fleet->setIsFleetFixed(true);
             $game->addInformation(_('Die Flotte ist nun fixiert'));
         } else {

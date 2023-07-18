@@ -166,7 +166,7 @@ class VisualNavPanelEntry
     public function getDisplayCount(): string
     {
         if ($this->hasShips()) {
-            return strval($this->getShipCount());
+            return (string) $this->getShipCount();
         }
         if ($this->hasCloakedShips()) {
             if ($this->tachyonFresh) {
@@ -191,14 +191,9 @@ class VisualNavPanelEntry
 
     public function isCurrentShipPosition(): bool
     {
-        if (
-            $this->getSystemId() == $this->currentShipSysId
-            && $this->getPosX() == $this->currentShipPosX
-            && $this->getPosY() == $this->currentShipPosY
-        ) {
-            return true;
-        }
-        return false;
+        return $this->getSystemId() == $this->currentShipSysId
+        && $this->getPosX() == $this->currentShipPosX
+        && $this->getPosY() == $this->currentShipPosY;
     }
 
     public function getBorder(): string
@@ -259,11 +254,7 @@ class VisualNavPanelEntry
         if (!$this->ship->canMove()) {
             return false;
         }
-        if (!$this->isCurrentShipPosition() && ($this->getPosX() == $this->currentShipPosX || $this->getPosY() == $this->currentShipPosY)) {
-            return true;
-        }
-
-        return false;
+        return !$this->isCurrentShipPosition() && ($this->getPosX() == $this->currentShipPosX || $this->getPosY() == $this->currentShipPosY);
     }
 
     public function getOnClick(): string
@@ -280,8 +271,8 @@ class VisualNavPanelEntry
                 'showSectorScanWindow(this, %d, %d, %d, %s);',
                 $this->getPosX(),
                 $this->getPosY(),
-                $this->system ? $this->system->getId() : 0,
-                $this->system ? 'false' : 'true'
+                $this->system !== null ? $this->system->getId() : 0,
+                $this->system !== null ? 'false' : 'true'
             );
         }
         return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());

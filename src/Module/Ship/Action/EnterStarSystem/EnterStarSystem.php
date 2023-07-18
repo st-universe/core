@@ -22,11 +22,7 @@ final class EnterStarSystem extends AbstractDirectedMovement
         $ship = $wrapper->get();
 
         $system = $ship->isOverSystem();
-        if ($system === null) {
-            return true;
-        }
-
-        return false;
+        return $system === null;
     }
 
     protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface

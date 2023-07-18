@@ -56,10 +56,8 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         // calculate possible research items
         foreach ($result as $obj) {
             // check for existent user award
-            if ($obj->getNeededAwardId() !== null) {
-                if (!$user->hasAward($obj->getNeededAwardId())) {
-                    continue;
-                }
+            if ($obj->getNeededAwardId() !== null && !$user->hasAward($obj->getNeededAwardId())) {
+                continue;
             }
 
             $key = $obj->getId();
@@ -85,7 +83,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                     $grouped_list[$dependency->getMode()][] = $dependency;
                 }
             }
-            if (count($grouped_list) > 0) {
+            if ($grouped_list !== []) {
                 foreach ($grouped_list as $group) {
                     $found = false;
                     foreach ($group as $dependency) {
@@ -156,7 +154,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         usort(
             $result,
             function (ResearchedInterface $a, ResearchedInterface $b): int {
-                if ($a->getActive() != $b->getActive()) {
+                if ($a->getActive() !== $b->getActive()) {
                     return $b->getActive() <=> $a->getActive();
                 }
                 return $b->getFinished() <=> $a->getFinished();

@@ -61,7 +61,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         foreach ($this->mapRepository->getAllOrdered(MapEnum::LAYER_ID_CRAGGANMORE) as $data) {
             $col = null;
 
-            if ($startY != $data->getCy()) {
+            if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;
                 $cury += 15;
@@ -70,9 +70,9 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             $id = $data->getInfluenceAreaId();
 
             $border = imagecreatetruecolor(15, 15);
-            if ($data->getSystem()) {
+            if ($data->getSystem() !== null) {
                 $col = imagecolorallocate($border, 255, 0, 0);
-            } elseif ($showAllyAreas) {
+            } elseif ($showAllyAreas !== 0) {
                 $influenceArea = $data->getInfluenceArea();
                 if ($influenceArea !== null) {
                     $base = $influenceArea->getBase();
@@ -80,11 +80,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
                     if ($base !== null) {
                         $ally = $base->getUser()->getAlliance();
 
-                        if ($ally !== null) {
-                            $rgbCode = $ally->getRgbCode();
-                        } else {
-                            $rgbCode = $base->getUser()->getRgbCode();
-                        }
+                        $rgbCode = $ally !== null ? $ally->getRgbCode() : $base->getUser()->getRgbCode();
 
                         if ($rgbCode !== '') {
                             $red = 100;

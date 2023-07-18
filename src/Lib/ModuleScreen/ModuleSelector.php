@@ -138,22 +138,18 @@ class ModuleSelector implements ModuleSelectorInterface
                         $this->getShipRumpRole()
                     );
                 }
-            } else {
-                if ($this->getColony() !== null) {
-                    $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
-                        $this->getRump()->getId()
-                    );
-
-                    $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
-                    $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
-
-                    $modules = $this->moduleRepository->getByTypeColonyAndLevel(
-                        $this->getColony()->getId(),
-                        $this->getModuleType(),
-                        $this->getShipRumpRole()->getId(),
-                        range($min_level, $max_level)
-                    );
-                }
+            } elseif ($this->getColony() !== null) {
+                $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
+                    $this->getRump()->getId()
+                );
+                $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
+                $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
+                $modules = $this->moduleRepository->getByTypeColonyAndLevel(
+                    $this->getColony()->getId(),
+                    $this->getModuleType(),
+                    $this->getShipRumpRole()->getId(),
+                    range($min_level, $max_level)
+                );
             }
             foreach ($modules as $obj) {
                 $this->moduleSelectorWrappers[$obj->getId()] = new ModuleSelectorWrapper($obj, $this->getBuildplan());

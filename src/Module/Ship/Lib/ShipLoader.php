@@ -109,10 +109,8 @@ final class ShipLoader implements ShipLoaderInterface
 
     private function acquireSemaphores(ShipInterface $ship, ?int $targetId): SourceAndTargetWrappersInterface
     {
-        if ($targetId === null) {
-            if ($this->game->isSemaphoreAlreadyAcquired($ship->getUser()->getId())) {
-                return new SourceAndTargetWrappers($this->shipWrapperFactory->wrapShip($ship));
-            }
+        if ($targetId === null && $this->game->isSemaphoreAlreadyAcquired($ship->getUser()->getId())) {
+            return new SourceAndTargetWrappers($this->shipWrapperFactory->wrapShip($ship));
         }
 
         //main ship sema on

@@ -313,7 +313,7 @@ class VisualNavPanel
         if ($this->viewport === null) {
             $navPercentage = ($this->systemForSensorScan === null && $this->getShip()->isBase()) ? 50 : 33;
             $perColumn = $navPercentage / count($this->getHeadRow());
-            $this->viewport = floatval(min($perColumn, 1.7));
+            $this->viewport = (float) min($perColumn, 1.7);
         }
         return $this->viewport;
     }

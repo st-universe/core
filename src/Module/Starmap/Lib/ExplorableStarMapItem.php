@@ -138,20 +138,17 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     {
         $borderType = $this->exploreableStarMap->getMapBorderType();
         if ($borderType === null) {
-            if ($this->exploreableStarMap->getAdminRegion() === null) {
-                if ($this->exploreableStarMap->getInfluenceArea() !== null) {
-                    $influenceArea = $this->exploreableStarMap->getInfluenceArea();
-                    $base = $influenceArea->getBase();
+            if ($this->exploreableStarMap->getAdminRegion() === null && $this->exploreableStarMap->getInfluenceArea() !== null) {
+                $influenceArea = $this->exploreableStarMap->getInfluenceArea();
+                $base = $influenceArea->getBase();
+                if ($base !== null) {
+                    $user = $base->getUser();
+                    $ally = $user->getAlliance();
 
-                    if ($base !== null) {
-                        $user = $base->getUser();
-                        $ally = $user->getAlliance();
-
-                        if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
-                            return 'border: 1px solid ' . $ally->getRgbCode();
-                        } elseif (strlen($user->getRgbCode()) > 0) {
-                            return 'border: 1px solid ' . $user->getRgbCode();
-                        }
+                    if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
+                        return 'border: 1px solid ' . $ally->getRgbCode();
+                    } elseif (strlen($user->getRgbCode()) > 0) {
+                        return 'border: 1px solid ' . $user->getRgbCode();
                     }
                 }
             }
@@ -173,7 +170,6 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         }
 
         $style = "background-image: url('assets/map/" . $layer . "/" . $type . ".png'); opacity:1;";
-        $style .= $this->getBorder();
-        return $style;
+        return $style . $this->getBorder();
     }
 }

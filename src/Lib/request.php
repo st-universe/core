@@ -84,17 +84,17 @@ class request
         return self::returnInt($int);
     }
 
-    public static function getString(string $var): string
+    public static function getString(string $var): string|false
     {
         return self::getVarByMethod(self::getvars(), $var);
     }
 
-    public static function postString(string $var): string
+    public static function postString(string $var): string|false
     {
         return self::getVarByMethod(self::postvars(), $var);
     }
 
-    public static function indString(string $var): string
+    public static function indString(string $var): string|false
     {
         $value = self::getVarByMethod(self::postvars(), $var);
         if ($value) {

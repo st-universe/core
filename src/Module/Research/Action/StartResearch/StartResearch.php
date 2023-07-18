@@ -42,7 +42,7 @@ final class StartResearch implements ActionControllerInterface
         }
         $current_research = $this->researchedRepository->getCurrentResearch($user);
 
-        if ($current_research) {
+        if ($current_research !== null) {
             $this->researchedRepository->delete($current_research);
 
             $game->addInformation(_('Die laufende Forschung wurde abgebrochen'));

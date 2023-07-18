@@ -105,11 +105,7 @@ final class ShipNfsItem
         } else {
             $closeTofinish = $finishTime - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
 
-            if ($closeTofinish) {
-                $icon = 'web_u.png';
-            } else {
-                $icon = 'web_u2.png';
-            }
+            $icon = $closeTofinish ? 'web_u.png' : 'web_u2.png';
         }
 
         return sprintf('background-image: url(assets/buttons/%s); vertical-align: middle; text-align: center;', $icon);
@@ -128,7 +124,7 @@ final class ShipNfsItem
     }
     public function isOwnedByCurrentUser(): bool
     {
-        return $this->userId == $this->getUserId();
+        return $this->userId === $this->getUserId();
     }
 
     public function hasUplink(): bool

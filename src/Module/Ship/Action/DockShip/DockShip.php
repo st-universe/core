@@ -79,7 +79,7 @@ final class DockShip implements ActionControllerInterface
         if (!$this->interactionChecker->checkPosition($target, $ship)) {
             return;
         }
-        if ($ship->getDockedTo()) {
+        if ($ship->getDockedTo() !== null) {
             return;
         }
         if (!$target->isBase()) {

@@ -94,7 +94,7 @@ final class BuildTorpedos implements ActionControllerInterface
         }
         $this->colonyRepository->save($colony);
 
-        if (count($msg) > 0) {
+        if ($msg !== []) {
             $game->addInformationMerge($msg);
         } else {
             $game->addInformation(_('Es wurden keine Torpedos hergestellt'));

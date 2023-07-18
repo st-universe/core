@@ -76,16 +76,16 @@ class TwigHelper
         $this->environment->addFilter($jsquoteFilter);
 
         $addPlusCharacterFilter = new TwigFilter('addPlusCharacter', function ($value): string {
-            if (is_integer($value)) {
-                return TalHelper::addPlusCharacter(strval($value));
+            if (is_int($value)) {
+                return TalHelper::addPlusCharacter((string) $value);
             }
             return TalHelper::addPlusCharacter($value);
         });
         $this->environment->addFilter($addPlusCharacterFilter);
 
         $formatSecondsFilter = new TwigFilter('formatSeconds', function ($value): string {
-            if (is_integer($value)) {
-                return TalHelper::formatSeconds(strval($value));
+            if (is_int($value)) {
+                return TalHelper::formatSeconds((string) $value);
             }
             return TalHelper::formatSeconds($value);
         });

@@ -156,11 +156,9 @@ final class CreateBuildplan implements ActionControllerInterface
                 } else {
                     $crew_usage += $mod->getCrew();
                 }
-            } else {
-                if (!$moduleLevels->{'getModuleLevel' . $i}()) {
-                    $this->exitOnError($game);
-                    return;
-                }
+            } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
+                $this->exitOnError($game);
+                return;
             }
             if ($mod !== null) {
                 $modules[current($module)] = $mod;
@@ -181,16 +179,16 @@ final class CreateBuildplan implements ActionControllerInterface
         }
         $this->loggerUtil->log('G');
         $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
-        if (
-            request::has('buildplanname')
-            && request::indString('buildplanname') != ''
-            && request::indString('buildplanname') != 'Bauplanname'
-        ) {
-            $planname = request::indString('buildplanname');
 
-            $planname = CleanTextUtils::clearEmojis($planname);
+        $plannameFromRequest = request::indString('buildplanname');
+        if (
+            $plannameFromRequest !== false
+            && $plannameFromRequest !== ''
+            && $plannameFromRequest !== 'Bauplanname'
+        ) {
+            $planname = CleanTextUtils::clearEmojis($plannameFromRequest);
             $nameWithoutUnicode = CleanTextUtils::clearUnicode($planname);
-            if ($planname != $nameWithoutUnicode) {
+            if ($planname !== $nameWithoutUnicode) {
                 $game->addInformation(_('Der Name enthält ungültigen Unicode'));
                 $this->exitOnError($game);
                 return;

@@ -108,7 +108,7 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
-        if ($colony->getId() != $field->getColonyId()) {
+        if ($colony->getId() !== $field->getColonyId()) {
             return;
         }
         if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {

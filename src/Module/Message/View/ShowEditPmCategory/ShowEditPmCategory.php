@@ -29,7 +29,7 @@ final class ShowEditPmCategory implements ViewControllerInterface
     {
         $category = $this->privateMessageFolderRepository->find($this->showEditCategoryRequest->getCategoryId());
 
-        if ($category === null || $category->getUserId() != $game->getUser()->getId()) {
+        if ($category === null || $category->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 

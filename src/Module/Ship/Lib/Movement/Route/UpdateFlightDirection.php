@@ -26,7 +26,7 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
 
         $flightDirection = null;
 
-        if ($destinationX == $startX) {
+        if ($destinationX === $startX) {
             $oldy = $startY;
             if ($destinationY > $oldy) {
                 $flightDirection = ShipEnum::DIRECTION_BOTTOM;
@@ -34,7 +34,7 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
                 $flightDirection = ShipEnum::DIRECTION_TOP;
             }
         }
-        if ($destinationY == $startY) {
+        if ($destinationY === $startY) {
             $oldx = $startX;
             if ($destinationX > $oldx) {
                 $flightDirection = ShipEnum::DIRECTION_RIGHT;
@@ -65,17 +65,11 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
         $flightDirection = null;
 
         if ($rad12or34 < M_PI_4) {
-            if ($rad14or23 < M_PI_4) {
-                $flightDirection = ShipEnum::DIRECTION_LEFT;
-            } else {
-                $flightDirection = ShipEnum::DIRECTION_BOTTOM;
-            }
+            $flightDirection = $rad14or23 < M_PI_4 ? ShipEnum::DIRECTION_LEFT : ShipEnum::DIRECTION_BOTTOM;
+        } elseif ($rad14or23 < M_PI_4) {
+            $flightDirection = ShipEnum::DIRECTION_TOP;
         } else {
-            if ($rad14or23 < M_PI_4) {
-                $flightDirection = ShipEnum::DIRECTION_TOP;
-            } else {
-                $flightDirection = ShipEnum::DIRECTION_RIGHT;
-            }
+            $flightDirection = ShipEnum::DIRECTION_RIGHT;
         }
 
         $ship->setFlightDirection($flightDirection);

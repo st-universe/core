@@ -56,7 +56,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             return false;
         }
 
-        if ($ship->getDockedTo()) {
+        if ($ship->getDockedTo() !== null) {
             $reason = _('das Schiff angedockt ist');
             return false;
         }
@@ -124,16 +124,10 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     public static function isTractorBeamPossible(ShipInterface|ShipNfsItem $ship): bool
     {
-        if (
-            $ship->isBase()
-            || $ship->isTrumfield()
-            || $ship->getCloakState()
-            || $ship->getShieldState()
-            || $ship->getWarpState()
-        ) {
-            return false;
-        }
-
-        return true;
+        return !($ship->isBase()
+        || $ship->isTrumfield()
+        || $ship->getCloakState()
+        || $ship->getShieldState()
+        || $ship->getWarpState());
     }
 }

@@ -39,13 +39,13 @@ final class SwitchContactMode implements ActionControllerInterface
         $mode = $this->switchContactModeRequest->getModeId();
         $userId = $game->getUser()->getId();
 
-        if ($contact === null || $contact->getUserId() != $userId) {
+        if ($contact === null || $contact->getUserId() !== $userId) {
             return;
         }
         if (!in_array($mode, ContactListModeEnum::AVAILABLE_MODES)) {
             return;
         }
-        if ($mode != $contact->getMode() && $mode == ContactListModeEnum::CONTACT_ENEMY) {
+        if ($mode !== $contact->getMode() && $mode == ContactListModeEnum::CONTACT_ENEMY) {
             $this->privateMessageSender->send(
                 $userId,
                 $contact->getRecipientId(),

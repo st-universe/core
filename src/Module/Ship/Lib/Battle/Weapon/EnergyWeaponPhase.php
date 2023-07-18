@@ -30,7 +30,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         $targetWrapper = $targetPool[array_rand($targetPool)];
 
         for ($i = 1; $i <= $attacker->getPhaserVolleys(); $i++) {
-            if (count($targetPool) === 0) {
+            if ($targetPool === []) {
                 break;
             }
             if (!$attacker->getPhaserState() || !$attacker->hasSufficientEnergy($this->getEnergyWeaponEnergyCosts())) {
@@ -191,10 +191,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     private function isCritical(WeaponInterface $weapon, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $weapon->getCriticalChance() * 2 : $weapon->getCriticalChance();
-        if (random_int(1, 100) <= $critChance) {
-            return true;
-        }
-        return false;
+        return random_int(1, 100) <= $critChance;
     }
 
     private function setWeaponShieldModificator(

@@ -56,7 +56,7 @@ final class FightMessage implements FightMessageInterface
 
     public function addMessageMerge(array $msg): void
     {
-        if (empty($msg)) {
+        if ($msg === []) {
             return;
         }
 

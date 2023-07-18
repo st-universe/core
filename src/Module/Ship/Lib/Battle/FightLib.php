@@ -94,11 +94,7 @@ final class FightLib implements FightLibInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() === 0) {
-            return false;
-        }
-
-        return true;
+        return $epsSystem !== null && $epsSystem->getEps() !== 0;
     }
 
     public function canAttackTarget(ShipInterface $ship, ShipInterface|ShipNfsItem $target): bool
