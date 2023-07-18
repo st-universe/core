@@ -48,7 +48,7 @@ class LotteryTicket implements LotteryTicketInterface
      * @Column(type="boolean", nullable=true)
      *
      */
-    private ?bool $is_winner;
+    private ?bool $is_winner = null;
 
     /**
      *

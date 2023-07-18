@@ -37,14 +37,10 @@ final class TechlistRetriever implements TechlistRetrieverInterface
     public function getResearchList(UserInterface $user): array
     {
         $finished_list = array_map(
-            function (ResearchedInterface $researched): int {
-                return $researched->getResearch()->getId();
-            },
+            fn(ResearchedInterface $researched): int => $researched->getResearch()->getId(),
             array_filter(
                 $this->getFinishedResearchList($user),
-                function (ResearchedInterface $researched): bool {
-                    return $researched->getFinished() > 0;
-                }
+                fn(ResearchedInterface $researched): bool => $researched->getFinished() > 0
             )
         );
 

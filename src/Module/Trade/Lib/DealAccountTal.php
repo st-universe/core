@@ -70,9 +70,7 @@ final class DealAccountTal implements DealAccountTalInterface
     {
         return array_reduce(
             $this->getStorage(),
-            function (int $value, StorageInterface $storage): int {
-                return $value + $storage->getAmount();
-            },
+            fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
             0
         );
     }

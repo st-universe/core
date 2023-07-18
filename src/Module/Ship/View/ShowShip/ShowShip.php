@@ -214,7 +214,7 @@ final class ShowShip implements ViewControllerInterface
 
     private function getAstroState(ShipInterface $ship, GameControllerInterface $game): AstroStateWrapper
     {
-        $system = $ship->getSystem() !== null ? $ship->getSystem() : $ship->isOverSystem();
+        $system = $ship->getSystem() ?? $ship->isOverSystem();
 
         $astroEntry = null;
         if ($system === null || $system->getDatabaseEntry() === null) {
@@ -296,9 +296,7 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('CAN_REPAIR', true);
 
             $shipRepairProgress = array_map(
-                function (StationShipRepairInterface $repair): ShipWrapperInterface {
-                    return $this->shipWrapperFactory->wrapShip($repair->getShip());
-                },
+                fn(StationShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
                 $this->stationShipRepairRepository->getByStation(
                     $ship->getId()
                 )

@@ -106,7 +106,7 @@ class StarSystemMap implements StarSystemMapInterface
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="systemMap")
      */
-    private ArrayCollection $wormholeEntries;
+    private Collection $wormholeEntries;
 
     public function __construct()
     {

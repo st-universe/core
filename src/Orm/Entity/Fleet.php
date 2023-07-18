@@ -59,19 +59,19 @@ class Fleet implements FleetInterface
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $defended_colony_id;
+    private ?int $defended_colony_id = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $blocked_colony_id;
+    private ?int $blocked_colony_id = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $sort;
+    private ?int $sort = null;
 
     /**
      * @Column(type="boolean")
@@ -218,9 +218,7 @@ class Fleet implements FleetInterface
     {
         return array_reduce(
             $this->shiplist->toArray(),
-            function (int $sum, ShipInterface $ship): int {
-                return $sum + ($ship->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew());
-            },
+            fn(int $sum, ShipInterface $ship): int => $sum + ($ship->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
             0
         );
     }

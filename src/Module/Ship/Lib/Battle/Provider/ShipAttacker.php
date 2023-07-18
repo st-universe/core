@@ -157,7 +157,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
             false,
             $torpedo->getBaseDamage()
         );
-        $damage = rand($basedamage - $variance, $basedamage + $variance);
+        $damage = random_int($basedamage - $variance, $basedamage + $variance);
 
         return $isCritical ? $damage * 2 : $damage;
     }

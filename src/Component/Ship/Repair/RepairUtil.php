@@ -248,11 +248,11 @@ final class RepairUtil implements RepairUtilInterface
         $percentage = 0;
 
         if ($repairType === RepairTaskEnum::SPARE_PARTS_ONLY) {
-            $percentage += rand(RepairTaskEnum::SPARE_PARTS_ONLY_MIN, RepairTaskEnum::SPARE_PARTS_ONLY_MAX);
+            $percentage += random_int(RepairTaskEnum::SPARE_PARTS_ONLY_MIN, RepairTaskEnum::SPARE_PARTS_ONLY_MAX);
         } elseif ($repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY) {
-            $percentage += rand(RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MIN, RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MAX);
+            $percentage += random_int(RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MIN, RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MAX);
         } elseif ($repairType === RepairTaskEnum::BOTH) {
-            $percentage += rand(RepairTaskEnum::BOTH_MIN, RepairTaskEnum::BOTH_MAX);
+            $percentage += random_int(RepairTaskEnum::BOTH_MIN, RepairTaskEnum::BOTH_MAX);
         }
 
         return $percentage;

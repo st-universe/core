@@ -61,11 +61,11 @@ final class CrewCreator implements CrewCreatorInterface
                     $value = $obj->getId();
                 }
             );
-            $arr = array_merge($arr, $amount);
+            $arr = [...$arr, ...$amount];
         }
         $race = $this->crewRaceRepository->find((int)$arr[array_rand($arr)]);
 
-        $gender = rand(1, 100) > $race->getMaleRatio() ? CrewEnum::CREW_GENDER_FEMALE : CrewEnum::CREW_GENDER_MALE;
+        $gender = random_int(1, 100) > $race->getMaleRatio() ? CrewEnum::CREW_GENDER_FEMALE : CrewEnum::CREW_GENDER_MALE;
 
         $crew = $this->crewRepository->prototype();
 

@@ -35,7 +35,7 @@ final class KnPostPreview implements ActionControllerInterface
         $mark = $this->request->getPostMark();
 
         $game->setTemplateVar('TITLE', $title);
-        $game->setTemplateVar('TEXT', request::indString('text') ? request::indString('text') : '');
+        $game->setTemplateVar('TEXT', request::indString('text') ?: '');
         $game->setTemplateVar('PLOT_ID', $plotId);
         $game->setTemplateVar('MARK', $mark);
         $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parse($text)->getAsHTML());

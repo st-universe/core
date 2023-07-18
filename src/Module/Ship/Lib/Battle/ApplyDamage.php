@@ -81,7 +81,7 @@ final class ApplyDamage implements ApplyDamageInterface
                 $this->damageRandomShipSystem(
                     $shipWrapper,
                     $informations,
-                    (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHull())
+                    (int)ceil((100 * $damage * random_int(1, 5)) / $ship->getMaxHull())
                 );
             }
 
@@ -186,7 +186,7 @@ final class ApplyDamage implements ApplyDamageInterface
         if (count($healthySystems) > 0) {
             $system = $healthySystems[0];
 
-            $this->damageShipSystem($wrapper, $system, $percent ?? rand(1, 70), $informations);
+            $this->damageShipSystem($wrapper, $system, $percent ?? random_int(1, 70), $informations);
         }
     }
 

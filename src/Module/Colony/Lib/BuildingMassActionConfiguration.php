@@ -28,9 +28,7 @@ final class BuildingMassActionConfiguration implements BuildingMassActionConfigu
     public function getConfigurations(): array
     {
         return [
-            static::CONFIGURATION_EPS => function (ColonyInterface $colony, $selection = null): iterable {
-                return $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId());
-            },
+            static::CONFIGURATION_EPS => fn(ColonyInterface $colony, $selection = null): iterable => $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId()),
             static::CONFIGURATION_SELECTION => function (ColonyInterface $colony, $selection = null): iterable {
                 if (!is_array($selection)) {
                     return [];
@@ -43,27 +41,17 @@ final class BuildingMassActionConfiguration implements BuildingMassActionConfigu
                 }
                 return $fields;
             },
-            static::CONFIGURATION_EPS_PRODUCER => function (ColonyInterface $colony, $selection = null): iterable {
-                return $this->planetFieldRepository->getEnergyProducingByColony($colony->getId());
-            },
-            static::CONFIGURATION_INDUSTRY => function (ColonyInterface $colony, $selection = null): iterable {
-                return $this->planetFieldRepository->getWorkerConsumingByColony($colony->getId());
-            },
-            static::CONFIGURATION_RESIDENTIALS => function (ColonyInterface $colony, $selection = null): iterable {
-                return $this->planetFieldRepository->getHousingProvidingByColony($colony->getId());
-            },
-            static::CONFIGURATION_COMMODITY_CONSUMER => function (ColonyInterface $colony, $selection = null): iterable {
-                return $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity(
-                    $colony->getId(),
-                    (int) $selection
-                );
-            },
-            static::CONFIGURATION_COMMODITY_PRODUCER => function (ColonyInterface $colony, $selection = null): iterable {
-                return $this->planetFieldRepository->getCommodityProducingByColonyAndCommodity(
-                    $colony->getId(),
-                    (int) $selection
-                );
-            },
+            static::CONFIGURATION_EPS_PRODUCER => fn(ColonyInterface $colony, $selection = null): iterable => $this->planetFieldRepository->getEnergyProducingByColony($colony->getId()),
+            static::CONFIGURATION_INDUSTRY => fn(ColonyInterface $colony, $selection = null): iterable => $this->planetFieldRepository->getWorkerConsumingByColony($colony->getId()),
+            static::CONFIGURATION_RESIDENTIALS => fn(ColonyInterface $colony, $selection = null): iterable => $this->planetFieldRepository->getHousingProvidingByColony($colony->getId()),
+            static::CONFIGURATION_COMMODITY_CONSUMER => fn(ColonyInterface $colony, $selection = null): iterable => $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity(
+                $colony->getId(),
+                (int) $selection
+            ),
+            static::CONFIGURATION_COMMODITY_PRODUCER => fn(ColonyInterface $colony, $selection = null): iterable => $this->planetFieldRepository->getCommodityProducingByColonyAndCommodity(
+                $colony->getId(),
+                (int) $selection
+            ),
         ];
     }
 }

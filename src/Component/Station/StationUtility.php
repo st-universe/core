@@ -228,7 +228,7 @@ final class StationUtility implements StationUtilityInterface
         $license->setTradePost($tradepost);
         $license->setUser($owner);
         $license->setDate(time());
-        $license->setExpired(2147483647); // 2147483647 = maxInt in postgres:  19. January 2038
+        $license->setExpired(2_147_483_647); // 2147483647 = maxInt in postgres:  19. January 2038
 
         $this->tradeLicenseRepository->save($license);
     }

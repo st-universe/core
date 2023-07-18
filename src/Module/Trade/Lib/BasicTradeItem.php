@@ -36,8 +36,7 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getCommodity(): CommodityInterface
     {
-        return $this->commodity !== null ? $this->commodity
-            : $this->basicTrade->getCommodity();
+        return $this->commodity ?? $this->basicTrade->getCommodity();
     }
 
     public function getStoredAmount(): int

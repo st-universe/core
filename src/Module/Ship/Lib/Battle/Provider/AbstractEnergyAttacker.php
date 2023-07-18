@@ -42,7 +42,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
     {
         $basedamage = $this->getEnergyWeaponBaseDamage();
         $variance = (int) round($basedamage / 100 * $this->getWeapon()->getVariance());
-        $damage = rand($basedamage - $variance, $basedamage + $variance);
+        $damage = random_int($basedamage - $variance, $basedamage + $variance);
 
         return $isCritical ? $damage * 2 : $damage;
     }

@@ -9,7 +9,7 @@ class StuRandom
 {
     public function rand(int $min, int $max): int
     {
-        return rand($min, $max);
+        return random_int($min, $max);
     }
 
     public function array_rand(array $array): string|int

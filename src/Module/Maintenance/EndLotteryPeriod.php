@@ -83,7 +83,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         $jackpot = (int)ceil($ticketCount / 100 * 80);
 
-        $winnerIndex = rand(0, $ticketCount - 1);
+        $winnerIndex = random_int(0, $ticketCount - 1);
         $losers = [];
         $winner = null;
 
@@ -151,7 +151,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         foreach ($this->userRepository->getNonNpcList() as $user) {
             $winRateInPercent = 10 * ($user->getId() - UserEnum::USER_FIRST_ID) / $userCount;
 
-            if (rand(1, 100) > $winRateInPercent) {
+            if (random_int(1, 100) > $winRateInPercent) {
                 continue;
             }
 

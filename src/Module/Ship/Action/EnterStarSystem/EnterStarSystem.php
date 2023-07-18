@@ -57,25 +57,25 @@ final class EnterStarSystem extends AbstractDirectedMovement
     {
         $flightDirection = $ship->getFlightDirection();
         if ($flightDirection === 0) {
-            $flightDirection = rand(1, 4);
+            $flightDirection = random_int(1, 4);
         }
 
         switch ($flightDirection) {
             case ShipEnum::DIRECTION_BOTTOM:
-                $posx = rand(1, $system->getMaxX());
+                $posx = random_int(1, $system->getMaxX());
                 $posy = 1;
                 break;
             case ShipEnum::DIRECTION_TOP:
-                $posx = rand(1, $system->getMaxX());
+                $posx = random_int(1, $system->getMaxX());
                 $posy = $system->getMaxY();
                 break;
             case ShipEnum::DIRECTION_RIGHT:
                 $posx = 1;
-                $posy = rand(1, $system->getMaxY());
+                $posy = random_int(1, $system->getMaxY());
                 break;
             case ShipEnum::DIRECTION_LEFT:
                 $posx = $system->getMaxX();
-                $posy = rand(1, $system->getMaxY());
+                $posy = random_int(1, $system->getMaxY());
                 break;
             default:
                 throw new RuntimeException('unsupported flight direction');

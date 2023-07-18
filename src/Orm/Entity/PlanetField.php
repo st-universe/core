@@ -58,13 +58,13 @@ class PlanetField implements PlanetFieldInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $buildings_id;
+    private ?int $buildings_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $terraforming_id;
+    private ?int $terraforming_id = null;
 
     /**
      * @Column(type="smallint")

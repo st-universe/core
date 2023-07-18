@@ -49,7 +49,7 @@ class AstronomicalEntry implements AstronomicalEntryInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $astro_start_turn;
+    private ?int $astro_start_turn = null;
 
     /**
      * @Column(type="integer") *
@@ -61,31 +61,31 @@ class AstronomicalEntry implements AstronomicalEntryInterface
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id_1;
+    private ?int $starsystem_map_id_1 = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id_2;
+    private ?int $starsystem_map_id_2 = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id_3;
+    private ?int $starsystem_map_id_3 = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id_4;
+    private ?int $starsystem_map_id_4 = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id_5;
+    private ?int $starsystem_map_id_5 = null;
 
     /**
      *

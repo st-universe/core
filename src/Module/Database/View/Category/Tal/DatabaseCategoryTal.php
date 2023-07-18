@@ -65,9 +65,7 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
     public function getEntries(): array
     {
         return array_map(
-            function (DatabaseEntryInterface $entry): DatabaseCategoryEntryTalInterface {
-                return $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($entry, $this->user);
-            },
+            fn(DatabaseEntryInterface $entry): DatabaseCategoryEntryTalInterface => $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($entry, $this->user),
             $this->databaseCategory->getEntries()
         );
     }

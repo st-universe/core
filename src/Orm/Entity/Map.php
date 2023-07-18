@@ -99,7 +99,7 @@ class Map implements MapInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $admin_region_id;
+    private ?int $admin_region_id = null;
 
     /**
      *
@@ -177,7 +177,7 @@ class Map implements MapInterface
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="map")
      */
-    private ArrayCollection $wormholeEntries;
+    private Collection $wormholeEntries;
 
 
     public function __construct()

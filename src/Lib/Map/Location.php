@@ -24,7 +24,7 @@ class Location
             throw new InvalidArgumentException('Either map or systemMap has to be filled');
         }
 
-        $this->location = $map !== null ? $map : $sysMap;
+        $this->location = $map ?? $sysMap;
     }
 
     /**

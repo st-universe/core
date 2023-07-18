@@ -49,13 +49,13 @@ class ShipCrew implements ShipCrewInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $colony_id;
+    private ?int $colony_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $tradepost_id;
+    private ?int $tradepost_id = null;
 
     /**
      * @Column(type="integer")
@@ -67,7 +67,7 @@ class ShipCrew implements ShipCrewInterface
      * @Column(type="smallint", nullable=true)
      *
      */
-    private ?int $slot;
+    private ?int $slot = null;
 
     /**
      * @Column(type="integer")
@@ -79,7 +79,7 @@ class ShipCrew implements ShipCrewInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $repair_task_id;
+    private ?int $repair_task_id = null;
 
     /**
      *

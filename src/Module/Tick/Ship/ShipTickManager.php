@@ -206,7 +206,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
     private function lowerTrumfieldHull(): void
     {
         foreach ($this->shipRepository->getDebrisFields() as $ship) {
-            $lower = rand(5, 15);
+            $lower = random_int(5, 15);
             if ($ship->getHull() <= $lower) {
                 $this->shipRemover->remove($ship);
                 continue;
@@ -242,7 +242,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
     private function lowerStationConstructionHull(): void
     {
         foreach ($this->shipRepository->getStationConstructions() as $ship) {
-            $lower = rand(5, 15);
+            $lower = random_int(5, 15);
             if ($ship->getHull() <= $lower) {
                 $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $ship->getSectorString());
                 $this->privateMessageSender->send(

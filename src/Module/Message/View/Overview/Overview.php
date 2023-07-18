@@ -112,15 +112,13 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar(
             'PM_LIST',
             array_map(
-                function (PrivateMessageInterface $message) use ($userId): PrivateMessageListItem {
-                    return new PrivateMessageListItem(
-                        $this->privateMessageRepository,
-                        $this->contactRepository,
-                        $this->ignoreListRepository,
-                        $message,
-                        $userId
-                    );
-                },
+                fn(PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
+                    $this->privateMessageRepository,
+                    $this->contactRepository,
+                    $this->ignoreListRepository,
+                    $message,
+                    $userId
+                ),
                 $this->privateMessageRepository->getByUserAndFolder(
                     $userId,
                     $category->getId(),

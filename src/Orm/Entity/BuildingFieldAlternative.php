@@ -53,7 +53,7 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $research_id;
+    private ?int $research_id = null;
 
     /**
      *

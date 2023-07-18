@@ -11,7 +11,7 @@ namespace Stu\Lib\ModuleScreen;
  */
 class ModuleScreenTabWrapper
 { #{{{
-    private $tabs = null;
+    private ?array $tabs = null;
 
     /**
      */

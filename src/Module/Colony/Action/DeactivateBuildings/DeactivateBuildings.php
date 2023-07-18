@@ -76,9 +76,7 @@ final class DeactivateBuildings implements ActionControllerInterface
 
         usort(
             $list,
-            function (PlanetFieldInterface $a, PlanetFieldInterface $b): int {
-                return strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName());
-            }
+            fn(PlanetFieldInterface $a, PlanetFieldInterface $b): int => strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName())
         );
 
         $game->setTemplateVar('BUILDING_LIST', $list);

@@ -61,31 +61,31 @@ class Storage implements StorageInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $colony_id;
+    private ?int $colony_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $ship_id;
+    private ?int $ship_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $torpedo_storage_id;
+    private ?int $torpedo_storage_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $tradepost_id;
+    private ?int $tradepost_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $tradeoffer_id;
+    private ?int $tradeoffer_id = null;
 
     /**
      *

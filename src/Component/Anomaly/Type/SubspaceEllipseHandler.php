@@ -25,7 +25,7 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 //TODO unit tests
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 {
-    public const MASS_CALCULATION_THRESHOLD = 33333333;
+    public const MASS_CALCULATION_THRESHOLD = 33_333_333;
 
     private MapRepositoryInterface $mapRepository;
 
@@ -164,8 +164,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         do {
             $value = random_int(1, 50);
-            $probability = exp(-0.5 * pow(($value - $mean) / $stdDeviation, 2)); // normal distribution
-            $randomProbability = mt_rand() / mt_getrandmax();
+            $probability = exp(-0.5 * (($value - $mean) / $stdDeviation) ** 2); // normal distribution
+            $randomProbability = random_int(0, mt_getrandmax()) / mt_getrandmax();
 
 
             if ($randomProbability <= $probability) {

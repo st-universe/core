@@ -74,9 +74,7 @@ final class ShowBuilding implements ViewControllerInterface
         //filter by view
         $useableFieldTypes = array_filter(
             $useableFieldTypes->toArray(),
-            function (PlanetFieldTypeBuildingInterface $pftb): bool {
-                return $pftb->getView();
-            }
+            fn(PlanetFieldTypeBuildingInterface $pftb): bool => $pftb->getView()
         );
 
         // @todo: Code verschoenern

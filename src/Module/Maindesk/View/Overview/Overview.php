@@ -167,10 +167,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'SHIP_BUILD_PROGRESS',
-            array_merge(
-                $this->colonyShipQueueRepository->getByUser($userId),
-                $this->shipyardShipQueueRepository->getByUser($userId)
-            )
+            [...$this->colonyShipQueueRepository->getByUser($userId), ...$this->shipyardShipQueueRepository->getByUser($userId)]
         );
         $game->setTemplateVar(
             'RECENT_ALLIANCE_BOARD_TOPICS',

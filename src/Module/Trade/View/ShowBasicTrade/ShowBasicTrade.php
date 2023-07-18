@@ -39,9 +39,7 @@ final class ShowBasicTrade implements ViewControllerInterface
         $basicTrades = $this->basicTradeRepository->getBasicTrades($userId);
 
         $basicTradeAccounts = array_map(
-            function (TradePostInterface $tradePost) use ($basicTrades, $userId): BasicTradeAccountTalInterface {
-                return $this->tradeLibFactory->createBasicTradeAccountTal($tradePost, $basicTrades, $userId);
-            },
+            fn(TradePostInterface $tradePost): BasicTradeAccountTalInterface => $this->tradeLibFactory->createBasicTradeAccountTal($tradePost, $basicTrades, $userId),
             $this->tradePostRepository->getByUserLicenseOnlyNPC($userId)
         );
 

@@ -41,9 +41,7 @@ final class ColonizationChecker implements ColonizationCheckerInterface
         }
 
         $researchIds = array_map(
-            function (ColonyClassResearchInterface $colonyClassResearch): int {
-                return $colonyClassResearch->getResearch()->getId();
-            },
+            fn(ColonyClassResearchInterface $colonyClassResearch): int => $colonyClassResearch->getResearch()->getId(),
             $this->colonyClassResearchRepository->getByColonyClass($colonyClass)
         );
         if ($researchIds !== [] && $this->researchedRepository->hasUserFinishedResearch($user, $researchIds) === false) {

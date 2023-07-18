@@ -36,13 +36,13 @@ class UserLock implements UserLockInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $user_id;
+    private ?int $user_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $former_user_id;
+    private ?int $former_user_id = null;
 
     /**
      * @Column(type="integer")

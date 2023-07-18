@@ -42,7 +42,7 @@ class UserInvitation implements UserInvitationInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $invited_user_id;
+    private ?int $invited_user_id = null;
 
     /**
      * @Column(type="datetime")

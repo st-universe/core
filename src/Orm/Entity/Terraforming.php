@@ -69,7 +69,7 @@ class Terraforming implements TerraformingInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $research_id;
+    private ?int $research_id = null;
 
     /**
      * @var ArrayCollection<int, TerraformingCostInterface>

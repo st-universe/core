@@ -19,5 +19,5 @@ final class ResearchEnum
     public const RESEARCH_MODE_REQUIRE_SOME = 2;
 
     // offsets
-    public const RESEARCH_OFFSET_CONSTRUCTION = 12001200;
+    public const RESEARCH_OFFSET_CONSTRUCTION = 12_001_200;
 }

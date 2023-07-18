@@ -79,9 +79,7 @@ final class FightLib implements FightLibInterface
     {
         return array_filter(
             $base,
-            function (ShipWrapperInterface $wrapper): bool {
-                return !$wrapper->get()->isDestroyed() && !$wrapper->get()->isDisabled();
-            }
+            fn (ShipWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed() && !$wrapper->get()->isDisabled()
         );
     }
 

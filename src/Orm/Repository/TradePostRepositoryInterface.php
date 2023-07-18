@@ -23,22 +23,22 @@ interface TradePostRepositoryInterface extends ObjectRepository
     public function delete(TradePostInterface $tradePost): void;
 
     /**
-     * @return list<TradePostInterface>
+     * @return array<TradePostInterface>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return list<TradePostInterface>
+     * @return array<TradePostInterface>
      */
     public function getByUserLicense(int $userId): array;
 
     /**
-     * @return list<TradePostInterface>
+     * @return array<TradePostInterface>
      */
     public function getByUserLicenseOnlyNPC(int $userId): array;
 
     /**
-     * @return list<TradePostInterface>
+     * @return array<TradePostInterface>
      */
     public function getByUserLicenseOnlyFerg(int $userId): array;
 
@@ -49,7 +49,7 @@ interface TradePostRepositoryInterface extends ObjectRepository
     ): ?TradePostInterface;
 
     /**
-     * @return list<UserInterface>
+     * @return array<UserInterface>
      */
     public function getUsersWithStorageOnTradepost(int $tradePostId): array;
 

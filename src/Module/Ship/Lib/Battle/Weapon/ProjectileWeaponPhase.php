@@ -53,7 +53,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $fightMessage->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
 
             $hitchance = $attacker->getHitChance();
-            if ($hitchance * (100 - $target->getEvadeChance()) < rand(1, 10000)) {
+            if ($hitchance * (100 - $target->getEvadeChance()) < random_int(1, 10000)) {
                 $fightMessage->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
@@ -148,11 +148,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 $informations->addInformation("Der Torpedo wurde vom orbitalem Torpedoabwehrsystem abgefangen");
                 continue;
             }
-            if ($attacker->getHitChance() < rand(1, 100)) {
+            if ($attacker->getHitChance() < random_int(1, 100)) {
                 $informations->addInformation("Das Gebäude wurde verfehlt");
                 continue;
             }
-            $isCritical = rand(1, 100) <= $torpedo->getCriticalChance();
+            $isCritical = random_int(1, 100) <= $torpedo->getCriticalChance();
             $damage_wrapper = new DamageWrapper(
                 $attacker->getProjectileWeaponDamage($isCritical)
             );
@@ -194,7 +194,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     private function isCritical(TorpedoTypeInterface $torpedo, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $torpedo->getCriticalChance() * 2 : $torpedo->getCriticalChance();
-        if (rand(1, 100) <= $critChance) {
+        if (random_int(1, 100) <= $critChance) {
             return true;
         }
         return false;

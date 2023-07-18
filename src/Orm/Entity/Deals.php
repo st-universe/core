@@ -37,7 +37,7 @@ class Deals implements DealsInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $faction_id;
+    private ?int $faction_id = null;
 
     /**
      * @Column(type="boolean")
@@ -109,19 +109,19 @@ class Deals implements DealsInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $taken_time;
+    private ?int $taken_time = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $auction_user;
+    private ?int $auction_user = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $auction_amount;
+    private ?int $auction_amount = null;
 
     /**
      *

@@ -523,7 +523,7 @@ final class ColonyTick implements ColonyTickInterface
     private function proceedEmigration(ColonyInterface $colony): void
     {
         if ($colony->getWorkless()) {
-            $bev = rand(1, $colony->getWorkless());
+            $bev = random_int(1, $colony->getWorkless());
             $colony->setWorkless($colony->getWorkless() - $bev);
             $this->msg[] = $bev . " Einwohner sind ausgewandert";
         }

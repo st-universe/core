@@ -209,12 +209,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if ($sort) {
             usort(
                 $activeSystems,
-                function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
-                    if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
-                        return 0;
-                    }
-                    return ($prioArray[$a->getSystemType()] < $prioArray[$b->getSystemType()]) ? -1 : 1;
-                }
+                fn (ShipSystemInterface $a, ShipSystemInterface $b): int => $prioArray[$a->getSystemType()] <=> $prioArray[$b->getSystemType()]
             );
         }
 

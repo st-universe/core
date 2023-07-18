@@ -112,7 +112,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $ratio = $ownMass / $otherPayload;
 
         // probabilities
-        $chance = rand(1, 100);
+        $chance = random_int(1, 100);
         if ($chance < (int)ceil(11 * $ratio)) {
             $this->escape($tractoringShipWrapper, $wrapper, $game);
         } elseif ($chance < 55) {
@@ -168,7 +168,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $ship = $wrapper->get();
         $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
-        $this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $informations);
+        $this->applyDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
 
         $game->addInformationWrapper($informations);
 
@@ -194,7 +194,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
-        $informations = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * rand(10, 25) / 100)), $wrapper);
+        $informations = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper);
         $game->addInformationWrapper($informations);
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());

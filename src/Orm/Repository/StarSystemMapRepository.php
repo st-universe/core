@@ -246,7 +246,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         foreach ($sysMapIds as $entry) {
             $descriminator = $entry['descriminator'];
 
-            if ((int)ceil($descriminator / 1000000 + 5) > rand(1, 100)) {
+            if ((int)ceil($descriminator / 1_000_000 + 5) > random_int(1, 100)) {
                 $finalIds[] = $entry['sys_map_id'];
             }
         }

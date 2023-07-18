@@ -419,7 +419,7 @@ final class ShipTick implements ShipTickInterface
 
     private function getTrackerSource(UserInterface $user): string
     {
-        switch (rand(0, 2)) {
+        switch (random_int(0, 2)) {
             case 0:
                 return _('Der Ursprung kann nicht identifiziert werden');
             case 1:

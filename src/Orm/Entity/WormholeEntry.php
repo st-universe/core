@@ -57,13 +57,13 @@ class WormholeEntry implements WormholeEntryInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $last_used;
+    private ?int $last_used = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $cooldown;
+    private ?int $cooldown = null;
 
     /**
      *

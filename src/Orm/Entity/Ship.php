@@ -289,18 +289,18 @@ class Ship implements ShipInterface
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?FleetInterface $fleet;
+    private ?FleetInterface $fleet = null;
 
     /**
      * @OneToOne(targetEntity="TradePost", mappedBy="ship")
      */
-    private ?TradePostInterface $tradePost;
+    private ?TradePostInterface $tradePost = null;
 
     /**
      * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
      * @JoinColumn(name="dock", referencedColumnName="id")
      */
-    private ?ShipInterface $dockedTo;
+    private ?ShipInterface $dockedTo = null;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
@@ -321,18 +321,18 @@ class Ship implements ShipInterface
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="tractored_ship_id", referencedColumnName="id")
      */
-    private ?ShipInterface $tractoredShip;
+    private ?ShipInterface $tractoredShip = null;
 
     /**
      * @OneToOne(targetEntity="Ship", mappedBy="tractoredShip")
      */
-    private ?ShipInterface $tractoringShip;
+    private ?ShipInterface $tractoringShip = null;
 
     /**
      * @ManyToOne(targetEntity="TholianWeb")
      * @JoinColumn(name="holding_web_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?TholianWebInterface $holdingWeb;
+    private ?TholianWebInterface $holdingWeb = null;
 
     /**
      * @ManyToOne(targetEntity="User")
@@ -371,7 +371,7 @@ class Ship implements ShipInterface
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="plans_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?ShipBuildplanInterface $buildplan;
+    private ?ShipBuildplanInterface $buildplan = null;
 
     /**
      * @var ArrayCollection<int, StorageInterface>
@@ -385,19 +385,19 @@ class Ship implements ShipInterface
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private ?MapInterface $map;
+    private ?MapInterface $map = null;
 
     /**
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private ?StarSystemMapInterface $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     /**
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
      */
-    private ?StarSystemInterface $influenceArea;
+    private ?StarSystemInterface $influenceArea = null;
 
     /**
      * @var ArrayCollection<int, ShipLogInterface>
@@ -1227,9 +1227,7 @@ class Ship implements ShipInterface
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            function (int $sum, StorageInterface $storage): int {
-                return $sum + $storage->getAmount();
-            },
+            fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -1243,9 +1241,7 @@ class Ship implements ShipInterface
     {
         return array_filter(
             $this->getStorage()->getValues(),
-            function (StorageInterface $storage): bool {
-                return $storage->getCommodity()->isBeamable() === true;
-            }
+            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
     }
 
@@ -1534,7 +1530,7 @@ class Ship implements ShipInterface
 
     public function getCurrentMapField()
     {
-        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();
+        return $this->getStarsystemMap() ?? $this->getMap();
     }
 
     public function getCurrentMapFieldLayer(): string

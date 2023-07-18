@@ -259,13 +259,13 @@ final class ShipRemover implements ShipRemoverInterface
         $storages = $this->storageRepository->getByTradePost($tradePost->getId());
         foreach ($storages as $storage) {
             //only 50% off all storages
-            if (rand(0, 1) === 0) {
+            if (random_int(0, 1) === 0) {
                 $this->storageRepository->delete($storage);
                 continue;
             }
 
             //only 0 to 50% of the specific amount
-            $amount = (int)ceil($storage->getAmount() / 100 * rand(0, 50));
+            $amount = (int)ceil($storage->getAmount() / 100 * random_int(0, 50));
 
             if ($amount === 0) {
                 $this->storageRepository->delete($storage);

@@ -62,7 +62,7 @@ class User implements UserInterface
      * @Column(type="string", length=6, nullable=true)
      *
      */
-    private ?string $sms_code;
+    private ?string $sms_code = null;
 
     /**
      * @Column(type="string", length=200)
@@ -74,19 +74,19 @@ class User implements UserInterface
      * @Column(type="string", length=255, nullable=true)
      *
      */
-    private ?string $mobile;
+    private ?string $mobile = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $allys_id;
+    private ?int $allys_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $race;
+    private ?int $race = null;
 
     /**
      * @Column(type="smallint")
@@ -218,7 +218,7 @@ class User implements UserInterface
      * @Column(type="string", length=100, nullable=true)
      *
      */
-    private ?string $start_page;
+    private ?string $start_page = null;
 
     /**
      * @Column(type="integer", options={"default": 0})

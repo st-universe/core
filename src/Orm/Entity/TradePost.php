@@ -100,7 +100,7 @@ class TradePost implements TradePostInterface
      * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost")
      * @OrderBy({"id": "DESC"})
      */
-    private ArrayCollection $licenseInfos;
+    private Collection $licenseInfos;
 
     /**
      *

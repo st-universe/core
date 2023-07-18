@@ -61,7 +61,7 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $deleted;
+    private ?int $deleted = null;
 
     /**
      *

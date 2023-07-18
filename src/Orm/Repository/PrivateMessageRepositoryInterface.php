@@ -25,29 +25,29 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $specialIds
      *
-     * @return iterable<PrivateMessageInterface>
+     * @return array<PrivateMessageInterface>
      */
     public function getOrderedCorrepondence(
         int $senderUserId,
         int $recipientUserId,
         array $specialIds,
         int $limit
-    ): iterable;
+    ): array;
 
     /**
-     * @return iterable<PrivateMessageInterface>
+     * @return array<PrivateMessageInterface>
      */
-    public function getBySender(int $userId): iterable;
+    public function getBySender(int $userId): array;
 
     /**
-     * @return iterable<PrivateMessageInterface>
+     * @return array<PrivateMessageInterface>
      */
     public function getByUserAndFolder(
         int $userId,
         int $folderId,
         int $offset,
         int $limit
-    ): iterable;
+    ): array;
 
     public function getAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
 

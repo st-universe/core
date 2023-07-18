@@ -284,7 +284,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
         return new ColonyPopulationCalculator(
             $colony,
-            $production === null ? $this->createColonyCommodityProduction($colony)->getProduction() : $production
+            $production ?? $this->createColonyCommodityProduction($colony)->getProduction()
         );
     }
 }
