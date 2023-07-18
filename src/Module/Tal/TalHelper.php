@@ -110,7 +110,7 @@ final class TalHelper
 
     public static function getNumberWithThousandSeperator(int $number): string
     {
-        return number_format(floatval($number), 0, '', '.');
+        return number_format((float) $number, 0, '', '.');
     }
 
     public static function getPlanetFieldTypeDescription(

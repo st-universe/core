@@ -32,13 +32,13 @@ final class DeleteKnPlotMember implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $plot = $this->rpgPlotRepository->find($this->deleteKnPlotMemberRequest->getPlotId());
-        if ($plot === null || $plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
+        if ($plot === null || $plot->getUserId() !== $game->getUser()->getId() || !$plot->isActive()) {
             return;
         }
 
         $recipientId = $this->deleteKnPlotMemberRequest->getRecipientId();
 
-        if ($plot->getUserId() == $recipientId) {
+        if ($plot->getUserId() === $recipientId) {
             $game->addInformation(_('Du kannst Dich nicht selbst entfernen'));
             return;
         }

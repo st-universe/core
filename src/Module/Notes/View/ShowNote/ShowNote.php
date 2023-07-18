@@ -28,7 +28,7 @@ final class ShowNote implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $note = $this->noteRepository->find($this->showNoteRequest->getNoteId());
-        if ($note->getUserId() != $game->getUser()->getId()) {
+        if ($note->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 

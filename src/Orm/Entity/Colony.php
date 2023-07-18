@@ -446,12 +446,10 @@ class Colony implements ColonyInterface
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
             if ($scaled == 0) {
                 $twilightZone = (int) - (($width) - 1);
+            } elseif ((int) - (($width) - ceil($scaled)) == 0) {
+                $twilightZone = -1;
             } else {
-                if ((int) - (($width) - ceil($scaled)) == 0) {
-                    $twilightZone = -1;
-                } else {
-                    $twilightZone = (int) - (($width) - $scaled);
-                }
+                $twilightZone = (int) - (($width) - $scaled);
             }
         }
         if ($this->getDayTimePrefix() == 2) {
@@ -625,12 +623,10 @@ class Colony implements ColonyInterface
      */
     public function getBeamableStorage(): array
     {
-        $filteredArray = array_filter(
+        return array_filter(
             $this->getStorage()->getValues(),
             fn (StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
-
-        return $filteredArray;
     }
 
     public function getStorage(): Collection

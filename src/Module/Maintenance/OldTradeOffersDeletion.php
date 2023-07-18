@@ -45,7 +45,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 
         foreach ($offersToDelete as $offer) {
             // send message to user
-            if (!$pm->isEmpty() && $userId != $offer->getUserId()) {
+            if (!$pm->isEmpty() && $userId !== $offer->getUserId()) {
                 $this->sendMessage($userId, $pm);
                 $pm = new InformationWrapper();
                 $userId = 0;
@@ -58,7 +58,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             }
 
             //trade post change
-            if ($postId != $offer->getTradePostId()) {
+            if ($postId !== $offer->getTradePostId()) {
                 $post = $offer->getTradePost();
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager(
                     $post,

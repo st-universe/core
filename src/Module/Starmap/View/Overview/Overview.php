@@ -29,12 +29,12 @@ final class Overview implements ViewControllerInterface
         //only layers, that are known by user
         $layers = $this->layerRepository->getKnownByUser($game->getUser()->getId());
 
-        if (empty($layers)) {
+        if ($layers === []) {
             return;
         }
 
         $layerId = request::getInt('layerid');
-        if (!$layerId) {
+        if ($layerId === 0) {
             $layer = current($layers);
         } else {
             if (!array_key_exists($layerId, $layers)) {

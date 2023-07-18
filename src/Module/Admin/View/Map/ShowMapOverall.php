@@ -46,7 +46,7 @@ final class ShowMapOverall implements ViewControllerInterface
         $webrootWithoutPublic = str_replace("/Public", "", $this->config->getGameSettings()->getWebroot());
 
         foreach ($this->mapRepository->getAllOrdered(MapEnum::LAYER_ID_CRAGGANMORE) as $data) {
-            if ($startY != $data->getCy()) {
+            if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;
                 $cury += 15;

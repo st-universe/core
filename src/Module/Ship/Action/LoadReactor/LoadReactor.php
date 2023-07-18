@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LoadReactor;
 
 use request;
+use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,6 +17,10 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LoadReactor implements ActionControllerInterface
 {
+    /**
+     * @var ShipRepositoryInterface
+     */
+    public $shipRepository;
     public const ACTION_IDENTIFIER = 'B_LOAD_REACTOR';
 
     private ShipLoaderInterface $shipLoader;
@@ -45,10 +50,16 @@ final class LoadReactor implements ActionControllerInterface
 
         $requestedLoad = (int) request::postIntFatal('reactorload');
 
-        if (request::postString('fleet')) {
+        if (request::postString('fleet') !== false) {
             $msg = [];
             $msg[] = _('Flottenbefehl ausgeführt: Aufladung des Reaktors');
-            foreach ($ship->getFleet()->getShips() as $ship) {
+
+            $fleet = $ship->getFleet();
+            if ($fleet === null) {
+                throw new RuntimeException('this should not happen');
+            }
+
+            foreach ($fleet->getShips() as $ship) {
                 $hasWarpcore = $ship->hasWarpcore();
                 $hasFusionReactor = $ship->hasFusionReactor();
 

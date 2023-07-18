@@ -342,24 +342,17 @@ class Deals implements DealsInterface
 
     public function getRumpId(): int
     {
-        $rumpid = $this->getBuildplan()->getRumpId();
-        return $rumpid;
+        return $this->getBuildplan()->getRumpId();
     }
 
     public function getCrew(): int
     {
-        if ($this->getBuildplan() == null) {
-            $crew = 0;
-        } else {
-            $crew = $this->getBuildplan()->getCrew();
-        }
-        return $crew;
+        return $this->getBuildplan() == null ? 0 : $this->getBuildplan()->getCrew();
     }
 
     public function getBuildplanName(): string
     {
-        $bpname = $this->getBuildplan()->getName();
-        return $bpname;
+        return $this->getBuildplan()->getName();
     }
 
     public function getAuctionBids(): Collection

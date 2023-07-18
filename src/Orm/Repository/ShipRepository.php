@@ -558,11 +558,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'starSystemId' => $system ? $system->getId() : $ship->getStarsystemMap()->getSystem()->getId(),
-            'sxStart' => $system ? 1 : $map->getSx() - $sensorRange,
-            'sxEnd' => $system ? $system->getMaxX() : $map->getSx() + $sensorRange,
-            'syStart' => $system ? 1 : $map->getSy() - $sensorRange,
-            'syEnd' => $system ? $system->getMaxY() : $map->getSy() + $sensorRange,
+            'starSystemId' => $system !== null ? $system->getId() : $ship->getStarsystemMap()->getSystem()->getId(),
+            'sxStart' => $system !== null ? 1 : $map->getSx() - $sensorRange,
+            'sxEnd' => $system !== null ? $system->getMaxX() : $map->getSx() + $sensorRange,
+            'syStart' => $system !== null ? 1 : $map->getSy() - $sensorRange,
+            'syEnd' => $system !== null ? $system->getMaxY() : $map->getSy() + $sensorRange,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'active' => 1,
             'shieldBuilding' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR

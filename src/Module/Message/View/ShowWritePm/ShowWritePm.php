@@ -50,7 +50,7 @@ final class ShowWritePm implements ViewControllerInterface
         $rpgtext = '';
 
         $pm = $this->privateMessageRepository->find($this->showWritePmRequest->getReplyPmId());
-        if ($pm === null || $pm->getRecipientId() != $userId) {
+        if ($pm === null || $pm->getRecipientId() !== $userId) {
             $reply = null;
             $correspondence = null;
         } else {

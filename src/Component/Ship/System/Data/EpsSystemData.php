@@ -49,7 +49,7 @@ class EpsSystemData extends AbstractSystemData
 
     public function lowerEps(int $amount): EpsSystemData
     {
-        $this->eps = $this->eps - $amount;
+        $this->eps -= $amount;
         return $this;
     }
 

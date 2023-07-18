@@ -46,7 +46,7 @@ final class AddKnPlotMember implements ActionControllerInterface
     {
         /** @var RpgPlotInterface $plot */
         $plot = $this->rpgPlotRepository->find($this->addKnPlotMemberRequest->getPlotId());
-        if ($plot === null || $plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
+        if ($plot === null || $plot->getUserId() !== $game->getUser()->getId() || !$plot->isActive()) {
             return;
         }
 
@@ -55,7 +55,7 @@ final class AddKnPlotMember implements ActionControllerInterface
             $game->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
-        if ($plot->getUserId() == $recipient->getId()) {
+        if ($plot->getUserId() === $recipient->getId()) {
             $game->addInformation(_('Du kannst Dich nicht selbst hinzufügen'));
             return;
         }

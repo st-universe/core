@@ -109,11 +109,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             if (array_key_exists($commodityId, $prod)) {
                 $storage[$commodityId]['commodity'] = $value;
                 $storage[$commodityId]['production'] = $prod[$commodityId];
-                if (!$stor->containsKey($commodityId)) {
-                    $storage[$commodityId]['storage'] = false;
-                } else {
-                    $storage[$commodityId]['storage'] = $stor[$commodityId];
-                }
+                $storage[$commodityId]['storage'] = $stor->containsKey($commodityId) ? $stor[$commodityId] : false;
             } elseif ($stor->containsKey($commodityId)) {
                 $storage[$commodityId]['commodity'] = $value;
                 $storage[$commodityId]['storage'] = $stor[$commodityId];

@@ -57,7 +57,7 @@ final class ShowTransferMenu implements ViewControllerInterface
         foreach ($tradeposts as $obj) {
             if (
                 $tradePost !== $obj
-                && $obj->getTradeNetwork() == $tradePost->getTradeNetwork()
+                && $obj->getTradeNetwork() === $tradePost->getTradeNetwork()
                 && $obj->getUser()->getId() !== UserEnum::USER_NOONE
             ) {
                 $trade_post_list[] = $this->tradeLibFactory->createTradePostStorageManager($obj, $game->getUser());

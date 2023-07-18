@@ -164,7 +164,7 @@ final class ApplyDamage implements ApplyDamageInterface
         $healthySystems = $wrapper->get()->getHealthySystems();
         shuffle($healthySystems);
 
-        if (empty($healthySystems)) {
+        if ($healthySystems === []) {
             return null;
         }
         $system = $healthySystems[0];
@@ -183,7 +183,7 @@ final class ApplyDamage implements ApplyDamageInterface
         $healthySystems = $wrapper->get()->getHealthySystems();
         shuffle($healthySystems);
 
-        if (count($healthySystems) > 0) {
+        if ($healthySystems !== []) {
             $system = $healthySystems[0];
 
             $this->damageShipSystem($wrapper, $system, $percent ?? random_int(1, 70), $informations);

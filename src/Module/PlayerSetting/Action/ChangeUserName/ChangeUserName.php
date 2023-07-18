@@ -46,7 +46,7 @@ final class ChangeUserName implements ActionControllerInterface
 
         $value = CleanTextUtils::clearEmojis($text);
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($value);
-        if ($value != $nameWithoutUnicode) {
+        if ($value !== $nameWithoutUnicode) {
             $game->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
@@ -55,25 +55,19 @@ final class ChangeUserName implements ActionControllerInterface
 
         if (mb_strlen($valueWithoutMarkup) < 6) {
             $game->addInformation(
-                sprintf(
-                    _('Der Siedlername muss aus mindestens 6 Zeichen bestehen')
-                )
+                _('Der Siedlername muss aus mindestens 6 Zeichen bestehen')
             );
             return;
         }
         if (mb_strlen($value) > 255) {
             $game->addInformation(
-                sprintf(
-                    _('Der Siedlername darf inklusive BBCode nur maximal 255 Zeichen lang sein')
-                )
+                _('Der Siedlername darf inklusive BBCode nur maximal 255 Zeichen lang sein')
             );
             return;
         }
         if (mb_strlen($valueWithoutMarkup) > 60) {
             $game->addInformation(
-                sprintf(
-                    _('Der Siedlername darf nur maximal 60 Zeichen lang sein')
-                )
+                _('Der Siedlername darf nur maximal 60 Zeichen lang sein')
             );
             return;
         }

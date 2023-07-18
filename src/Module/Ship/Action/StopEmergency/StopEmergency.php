@@ -49,7 +49,7 @@ final class StopEmergency implements ActionControllerInterface
 
         $ship = $wrapper->get();
 
-        if (!$ship->getIsInEmergency() === true) {
+        if (!$ship->getIsInEmergency()) {
             return;
         }
 

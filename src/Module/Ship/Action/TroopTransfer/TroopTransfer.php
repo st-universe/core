@@ -263,10 +263,8 @@ final class TroopTransfer implements ActionControllerInterface
             $this->transferUtility->getFreeQuarters($ship)
         );
 
-        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
-            if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
-                throw new SystemNotActivatableException();
-            }
+        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF && !$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
+            throw new SystemNotActivatableException();
         }
 
         $crewAssignments = $colony->getCrewAssignments();
@@ -355,10 +353,8 @@ final class TroopTransfer implements ActionControllerInterface
             $ownCrewOnTarget
         );
 
-        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
-            if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
-                throw new SystemNotActivatableException();
-            }
+        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF && !$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
+            throw new SystemNotActivatableException();
         }
 
         $array = $target->getCrewlist()->getValues();
@@ -393,26 +389,19 @@ final class TroopTransfer implements ActionControllerInterface
         }
 
         // no crew left
-        if ($amount == $targetCrewCount) {
+        if ($amount === $targetCrewCount) {
             $this->shipSystemManager->deactivateAll($this->shipWrapperFactory->wrapShip($target));
-
             $target->setAlertStateGreen();
-
             foreach ($target->getDockedShips() as $dockedShip) {
                 $dockedShip->setDockedTo(null);
                 $this->shipLoader->save($dockedShip);
             }
-
             $target->getDockedShips()->clear();
             $this->shipLoader->save($target);
-        } else {
-            if (
-                $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-                && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-                && $target->getCrewCount() <= $target->getBuildplan()->getCrew()
-            ) {
-                $this->helper->deactivate($target->getId(), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
-            }
+        } elseif ($target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+        && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+        && $target->getCrewCount() <= $target->getBuildplan()->getCrew()) {
+            $this->helper->deactivate($target->getId(), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
 
         return $amount;

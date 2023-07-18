@@ -134,7 +134,7 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($colony->getId() != $field->getColonyId()) {
+        if ($colony->getId() !== $field->getColonyId()) {
             return;
         }
         if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
@@ -170,7 +170,7 @@ final class AttackBuilding implements ActionControllerInterface
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attackers);
 
-            if (count($attackerPool) === 0) {
+            if ($attackerPool === []) {
                 break;
             }
             $this->addFightMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool));
@@ -186,7 +186,7 @@ final class AttackBuilding implements ActionControllerInterface
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attackers);
 
-            if (count($attackerPool) === 0) {
+            if ($attackerPool === []) {
                 break;
             }
             $this->addFightMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));

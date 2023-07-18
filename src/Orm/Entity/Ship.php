@@ -594,7 +594,7 @@ class Ship implements ShipInterface
 
     public function getWebState(): bool
     {
-        return $this->getHoldingWeb() === null ? false : true;
+        return $this->getHoldingWeb() !== null;
     }
 
     public function getReactorLoad(): int
@@ -1031,13 +1031,11 @@ class Ship implements ShipInterface
         $result = $this->getBuildplan()->getCrew() <= 0
             || $this->getCrewCount() >= $this->getBuildplan()->getCrew();
 
-        if (!$result) {
-            if ($game !== null) {
-                $game->addInformationf(
-                    _("Es werden %d Crewmitglieder benötigt"),
-                    $this->getBuildplan()->getCrew()
-                );
-            }
+        if (!$result && $game !== null) {
+            $game->addInformationf(
+                _("Es werden %d Crewmitglieder benötigt"),
+                $this->getBuildplan()->getCrew()
+            );
         }
 
         return $result;
@@ -1489,7 +1487,7 @@ class Ship implements ShipInterface
     public function getHoldingWebBackgroundStyle(): string
     {
         if ($this->getHoldingWeb() === null) {
-            return sprintf('');
+            return '';
         }
 
         if ($this->getHoldingWeb()->isFinished()) {
@@ -1497,11 +1495,7 @@ class Ship implements ShipInterface
         } else {
             $closeTofinish = $this->getHoldingWeb()->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
 
-            if ($closeTofinish) {
-                $icon = 'web_u.png';
-            } else {
-                $icon = 'web_u2.png';
-            }
+            $icon = $closeTofinish ? 'web_u.png' : 'web_u2.png';
         }
 
         return sprintf('src="assets/buttons/%s"; class="indexedGraphics" style="z-index: 5;"', $icon);
@@ -1510,7 +1504,7 @@ class Ship implements ShipInterface
     public function getHoldingWebImageStyle(): string
     {
         if ($this->getHoldingWeb() === null) {
-            return sprintf('');
+            return '';
         }
 
         if ($this->getHoldingWeb()->isFinished()) {
@@ -1518,14 +1512,10 @@ class Ship implements ShipInterface
         } else {
             $closeTofinish = $this->getHoldingWeb()->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
 
-            if ($closeTofinish) {
-                $icon = 'web_ufill.png';
-            } else {
-                $icon = 'web_ufill2.png';
-            }
+            $icon = $closeTofinish ? 'web_ufill.png' : 'web_ufill2.png';
         }
 
-        return sprintf('%s', $icon);
+        return $icon;
     }
 
     public function getCurrentMapField()
@@ -1535,7 +1525,7 @@ class Ship implements ShipInterface
 
     public function getCurrentMapFieldLayer(): string
     {
-        return $this->getStarsystemMap() !== null ? '' : strval($this->getMap()->getLayer()->getId());
+        return $this->getStarsystemMap() !== null ? '' : (string) $this->getMap()->getLayer()->getId();
     }
 
     private function getShieldRegenerationPercentage(): int
@@ -1792,7 +1782,7 @@ class Ship implements ShipInterface
     private function getColorStyle(int $actual, int $max): string
     {
         // full
-        if ($actual == $max) {
+        if ($actual === $max) {
             return '';
         }
 

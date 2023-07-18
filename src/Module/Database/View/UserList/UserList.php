@@ -69,11 +69,11 @@ final class UserList implements ViewControllerInterface
         $user_list = $this->userRepository->getList(
             static::SORT_FIELD_MAP[$sort_field],
             static::SORT_ORDER_MAP[$sort_order],
-            $search ? null : static::LIST_LIMIT,
+            $search !== false ? null : static::LIST_LIMIT,
             $pagination
         );
 
-        if ($search) {
+        if ($search !== false) {
             $search = strtoupper($search);
 
             //filter by name/id
@@ -93,7 +93,7 @@ final class UserList implements ViewControllerInterface
         $game->setTemplateVar('SORT_ORDER', $sort_field);
         $game->setTemplateVar('ORDER_BY', $sort_order);
         $game->setTemplateVar('PAGINATION', $pagination);
-        $game->setTemplateVar('SEARCH', $search ? request::indString('search') : '');
+        $game->setTemplateVar('SEARCH', $search !== '' && $search !== '0' ? request::indString('search') : '');
     }
 
     private function getUserListNavigation(GameControllerInterface $game): array
@@ -117,10 +117,10 @@ final class UserList implements ViewControllerInterface
             $ret[] = [
                 "page" => $i,
                 "mark" => ($i * static::LIST_LIMIT - static::LIST_LIMIT),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages"),
+                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages"),
             ];
         }
-        if ($curpage + 1 != $maxpage) {
+        if ($curpage + 1 !== $maxpage) {
             $ret[] = ["page" => ">", "mark" => ($mark + static::LIST_LIMIT), "cssclass" => "pages"];
             $ret[] = [
                 "page" => ">>",

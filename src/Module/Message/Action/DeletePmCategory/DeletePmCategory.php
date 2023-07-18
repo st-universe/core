@@ -36,7 +36,7 @@ final class DeletePmCategory implements ActionControllerInterface
         $folder = $this->privateMessageFolderRepository->find($this->deletePmCategoryRequest->getCategoryId());
         if (
             $folder === null ||
-            $folder->getUserId() != $game->getUser()->getId() ||
+            $folder->getUserId() !== $game->getUser()->getId() ||
             !$folder->isDeleteAble()
         ) {
             return;

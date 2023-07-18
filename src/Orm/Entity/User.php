@@ -681,10 +681,7 @@ class User implements UserInterface
 
     public function isOnline(): bool
     {
-        if ($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD) {
-            return false;
-        }
-        return true;
+        return !($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD);
     }
 
     public function getAlliance(): ?AllianceInterface
@@ -717,7 +714,7 @@ class User implements UserInterface
 
     public function isContactable(): bool
     {
-        return !in_array($this->getId(), [UserEnum::USER_NOONE]);
+        return $this->getId() != UserEnum::USER_NOONE;
     }
 
     public function hasAward(int $awardId): bool

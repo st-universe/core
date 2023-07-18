@@ -30,7 +30,7 @@ final class ShowEditPlot implements ViewControllerInterface
     {
         /** @var RpgPlotInterface $plot */
         $plot = $this->rpgPlotRepository->find($this->showEditPlotRequest->getPlotId());
-        if ($plot === null || $plot->getUserId() != $game->getUser()->getId()) {
+        if ($plot === null || $plot->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 

@@ -97,11 +97,7 @@ final class CrewCreator implements CrewCreatorInterface
 
         foreach (CrewEnum::CREW_ORDER as $crewType) {
             $createdcount = 1;
-            if ($crewType == CrewEnum::CREW_TYPE_CREWMAN) {
-                $slot = 'getJob6Crew';
-            } else {
-                $slot = 'getJob' . $crewType . 'Crew';
-            }
+            $slot = $crewType == CrewEnum::CREW_TYPE_CREWMAN ? 'getJob6Crew' : 'getJob' . $crewType . 'Crew';
             $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
                 $ship->getRump()->getShipRumpCategory()->getId(),
                 $ship->getRump()->getShipRumpRole()->getId()

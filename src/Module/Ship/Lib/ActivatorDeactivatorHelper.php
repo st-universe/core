@@ -115,7 +115,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                 _('%s: [b][color=#ff2626]System %s kann nicht aktiviert werden, Cooldown noch %s[/color][/b]'),
                 $ship->getName(),
                 $systemName,
-                TalHelper::formatSeconds(strval($e->getRemainingSeconds()))
+                TalHelper::formatSeconds((string) $e->getRemainingSeconds())
             ));
         } catch (SystemDamagedException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));

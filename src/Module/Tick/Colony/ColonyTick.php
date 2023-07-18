@@ -131,7 +131,7 @@ final class ColonyTick implements ColonyTickInterface
             $rewind |= $this->checkLivingSpace($colony, $production, $deactivatedFields);
             $rewind |= $this->checkEnergyProduction($colony, $production, $deactivatedFields);
 
-            if ($rewind) {
+            if ($rewind !== 0) {
                 $i++;
                 if ($i == 100) {
                     // SECURITY
@@ -177,10 +177,8 @@ final class ColonyTick implements ColonyTickInterface
             $commodityId = $pro->getCommodityId();
 
             $depositMining = $colony->getUserDepositMinings()[$commodityId] ?? null;
-            if ($depositMining !== null) {
-                if ($depositMining->isEnoughLeft((int) abs($pro->getProduction()))) {
-                    continue;
-                }
+            if ($depositMining !== null && $depositMining->isEnoughLeft((int) abs($pro->getProduction()))) {
+                continue;
             }
 
             $storage = $colony->getStorage();
@@ -253,11 +251,7 @@ final class ColonyTick implements ColonyTickInterface
         array &$production,
         CommodityInterface|string $cause
     ): void {
-        if ($cause instanceof CommodityInterface) {
-            $ext = $cause->getName();
-        } else {
-            $ext = $cause;
-        }
+        $ext = $cause instanceof CommodityInterface ? $cause->getName() : $cause;
         $building = $field->getBuilding();
 
         if ($building === null) {
@@ -435,13 +429,11 @@ final class ColonyTick implements ColonyTickInterface
         }
         $current_research = $this->researchedRepository->getCurrentResearch($colony->getUser());
 
-        if ($current_research && $current_research->getActive()) {
-            if (isset($production[$current_research->getResearch()->getCommodityId()])) {
-                $this->researchStateFactory->createResearchState()->advance(
-                    $current_research,
-                    $production[$current_research->getResearch()->getCommodityId()]->getProduction()
-                );
-            }
+        if ($current_research && $current_research->getActive() && isset($production[$current_research->getResearch()->getCommodityId()])) {
+            $this->researchStateFactory->createResearchState()->advance(
+                $current_research,
+                $production[$current_research->getResearch()->getCommodityId()]->getProduction()
+            );
         }
         if ($doLog) {
             $endTime = microtime(true);
@@ -522,7 +514,7 @@ final class ColonyTick implements ColonyTickInterface
 
     private function proceedEmigration(ColonyInterface $colony): void
     {
-        if ($colony->getWorkless()) {
+        if ($colony->getWorkless() !== 0) {
             $bev = random_int(1, $colony->getWorkless());
             $colony->setWorkless($colony->getWorkless() - $bev);
             $this->msg[] = $bev . " Einwohner sind ausgewandert";
@@ -567,14 +559,11 @@ final class ColonyTick implements ColonyTickInterface
                     $obj->getCommodity(),
                     $obj->getAmount() * -1
                 );
-
                 $production[$commodityId] = $data;
+            } elseif ($obj->getAmount() < 0) {
+                $production[$commodityId]->upperProduction(abs($obj->getAmount()));
             } else {
-                if ($obj->getAmount() < 0) {
-                    $production[$commodityId]->upperProduction(abs($obj->getAmount()));
-                } else {
-                    $production[$commodityId]->lowerProduction($obj->getAmount());
-                }
+                $production[$commodityId]->lowerProduction($obj->getAmount());
             }
         }
     }

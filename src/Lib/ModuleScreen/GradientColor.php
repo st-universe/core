@@ -64,9 +64,9 @@ final class GradientColor implements GradientColorInterface
      */
     private static function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
-        $r = intval($rgb1[0] + ($rgb2[0] - $rgb1[0]) * $percent / 100);
-        $g = intval($rgb1[1] + ($rgb2[1] - $rgb1[1]) * $percent / 100);
-        $b = intval($rgb1[2] + ($rgb2[2] - $rgb1[2]) * $percent / 100);
+        $r = (int) ($rgb1[0] + ($rgb2[0] - $rgb1[0]) * $percent / 100);
+        $g = (int) ($rgb1[1] + ($rgb2[1] - $rgb1[1]) * $percent / 100);
+        $b = (int) ($rgb1[2] + ($rgb2[2] - $rgb1[2]) * $percent / 100);
 
         return [$r, $g, $b];
     }

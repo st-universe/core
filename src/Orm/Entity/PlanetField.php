@@ -213,10 +213,7 @@ class PlanetField implements PlanetFieldInterface
         if (!$this->isDamaged()) {
             return false;
         }
-        if (round((100 / $this->getBuilding()->getIntegrity()) * $this->getIntegrity()) < 50) {
-            return true;
-        }
-        return false;
+        return round((100 / $this->getBuilding()->getIntegrity()) * $this->getIntegrity()) < 50;
     }
 
     public function isUnderConstruction(): bool
@@ -278,7 +275,7 @@ class PlanetField implements PlanetFieldInterface
         if ($this->isUnderConstruction()) {
             return false;
         }
-        return $this->getIntegrity() != $this->getBuilding()->getIntegrity();
+        return $this->getIntegrity() !== $this->getBuilding()->getIntegrity();
     }
 
     public function clearBuilding(): void

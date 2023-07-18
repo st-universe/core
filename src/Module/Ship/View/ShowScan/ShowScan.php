@@ -69,7 +69,7 @@ final class ShowScan implements ViewControllerInterface
             return;
         }
 
-        if ($target->getDatabaseId()) {
+        if ($target->getDatabaseId() !== 0) {
             $game->checkDatabaseItem($target->getDatabaseId());
         }
         if ($target->getRump()->getDatabaseId()) {

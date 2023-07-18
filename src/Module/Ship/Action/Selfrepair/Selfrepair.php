@@ -63,11 +63,11 @@ final class Selfrepair implements ActionControllerInterface
         $repairType = request::postInt('partschoice');
         $systemType = request::postInt('sid');
 
-        if (!$repairType) {
+        if ($repairType === 0) {
             $game->addInformation(_('Es muss ausgewählt werden, welche Teile verwenden werden sollen.'));
         }
 
-        if (!$systemType) {
+        if ($systemType === 0) {
             $game->addInformation(_('Es muss ausgewählt werden, welches System repariert werden soll.'));
         }
 
@@ -99,7 +99,7 @@ final class Selfrepair implements ActionControllerInterface
         $neededSparePartCount = (int) ($ship->getMaxHull() / 150);
 
 
-        if (!$isInstantRepair) {
+        if ($isInstantRepair === false) {
             if (!$this->checkForSpareParts($ship, $neededSparePartCount, $repairType, $game)) {
                 return;
             }

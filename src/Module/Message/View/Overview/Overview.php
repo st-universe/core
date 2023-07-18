@@ -93,10 +93,10 @@ final class Overview implements ViewControllerInterface
             $pmNavigation[] = [
                 "page" => $i,
                 "mark" => ($i * static::PMLIMITER - static::PMLIMITER),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
+                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")
             ];
         }
-        if ($curpage + 1 != $maxpage) {
+        if ($curpage + 1 !== $maxpage) {
             $pmNavigation[] = ["page" => ">", "mark" => ($mark + static::PMLIMITER), "cssclass" => "pages"];
             $pmNavigation[] = ["page" => ">>", "mark" => $maxpage * static::PMLIMITER - static::PMLIMITER, "cssclass" => "pages"];
         }

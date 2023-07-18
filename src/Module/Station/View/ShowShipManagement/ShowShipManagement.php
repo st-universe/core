@@ -80,14 +80,14 @@ final class ShowShipManagement implements ViewControllerInterface
             usort(
                 $shipList,
                 function (ShipInterface $a, ShipInterface $b): int {
-                    if ($b->isFleetLeader() == $a->isFleetLeader()) {
+                    if ($b->isFleetLeader() === $a->isFleetLeader()) {
                         $catA = $a->getRump()->getCategoryId();
                         $catB = $b->getRump()->getCategoryId();
-                        if ($catB == $catA) {
+                        if ($catB === $catA) {
                             $roleA = $a->getRump()->getRoleId();
                             $roleB = $b->getRump()->getRoleId();
-                            if ($roleB == $roleA) {
-                                if ($b->getRumpId() == $a->getRumpId()) {
+                            if ($roleB === $roleA) {
+                                if ($b->getRumpId() === $a->getRumpId()) {
                                     return $a->getName() <=> $b->getName();
                                 }
 

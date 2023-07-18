@@ -100,7 +100,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             }
         }
 
-        if (!empty($nonDestroyedShips)) {
+        if ($nonDestroyedShips !== []) {
             return current($nonDestroyedShips);
         }
 
@@ -251,10 +251,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
                     return false;
                 }
             }
-        } else {
-            if (!$leadShip->getWarpState()) {
-                return false;
-            }
+        } elseif (!$leadShip->getWarpState()) {
+            return false;
         }
 
         return true;
@@ -268,10 +266,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
                     return false;
                 }
             }
-        } else {
-            if (!$leadShip->getCloakState()) {
-                return false;
-            }
+        } elseif (!$leadShip->getCloakState()) {
+            return false;
         }
 
         return true;
@@ -310,7 +306,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
                 }
             }
             // if whole flying fleet cloaked, nothing happens
-            if (empty($defender)) {
+            if ($defender === []) {
                 return;
             }
         } else {

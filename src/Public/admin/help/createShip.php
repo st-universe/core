@@ -55,7 +55,6 @@ Init::run(function (ContainerInterface $dic): void {
         $cx = request::postIntFatal('cx');
         $cy = request::postIntFatal('cy');
         $shipcount = request::postIntFatal('shipcount');
-
         for ($i = 0; $i < $shipcount; $i++) {
             /**
              * @var ShipWrapperInterface
@@ -88,12 +87,10 @@ Init::run(function (ContainerInterface $dic): void {
             }
             $db->flush();
         }
-
         echo $shipcount . ' Schiff(e) erstellt, mit Wurstblinkern!';
-    } else {
-        if ($buildplanId > 0) {
-            printf(
-                '<form action="" method="post">
+    } elseif ($buildplanId > 0) {
+        printf(
+            '<form action="" method="post">
             <input type="hidden" name="userId" value="%d" />
             <input type="hidden" name="buildplanId" value="%d" />
             <input type="hidden" name="layer" value="%d" />
@@ -101,77 +98,67 @@ Init::run(function (ContainerInterface $dic): void {
             <input type="hidden" name="cy" value="%d" />
             <input type="hidden" name="shipcount" value="%d" />
             ',
-                $userId,
-                $buildplanId,
-                request::postIntFatal('layer'),
-                request::postIntFatal('cx'),
-                request::postIntFatal('cy'),
-                request::postIntFatal('shipcount')
-            );
-
-            $plan = $buildplanRepo->find($buildplanId);
-
-            $possibleTorpedoTypes = $torpedoTypeRepo->getByLevel((int) $plan->getRump()->getTorpedoLevel());
-
-            if (empty($possibleTorpedoTypes)) {
-                printf(
-                    '<input type="hidden" name="noTorps" value="1" />
-                Schiff kann keine Torpedos tragen'
-                );
-            } else {
-                foreach ($possibleTorpedoTypes as $torpType) {
-                    printf(
-                        '<input type="radio" name="torptypeId" value="%d" />%s<br />',
-                        $torpType->getId(),
-                        $torpType->getName()
-                    );
-                }
-            }
-
+            $userId,
+            $buildplanId,
+            request::postIntFatal('layer'),
+            request::postIntFatal('cx'),
+            request::postIntFatal('cy'),
+            request::postIntFatal('shipcount')
+        );
+        $plan = $buildplanRepo->find($buildplanId);
+        $possibleTorpedoTypes = $torpedoTypeRepo->getByLevel((int) $plan->getRump()->getTorpedoLevel());
+        if ($possibleTorpedoTypes === []) {
             printf(
-                '<br /><br />
-            <input type="submit" value="Schiff erstellen" /></form>'
+                '<input type="hidden" name="noTorps" value="1" />
+                Schiff kann keine Torpedos tragen'
             );
         } else {
-            if ($userId > 0) {
-                $buildplans = $buildplanRepo->getByUser($userId);
-
+            foreach ($possibleTorpedoTypes as $torpType) {
                 printf(
-                    '<form action="" method="post">
-                <input type="hidden" name="userId" value="%d" />',
-                    $userId
+                    '<input type="radio" name="torptypeId" value="%d" />%s<br />',
+                    $torpType->getId(),
+                    $torpType->getName()
                 );
-
-                foreach ($buildplans as $plan) {
-                    printf(
-                        '<input type="radio" name="buildplanId" value="%d" />%s<br />',
-                        $plan->getId(),
-                        $plan->getName()
-                    );
-                }
-
-                printf(
-                    '<br /><br />
+            }
+        }
+        printf(
+            '<br /><br />
+            <input type="submit" value="Schiff erstellen" /></form>'
+        );
+    } elseif ($userId > 0) {
+        $buildplans = $buildplanRepo->getByUser($userId);
+        printf(
+            '<form action="" method="post">
+                <input type="hidden" name="userId" value="%d" />',
+            $userId
+        );
+        foreach ($buildplans as $plan) {
+            printf(
+                '<input type="radio" name="buildplanId" value="%d" />%s<br />',
+                $plan->getId(),
+                $plan->getName()
+            );
+        }
+        printf(
+            '<br /><br />
                 Koordinaten<br /><input type="text" size="3" name="layer" value="1"/> | <input type="text" size="3" name="cx" /> | <input type="text" size="3" name="cy" /><br />
                 Anzahl<br /><input type="text" size="3" name="shipcount" value="1"/><br /><br />
                 <input type="submit" value="weiter zu Torpedo-Auswahl" /></form>'
-                );
-            } else {
-                foreach ($userRepo->getNpcList() as $user) {
-                    printf(
-                        '<a href="?userId=%d">%s</a><br />',
-                        $user->getId(),
-                        $user->getName()
-                    );
-                }
-                foreach ($userRepo->getNonNpcList() as $user) {
-                    printf(
-                        '<a href="?userId=%d">%s</a><br />',
-                        $user->getId(),
-                        $user->getName()
-                    );
-                }
-            }
+        );
+    } else {
+        foreach ($userRepo->getNpcList() as $user) {
+            printf(
+                '<a href="?userId=%d">%s</a><br />',
+                $user->getId(),
+                $user->getName()
+            );
+        }
+        foreach ($userRepo->getNonNpcList() as $user) {
+            printf(
+                '<a href="?userId=%d">%s</a><br />',
+                $user->getId(),
+                $user->getName()
+            );
         }
     }
 

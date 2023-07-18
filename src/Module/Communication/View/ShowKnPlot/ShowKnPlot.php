@@ -66,10 +66,10 @@ final class ShowKnPlot implements ViewControllerInterface
             $knNavigation[] = [
                 "page" => $i,
                 "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
+                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")
             ];
         }
-        if ($curpage + 1 != $maxpage) {
+        if ($curpage + 1 !== $maxpage) {
             $knNavigation[] = ["page" => ">", "mark" => ($mark + GameEnum::KN_PER_SITE), "cssclass" => "pages"];
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
@@ -101,7 +101,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
         $game->setTemplateVar('PLOT', $plot);
-        $game->setTemplateVar('MAY_EDIT', $plot->getUserId() == $game->getUser()->getId());
+        $game->setTemplateVar('MAY_EDIT', $plot->getUserId() === $game->getUser()->getId());
         $game->setTemplateVar(
             'POSTS',
             array_map(

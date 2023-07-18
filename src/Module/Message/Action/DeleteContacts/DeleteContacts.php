@@ -34,7 +34,7 @@ final class DeleteContacts implements ActionControllerInterface
     {
         foreach ($this->deleteContactsRequest->getContactIds() as $contactId) {
             $contact = $this->contactRepository->find((int) $contactId);
-            if ($contact === null || $contact->getUserId() != $game->getUser()->getId()) {
+            if ($contact === null || $contact->getUserId() !== $game->getUser()->getId()) {
                 continue;
             }
 

@@ -150,7 +150,6 @@ class KnCommentTalTest extends StuTestCase
     {
         $this->comment->shouldReceive('getUsername')
             ->withNoArgs()
-            ->once()
             ->andReturn('some-name');
 
         static::assertSame(

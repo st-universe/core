@@ -135,7 +135,7 @@ final class ShowShip implements ViewControllerInterface
 
         $colony = $this->getColony($ship);
         $canColonize = false;
-        if ($colony) {
+        if ($colony !== null) {
             if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
                 $canColonize = $this->colonizationChecker->canColonize($user, $colony);
             }
@@ -219,21 +219,15 @@ final class ShowShip implements ViewControllerInterface
         $astroEntry = null;
         if ($system === null || $system->getDatabaseEntry() === null) {
             $state = AstronomicalMappingEnum::NONE;
+        } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
+            $state = AstronomicalMappingEnum::DONE;
         } else {
-            if ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
-                $state = AstronomicalMappingEnum::DONE;
-            } else {
-                $astroEntry = $this->astroEntryRepository->getByUserAndSystem(
-                    $ship->getUser()->getId(),
-                    $system->getId()
-                );
+            $astroEntry = $this->astroEntryRepository->getByUserAndSystem(
+                $ship->getUser()->getId(),
+                $system->getId()
+            );
 
-                if ($astroEntry === null) {
-                    $state = AstronomicalMappingEnum::PLANNABLE;
-                } else {
-                    $state = $astroEntry->getState();
-                }
-            }
+            $state = $astroEntry === null ? AstronomicalMappingEnum::PLANNABLE : $astroEntry->getState();
         }
         $turnsLeft = null;
         if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
@@ -315,11 +309,11 @@ final class ShowShip implements ViewControllerInterface
          * @var ShipInterface[] $shipList
          */
         $shipList = $ship->getDockedShips()->toArray();
-        if (!empty($shipList)) {
+        if ($shipList !== []) {
             // if selected, return the current target
             $target = request::postInt('target');
 
-            if ($target) {
+            if ($target !== 0) {
                 foreach ($shipList as $ship) {
                     if ($ship->getId() === $target) {
                         $firstOrbitShip = $ship;
@@ -331,7 +325,7 @@ final class ShowShip implements ViewControllerInterface
             }
         }
 
-        $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
+        $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip !== null ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
         $game->setTemplateVar('CAN_UNDOCK', true);
 
         if ($ship->getRump()->isShipyard()) {

@@ -120,7 +120,7 @@ final class DockFleet implements ActionControllerInterface
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
             }
-            if ($ship->getDockedTo()) {
+            if ($ship->getDockedTo() !== null) {
                 continue;
             }
 

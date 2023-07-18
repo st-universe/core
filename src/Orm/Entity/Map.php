@@ -334,8 +334,7 @@ class Map implements MapInterface
     {
         // @todo hide unexplored fields
         $style = "background-image: url('/assets/map/" . $this->getLayer()->getId() . "/" . $this->getFieldId() . ".png'); opacity:1;";
-        $style .= $this->getBorder();
-        return $style;
+        return $style . $this->getBorder();
     }
 
     public function getShips(): Collection
@@ -369,7 +368,7 @@ class Map implements MapInterface
             }
         );
 
-        return empty($usableEntries) ? null : $usableEntries[array_rand($usableEntries)];
+        return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
     }
 
     public function getSectorString(): string

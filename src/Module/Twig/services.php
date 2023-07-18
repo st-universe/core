@@ -32,11 +32,10 @@ return [
         }
 
         $loader = new FilesystemLoader($templatePath ? $templatePath : []);
-        $environment = new Environment($loader, [
+
+        return new Environment($loader, [
             'cache' => $cache,
         ]);
-
-        return $environment;
     },
     TwigPageInterface::class => autowire(TwigPage::class),
     TwigHelper::class => autowire(TwigHelper::class)

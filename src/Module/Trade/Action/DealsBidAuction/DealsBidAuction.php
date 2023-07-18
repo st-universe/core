@@ -22,7 +22,6 @@ use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class DealsBidAuction implements ActionControllerInterface
 {
@@ -61,7 +60,6 @@ final class DealsBidAuction implements ActionControllerInterface
         DealsRepositoryInterface $dealsRepository,
         TradePostRepositoryInterface $tradepostRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         CreatePrestigeLogInterface $createPrestigeLog,
@@ -73,7 +71,6 @@ final class DealsBidAuction implements ActionControllerInterface
         $this->dealsRepository = $dealsRepository;
         $this->auctionBidRepository = $auctionBidRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;

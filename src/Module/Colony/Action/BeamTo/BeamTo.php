@@ -132,11 +132,7 @@ final class BeamTo implements ActionControllerInterface
                 continue;
             }
             $count = $gcount[$key];
-            if ($count == "max") {
-                $count = $storage->getAmount();
-            } else {
-                $count = (int)$count;
-            }
+            $count = $count == "max" ? $storage->getAmount() : (int)$count;
             if ($count < 1) {
                 continue;
             }

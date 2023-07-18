@@ -56,7 +56,7 @@ final class RenewTradeLicense implements ActionControllerInterface
         $userId = $user->getId();
 
         $postId = request::postIntFatal('postid');
-        if (!$postId) {
+        if ($postId === 0) {
             throw new SanityCheckException('postid parameter missing');
         }
 

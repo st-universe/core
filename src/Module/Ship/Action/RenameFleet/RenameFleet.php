@@ -41,7 +41,7 @@ final class RenameFleet implements ActionControllerInterface
         }
 
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($newName);
-        if ($newName != $nameWithoutUnicode) {
+        if ($newName !== $nameWithoutUnicode) {
             $game->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }

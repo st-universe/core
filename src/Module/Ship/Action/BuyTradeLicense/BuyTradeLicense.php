@@ -199,7 +199,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         if ($stor->getAmount() < $costs) {
             throw new SanityCheckException('storage insufficient');
         }
-        if ($targetTradepost->getTradeNetwork() != $tradePost->getTradeNetwork()) {
+        if ($targetTradepost->getTradeNetwork() !== $tradePost->getTradeNetwork()) {
             throw new SanityCheckException('wrong trade network');
         }
 

@@ -130,7 +130,7 @@ final class AttackShip implements ActionControllerInterface
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
-        if ($ship->getDockedTo()) {
+        if ($ship->getDockedTo() !== null) {
             $ship->setDockedTo(null);
         }
 
@@ -274,7 +274,7 @@ final class AttackShip implements ActionControllerInterface
             }
 
             // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
-            if (empty($defender)) {
+            if ($defender === []) {
                 $defender = $target->getFleet()->getShips()->toArray();
             }
 

@@ -37,11 +37,7 @@ final class ShowMapEditor implements ViewControllerInterface
         $layers = $this->layerRepository->findAllIndexed();
 
         $layerId = request::getInt('layerid');
-        if (!$layerId) {
-            $layer = current($layers);
-        } else {
-            $layer = $layers[$layerId];
-        }
+        $layer = $layerId === 0 ? current($layers) : $layers[$layerId];
         $game->setTemplateVar('LAYERID', $layer->getId());
 
         //HEADROW

@@ -28,7 +28,7 @@ final class EditContactComment implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $contact = $this->contactRepository->find($this->editContactCommentRequest->getContactId());
-        if ($contact == null || $contact->getUserId() != $game->getUser()->getId()) {
+        if ($contact == null || $contact->getUserId() !== $game->getUser()->getId()) {
             return;
         }
 

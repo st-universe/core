@@ -139,7 +139,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     public function hasExcludes(): bool
     {
-        return count($this->getDistinctExcludeNames()) > 0;
+        return $this->getDistinctExcludeNames() !== [];
     }
 
     public function getDistinctPositiveDependencyNames(): array
@@ -169,7 +169,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     public function hasPositiveDependencies(): bool
     {
-        return count($this->getDistinctPositiveDependencyNames()) > 0;
+        return $this->getDistinctPositiveDependencyNames() !== [];
     }
 
     public function getDonePoints(): int

@@ -67,7 +67,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
         string $href = null
     ): void {
-        if ($senderId == $recipientId) {
+        if ($senderId === $recipientId) {
             return;
         }
         $recipient = $this->userRepository->find($recipientId);
@@ -109,7 +109,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         array $recipients,
         string $text
     ): void {
-        if (empty($recipients)) {
+        if ($recipients === []) {
             return;
         }
 

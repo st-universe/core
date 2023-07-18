@@ -27,7 +27,7 @@ final class EndKnPlot implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $plot = $this->rpgPlotRepository->find($this->endKnPlotRequest->getPlotId());
-        if ($plot === null || $plot->getUserId() != $game->getUser()->getId()) {
+        if ($plot === null || $plot->getUserId() !== $game->getUser()->getId()) {
             return;
         }
         if (!$plot->isActive()) {

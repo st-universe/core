@@ -28,11 +28,7 @@ final class LeaveWormhole extends AbstractDirectedMovement
         }
 
         $wormholeEntry = $starsystemMap->getRandomWormholeEntry();
-        if ($wormholeEntry === null) {
-            return true;
-        }
-
-        return false;
+        return $wormholeEntry === null;
     }
 
     protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface

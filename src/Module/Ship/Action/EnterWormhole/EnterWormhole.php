@@ -32,12 +32,7 @@ final class EnterWormhole extends AbstractDirectedMovement
         if ($ship->getWarpState()) {
             return true;
         }
-
-        if ($ship->isBase()) {
-            return true;
-        }
-
-        return false;
+        return $ship->isBase();
     }
 
     protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface

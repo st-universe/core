@@ -25,7 +25,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         $fightMessages = [];
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
-            if (count($targetPool) === 0) {
+            if ($targetPool === []) {
                 break;
             }
 
@@ -194,10 +194,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     private function isCritical(TorpedoTypeInterface $torpedo, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $torpedo->getCriticalChance() * 2 : $torpedo->getCriticalChance();
-        if (random_int(1, 100) <= $critChance) {
-            return true;
-        }
-        return false;
+        return random_int(1, 100) <= $critChance;
     }
 
     private function setTorpedoHullModificator(

@@ -38,7 +38,7 @@ final class DeleteKnComment implements ActionControllerInterface
             return;
         }
 
-        if ($obj->getUserId() == $userId) {
+        if ($obj->getUserId() === $userId) {
             $obj->setDeleted(time());
             $this->knCommentRepository->save($obj);
         }

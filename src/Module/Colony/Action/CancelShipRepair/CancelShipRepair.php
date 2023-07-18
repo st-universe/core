@@ -59,7 +59,7 @@ final class CancelShipRepair implements ActionControllerInterface
             return;
         }
 
-        if ($colony->getUserId() != $userId) {
+        if ($colony->getUserId() !== $userId) {
             return;
         }
 

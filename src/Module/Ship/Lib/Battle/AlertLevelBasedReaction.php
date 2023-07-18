@@ -31,10 +31,8 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             return $informations;
         }
 
-        if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_YELLOW) {
-            if ($this->doAlertYellowReactions($wrapper, $informations)) {
-                return $informations;
-            }
+        if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_YELLOW && $this->doAlertYellowReactions($wrapper, $informations)) {
+            return $informations;
         }
 
         if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_RED) {

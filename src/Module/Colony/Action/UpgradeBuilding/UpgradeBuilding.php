@@ -144,11 +144,7 @@ final class UpgradeBuilding implements ActionControllerInterface
             (int) $upgrade->getBuilding()->getId(),
             (int) $field->getFieldType()
         );
-        if ($alt_building !== null) {
-            $building = $alt_building->getAlternativeBuilding();
-        } else {
-            $building = $upgrade->getBuilding();
-        }
+        $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
 
         $field->setBuilding($building);
         $field->setActive(time() + $building->getBuildtime());

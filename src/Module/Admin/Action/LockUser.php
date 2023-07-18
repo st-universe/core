@@ -56,7 +56,7 @@ final class LockUser implements ActionControllerInterface
         $userIdToLock = request::postIntFatal('uid');
         $remainingTicks = request::postInt('ticks');
 
-        if (!$remainingTicks) {
+        if ($remainingTicks === 0) {
             $game->addInformation(_('Bitte Anzahl Ticks angeben'));
             return;
         }
@@ -96,7 +96,7 @@ final class LockUser implements ActionControllerInterface
         $lock->setRemainingTicks($remainingTicks);
         $reason = request::postString('reason');
 
-        if ($reason) {
+        if ($reason !== false) {
             $lock->setReason($reason);
         }
         $this->userLockRepository->save($lock);

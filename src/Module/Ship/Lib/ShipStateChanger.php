@@ -94,10 +94,8 @@ final class ShipStateChanger implements ShipStateChangerInterface
         }
 
         // cancel repair if not on alert green
-        if ($alertState !== ShipAlertStateEnum::ALERT_GREEN) {
-            if ($this->cancelRepair->cancelRepair($ship)) {
-                $msg = _('Die Reparatur wurde abgebrochen');
-            }
+        if ($alertState !== ShipAlertStateEnum::ALERT_GREEN && $this->cancelRepair->cancelRepair($ship)) {
+            $msg = _('Die Reparatur wurde abgebrochen');
         }
 
         // now change

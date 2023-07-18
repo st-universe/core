@@ -23,7 +23,6 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class DealsTakeOffer implements ActionControllerInterface
 {
@@ -57,7 +56,6 @@ final class DealsTakeOffer implements ActionControllerInterface
         DealsRepositoryInterface $dealsRepository,
         TradePostRepositoryInterface $tradepostRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
@@ -71,7 +69,6 @@ final class DealsTakeOffer implements ActionControllerInterface
         $this->tradepostRepository = $tradepostRepository;
         $this->dealsRepository = $dealsRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->shipBuildplanRepository = $shipBuildplanRepository;

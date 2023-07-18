@@ -41,11 +41,7 @@ final class Overview implements ViewControllerInterface
 
         $mark = $knPostCount;
         $lim = floor($mark / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
-        if ($mark % GameEnum::KN_PER_SITE == 0) {
-            $knStart = $lim - GameEnum::KN_PER_SITE;
-        } else {
-            $knStart = $lim;
-        }
+        $knStart = $mark % GameEnum::KN_PER_SITE == 0 ? $lim - GameEnum::KN_PER_SITE : $lim;
 
         $mark = $this->overviewRequest->getKnOffset();
         if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
@@ -70,10 +66,10 @@ final class Overview implements ViewControllerInterface
             $knNavigation[] = [
                 "page" => $i,
                 "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
+                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")
             ];
         }
-        if ($curpage + 1 != $maxpage) {
+        if ($curpage + 1 !== $maxpage) {
             $knNavigation[] = ["page" => ">", "mark" => ($mark + GameEnum::KN_PER_SITE), "cssclass" => "pages"];
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }

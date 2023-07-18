@@ -35,6 +35,8 @@ class ColonyStorageManagerTest extends StuTestCase
 
     private LoggerUtilInterface $loggerUtil;
 
+    public $commodityId;
+
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);

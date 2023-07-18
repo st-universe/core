@@ -62,30 +62,25 @@ final class ErrorHandler
     private function outputHandler(): mixed
     {
 
-        if (
-            $this->stuConfig->getDebugSettings()->isDebugMode()
-            || $this->isAdminUser()
-        ) {
-
+        if ($this->stuConfig->getDebugSettings()->isDebugMode()
+        || $this->isAdminUser()) {
             if (Misc::isCommandLine()) {
                 $handler = new PlainTextHandler();
             } else {
                 $handler = new PrettyPageHandler();
                 $handler->setPageTitle('Error - Star Trek Universe');
             }
+        } elseif (Misc::isCommandLine()) {
+            $handler = new PlainTextHandler();
         } else {
-            if (Misc::isCommandLine()) {
-                $handler = new PlainTextHandler();
-            } else {
-                $handler = function (): void {
+            $handler = function (): void {
 
-                    echo str_replace(
-                        '$REQUESTID',
-                        $this->game->getGameRequestId(),
-                        (string) file_get_contents(__DIR__ . '/../html/error.html')
-                    );
-                };
-            }
+                echo str_replace(
+                    '$REQUESTID',
+                    $this->game->getGameRequestId(),
+                    (string) file_get_contents(__DIR__ . '/../html/error.html')
+                );
+            };
         }
 
         return $handler;

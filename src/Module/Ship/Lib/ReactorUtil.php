@@ -80,11 +80,7 @@ final class ReactorUtil implements ReactorUtilInterface
             return null;
         }
 
-        if ($managerProvider !== null) {
-            $storage = $managerProvider->getStorage();
-        } else {
-            $storage = $ship->getStorage();
-        }
+        $storage = $managerProvider !== null ? $managerProvider->getStorage() : $ship->getStorage();
 
         // check for ressource limitation
         $costs = $isWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
@@ -126,7 +122,7 @@ final class ReactorUtil implements ReactorUtilInterface
         if ($ship->getReactorLoad() + $loadUnits *  $capaPerLoad > $ship->getReactorCapacity()) {
             $loadUnits = $ship->getReactorCapacity() - $ship->getReactorLoad();
         } else {
-            $loadUnits = $loadUnits *  $capaPerLoad;
+            $loadUnits *= $capaPerLoad;
         }
         $ship->setReactorLoad($ship->getReactorLoad() + $loadUnits);
         $this->shipRepository->save($ship);

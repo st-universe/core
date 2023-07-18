@@ -36,9 +36,7 @@ final class ShowLicenseInfo implements ViewControllerInterface
         $licenseInfo = $this->tradeLicenseInfoRepository->getLatestLicenseInfo($tradePostId);
 
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicenseinfo');
-        $game->setPageTitle(sprintf(
-            _('Lizenzinformation')
-        ));
+        $game->setPageTitle(_('Lizenzinformation'));
         $game->setTemplateVar('LICENSEINFO', $licenseInfo);
         $game->setTemplateVar('CURRENTLICENSE', $this->tradeLicenseRepository->getLatestActiveLicenseByUserAndTradePost($game->getUser()->getId(), $tradePostId));
     }

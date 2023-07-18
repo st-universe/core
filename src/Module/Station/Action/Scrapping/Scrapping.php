@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\Scrapping;
 
 use request;
+use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Station\View\Overview\Overview;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
@@ -41,8 +40,6 @@ final class Scrapping implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -50,8 +47,7 @@ final class Scrapping implements ActionControllerInterface
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
         ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
         ShipRemoverInterface $shipRemover,
-        TradePostRepositoryInterface $tradePostRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -60,13 +56,10 @@ final class Scrapping implements ActionControllerInterface
         $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
         $this->shipRemover = $shipRemover;
         $this->tradePostRepository = $tradePostRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-
         $userId = $game->getUser()->getId();
 
         $station = $this->shipLoader->getByIdAndUser(
@@ -82,9 +75,13 @@ final class Scrapping implements ActionControllerInterface
             return;
         }
 
-        $code = trim(request::postString('scrapcode'));
+        $code = request::postString('scrapcode');
+        if ($code === false) {
+            return;
+        }
 
-        if ($code !== substr(md5($station->getName()), 0, 6)) {
+        $trimmedCode = trim($code);
+        if ($trimmedCode !== substr(md5($station->getName()), 0, 6)) {
             $game->addInformation(_('Der Bestätigungscode war fehlerhaft'));
             return;
         }
@@ -114,6 +111,9 @@ final class Scrapping implements ActionControllerInterface
 
         //setup scrapping progress
         $progress = $this->constructionProgressRepository->getByShip($station->getId());
+        if ($progress === null) {
+            throw new RuntimeException(sprintf('station with id %d does not have construction progess', $station->getId()));
+        }
         $progress->setRemainingTicks((int)ceil($station->getRump()->getBuildtime() / 2));
 
         $this->constructionProgressRepository->save($progress);
@@ -151,11 +151,18 @@ final class Scrapping implements ActionControllerInterface
         $this->shipRepository->save($station);
     }
 
+    /**
+     * @return array<int, array{0: ModuleInterface, 1: int}>
+     */
     private function retrieveSomeIntactModules(ShipInterface $station): array
     {
         $intactModules = [];
 
         $plan = $station->getBuildplan();
+        if ($plan === null) {
+            return $intactModules;
+        }
+
         $modules = $plan->getModules();
 
         foreach ($station->getSystems() as $system) {
@@ -168,11 +175,7 @@ final class Scrapping implements ActionControllerInterface
                 if (!array_key_exists($module->getId(), $intactModules)) {
                     $buildplanModule = $modules->get($module->getId());
 
-                    if ($buildplanModule === null) {
-                        $count = 1;
-                    } else {
-                        $count = $buildplanModule->getModuleCount();
-                    }
+                    $count = $buildplanModule === null ? 1 : $buildplanModule->getModuleCount();
 
                     $intactModules[$module->getId()] = [$module, $count];
                 }

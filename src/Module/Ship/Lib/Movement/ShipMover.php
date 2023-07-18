@@ -168,7 +168,7 @@ final class ShipMover implements ShipMoverInterface
             && $leadShip->getFleet() !== null
             && $leadShip->getFleet()->isFleetFixed();
         $this->getReadyForFlight($leadShip, $wrappers, $isFixedFleetMode, $flightRoute);
-        if (!empty($this->lostShips)) {
+        if ($this->lostShips !== []) {
             $this->addInformation(_('Der Weiterflug wurde abgebrochen!'));
 
             return $this->informations;
@@ -184,7 +184,7 @@ final class ShipMover implements ShipMoverInterface
             if ($isFixedFleetMode) {
                 $reasons = $this->shipMovementComponentsFactory->createShipMovementBlockingDeterminator()->determine($wrappers);
 
-                if (!empty($reasons)) {
+                if ($reasons !== []) {
                     $flightRoute->abortFlight();
                     $this->addInformation(_('Der Weiterflug wurde aus folgenden Gründen abgebrochen:'));
                     $this->addInformationMerge($reasons);

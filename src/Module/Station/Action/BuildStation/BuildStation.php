@@ -74,7 +74,7 @@ final class BuildStation implements ActionControllerInterface
 
         $wantedPlanId = request::postInt('plan_select');
 
-        if (!$wantedPlanId) {
+        if ($wantedPlanId === 0) {
             $game->addInformation('Bitte Stationstyp auswählen');
             return;
         }
@@ -155,11 +155,7 @@ final class BuildStation implements ActionControllerInterface
         }
 
         $outsideSystem = !$inSystem && !$overSystem;
-        if ($outsideSystem && $location === StationEnum::BUILDABLE_OUTSIDE_SYSTEM) {
-            return true;
-        }
-
-        return false;
+        return $outsideSystem && $location === StationEnum::BUILDABLE_OUTSIDE_SYSTEM;
     }
 
     /**

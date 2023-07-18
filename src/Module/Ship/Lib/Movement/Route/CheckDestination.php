@@ -33,7 +33,7 @@ final class CheckDestination implements CheckDestinationInterface
     ): MapInterface|StarSystemMapInterface {
         $start = $ship->getCurrentMapField();
 
-        if ($start->getX() != $destinationX && $start->getY() != $destinationY) {
+        if ($start->getX() !== $destinationX && $start->getY() !== $destinationY) {
             throw new SanityCheckException(
                 sprintf(
                     'userId %d tried to navigate from %s to invalid position %d|%d',

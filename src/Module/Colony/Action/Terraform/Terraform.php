@@ -84,7 +84,7 @@ final class Terraform implements ActionControllerInterface
         if ($terraf === null) {
             return;
         }
-        if ($field->getFieldType() != $terraf->getFromFieldTypeId()) {
+        if ($field->getFieldType() !== $terraf->getFromFieldTypeId()) {
             return;
         }
 

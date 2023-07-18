@@ -34,7 +34,7 @@ final class ChangePassword implements ActionControllerInterface
         $user = $game->getUser();
         $currentPassword = $this->changePasswordRequest->getCurrentPassword();
 
-        if (!$currentPassword) {
+        if ($currentPassword === '') {
             $game->addInformation(_('Das alte Passwort wurde nicht angegeben'));
             return;
         }
@@ -46,7 +46,7 @@ final class ChangePassword implements ActionControllerInterface
         $newPassword = trim($this->changePasswordRequest->getNewPassword());
         $newPasswordReEntered = $this->changePasswordRequest->getNewPasswordReEntered();
 
-        if (!$newPassword) {
+        if ($newPassword === '') {
             $game->addInformation(_('Es wurde kein neues Passwort eingegeben'));
             return;
         }

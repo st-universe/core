@@ -36,7 +36,7 @@ final class EditPmCategory implements ActionControllerInterface
         }
 
         $cat = $this->privateMessageFolderRepository->find($this->editPmCategoryRequest->getCategoryId());
-        if ($cat === null || $cat->getUserId() != $game->getUser()->getId()) {
+        if ($cat === null || $cat->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 
