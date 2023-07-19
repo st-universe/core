@@ -63,7 +63,7 @@ final class BuildTorpedos implements ActionControllerInterface
             if ($count <= 0) {
                 continue;
             }
-            foreach ($torp->getProductionCosts() as $id => $cost) {
+            foreach ($torp->getProductionCosts() as $cost) {
                 if (!$storage->containsKey($cost->getCommodityId())) {
                     $count = 0;
                     break;
@@ -79,7 +79,7 @@ final class BuildTorpedos implements ActionControllerInterface
             //count could be float here
             $count = (int)$count;
 
-            foreach ($torp->getProductionCosts() as $id => $cost) {
+            foreach ($torp->getProductionCosts() as $cost) {
                 $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
             }
 

@@ -43,7 +43,7 @@ final class IgnoreUser implements ActionControllerInterface
             $game->addInformation(_('Du kannst Dich nicht selbst ignorieren'));
             return;
         }
-        if ($this->ignoreListRepository->exists($userId, (int) $recipient->getId()) === true) {
+        if ($this->ignoreListRepository->exists($userId, $recipient->getId()) === true) {
             $game->addInformation(_('Der Spieler befindet sich bereits auf Deiner Ignoreliste'));
             return;
         }

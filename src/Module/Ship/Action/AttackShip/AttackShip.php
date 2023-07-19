@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackShip;
 
 use request;
+use RuntimeException;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -298,8 +299,10 @@ final class AttackShip implements ActionControllerInterface
             $isWebSituation = true;
             $defender = [];
 
-            /** @var TholianWebInterface */
             $holdingWeb = $ship->getHoldingWeb();
+            if ($holdingWeb === null) {
+                throw new RuntimeException('this should not happen');
+            }
 
             foreach ($holdingWeb->getCapturedShips() as $shipInWeb) {
                 $defender[$shipInWeb->getId()] = $shipInWeb;

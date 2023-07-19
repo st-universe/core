@@ -103,7 +103,7 @@ final class StartBlocking implements ActionControllerInterface
 
         $this->privateMessageSender->send(
             $userId,
-            (int) $currentColony->getUser()->getId(),
+            $currentColony->getUser()->getId(),
             $text,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
         );

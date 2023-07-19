@@ -35,13 +35,7 @@ Init::run(function (ContainerInterface $dic): void {
     $shipRepo = $dic->get(ShipRepositoryInterface::class);
     $crewCreator = $dic->get(CrewCreatorInterface::class);
     $shipCrewRepo = $dic->get(ShipCrewRepositoryInterface::class);
-    /**
-     * @var MapRepositoryInterface
-     */
     $mapRepo = $dic->get(MapRepositoryInterface::class);
-    /**
-     * @var ShipTorpedoManagerInterface
-     */
     $torpedoManager = $dic->get(ShipTorpedoManagerInterface::class);
 
     $userId = request::indInt('userId');
@@ -56,9 +50,6 @@ Init::run(function (ContainerInterface $dic): void {
         $cy = request::postIntFatal('cy');
         $shipcount = request::postIntFatal('shipcount');
         for ($i = 0; $i < $shipcount; $i++) {
-            /**
-             * @var ShipWrapperInterface
-             */
             $wrapper = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
             $ship = $wrapper->get();
 
@@ -106,7 +97,7 @@ Init::run(function (ContainerInterface $dic): void {
             request::postIntFatal('shipcount')
         );
         $plan = $buildplanRepo->find($buildplanId);
-        $possibleTorpedoTypes = $torpedoTypeRepo->getByLevel((int) $plan->getRump()->getTorpedoLevel());
+        $possibleTorpedoTypes = $torpedoTypeRepo->getByLevel($plan->getRump()->getTorpedoLevel());
         if ($possibleTorpedoTypes === []) {
             printf(
                 '<input type="hidden" name="noTorps" value="1" />

@@ -55,7 +55,7 @@ final class ShowAirfield implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_AIRFIELD));
         $game->setTemplateVar(
             'STARTABLE_SHIPS',
-            $this->shipRumpRepository->getStartableByColony((int) $colony->getId())
+            $this->shipRumpRepository->getStartableByColony($colony->getId())
         );
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',

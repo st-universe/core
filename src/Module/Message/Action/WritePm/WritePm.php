@@ -57,7 +57,7 @@ final class WritePm implements ActionControllerInterface
             $game->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
-        if ($this->ignoreListRepository->exists((int) $recipient->getId(), $userId)) {
+        if ($this->ignoreListRepository->exists($recipient->getId(), $userId)) {
             $game->addInformation("Der Siedler ignoriert Dich");
             return;
         }

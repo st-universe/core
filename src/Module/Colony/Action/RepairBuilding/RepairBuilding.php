@@ -52,7 +52,7 @@ final class RepairBuilding implements ActionControllerInterface
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
             $colony->getId(),
-            (int) request::indInt('fid')
+            request::indInt('fid')
         );
 
         if ($field === null) {

@@ -13,8 +13,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -32,20 +30,16 @@ final class Selfrepair implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         RepairUtilInterface $repairUtil,
         ShipRepositoryInterface $shipRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->repairUtil = $repairUtil;
         $this->shipRepository = $shipRepository;
         $this->shipStorageManager = $shipStorageManager;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

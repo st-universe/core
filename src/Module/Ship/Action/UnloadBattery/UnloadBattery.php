@@ -9,8 +9,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -26,18 +24,14 @@ final class UnloadBattery implements ActionControllerInterface
 
     private StuTime $stuTime;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        StuTime $stuTime,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        StuTime $stuTime
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->stuTime = $stuTime;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

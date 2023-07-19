@@ -5,23 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Stu\Component\Ship\ShipEnum;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickHandlerInterface
 {
     private ShipRepositoryInterface $shipRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipRepository = $shipRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(): void

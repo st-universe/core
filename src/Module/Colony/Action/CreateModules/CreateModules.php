@@ -127,14 +127,14 @@ final class CreateModules implements ActionControllerInterface
 
             $this->colonyRepository->save($colony);
 
-            if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding((int) $colonyId, (int) $module_id, (int) $func)) !== null) {
+            if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $module_id, $func)) !== null) {
                 $queue->setAmount($queue->getAmount() + $count);
 
                 $this->moduleQueueRepository->save($queue);
             } else {
                 $queue = $this->moduleQueueRepository->prototype();
                 $queue->setColony($colony);
-                $queue->setBuildingFunction((int) $func);
+                $queue->setBuildingFunction($func);
                 $queue->setModule($module);
                 $queue->setAmount($count);
 

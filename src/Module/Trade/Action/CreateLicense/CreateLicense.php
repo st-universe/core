@@ -7,9 +7,6 @@ namespace Stu\Module\Trade\Action\CreateLicense;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -27,20 +24,16 @@ final class CreateLicense implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         CreateLicenseRequestInterface $createLicenseRequest,
         TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         TradePostRepositoryInterface $tradePostRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->createLicenseRequest = $createLicenseRequest;
         $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->tradePostRepository = $tradePostRepository;
         $this->commodityRepository = $commodityRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -85,7 +78,7 @@ final class CreateLicense implements ActionControllerInterface
         $setLicense->setTradepost($tradepost);
         $setLicense->setDate(time());
         $setLicense->setCommodity($commodity);
-        $setLicense->setAmount((int) $giveAmount);
+        $setLicense->setAmount($giveAmount);
         $setLicense->setDays($days);
 
         $this->TradeLicenseInfoRepository->save($setLicense);

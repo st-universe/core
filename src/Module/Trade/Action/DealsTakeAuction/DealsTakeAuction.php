@@ -161,7 +161,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         if ($auction->getgiveCommodityId() !== null) {
             $storageManagerUser->upperStorage(
-                (int) $auction->getgiveCommodityId(),
+                $auction->getgiveCommodityId(),
                 (int) $auction->getgiveCommodityAmount()
             );
 
@@ -234,7 +234,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         //copying buildplan modules
         foreach ($buildplan->getModules() as $buildplanModule) {
             $mod = $this->buildplanModuleRepository->prototype();
-            $mod->setModuleType((int) $buildplanModule->getModule()->getType());
+            $mod->setModuleType($buildplanModule->getModule()->getType());
             $mod->setBuildplan($newPlan);
             $mod->setModule($buildplanModule->getModule());
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($buildplanModule->getModule()->getSpecials()));

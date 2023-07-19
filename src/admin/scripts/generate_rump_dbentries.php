@@ -18,7 +18,7 @@ Init::run(function (ContainerInterface $dic): void {
     $shipRumpRepo = $dic->get(ShipRumpRepositoryInterface::class);
 
     $result = $shipRumpRepo->getWithoutDatabaseEntry();
-    foreach ($result as $key => $obj) {
+    foreach ($result as $obj) {
         $db = $repository->prototype();
         $db->setCategory($category);
         $db->setDescription($obj->getName());

@@ -40,7 +40,6 @@ final class ShowSystemEditField implements ViewControllerInterface
             $possibleFieldTypes['row_' . ($key % 6)][] = $value;
         }
 
-        /** @var StarSystemMapInterface $selectedField */
         $field = $this->starSystemMapRepository->find($this->showSystemEditFieldRequest->getFieldId());
 
         $game->setPageTitle(_('Feld wählen'));

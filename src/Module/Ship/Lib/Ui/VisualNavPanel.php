@@ -34,7 +34,6 @@ class VisualNavPanel
     /** @var null|array<array{value: int}> */
     private ?array $headRow = null;
 
-    /** @var null|float */
     private ?float $viewport = null;
 
     private ?string $viewportPerColumn = null;
@@ -208,9 +207,6 @@ class VisualNavPanel
             $startTime = microtime(true);
         }
 
-        /**
-         * @var array<int, VisualNavPanelRow>
-         */
         $rows = [];
 
         foreach ($result as $data) {

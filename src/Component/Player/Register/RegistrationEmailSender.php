@@ -50,7 +50,7 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
             $transport = new Sendmail();
             $transport->send($mail);
         } catch (RuntimeException $e) {
-            return;
+            //nothing to do here
         }
     }
 }

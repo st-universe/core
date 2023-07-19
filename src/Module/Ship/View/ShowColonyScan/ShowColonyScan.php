@@ -96,7 +96,7 @@ final class ShowColonyScan implements ViewControllerInterface
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
-            (int) $colony->getUserId(),
+            $colony->getUserId(),
             sprintf(_('Der Spieler %s hat die Oberfläche deiner Kolonie %s gescannt.'), $game->getUser()->getName(), $colony->getName()),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
         );

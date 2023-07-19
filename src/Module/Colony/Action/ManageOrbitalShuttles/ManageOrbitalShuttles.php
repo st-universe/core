@@ -193,7 +193,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         ColonyInterface $colony,
         InformationWrapper $informations
     ): void {
-        $diff = (int)abs($wanted - $current);
+        $diff = abs($wanted - $current);
 
         if ($current < $wanted) {
             $this->shipStorageManager->upperStorage($ship, $commodity, $diff);

@@ -183,8 +183,6 @@ final class BeamTo implements ActionControllerInterface
                 $isDockTransfer ? 0 : ceil($count / $transferAmount)
             ));
 
-            $count = (int) $count;
-
             $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
             $this->shipStorageManager->upperStorage($target, $commodity, $count);
 

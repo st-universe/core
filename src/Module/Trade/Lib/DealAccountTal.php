@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class DealAccountTal implements DealAccountTalInterface
@@ -18,31 +15,19 @@ final class DealAccountTal implements DealAccountTalInterface
 
     private TradePostInterface $tradePost;
 
-    private array $deals;
-
     private int $userId;
 
     /** @var array<StorageInterface> */
     private ?array $storage = null;
 
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         StorageRepositoryInterface $storageRepository,
         TradePostInterface $tradePost,
-        array $deals,
-        int $userId,
-        CommodityRepositoryInterface $commodityRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        int $userId
     ) {
         $this->storageRepository = $storageRepository;
         $this->tradePost = $tradePost;
-        $this->deals = $deals;
         $this->userId = $userId;
-        $this->commodityRepository = $commodityRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getId(): int
@@ -70,7 +55,7 @@ final class DealAccountTal implements DealAccountTalInterface
     {
         return array_reduce(
             $this->getStorage(),
-            fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+            fn (int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
             0
         );
     }

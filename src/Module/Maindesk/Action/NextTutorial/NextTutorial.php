@@ -26,15 +26,15 @@ final class NextTutorial implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ((int) $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP || (int) $user->getState() === UserEnum::USER_STATE_UNCOLONIZED) {
+        if ($user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP || $user->getState() === UserEnum::USER_STATE_UNCOLONIZED) {
             throw new AccessViolation();
-        } elseif ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL1) {
+        } elseif ($user->getState() === UserEnum::USER_STATE_TUTORIAL1) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL2);
-        } elseif ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL2) {
+        } elseif ($user->getState() === UserEnum::USER_STATE_TUTORIAL2) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL3);
-        } elseif ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL3) {
+        } elseif ($user->getState() === UserEnum::USER_STATE_TUTORIAL3) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL4);
-        } elseif ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL4) {
+        } elseif ($user->getState() === UserEnum::USER_STATE_TUTORIAL4) {
             $user->setState(UserEnum::USER_STATE_ACTIVE);
         }
         $this->userRepository->save($user);

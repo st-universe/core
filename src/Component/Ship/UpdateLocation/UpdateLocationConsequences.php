@@ -91,7 +91,7 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
 
         if ($scheduleToOwnerOfPassiveShip) {
             $this->loggerUtil->log('  scheduleToOwnerOfPassiveShip');
-            $this->informOwnerOfTractoredShip($msgToSchedule);
+            $this->informOwnerOfTractoredShip();
         } else {
             $this->loggerUtil->log('  msgToPlayer');
             if ($msgToPlayer !== null) {
@@ -101,10 +101,7 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         }
     }
 
-    /**
-     * @param array<string> $msg
-     */
-    private function informOwnerOfTractoredShip(array $msg): void
+    private function informOwnerOfTractoredShip(): void
     {
         //TODO privateMessageSender
     }

@@ -19,9 +19,9 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
 
     $rectorConfig->sets([
-        SetList::CODE_QUALITY,          //last 2023-07-18
+        //SetList::CODE_QUALITY,        //last 2023-07-18
         //SetList::CODING_STYLE,
-        //SetList::DEAD_CODE,
+        SetList::DEAD_CODE,             //last 2023-07-18
         //SetList::PRIVATIZATION,       //lots of errors
         //SetList::TYPE_DECLARATION,    //last 2023-07-17
         //LevelSetList::UP_TO_PHP_74,   //last 2023-07-18

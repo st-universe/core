@@ -44,7 +44,7 @@ final class RenameCrew implements ActionControllerInterface
         $game->setView(ShowRenameCrew::VIEW_IDENTIFIER);
         $crew_id = request::getIntFatal('crewid');
 
-        $crew = $this->crewRepository->find((int) $crew_id);
+        $crew = $this->crewRepository->find($crew_id);
 
         if ($crew === null || $crew->getUser()->getId() !== $userId) {
             throw new AccessViolation();

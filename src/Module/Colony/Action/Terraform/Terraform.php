@@ -61,7 +61,7 @@ final class Terraform implements ActionControllerInterface
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $fieldId = (int)request::indInt('fid');
+        $fieldId = request::indInt('fid');
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
             $colony->getId(),

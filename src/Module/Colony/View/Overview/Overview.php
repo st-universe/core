@@ -8,8 +8,6 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -28,8 +26,6 @@ final class Overview implements ViewControllerInterface
 
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
 
 
@@ -38,15 +34,13 @@ final class Overview implements ViewControllerInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
-        BuildingCommodityRepositoryInterface $buildingCommodityRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        BuildingCommodityRepositoryInterface $buildingCommodityRepository
     ) {
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->buildingCommodityRepository = $buildingCommodityRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

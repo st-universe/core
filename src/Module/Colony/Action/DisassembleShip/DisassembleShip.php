@@ -88,7 +88,7 @@ final class DisassembleShip implements ActionControllerInterface
         )->getFreeAssignmentCount();
 
         $ship_id = request::getIntFatal('ship_id');
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser((int) $ship_id, $userId);
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser($ship_id, $userId);
         $ship = $wrapper->get();
         if ($ship->getCrewCount() > $freeAssignmentCount) {
             $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
@@ -182,7 +182,7 @@ final class DisassembleShip implements ActionControllerInterface
                 break;
             }
 
-            $amount = (int) $loads * $loadCost;
+            $amount = $loads * $loadCost;
             if ($maxStorage - $colony->getStorageSum() < $amount) {
                 $amount = $maxStorage - $colony->getStorageSum();
             }

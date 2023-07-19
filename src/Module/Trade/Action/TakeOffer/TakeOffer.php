@@ -133,7 +133,7 @@ final class TakeOffer implements ActionControllerInterface
             $this->tradeOfferRepository->delete($selectedOffer);
         } else {
             //modify offer
-            $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - (int) $amount);
+            $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - $amount);
             $this->tradeOfferRepository->save($selectedOffer);
 
             //modify storage of offer
@@ -143,18 +143,18 @@ final class TakeOffer implements ActionControllerInterface
         }
 
         $storageManagerRemote->upperStorage(
-            (int) $selectedOffer->getWantedCommodityId(),
-            (int) $selectedOffer->getWantedCommodityCount() * $amount
+            $selectedOffer->getWantedCommodityId(),
+            $selectedOffer->getWantedCommodityCount() * $amount
         );
 
         $storageManagerUser->upperStorage(
-            (int) $selectedOffer->getOfferedCommodityId(),
-            (int) $selectedOffer->getOfferedCommodityCount() * $amount
+            $selectedOffer->getOfferedCommodityId(),
+            $selectedOffer->getOfferedCommodityCount() * $amount
         );
 
         $storageManagerUser->lowerStorage(
-            (int) $selectedOffer->getWantedCommodityId(),
-            (int) $selectedOffer->getWantedCommodityCount() * $amount
+            $selectedOffer->getWantedCommodityId(),
+            $selectedOffer->getWantedCommodityCount() * $amount
         );
 
         $transaction = $this->tradeTransactionRepository->prototype();

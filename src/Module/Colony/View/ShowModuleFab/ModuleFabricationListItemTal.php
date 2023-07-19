@@ -33,12 +33,12 @@ final class ModuleFabricationListItemTal
 
     public function getModuleId(): int
     {
-        return (int)$this->module->getId();
+        return $this->module->getId();
     }
 
     public function getCommodityId(): int
     {
-        return (int)$this->module->getCommodityId();
+        return $this->module->getCommodityId();
     }
 
     public function getName(): string
@@ -48,7 +48,7 @@ final class ModuleFabricationListItemTal
 
     public function getEnergyCost(): int
     {
-        return (int)$this->module->getEcost();
+        return $this->module->getEcost();
     }
 
     public function getConstructionCosts(): array
@@ -59,8 +59,8 @@ final class ModuleFabricationListItemTal
     public function getAmountQueued(): int
     {
         return $this->moduleQueueRepository->getAmountByColonyAndModule(
-            (int) $this->colony->getId(),
-            (int) $this->module->getId()
+            $this->colony->getId(),
+            $this->module->getId()
         );
     }
 
@@ -71,6 +71,6 @@ final class ModuleFabricationListItemTal
         if ($result === null) {
             return 0;
         }
-        return (int) $result->getAmount();
+        return $result->getAmount();
     }
 }

@@ -111,9 +111,9 @@ final class TroopTransfer implements ActionControllerInterface
 
         $isColony = request::has('isColony');
         if ($isColony) {
-            $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
+            $target = $this->colonyRepository->find(request::postIntFatal('target'));
         } else {
-            $target = $this->shipRepository->find((int)request::postIntFatal('target'));
+            $target = $this->shipRepository->find(request::postIntFatal('target'));
         }
         if ($target === null) {
             return;
@@ -236,7 +236,6 @@ final class TroopTransfer implements ActionControllerInterface
             $freeAssignmentCount
         );
 
-        /** @var ShipCrewInterface[] */
         $array = $ship->getCrewlist()->getValues();
 
         for ($i = 0; $i < $amount; $i++) {

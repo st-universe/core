@@ -208,7 +208,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             return;
         }
 
-        /** @var TorpedoHullInterface|null */
         $torpedoHull = $targetHullModule->getTorpedoHull()->get($torpedo->getId());
 
         if ($torpedoHull !== null) {

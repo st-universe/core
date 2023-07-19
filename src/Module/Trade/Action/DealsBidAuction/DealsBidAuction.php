@@ -114,7 +114,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
         $highestBid = $auction->getHighestBid();
         if ($highestBid === null) {
-            $this->createFirstBid($maxAmount, $auction, $game, $userId);
+            $this->createFirstBid($maxAmount, $auction, $game);
             return;
         }
 
@@ -135,7 +135,7 @@ final class DealsBidAuction implements ActionControllerInterface
         }
     }
 
-    private function createFirstBid(int $maxAmount, DealsInterface $auction, GameControllerInterface $game, int $userId): void
+    private function createFirstBid(int $maxAmount, DealsInterface $auction, GameControllerInterface $game): void
     {
         //check if enough available
         if (!$this->checkAndCollectCosts($auction, $maxAmount, self::BID_TYPE_FIRST, $game)) {

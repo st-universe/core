@@ -86,8 +86,8 @@ final class StartAirfieldShip implements ActionControllerInterface
             $userId
         );
 
-        $rump_id = (int) request::postInt('startrump');
-        $available_rumps = $this->shipRumpRepository->getStartableByColony((int) $colony->getId());
+        $rump_id = request::postInt('startrump');
+        $available_rumps = $this->shipRumpRepository->getStartableByColony($colony->getId());
 
         if (!array_key_exists($rump_id, $available_rumps)) {
             return;
@@ -102,7 +102,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
-        $hangar = $this->buildplanHangarRepository->getByRump((int) $rump->getId());
+        $hangar = $this->buildplanHangarRepository->getByRump($rump->getId());
 
         if ($hangar->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
             $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
@@ -136,8 +136,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         );
 
         $wrapper = $this->shipCreator->createBy(
-            (int) $userId,
-            (int) $rump_id,
+            $userId,
+            $rump_id,
             $hangar->getBuildplanId(),
             $colony
         );

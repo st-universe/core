@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -26,22 +25,18 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
-
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         StorageRepositoryInterface $storageRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->storageRepository = $storageRepository;
         $this->commodityRepository = $commodityRepository;
-        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function createTradeAccountTal(
@@ -58,21 +53,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         );
     }
 
-    public function createDealAccountTal(
-        TradePostInterface $tradePost,
-        array $deals,
-        int $userId
-    ): DealAccountTalInterface {
-        return new DealAccountTal(
-            $this->storageRepository,
-            $tradePost,
-            $deals,
-            $userId,
-            $this->commodityRepository,
-            $this->loggerUtilFactory
-        );
-    }
-
     public function createBasicTradeAccountTal(
         TradePostInterface $tradePost,
         array $basicTrades,
@@ -80,7 +60,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     ): BasicTradeAccountTalInterface {
         $filteredBasicTrades = array_filter(
             $basicTrades,
-            fn(BasicTradeInterface $basicTrade): bool => $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork()
+            fn (BasicTradeInterface $basicTrade): bool => $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork()
         );
 
         return new BasicTradeAccountTal(

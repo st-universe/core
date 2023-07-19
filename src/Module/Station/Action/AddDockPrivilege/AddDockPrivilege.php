@@ -52,33 +52,33 @@ final class AddDockPrivilege implements ActionControllerInterface
             $userId
         );
 
-        $target = (int) request::getIntFatal('target');
-        $type = (int) request::getIntFatal('type');
-        $mode = (int) request::getIntFatal('mode');
+        $target = request::getIntFatal('target');
+        $type = request::getIntFatal('type');
+        $mode = request::getIntFatal('mode');
 
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
         if ($mode != ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW && $mode != ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
             return;
         }
-        if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, (int) $ship->getId()) === true) {
+        if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, $ship->getId()) === true) {
             return;
         }
         $save = 0;
         switch ($type) {
             case ShipEnum::DOCK_PRIVILEGE_USER:
-                if ($this->userRepository->find((int) $target) === null) {
+                if ($this->userRepository->find($target) === null) {
                     break;
                 }
                 $save = 1;
                 break;
             case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
-                if ($this->allianceRepository->find((int) $target) === null) {
+                if ($this->allianceRepository->find($target) === null) {
                     break;
                 }
                 $save = 1;
                 break;
             case ShipEnum::DOCK_PRIVILEGE_FACTION:
-                if ($this->factionRepository->find((int) $target) === null) {
+                if ($this->factionRepository->find($target) === null) {
                     break;
                 }
                 $save = 1;

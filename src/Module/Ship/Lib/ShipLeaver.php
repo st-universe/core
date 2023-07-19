@@ -164,7 +164,7 @@ final class ShipLeaver implements ShipLeaverInterface
             $crewArray[] = $shipCrew->getCrew();
         }
 
-        $this->shipCrewRepository->truncateByShip((int) $ship->getId());
+        $this->shipCrewRepository->truncateByShip($ship->getId());
 
         foreach ($crewArray as $crew) {
             $this->crewRepository->delete($crew);

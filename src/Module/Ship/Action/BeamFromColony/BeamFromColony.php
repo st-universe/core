@@ -69,7 +69,7 @@ final class BeamFromColony implements ActionControllerInterface
         );
         $ship = $wrapper->get();
 
-        $target = $this->colonyRepository->find((int) request::postIntFatal('target'));
+        $target = $this->colonyRepository->find(request::postIntFatal('target'));
         if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
@@ -82,7 +82,7 @@ final class BeamFromColony implements ActionControllerInterface
         }
 
         if ($target->getUserId() !== $userId && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getShieldFrequency() !== 0) {
-            $frequency = (int) request::postInt('frequency');
+            $frequency = request::postInt('frequency');
             if ($frequency !== $target->getShieldFrequency()) {
                 $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
                 return;
@@ -165,7 +165,7 @@ final class BeamFromColony implements ActionControllerInterface
                 $game->addInformation(sprintf(_('%s ist nicht beambar'), $commodity->getCommodity()->getName()));
                 continue;
             }
-            $count = $count == "max" ? (int) $commodity->getAmount() : (int) $count;
+            $count = $count == "max" ? $commodity->getAmount() : (int) $count;
             if ($count < 1) {
                 continue;
             }
@@ -173,7 +173,7 @@ final class BeamFromColony implements ActionControllerInterface
                 break;
             }
             if ($count > $commodity->getAmount()) {
-                $count = (int) $commodity->getAmount();
+                $count = $commodity->getAmount();
             }
 
             $transferAmount = $commodity->getCommodity()->getTransferCount() * $ship->getBeamFactor();
@@ -185,16 +185,12 @@ final class BeamFromColony implements ActionControllerInterface
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
 
-            $count = (int) $count;
-
             $game->addInformationf(
                 _('%d %s (Energieverbrauch: %d)'),
                 $count,
                 $commodity->getCommodity()->getName(),
                 ceil($count / $transferAmount)
             );
-
-            $count = (int) $count;
 
             $this->colonyStorageManager->lowerStorage($target, $commodity->getCommodity(), $count);
             $this->shipStorageManager->upperStorage($ship, $commodity->getCommodity(), $count);

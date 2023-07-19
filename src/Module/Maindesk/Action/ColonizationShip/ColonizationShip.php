@@ -34,7 +34,7 @@ final class ColonizationShip implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ((int) $user->getState() !== 1) {
+        if ($user->getState() !== 1) {
             throw new AccessViolation();
         }
 

@@ -23,8 +23,6 @@ final class ShowGiveUp implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
-
         $colony = $this->colonyRepository->find(request::indInt('id'));
 
         $code = substr(md5($colony->getName()), 0, 6);

@@ -87,8 +87,8 @@ class SignaturePanelEntry
         return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getLayer() . "_" . $this->getDisplayCount();
     }
 
-    public $currentShipPosX = null;
-    public $currentShipPosY = null;
+    public $currentShipPosX;
+    public $currentShipPosY;
 
     private string $cssClass = 'lss';
 

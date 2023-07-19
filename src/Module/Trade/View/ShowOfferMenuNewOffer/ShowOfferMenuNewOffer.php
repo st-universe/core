@@ -48,8 +48,8 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
             $storage->getCommodity()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_LATINUM', (int) $storage->getCommodityId() === CommodityTypeEnum::COMMODITY_LATINUM);
-        $game->setTemplateVar('IS_NPC_POST', (int) $storage->getTradePost()->getId() < 18);
+        $game->setTemplateVar('IS_LATINUM', $storage->getCommodityId() === CommodityTypeEnum::COMMODITY_LATINUM);
+        $game->setTemplateVar('IS_NPC_POST', $storage->getTradePost()->getId() < 18);
         $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
     }
 }

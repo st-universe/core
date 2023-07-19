@@ -59,7 +59,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         $count = request::postInt('count');
 
         /** @var ModuleInterface $module */
-        $module = $this->moduleRepository->find((int) $module_id);
+        $module = $this->moduleRepository->find($module_id);
 
         if ($module === null) {
             return;
@@ -77,7 +77,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         if ($count == 0) {
             return;
         }
-        $queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding((int) $colony->getId(), (int) $module_id, (int) $function);
+        $queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colony->getId(), $module_id, $function);
         if ($queue === null) {
             return;
         }
@@ -106,7 +106,7 @@ final class CancelModuleCreation implements ActionControllerInterface
                 $gc = $count * $cost->getAmount();
             }
 
-            $this->colonyStorageManager->upperStorage($colony, $cost->getCommodity(), (int)$gc);
+            $this->colonyStorageManager->upperStorage($colony, $cost->getCommodity(), $gc);
         }
         $this->colonyRepository->save($colony);
     }

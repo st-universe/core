@@ -60,21 +60,18 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\MapBorderType")
      * @JoinColumn(name="bordertype_id", referencedColumnName="id")
-     * @var null|MapBorderTypeInterface
      */
     private ?MapBorderTypeInterface $mapBorderType = null;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
-     * @var null|StarSystemInterface
      */
     private ?StarSystemInterface $influenceArea = null;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\MapRegion")
      * @JoinColumn(name="region_id", referencedColumnName="id")
-     * @var null|MapRegionInterface
      */
     private ?MapRegionInterface $adminRegion = null;
 

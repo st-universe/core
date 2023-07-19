@@ -499,11 +499,8 @@ final class ShipMover implements ShipMoverInterface
         $ship = $wrapper->get();
 
         // zu wenig Crew
-        if (!$ship->hasEnoughCrew()) {
-            /**
-             * @var ShipBuildplanInterface
-             */
-            $buildplan = $ship->getBuildplan();
+        $buildplan = $ship->getBuildplan();
+        if (!$ship->hasEnoughCrew() && $buildplan !== null) {
             $this->addLostShip(
                 $wrapper,
                 $leadShip,

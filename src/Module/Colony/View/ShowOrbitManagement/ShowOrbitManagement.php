@@ -51,9 +51,6 @@ final class ShowOrbitManagement implements ViewControllerInterface
             null
         );
 
-        /**
-         * @var array<int, array<ShipInterface>>
-         */
         $groupedList = [];
 
         foreach ($shipList as $ship) {

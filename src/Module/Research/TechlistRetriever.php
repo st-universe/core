@@ -83,17 +83,15 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                     $grouped_list[$dependency->getMode()][] = $dependency;
                 }
             }
-            if ($grouped_list !== []) {
-                foreach ($grouped_list as $group) {
-                    $found = false;
-                    foreach ($group as $dependency) {
-                        if (in_array($dependency->getDependsOn(), $finished_list)) {
-                            $found = true;
-                        }
+            foreach ($grouped_list as $group) {
+                $found = false;
+                foreach ($group as $dependency) {
+                    if (in_array($dependency->getDependsOn(), $finished_list)) {
+                        $found = true;
                     }
-                    if (!$found) {
-                        continue 2;
-                    }
+                }
+                if (!$found) {
+                    continue 2;
                 }
             }
 

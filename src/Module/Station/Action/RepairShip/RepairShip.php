@@ -51,7 +51,7 @@ final class RepairShip implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $stationId = request::indInt('id');
-        $shipId = (int) request::getIntFatal('ship_id');
+        $shipId = request::getIntFatal('ship_id');
 
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,

@@ -8,8 +8,6 @@ use request;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -22,16 +20,12 @@ final class StationRepair implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

@@ -8,8 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
@@ -25,18 +23,14 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     private EntityManagerInterface $entityManager;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        EntityManagerInterface $entityManager,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        EntityManagerInterface $entityManager
     ) {
         $this->shipRepository = $shipRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->entityManager = $entityManager;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getSystemType(): int
@@ -125,9 +119,9 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
     public static function isTractorBeamPossible(ShipInterface|ShipNfsItem $ship): bool
     {
         return !($ship->isBase()
-        || $ship->isTrumfield()
-        || $ship->getCloakState()
-        || $ship->getShieldState()
-        || $ship->getWarpState());
+            || $ship->isTrumfield()
+            || $ship->getCloakState()
+            || $ship->getShieldState()
+            || $ship->getWarpState());
     }
 }

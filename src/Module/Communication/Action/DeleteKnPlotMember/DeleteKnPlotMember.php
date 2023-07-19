@@ -42,7 +42,7 @@ final class DeleteKnPlotMember implements ActionControllerInterface
             $game->addInformation(_('Du kannst Dich nicht selbst entfernen'));
             return;
         }
-        $item = $this->rpgPlotMemberRepository->getByPlotAndUser((int) $plot->getId(), $recipientId);
+        $item = $this->rpgPlotMemberRepository->getByPlotAndUser($plot->getId(), $recipientId);
         if ($item !== null) {
             $this->rpgPlotMemberRepository->delete($item);
 

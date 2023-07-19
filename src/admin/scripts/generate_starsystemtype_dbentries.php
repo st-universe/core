@@ -19,7 +19,7 @@ Init::run(function (ContainerInterface $dic): void {
     $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE);
 
     $result = $starSystemTypeRepo->getWithoutDatabaseEntry();
-    foreach ($result as $key => $obj) {
+    foreach ($result as $obj) {
         $db = $repository->prototype();
         $db->setCategory($category);
         $db->setDescription($obj->getDescription());

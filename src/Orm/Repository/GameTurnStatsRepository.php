@@ -85,25 +85,25 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
 
     public function getFlightSigs24h(): int
     {
-        return (int)((int)$this->getEntityManager()->createQuery(
+        return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(fs) FROM %s fs
                 WHERE fs.time > :threshold',
                 FlightSignature::class
             )
-        )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult()) / 2;
+        )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult() / 2;
     }
 
     public function getFlightSigsSystem24h(): int
     {
-        return (int)((int)$this->getEntityManager()->createQuery(
+        return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(fs) FROM %s fs
                 WHERE fs.time > :threshold
                 AND fs.starsystem_map_id IS NOT NULL',
                 FlightSignature::class
             )
-        )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult()) / 2;
+        )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult() / 2;
     }
 
     public function getLatestStats(int $amount, int $divisor): array

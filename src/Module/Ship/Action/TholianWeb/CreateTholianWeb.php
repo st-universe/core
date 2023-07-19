@@ -111,9 +111,6 @@ final class CreateTholianWeb implements ActionControllerInterface
 
         $chosenShipIds = request::postArray('chosen');
 
-        /**
-         * @var ShipInterface[]
-         */
         $possibleCatches = [];
         foreach ($chosenShipIds as $targetId) {
             $target = $this->tryToCatch($ship, (int)$targetId, $game);

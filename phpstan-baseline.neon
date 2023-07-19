@@ -139,11 +139,6 @@ parameters:
 			path: src/Component/Ship/System/Type/TractorBeamShipSystem.php
 
 		-
-			message: "#^Property Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\TractorBeamShipSystem\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Type/TractorBeamShipSystem.php
-
-		-
 			message: "#^Cannot call method getWebUnderConstruction\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/WebEmitterShipSystem.php
@@ -587,11 +582,6 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditField.php
 
 		-
-			message: "#^Variable \\$selectedField in PHPDoc tag @var does not match assigned variable \\$field\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditField.php
-
-		-
 			message: "#^Parameter \\#2 \\$array of function array_map expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\UserInterface\\> given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Playerlist/Playerlist.php
@@ -877,19 +867,9 @@ parameters:
 			path: src/Module/Alliance/View/TopicSettings/TopicSettings.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\ActivateBuilding\\\\ActivateBuilding\\:\\:\\$colonyRepository is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ActivateBuilding/ActivateBuilding.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Colony/Action/ActivateBuildings/ActivateBuildings.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\AllowImmigration\\\\AllowImmigration\\:\\:\\$colonyGuiHelper is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/AllowImmigration/AllowImmigration.php
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
@@ -955,11 +935,6 @@ parameters:
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Colony/Action/DeactivateBuildings/DeactivateBuildings.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\DenyImmigration\\\\DenyImmigration\\:\\:\\$colonyGuiHelper is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DenyImmigration/DenyImmigration.php
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
@@ -1117,11 +1092,6 @@ parameters:
 			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
 			message: "#^Cannot call method getCosts\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/BuildingAction.php
@@ -1210,11 +1180,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetColonization.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\Overview\\\\Overview\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Colony/View/Overview/Overview.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
@@ -1677,11 +1642,6 @@ parameters:
 			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 3
-			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryEntryTalInterface\\:\\:getObject\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTalInterface.php
@@ -1810,11 +1770,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$data of method Stu\\\\Module\\\\Control\\\\StuHashInterface\\:\\:hash\\(\\) expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Module/Maindesk/Action/SmsVerification/SmsVerification.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Maindesk\\\\View\\\\Overview\\\\Overview\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Maindesk/View/Overview/Overview.php
 
 		-
 			message: "#^Cannot call method close\\(\\) on Directory\\|false\\.$#"
@@ -2027,11 +1982,6 @@ parameters:
 			path: src/Module/Research/TalSelectedTech.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTechInterface\\:\\:getDistinctExcludeNames\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Research/TalSelectedTechInterface.php
@@ -2197,11 +2147,6 @@ parameters:
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Action\\\\Selfrepair\\\\Selfrepair\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
-
-		-
 			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TholianWeb/CancelTholianWeb.php
@@ -2270,16 +2215,6 @@ parameters:
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/UnloadBattery/UnloadBattery.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Action\\\\UnloadBattery\\\\UnloadBattery\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/UnloadBattery/UnloadBattery.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ActivatorDeactivatorHelper\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ActivatorDeactivatorHelper.php
 
 		-
 			message: "#^Cannot call method setAstroStartTurn\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
@@ -2602,11 +2537,6 @@ parameters:
 			path: src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\View\\\\ShowTradeMenuPayment\\\\ShowTradeMenuPayment\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php
-
-		-
 			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
@@ -2717,11 +2647,6 @@ parameters:
 			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\Action\\\\StationRepair\\\\StationRepair\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Station/Action/StationRepair/StationRepair.php
-
-		-
 			message: "#^Cannot call method reloadBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
 			path: src/Module/Station/Action/ToggleBatteryReload/ToggleBatteryReload.php
@@ -2732,32 +2657,12 @@ parameters:
 			path: src/Module/Station/Action/ToggleBatteryReload/ToggleBatteryReload.php
 
 		-
-			message: "#^PHPDoc tag @var contains unknown class Stu\\\\Module\\\\Station\\\\View\\\\ShowShipManagement\\\\FleetWrapperInterface\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowShipManagement/ShowShipManagement.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\View\\\\ShowStationCosts\\\\ShowStationCosts\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowStationCosts/ShowStationCosts.php
-
-		-
 			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Station/View/ShowStationInfo/ShowStationInfo.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\View\\\\ShowStationInfo\\\\ShowStationInfo\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowStationInfo/ShowStationInfo.php
-
-		-
 			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSystemSensorScan/ShowSystemSensorScan.php
-
-		-
-			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: src/Module/Station/View/ShowSystemSensorScan/ShowSystemSensorScan.php
 
@@ -2787,16 +2692,6 @@ parameters:
 			path: src/Module/Tick/Process/FinishTholianWebs.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Tick\\\\Process\\\\FinishTholianWebs\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Tick/Process/FinishTholianWebs.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Tick\\\\Process\\\\ShieldRegeneration\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Tick/Process/ShieldRegeneration.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Tick/TickManager.php
@@ -2820,11 +2715,6 @@ parameters:
 			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/CancelOffer/CancelOffer.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Action\\\\CreateLicense\\\\CreateLicense\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CreateLicense/CreateLicense.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between int\\<1, max\\> and null will always evaluate to false\\.$#"
@@ -3032,32 +2922,7 @@ parameters:
 			path: src/Module/Trade/Lib/BasicTradeItem.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:__construct\\(\\) has parameter \\$deals with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:getStorage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$commodityRepository is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$deals is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$deals type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/DealAccountTal.php
 
@@ -3067,17 +2932,7 @@ parameters:
 			path: src/Module/Trade/Lib/TradeLibFactory.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactory\\:\\:createDealAccountTal\\(\\) has parameter \\$deals with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradeLibFactory.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradeLibFactoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createDealAccountTal\\(\\) has parameter \\$deals with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/TradeLibFactoryInterface.php
 
