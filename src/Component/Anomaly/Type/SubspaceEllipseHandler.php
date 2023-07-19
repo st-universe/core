@@ -181,9 +181,6 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
     private function informSpacecraftOwnersAboutCreation(AnomalyInterface $anomaly): void
     {
-        /**
-         * @var array<UserInterface>
-         */
         $usersToInform = [];
 
         $location = $anomaly->getLocation();

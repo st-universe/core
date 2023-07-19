@@ -51,7 +51,7 @@ final class ShowKnPlot implements ViewControllerInterface
         if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
             $mark = 0;
         }
-        $maxcount = $this->knPostRepository->getAmountByPlot((int) $plot->getId());
+        $maxcount = $this->knPostRepository->getAmountByPlot($plot->getId());
         $maxpage = ceil($maxcount / GameEnum::KN_PER_SITE);
         $curpage = floor($mark / GameEnum::KN_PER_SITE);
         $knNavigation = [];

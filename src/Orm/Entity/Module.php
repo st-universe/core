@@ -338,7 +338,7 @@ class Module implements ModuleInterface
     {
         if ($this->specialAbilities === null) {
             $this->specialAbilities = array_map(
-                fn(ModuleSpecialInterface $moduleSpecial): int => (int)$moduleSpecial->getSpecialId(),
+                fn(ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId(),
                 $this->getSpecials()->toArray()
             );
         }

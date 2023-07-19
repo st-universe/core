@@ -71,9 +71,6 @@ final class ShowShipManagement implements ViewControllerInterface
             $groupedList[$fleetId][] = $ship;
         }
 
-        /**
-         * @var FleetWrapperInterface[]
-         */
         $list = [];
 
         foreach ($groupedList as $fleetId => $shipList) {

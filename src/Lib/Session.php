@@ -107,7 +107,7 @@ final class Session implements SessionInterface
         }
 
         if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
-            $result->setPassword((string) password_hash($password, PASSWORD_DEFAULT));
+            $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
             $this->userRepository->save($result);
         }

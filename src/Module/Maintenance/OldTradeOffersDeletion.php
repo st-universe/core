@@ -80,8 +80,8 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 
             // update post storage
             $storageManager->upperStorage(
-                (int) $offer->getOfferedCommodityId(),
-                (int) $offer->getOfferedCommodityCount() * $offer->getOfferCount()
+                $offer->getOfferedCommodityId(),
+                $offer->getOfferedCommodityCount() * $offer->getOfferCount()
             );
 
             $this->storageRepository->delete($offer->getStorage());

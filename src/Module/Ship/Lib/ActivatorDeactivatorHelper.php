@@ -22,8 +22,6 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tal\TalHelper;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -35,18 +33,14 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function activate(

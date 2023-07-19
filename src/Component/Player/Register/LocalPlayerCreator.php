@@ -30,7 +30,7 @@ final class LocalPlayerCreator extends PlayerCreator
         $player->setUsername(sprintf('Siedler %d', $player->getId()));
         $player->setTick(1);
         $player->setCreationDate(time());
-        $player->setPassword((string) password_hash($password, PASSWORD_DEFAULT));
+        $player->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
         $this->userRepository->save($player);
 

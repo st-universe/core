@@ -74,9 +74,6 @@ final class BasicTradeBuy implements ActionControllerInterface
             return;
         }
 
-        /**
-         * @var StorageInterface|null
-         */
         $latinumStorage = $storageManager->getStorage()->get(CommodityTypeEnum::COMMODITY_LATINUM);
 
         if ($latinumStorage === null || $latinumStorage->getAmount() < 1) {

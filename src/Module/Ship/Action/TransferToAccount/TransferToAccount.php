@@ -62,7 +62,7 @@ final class TransferToAccount implements ActionControllerInterface
         /**
          * @var TradePostInterface $tradepost
          */
-        $tradepost = $this->tradePostRepository->find((int) request::indInt('postid'));
+        $tradepost = $this->tradePostRepository->find(request::indInt('postid'));
         if ($tradepost === null) {
             return;
         }
@@ -79,7 +79,7 @@ final class TransferToAccount implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())) {
             return;
         }
 
@@ -137,8 +137,6 @@ final class TransferToAccount implements ActionControllerInterface
                 $count = $tradepost->getStorage() - $storageManager->getStorageSum();
             }
             $game->addInformationf(_('%d %s'), $count, $commodity->getName());
-
-            $count = (int) $count;
             $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
             $storageManager->upperStorage((int) $value, $count);
         }

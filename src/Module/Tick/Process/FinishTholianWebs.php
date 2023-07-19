@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
-use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -33,16 +31,13 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         TholianWebRepositoryInterface $tholianWebRepository,
         TholianWebUtilInterface $tholianWebUtil,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         LeaveFleetInterface $leaveFleet,
         ShipSystemManagerInterface $shipSystemManager,
-        PrivateMessageSenderInterface $privateMessageSender,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->tholianWebRepository = $tholianWebRepository;
         $this->tholianWebUtil = $tholianWebUtil;
@@ -50,7 +45,6 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
         $this->leaveFleet = $leaveFleet;
         $this->shipSystemManager = $shipSystemManager;
         $this->privateMessageSender = $privateMessageSender;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(): void
@@ -94,10 +88,11 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
 
         //modify constellation
         foreach ($fleets as $shiplist) {
-            /**
-             * @var FleetInterface
-             */
             $fleet = current($shiplist)->getFleet();
+
+            if ($fleet === null) {
+                throw new RuntimeException('this should not happen');
+            }
 
             //all ships of fleet in web, nothing to do
             if ($fleet->getShipCount() === count($shiplist)) {
@@ -114,8 +109,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
                 $this->leaveFleet->leaveFleet($ship);
 
                 if (!array_key_exists($userId, $pms)) {
-                    $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());
-                    ;
+                    $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());;
                 }
 
                 $pms[$userId] .= sprintf('Die %s hat die Flotte %s verlassen' . "\n", $ship->getName(), $fleetName);

@@ -121,7 +121,7 @@ final class InterceptShip implements ActionControllerInterface
 
         $this->privateMessageSender->send(
             $userId,
-            (int) $target->getUser()->getId(),
+            $target->getUser()->getId(),
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href

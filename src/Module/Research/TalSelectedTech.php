@@ -6,8 +6,6 @@ namespace Stu\Module\Research;
 
 use Stu\Orm\Entity\ResearchedInterface;
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\CommodityInterface;
@@ -32,8 +30,6 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     private ConfigInterface $config;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private ?ResearchedInterface $state = null;
 
     private ?array $excludes = null;
@@ -46,8 +42,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
         ResearchInterface $research,
         UserInterface $currentUser,
-        ConfigInterface $config,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        ConfigInterface $config
     ) {
         $this->research = $research;
         $this->currentUser = $currentUser;
@@ -55,7 +50,6 @@ final class TalSelectedTech implements TalSelectedTechInterface
         $this->researchedRepository = $researchedRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
         $this->config = $config;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getId(): int
@@ -108,7 +102,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
         if ($this->state === null) {
             $this->state = $this->researchedRepository->getFor(
                 $this->research->getId(),
-                (int) $this->currentUser->getId()
+                $this->currentUser->getId()
             );
         }
         return $this->state;

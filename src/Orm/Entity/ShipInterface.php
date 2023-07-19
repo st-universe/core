@@ -315,9 +315,6 @@ interface ShipInterface
      */
     public function hasShipSystem(int $systemType): bool;
 
-    /**
-     * @param int $systemType
-     */
     public function getShipSystem(int $systemType): ShipSystemInterface;
 
     /**

@@ -62,8 +62,6 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
         $rad12or34 = atan($shipY / $shipX);
         $rad14or23 = atan(($system->getMaxX() - $shipX) / $shipY);
 
-        $flightDirection = null;
-
         if ($rad12or34 < M_PI_4) {
             $flightDirection = $rad14or23 < M_PI_4 ? ShipEnum::DIRECTION_LEFT : ShipEnum::DIRECTION_BOTTOM;
         } elseif ($rad14or23 < M_PI_4) {

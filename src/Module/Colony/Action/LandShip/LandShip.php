@@ -100,7 +100,7 @@ final class LandShip implements ActionControllerInterface
         $this->colonyStorageManager->upperStorage($colony, $ship->getRump()->getCommodity(), 1);
 
         foreach ($ship->getStorage() as $stor) {
-            $count = (int) min($stor->getAmount(), $colony->getMaxStorage() - $colony->getStorageSum());
+            $count = min($stor->getAmount(), $colony->getMaxStorage() - $colony->getStorageSum());
             if ($count > 0) {
                 $this->colonyStorageManager->upperStorage($colony, $stor->getCommodity(), $count);
             }

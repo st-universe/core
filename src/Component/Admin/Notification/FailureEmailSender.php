@@ -42,7 +42,6 @@ final class FailureEmailSender implements FailureEmailSenderInterface
                 $subject,
                 $message
             ));
-            return;
         }
     }
 }

@@ -81,7 +81,6 @@ final class ResetPassword implements ActionControllerInterface
             $transport->send($mail);
         } catch (RuntimeException $e) {
             $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
-            return;
         }
     }
 

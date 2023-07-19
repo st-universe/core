@@ -62,7 +62,7 @@ final class TransferFromAccount implements ActionControllerInterface
         /**
          * @var TradePostInterface $tradepost
          */
-        $tradepost = $this->tradePostRepository->find((int) request::postIntFatal('postid'));
+        $tradepost = $this->tradePostRepository->find(request::postIntFatal('postid'));
         if ($tradepost === null) {
             return;
         }
@@ -79,7 +79,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())) {
             return;
         }
         $commodities = request::postArray('commodities');
@@ -106,7 +106,7 @@ final class TransferFromAccount implements ActionControllerInterface
                 continue;
             }
             $count = $gcount[$key];
-            $count = $count == "max" ? (int) $curCommodities[$value]->getAmount() : (int) $count;
+            $count = $count == "max" ? $curCommodities[$value]->getAmount() : (int) $count;
             if ($count < 1 || $ship->getStorageSum() >= $ship->getMaxStorage()) {
                 continue;
             }
@@ -122,13 +122,11 @@ final class TransferFromAccount implements ActionControllerInterface
                 continue;
             }
             if ($count > $curCommodities[$value]->getAmount()) {
-                $count = (int) $curCommodities[$value]->getAmount();
+                $count = $curCommodities[$value]->getAmount();
             }
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
-
-            $count = (int) $count;
 
             $storageManager->lowerStorage((int) $value, $count);
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);

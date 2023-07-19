@@ -51,7 +51,7 @@ final class ActivateBuildings implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $colonyId = (int) $colony->getId();
+        $colonyId = $colony->getId();
 
         $mode = request::indInt('mode');
         $selection = request::getvars()['selection'] ?? request::postvars()['selection'] ?? null;

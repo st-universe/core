@@ -80,7 +80,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
             case ColonyEnum::MENU_SHIPYARD:
                 if ($colonySurface->hasShipyard()) {
                     $game->setView(ShowShipyard::VIEW_IDENTIFIER);
-                    $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
+                    $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }
@@ -88,7 +88,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
             case ColonyEnum::MENU_BUILDPLANS:
                 if ($colonySurface->hasShipyard()) {
                     $game->setView(ShowBuildPlans::VIEW_IDENTIFIER);
-                    $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
+                    $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }
@@ -150,7 +150,6 @@ final class SwitchColonyMenu implements ActionControllerInterface
             case ColonyEnum::MENU_INFO:
             default:
                 $game->setView("SHOW_MANAGEMENT");
-                return;
         }
     }
 

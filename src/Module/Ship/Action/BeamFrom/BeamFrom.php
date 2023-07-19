@@ -192,8 +192,6 @@ final class BeamFrom implements ActionControllerInterface
                 $isDockTransfer ? 0 : ceil($count / $transferAmount)
             ));
 
-            $count = (int) $count;
-
             $this->shipStorageManager->lowerStorage($target, $commodity, $count);
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 

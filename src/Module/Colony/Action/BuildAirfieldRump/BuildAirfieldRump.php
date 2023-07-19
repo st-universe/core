@@ -51,7 +51,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
             $userId
         );
 
-        $rumpId = (int) request::postInt('buildrump');
+        $rumpId = request::postInt('buildrump');
 
         $availableShipRumps = $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,

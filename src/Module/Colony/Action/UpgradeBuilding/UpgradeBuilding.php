@@ -71,15 +71,12 @@ final class UpgradeBuilding implements ActionControllerInterface
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
             $colony->getId(),
-            (int)request::indInt('fid')
+            request::indInt('fid')
         );
 
         // has to be string because of bigint issue
         $upgradeId = request::getStringFatal('upid');
 
-        /**
-         * @var BuildingUpgradeInterface
-         */
         $upgrade = $this->buildingUpgradeRepository->find($upgradeId);
         if ($upgrade === null) {
             return;
@@ -89,7 +86,7 @@ final class UpgradeBuilding implements ActionControllerInterface
             return;
         }
 
-        $researchId = (int) $upgrade->getResearchId();
+        $researchId = $upgrade->getResearchId();
         if (
             $researchId > 0 &&
             $this->researchedRepository->hasUserFinishedResearch($game->getUser(), [$researchId]) === false
@@ -141,8 +138,8 @@ final class UpgradeBuilding implements ActionControllerInterface
         }
         // Check for alternative building
         $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
-            (int) $upgrade->getBuilding()->getId(),
-            (int) $field->getFieldType()
+            $upgrade->getBuilding()->getId(),
+            $field->getFieldType()
         );
         $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
 

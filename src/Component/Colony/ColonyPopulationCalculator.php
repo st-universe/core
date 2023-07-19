@@ -197,13 +197,9 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     {
         switch ($this->colony->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
-                return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_ROMULAN:
-                return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_KLINGON:
-                return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_CARDASSIAN:
-                return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_FERENGI:
                 return _('Bevölkerungsdichte');
         }

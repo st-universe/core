@@ -29,9 +29,6 @@ Init::run(function (ContainerInterface $dic): void {
     $dic->get(GameControllerInterface::class)->sessionAndAdminCheck();
 
     $shipRumpRepo = $dic->get(ShipRumpRepositoryInterface::class);
-    /**
-     * @var ShipRumpModuleLevelRepositoryInterface
-     */
     $shipRumpModuleLevelRepo = $dic->get(ShipRumpModuleLevelRepositoryInterface::class);
     $moduleRepo = $dic->get(ModuleRepositoryInterface::class);
     $buildplanRepo = $dic->get(ShipBuildplanRepositoryInterface::class);

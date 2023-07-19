@@ -100,7 +100,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if (!$this->dockPrivilegeUtility->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
+        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $game->getUser())) {
             $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
 
             $this->privateMessageSender->send(
@@ -157,7 +157,7 @@ final class DockShip implements ActionControllerInterface
 
         $this->privateMessageSender->send(
             $userId,
-            (int)$target->getUser()->getId(),
+            $target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
             $href

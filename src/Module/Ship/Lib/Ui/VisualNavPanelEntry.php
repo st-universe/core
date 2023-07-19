@@ -12,13 +12,13 @@ use Stu\Orm\Entity\StarSystemInterface;
 class VisualNavPanelEntry
 {
     /** @var null|int */
-    public $currentShipPosX = null;
+    public $currentShipPosX;
 
     /** @var null|int */
-    public $currentShipPosY = null;
+    public $currentShipPosY;
 
     /** @var null|int */
-    public $currentShipSysId = null;
+    public $currentShipSysId;
 
     public ?int $row = null;
 

@@ -49,7 +49,7 @@ final class TalHelper
     public static function addPlusCharacter(string $value): string
     {
         if ($value <= 0) {
-            return (string) $value;
+            return $value;
         }
         return sprintf('+%d', $value);
     }

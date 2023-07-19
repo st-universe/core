@@ -123,8 +123,6 @@ final class ShowStatistics implements ViewControllerInterface
 
     /**
      * @param GameTurnStatsInterface[] $stats
-     * @param GraphInfo $graphInfo
-     * @param string $title
      */
     private function createImageSrc(array $stats, GraphInfo $graphInfo, string $title): string
     {
@@ -199,7 +197,6 @@ final class ShowStatistics implements ViewControllerInterface
     }
 
     /**
-     * @param array $datax
      * @param PlotInfo[] $plotInfos
      * @param GameTurnStatsInterface[] $stats
      */

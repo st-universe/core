@@ -61,8 +61,8 @@ final class ShowBuilding implements ViewControllerInterface
         }
 
         $alternativeBuildings = $this->buildingFieldAlternativeRepository->getByBuildingIdAndResearchedByUser(
-            (int) $building->getId(),
-            (int) $userId
+            $building->getId(),
+            $userId
         );
 
         if ($alternativeBuildings === []) {

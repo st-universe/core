@@ -445,7 +445,7 @@ class Colony implements ColonyInterface
         if ($this->getDayTimePrefix() == 1) {
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
             if ($scaled == 0) {
-                $twilightZone = (int) - (($width) - 1);
+                $twilightZone = - (($width) - 1);
             } elseif ((int) - (($width) - ceil($scaled)) == 0) {
                 $twilightZone = -1;
             } else {

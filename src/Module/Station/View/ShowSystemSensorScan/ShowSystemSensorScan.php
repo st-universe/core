@@ -76,16 +76,14 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             return;
         }
 
-        if ($ship->getLss()) {
-            $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
-                $ship,
-                $game->getUser(),
-                $this->loggerUtilFactory->getLoggerUtil(),
-                $ship->getTachyonState(),
-                false,
-                $mapField->getSystem()
-            ));
-        }
+        $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
+            $ship,
+            $game->getUser(),
+            $this->loggerUtilFactory->getLoggerUtil(),
+            $ship->getTachyonState(),
+            false,
+            $mapField->getSystem()
+        ));
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('DONOTHING', false);

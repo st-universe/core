@@ -38,7 +38,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
             $userId
         );
 
-        $menu = (int) request::getIntFatal('menu');
+        $menu = request::getIntFatal('menu');
         $offset = request::getInt('offset');
         if ($offset < 0) {
             $offset = 0;
@@ -48,7 +48,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         }
         /** @var BuildingInterface[] $ret */
         $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
-            (int) $colony->getId(),
+            $colony->getId(),
             $userId,
             $menu,
             $offset
@@ -56,7 +56,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($ret === []) {
             $offset = max(0, $offset - ColonyEnum::BUILDMENU_SCROLLOFFSET);
             $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
-                (int) $colony->getId(),
+                $colony->getId(),
                 $userId,
                 $menu,
                 $offset

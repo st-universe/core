@@ -108,7 +108,7 @@ final class EpsTransfer implements ActionControllerInterface
 
         $this->privateMessageSender->send(
             $userId,
-            (int)$target->getUser()->getId(),
+            $target->getUser()->getId(),
             "Die " . $ship->getName() . " transferiert in Sektor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );

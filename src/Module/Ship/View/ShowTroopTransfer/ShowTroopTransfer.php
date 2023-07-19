@@ -63,7 +63,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
         $isUplinkSituation = false;
 
         if ($isColony) {
-            $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
+            $target = $this->colonyRepository->find(request::getIntFatal('target'));
             if ($target === null) {
                 return;
             }
@@ -79,7 +79,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
                 $game->setPageTitle(_('Truppen von Kolonie beamen'));
             }
         } else {
-            $target = $this->shipRepository->find((int)request::getIntFatal('target'));
+            $target = $this->shipRepository->find(request::getIntFatal('target'));
             if ($target === null) {
                 return;
             }

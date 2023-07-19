@@ -64,6 +64,7 @@ class ManageManTest extends StuTestCase
     public function testManageExpectNothingWhenNotInValues(): void
     {
         $values = ['man' => ['5' => '42']];
+        $buildplan = $this->mock(ShipBuildplanInterface::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -79,6 +80,10 @@ class ManageManTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -87,6 +92,7 @@ class ManageManTest extends StuTestCase
 
     public function testManageExpectNothingWhenShipCantBeManned(): void
     {
+        $buildplan = $this->mock(ShipBuildplanInterface::class);
         $values = ['man' => ['555' => '42']];
 
         $this->wrapper->shouldReceive('get')
@@ -107,6 +113,42 @@ class ManageManTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $this->ship->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($buildplan);
+
+        $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
+
+        $this->assertEmpty($msg);
+    }
+
+    public function testManageExpectNothingWhenShipBuildplanIsNull(): void
+    {
+        $values = ['man' => ['555' => '42']];
+
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->user);
+
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->shipId);
+        $this->ship->shouldReceive('canMan')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $this->ship->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -116,6 +158,7 @@ class ManageManTest extends StuTestCase
     public function testManageExpectNothingWhenForeignShip(): void
     {
         $shipOwner = $this->mock(UserInterface::class);
+        $buildplan = $this->mock(ShipBuildplanInterface::class);
         $values = ['man' => ['555' => '42']];
 
         $this->wrapper->shouldReceive('get')
@@ -140,6 +183,10 @@ class ManageManTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($shipOwner);
+        $this->ship->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($buildplan);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 

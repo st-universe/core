@@ -48,7 +48,7 @@ final class CancelOffer implements ActionControllerInterface
         /** @var TradeOfferInterface $offer */
         $offer = $this->tradeOfferRepository->find($offerId);
 
-        if ((int) $offer->getUserId() !== $userId) {
+        if ($offer->getUserId() !== $userId) {
             new AccessViolation();
         }
 
@@ -56,8 +56,8 @@ final class CancelOffer implements ActionControllerInterface
             $offer->getTradePost(),
             $game->getUser()
         )->upperStorage(
-            (int) $offer->getOfferedCommodityId(),
-            (int) $offer->getOfferedCommodityCount() * $offer->getOfferCount()
+            $offer->getOfferedCommodityId(),
+            $offer->getOfferedCommodityCount() * $offer->getOfferCount()
         );
 
         $this->storageRepository->delete($offer->getStorage());

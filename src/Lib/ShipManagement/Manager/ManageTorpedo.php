@@ -61,7 +61,7 @@ class ManageTorpedo implements ManagerInterface
         $isUnload = $load < 0;
 
         if ($isUnload) {
-            return $this->unloadTorpedo((int)abs($load), $wrapper, $managerProvider);
+            return $this->unloadTorpedo(abs($load), $wrapper, $managerProvider);
         } else {
             $selectedTorpedoTypeArray = $values['torp_type'] ?? null;
             $torpedoType = $this->determineTorpedoType($ship, $selectedTorpedoTypeArray);
@@ -168,9 +168,6 @@ class ManageTorpedo implements ManagerInterface
             return [];
         }
 
-        /**
-         * @var StorageInterface|null
-         */
         $storageElement = $managerProvider->getStorage()->get($torpedoType->getCommodityId());
         if ($storageElement === null) {
             return [sprintf(

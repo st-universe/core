@@ -40,9 +40,6 @@ final class ReactorUtil implements ReactorUtilInterface
         $costs = $isWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
 
         foreach ($costs as $commodityId => $loadCost) {
-            /**
-             * @var StorageInterface|null
-             */
             $storage = $storages->get($commodityId);
 
             if ($storage === null) {

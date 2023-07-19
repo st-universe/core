@@ -134,7 +134,7 @@ final class ResearchState implements ResearchStateInterface
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
-            (int) $userId,
+            $userId,
             $txt,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );

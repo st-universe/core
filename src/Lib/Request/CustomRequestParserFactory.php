@@ -25,9 +25,6 @@ final class CustomRequestParserFactory implements RequestParserFactory
         $this->config = $config;
     }
 
-    /**
-     * @return RequestParser
-     */
     public function createQueryParser(): RequestParser
     {
         return new RequestParser(
@@ -41,9 +38,6 @@ final class CustomRequestParserFactory implements RequestParserFactory
         );
     }
 
-    /**
-     * @return RequestParser
-     */
     public function createBodyParser(): RequestParser
     {
         return new RequestParser(

@@ -82,7 +82,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
-        $rump = $this->shipRumpRepository->find((int) request::indInt('rump'));
+        $rump = $this->shipRumpRepository->find(request::indInt('rump'));
         if ($rump === null) {
             $this->loggerUtil->log('A');
             $this->exitOnError($game);
@@ -234,7 +234,7 @@ final class CreateBuildplan implements ActionControllerInterface
          */
         foreach ($modules as $obj) {
             $mod = $this->buildplanModuleRepository->prototype();
-            $mod->setModuleType((int) $obj->getType());
+            $mod->setModuleType($obj->getType());
             $mod->setBuildplan($plan);
             $mod->setModule($obj);
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));

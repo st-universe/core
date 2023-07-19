@@ -69,7 +69,7 @@ final class BeamToColony implements ActionControllerInterface
         );
         $ship = $wrapper->get();
 
-        $target = $this->colonyRepository->find((int) request::postIntFatal('target'));
+        $target = $this->colonyRepository->find(request::postIntFatal('target'));
         if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
@@ -82,7 +82,7 @@ final class BeamToColony implements ActionControllerInterface
         }
 
         if ($target->getUserId() !== $userId && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getShieldFrequency() !== 0) {
-            $frequency = (int) request::postInt('frequency');
+            $frequency = request::postInt('frequency');
             if ($frequency !== $target->getShieldFrequency()) {
                 $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
                 return;
@@ -194,8 +194,6 @@ final class BeamToColony implements ActionControllerInterface
                 $commodity->getName(),
                 ceil($count / $transferAmount)
             );
-
-            $count = (int) $count;
 
             $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
             $this->colonyStorageManager->upperStorage($target, $commodity, $count);

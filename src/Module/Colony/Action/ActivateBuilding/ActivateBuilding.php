@@ -10,7 +10,6 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ActivateBuilding implements ActionControllerInterface
@@ -21,19 +20,15 @@ final class ActivateBuilding implements ActionControllerInterface
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private ColonyRepositoryInterface $colonyRepository;
-
     private BuildingActionInterface $buildingAction;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository,
         BuildingActionInterface $buildingAction
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
     }
 
@@ -48,7 +43,7 @@ final class ActivateBuilding implements ActionControllerInterface
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
             $colony->getId(),
-            (int) request::indInt('fid')
+            request::indInt('fid')
         );
         if ($field === null) {
             return;

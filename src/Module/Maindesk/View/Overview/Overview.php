@@ -14,12 +14,9 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\EmergencyWrapper;
 use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
@@ -51,8 +48,6 @@ final class Overview implements ViewControllerInterface
 
     private ColonyLimitCalculatorInterface $colonyLimitCalculator;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private CrewCountRetrieverInterface $crewCountRetriever;
 
     private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
@@ -70,7 +65,6 @@ final class Overview implements ViewControllerInterface
         SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
         KnFactoryInterface $knFactory,
         ColonyLimitCalculatorInterface $colonyLimitCalculator,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
         PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         CrewLimitCalculatorInterface $crewLimitCalculator,
         CrewCountRetrieverInterface $crewCountRetriever
@@ -85,7 +79,6 @@ final class Overview implements ViewControllerInterface
         $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
         $this->knFactory = $knFactory;
         $this->colonyLimitCalculator = $colonyLimitCalculator;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->crewCountRetriever = $crewCountRetriever;
         $this->playerRelationDeterminator = $playerRelationDeterminator;
         $this->crewLimitCalculator = $crewLimitCalculator;
@@ -93,9 +86,6 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        /**
-         * @var UserInterface
-         */
         $user = $game->getUser();
         $userId = $user->getId();
 

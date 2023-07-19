@@ -97,9 +97,9 @@ final class BuildShip implements ActionControllerInterface
         );
 
         $userId = $game->getUser()->getId();
-        $colonyId = (int) $colony->getId();
+        $colonyId = $colony->getId();
 
-        $rump = $this->shipRumpRepository->find((int) request::indInt('rump'));
+        $rump = $this->shipRumpRepository->find(request::indInt('rump'));
         if ($rump === null) {
             return;
         }
@@ -156,7 +156,6 @@ final class BuildShip implements ActionControllerInterface
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 $specialCount = 0;
                 foreach ($module as $id) {
-                    /** @var ModuleInterface[] $modules */
                     $specialMod = $this->moduleRepository->find((int) $id);
                     if ($specialMod === null) {
                         throw new RuntimeException(sprintf('moduleId %d does noe exist', $id));
@@ -253,7 +252,7 @@ final class BuildShip implements ActionControllerInterface
 
             foreach ($modules as $obj) {
                 $mod = $this->buildplanModuleRepository->prototype();
-                $mod->setModuleType((int) $obj->getType());
+                $mod->setModuleType($obj->getType());
                 $mod->setBuildplan($plan);
                 $mod->setModule($obj);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));

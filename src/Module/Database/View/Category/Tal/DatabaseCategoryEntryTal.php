@@ -45,9 +45,6 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
 
     private ?bool $wasEntryDiscovered = null;
 
-    /**
-     * @var DatabaseUserInterface|null
-     */
     private ?DatabaseUserInterface $userDiscovery = null;
 
     /**
@@ -59,13 +56,10 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         switch ($this->databaseEntry->getCategory()->getId()) {
             case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM:
                 return $this->starSystemRepository->find($this->databaseEntry->getObjectId());
-                break;
             case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST:
                 return $this->shipRepository->find($this->databaseEntry->getObjectId());
-                break;
             case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS:
                 return $this->colonyClassRepository->find($this->databaseEntry->getObjectId());
-                break;
         }
 
         return null;
@@ -109,6 +103,6 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         if ($this->wasDiscovered() === false) {
             return 0;
         }
-        return (int)$this->userDiscovery->getDate();
+        return $this->userDiscovery->getDate();
     }
 }

@@ -8,8 +8,6 @@ use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowStationCosts implements ViewControllerInterface
@@ -18,17 +16,13 @@ final class ShowStationCosts implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private StationUtilityInterface $stationUtility;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        StationUtilityInterface $stationUtility,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        StationUtilityInterface $stationUtility
     ) {
         $this->shipLoader = $shipLoader;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->stationUtility = $stationUtility;
     }
 
@@ -46,7 +40,7 @@ final class ShowStationCosts implements ViewControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $wantedPlanId = (int)request::getIntFatal('pid');
+        $wantedPlanId = request::getIntFatal('pid');
 
         $plan = $this->stationUtility->getBuidplanIfResearchedByUser($wantedPlanId, $userId);
 

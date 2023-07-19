@@ -40,8 +40,8 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
             $colony = $obj->getColony();
 
             $ship = $this->shipCreator->createBy(
-                (int) $obj->getUserId(),
-                (int) $obj->getRumpId(),
+                $obj->getUserId(),
+                $obj->getRumpId(),
                 $obj->getShipBuildplan()->getId(),
                 $colony
             )->get();
@@ -52,7 +52,7 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                (int)$colony->getUserId(),
+                $colony->getUserId(),
                 $txt,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
             );

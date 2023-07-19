@@ -35,7 +35,7 @@ final class SaveNote implements ActionControllerInterface
             $note = $this->noteRepository->prototype();
         } else {
             $note = $this->noteRepository->find($noteId);
-            if ((int) $note->getUserId() !== $userId) {
+            if ($note->getUserId() !== $userId) {
                 throw new AccessViolation();
             }
         }

@@ -57,7 +57,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
                 $game->showMacro('html/shipmacros.xhtml/transfertoaccount');
         }
         /** @var TradePostInterface $tradepost */
-        $tradepost = $this->tradePostRepository->find((int) request::getIntFatal('postid'));
+        $tradepost = $this->tradePostRepository->find(request::getIntFatal('postid'));
         if ($tradepost === null) {
             return;
         }

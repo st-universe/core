@@ -48,7 +48,7 @@ final class LoadReactor implements ActionControllerInterface
             $userId
         );
 
-        $requestedLoad = (int) request::postIntFatal('reactorload');
+        $requestedLoad = request::postIntFatal('reactorload');
 
         if (request::postString('fleet') !== false) {
             $msg = [];
@@ -137,7 +137,6 @@ final class LoadReactor implements ActionControllerInterface
             foreach ($costs as $commodityId => $loadCost) {
                 $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
             }
-            return;
         }
     }
 

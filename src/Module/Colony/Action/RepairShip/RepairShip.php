@@ -89,7 +89,7 @@ final class RepairShip implements ActionControllerInterface
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
             $colony->getId(),
-            (int) request::indInt('fid'),
+            request::indInt('fid'),
         );
 
         if ($field === null || $field->getBuilding() === null) {
@@ -142,7 +142,7 @@ final class RepairShip implements ActionControllerInterface
         $obj = $this->colonyShipRepairRepository->prototype();
         $obj->setColony($colony);
         $obj->setShip($ship);
-        $obj->setFieldId((int) $field->getFieldId());
+        $obj->setFieldId($field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);
 
         $ship->setState(ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE);

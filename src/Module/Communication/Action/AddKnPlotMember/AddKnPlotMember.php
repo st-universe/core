@@ -23,9 +23,6 @@ final class AddKnPlotMember implements ActionControllerInterface
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     private PrivateMessageSenderInterface $privateMessageSender;
-    /**
-     * @var UserRepositoryInterface
-     */
     private UserRepositoryInterface $userRepository;
 
     public function __construct(
@@ -59,7 +56,7 @@ final class AddKnPlotMember implements ActionControllerInterface
             $game->addInformation(_('Du kannst Dich nicht selbst hinzufügen'));
             return;
         }
-        if ($this->rpgPlotMemberRepository->getByPlotAndUser((int) $plot->getId(), (int) $recipient->getId()) !== null) {
+        if ($this->rpgPlotMemberRepository->getByPlotAndUser($plot->getId(), $recipient->getId()) !== null) {
             $game->addInformation(_('Dieser Spieler schreibt bereits an diesem Plot'));
             return;
         }

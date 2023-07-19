@@ -107,7 +107,7 @@ final class TransferCommodities implements ActionControllerInterface
         if ($freeStorage <= 0) {
             return;
         }
-        $amount = (int) min(min($freeStorage, $amount), $freeTransferCapacity);
+        $amount = min(min($freeStorage, $amount), $freeTransferCapacity);
 
         $storageManagerTarget->upperStorage($selectedStorage->getCommodityId(), $amount);
         $storageManager->lowerStorage($selectedStorage->getCommodityId(), $amount);

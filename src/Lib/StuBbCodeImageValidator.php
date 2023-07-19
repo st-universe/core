@@ -13,7 +13,6 @@ final class StuBbCodeImageValidator implements InputValidator
      * Returns true if $input is a valid url and correct image type
      *
      * @param string $input  the string to validate
-     * @return boolean
      */
     public function validate($input): bool
     {

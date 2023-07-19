@@ -113,7 +113,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
     public function getFreeTransferCapacity(): int
     {
         return $this->tradePost->getTransferCapacity() - $this->tradeTransferRepository->getSumByPostAndUser(
-            (int) $this->tradePost->getId(),
+            $this->tradePost->getId(),
             $this->userId
         );
     }
@@ -135,7 +135,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
 
     public function getLicenseCount(): int
     {
-        return $this->tradeLicenseRepository->getAmountByTradePost((int)$this->tradePost->getId());
+        return $this->tradeLicenseRepository->getAmountByTradePost($this->tradePost->getId());
     }
 
     public function getFreeStorage(): int

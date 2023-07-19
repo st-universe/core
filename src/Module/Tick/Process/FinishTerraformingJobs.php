@@ -45,7 +45,7 @@ final class FinishTerraformingJobs implements ProcessTickHandlerInterface
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                (int)$colony->getUserId(),
+                $colony->getUserId(),
                 $txt,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
             );

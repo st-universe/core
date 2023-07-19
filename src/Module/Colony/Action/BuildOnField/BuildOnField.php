@@ -82,7 +82,7 @@ final class BuildOnField implements ActionControllerInterface
 
         $colonyId = $colony->getId();
 
-        $field = $this->planetFieldRepository->getByColonyAndFieldId($colonyId, (int) request::indInt('fid'));
+        $field = $this->planetFieldRepository->getByColonyAndFieldId($colonyId, request::indInt('fid'));
 
         if ($field === null) {
             return;
@@ -91,7 +91,7 @@ final class BuildOnField implements ActionControllerInterface
         if ($field->getTerraformingId() > 0) {
             return;
         }
-        $building = $this->buildingRepository->find((int) request::indInt('bid'));
+        $building = $this->buildingRepository->find(request::indInt('bid'));
         if ($building === null) {
             return;
         }
@@ -99,7 +99,7 @@ final class BuildOnField implements ActionControllerInterface
         $buildingId = $building->getId();
         $researchId = $building->getResearchId();
 
-        if ($building->getBuildableFields()->containsKey((int) $field->getFieldType()) === false) {
+        if ($building->getBuildableFields()->containsKey($field->getFieldType()) === false) {
             return;
         }
 
@@ -108,7 +108,7 @@ final class BuildOnField implements ActionControllerInterface
                 return;
             }
 
-            $researchId = $building->getBuildableFields()->get((int) $field->getFieldType())->getResearchId();
+            $researchId = $building->getBuildableFields()->get($field->getFieldType())->getResearchId();
             if ($researchId != null && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
                 return;
             }
@@ -143,7 +143,7 @@ final class BuildOnField implements ActionControllerInterface
         // Check for alternative building
         $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
             $buildingId,
-            (int) $field->getFieldType()
+            $field->getFieldType()
         );
         if ($alt_building !== null) {
             $building = $alt_building->getAlternativeBuilding();

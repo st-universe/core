@@ -63,9 +63,6 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         $torpedo = $this->getTorpedo();
 
         if ($torpedo != null) {
-            /**
-             * @var StorageInterface|null
-             */
             $stor = $this->colony->getStorage()->get($torpedo->getCommodityId());
 
             if ($stor !== null) {

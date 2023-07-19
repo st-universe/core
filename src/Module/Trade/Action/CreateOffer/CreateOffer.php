@@ -154,7 +154,7 @@ final class CreateOffer implements ActionControllerInterface
 
         $this->saveStorage($offer);
 
-        $storageManager->lowerStorage($giveCommodityId, (int) $offerAmount * $giveAmount);
+        $storageManager->lowerStorage($giveCommodityId, $offerAmount * $giveAmount);
 
 
         $game->addInformation('Das Angebot wurde erstellt');

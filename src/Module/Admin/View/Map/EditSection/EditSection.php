@@ -51,7 +51,7 @@ final class EditSection implements ViewControllerInterface
         $miny = $maxy - MapEnum::FIELDS_PER_SECTION + 1;
 
         $fields = [];
-        foreach (range($miny, $maxy) as $key => $value) {
+        foreach (range($miny, $maxy) as $value) {
             $fields[] = $this->starmapUiFactory->createYRow($layerId, $value, $minx, $maxx);
         }
 

@@ -27,15 +27,15 @@ final class LastTutorial implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ((int) $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP || (int) $user->getState() === UserEnum::USER_STATE_UNCOLONIZED) {
+        if ($user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP || $user->getState() === UserEnum::USER_STATE_UNCOLONIZED) {
             throw new AccessViolation();
         }
 
-        if ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL2) {
+        if ($user->getState() === UserEnum::USER_STATE_TUTORIAL2) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL1);
-        } elseif ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL3) {
+        } elseif ($user->getState() === UserEnum::USER_STATE_TUTORIAL3) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL2);
-        } elseif ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL4) {
+        } elseif ($user->getState() === UserEnum::USER_STATE_TUTORIAL4) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL3);
         }
 

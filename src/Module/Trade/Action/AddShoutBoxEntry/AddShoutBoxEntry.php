@@ -40,7 +40,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndNetwork($userId, $tradeNetworkId)) {
             throw new AccessViolation();
         }
-        $msg = (string) substr(strip_tags($msg), 0, 200);
+        $msg = substr(strip_tags($msg), 0, 200);
         if (mb_strlen($msg) > 0) {
             $entry = $this->tradeShoutboxRepository
                 ->prototype()

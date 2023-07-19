@@ -205,7 +205,6 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             return;
         }
 
-        /** @var WeaponShieldInterface|null */
         $weaponShield = $targetShieldModule->getWeaponShield()->get($weapon->getId());
 
         if ($weaponShield !== null) {

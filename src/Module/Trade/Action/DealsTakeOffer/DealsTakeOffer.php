@@ -186,14 +186,14 @@ final class DealsTakeOffer implements ActionControllerInterface
                     $this->dealsRepository->delete($selectedDeal);
                 } else {
                     //modify deal
-                    $selectedDeal->setAmount($selectedDeal->getAmount() - (int) $amount);
+                    $selectedDeal->setAmount($selectedDeal->getAmount() - $amount);
                     $this->dealsRepository->save($selectedDeal);
                 }
             }
 
             if ($selectedDeal->getgiveCommodityId() !== null) {
                 $storageManagerUser->upperStorage(
-                    (int) $selectedDeal->getgiveCommodityId(),
+                    $selectedDeal->getgiveCommodityId(),
                     (int) $selectedDeal->getgiveCommodityAmount() * $amount
                 );
             }
@@ -208,7 +208,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
             if ($selectedDeal->getwantCommodityId() !== null) {
                 $storageManagerUser->lowerStorage(
-                    (int) $selectedDeal->getwantCommodityId(),
+                    $selectedDeal->getwantCommodityId(),
                     (int) $selectedDeal->getwantCommodityAmount() * $amount
                 );
             }
@@ -259,7 +259,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         //copying buildplan modules
         foreach ($buildplan->getModules() as $buildplanModule) {
             $mod = $this->buildplanModuleRepository->prototype();
-            $mod->setModuleType((int) $buildplanModule->getModule()->getType());
+            $mod->setModuleType($buildplanModule->getModule()->getType());
             $mod->setBuildplan($newPlan);
             $mod->setModule($buildplanModule->getModule());
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($buildplanModule->getModule()->getSpecials()));

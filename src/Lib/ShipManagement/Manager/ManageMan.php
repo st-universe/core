@@ -9,7 +9,6 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
 
 class ManageMan implements ManagerInterface
 {
@@ -31,16 +30,14 @@ class ManageMan implements ManagerInterface
 
         $ship = $wrapper->get();
         $user = $managerProvider->getUser();
+        $buildplan = $ship->getBuildplan();
 
         if (
             isset($man[$ship->getId()])
             && $ship->canMan()
+            && $buildplan !== null
             && $ship->getUser() === $user
         ) {
-            /**
-             * @var ShipBuildplanInterface
-             */
-            $buildplan = $ship->getBuildplan();
             if ($buildplan->getCrew() > $managerProvider->getFreeCrewAmount()) {
                 $msg[] = sprintf(
                     _('%s: Nicht genügend Crew auf der Kolonie vorhanden (%d benötigt)'),

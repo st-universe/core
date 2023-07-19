@@ -7,8 +7,6 @@ namespace Stu\Module\Ship\View\ShowTradeMenuPayment;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -39,8 +37,6 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
@@ -49,8 +45,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         TradePostRepositoryInterface $tradePostRepository,
         StorageRepositoryInterface $storageRepository,
         ShipRepositoryInterface $shipRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
@@ -60,7 +55,6 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $this->storageRepository = $storageRepository;
         $this->shipRepository = $shipRepository;
         $this->commodityRepository = $commodityRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -97,7 +91,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $game->setTemplateVar('LICENSEDAYS', $licenseInfo->getDays());
 
         if (
-            !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
+            !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())
         ) {
             $game->setTemplateVar(
                 'DOCKED_SHIPS_FOR_LICENSE',

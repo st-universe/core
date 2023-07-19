@@ -47,7 +47,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
             false
         );
 
-        $colonyId = (int) $colony->getId();
+        $colonyId = $colony->getId();
 
         $this->colonyGuiHelper->register($colony, $game);
 

@@ -49,7 +49,6 @@ class SessionString implements SessionStringInterface
     /**
      * @Column(type="datetime", nullable=true)
      *
-     * @var DateTimeInterface
      */
     private DateTimeInterface $date;
 

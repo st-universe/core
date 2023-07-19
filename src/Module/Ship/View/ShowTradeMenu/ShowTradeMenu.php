@@ -65,7 +65,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         /**
          * @var TradePostInterface $tradepost
          */
-        $tradepost = $this->tradePostRepository->find((int) request::indInt('postid'));
+        $tradepost = $this->tradePostRepository->find(request::indInt('postid'));
         if ($tradepost === null) {
             return;
         }
@@ -104,7 +104,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(
             'HAS_LICENSE',
-            $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
+            $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())
         );
         $game->setTemplateVar(
             'CAN_BUY_LICENSE',

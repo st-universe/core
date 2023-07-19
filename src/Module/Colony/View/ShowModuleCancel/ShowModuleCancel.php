@@ -44,8 +44,8 @@ final class ShowModuleCancel implements ViewControllerInterface
         $module = $game->getViewContext()['MODULE'];
 
         $queuedAmount = $this->moduleQueueRepository->getAmountByColonyAndModule(
-            (int) $colony->getId(),
-            (int) $module->getId()
+            $colony->getId(),
+            $module->getId()
         );
 
         $game->showMacro('html/colonymacros.xhtml/queue_count');

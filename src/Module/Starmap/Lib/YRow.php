@@ -22,7 +22,7 @@ class YRow
     protected int $systemId;
 
     /** @var null|array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null> */
-    protected $fields = null;
+    protected $fields;
 
     private MapRepositoryInterface $mapRepository;
 

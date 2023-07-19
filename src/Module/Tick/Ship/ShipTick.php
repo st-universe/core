@@ -332,14 +332,15 @@ final class ShipTick implements ShipTickInterface
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
     {
+        $system = $ship->getSystem();
+
         if (
             $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING
+            && $system !== null
             && $this->game->getCurrentRound()->getTurn() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
             $this->astroEntryLib->finish($ship);
 
-            /** @var StarSystemInterface */
-            $system = $ship->getSystem();
             $this->msg[] = sprintf(
                 _('Die Kartographierung des Systems %s wurde vollendet'),
                 $system->getName()
@@ -450,7 +451,7 @@ final class ShipTick implements ShipTickInterface
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
-            (int) $ship->getUser()->getId(),
+            $ship->getUser()->getId(),
             $text,
             $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href

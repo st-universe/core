@@ -96,8 +96,8 @@ final class AttackBuilding implements ActionControllerInterface
             $userId
         );
 
-        $colonyId = (int) request::getIntFatal('colid');
-        $fieldId = (int) request::getIntFatal('field');
+        $colonyId = request::getIntFatal('colid');
+        $fieldId = request::getIntFatal('field');
 
 
         $field = $this->planetFieldRepository->find($fieldId);

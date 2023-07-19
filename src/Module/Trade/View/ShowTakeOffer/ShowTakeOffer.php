@@ -41,7 +41,7 @@ final class ShowTakeOffer implements ViewControllerInterface
 
         if ($selectedOffer === null || !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost(
             $game->getUser()->getId(),
-            (int) $selectedOffer->getTradePostId()
+            $selectedOffer->getTradePostId()
         )) {
             throw new AccessViolation();
         }

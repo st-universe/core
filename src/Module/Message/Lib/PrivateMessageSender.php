@@ -188,7 +188,6 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         } catch (RuntimeException $e) {
             $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log($e->getMessage());
-            return;
         }
     }
 }
