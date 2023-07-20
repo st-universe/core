@@ -35,13 +35,12 @@ final class LeaveWormhole extends AbstractDirectedMovement
     {
         $ship = $wrapper->get();
 
-        $map = $ship->getMap();
-
-        if ($map === null) {
+        $starsystemMap = $ship->getStarsystemMap();
+        if ($starsystemMap === null) {
             throw new RuntimeException('should not happen');
         }
 
-        $wormholeEntry = $map->getRandomWormholeEntry();
+        $wormholeEntry = $starsystemMap->getRandomWormholeEntry();
         if ($wormholeEntry === null) {
             throw new RuntimeException('should not happen');
         }
