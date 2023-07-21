@@ -172,12 +172,16 @@ use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
+use Stu\Module\Ship\Lib\Crew\LaunchEscapePods;
+use Stu\Module\Ship\Lib\Crew\LaunchEscapePodsInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtility;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
+use Stu\Module\Ship\Lib\Fleet\ChangeFleetLeader;
+use Stu\Module\Ship\Lib\Fleet\ChangeFleetLeaderInterface;
+use Stu\Module\Ship\Lib\Fleet\LeaveFleet as FleetLeaveFleet;
+use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\LeaveFleet as LibLeaveFleet;
-use Stu\Module\Ship\Lib\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreator;
@@ -277,6 +281,8 @@ return [
     AlertRedHelperInterface::class => autowire(AlertRedHelper::class),
     AstroEntryLibInterface::class => autowire(AstroEntryLib::class),
     ShipLeaverInterface::class => autowire(ShipLeaver::class),
+    ChangeFleetLeaderInterface::class => autowire(ChangeFleetLeader::class),
+    LaunchEscapePodsInterface::class => autowire(LaunchEscapePods::class),
     TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     DockPrivilegeUtilityInterface::class => autowire(DockPrivilegeUtility::class),
     CancelColonyBlockOrDefendInterface::class => autowire(CancelColonyBlockOrDefend::class),
@@ -294,7 +300,7 @@ return [
     ShipWrapperFactoryInterface::class => autowire(ShipWrapperFactory::class),
     TholianWebUtilInterface::class => autowire(TholianWebUtil::class),
     ShipStateChangerInterface::class => autowire(ShipStateChanger::class),
-    LeaveFleetInterface::class => autowire(LibLeaveFleet::class),
+    LeaveFleetInterface::class => autowire(FleetLeaveFleet::class),
     AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class),
     AttackMatchupInterface::class => autowire(AttackMatchup::class),
     AlertLevelBasedReactionInterface::class => autowire(AlertLevelBasedReaction::class),

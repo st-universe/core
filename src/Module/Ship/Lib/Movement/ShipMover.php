@@ -13,6 +13,7 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
+use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -20,11 +21,11 @@ use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
+//TODO unit tests
 final class ShipMover implements ShipMoverInterface
 {
     private ShipRepositoryInterface $shipRepository;
@@ -50,6 +51,8 @@ final class ShipMover implements ShipMoverInterface
     private ShipMovementComponentsFactoryInterface $shipMovementComponentsFactory;
 
     private ShipMovementInformationAdderInterface $shipMovementInformationAdder;
+
+    private LeaveFleetInterface $leaveFleet;
 
     private bool $fleetMode = false;
 
@@ -80,7 +83,8 @@ final class ShipMover implements ShipMoverInterface
         ShipStateChangerInterface $shipStateChanger,
         TholianWebUtilInterface $tholianWebUtil,
         ShipMovementComponentsFactoryInterface $shipMovementComponentsFactory,
-        ShipMovementInformationAdderInterface $shipMovementInformationAdder
+        ShipMovementInformationAdderInterface $shipMovementInformationAdder,
+        LeaveFleetInterface $leaveFleet
     ) {
         $this->shipRepository = $shipRepository;
         $this->entryCreator = $entryCreator;
@@ -94,6 +98,7 @@ final class ShipMover implements ShipMoverInterface
         $this->tholianWebUtil = $tholianWebUtil;
         $this->shipMovementComponentsFactory = $shipMovementComponentsFactory;
         $this->shipMovementInformationAdder = $shipMovementInformationAdder;
+        $this->leaveFleet = $leaveFleet;
     }
 
     /**
@@ -726,7 +731,7 @@ final class ShipMover implements ShipMoverInterface
 
     private function leaveFleet(ShipWrapperInterface $wrapper, bool $addLeaveInfo = true): void
     {
-        $wrapper->leaveFleet();
+        $this->leaveFleet->leaveFleet($wrapper->get());
 
         if ($addLeaveInfo) {
             $ship = $wrapper->get();

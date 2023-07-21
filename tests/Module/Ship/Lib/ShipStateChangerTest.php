@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib;
 
 use Mockery\MockInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
