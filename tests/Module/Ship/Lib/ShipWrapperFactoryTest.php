@@ -16,7 +16,6 @@ use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -24,8 +23,6 @@ use Stu\StuTestCase;
 class ShipWrapperFactoryTest extends StuTestCase
 {
     private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
@@ -52,7 +49,6 @@ class ShipWrapperFactoryTest extends StuTestCase
     {
         //injected
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->colonyShipRepairRepository = $this->mock(ColonyShipRepairRepositoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
@@ -66,7 +62,6 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->shipWrapperFactory = new ShipWrapperFactory(
             $this->colonyFunctionManager,
             $this->shipSystemManager,
-            $this->shipRepository,
             $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
             $this->torpedoTypeRepository,

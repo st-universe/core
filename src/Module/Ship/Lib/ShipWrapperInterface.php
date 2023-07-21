@@ -32,8 +32,6 @@ interface ShipWrapperInterface
 
     public function setAlertState(int $alertState): ?string;
 
-    public function leaveFleet(): void;
-
     /**
      * highest damage first, then prio
      *

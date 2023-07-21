@@ -27,7 +27,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 //TODO increase coverage
@@ -36,8 +35,6 @@ final class ShipWrapper implements ShipWrapperInterface
     private ShipInterface $ship;
 
     private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -70,7 +67,6 @@ final class ShipWrapper implements ShipWrapperInterface
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipInterface $ship,
         ShipSystemManagerInterface $shipSystemManager,
-        ShipRepositoryInterface $shipRepository,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -82,7 +78,6 @@ final class ShipWrapper implements ShipWrapperInterface
     ) {
         $this->ship = $ship;
         $this->shipSystemManager = $shipSystemManager;
-        $this->shipRepository = $shipRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -180,21 +175,6 @@ final class ShipWrapper implements ShipWrapperInterface
         $this->epsUsage = $this->reloadEpsUsage();
 
         return $msg;
-    }
-
-    public function leaveFleet(): void
-    {
-        $fleet = $this->get()->getFleet();
-
-        if ($fleet !== null) {
-            $fleet->getShips()->removeElement($this->get());
-
-            $this->get()->setFleet(null);
-            $this->get()->setIsFleetLeader(false);
-            $this->get()->setFleetId(null);
-
-            $this->shipRepository->save($this->get());
-        }
     }
 
     /**

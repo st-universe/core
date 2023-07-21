@@ -16,15 +16,12 @@ use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 {
     private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
@@ -47,7 +44,6 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     public function __construct(
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipSystemManagerInterface $shipSystemManager,
-        ShipRepositoryInterface $shipRepository,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -58,7 +54,6 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         UserRepositoryInterface $userRepository
     ) {
         $this->shipSystemManager = $shipSystemManager;
-        $this->shipRepository = $shipRepository;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -76,7 +71,6 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $this->colonyFunctionManager,
             $ship,
             $this->shipSystemManager,
-            $this->shipRepository,
             $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
             $this->torpedoTypeRepository,
@@ -136,7 +130,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     public function wrapFleets(array $fleets): array
     {
         return array_map(
-            fn(FleetInterface $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
+            fn (FleetInterface $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
             $fleets
         );
     }
