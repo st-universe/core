@@ -8,10 +8,13 @@ use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Crew\LaunchEscapePodsInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -36,6 +39,8 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private LaunchEscapePodsInterface $launchEscapePods;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ShipCrewRepositoryInterface $shipCrewRepository,
         ShipRepositoryInterface $shipRepository,
@@ -44,7 +49,8 @@ final class ShipLeaver implements ShipLeaverInterface
         CrewRepositoryInterface $crewRepository,
         AstroEntryLibInterface $astroEntryLib,
         LeaveFleetInterface $leaveFleet,
-        LaunchEscapePodsInterface $launchEscapePods
+        LaunchEscapePodsInterface $launchEscapePods,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipRepository = $shipRepository;
@@ -54,6 +60,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->leaveFleet = $leaveFleet;
         $this->launchEscapePods = $launchEscapePods;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function evacuate(ShipWrapperInterface $wrapper): string
@@ -108,7 +115,7 @@ final class ShipLeaver implements ShipLeaverInterface
         }
     }
 
-    public function dumpCrewman(ShipCrewInterface $shipCrew): string
+    public function dumpCrewman(ShipCrewInterface $shipCrew, string $message): string
     {
         $ship = $shipCrew->getShip();
         if ($ship === null) {
@@ -123,16 +130,44 @@ final class ShipLeaver implements ShipLeaverInterface
             $this->shipCrewRepository->delete($shipCrew);
             $this->crewRepository->delete($crew);
 
-            return _('Der Crewman wurde exekutiert!');
+            $survivalMessage = _('Der Crewman wurde exekutiert!');
+        } else {
+
+            //transfer crewman into pods
+            $shipCrew->setShip($pods);
+            $shipCrew->setShipId($pods->getId());
+            $ship->getCrewlist()->removeElement($shipCrew);
+            $this->shipCrewRepository->save($shipCrew);
+
+            $survivalMessage = _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
         }
 
-        //transfer crewman into pods
-        $shipCrew->setShip($pods);
-        $shipCrew->setShipId($pods->getId());
-        $ship->getCrewlist()->removeElement($shipCrew);
-        $this->shipCrewRepository->save($shipCrew);
+        $this->sendPmToOwner(
+            $ship->getUser(),
+            $shipCrew->getUser(),
+            $message,
+            $survivalMessage
+        );
 
-        return _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
+        return $survivalMessage;
+    }
+
+    private function sendPmToOwner(
+        UserInterface $sender,
+        UserInterface $owner,
+        string $message,
+        string $survivalMessage
+    ): void {
+        $this->privateMessageSender->send(
+            $sender->getId(),
+            $owner->getId(),
+            sprintf(
+                "%s\n%s",
+                $message,
+                $survivalMessage
+            ),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+        );
     }
 
     private function letCrewDie(ShipInterface $ship): void
