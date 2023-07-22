@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Stu\Lib\ShipManagement\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
+use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -23,6 +25,12 @@ class ManageUnmanTest extends StuTestCase
 
     /** @var MockInterface&ShipRepositoryInterface */
     private MockInterface $shipRepository;
+
+    /** @var MockInterface&TroopTransferUtilityInterface */
+    private MockInterface $troopTransferUtility;
+
+    /** @var MockInterface&ShipLeaverInterface */
+    private MockInterface $shipLeaver;
 
     /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
@@ -42,6 +50,9 @@ class ManageUnmanTest extends StuTestCase
     {
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
+        $this->shipLeaver = $this->mock(ShipLeaverInterface::class);
+
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
         $this->user = $this->mock(UserInterface::class);
@@ -49,7 +60,9 @@ class ManageUnmanTest extends StuTestCase
 
         $this->subject = new ManageUnman(
             $this->shipSystemManager,
-            $this->shipRepository
+            $this->shipRepository,
+            $this->troopTransferUtility,
+            $this->shipLeaver
         );
     }
 
@@ -84,6 +97,11 @@ class ManageUnmanTest extends StuTestCase
             ->once()
             ->andReturn($this->shipId);
 
+        $this->troopTransferUtility->shouldReceive('ownCrewOnTarget')
+            ->with($this->user, $this->ship)
+            ->once()
+            ->andReturn(42);
+
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
         $this->assertEmpty($msg);
@@ -113,6 +131,11 @@ class ManageUnmanTest extends StuTestCase
             ->once()
             ->andReturn($shipOwner);
 
+        $this->troopTransferUtility->shouldReceive('ownCrewOnTarget')
+            ->with($this->user, $this->ship)
+            ->once()
+            ->andReturn(42);
+
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
         $this->assertEmpty($msg);
@@ -140,8 +163,8 @@ class ManageUnmanTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->user);
-        $this->ship->shouldReceive('getCrewCount')
-            ->withNoArgs()
+        $this->troopTransferUtility->shouldReceive('ownCrewOnTarget')
+            ->with($this->user, $this->ship)
             ->once()
             ->andReturn(0);
 
@@ -184,8 +207,9 @@ class ManageUnmanTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('name');
-        $this->ship->shouldReceive('getCrewCount')
-            ->withNoArgs()
+        $this->troopTransferUtility->shouldReceive('ownCrewOnTarget')
+            ->with($this->user, $this->ship)
+            ->once()
             ->andReturn(10);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
@@ -195,7 +219,9 @@ class ManageUnmanTest extends StuTestCase
 
     public function testManageExpectCrewSwapWhenEnoughSpaceOnProvider(): void
     {
-        $shipCrewlist = $this->mock(Collection::class);
+        $foreignCrew = $this->mock(ShipCrewInterface::class);
+
+        $shipCrewlist = new ArrayCollection([$foreignCrew]);
         $dockedShips = new ArrayCollection();
         $dockedShip = $this->mock(ShipInterface::class);
         $dockedShips->add($dockedShip);
@@ -225,14 +251,13 @@ class ManageUnmanTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->once()
             ->andReturn($this->user);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
-            ->once()
             ->andReturn('name');
-        $this->ship->shouldReceive('getCrewCount')
-            ->withNoArgs()
+        $this->troopTransferUtility->shouldReceive('ownCrewOnTarget')
+            ->with($this->user, $this->ship)
+            ->once()
             ->andReturn(10);
         $this->ship->shouldReceive('getCrewlist')
             ->withNoArgs()
@@ -245,9 +270,10 @@ class ManageUnmanTest extends StuTestCase
             ->twice()
             ->andReturn($dockedShips);
 
-        $shipCrewlist->shouldReceive('clear')
+        $this->user->shouldReceive('getName')
             ->withNoArgs()
-            ->once();
+            ->once()
+            ->andReturn('spieler');
 
         $dockedShip->shouldReceive('setDockedTo')
             ->with(null)
@@ -261,8 +287,27 @@ class ManageUnmanTest extends StuTestCase
             ->with($this->wrapper)
             ->once();
 
+        $foreignCrew->shouldReceive('getCrew->getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(UserInterface::class));
+        $foreignCrew->shouldReceive('getCrew->getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('Foreigner');
+
+        $this->shipLeaver->shouldReceive('dumpCrewman')
+            ->with(
+                $foreignCrew,
+                'Die Dienste von Crewman Foreigner werden nicht mehr auf der Station name von Spieler spieler benötigt.'
+            )
+            ->once()
+            ->andReturn('Foreigner');
+
+
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
         $this->assertEquals(['name: Die Crew wurde runtergebeamt'], $msg);
+        $this->assertTrue($shipCrewlist->isEmpty());
     }
 }

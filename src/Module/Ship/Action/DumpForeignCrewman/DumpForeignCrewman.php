@@ -7,11 +7,8 @@ namespace Stu\Module\Ship\Action\DumpForeignCrewman;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -27,21 +24,17 @@ final class DumpForeignCrewman implements ActionControllerInterface
 
     private ShipLeaverInterface $shipLeaver;
 
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
         ShipLeaverInterface $shipLeaver,
-        PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipLeaver = $shipLeaver;
-        $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -80,22 +73,17 @@ final class DumpForeignCrewman implements ActionControllerInterface
 
         $name = $shipCrew->getCrew()->getName();
 
-        $msg = $this->shipLeaver->dumpCrewman($shipCrew);
-
-        $this->privateMessageSender->send(
-            $userId,
-            $shipCrew->getCrew()->getUser()->getId(),
+        $survivalMessage = $this->shipLeaver->dumpCrewman(
+            $shipCrew,
             sprintf(
-                'Die Dienste von Crewman %s werden nicht mehr auf der Station %s von Spieler %s benötigt. %s',
+                'Die Dienste von Crewman %s werden nicht mehr auf der Station %s von Spieler %s benötigt.',
                 $name,
                 $ship->getName(),
                 $game->getUser()->getName(),
-                $msg
-            ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+            )
         );
 
-        $game->addInformation($msg);
+        $game->addInformation($survivalMessage);
     }
 
     public function performSessionCheck(): bool
