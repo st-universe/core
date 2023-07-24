@@ -1,0 +1,62 @@
+{% from 'html/shipmacros.twig' import nbslist_header %}
+{% if not HAS_NBS and not CLOAK_NBS %}
+<table class="tcal">
+  <tr>
+    <td>Es befinden sich keine Schiffe in diesem Sektor</td>
+  </tr>
+</table>
+{% endif %}
+{% if CLOAK_NBS %}
+<table class="tcal">
+  <tr>
+    <td style="color: #f1a005;">Es befinden sich getarnte Schiffe in diesem Sektor</td>
+  </tr>
+</table>
+{% endif %}
+{% if HAS_NBS %}
+<table class="tcal nbs" id="sensornbstab">
+  {{ nbslist_header() }}
+  {% if STATION_NBS %}
+  <tr>
+    <td colspan="2"></td>
+    <td colspan="5">Stationen</td>
+  </tr>
+  {% for ship in STATION_NBS %}
+  <tr class="row">
+    {% include 'html/station/nbsListBody.twig' %}
+  </tr>
+  {% endfor %}
+  {% endif %}
+  {% if FLEET_NBS %}
+  {% for data in FLEET_NBS %}
+  <tr>
+    <td colspan="7">
+      {% if data.getDefendedColony %}
+      <img src="/assets/buttons/defend1.png" title="verteidigt die Kolonie" />
+      {% endif %}
+      {% if data.getBlockedColony %}
+      <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
+      {% endif %}
+      {{ data.getName|bbcode }}
+    </td>
+  </tr>
+  {% for ship in data.getVisibleShips %}
+  <tr class="row fleet{{ data.getId }}">
+    {% include 'html/station/nbsListBody.twig' %}
+  </tr>
+  {% endfor %}
+  {% endfor %}
+  {% endif %}
+  {% if SHIP_NBS %}
+  <tr>
+    <td colspan="2"></td>
+    <td colspan="5">Einzelschiffe</td>
+  </tr>
+  {% for ship in SHIP_NBS %}
+  <tr class="row">
+    {% include 'html/station/nbsListBody.twig' %}
+  </tr>
+  {% endfor %}
+  {% endif %}
+</table>
+{% endif %}

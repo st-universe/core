@@ -1,0 +1,84 @@
+<table class="tcal">
+  {% if SYSTEM_INTERN %}
+  <tr>
+    {% if MAPFIELD.getColony %}
+    <th colspan="3">
+      {{ MAPFIELD.getColony.getUser.getName|bbcode }}
+    </th>
+    {% endif %}
+  </tr>
+  {% endif %}
+  <tr>
+    <td rowspan="2" style="width: 30px; vertical-align: top;">
+      <img src="assets/map/{{ MAPFIELD.getFieldId }}.png" />
+    </td>
+    <th>{{ MAPFIELD.getFieldType.getName }}</th>
+  </tr>
+  <tr>
+    <td>
+      Energiekosten: {{ MAPFIELD.getFieldType.getEnergyCosts }}<br />
+      Schaden: {{ MAPFIELD.getFieldType.getSpecialDamage }}
+      ({{ MAPFIELD.getFieldType.getDamage }})
+    </td>
+  </tr>
+</table>
+{% if SIGNATURES %}
+<table class="tcal">
+  <tr>
+    <th colspan="3">Signaturen</th>
+  </tr>
+  <tr>
+    <th>Rumpf</th>
+    <th>Schiffsname</th>
+    <th>Alter</th>
+  </tr>
+  {% for sig in SIGNATURES %}
+  <tr>
+    <td>
+      {% if sig.getRump %}
+      <img src="assets/ships/{{ sig.getRump.getId }}.png" title="{{ sig.getRump.getName }}" />
+      {% else %}
+      <span>?</span>
+      {% endif %}
+    </td>
+    <td>
+      {% if sig.getShipName %}
+      {{ sig.getShipName|bbcode }}
+      {% else %}
+      <span>?</span>
+      {% endif %}
+    </td>
+    <td>
+      {{ sig.getAge }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% if OTHER_SIG_COUNT or OTHER_CLOAKED_COUNT %}
+<table class="tcal">
+  <tr>
+    <th colspan="2">verblasste Signaturen</th>
+  </tr>
+  {% if OTHER_SIG_COUNT %}
+  <tr>
+    <td>
+      ungetarnt:
+    </td>
+    <td>
+      {{ OTHER_SIG_COUNT }}
+    </td>
+  </tr>
+  {% endif %}
+  {% if OTHER_CLOAKED_COUNT %}
+  <tr>
+    <td>
+      getarnt:
+    </td>
+    <td>
+      {{ OTHER_CLOAKED_COUNT }}
+    </td>
+  </tr>
+  {% endif %}
+</table>
+{% endif %}

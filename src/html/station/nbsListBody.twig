@@ -1,0 +1,46 @@
+{% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+<td colspan="2" style="text-align: center;">
+</td>
+{% if ship.isOwnedByCurrentUser %}
+<td style="width: 200px; background-color: #000000 !important;">
+  <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}">
+    {{ shipimagewithoutwarp(ship) }}
+  </a>
+</td>
+<td></td>
+<td>
+  <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}"> {{ ship.getName|bbcode }}</a>
+</td>
+{% else %}
+<td style="width: 200px; background-color: #000000 !important;">
+  {{ shipimagewithoutwarp(ship) }}
+</td>
+<td></td>
+<td>
+  {{ ship.getName|bbcode }}
+</td>
+{% endif %}
+{% if ship.isTrumfield %}
+<td style="width: 160px;">{{ ship.getHull }}</td>
+<td>
+  {{ ship.getUserName|bbcode }}
+</td>
+{% else %}
+<td style="width: 160px;">
+  {{ ship.getHull }}/{{ ship.getMaxHull }}
+  {% if ship.getShieldState %}
+  (<span class="activeshield">{{ ship.getShield }}</span>)
+  {% endif %}
+</td>
+<td>
+  {% if WRAPPER.isOwnedByCurrentUser %}
+  {% set toType = ship.isBase ? 4 : 2 %}
+  <a href="javascript:void(0);" onclick="openPmWindow({{ WRAPPER.get.getId }},{{ ship.getId }},4,{{ toType }})"
+    title="Nachricht an {{ ship.getUserName|bbcode2txt }} verfassen"
+    onmouseover="cp('nbsPm{{ ship.getId }}','buttons/msg2')" onmouseout="cp('nbsPm{{ ship.getId }}','buttons/msg1')">
+    <img src="/assets/buttons/msg1.png" name="nbsPm{{ ship.getId }}" />
+  </a>
+  {% endif %}
+  {{ ship.getUserName|bbcode }} ({{ ship.getUserId }})
+</td>
+{% endif %}
