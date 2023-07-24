@@ -76,13 +76,20 @@ final class ShowSensorScan implements ViewControllerInterface
         );
         $station = $wrapper->get();
 
+        $game->setTemplateVar('ERROR', true);
+
+        $epsSystem = $wrapper->getEpsSystemData();
+        if ($epsSystem === null || $epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
+            $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
+            return;
+        }
+
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
         $sysid = request::getIntFatal('sysid');
 
         $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
 
-        $game->setTemplateVar('ERROR', true);
 
         if ($sysid === 0) {
             if (
@@ -114,19 +121,13 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $game->setPageTitle(sprintf(_('Sensor Scan %d|%d'), $cx, $cy));
-        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/sensorscan');
+        $game->setTemplateFile('html/station/sensorScan.twig', true);
 
         if ($mapField === null) {
             return;
         }
 
         if (!$station->getLss()) {
-            return;
-        }
-
-        $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
-            $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
             return;
         }
 

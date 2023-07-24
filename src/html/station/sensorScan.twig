@@ -1,0 +1,21 @@
+{% embed "html/ajaxwindow.twig" %}
+{% block content %}
+{% if not ERROR %}
+{% set SHIP = WRAPPER.get %}
+<table class="tcal">
+    <tr>
+        <th style="width: 40%;"></th>
+        <th style="width: 60%;">Aktueller Scan</th>
+    </tr>
+    <tr>
+        <td>
+            {% include 'html/station/sectorScan.twig' %}
+        </td>
+        <td>
+            {% include 'html/station/nbsBlock.twig' %}
+        </td>
+    </tr>
+</table>
+{% endif %}
+{% endblock %}
+{% endembed %}
