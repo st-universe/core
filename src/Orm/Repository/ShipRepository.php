@@ -17,6 +17,8 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Module\Ship\Lib\TFleetShipItem;
+use Stu\Module\Ship\Lib\TShipItem;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Fleet;
@@ -802,35 +804,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         bool $showCloaked = false,
         int $mapId = null,
         int $sysMapId = null
-    ): iterable {
+    ): array {
         $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('fleetid', 'fleetid', 'integer');
-        $rsm->addScalarResult('fleetname', 'fleetname');
-        $rsm->addScalarResult('isdefending', 'isdefending', 'boolean');
-        $rsm->addScalarResult('isblocking', 'isblocking', 'boolean');
-        $rsm->addScalarResult('shipid', 'shipid', 'integer');
-        $rsm->addScalarResult('rumpid', 'rumpid', 'integer');
-        $rsm->addScalarResult('formerrumpid', 'formerrumpid', 'integer');
-        $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
-        $rsm->addScalarResult('cloakstate', 'cloakstate', 'integer');
-        $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
-        $rsm->addScalarResult('uplinkstate', 'uplinkstate', 'integer');
-        $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
-        $rsm->addScalarResult('spacecrafttype', 'spacecrafttype', 'integer');
-        $rsm->addScalarResult('shipname', 'shipname');
-        $rsm->addScalarResult('hull', 'hull', 'integer');
-        $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
-        $rsm->addScalarResult('shield', 'shield', 'integer');
-        $rsm->addScalarResult('webid', 'webid', 'integer');
-        $rsm->addScalarResult('webfinishtime', 'webfinishtime', 'integer');
-        $rsm->addScalarResult('userid', 'userid', 'integer');
-        $rsm->addScalarResult('username', 'username');
-        $rsm->addScalarResult('rumpcategoryid', 'rumpcategoryid', 'integer');
-        $rsm->addScalarResult('rumpname', 'rumpname');
-        $rsm->addScalarResult('rumproleid', 'rumproleid', 'integer');
-        $rsm->addScalarResult('haslogbook', 'haslogbook', 'boolean');
+        $rsm->addEntityResult(TFleetShipItem::class, 's');
+        $rsm->addFieldResult('s', 'fleetname', 'fleet_name');
+        $rsm->addFieldResult('s', 'isdefending', 'is_defending');
+        $rsm->addFieldResult('s', 'isblocking', 'is_blocking');
+        $this->addTShipItemFields($rsm);
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -885,32 +867,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         bool $showCloaked = false,
         int $mapId = null,
         int $sysMapId = null
-    ): iterable {
+    ): array {
         $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('shipid', 'shipid', 'integer');
-        $rsm->addScalarResult('fleetid', 'fleetid', 'integer');
-        $rsm->addScalarResult('rumpid', 'rumpid', 'integer');
-        $rsm->addScalarResult('formerrumpid', 'formerrumpid', 'integer');
-        $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
-        $rsm->addScalarResult('cloakstate', 'cloakstate', 'integer');
-        $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
-        $rsm->addScalarResult('uplinkstate', 'uplinkstate', 'integer');
-        $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
-        $rsm->addScalarResult('spacecrafttype', 'spacecrafttype', 'integer');
-        $rsm->addScalarResult('shipname', 'shipname', 'string');
-        $rsm->addScalarResult('hull', 'hull', 'integer');
-        $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
-        $rsm->addScalarResult('shield', 'shield', 'integer');
-        $rsm->addScalarResult('webid', 'webid', 'integer');
-        $rsm->addScalarResult('webfinishtime', 'webfinishtime', 'integer');
-        $rsm->addScalarResult('userid', 'userid', 'integer');
-        $rsm->addScalarResult('username', 'username', 'string');
-        $rsm->addScalarResult('rumpcategoryid', 'rumpcategoryid', 'integer');
-        $rsm->addScalarResult('rumpname', 'rumpname', 'string');
-        $rsm->addScalarResult('rumproleid', 'rumproleid', 'integer');
-        $rsm->addScalarResult('haslogbook', 'haslogbook', 'boolean');
+        $rsm->addEntityResult(TShipItem::class, 's');
+        $this->addTShipItemFields($rsm);
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -957,6 +919,32 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
             'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK
         ])->getResult();
+    }
+
+    private function addTShipItemFields(ResultSetMapping $rsm): void
+    {
+        $rsm->addFieldResult('s', 'shipid', 'ship_id');
+        $rsm->addFieldResult('s', 'fleetid', 'fleet_id');
+        $rsm->addFieldResult('s', 'rumpid', 'rump_id');
+        $rsm->addFieldResult('s', 'formerrumpid', 'former_rump_id');
+        $rsm->addFieldResult('s', 'warpstate', 'warp_state');
+        $rsm->addFieldResult('s', 'cloakstate', 'cloak_state');
+        $rsm->addFieldResult('s', 'shieldstate', 'shield_state');
+        $rsm->addFieldResult('s', 'uplinkstate', 'uplink_state');
+        $rsm->addFieldResult('s', 'isdestroyed', 'is_destroyed');
+        $rsm->addFieldResult('s', 'spacecrafttype', 'spacecraft_type');
+        $rsm->addFieldResult('s', 'shipname', 'ship_name');
+        $rsm->addFieldResult('s', 'hull', 'hull');
+        $rsm->addFieldResult('s', 'maxhull', 'max_hull');
+        $rsm->addFieldResult('s', 'shield', 'shield');
+        $rsm->addFieldResult('s', 'webid', 'web_id');
+        $rsm->addFieldResult('s', 'webfinishtime', 'web_finish_time');
+        $rsm->addFieldResult('s', 'userid', 'user_id');
+        $rsm->addFieldResult('s', 'username', 'user_name');
+        $rsm->addFieldResult('s', 'rumpcategoryid', 'rump_category_id');
+        $rsm->addFieldResult('s', 'rumpname', 'rump_name');
+        $rsm->addFieldResult('s', 'rumproleid', 'rump_role_id');
+        $rsm->addFieldResult('s', 'haslogbook', 'has_logbook');
     }
 
     public function isCloakedShipAtShipLocation(

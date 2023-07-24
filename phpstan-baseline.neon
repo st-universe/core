@@ -24,11 +24,6 @@ parameters:
 			path: src/Component/Logging/services.php
 
 		-
-			message: "#^Parameter \\#1 \\$ships of class Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator constructor expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
-			count: 2
-			path: src/Component/Ship/Nbs/NbsUtility.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtil.php
@@ -2297,41 +2292,6 @@ parameters:
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsItem.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsItem\\:\\:__construct\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsItem.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsItem\\:\\:getVisibleShips\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsItem.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsItem\\:\\:\\$ships type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsItem.php
-
-		-
-			message: "#^Class Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator implements generic interface Iterator but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsIterator.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator\\<TShipItem of array\\<string, bool\\|int\\|string\\>\\>\\:\\:\\$fleets \\(array\\<int, TShipItem of array\\{fleetid\\: int, fleetname\\: string, isdefending\\: bool, isblocking\\: bool, shipid\\: int, rumpid\\: int, formerrumpid\\: int, warpstate\\: int, \\.\\.\\.\\}\\>\\) does not accept non\\-empty\\-array\\<int, non\\-empty\\-array\\<'cloakstate'\\|'fleetid'\\|'fleetname'\\|'formerrumpid'\\|'haslogbook'\\|'hull'\\|'isblocking'\\|'isdefending'\\|'isdestroyed'\\|'maxhull'\\|'rumpcategoryid'\\|'rumpid'\\|'rumpname'\\|'rumproleid'\\|'shield'\\|'shieldstate'\\|'shipid'\\|'shipname'\\|'spacecrafttype'\\|'uplinkstate'\\|'userid'\\|'username'\\|'warpstate'\\|'webfinishtime'\\|'webid'\\|int\\<0, max\\>, array\\{cloakstate\\: int, fleetid\\: int, fleetname\\: string, formerrumpid\\: int, haslogbook\\: bool, hull\\: int, isblocking\\: bool, isdefending\\: bool, \\.\\.\\.\\}\\|bool\\|int\\|string\\>\\>\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsIterator.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator\\<TShipItem of array\\<string, bool\\|int\\|string\\>\\>\\:\\:\\$fleets \\(array\\<int, TShipItem of array\\{fleetid\\: int, fleetname\\: string, isdefending\\: bool, isblocking\\: bool, shipid\\: int, rumpid\\: int, formerrumpid\\: int, warpstate\\: int, \\.\\.\\.\\}\\>\\) does not accept non\\-empty\\-array\\<int, non\\-empty\\-array\\<'cloakstate'\\|'fleetid'\\|'fleetname'\\|'formerrumpid'\\|'haslogbook'\\|'hull'\\|'isblocking'\\|'isdefending'\\|'isdestroyed'\\|'maxhull'\\|'rumpcategoryid'\\|'rumpid'\\|'rumpname'\\|'rumproleid'\\|'shield'\\|'shieldstate'\\|'shipid'\\|'shipname'\\|'spacecrafttype'\\|'uplinkstate'\\|'userid'\\|'username'\\|'warpstate'\\|'webfinishtime'\\|'webid'\\|int\\<0, max\\>, array\\{fleetid\\: int, fleetname\\: string, isdefending\\: bool, isblocking\\: bool, shipid\\: int, rumpid\\: int, formerrumpid\\: int, warpstate\\: int, \\.\\.\\.\\}\\|bool\\|int\\|string\\>\\>\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsIterator.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\InteractionChecker\\:\\:canInteractWith\\(\\) has parameter \\$target with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/InteractionChecker.php
@@ -2365,31 +2325,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsItem\\:\\:__construct\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipNfsItem.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsItem\\:\\:\\$values type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipNfsItem.php
-
-		-
-			message: "#^Class Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator implements generic interface Iterator but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipNfsIterator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator\\:\\:__construct\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipNfsIterator.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator\\:\\:\\$ships type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipNfsIterator.php
 
 		-
 			message: "#^Cannot access property \\$ownedWebId on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"

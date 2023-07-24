@@ -3,6 +3,8 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Ship\Lib\TFleetShipItemInterface;
+use Stu\Module\Ship\Lib\TShipItemInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
@@ -208,45 +210,19 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): iterable;
 
     /**
-     * @return iterable<array{
-     *  fleetid: int,
-     *  fleetname: string,
-     *  isdefending: bool,
-     *  isblocking: bool,
-     *  shipid: int,
-     *  rumpid: int,
-     *  formerrumpid: int,
-     *  warpstate: int,
-     *  cloakstate: int,
-     *  shieldstate: int,
-     *  uplinkstate: int,
-     *  isdestroyed: bool,
-     *  spacecrafttype: int,
-     *  shipname: string,
-     *  hull: int,
-     *  maxhull: int,
-     *  shield: int,
-     *  webid: int,
-     *  webfinishtime: int,
-     *  userid: int,
-     *  username: string,
-     *  rumpcategoryid: int,
-     *  rumpname: string,
-     *  rumproleid: int,
-     *  haslogbook: bool
-     * }>
+     * @return array<TFleetShipItemInterface>
      */
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
         int $mapId = null,
         int $sysMapId = null
-    ): iterable;
+    ): array;
 
     /**
      * @param array<int> $types
      *
-     * @return array<ShipInterface>
+     * @return array<TShipItemInterface>
      */
     public function getSingleShipScannerResults(
         ShipInterface $ship,
@@ -254,7 +230,7 @@ interface ShipRepositoryInterface extends ObjectRepository
         bool $showCloaked = false,
         int $mapId = null,
         int $sysMapId = null
-    ): iterable;
+    ): array;
 
     public function isCloakedShipAtShipLocation(
         ShipInterface $ship

@@ -6,14 +6,20 @@ namespace Stu\Module\Ship\Lib;
 
 use Iterator;
 
+/**
+ * @implements Iterator<ShipNfsItem>
+ * 
+ */
 final class ShipNfsIterator implements Iterator
 {
     protected int $position = 0;
 
+    /** @var array<TShipItemInterface> */
     private array $ships;
 
     private int $userId;
 
+    /** @param array<TShipItemInterface> $ships */
     public function __construct(array $ships, int $userId)
     {
         $this->ships = $ships;
