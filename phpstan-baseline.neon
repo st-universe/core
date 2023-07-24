@@ -2472,11 +2472,6 @@ parameters:
 			path: src/Module/Ship/Lib/TholianWebUtilInterface.php
 
 		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TroopTransferUtility.php
-
-		-
 			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\ShipUiFactory\\:\\:createVisualNavPanelEntry\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Ui/ShipUiFactory.php

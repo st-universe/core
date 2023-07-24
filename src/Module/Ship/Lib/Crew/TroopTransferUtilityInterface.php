@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Crew;
 
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;

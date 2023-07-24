@@ -9,7 +9,7 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 

@@ -25,7 +25,7 @@ use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
@@ -397,9 +397,11 @@ final class TroopTransfer implements ActionControllerInterface
             }
             $target->getDockedShips()->clear();
             $this->shipLoader->save($target);
-        } elseif ($target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-        && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-        && $target->getCrewCount() <= $target->getBuildplan()->getCrew()) {
+        } elseif (
+            $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            && $target->getCrewCount() <= $target->getBuildplan()->getCrew()
+        ) {
             $this->helper->deactivate($target->getId(), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
 
