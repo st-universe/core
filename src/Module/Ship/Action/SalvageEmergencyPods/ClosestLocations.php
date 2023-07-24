@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

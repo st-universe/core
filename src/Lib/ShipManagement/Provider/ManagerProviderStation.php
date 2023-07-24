@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Crew;
 
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -27,8 +27,12 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
 
     public function getBeamableTroopCount(ShipInterface $ship): int
     {
-        $max = $ship->getCrewCount() - $ship->getBuildplan()->getCrew();
+        $buildplan = $ship->getBuildplan();
+        if ($buildplan === null) {
+            return 0;
+        }
 
+        $max = $ship->getCrewCount() - $buildplan->getCrew();
         return max(0, $max);
     }
 
