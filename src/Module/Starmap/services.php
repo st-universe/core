@@ -13,10 +13,13 @@ use Stu\Module\Starmap\View\ShowByPosition\ShowByPosition;
 use Stu\Module\Starmap\View\ShowSection\ShowSection;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequest;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
+use Stu\StarsystemGenerator\StarsystemGenerator;
+use Stu\StarsystemGenerator\StarsystemGeneratorInterface;
 
 use function DI\autowire;
 
 return [
+    StarsystemGeneratorInterface::class => autowire(StarsystemGenerator::class),
     ShowSectionRequestInterface::class => autowire(ShowSectionRequest::class),
     'STARMAP_ACTIONS' => [],
     'STARMAP_VIEWS' => [
