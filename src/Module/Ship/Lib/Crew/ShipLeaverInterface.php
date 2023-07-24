@@ -1,7 +1,8 @@
 <?php
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Crew;
 
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 
 interface ShipLeaverInterface
