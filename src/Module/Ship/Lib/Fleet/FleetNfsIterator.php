@@ -2,40 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Fleet;
 
 use Iterator;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 /**
- * @template TShipItem of array{
- *  fleetid: int,
- *  fleetname: string,
- *  isdefending: bool,
- *  isblocking: bool,
- *  shipid: int,
- *  rumpid: int,
- *  formerrumpid: int,
- *  warpstate: int,
- *  cloakstate: int,
- *  shieldstate: int,
- *  uplinkstate: int,
- *  isdestroyed: bool,
- *  spacecrafttype: int,
- *  shipname: string,
- *  hull: int,
- *  maxhull: int,
- *  shield: int,
- *  webid: int,
- *  webfinishtime: int,
- *  userid: int,
- *  username: string,
- *  rumpcategoryid: int,
- *  rumpname: string,
- *  rumproleid: int,
- *  haslogbook: bool
- * }
+ * @implements Iterator<FleetNfsItem>
+ * 
  */
 final class FleetNfsIterator implements Iterator
 {
@@ -47,11 +23,11 @@ final class FleetNfsIterator implements Iterator
 
     protected int $position = 0;
 
-    /** @var array<int, TShipItem> */
+    /** @var array<int, array<TFleetShipItemInterface>> */
     private array $fleets = [];
 
     /**
-     * @param iterable<TShipItem> $ships
+     * @param iterable<TFleetShipItemInterface> $ships
      */
     public function __construct(iterable $ships, ShipInterface $currentShip, ?SessionInterface $session, int $userId)
     {
@@ -63,7 +39,7 @@ final class FleetNfsIterator implements Iterator
         $currentFleet = null;
 
         foreach ($ships as $ship) {
-            $newFleetId = $ship['fleetid'];
+            $newFleetId = $ship->getFleetId();
 
             if ($newFleetId !== $currentFleetId) {
                 if ($currentFleet !== null) {

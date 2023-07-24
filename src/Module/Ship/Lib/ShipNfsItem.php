@@ -11,53 +11,53 @@ use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 
 final class ShipNfsItem
 {
-    private array $values;
+    private TShipItemInterface $item;
 
     private int $userId;
 
     public function __construct(
-        array $values,
+        TShipItemInterface $item,
         int $userId
     ) {
-        $this->values = $values;
+        $this->item = $item;
         $this->userId = $userId;
     }
 
     public function getId(): int
     {
-        return $this->values['shipid'];
+        return $this->item->getShipId();
     }
     public function getFleetId(): ?int
     {
-        return $this->values['fleetid'];
+        return $this->item->getFleetId();
     }
     public function getName(): string
     {
-        return $this->values['shipname'];
+        return $this->item->getShipName();
     }
     public function getHull(): int
     {
-        return $this->values['hull'];
+        return $this->item->getHull();
     }
     public function getMaxHull(): int
     {
-        return $this->values['maxhull'];
+        return $this->item->getMaxHull();
     }
     public function getShield(): int
     {
-        return $this->values['shield'];
+        return $this->item->getShield();
     }
     public function getShieldState(): bool
     {
-        return $this->values['shieldstate'] > 1;
+        return $this->item->getShieldState() > 0;
     }
     public function getCloakState(): bool
     {
-        return $this->values['cloakstate'] > 1;
+        return $this->item->getCloakState() > 0;
     }
     public function getWarpState(): bool
     {
-        return $this->values['warpstate'] > 1;
+        return $this->item->getWarpState() > 0;
     }
     public function isTractorbeamPossible(): bool
     {
@@ -69,36 +69,35 @@ final class ShipNfsItem
     }
     public function isDestroyed(): bool
     {
-        return $this->values['isdestroyed'];
+        return $this->item->isDestroyed();
     }
     public function isBase(): bool
     {
-        return $this->values['spacecrafttype'] === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION;
+        return $this->item->getSpacecraftType() === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION;
     }
     public function isTrumfield(): bool
     {
-        return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;
-        ;
+        return $this->item->getRumpCategoryId() === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;;
     }
     public function isShuttle(): bool
     {
-        return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE;
+        return $this->item->getRumpCategoryId() === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE;
     }
     public function getRumpId(): int
     {
-        return $this->values['rumpid'];
+        return $this->item->getRumpId();
     }
-    public function getFormerRumpId(): int
+    public function getFormerRumpId(): ?int
     {
-        return $this->values['formerrumpid'];
+        return $this->item->getFormerRumpId();
     }
     public function getHoldingWebBackgroundStyle(): string
     {
-        if ($this->values['webid'] === null) {
+        if ($this->item->getWebId() === null) {
             return '';
         }
 
-        $finishTime = $this->values['webfinishtime'];
+        $finishTime = $this->item->getWebFinishTime();
 
         if ($finishTime === null || $finishTime < time()) {
             $icon =  'web.png';
@@ -112,15 +111,15 @@ final class ShipNfsItem
     }
     public function getRumpName(): string
     {
-        return $this->values['rumpname'];
+        return $this->item->getRumpName();
     }
     public function getUserId(): int
     {
-        return $this->values['userid'];
+        return $this->item->getUserId();
     }
     public function getUserName(): string
     {
-        return $this->values['username'];
+        return $this->item->getUserName();
     }
     public function isOwnedByCurrentUser(): bool
     {
@@ -129,7 +128,7 @@ final class ShipNfsItem
 
     public function hasUplink(): bool
     {
-        return $this->values['uplinkstate'] > 0;
+        return $this->item->getUplinkState() > 0;
     }
 
     public function getRump(): mixed
@@ -139,6 +138,6 @@ final class ShipNfsItem
 
     public function hasLogBook(): bool
     {
-        return $this->values['haslogbook'];
+        return $this->item->hasLogBook();
     }
 }

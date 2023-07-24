@@ -7,7 +7,7 @@ namespace Stu\Component\Ship\Nbs;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\FleetNfsIterator;
+use Stu\Module\Ship\Lib\Fleet\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipNfsIterator;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
