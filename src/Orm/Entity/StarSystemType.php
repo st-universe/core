@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use RuntimeException;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\StarSystemTypeRepository")
@@ -83,7 +84,29 @@ class StarSystemType implements StarSystemTypeInterface
 
     public function getDescription(): string
     {
-        return $this->description;
+        $firstMassCenter = $this->getFirstMassCenterType();
+        $secondMassCenter = $this->getSecondMassCenterType();
+
+        if (
+            $firstMassCenter === null
+            && $secondMassCenter === null
+        ) {
+            return $this->description;
+        }
+
+        if ($firstMassCenter === null) {
+            throw new RuntimeException('this is not allowed');
+        }
+
+        if ($secondMassCenter === null) {
+            return $firstMassCenter->getDescription();
+        }
+
+        return sprintf(
+            "Binärsystem %s-%s",
+            $firstMassCenter->getDescription(),
+            $secondMassCenter->getDescription()
+        );
     }
 
     public function setDescription(string $description): StarSystemTypeInterface
