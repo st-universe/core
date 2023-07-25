@@ -4072,6 +4072,11 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$starSystemType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$wormholeEntries type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\WormholeEntryInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
