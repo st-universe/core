@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 
 final class ShipNfsItem
@@ -49,15 +50,16 @@ final class ShipNfsItem
     }
     public function getShieldState(): bool
     {
-        return $this->item->getShieldState() > 0;
+        return $this->item->getShieldState() > ShipSystemModeEnum::MODE_OFF;
     }
     public function getCloakState(): bool
     {
-        return $this->item->getCloakState() > 0;
+
+        return $this->item->getCloakState() > ShipSystemModeEnum::MODE_OFF;
     }
     public function getWarpState(): bool
     {
-        return $this->item->getWarpState() > 0;
+        return $this->item->getWarpState() > ShipSystemModeEnum::MODE_OFF;
     }
     public function isTractorbeamPossible(): bool
     {
@@ -128,7 +130,7 @@ final class ShipNfsItem
 
     public function hasUplink(): bool
     {
-        return $this->item->getUplinkState() > 0;
+        return $this->item->getUplinkState() > ShipSystemModeEnum::MODE_OFF;
     }
 
     public function getRump(): mixed
