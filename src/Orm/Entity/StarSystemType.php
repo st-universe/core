@@ -67,14 +67,14 @@ class StarSystemType implements StarSystemTypeInterface
      * @ManyToOne(targetEntity="MassCenterType")
      * @JoinColumn(name="first_mass_center_id", referencedColumnName="id")
      */
-    private ?MassCenterTypeInterface $secondMassCenterType = null;
+    private ?MassCenterTypeInterface $firstMassCenterType = null;
 
     /**
      *
      * @ManyToOne(targetEntity="MassCenterType")
      * @JoinColumn(name="second_mass_center_id", referencedColumnName="id")
      */
-    private ?MassCenterTypeInterface $firstMassCenterType = null;
+    private ?MassCenterTypeInterface $secondMassCenterType = null;
 
     public function getId(): int
     {
