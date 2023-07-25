@@ -42,6 +42,12 @@ class StarSystemType implements StarSystemTypeInterface
      */
     private ?int $database_id = null;
 
+    /** @Column(type="boolean", nullable=true) */
+    private ?bool $is_generateable = null;
+
+    /** @Column(type="integer", nullable=true) */
+    private ?int $mass_center_amount = null;
+
     /**
      *
      * @OneToOne(targetEntity="DatabaseEntry")
