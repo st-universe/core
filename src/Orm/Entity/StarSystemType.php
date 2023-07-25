@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
@@ -63,14 +64,14 @@ class StarSystemType implements StarSystemTypeInterface
 
     /**
      *
-     * @OneToOne(targetEntity="MassCenterType")
+     * @ManyToOne(targetEntity="MassCenterType")
      * @JoinColumn(name="first_mass_center_id", referencedColumnName="id")
      */
     private ?MassCenterTypeInterface $secondMassCenterType = null;
 
     /**
      *
-     * @OneToOne(targetEntity="MassCenterType")
+     * @ManyToOne(targetEntity="MassCenterType")
      * @JoinColumn(name="second_mass_center_id", referencedColumnName="id")
      */
     private ?MassCenterTypeInterface $firstMassCenterType = null;
