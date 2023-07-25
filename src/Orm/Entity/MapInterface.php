@@ -50,6 +50,8 @@ interface MapInterface
 
     public function getFieldType(): MapFieldTypeInterface;
 
+    public function getStarSystemType(): ?StarSystemTypeInterface;
+
     public function getMapBorderType(): ?MapBorderTypeInterface;
 
     public function getMapRegion(): ?MapRegionInterface;

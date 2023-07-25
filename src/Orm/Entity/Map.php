@@ -30,7 +30,8 @@ use Stu\Lib\SectorString;
  *         @Index(name="coordinates_reverse_idx", columns={"cy", "cx"}),
  *         @Index(name="map_field_type_idx", columns={"field_id"}),
  *         @Index(name="map_layer_idx", columns={"layer_id"}),
- *         @Index(name="map_system_idx", columns={"systems_id"})
+ *         @Index(name="map_system_idx", columns={"systems_id"}),
+ *         @Index(name="map_system_type_idx", columns={"system_type_id"})
  *     },
  *     uniqueConstraints={
  *         @UniqueConstraint(name="map_coordinate_idx", columns={"layer_id", "cx", "cy"})
@@ -70,6 +71,12 @@ class Map implements MapInterface
      *
      */
     private int $field_id = 0;
+
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $system_type_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -128,6 +135,13 @@ class Map implements MapInterface
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
     private MapFieldTypeInterface $mapFieldType;
+
+    /**
+     *
+     * @ManyToOne(targetEntity="StarSystemType")
+     * @JoinColumn(name="system_type_id", referencedColumnName="id")
+     */
+    private ?StarSystemTypeInterface $starSystemType;
 
     /**
      *
@@ -304,6 +318,11 @@ class Map implements MapInterface
     public function getFieldType(): MapFieldTypeInterface
     {
         return $this->mapFieldType;
+    }
+
+    public function getStarSystemType(): ?StarSystemTypeInterface
+    {
+        return $this->starSystemType;
     }
 
     public function getMapBorderType(): ?MapBorderTypeInterface
