@@ -4092,6 +4092,16 @@ parameters:
 			path: src/Orm/Entity/MapRegion.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MassCenterType\\:\\:\\$firstFieldType type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapFieldTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/MassCenterType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MassCenterType\\:\\:\\$firstFieldType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapFieldTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/MassCenterType.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getResearchId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
@@ -4963,6 +4973,16 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$firstMassCenterType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MassCenterTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MassCenterType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$secondMassCenterType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MassCenterTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MassCenterType\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemType.php
 
