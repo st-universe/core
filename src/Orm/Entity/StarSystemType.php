@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -17,6 +18,8 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_system_types",
  *     indexes={
+ *          @Index(name="starsystem_mass_center_1_idx", columns={"first_mass_center_id"}),
+ *          @Index(name="starsystem_mass_center_2_idx", columns={"second_mass_center_id"})
  *     }
  * )
  **/
@@ -46,7 +49,10 @@ class StarSystemType implements StarSystemTypeInterface
     private ?bool $is_generateable = null;
 
     /** @Column(type="integer", nullable=true) */
-    private ?int $mass_center_amount = null;
+    private ?int $first_mass_center_id = null;
+
+    /** @Column(type="integer", nullable=true) */
+    private ?int $second_mass_center_id = null;
 
     /**
      *
@@ -54,6 +60,20 @@ class StarSystemType implements StarSystemTypeInterface
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
     private ?DatabaseEntryInterface $databaseEntry = null;
+
+    /**
+     *
+     * @OneToOne(targetEntity="MassCenterType")
+     * @JoinColumn(name="first_mass_center_id", referencedColumnName="id")
+     */
+    private ?MassCenterTypeInterface $secondMassCenterType = null;
+
+    /**
+     *
+     * @OneToOne(targetEntity="MassCenterType")
+     * @JoinColumn(name="second_mass_center_id", referencedColumnName="id")
+     */
+    private ?MassCenterTypeInterface $firstMassCenterType = null;
 
     public function getId(): int
     {
@@ -94,5 +114,15 @@ class StarSystemType implements StarSystemTypeInterface
         $this->databaseEntry = $databaseEntry;
 
         return $this;
+    }
+
+    public function getFirstMassCenterType(): ?MassCenterTypeInterface
+    {
+        return $this->firstMassCenterType;
+    }
+
+    public function getSecondMassCenterType(): ?MassCenterTypeInterface
+    {
+        return $this->secondMassCenterType;
     }
 }

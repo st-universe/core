@@ -17,4 +17,8 @@ interface StarSystemTypeInterface
     public function getDatabaseEntry(): ?DatabaseEntryInterface;
 
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemTypeInterface;
+
+    public function getFirstMassCenterType(): ?MassCenterTypeInterface;
+
+    public function getSecondMassCenterType(): ?MassCenterTypeInterface;
 }
