@@ -186,4 +186,8 @@ interface ShipRumpInterface
     public function getSpecialAbilities(): Collection;
 
     public function getNeededRepairWorkbees(): ?int;
+
+    public function getBaseWarpDrive(): int;
+
+    public function setBaseWarpDrive(int $baseWarpDrive): ShipRumpInterface;
 }
