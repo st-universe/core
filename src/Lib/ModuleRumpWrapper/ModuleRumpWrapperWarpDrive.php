@@ -7,7 +7,7 @@ namespace Stu\Lib\ModuleRumpWrapper;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Orm\Entity\ShipInterface;
 
-final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
+final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
     public function getValue(): int
     {
@@ -20,13 +20,12 @@ final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements M
             $this->rump,
             $module->getModule(),
             null,
-            $this->rump->getBaseReactor()
+            $this->rump->getBaseWarpDrive()
         );
     }
 
     public function apply(ShipInterface $ship): void
     {
-        $ship->setReactorOutput($this->getValue());
-        $this->wrapper->getWarpCoreSystemData()->setWarpCoreSplit(50)->update();
+        $this->wrapper->getWarpDriveSystemData()->setMaxWarpDrive($this->getValue())->update();
     }
 }

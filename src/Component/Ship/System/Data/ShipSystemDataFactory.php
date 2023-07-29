@@ -51,6 +51,10 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                     $this->shipSystemRepository,
                     $this->tholianWebRepository
                 );
+            case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
+                return  new WarpDriveSystemData($this->shipSystemRepository);
+            case ShipSystemTypeEnum::SYSTEM_WARPCORE:
+                return  new WarpCoreSystemData($this->shipSystemRepository);
         }
 
         throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType));
