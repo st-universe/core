@@ -17,6 +17,8 @@ use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
+use Stu\Component\Ship\System\Data\WarpCoreSystemData;
+use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -407,6 +409,22 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_EPS,
             EpsSystemData::class
+        );
+    }
+
+    public function getWarpCoreSystemData(): ?WarpCoreSystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_WARPCORE,
+            WarpCoreSystemData::class
+        );
+    }
+
+    public function getWarpDriveSystemData(): ?WarpDriveSystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            WarpDriveSystemData::class
         );
     }
 

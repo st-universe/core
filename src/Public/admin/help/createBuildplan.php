@@ -9,6 +9,7 @@ use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -66,6 +67,7 @@ Init::run(function (ContainerInterface $dic): void {
             ShipModuleTypeEnum::MODULE_TYPE_COMPUTER,
             ShipModuleTypeEnum::MODULE_TYPE_PHASER,
             ShipModuleTypeEnum::MODULE_TYPE_TORPEDO,
+            ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE,
         ];
         $moduleList = request::postArray('mod');
         $moduleSpecialList = request::postArray('special_mod');

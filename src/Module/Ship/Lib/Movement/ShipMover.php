@@ -522,9 +522,10 @@ final class ShipMover implements ShipMoverInterface
         $flight_ecost = $ship->getRump()->getFlightEcost();
 
         $epsSystem = $wrapper->getEpsSystemData();
+        $warpdriveSystem = $wrapper->getWarpdriveSystemData();
 
         //zu wenig E zum weiterfliegen
-        if ($epsSystem === null || $epsSystem->getEps() < $flight_ecost) {
+        if (($epsSystem === null || $epsSystem->getEps() < $flight_ecost) && $ship->getWarpState() == false) {
             $this->addLostShip(
                 $wrapper,
                 $leadShip,
@@ -534,6 +535,21 @@ final class ShipMover implements ShipMoverInterface
                     _('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),
                     $ship->getName(),
                     $flight_ecost
+                )
+            );
+            return;
+        }
+
+        //zu wenig WarpDriveKapazität zum weiterfliegen
+        if (($warpdriveSystem === null || $warpdriveSystem->getWarpDrive() < 1) && $ship->getWarpState()) {
+            $this->addLostShip(
+                $wrapper,
+                $leadShip,
+                $isFixedFleetMode,
+                $flightRoute,
+                sprintf(
+                    _('Die %s hat nicht genug Warp-Energie für den Flug (1 benötigt)'),
+                    $ship->getName()
                 )
             );
             return;
@@ -553,7 +569,15 @@ final class ShipMover implements ShipMoverInterface
 
             if ($abortionMsg === null) {
                 //Traktorstrahl Kosten
-                if ($epsSystem->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
+                if (($epsSystem->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) && $ship->getWarpState() == false) {
+                    $this->shipMovementInformationAdder->notEnoughEnergyforTractoring(
+                        $ship,
+                        $flightRoute->getRouteMode(),
+                        $this->informations
+                    );
+                    $this->deactivateTractorBeam($wrapper, null);
+                }
+                if ($warpdriveSystem->getWarpDrive() < 2 && $ship->getWarpState()) {
                     $this->shipMovementInformationAdder->notEnoughEnergyforTractoring(
                         $ship,
                         $flightRoute->getRouteMode(),
@@ -582,17 +606,31 @@ final class ShipMover implements ShipMoverInterface
             $this->leaveFleet($wrapper);
         }
         //Flugkosten abziehen
-        $epsSystem->lowerEps($flight_ecost);
+        if ($ship->getWarpState() == false) {
+            $epsSystem->lowerEps($flight_ecost);
+        } else {
+            $warpdriveSystem->lowerWarpDrive(1);
+        }
+
 
         //Traktorstrahl Energie abziehen
         $tractoredShip = $ship->getTractoredShip();
         if ($tractoredShip !== null) {
-            $epsSystem->lowerEps($tractoredShip->getRump()->getFlightEcost());
-            $flightRoute->enterNextWaypoint(
-                $tractoredShip,
-                $nextWaypoint,
-                $this->informations
-            );
+            if ($ship->getWarpState() == false) {
+                $epsSystem->lowerEps($tractoredShip->getRump()->getFlightEcost());
+                $flightRoute->enterNextWaypoint(
+                    $tractoredShip,
+                    $nextWaypoint,
+                    $this->informations
+                );
+            } else {
+                $warpdriveSystem->lowerWarpDrive(2);
+                $flightRoute->enterNextWaypoint(
+                    $tractoredShip,
+                    $nextWaypoint,
+                    $this->informations
+                );
+            }
 
             //check for tractor system health
             $tractorSystemSurvived = $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing(
@@ -638,6 +676,7 @@ final class ShipMover implements ShipMoverInterface
         }
 
         $epsSystem->update();
+        $warpdriveSystem->update();
 
         //Einflugschaden Energiemangel oder Deflektor zerstört
         if ($notEnoughEnergyForDeflector || $deflectorDestroyed) {
