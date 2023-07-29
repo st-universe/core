@@ -368,3 +368,27 @@ function adjustCellWidth(image) {
 	}
 	else { cell.style.minWidth = cellWidth + 'px'; }
 }
+// Funktion, um den Warpcore-Regler zu aktualisieren
+function updateWarpCoreSplitValue(value) {
+	const warpCoreSplitValueSpan = document.getElementById('warpCoreSplitValue');
+	warpCoreSplitValueSpan.innerText = value;
+}
+
+// Funktion, um den Wert automatisch zu speichern
+function saveWarpCoreSplit(value) {
+	// Führe eine AJAX-Anfrage an den Server durch, um den Wert zu speichern
+	const xhttp = new XMLHttpRequest();
+	xhttp.open('POST', 'ship.php', true);
+	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhttp.onreadystatechange = function () {
+		if (this.readyState === 4 && this.status === 200) {
+			// Optional: Zeige eine Bestätigungsnachricht oder führe andere Aktionen aus
+			console.log('Warpkern Split erfolgreich gespeichert!');
+		}
+	};
+	const parameters = {
+		'B_SET_WARP_CORE_SPLIT': 1,
+		'warpCoreSplit': value
+	};
+	xhttp.send(Object.keys(parameters).map(key => key + '=' + encodeURIComponent(parameters[key])).join('&'));
+}
