@@ -38,8 +38,7 @@ class WarpCoreSystemData extends AbstractSystemData
 
     public function setWarpCoreSplit(int $split): WarpCoreSystemData
     {
-        // Überprüfe und begrenze den Wert zwischen 0 und 100
-        $this->split = max(0, min(100, $split));
+        $this->split = $split;
         return $this;
     }
 }

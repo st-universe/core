@@ -368,27 +368,23 @@ function adjustCellWidth(image) {
 	}
 	else { cell.style.minWidth = cellWidth + 'px'; }
 }
-// Funktion, um den Warpcore-Regler zu aktualisieren
 function updateWarpCoreSplitValue(value) {
-	const warpCoreSplitValueSpan = document.getElementById('warpCoreSplitValue');
-	warpCoreSplitValueSpan.innerText = value;
+	document.getElementById('warpCoreSplitValue').textContent = value;
 }
 
-// Funktion, um den Wert automatisch zu speichern
-function saveWarpCoreSplit(value) {
-	// Führe eine AJAX-Anfrage an den Server durch, um den Wert zu speichern
-	const xhttp = new XMLHttpRequest();
-	xhttp.open('POST', 'ship.php', true);
-	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4 && this.status === 200) {
-			// Optional: Zeige eine Bestätigungsnachricht oder führe andere Aktionen aus
-			console.log('Warpkern Split erfolgreich gespeichert!');
-		}
-	};
-	const parameters = {
-		'B_SET_WARP_CORE_SPLIT': 1,
-		'warpCoreSplit': value
-	};
-	xhttp.send(Object.keys(parameters).map(key => key + '=' + encodeURIComponent(parameters[key])).join('&'));
+var saveTimeout;
+
+function saveWarpCoreSplit(value, shipId, successCallback) {
+	clearTimeout(saveTimeout);
+
+	saveTimeout = setTimeout(function () {
+		new Ajax.Request('ship.php', {
+			method: 'post',
+			parameters: 'B_SPLIT_WARP_CORE_OUTPUT=1&id=' + shipId + '&value=' + value,
+			evalScripts: true,
+			onSuccess: function () {
+				successCallback(value);
+			},
+		});
+	}, 150);
 }
