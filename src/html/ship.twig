@@ -51,6 +51,10 @@
 			<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
 				<img src="assets/buttons/info2.png" style="height:16px;" />
 			</th>
+			{% if SHIP.hasWarpdrive %}
+			<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
+				Warpdrive <img src="assets/buttons/info2.png" style="height:16px;" /></th>
+			{% endif %}
 			<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">
 				Energie <img src="assets/buttons/info2.png" style="height:16px;" /></th>
 			<th style="text-align: center;">Batterie</th>
@@ -103,10 +107,47 @@
 				{% endif %}
 				(+{{ SHIP.getShieldRegenerationRate }})
 			</td>
+			{% if SHIP.hasWarpdrive %}
+			<td style="text-align: center;">
+				{% set warpcoresystem = WRAPPER.getWarpCoreSystemData %}
+				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
+				{{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpDrive }}
+				<span id="EffektivWarpDrive">
+					<script>
+						updateEPSSplitValue(
+							"{{ warpcoresystem.getWarpCoreSplit }}",
+							"{{ SHIP.getReactorOutput }}",
+							"{{ WRAPPER.getEpsUsage }}",
+							"{{ SHIP.getRump.getFlightEcost }}",
+							"{{ WRAPPER.getEffectiveEpsProduction }}",
+							"{{ warpdrivesystem.getWarpDrive }}",
+							"{{ warpdrivesystem.getMaxWarpDrive }}"
+
+						);
+					</script>
+				</span>
+				{% endif %}
 			<td style="text-align: center;">
 				{% if epssystem %}
 				{{ epssystem.getEps }}/{{ epssystem.getMaxEps }}
-				<span>{{ WRAPPER.getEffectiveEpsProduction|addPlusCharacter }}</span>
+				{% if SHIP.hasWarpCore %}
+				{% set warpcoresystem = WRAPPER.getWarpCoreSystemData %}
+				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
+				<span id="EffektivEPS">
+					<script>
+						updateEPSSplitValue(
+							"{{ warpcoresystem.getWarpCoreSplit }}",
+							"{{ SHIP.getReactorOutput }}",
+							"{{ WRAPPER.getEpsUsage }}",
+							"{{ SHIP.getRump.getFlightEcost }}",
+							"{{ WRAPPER.getEffectiveEpsProduction }}",
+							"{{ warpdrivesystem.getWarpDrive }}",
+							"{{ warpdrivesystem.getMaxWarpDrive }}"
+						);
+					</script>
+				</span>
+				{% else %}
+				{% endif %}
 				(<span class="neg">{{ WRAPPER.getEpsUsage }}</span>/<span class="neg">{{ WRAPPER.getWarpcoreUsage
 					}}</span>)
 				{% endif %}
