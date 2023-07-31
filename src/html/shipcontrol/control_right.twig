@@ -13,9 +13,6 @@
         </th>
     </tr>
     {% if ship.hasWarpcore %}
-    {% set epssystem = WRAPPER.getEpsSystemData %}
-    {% set warpcoresystem = WRAPPER.getWarpCoreSystemData %}
-    {% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
     <tr>
         <td style="width:50%;">
             <img src="assets/buttons/warpk.png" title="Warpkern" />
@@ -35,14 +32,21 @@
     </tr>
     {% endif %}
     {% if ship.hasWarpDrive %}
+    {% set epssystem = wrapper.getEpsSystemData %}
+    {% set warpcoresystem = wrapper.getWarpCoreSystemData %}
+    {% set warpdrivesystem = wrapper.getWarpDriveSystemData %}
+
     <tr>
         <td colspan="2">
             Warpkern Split:
             <input type="range" min="0" max="100" value="{{ warpcoresystem.getWarpCoreSplit }}" id="warpCoreSplit"
-                oninput="updateWarpCoreSplitValue(this.value); saveWarpCoreSplit(this.value);">
+                oninput="updateWarpCoreSplitValue(this.value); saveWarpCoreSplit(this.value, {{ shipId }}, updateWarpCoreSplitValue)">
             <span id="warpCoreSplitValue">{{ warpcoresystem.getWarpCoreSplit }}</span>
         </td>
     </tr>
+
+
+
 
     {% if ship.isWarpPossible %}
     <tr>
