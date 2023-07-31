@@ -30,6 +30,8 @@ interface ShipWrapperInterface
 
     public function getEffectiveEpsProduction(): int;
 
+    public function getEffectiveWarpDriveProduction(): int;
+
     public function getWarpcoreUsage(): int;
 
     public function setAlertState(int $alertState): ?string;
