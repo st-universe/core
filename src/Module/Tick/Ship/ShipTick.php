@@ -196,14 +196,18 @@ final class ShipTick implements ShipTickInterface
         if ($newEps > $eps->getMaxEps()) {
             $newEps = $eps->getMaxEps();
         }
+        $usedwarpdrive = 0;
         if ($warpdrive !== null) {
             if ($availableWarpDrive > $warpdrive->getMaxWarpDrive()) {
                 $availableWarpDrive = $warpdrive->getMaxWarpDrive();
+                $usedwarpdrive = ($warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive()) * $ship->getRump()->getFlightECost();
+            } else {
+                $usedwarpdrive = $wrapper->getEffectiveWarpDriveProduction() * $ship->getRump()->getFlightECost();
             }
             $warpdrive->setWarpDrive($availableWarpDrive)->update();
         }
 
-        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + ($wrapper->getEffectiveWarpDriveProduction() * $ship->getRump()->getFlightEcost());
+        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + $usedwarpdrive;
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$wrapper->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
         $eps->setEps($newEps)
             ->setBattery($eps->getBattery() + $batteryReload)
