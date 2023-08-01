@@ -101,6 +101,8 @@ final class ShipTick implements ShipTickInterface
         }
 
         $eps = $wrapper->getEpsSystemData();
+        $warpdrive = $wrapper->getWarpDriveSystemData();
+        $warpcore = $wrapper->getWarpCoreSystemData();
         if ($eps === null) {
             return;
         }
@@ -118,7 +120,16 @@ final class ShipTick implements ShipTickInterface
 
             $availableEps = $eps->getEps();
         } else {
-            $availableEps = $eps->getEps() + $ship->getReactorOutputCappedByReactorLoad();
+            if ($warpcore != null) {
+                $availableEps = $eps->getEps() +  ($ship->getReactorOutputCappedByReactorLoad() * ($warpcore->getWarpCoreSplit() / 100));
+            } else {
+                $availableEps = $eps->getEps() + $ship->getReactorOutputCappedByReactorLoad();
+            }
+            if ($warpdrive !== null) {
+                $availableWarpDrive = $warpdrive->getWarpDrive() + $wrapper->getEffectiveWarpDriveProduction();
+            } else {
+                return;
+            }
         }
 
         //try to save energy by reducing alert state
@@ -185,11 +196,19 @@ final class ShipTick implements ShipTickInterface
         if ($newEps > $eps->getMaxEps()) {
             $newEps = $eps->getMaxEps();
         }
-        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps());
+        if ($warpdrive !== null) {
+            if ($availableWarpDrive > $warpdrive->getMaxWarpDrive()) {
+                $availableWarpDrive = $warpdrive->getMaxWarpDrive();
+            }
+            $warpdrive->setWarpDrive($availableWarpDrive)->update();
+        }
+
+        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + ($wrapper->getEffectiveWarpDriveProduction() * $ship->getRump()->getFlightEcost());
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$wrapper->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
         $eps->setEps($newEps)
             ->setBattery($eps->getBattery() + $batteryReload)
             ->update();
+
 
         //core OR fusion
         $ship->setReactorLoad($ship->getReactorLoad() - $usedEnergy);
