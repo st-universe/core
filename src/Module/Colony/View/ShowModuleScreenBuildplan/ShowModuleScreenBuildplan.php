@@ -65,31 +65,38 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $moduleScreenTabs = new ModuleScreenTabWrapper();
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
-            $moduleScreenTabs->register(new ModuleScreenTab($this->shipRumpModuleLevelRepository, $i, $colony, $rump, $plan));
-        }
-
-        $moduleSelectors = [];
-        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
-            if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                $moduleSelectors[$i] = $this->colonyLibFactory->createModuleSelectorSpecial(
-                    $i,
-                    $colony,
-                    null,
-                    $rump,
-                    $userId,
-                    $plan
-                );
-            } else {
-                $moduleSelectors[$i] = $this->colonyLibFactory->createModuleSelector(
-                    $i,
-                    $colony,
-                    null,
-                    $rump,
-                    $userId,
-                    $plan,
-                );
+            if ($i !== 10) {
+                $moduleScreenTabs->register(new ModuleScreenTab($this->shipRumpModuleLevelRepository, $i, $colony, $rump, $plan));
             }
         }
+
+
+        $moduleSelectors = [];
+        $moduleSelectors = [];
+        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
+            if ($i !== 10) {
+                if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
+                    $moduleSelectors[$i] = $this->colonyLibFactory->createModuleSelectorSpecial(
+                        $i,
+                        $colony,
+                        null,
+                        $rump,
+                        $userId,
+                        $plan
+                    );
+                } else {
+                    $moduleSelectors[$i] = $this->colonyLibFactory->createModuleSelector(
+                        $i,
+                        $colony,
+                        null,
+                        $rump,
+                        $userId,
+                        $plan,
+                    );
+                }
+            }
+        }
+
 
         $game->appendNavigationPart(
             'colony.php',
@@ -112,6 +119,9 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
             ),
             _('Schiffbau')
         );
+        $moduleSlots = range(1, ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT);
+        $moduleSlotsWithout10 = array_diff($moduleSlots, [10]);
+        $game->setTemplateVar('MODULE_SLOTS', $moduleSlotsWithout10);
         $game->setPagetitle(_('Schiffbau'));
         $game->setTemplateFile('html/modulescreen.xhtml');
         $game->setTemplateVar('COLONY', $colony);
@@ -119,7 +129,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $game->setTemplateVar('PLAN', $plan);
         $game->setTemplateVar('MODULE_SCREEN_TABS', $moduleScreenTabs);
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
-        $game->setTemplateVar('MODULE_SLOTS', range(1, ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT));
         $game->setTemplateVar('HAS_STORAGE', new ColonyStorageCommodityWrapper($colony->getStorage()));
         $game->setTemplateVar(
             'MAX_CREW_COUNT',

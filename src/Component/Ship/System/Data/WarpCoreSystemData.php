@@ -10,7 +10,7 @@ use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 class WarpCoreSystemData extends AbstractSystemData
 {
     // warpdrive fields
-    public int $split = 50;
+    public int $split = 100;
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
