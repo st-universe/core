@@ -257,7 +257,7 @@ class ShipRump implements ShipRumpInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private int $base_warpdrive = 0;
+    private ?int $base_warpdrive = 0;
 
     /**
      *
