@@ -165,6 +165,11 @@ final class StartShuttle implements ActionControllerInterface
             $epsSystem->lowerEps($shuttleEps->getMaxEps())->update();
         }
 
+        $shuttleWarpDrive = $shuttleWrapper->getWarpDriveSystemData();
+        if ($shuttleWarpDrive !== null) {
+            $shuttleWarpDrive->setWarpDrive($shuttleWarpDrive->getMaxWarpdrive())->update();
+        }
+
         $shuttle = $shuttleWrapper->get();
         $shuttle->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
 

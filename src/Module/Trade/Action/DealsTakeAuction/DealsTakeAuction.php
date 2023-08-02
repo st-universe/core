@@ -209,7 +209,10 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         $eps = $wrapper->getEpsSystemData();
         $eps->setEps((int)floor($eps->getTheoreticalMaxEps() / 4))->update();
-
+        $warpdrive = $wrapper->getWarpDriveSystemData();
+        if ($warpdrive !== null) {
+            $warpdrive->setWarpDrive((int)floor($warpdrive->getMaxWarpdrive() / 4))->update();
+        }
         $this->shipRepository->save($ship);
     }
 
