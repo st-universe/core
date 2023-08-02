@@ -140,21 +140,5 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel8Max(int $moduleLevel8Max): ShipRumpModuleLevelInterface;
 
-    public function getModuleLevel11(): int;
-
-    public function setModuleLevel11(int $moduleLevel11): ShipRumpModuleLevelInterface;
-
-    public function getModuleMandatory11(): int;
-
-    public function setModuleMandatory11(int $moduleMandatory11): ShipRumpModuleLevelInterface;
-
-    public function getModuleLevel11Min(): int;
-
-    public function setModuleLevel11Min(int $moduleLevel11Min): ShipRumpModuleLevelInterface;
-
-    public function getModuleLevel11Max(): int;
-
-    public function setModuleLevel11Max(int $moduleLevel11Max): ShipRumpModuleLevelInterface;
-
     public function getMandatoryModulesCount(): int;
 }

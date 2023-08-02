@@ -87,17 +87,4 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         }
         $ship->getDockedShips()->clear();
     }
-
-    public function handleDestruction(ShipWrapperInterface $wrapper): void
-    {
-        $wrapper->getWarpDriveSystemData()->setWarpDrive(0)->update();
-    }
-
-    public function handleDamage(ShipWrapperInterface $wrapper): void
-    {
-        $data = $wrapper->getWarpDriveSystemData();
-        if ($data->getWarpDrive() > $data->getMaxWarpDrive()) {
-            $data->setWarpDrive($data->getMaxWarpDrive())->update();
-        }
-    }
 }

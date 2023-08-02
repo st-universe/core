@@ -27,6 +27,5 @@ final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements M
     public function apply(ShipInterface $ship): void
     {
         $ship->setReactorOutput($this->getValue());
-        $this->wrapper->getWarpCoreSystemData()->setWarpCoreSplit(50)->update();
     }
 }

@@ -27,8 +27,6 @@ class ModuleTypeDescriptionMapper
                 return _("Torpedobank");
             case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
                 return _("Spezial");
-            case ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE:
-                return _("Warpantrieb");
         }
         return '';
     }

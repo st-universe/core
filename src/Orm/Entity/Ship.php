@@ -1225,7 +1225,7 @@ class Ship implements ShipInterface
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            fn (int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
+            fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -1239,7 +1239,7 @@ class Ship implements ShipInterface
     {
         return array_filter(
             $this->getStorage()->getValues(),
-            fn (StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
+            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
     }
 
