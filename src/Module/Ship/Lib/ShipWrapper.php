@@ -158,7 +158,7 @@ final class ShipWrapper implements ShipWrapperInterface
                 $prod = round(($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * ($warpcore->getWarpCoreSplit() / 100));
             }
             if ($prod <= 0) {
-                return $prod;
+                return (int) $prod;
             }
 
             $eps = $this->getEpsSystemData();
@@ -170,7 +170,7 @@ final class ShipWrapper implements ShipWrapperInterface
             }
             $this->effectiveEpsProduction = (int) $prod;
         }
-        return $this->effectiveEpsProduction;
+        return (int) $this->effectiveEpsProduction;
     }
 
     public function getEffectiveWarpDriveProduction(): int
@@ -201,7 +201,7 @@ final class ShipWrapper implements ShipWrapperInterface
             }
             $this->effectiveWarpDriveProduction = (int) round($prod);
         }
-        return $this->effectiveWarpDriveProduction;
+        return (int) $this->effectiveWarpDriveProduction;
     }
 
     public function getWarpcoreUsage(): int
