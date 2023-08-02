@@ -254,12 +254,6 @@ class ShipRump implements ShipRumpInterface
     private int $prestige;
 
     /**
-     * @Column(type="integer")
-     *
-     */
-    private int $base_warpdrive = 0;
-
-    /**
      *
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="role_id", referencedColumnName="id")
@@ -505,17 +499,6 @@ class ShipRump implements ShipRumpInterface
     public function getTractorPayload(): int
     {
         return $this->tractor_payload;
-    }
-
-    public function getBaseWarpDrive(): int
-    {
-        return $this->base_warpdrive;
-    }
-
-    public function setBaseWarpDrive(int $baseWarpDrive): ShipRumpInterface
-    {
-        $this->base_warpdrive = $baseWarpDrive;
-        return $this;
     }
 
     public function getPhaserVolleys(): int
