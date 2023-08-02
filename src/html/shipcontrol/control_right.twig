@@ -37,38 +37,15 @@
     {% set warpdrivesystem = wrapper.getWarpDriveSystemData %}
 
     <tr>
-        <td colspan="2"><img src="assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" /> +
-            <span id="calculatedWarpDrive">
-                <script>
-                    updateEPSSplitValue(
-                        "{{ warpcoresystem.getWarpCoreSplit }}",
-                        "{{ ship.getReactorOutput }}",
-                        "{{ wrapper.getEpsUsage }}",
-                        "{{ ship.getRump.getFlightEcost }}",
-                        "{{ wrapper.getEffectiveEpsProduction }}",
-                        "{{ warpdrivesystem.getWarpDrive }}",
-                        "{{ warpdrivesystem.getMaxWarpDrive }}"
-                    );
-                </script>
-            </span>
+        <td colspan="2">
+            Warpkern Split:
             <input type="range" min="0" max="100" value="{{ warpcoresystem.getWarpCoreSplit }}" id="warpCoreSplit"
-                oninput="saveWarpCoreSplit(this.value, {{ shipId }});  updateEPSSplitValue(this.value, {{ ship.getReactorOutput }}, {{ wrapper.getEpsUsage }}, {{ ship.getRump.getFlightEcost }}, {{ wrapper.getEffectiveEpsProduction }}, {{ warpdrivesystem.getWarpDrive }}, {{ warpdrivesystem.getMaxWarpDrive }})">
-            <img src="assets/buttons/battp2.png" title="Zuwachs zum EPS" /> +
-            <span id="calculatedEPS">
-                <script>
-                    updateEPSSplitValue(
-                        "{{ warpcoresystem.getWarpCoreSplit }}",
-                        "{{ ship.getReactorOutput }}",
-                        "{{ wrapper.getEpsUsage }}",
-                        "{{ ship.getRump.getFlightEcost }}",
-                        "{{ wrapper.getEffectiveEpsProduction }}",
-                        "{{ warpdrivesystem.getWarpDrive }}",
-                        "{{ warpdrivesystem.getMaxWarpDrive }}"
-                    );
-                </script>
-            </span>
+                oninput="updateWarpCoreSplitValue(this.value); saveWarpCoreSplit(this.value, {{ shipId }}, updateWarpCoreSplitValue)">
+            <span id="warpCoreSplitValue">{{ warpcoresystem.getWarpCoreSplit }}</span>
         </td>
     </tr>
+
+
 
 
     {% if ship.isWarpPossible %}

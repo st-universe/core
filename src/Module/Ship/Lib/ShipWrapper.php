@@ -65,8 +65,6 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private ?int $effectiveEpsProduction = null;
 
-    private ?int $effectiveWarpDriveProduction = null;
-
     public function __construct(
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipInterface $ship,
@@ -151,12 +149,7 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
-            $warpcore = $this->getWarpCoreSystemData();
-            if ($warpcore === null) {
-                $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
-            } else {
-                $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage() * ($warpcore->getWarpCoreSplit() / 100);
-            }
+            $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             if ($prod <= 0) {
                 return $prod;
             }
@@ -171,31 +164,6 @@ final class ShipWrapper implements ShipWrapperInterface
             $this->effectiveEpsProduction = $prod;
         }
         return $this->effectiveEpsProduction;
-    }
-
-    public function getEffectiveWarpDriveProduction(): int
-    {
-        if ($this->effectiveWarpDriveProduction === null) {
-            $warpcore = $this->getWarpCoreSystemData();
-            if ($warpcore === null) {
-                $prod = ($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) / $this->ship->getRump()->getFlightEcost();
-            } else {
-                $prod = (($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * (1 - ($warpcore->getWarpCoreSplit() / 100))) / $this->ship->getRump()->getFlightEcost();
-            }
-            if ($prod <= 0) {
-                return (int) $prod;
-            }
-
-            $warpdrive = $this->getWarpDriveSystemData();
-            if (
-                $warpdrive !== null
-                && $warpdrive->getWarpDrive() + $prod > $warpdrive->getMaxWarpDrive()
-            ) {
-                return $warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive();
-            }
-            $this->effectiveWarpDriveProduction = (int) ceil($prod);
-        }
-        return $this->effectiveWarpDriveProduction;
     }
 
     public function getWarpcoreUsage(): int
