@@ -254,7 +254,7 @@ class ShipRump implements ShipRumpInterface
     private int $prestige;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
     private int $base_warpdrive = 0;
