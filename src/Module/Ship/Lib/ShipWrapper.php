@@ -155,7 +155,7 @@ final class ShipWrapper implements ShipWrapperInterface
             if ($warpcore === null) {
                 $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             } else {
-                $prod = round(($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * ($warpcore->getWarpCoreSplit() / 100));
+                $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage() * ($warpcore->getWarpCoreSplit() / 100);
             }
             if ($prod <= 0) {
                 return $prod;
@@ -168,25 +168,19 @@ final class ShipWrapper implements ShipWrapperInterface
             ) {
                 return $eps->getMaxEps() - $eps->getEps();
             }
-            $this->effectiveEpsProduction = (int) $prod;
+            $this->effectiveEpsProduction = $prod;
         }
         return $this->effectiveEpsProduction;
     }
 
     public function getEffectiveWarpDriveProduction(): int
     {
-
-        if ($this->ship->getRump()->getFlightEcost() === 0 || $this->ship->getRump()->getFlightEcost() === null) {
-            $flightcost = 1;
-        } else {
-            $flightcost = $this->ship->getRump()->getFlightEcost();
-        }
         if ($this->effectiveWarpDriveProduction === null) {
             $warpcore = $this->getWarpCoreSystemData();
             if ($warpcore === null) {
                 $prod = ($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) / $this->ship->getRump()->getFlightEcost();
             } else {
-                $prod = (($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * (1 - ($warpcore->getWarpCoreSplit() / 100))) / $flightcost;
+                $prod = (($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * (1 - ($warpcore->getWarpCoreSplit() / 100))) / $this->ship->getRump()->getFlightEcost();
             }
             if ($prod <= 0) {
                 return (int) $prod;
@@ -199,7 +193,7 @@ final class ShipWrapper implements ShipWrapperInterface
             ) {
                 return $warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive();
             }
-            $this->effectiveWarpDriveProduction = (int) round($prod);
+            $this->effectiveWarpDriveProduction = (int) ceil($prod);
         }
         return $this->effectiveWarpDriveProduction;
     }

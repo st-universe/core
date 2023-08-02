@@ -29,8 +29,6 @@
                     tal:define="moduleType string:6" />
                   <metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab"
                     tal:define="moduleType string:4" />
-                  <metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab"
-                    tal:define="moduleType string:11" />
                   <td></td>
                 </tr>
                 <tr>
@@ -312,11 +310,6 @@
       <img src="assets/buttons/modul_special_${special/getId}.png" tal:attributes="title special/getName" /> <span
         tal:content="special/getName"></span>
     </div>
-  </metal:macro>
-  <metal:macro metal:define-macro="moduleselector_stats_type_11">
-    <img src="assets/buttons/modul_screen_11.png" tal:attributes="title module/getModule/getDescription" />
-    <span>Warpreichweite</span>: <span
-      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseWarpDrive')">VALUE</span>
   </metal:macro>
 </metal:macro>
 
