@@ -62,10 +62,6 @@ Init::run(function (ContainerInterface $dic): void {
                 ->setEps($epsSystem->getMaxEps())
                 ->setBattery($epsSystem->getMaxBattery())
                 ->update();
-            $warpdrive = $wrapper->getWarpDriveSystemData();
-            if ($warpdrive !== null) {
-                $warpdrive->setWarpDrive($warpdrive->getMaxWarpdrive())->update();
-            }
 
             if ($torptypeId > 0) {
                 $torp_obj = $torpedoTypeRepo->find($torptypeId);

@@ -52,20 +52,17 @@ final class ColonizationShip implements ActionControllerInterface
         $ship = $wrapper->get();
 
         $ship->updateLocation($faction->getStartMap(), null);
-        $ship->setReactorLoad((int)floor($ship->getReactorCapacity() * 10));
+        $ship->setReactorLoad((int)floor($ship->getReactorCapacity() * 20));
         $ship->setSensorRange(5);
-        $ship->setReactorOutput((int)floor($ship->getReactorOutput() * 5));
+        $ship->setReactorOutput((int)floor($ship->getReactorOutput() * 10));
 
         $eps = $wrapper->getEpsSystemData();
-        $warpdrive = $wrapper->getWarpDriveSystemData();
         if ($eps === null) {
             throw new RuntimeException('no eps installed');
         }
 
-        $eps->setEps((int)floor($eps->getTheoreticalMaxEps() * 5))->update();
-        $eps->setMaxEps((int)floor($eps->getTheoreticalMaxEps() * 5))->update();
-        $warpdrive->setWarpDrive((int)floor($warpdrive->getMaxWarpdrive() * 5))->update();
-        $warpdrive->setMaxWarpDrive((int)floor($warpdrive->getMaxWarpdrive() * 5))->update();
+        $eps->setEps((int)floor($eps->getTheoreticalMaxEps() * 10))->update();
+        $eps->setMaxEps((int)floor($eps->getTheoreticalMaxEps() * 10))->update();
 
         $user->setState(UserEnum::USER_STATE_COLONIZATION_SHIP);
         $this->userRepository->save($user);

@@ -118,9 +118,6 @@ final class ResearchState implements ResearchStateInterface
         $eps->setEps($eps->getTheoreticalMaxEps())
             ->setBattery($eps->getMaxBattery())->update();
 
-        $warpdrive = $wrapper->getWarpDriveSystemData();
-        $warpdrive->setWarpDrive((int)$warpdrive->getMaxWarpdrive())->update();
-
         if ($plan->getCrew() > 0) {
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
         }
