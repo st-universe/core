@@ -127,8 +127,6 @@ final class ShipTick implements ShipTickInterface
             }
             if ($warpdrive !== null) {
                 $availableWarpDrive = $warpdrive->getWarpDrive() + $wrapper->getEffectiveWarpDriveProduction();
-            } else {
-                return;
             }
         }
 
@@ -197,7 +195,7 @@ final class ShipTick implements ShipTickInterface
             $newEps = $eps->getMaxEps();
         }
         $usedwarpdrive = 0;
-        if ($warpdrive !== null) {
+        if ($warpdrive !== null && $availableWarpDrive != null) {
             if ($availableWarpDrive > $warpdrive->getMaxWarpDrive()) {
                 $availableWarpDrive = $warpdrive->getMaxWarpDrive();
                 $usedwarpdrive = ($warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive()) * $ship->getRump()->getFlightECost();
