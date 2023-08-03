@@ -2312,46 +2312,6 @@ parameters:
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Movement\\\\Route\\\\FlightRoute\\:\\:getNextWaypoint\\(\\) should return Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but returns Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|false\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/Route/FlightRoute.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method getWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method lowerEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method lowerWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between int\\<min, \\-1\\>\\|int\\<1, max\\> and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipWrapper.php
@@ -4822,11 +4782,6 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:getBaseWarpDrive\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategory.php
@@ -4852,6 +4807,21 @@ parameters:
 			path: src/Orm/Entity/ShipRumpCost.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpModuleLevel.php
@@ -4872,7 +4842,7 @@ parameters:
 			path: src/Orm/Entity/ShipRumpModuleLevel.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpSpecial.php
 
