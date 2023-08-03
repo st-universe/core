@@ -11,10 +11,10 @@
     </div>
 </div>
 <br />
+{% include 'html/executeJavascript.twig' %}
 {% if INFORMATION %}
 {% include 'html/systeminformation.twig' %}
-{% endif %}
-{% include 'html/achievements.twig' %}
-{% if not INFORMATION %}
+{% else %}
 <div id="result" style="display: none;">..</div>
 {% endif %}
+{% include 'html/achievements.twig' %}

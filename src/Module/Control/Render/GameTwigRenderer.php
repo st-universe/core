@@ -64,6 +64,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('INFORMATION', $game->getInformation());
         $twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
         $twigPage->setVar('EXECUTEJS', $game->getExecuteJS());
+        $twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJsAfterRender());
         $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
         $twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
         $twigPage->setVar('ISADMIN', $game->isAdmin());

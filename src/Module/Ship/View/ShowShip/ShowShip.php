@@ -200,7 +200,30 @@ final class ShowShip implements ViewControllerInterface
                 : $this->shipCrewCalculator->getMaxCrewCountByShip($ship)
         );
 
+        $this->addWarpcoreSplitJavascript($wrapper, $game);
+
         $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));
+    }
+
+    private function addWarpcoreSplitJavascript(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
+    {
+        $warpCoreSystem = $wrapper->getWarpCoreSystemData();
+        $warpDriveSystem = $wrapper->getWarpDriveSystemData();
+
+        if ($warpCoreSystem !== null && $warpDriveSystem !== null) {
+            $ship = $wrapper->get();
+
+            $game->addExecuteJS(sprintf(
+                'updateEPSSplitValue(%d,%d,%d,%d,%d,%d,%d);',
+                $warpCoreSystem->getWarpCoreSplit(),
+                $ship->getReactorOutput(),
+                $wrapper->getEpsUsage(),
+                $ship->getRump()->getFlightEcost(),
+                $wrapper->getEffectiveEpsProduction(),
+                $warpDriveSystem->getWarpDrive(),
+                $warpDriveSystem->getMaxWarpDrive()
+            ), true);
+        }
     }
 
     private function getColony(ShipInterface $ship): ?ColonyInterface
@@ -290,7 +313,7 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('CAN_REPAIR', true);
 
             $shipRepairProgress = array_map(
-                fn(StationShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
+                fn (StationShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
                 $this->stationShipRepairRepository->getByStation(
                     $ship->getId()
                 )

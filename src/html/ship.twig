@@ -112,20 +112,7 @@
 				{% set warpcoresystem = WRAPPER.getWarpCoreSystemData %}
 				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
 				{{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpDrive }}
-				<span id="EffektivWarpDrive">
-					<script>
-						updateEPSSplitValue(
-							"{{ warpcoresystem.getWarpCoreSplit }}",
-							"{{ SHIP.getReactorOutput }}",
-							"{{ WRAPPER.getEpsUsage }}",
-							"{{ SHIP.getRump.getFlightEcost }}",
-							"{{ WRAPPER.getEffectiveEpsProduction }}",
-							"{{ warpdrivesystem.getWarpDrive }}",
-							"{{ warpdrivesystem.getMaxWarpDrive }}"
-
-						);
-					</script>
-				</span>
+				<span id="EffektivWarpDrive"></span>
 				{% endif %}
 			<td style="text-align: center;">
 				{% if epssystem %}
@@ -133,19 +120,7 @@
 				{% if SHIP.hasWarpCore %}
 				{% set warpcoresystem = WRAPPER.getWarpCoreSystemData %}
 				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
-				<span id="EffektivEPS">
-					<script>
-						updateEPSSplitValue(
-							"{{ warpcoresystem.getWarpCoreSplit }}",
-							"{{ SHIP.getReactorOutput }}",
-							"{{ WRAPPER.getEpsUsage }}",
-							"{{ SHIP.getRump.getFlightEcost }}",
-							"{{ WRAPPER.getEffectiveEpsProduction }}",
-							"{{ warpdrivesystem.getWarpDrive }}",
-							"{{ warpdrivesystem.getMaxWarpDrive }}"
-						);
-					</script>
-				</span>
+				<span id="EffektivEPS"></span>
 				{% else %}
 				{% endif %}
 				(<span class="neg">{{ WRAPPER.getEpsUsage }}</span>/<span class="neg">{{ WRAPPER.getWarpcoreUsage
