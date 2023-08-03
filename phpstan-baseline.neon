@@ -2381,11 +2381,6 @@ parameters:
 			path: src/Module/Ship/Lib/Movement/ShipMover.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:getEffectiveEpsProduction\\(\\) should return int but returns float\\|int\\<min, 0\\>\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between int\\<min, \\-1\\>\\|int\\<1, max\\> and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipWrapper.php
@@ -3611,6 +3606,11 @@ parameters:
 			path: src/Orm/Entity/ShipLog.php
 
 		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:getBaseWarpDrive\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategory.php
@@ -3619,6 +3619,26 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Max\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Min\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleMandatory11\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump is never read, only written\\.$#"
