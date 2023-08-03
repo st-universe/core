@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use RuntimeException;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -26,6 +27,11 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
 
     public function apply(ShipInterface $ship): void
     {
-        $this->wrapper->getWarpDriveSystemData()->setMaxWarpDrive($this->getValue())->update();
+        $systemData = $this->wrapper->getWarpDriveSystemData();
+        if ($systemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        $systemData->setMaxWarpDrive($this->getValue())->update();
     }
 }

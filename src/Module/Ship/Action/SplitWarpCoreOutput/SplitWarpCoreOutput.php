@@ -8,7 +8,6 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class SplitWarpCoreOutput implements ActionControllerInterface
@@ -17,15 +16,10 @@ final class SplitWarpCoreOutput implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-
     public function __construct(
-        ShipWrapperFactoryInterface $shipWrapperFactory,
         ShipLoaderInterface $shipLoader
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,10 +29,15 @@ final class SplitWarpCoreOutput implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+
+        $warpcoresystem = $wrapper->getWarpCoreSystemData();
+        if ($warpcoresystem === null) {
+            return;
+        }
 
         $value = request::postInt('value');
         if ($value < 0) {
@@ -47,7 +46,6 @@ final class SplitWarpCoreOutput implements ActionControllerInterface
         if ($value > 100) {
             $value = 100;
         }
-        $warpcoresystem = $this->shipWrapperFactory->wrapShip($ship)->getWarpCoreSystemData();
 
         $warpcoresystem->setWarpCoreSplit($value)->update();
     }

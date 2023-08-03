@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use RuntimeException;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -90,14 +91,23 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
-        $wrapper->getWarpDriveSystemData()->setWarpDrive(0)->update();
+        $systemData = $wrapper->getWarpDriveSystemData();
+        if ($systemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        $systemData->setWarpDrive(0)->update();
     }
 
     public function handleDamage(ShipWrapperInterface $wrapper): void
     {
-        $data = $wrapper->getWarpDriveSystemData();
-        if ($data->getWarpDrive() > $data->getMaxWarpDrive()) {
-            $data->setWarpDrive($data->getMaxWarpDrive())->update();
+        $systemData = $wrapper->getWarpDriveSystemData();
+        if ($systemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        if ($systemData->getWarpDrive() > $systemData->getMaxWarpDrive()) {
+            $systemData->setWarpDrive($systemData->getMaxWarpDrive())->update();
         }
     }
 }

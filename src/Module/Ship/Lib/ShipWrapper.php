@@ -170,7 +170,7 @@ final class ShipWrapper implements ShipWrapperInterface
             }
             $this->effectiveEpsProduction = (int) $prod;
         }
-        return (int) $this->effectiveEpsProduction;
+        return $this->effectiveEpsProduction;
     }
 
     public function getEffectiveWarpDriveProduction(): int
@@ -201,7 +201,7 @@ final class ShipWrapper implements ShipWrapperInterface
             }
             $this->effectiveWarpDriveProduction = (int) round($prod);
         }
-        return (int) $this->effectiveWarpDriveProduction;
+        return $this->effectiveWarpDriveProduction;
     }
 
 

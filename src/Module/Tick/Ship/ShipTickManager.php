@@ -272,7 +272,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             $warpcore = $wrapper->getWarpCoreSystemData();
 
             if ($epsSystem !== null) {
-                if ($warpdrive != null) {
+                if ($warpdrive !== null && $warpcore !== null) {
                     $eps = (int) ceil($ship->getReactorOutput() * (($warpcore->getWarpCoreSplit() / 100)) - $wrapper->getEpsUsage());
                 } else {
                     $eps = (int) ceil($ship->getReactorOutput() - $wrapper->getEpsUsage());
@@ -284,10 +284,6 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             }
             if ($warpdrive !== null) {
                 $availableWarpDrive = $warpdrive->getWarpDrive() + $wrapper->getEffectiveWarpDriveProduction();
-            } else {
-                return;
-            }
-            if ($warpdrive !== null) {
                 if ($availableWarpDrive > $warpdrive->getMaxWarpDrive()) {
                     $availableWarpDrive = $warpdrive->getMaxWarpDrive();
                 }
