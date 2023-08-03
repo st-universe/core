@@ -80,9 +80,13 @@ interface GameControllerInterface
 
     public function setPageTitle(string $title): void;
 
+    /** @return array<string> */
     public function getExecuteJS(): array;
 
-    public function addExecuteJS(string $value): void;
+    /** @return array<string> */
+    public function getExecuteJsAfterRender(): array;
+
+    public function addExecuteJS(string $value, bool $executeAfterRender = false): void;
 
     public function redirectTo(string $href): void;
 

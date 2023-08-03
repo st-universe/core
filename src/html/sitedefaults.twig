@@ -162,6 +162,13 @@
             </div>
         </div>
     </div>
+    {% if EXECUTEJSAFTERRENDER %}
+    <script language="Javascript">
+        {% for item in EXECUTEJSAFTERRENDER %}
+        {{ item }}
+        {% endfor %}
+    </script>
+    {% endif %}
 </body>
 
 </html>

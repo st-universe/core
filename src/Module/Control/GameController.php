@@ -114,6 +114,9 @@ final class GameController implements GameControllerInterface
     /** @var array<string> */
     private array $execjs = [];
 
+    /** @var array<string> */
+    private array $execjsAfterRender = [];
+
     private ?GameTurnInterface $currentRound = null;
 
     /** @var array<string> */
@@ -423,9 +426,18 @@ final class GameController implements GameControllerInterface
         return $this->execjs;
     }
 
-    public function addExecuteJS(string $value): void
+    public function getExecuteJsAfterRender(): array
     {
-        $this->execjs[] = $value;
+        return $this->execjsAfterRender;
+    }
+
+    public function addExecuteJS(string $value, bool $executeAfterRender = false): void
+    {
+        if ($executeAfterRender) {
+            $this->execjsAfterRender[] = $value;
+        } else {
+            $this->execjs[] = $value;
+        }
     }
 
     public function redirectTo(string $href): void
