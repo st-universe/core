@@ -108,6 +108,7 @@ final class ShipTick implements ShipTickInterface
         }
 
         // not enough crew
+        $availableWarpDrive = null;
         if (!$ship->hasEnoughCrew()) {
             $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
 
@@ -195,7 +196,7 @@ final class ShipTick implements ShipTickInterface
             $newEps = $eps->getMaxEps();
         }
         $usedwarpdrive = 0;
-        if ($warpdrive !== null && $availableWarpDrive != null) {
+        if ($warpdrive !== null && $availableWarpDrive !== null) {
             if ($availableWarpDrive > $warpdrive->getMaxWarpDrive()) {
                 $availableWarpDrive = $warpdrive->getMaxWarpDrive();
                 $usedwarpdrive = ($warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive()) * $ship->getRump()->getFlightECost();
