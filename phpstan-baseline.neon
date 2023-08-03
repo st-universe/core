@@ -1,0 +1,3946 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constant _IMG_HANDLER not found\\.$#"
+			count: 1
+			path: src/Component/Image/ImageCreation.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Image\\\\ImageCreation\\:\\:gdImageInSrc\\(\\) has parameter \\$gdImage with no type specified\\.$#"
+			count: 1
+			path: src/Component/Image/ImageCreation.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Image\\\\ImageCreationInterface\\:\\:gdImageInSrc\\(\\) has parameter \\$gdImage with no type specified\\.$#"
+			count: 1
+			path: src/Component/Image/ImageCreationInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:enoughSparePartsOnEntity\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:enoughSparePartsOnEntity\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:instantSelfRepair\\(\\) has parameter \\$healingPercentage with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:instantSelfRepair\\(\\) has parameter \\$ship with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:instantSelfRepair\\(\\) has parameter \\$systemType with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:sendNeededAmountMessage\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtil.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:consumeSpareParts\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:enoughSparePartsOnEntity\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:enoughSparePartsOnEntity\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:instantSelfRepair\\(\\) has parameter \\$healingPercentage with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:instantSelfRepair\\(\\) has parameter \\$ship with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:instantSelfRepair\\(\\) has parameter \\$systemType with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/Repair/RepairUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\AbstractSystemData\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/System/Data/AbstractSystemData.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\AbstractShipSystemType\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
+			count: 1
+			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
+
+		-
+			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Component/Ship/System/Type/EpsShipSystem.php
+
+		-
+			message: "#^Cannot call method getMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 2
+			path: src/Component/Ship/System/Type/EpsShipSystem.php
+
+		-
+			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 2
+			path: src/Component/Ship/System/Type/EpsShipSystem.php
+
+		-
+			message: "#^Cannot call method setTarget\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\TrackerSystemData\\|null\\.$#"
+			count: 1
+			path: src/Component/Ship/System/Type/TrackerShipSystem.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Component/Ship/System/Type/TractorBeamShipSystem.php
+
+		-
+			message: "#^Cannot call method getMaxWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 2
+			path: src/Component/Ship/System/Type/WarpdriveShipSystem.php
+
+		-
+			message: "#^Cannot call method getWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Component/Ship/System/Type/WarpdriveShipSystem.php
+
+		-
+			message: "#^Cannot call method setWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 2
+			path: src/Component/Ship/System/Type/WarpdriveShipSystem.php
+
+		-
+			message: "#^Cannot call method getWebUnderConstruction\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
+			count: 1
+			path: src/Component/Ship/System/Type/WebEmitterShipSystem.php
+
+		-
+			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 1
+			path: src/Component/Station/StationUtility.php
+
+		-
+			message: "#^Cannot call method getBaseHull\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 2
+			path: src/Component/Station/StationUtility.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Component/Station/StationUtility.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\|null\\.$#"
+			count: 2
+			path: src/Component/Station/StationUtility.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 1
+			path: src/Component/Station/StationUtility.php
+
+		-
+			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 1
+			path: src/Component/Station/StationUtility.php
+
+		-
+			message: "#^Parameter \\#1 \\$shipRump of method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:setRump\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
+			count: 1
+			path: src/Component/Station/StationUtility.php
+
+		-
+			message: "#^Method Stu\\\\Exception\\\\SanityCheckException\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
+			count: 1
+			path: src/Exception/SanityCheckException.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\CleanTextUtils\\:\\:clearUnicode\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Lib/CleanTextUtils.php
+
+		-
+			message: "#^Cannot call method setMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperEps.php
+
+		-
+			message: "#^Cannot call method setMaxWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperWarpDrive.php
+
+		-
+			message: "#^Cannot call method setWarpCoreSplit\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\|null\\.$#"
+			count: 1
+			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperWarpcore.php
+
+		-
+			message: "#^Cannot call method getModulesByType\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTab.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:__get\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:__get\\(\\) has parameter \\$moduleType with no type specified\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:register\\(\\) has parameter \\$tab with no type specified\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
+
+		-
+			message: "#^Offset mixed might not exist on array\\|null\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
+
+		-
+			message: "#^Property Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:\\$tabs type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleSelectWrapper\\:\\:__get\\(\\) has parameter \\$type with no type specified\\.$#"
+			count: 1
+			path: src/Lib/ModuleScreen/ModuleSelectWrapper.php
+
+		-
+			message: "#^Method NavPanel\\:\\:getShip\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/NavPanel.php
+
+		-
+			message: "#^Property Stu\\\\Lib\\\\Request\\\\CustomRequestParserFactory\\:\\:\\$config has no type specified\\.$#"
+			count: 1
+			path: src/Lib/Request/CustomRequestParserFactory.php
+
+		-
+			message: "#^Cannot call method getSessionDataUnserialized\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 4
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Cannot call method setSessionData\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 2
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:getSessionValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$ip of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setIp\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$name of function setcookie expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\UserRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 2
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$sessionId of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setSessionId\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$sessionId of method Stu\\\\Orm\\\\Repository\\\\UserIpTableRepositoryInterface\\:\\:findBySessionId\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Repository\\\\SessionStringRepositoryInterface\\:\\:truncate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$userAgent of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setUserAgent\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#2 \\$value of function setcookie expects string, int given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:getSessionValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/SessionInterface.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\SignatureWrapper\\:\\:__construct\\(\\) has parameter \\$signature with no type specified\\.$#"
+			count: 1
+			path: src/Lib/SignatureWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\SignatureWrapper\\:\\:getRump\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/SignatureWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\SignatureWrapper\\:\\:getShipName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/SignatureWrapper.php
+
+		-
+			message: "#^Property Stu\\\\Lib\\\\SignatureWrapper\\:\\:\\$signature has no type specified\\.$#"
+			count: 1
+			path: src/Lib/SignatureWrapper.php
+
+		-
+			message: "#^Property Stu\\\\Lib\\\\StuBbCodeDefinitionSet\\:\\:\\$definitions type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Lib/StuBbCodeDefinitionSet.php
+
+		-
+			message: "#^Method request\\:\\:returnInt\\(\\) has parameter \\$result with no type specified\\.$#"
+			count: 1
+			path: src/Lib/request.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#2 \\$system of method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:setInfluenceArea\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#2 \\$system of method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:spreadInCircle\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
+
+		-
+			message: "#^Variable \\$new might not be defined\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/Map/EditSystemField/EditSystemField.php
+
+		-
+			message: "#^Cannot call method close\\(\\) on Directory\\|false\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/StartMirrorWorld.php
+
+		-
+			message: "#^Cannot call method read\\(\\) on Directory\\|false\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/StartMirrorWorld.php
+
+		-
+			message: "#^'row_0'\\|'row_1'\\|'row_2'\\|'row_3'\\|'row_4'\\|'row_5'\\|non\\-empty\\-list\\<Stu\\\\Orm\\\\Entity\\\\MapFieldType\\> does not accept Stu\\\\Orm\\\\Entity\\\\MapFieldType\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/EditSection/EditSection.php
+
+		-
+			message: "#^Cannot assign new offset to array\\<int, Stu\\\\Orm\\\\Entity\\\\MapFieldType\\>\\|string\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/EditSection/EditSection.php
+
+		-
+			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 3
+			path: src/Module/Admin/View/Map/EditSection/EditSection.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 3
+			path: src/Module/Admin/View/Map/EditSection/EditSection.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getXCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/EditSection/EditSection.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getYCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/EditSection/EditSection.php
+
+		-
+			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|false\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapEditor.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|false\\.$#"
+			count: 2
+			path: src/Module/Admin/View/Map/ShowMapEditor.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|false\\.$#"
+			count: 2
+			path: src/Module/Admin/View/Map/ShowMapEditor.php
+
+		-
+			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowMapInfluenceAreas\\:\\:buildImage\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#1 \\$dst_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, GdImage\\|false given\\.$#"
+			count: 3
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#2 \\$red of function imagecolorallocate expects int, float\\|int given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#2 \\$src_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#3 \\$green of function imagecolorallocate expects int, float\\|int given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#4 \\$blue of function imagecolorallocate expects int, float\\|int given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
+			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Offset 0 might not exist on array\\{int\\|null, int\\|null, int\\|null\\}\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Offset 1 might not exist on array\\{int\\|null, int\\|null, int\\|null\\}\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Offset 2 might not exist on array\\{int\\|null, int\\|null, int\\|null\\}\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#1 \\$dst_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#1 \\$dst_image of function imagecopyresized expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagedestroy expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#1 \\$image of function imagepng expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#2 \\$red of function imagecolorallocate expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#2 \\$src_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#2 \\$src_image of function imagecopyresized expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#3 \\$green of function imagecolorallocate expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#4 \\$blue of function imagecolorallocate expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapOverall.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowSystem/ShowSystem.php
+
+		-
+			message: "#^'row_0'\\|'row_1'\\|'row_2'\\|'row_3'\\|'row_4'\\|'row_5'\\|non\\-empty\\-list\\<Stu\\\\Orm\\\\Entity\\\\MapFieldType\\> does not accept Stu\\\\Orm\\\\Entity\\\\MapFieldType\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditField.php
+
+		-
+			message: "#^Cannot assign new offset to array\\<int, Stu\\\\Orm\\\\Entity\\\\MapFieldType\\>\\|string\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditField.php
+
+		-
+			message: "#^Parameter \\#2 \\$array of function array_map expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\UserInterface\\> given\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Playerlist/Playerlist.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getOuterSystemResult\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getRows\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getViewport\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getViewportForFont\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getViewportPerColumn\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
+
+		-
+			message: "#^Variable \\$row might not be defined\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:__construct\\(\\) has parameter \\$entry with no type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$currentShipPosX has no type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$currentShipPosY has no type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$data has no type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:addEntry\\(\\) has parameter \\$data with no type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:getEntries\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:\\$entries type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/CreatePost/CreatePost.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/CreatePost/CreatePost.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/CreateRelation/CreateRelation.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between int\\<min, 0\\>\\|int\\<7, max\\> and 1 will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/CreateRelation/CreateRelation.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/CreateTopic/CreateTopic.php
+
+		-
+			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface\\:\\:setAlliance\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/CreateTopic/CreateTopic.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/CreateTopic/CreateTopic.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeleteAlliance/DeleteAlliance.php
+
+		-
+			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeleteAlliance/DeleteAlliance.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeleteBoard/DeleteBoard.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeleteBoard/DeleteBoard.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeletePost/DeletePost.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardPostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeletePost/DeletePost.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeleteTopic/DeleteTopic.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DeleteTopic/DeleteTopic.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/EditPost/EditPost.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/Leave/Leave.php
+
+		-
+			message: "#^Cannot call method getSuccessor\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Alliance/Action/Leave/Leave.php
+
+		-
+			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Alliance/Action/Leave/Leave.php
+
+		-
+			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayer.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/RenameBoard/RenameBoard.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/RenameBoard/RenameBoard.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/RenameTopic/RenameTopic.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/SetTopicSticky/SetTopicSticky.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/SetTopicSticky/SetTopicSticky.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeace.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/UnsetTopicSticky/UnsetTopicSticky.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/UnsetTopicSticky/UnsetTopicSticky.php
+
+		-
+			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\:\\:setAlliance\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Alliance/Lib/AllianceActionManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Alliance/Lib/AllianceActionManager.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceListItem\\:\\:getMembers\\(\\) return type has no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: src/Module/Alliance/Lib/AllianceListItem.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/Board/Board.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/BoardSettings/BoardSettings.php
+
+		-
+			message: "#^Parameter \\#2 \\$factionId of method Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceActionManagerInterface\\:\\:mayEditFactionMode\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/Edit/Edit.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/NewPost/NewPost.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/NewPost/NewPost.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/NewTopic/NewTopic.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/NewTopic/NewTopic.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Alliance/View/ShowEditPost/ShowEditPost.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Topic\\\\Topic\\:\\:getTopicNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/Topic/Topic.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/Topic/Topic.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/View/TopicSettings/TopicSettings.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/ActivateBuildings/ActivateBuildings.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/BuildAirfieldRump/BuildAirfieldRump.php
+
+		-
+			message: "#^Parameter \\#1 \\$rump of method Stu\\\\Module\\\\Colony\\\\Action\\\\BuildAirfieldRump\\\\BuildAirfieldRump\\:\\:produceShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/BuildAirfieldRump/BuildAirfieldRump.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/BuildAirfieldRump/BuildAirfieldRump.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/BuildFighterShipyardRump/BuildFighterShipyardRump.php
+
+		-
+			message: "#^Parameter \\#1 \\$rump of method Stu\\\\Module\\\\Colony\\\\Action\\\\BuildFighterShipyardRump\\\\BuildFighterShipyardRump\\:\\:produceShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/BuildFighterShipyardRump/BuildFighterShipyardRump.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/BuildFighterShipyardRump/BuildFighterShipyardRump.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/BuildOnField/BuildOnField.php
+
+		-
+			message: "#^Cannot call method getCosts\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/BuildOnField/BuildOnField.php
+
+		-
+			message: "#^Cannot call method getEpsStorage\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/BuildOnField/BuildOnField.php
+
+		-
+			message: "#^Cannot call method getResearchId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/BuildOnField/BuildOnField.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/BuildTorpedos/BuildTorpedos.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ModuleInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/CancelModuleCreation/CancelModuleCreation.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/DeactivateBuildings/DeactivateBuildings.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/DisassembleShip/DisassembleShip.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/LandShip/LandShip.php
+
+		-
+			message: "#^Cannot call method isRemovable\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/RemoveBuilding/RemoveBuilding.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/RemoveWaste/RemoveWaste.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getBuildplan\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildplanHangarInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getBuildplanId\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildplanHangarInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getCommodityId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getDatabaseId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getDefaultTorpedoType\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildplanHangarInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getStartEnergyCosts\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildplanHangarInterface\\|null\\.$#"
+			count: 3
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method hasSpecialAbility\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of method Doctrine\\\\Common\\\\Collections\\\\ReadableCollection\\<int,Stu\\\\Orm\\\\Entity\\\\StorageInterface\\>\\:\\:containsKey\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:lowerStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/Terraform/Terraform.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TerraformingInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/Terraform/Terraform.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Cannot call method getBuildingId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Cannot call method getBuildtime\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Cannot call method getFieldType\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Cannot call method isUnderConstruction\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Cannot call method setActive\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Cannot call method setBuilding\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Parameter \\#1 \\$planetField of method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Parameter \\#2 \\$field of method Stu\\\\Module\\\\Colony\\\\Lib\\\\BuildingActionInterface\\:\\:remove\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
+
+		-
+			message: "#^Cannot call method getCosts\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/BuildingAction.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 5
+			path: src/Module/Colony/Lib/BuildingAction.php
+
+		-
+			message: "#^Cannot call method getWorkers\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Lib/BuildingAction.php
+
+		-
+			message: "#^Cannot call method isRemovable\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/BuildingAction.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\BuildingFunctionTal\\:\\:__construct\\(\\) has parameter \\$buildingfunctionIds with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/BuildingFunctionTal.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyGuiHelper\\:\\:buildShieldBar\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonyGuiHelper.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyGuiHelperInterface\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonyGuiHelperInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyLibFactory\\:\\:createBuildingFunctionTal\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonyLibFactory.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyLibFactoryInterface\\:\\:createBuildingFunctionTal\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonyLibFactoryInterface.php
+
+		-
+			message: "#^Cannot call method getBuildableFields\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/Lib/ColonySurface.php
+
+		-
+			message: "#^Cannot call method getResearchId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonySurface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonySurface\\:\\:isResearched\\(\\) has parameter \\$researched with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonySurface.php
+
+		-
+			message: "#^Parameter \\#1 \\$str of function base64_decode expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonySurface.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/CommodityConsumption.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLibInterface\\:\\:cancelModuleQueues\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ModuleQueueLibInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLibInterface\\:\\:cancelModuleQueuesForBuilding\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ModuleQueueLibInterface.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/PlanetColonization.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/PlanetColonization.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/RefreshSubspaceSection/RefreshSubspaceSection.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getXCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/RefreshSubspaceSection/RefreshSubspaceSection.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getYCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/RefreshSubspaceSection/RefreshSubspaceSection.php
+
+		-
+			message: "#^Parameter \\#2 \\$layer of method Stu\\\\Module\\\\Starmap\\\\Lib\\\\MapSectionHelper\\:\\:setTemplateVars\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/RefreshSubspaceSection/RefreshSubspaceSection.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagement.php
+
+		-
+			message: "#^Parameter \\#1 \\$databaseEntry of method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTalFactoryInterface\\:\\:createDatabaseCategoryEntryTal\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowColony/ShowColony.php
+
+		-
+			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowField/ShowField.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowGiveUp/ShowGiveUp.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleFab\\\\ModuleFabricationListItemTal\\:\\:getConstructionCosts\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowModuleFab/ModuleFabricationListItemTal.php
+
+		-
+			message: "#^Cannot call method getFunction\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFab.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesCloaked type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesUncloaked type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
+
+		-
+			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassembly.php
+
+		-
+			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowShipRepair/ShowShipRepair.php
+
+		-
+			message: "#^Cannot call method getFunction\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowShipyard/ShowShipyard.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSubspaceTelescope/ShowSubspaceTelescope.php
+
+		-
+			message: "#^Parameter \\#2 \\$layer of method Stu\\\\Module\\\\Starmap\\\\Lib\\\\MapSectionHelper\\:\\:setTemplateVars\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSubspaceTelescope/ShowSubspaceTelescope.php
+
+		-
+			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/View/ShowSubspaceTelescopeScan/ShowSubspaceTelescopeScan.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Colony/View/ShowSubspaceTelescopeScan/ShowSubspaceTelescopeScan.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/AddKnPlotMember/AddKnPlotMember.php
+
+		-
+			message: "#^Cannot call method getPlotId\\(\\) on Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/AddKnPostToPlot/AddKnPostToPlot.php
+
+		-
+			message: "#^Cannot call method setRpgPlot\\(\\) on Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/AddKnPostToPlot/AddKnPostToPlot.php
+
+		-
+			message: "#^Parameter \\#1 \\$post of method Stu\\\\Module\\\\Communication\\\\Action\\\\AddKnPostToPlot\\\\AddKnPostToPlot\\:\\:notifyPlotMembers\\(\\) expects Stu\\\\Orm\\\\Entity\\\\KnPostInterface, Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/AddKnPostToPlot/AddKnPostToPlot.php
+
+		-
+			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\KnPostRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\KnPostInterface, Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/AddKnPostToPlot/AddKnPostToPlot.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnCommentInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/DeleteKnComment/DeleteKnComment.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/DeleteKnPost/DeleteKnPost.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/EditKnPost/EditKnPost.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/PostKnComment/PostKnComment.php
+
+		-
+			message: "#^Variable \\$commentatorId in isset\\(\\) always exists and is not nullable\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/PostKnComment/PostKnComment.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/Action/RateKnPost/RateKnPost.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/View/ShowEditKn/ShowEditKn.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/View/ShowEditPlot/ShowEditPlot.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Communication/View/ShowKnComments/ShowKnComments.php
+
+		-
+			message: "#^Cannot call method getReason\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Cannot call method getRemainingTicks\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationMerge\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationMergeDown\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationf\\(\\) has parameter \\$args with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationfWithLink\\(\\) has parameter \\$args with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:checkDatabaseItem\\(\\) has parameter \\$databaseEntryId with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getContactlistModes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getCurrentRound\\(\\) should return Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but returns Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getExecuteJS\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getGameStats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:sendInformation\\(\\) has parameter \\$category_id with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:sendInformation\\(\\) has parameter \\$recipient_id with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:sendInformation\\(\\) has parameter \\$sender_id with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameStats type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationMerge\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationMergeDown\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationf\\(\\) has parameter \\$args with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationfWithLink\\(\\) has parameter \\$args with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:checkDatabaseItem\\(\\) has parameter \\$databaseEntryId with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getBenchmarkResult\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getContactlistModes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getExecuteJS\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getGameConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getGameStats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getViewContext\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has parameter \\$category_id with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has parameter \\$recipient_id with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has parameter \\$sender_id with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setTemplateVar\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setView\\(\\) has parameter \\$viewContext with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameControllerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquire\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:getSemaphore\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:release\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:getSemaphore\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
+			count: 1
+			path: src/Module/Control/SemaphoreUtilInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\StuRandom\\:\\:array_rand\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/StuRandom.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Crew/Lib/CrewCreator.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Crew/Lib/CrewCreator.php
+
+		-
+			message: "#^Cannot call method getMaleRatio\\(\\) on Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Crew/Lib/CrewCreator.php
+
+		-
+			message: "#^Parameter \\#1 \\$crewRace of method Stu\\\\Orm\\\\Entity\\\\CrewInterface\\:\\:setRace\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface, Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Crew/Lib/CrewCreator.php
+
+		-
+			message: "#^Parameter \\#1 \\$element of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\>\\:\\:removeElement\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Crew/Lib/CrewCreator.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\Lib\\\\GraphInfo\\:\\:__construct\\(\\) has parameter \\$plotInfos with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/Lib/GraphInfo.php
+
+		-
+			message: "#^Cannot call method getDate\\(\\) on Stu\\\\Orm\\\\Entity\\\\DatabaseUserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryEntryTal\\:\\:getObject\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryEntryTalInterface\\:\\:getObject\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTalInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTal\\:\\:getEntries\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/Category/Tal/DatabaseCategoryTal.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTalInterface\\:\\:getEntries\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/Category/Tal/DatabaseCategoryTalInterface.php
+
+		-
+			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
+
+		-
+			message: "#^Cannot call method getFields\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
+
+		-
+			message: "#^Cannot call method getMaxX\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
+
+		-
+			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowCommoditiesLocations/ShowCommoditiesLocations.php
+
+		-
+			message: "#^Constant FF_ARIAL not found\\.$#"
+			count: 4
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Constant FS_BOLD not found\\.$#"
+			count: 2
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Constant FS_NORMAL not found\\.$#"
+			count: 2
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:configureXAxis\\(\\) has parameter \\$stats with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createDataX\\(\\) has parameter \\$stats with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createDataX\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createDataY\\(\\) has parameter \\$stats with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createDataY\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createImagesSources\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createPlots\\(\\) has parameter \\$datax with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createPlots\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\UserList\\\\UserList\\:\\:getUserListNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Database/View/UserList/UserList.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\Overview\\:\\:\\$possibleTypes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/History/View/Overview/Overview.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequest\\:\\:getTypeId\\(\\) has parameter \\$possibleTypeIds with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/History/View/Overview/OverviewRequest.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequestInterface\\:\\:getTypeId\\(\\) has parameter \\$possibleTypeIds with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/History/View/Overview/OverviewRequestInterface.php
+
+		-
+			message: "#^Cannot call method getMaxWarpdrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 2
+			path: src/Module/Maindesk/Action/ColonizationShip/ColonizationShip.php
+
+		-
+			message: "#^Cannot call method setMaxWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Maindesk/Action/ColonizationShip/ColonizationShip.php
+
+		-
+			message: "#^Cannot call method setWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Maindesk/Action/ColonizationShip/ColonizationShip.php
+
+		-
+			message: "#^Cannot call method getStartBuildingId\\(\\) on Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Maindesk/Action/FirstColony/FirstColony.php
+
+		-
+			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Maindesk/Action/FirstColony/FirstColony.php
+
+		-
+			message: "#^Parameter \\#1 \\$data of method Stu\\\\Module\\\\Control\\\\StuHashInterface\\:\\:hash\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Module/Maindesk/Action/SmsVerification/SmsVerification.php
+
+		-
+			message: "#^Cannot call method close\\(\\) on Directory\\|false\\.$#"
+			count: 1
+			path: src/Module/Maintenance/DatabaseBackup.php
+
+		-
+			message: "#^Cannot call method read\\(\\) on Directory\\|false\\.$#"
+			count: 1
+			path: src/Module/Maintenance/DatabaseBackup.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Maintenance/EndLotteryPeriod.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Maintenance/OldTradeLicenseDeletion.php
+
+		-
+			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Maintenance/OldTradeLicenseDeletion.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Maintenance\\\\OldTradeLicenseDeletion\\:\\:deleteExpiredLicenses\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Maintenance/OldTradeLicenseDeletion.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Maintenance\\\\OldTradeLicenseDeletion\\:\\:informAboutAlmostExpiredLicenses\\(\\) has parameter \\$deletedLicenses with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Maintenance/OldTradeLicenseDeletion.php
+
+		-
+			message: "#^Variable \\$storageManager might not be defined\\.$#"
+			count: 1
+			path: src/Module/Maintenance/OldTradeOffersDeletion.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteContacts\\\\DeleteContactsRequest\\:\\:getContactIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/DeleteContacts/DeleteContactsRequest.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteContacts\\\\DeleteContactsRequestInterface\\:\\:getContactIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/DeleteContacts/DeleteContactsRequestInterface.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Module/Message/Action/DeleteIgnores/DeleteIgnores.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteIgnores\\\\DeleteIgnoresRequest\\:\\:getIgnoreIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/DeleteIgnores/DeleteIgnoresRequest.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteIgnores\\\\DeleteIgnoresRequestInterface\\:\\:getIgnoreIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/DeleteIgnores/DeleteIgnoresRequestInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePms\\\\DeletePmsRequest\\:\\:getDeletionIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/DeletePms/DeletePmsRequest.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePms\\\\DeletePmsRequestInterface\\:\\:getDeletionIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/DeletePms/DeletePmsRequestInterface.php
+
+		-
+			message: "#^Cannot call method getCategory\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Message/Action/MovePm/MovePm.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Message/Action/MovePm/MovePm.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SortPmCategories\\\\SortPmCategoriesRequest\\:\\:getCategoryIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/SortPmCategories/SortPmCategoriesRequest.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SortPmCategories\\\\SortPmCategoriesRequestInterface\\:\\:getCategoryIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Message/Action/SortPmCategories/SortPmCategoriesRequestInterface.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: src/Module/Message/Lib/PrivateMessageListItem.php
+
+		-
+			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Message/View/Overview/Overview.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Message/View/Overview/Overview.php
+
+		-
+			message: "#^Parameter \\#1 \\$privateMessageFolder of method Stu\\\\Orm\\\\Repository\\\\PrivateMessageRepositoryInterface\\:\\:getAmountByFolder\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface, Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Message/View/Overview/Overview.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\NoteInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Notes/Action/DeleteNotes/DeleteNotes.php
+
+		-
+			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Notes/Action/SaveNote/SaveNote.php
+
+		-
+			message: "#^Cannot call method setDate\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Notes/Action/SaveNote/SaveNote.php
+
+		-
+			message: "#^Cannot call method setText\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Notes/Action/SaveNote/SaveNote.php
+
+		-
+			message: "#^Cannot call method setTitle\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Notes/Action/SaveNote/SaveNote.php
+
+		-
+			message: "#^Cannot call method setUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Notes/Action/SaveNote/SaveNote.php
+
+		-
+			message: "#^Parameter \\#1 \\$note of method Stu\\\\Orm\\\\Repository\\\\NoteRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\NoteInterface, Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Notes/Action/SaveNote/SaveNote.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Notes/View/ShowNote/ShowNote.php
+
+		-
+			message: "#^Cannot call method getTitle\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Notes/View/ShowNote/ShowNote.php
+
+		-
+			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\NoteInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Notes/View/ShowNote/ShowNote.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\UserInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/PlayerSetting/View/Overview/Overview.php
+
+		-
+			message: "#^Cannot call method getMaxBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Research/ResearchState.php
+
+		-
+			message: "#^Cannot call method getMaxWarpdrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Research/ResearchState.php
+
+		-
+			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Research/ResearchState.php
+
+		-
+			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Research/ResearchState.php
+
+		-
+			message: "#^Cannot call method setWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Research/ResearchState.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:getDistinctExcludeNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTech.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:getDistinctPositiveDependencyNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTech.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:getResearchState\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTech.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$dependencies type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTech.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$excludes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTech.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTechInterface\\:\\:getDistinctExcludeNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTechInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTechInterface\\:\\:getDistinctPositiveDependencyNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTechInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTechInterface\\:\\:getResearchState\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Research/TalSelectedTechInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TechlistRetriever\\:\\:loadDependencies\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TechlistRetriever.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Research\\\\TechlistRetriever\\:\\:loadExcludes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Research/TechlistRetriever.php
+
+		-
+			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/Colonize/Colonize.php
+
+		-
+			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StartBlocking.php
+
+		-
+			message: "#^Cannot call method getDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StartBlocking.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StartBlocking.php
+
+		-
+			message: "#^Cannot call method setBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StartBlocking.php
+
+		-
+			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StartBlocking.php
+
+		-
+			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StartBlocking.php
+
+		-
+			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StopBlocking.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StopBlocking.php
+
+		-
+			message: "#^Cannot call method setBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StopBlocking.php
+
+		-
+			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StopBlocking.php
+
+		-
+			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyBlocking/StopBlocking.php
+
+		-
+			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StartDefending.php
+
+		-
+			message: "#^Cannot call method getDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StartDefending.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StartDefending.php
+
+		-
+			message: "#^Cannot call method setDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StartDefending.php
+
+		-
+			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StartDefending.php
+
+		-
+			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StartDefending.php
+
+		-
+			message: "#^Cannot call method getDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StopDefending.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StopDefending.php
+
+		-
+			message: "#^Cannot call method setDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StopDefending.php
+
+		-
+			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StopDefending.php
+
+		-
+			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/ColonyDefending/StopDefending.php
+
+		-
+			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/FleetDeactivateWarp/FleetDeactivateWarp.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\FleetDeactivateWarp\\\\FleetDeactivateWarp\\:\\:getTractoredShips\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/FleetDeactivateWarp/FleetDeactivateWarp.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
+
+		-
+			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
+
+		-
+			message: "#^Cannot call method setWarpCoreSplit\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/SplitWarpCoreOutput/SplitWarpCoreOutput.php
+
+		-
+			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/CancelTholianWeb.php
+
+		-
+			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtilInterface\\:\\:releaseAllShips\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/CancelTholianWeb.php
+
+		-
+			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/CreateTholianWeb.php
+
+		-
+			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/RemoveTholianWeb.php
+
+		-
+			message: "#^Cannot call method isFinished\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/RemoveTholianWeb.php
+
+		-
+			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtilInterface\\:\\:releaseAllShips\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/RemoveTholianWeb.php
+
+		-
+			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/SupportTholianWeb.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between bool and 7 will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TholianWeb/UnsupportTholianWeb.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TradePostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TransferFromAccount/TransferFromAccount.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TradePostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TransferToAccount/TransferToAccount.php
+
+		-
+			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/Transwarp/Transwarp.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
+
+		-
+			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
+
+		-
+			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/UnloadBattery/UnloadBattery.php
+
+		-
+			message: "#^Cannot call method setAstroStartTurn\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/AstroEntryLib.php
+
+		-
+			message: "#^Cannot call method setState\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/AstroEntryLib.php
+
+		-
+			message: "#^Parameter \\#1 \\$entry of method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface, Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/AstroEntryLib.php
+
+		-
+			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/AlertRedHelper.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageRandomShipSystem\\(\\) has parameter \\$percent with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageShipSystem\\(\\) has parameter \\$dmg with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageShipSystem\\(\\) has parameter \\$dmg with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
+
+		-
+			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
+
+		-
+			message: "#^Cannot call method getDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 4
+			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
+
+		-
+			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
+
+		-
+			message: "#^Cannot call method setBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
+
+		-
+			message: "#^Cannot call method setDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
+
+		-
+			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\InteractionChecker\\:\\:canInteractWith\\(\\) has parameter \\$target with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/InteractionChecker.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\InteractionCheckerInterface\\:\\:canInteractWith\\(\\) has parameter \\$target with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/InteractionCheckerInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ModuleValueCalculator.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$rump with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ModuleValueCalculator.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ModuleValueCalculator.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Movement\\\\Route\\\\FlightRoute\\:\\:getNextWaypoint\\(\\) should return Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but returns Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|false\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Movement/Route/FlightRoute.php
+
+		-
+			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/Movement/ShipMover.php
+
+		-
+			message: "#^Cannot call method getWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Movement/ShipMover.php
+
+		-
+			message: "#^Cannot call method lowerEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 3
+			path: src/Module/Ship/Lib/Movement/ShipMover.php
+
+		-
+			message: "#^Cannot call method lowerWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/Movement/ShipMover.php
+
+		-
+			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Movement/ShipMover.php
+
+		-
+			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Movement/ShipMover.php
+
+		-
+			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Movement/ShipMover.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between int\\<min, \\-1\\>\\|int\\<1, max\\> and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipWrapper.php
+
+		-
+			message: "#^Cannot access property \\$ownedWebId on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot access property \\$webUnderConstructionId on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot call method getFinishedTime\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot call method getWebUnderConstruction\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot call method isFinished\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot call method setOwnedWebId\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Cannot call method setWebUnderConstructionId\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:resetWebHelpers\\(\\) has parameter \\$isFinished with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:releaseAllShips\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:removeWeb\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:resetWebHelpers\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:updateWebFinishTime\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtil.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtilInterface\\:\\:resetWebHelpers\\(\\) has parameter \\$isFinished with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/TholianWebUtilInterface.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\ShipUiFactory\\:\\:createVisualNavPanelEntry\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/ShipUiFactory.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\ShipUiFactoryInterface\\:\\:createVisualNavPanelEntry\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/ShipUiFactoryInterface.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowAstroEntry/ShowAstroEntry.php
+
+		-
+			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowColonization/ShowColonization.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) should return array\\<int, Stu\\\\Lib\\\\SignatureWrapper\\> but returns array\\<string, Stu\\\\Lib\\\\SignatureWrapper\\>\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
+
+		-
+			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenu/ShowTradeMenu.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenu/ShowTradeMenu.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TradePostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenu/ShowTradeMenu.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php
+
+		-
+			message: "#^Cannot call method getCommodityId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php
+
+		-
+			message: "#^Cannot call method getDays\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php
+
+		-
+			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TradePostInterface and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\ShipModule\\\\ModuleSpecialAbilityEnum\\:\\:getHash\\(\\) should return int\\|null but returns float\\|int\\|null\\.$#"
+			count: 1
+			path: src/Module/ShipModule/ModuleSpecialAbilityEnum.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\ShipModule\\\\ModuleTypeDescriptionMapper\\:\\:getDescription\\(\\) has parameter \\$type with no type specified\\.$#"
+			count: 1
+			path: src/Module/ShipModule/ModuleTypeDescriptionMapper.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:getFieldId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Module/Starmap/Lib/ExploreableStarMap.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$influence_area_id is never read, only written\\.$#"
+			count: 1
+			path: src/Module/Starmap/Lib/ExploreableStarMap.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$region_id is never read, only written\\.$#"
+			count: 1
+			path: src/Module/Starmap/Lib/ExploreableStarMap.php
+
+		-
+			message: "#^Comparison operation \"\\>\" between int\\<2, max\\> and 1 is always true\\.$#"
+			count: 2
+			path: src/Module/Starmap/Lib/MapSectionHelper.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/RefreshSection/RefreshSection.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getXCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/RefreshSection/RefreshSection.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getYCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/RefreshSection/RefreshSection.php
+
+		-
+			message: "#^Parameter \\#2 \\$layer of method Stu\\\\Module\\\\Starmap\\\\Lib\\\\MapSectionHelper\\:\\:setTemplateVars\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/RefreshSection/RefreshSection.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/ShowByPosition/ShowByPosition.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getXCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/ShowByPosition/ShowByPosition.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequestInterface\\:\\:getYCoordinate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/ShowByPosition/ShowByPosition.php
+
+		-
+			message: "#^Parameter \\#2 \\$layer of method Stu\\\\Module\\\\Starmap\\\\Lib\\\\MapSectionHelper\\:\\:setTemplateVars\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Starmap/View/ShowByPosition/ShowByPosition.php
+
+		-
+			message: "#^Cannot call method getShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\DockingPrivilegeInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Station/Action/DeleteDockPrivilege/DeleteDockPrivilege.php
+
+		-
+			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\DockingPrivilegeRepositoryInterface\\:\\:delete\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DockingPrivilegeInterface, Stu\\\\Orm\\\\Entity\\\\DockingPrivilegeInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Station/Action/DeleteDockPrivilege/DeleteDockPrivilege.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:lowerStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
+
+		-
+			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
+
+		-
+			message: "#^Cannot call method reloadBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 2
+			path: src/Module/Station/Action/ToggleBatteryReload/ToggleBatteryReload.php
+
+		-
+			message: "#^Cannot call method setReloadBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Station/Action/ToggleBatteryReload/ToggleBatteryReload.php
+
+		-
+			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Station/View/ShowStationInfo/ShowStationInfo.php
+
+		-
+			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Station/View/ShowSystemSensorScan/ShowSystemSensorScan.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Tal\\\\TalPage\\:\\:setVar\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Tal/TalPage.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Tal\\\\TalPageInterface\\:\\:setVar\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Tal/TalPageInterface.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Tick/Process/FinishBuildJobs.php
+
+		-
+			message: "#^Parameter \\#2 \\$ship of method Stu\\\\Module\\\\Tick\\\\Process\\\\FinishTholianWebs\\:\\:cancelTractorBeam\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Tick/Process/FinishTholianWebs.php
+
+		-
+			message: "#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Tick/Process/FinishTholianWebs.php
+
+		-
+			message: "#^Variable \\$availableWarpDrive might not be defined\\.$#"
+			count: 1
+			path: src/Module/Tick/Ship/ShipTick.php
+
+		-
+			message: "#^Cannot call method getWarpCoreSplit\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Tick/Ship/ShipTickManager.php
+
+		-
+			message: "#^Strict comparison using \\!\\=\\= between Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData and null will always evaluate to true\\.$#"
+			count: 1
+			path: src/Module/Tick/Ship/ShipTickManager.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Tick/TickManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$turn of method Stu\\\\Module\\\\Tick\\\\TickManager\\:\\:endTurn\\(\\) expects Stu\\\\Orm\\\\Entity\\\\GameTurnInterface, Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Tick/TickManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$turn of method Stu\\\\Module\\\\Tick\\\\TickManager\\:\\:startTurn\\(\\) expects Stu\\\\Orm\\\\Entity\\\\GameTurnInterface, Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Tick/TickManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/BuyLotteryTickets/BuyLotteryTickets.php
+
+		-
+			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/CancelOffer/CancelOffer.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between int\\<1, max\\> and null will always evaluate to false\\.$#"
+			count: 2
+			path: src/Module/Trade/Action/CreateLicense/CreateLicense.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
+
+		-
+			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
+
+		-
+			message: "#^Comparison operation \"\\<\" between int\\<1, max\\> and 1 is always false\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
+
+		-
+			message: "#^Parameter \\#2 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Action\\\\CreateOffer\\\\CreateOffer\\:\\:saveOffer\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
+
+		-
+			message: "#^Cannot call method getAuctionAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\DealsInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Cannot call method getEnd\\(\\) on Stu\\\\Orm\\\\Entity\\\\DealsInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Cannot call method getMaxAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|null\\.$#"
+			count: 10
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Cannot call method getStart\\(\\) on Stu\\\\Orm\\\\Entity\\\\DealsInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|null\\.$#"
+			count: 4
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Parameter \\#1 \\$commodityId of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManagerInterface\\:\\:lowerStorage\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Parameter \\#1 \\$commodityId of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManagerInterface\\:\\:upperStorage\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Parameter \\#3 \\$commodityId of method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getByTradepostAndUserAndCommodity\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Cannot call method getMaxAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|null\\.$#"
+			count: 3
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Parameter \\#1 \\$buildplan of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuction\\:\\:copyBuildplan\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface, Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Parameter \\#1 \\$buildplan of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuction\\:\\:createShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface, Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Parameter \\#1 \\$commodityId of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradePostStorageManagerInterface\\:\\:upperStorage\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Parameter \\#2 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuction\\:\\:createShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
+
+		-
+			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Cannot call method getgiveCommodityId\\(\\) on Stu\\\\Orm\\\\Entity\\\\DealsInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Parameter \\#1 \\$buildplan of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeOffer\\\\DealsTakeOffer\\:\\:copyBuildplan\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface, Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Parameter \\#1 \\$buildplan of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeOffer\\\\DealsTakeOffer\\:\\:createShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface, Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Parameter \\#2 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeOffer\\\\DealsTakeOffer\\:\\:createShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Parameter \\#3 \\$commodityId of method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getByTradepostAndUserAndCommodity\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 2
+			path: src/Module/Trade/Action/TakeOffer/TakeOffer.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/TransferCommodities/TransferCommodities.php
+
+		-
+			message: "#^Cannot call method getTradeNetwork\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/TransferCommodities/TransferCommodities.php
+
+		-
+			message: "#^Cannot call method getTransferCapacity\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/TransferCommodities/TransferCommodities.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/TransferCommodities/TransferCommodities.php
+
+		-
+			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Orm\\\\Entity\\\\TradeTransferInterface\\:\\:setTradePost\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Action/TransferCommodities/TransferCommodities.php
+
+		-
+			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\BasicTradeInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/Lib/BasicTradeItem.php
+
+		-
+			message: "#^Cannot call method getValue\\(\\) on Stu\\\\Orm\\\\Entity\\\\BasicTradeInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Trade/Lib/BasicTradeItem.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:getStorage\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Trade/Lib/DealAccountTal.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactory\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Trade/Lib/TradeLibFactory.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Trade/Lib/TradeLibFactoryInterface.php
+
+		-
+			message: "#^Parameter \\#1 \\$commodity of method Stu\\\\Orm\\\\Entity\\\\StorageInterface\\:\\:setCommodity\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Trade/Lib/TradePostStorageManager.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/View/ShowOfferMenu/ShowOfferMenu.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Trade/View/ShowOfferMenuNewOffer/ShowOfferMenuNewOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Alliance.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$alliance_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceJob.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$anomaly_type_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/Anomaly.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Anomaly.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$starsystem_map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Anomaly.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_1 is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_2 is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_3 is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_4 is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_5 is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$systems_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$commodity_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/BasicTrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/BasicTrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$user_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/BasicTrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$building is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCommodity.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$building is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$building is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingFunction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$energy_cost is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeCosts is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeFromBuilding is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgrade.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:getDefaultTorpedoTypeId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanHangar.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$rump_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanHangar.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$shipRump is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanHangar.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$buildplan_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanModule.php
+
+		-
+			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Cannot call method getSx\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Cannot call method getSy\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$torpedo_type is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:setColonizeableFields\\(\\) has parameter \\$colonizeableFields with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClass.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$databaseEntry is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClass.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colony_class_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassDeposit.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$commodity_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassDeposit.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\:\\:setColonizeableFields\\(\\) has parameter \\$colonizeableFields with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassInterface.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$planet_type_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassResearch.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$research_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassResearch.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$colony_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyDepositMining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$commodity_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyDepositMining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$user_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyDepositMining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$buildplan_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$colony_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$module_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ConstructionProgressModule.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$progress_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ConstructionProgressModule.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseCategory.php
+
+		-
+			message: "#^Cannot call method getModules\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Cannot call method getRumpId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getHighestBid\\(\\) should return Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|false\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction_user is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$faction_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$ships_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/DockingPrivilege.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Faction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_research_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Faction.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$blocked_colony_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$defended_colony_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$shiplist with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$ships_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Fleet.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/FlightSignature.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$rump_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/FlightSignature.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$starsystem_map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/FlightSignature.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$user_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/FlightSignature.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$params is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/GameRequest.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$turn_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/GameTurnStats.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$plot_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPostToPlotApplication.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$post_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPostToPlotApplication.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$is_winner is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/LotteryTicket.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/LotteryTicket.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Map\\:\\:getRegionId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$admin_region_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$layer_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$system_type_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:getColonyClassId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/MapFieldType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$database_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/MapRegion.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MassCenterType\\:\\:\\$first_field_type_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/MassCenterType.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getResearchId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getShipRumpRoleId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:hasSpecial\\(\\) has parameter \\$special_id with no type specified\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$research is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleCost.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:hasSpecial\\(\\) has parameter \\$special_id with no type specified\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleInterface.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$module is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleSpecial.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$commodity_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetCommodity.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$count is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetCommodity.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetCommodity.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$planet_classes_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetCommodity.php
+
+		-
+			message: "#^Cannot call method getBuildTime\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Cannot call method getBuildingType\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Cannot call method getBuildtime\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Cannot call method getIntegrity\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 2
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Cannot call method isActivateable\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$deleted is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$finish_time is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/RepairTask.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/RepairTask.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getDatabaseEntryIds\\(\\) should return array\\<int\\> but returns array\\<int\\>\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/SessionString.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 2
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getModules\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getSx\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getSy\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getCurrentMapField\\(\\) should return Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but returns Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getSpacecraftType\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getStoredShuttles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dock is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$holding_web_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$influence_area_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$plans_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$starsystem_map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractored_ship_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:getShipId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$colony_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$repair_task_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipInterface.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getStoredShuttles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipInterface.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$is_private is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipLog.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipLog.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipLog.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:getBaseWarpDrive\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCategory.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Max\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Min\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleMandatory11\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpModuleLevel.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpSpecial.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:getModuleId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$buildplan_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipyardShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$ship_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipyardShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SpacecraftEmergency\\:\\:\\$ship_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/SpacecraftEmergency.php
+
+		-
+			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$database_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$first_mass_center_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$is_generateable is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$second_mass_center_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$colony_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$ship_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$torpedo_storage_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradeoffer_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradepost_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/TachyonScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$starsystem_map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/TachyonScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$ship_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/TholianWeb.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$ship_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoStorage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$torpedo_type is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoStorage.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:getLatestLicenseInfo\\(\\) should return Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|false\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradePost.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:getTradePostId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransaction.php
+
+		-
+			message: "#^Cannot call method isExplored\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$allys_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$maptype is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserInterface.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$layer_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserLayer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$user_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserLayer.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserLock.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$former_user_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserLock.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cx is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cy is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$map_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user_id is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Weapon\\:\\:\\$module is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/Weapon.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/WormholeEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$system_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/WormholeEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$system_map_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/WormholeEntry.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ColonyScanRepository\\:\\:getSurface\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Repository/ColonyScanRepository.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ColonyScanRepositoryInterface\\:\\:getSurface\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Repository/ColonyScanRepositoryInterface.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getWorkerConsumingByColonyAndState\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Repository/PlanetFieldRepository.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getWorkerConsumingByColonyAndState\\(\\) return type has no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: src/Orm/Repository/PlanetFieldRepository.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getWorkerConsumingByColonyAndState\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getWorkerConsumingByColonyAndState\\(\\) return type has no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
+			count: 1
+			path: src/Orm/Repository/RepairTaskRepository.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
+			count: 7
+			path: src/Orm/Repository/ShipRepository.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 6
+			path: src/Orm/Repository/ShipRepository.php
+
+		-
+			message: "#^Cannot call method getSx\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 2
+			path: src/Orm/Repository/ShipRepository.php
+
+		-
+			message: "#^Cannot call method getSy\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 2
+			path: src/Orm/Repository/ShipRepository.php
+
+		-
+			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Repository/ShipRepository.php
