@@ -21,6 +21,7 @@ use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
+//TODO@hux test handleDamage + handleDestruction
 class WarpdriveShipSystemTest extends StuTestCase
 {
     /**

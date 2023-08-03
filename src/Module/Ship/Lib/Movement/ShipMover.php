@@ -3,6 +3,7 @@
 namespace Stu\Module\Ship\Lib\Movement;
 
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -20,6 +21,7 @@ use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
+use Stu\Orm\Entity\MapFieldTypeInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -525,7 +527,10 @@ final class ShipMover implements ShipMoverInterface
         $warpdriveSystem = $wrapper->getWarpdriveSystemData();
 
         //zu wenig E zum weiterfliegen
-        if (($epsSystem === null || $epsSystem->getEps() < $flight_ecost) && $ship->getWarpState() == false) {
+        if (
+            !$ship->getWarpState()
+            && ($epsSystem === null || $epsSystem->getEps() < $flight_ecost)
+        ) {
             $this->addLostShip(
                 $wrapper,
                 $leadShip,
@@ -541,7 +546,10 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //zu wenig WarpDriveKapazität zum weiterfliegen
-        if (($warpdriveSystem === null || $warpdriveSystem->getWarpDrive() < 1) && $ship->getWarpState()) {
+        if (
+            $ship->getWarpState()
+            && ($warpdriveSystem === null || $warpdriveSystem->getWarpDrive() < 1)
+        ) {
             $this->addLostShip(
                 $wrapper,
                 $leadShip,
@@ -569,7 +577,10 @@ final class ShipMover implements ShipMoverInterface
 
             if ($abortionMsg === null) {
                 //Traktorstrahl Kosten
-                if (($epsSystem->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) && $ship->getWarpState() == false) {
+                if (
+                    !$ship->getWarpState()
+                    && ($epsSystem === null || $epsSystem->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1)
+                ) {
                     $this->shipMovementInformationAdder->notEnoughEnergyforTractoring(
                         $ship,
                         $flightRoute->getRouteMode(),
@@ -577,7 +588,10 @@ final class ShipMover implements ShipMoverInterface
                     );
                     $this->deactivateTractorBeam($wrapper, null);
                 }
-                if ($warpdriveSystem->getWarpDrive() < 2 && $ship->getWarpState()) {
+                if (
+                    $ship->getWarpState()
+                    && ($warpdriveSystem === null || $warpdriveSystem->getWarpDrive() < 2)
+                ) {
                     $this->shipMovementInformationAdder->notEnoughEnergyforTractoring(
                         $ship,
                         $flightRoute->getRouteMode(),
@@ -605,26 +619,27 @@ final class ShipMover implements ShipMoverInterface
         if (!$this->isFleetMode() && $ship->getFleetId()) {
             $this->leaveFleet($wrapper);
         }
+
         //Flugkosten abziehen
-        if ($ship->getWarpState() == false) {
-            $epsSystem->lowerEps($flight_ecost);
-        } else {
+        if ($ship->getWarpState() && $warpdriveSystem !== null) {
             $warpdriveSystem->lowerWarpDrive(1);
+        } else if ($epsSystem !== null) {
+            $epsSystem->lowerEps($flight_ecost);
         }
 
 
         //Traktorstrahl Energie abziehen
         $tractoredShip = $ship->getTractoredShip();
         if ($tractoredShip !== null) {
-            if ($ship->getWarpState() == false) {
-                $epsSystem->lowerEps($tractoredShip->getRump()->getFlightEcost());
+            if ($ship->getWarpState() && $warpdriveSystem !== null) {
+                $warpdriveSystem->lowerWarpDrive(2);
                 $flightRoute->enterNextWaypoint(
                     $tractoredShip,
                     $nextWaypoint,
                     $this->informations
                 );
-            } else {
-                $warpdriveSystem->lowerWarpDrive(2);
+            } else if ($epsSystem !== null) {
+                $epsSystem->lowerEps($tractoredShip->getRump()->getFlightEcost());
                 $flightRoute->enterNextWaypoint(
                     $tractoredShip,
                     $nextWaypoint,
@@ -661,31 +676,52 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //check for deflector state
-        $notEnoughEnergyForDeflector = false;
-        $deflectorDestroyed = false;
-        if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)) {
-            $notEnoughEnergyForDeflector = $nextFieldType->getEnergyCosts() > $epsSystem->getEps();
+        $hasEnoughEnergyForDeflector = $this->hasEnoughEnergeForDeflector($ship, $nextFieldType, $epsSystem);
+        $deflectorDestroyed = !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
 
-            if ($notEnoughEnergyForDeflector) {
-                $epsSystem->setEps(0);
-            } else {
-                $epsSystem->lowerEps($nextFieldType->getEnergyCosts());
-            }
-        } else {
-            $deflectorDestroyed = true;
+        if ($epsSystem !== null) {
+            $epsSystem->update();
         }
 
-        $epsSystem->update();
-        $warpdriveSystem->update();
+        if ($warpdriveSystem !== null) {
+            $warpdriveSystem->update();
+        }
 
         //Einflugschaden Energiemangel oder Deflektor zerstört
-        if ($notEnoughEnergyForDeflector || $deflectorDestroyed) {
-            $dmgCause = $notEnoughEnergyForDeflector ?
-                'Nicht genug Energie für den Deflektor.' :
-                'Deflektor außer Funktion.';
+        if (!$hasEnoughEnergyForDeflector || $deflectorDestroyed) {
+            $dmgCause = $deflectorDestroyed ?
+                'Deflektor außer Funktion.' :
+                'Nicht genug Energie für den Deflektor.';
 
             $this->applyFieldDamage($wrapper, $leadShip, $nextFieldType->getDamage(), false, $dmgCause, $flightRoute);
         }
+    }
+
+    private function hasEnoughEnergeForDeflector(
+        ShipInterface $ship,
+        MapFieldTypeInterface $nextFieldType,
+        ?EpsSystemData $epsSystem
+    ): bool {
+        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)) {
+            return false;
+        }
+
+        $energyCost = $nextFieldType->getEnergyCosts();
+        if ($energyCost === 0) {
+            return true;
+        }
+
+        if ($epsSystem === null) {
+            return false;
+        }
+
+        if ($epsSystem->getEps() < $energyCost) {
+            $epsSystem->setEps(0);
+            return false;
+        }
+
+        $epsSystem->lowerEps($nextFieldType->getEnergyCosts());
+        return true;
     }
 
     private function applyFieldDamage(
