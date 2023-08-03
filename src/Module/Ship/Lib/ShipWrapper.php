@@ -204,6 +204,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return (int) $this->effectiveWarpDriveProduction;
     }
 
+
     public function getWarpcoreUsage(): int
     {
         return $this->getEffectiveEpsProduction() + $this->getEpsUsage();
