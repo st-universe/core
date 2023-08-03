@@ -184,7 +184,7 @@ final class ShipWrapper implements ShipWrapperInterface
         if ($this->effectiveWarpDriveProduction === null) {
             $warpcore = $this->getWarpCoreSystemData();
             if ($warpcore === null) {
-                $prod = ($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) / $this->ship->getRump()->getFlightEcost();
+                $prod = ($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) / $flightcost;
             } else {
                 $prod = (($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * (1 - ($warpcore->getWarpCoreSplit() / 100))) / $flightcost;
             }
