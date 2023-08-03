@@ -504,6 +504,26 @@
                     </table>
                 </div>
                 {% endif %}
+                {% set warpdrive = fleetShipWrapper.getWarpDriveSystemData %}
+                {% if warpdrive %}
+                <div style="width: 33%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th style="text-align: center; width: 20px;">
+                                <img src="assets/buttons/modul_11.png" />
+                            </th>
+                            <td style="vertical-align: middle; text-align: center;">
+                                {% autoescape false %}
+                                {{ warpdrive.getWarpDriveStatusBar }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ warpdrive.getWarpDrive }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
             </div>
         </td>
         <td>
