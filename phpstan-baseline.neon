@@ -1761,21 +1761,6 @@ parameters:
 			path: src/Module/History/View/Overview/OverviewRequestInterface.php
 
 		-
-			message: "#^Cannot call method getMaxWarpdrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Maindesk/Action/ColonizationShip/ColonizationShip.php
-
-		-
-			message: "#^Cannot call method setMaxWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Maindesk/Action/ColonizationShip/ColonizationShip.php
-
-		-
-			message: "#^Cannot call method setWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Maindesk/Action/ColonizationShip/ColonizationShip.php
-
-		-
 			message: "#^Cannot call method getStartBuildingId\\(\\) on Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Maindesk/Action/FirstColony/FirstColony.php
@@ -1966,22 +1951,12 @@ parameters:
 			path: src/Module/Research/ResearchState.php
 
 		-
-			message: "#^Cannot call method getMaxWarpdrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Research/ResearchState.php
-
-		-
 			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Research/ResearchState.php
 
 		-
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Research/ResearchState.php
-
-		-
-			message: "#^Cannot call method setWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Research/ResearchState.php
 
