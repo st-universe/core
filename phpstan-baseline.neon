@@ -16,6 +16,14 @@ parameters:
 			path: src/Component/Image/ImageCreationInterface.php
 
 		-
+			message: """
+				#^Fetching class constant class of deprecated class Stu\\\\Component\\\\Logging\\\\GameRequest\\\\Adapter\\\\DatabaseAdapter\\:
+				Use LogfileAdapter$#
+			"""
+			count: 2
+			path: src/Component/Logging/services.php
+
+		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtil.php
@@ -184,6 +192,14 @@ parameters:
 			message: "#^Parameter \\#1 \\$shipRump of method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:setRump\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
 			count: 1
 			path: src/Component/Station/StationUtility.php
+
+		-
+			message: """
+				#^Call to deprecated method createAnnotationMetadataConfiguration\\(\\) of class Doctrine\\\\ORM\\\\ORMSetup\\:
+				Use another mapping driver\\.$#
+			"""
+			count: 1
+			path: src/Config/services.php
 
 		-
 			message: "#^Method Stu\\\\Exception\\\\SanityCheckException\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
