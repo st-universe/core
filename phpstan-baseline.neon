@@ -201,16 +201,6 @@ parameters:
 			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperEps.php
 
 		-
-			message: "#^Cannot call method setMaxWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperWarpDrive.php
-
-		-
-			message: "#^Cannot call method setWarpCoreSplit\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\|null\\.$#"
-			count: 1
-			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperWarpcore.php
-
-		-
 			message: "#^Cannot call method getModulesByType\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Lib/ModuleScreen/ModuleScreenTab.php
@@ -2151,11 +2141,6 @@ parameters:
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
 
 		-
-			message: "#^Cannot call method setWarpCoreSplit\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/SplitWarpCoreOutput/SplitWarpCoreOutput.php
-
-		-
 			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TholianWeb/CancelTholianWeb.php
@@ -2344,46 +2329,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Movement\\\\Route\\\\FlightRoute\\:\\:getNextWaypoint\\(\\) should return Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but returns Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|false\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Movement/Route/FlightRoute.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method getWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method lowerEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method lowerWarpDrive\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Movement/ShipMover.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int\\<min, \\-1\\>\\|int\\<1, max\\> and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
 
 		-
 			message: "#^Cannot access property \\$ownedWebId on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
@@ -2674,21 +2619,6 @@ parameters:
 			message: "#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Tick/Process/FinishTholianWebs.php
-
-		-
-			message: "#^Variable \\$availableWarpDrive might not be defined\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTick.php
-
-		-
-			message: "#^Cannot call method getWarpCoreSplit\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Strict comparison using \\!\\=\\= between Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpDriveSystemData and null will always evaluate to true\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
@@ -3606,11 +3536,6 @@ parameters:
 			path: src/Orm/Entity/ShipLog.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:getBaseWarpDrive\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategory.php
@@ -3619,26 +3544,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Max\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Min\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleMandatory11\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump is never read, only written\\.$#"
