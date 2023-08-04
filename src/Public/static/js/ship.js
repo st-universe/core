@@ -384,11 +384,25 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	const EpsProduction = Math.round((reactoroutput - epsusage) * warpCoreSplit / 100);
 	const EffektivEpsProduction = Math.round((reactoroutput - epsusage) * warpCoreSplit / 100);
 	const WarpDriveProduction = Math.round((1 - (warpCoreSplit / 100)) * (reactoroutput - epsusage) / flightcost);
-	document.getElementById('calculatedEPS').textContent = EpsProduction;
-	document.getElementById('calculatedWarpDrive').textContent = WarpDriveProduction;
-
 
 	// EPS ZUWACHS
+	if (EpsProduction > 0) {
+		formattedEps = '+' + EpsProduction;
+	}
+	else { formattedEps = String(EpsProduction); }
+
+	document.getElementById('calculatedEPS').textContent = formattedEps;
+
+	// WARP ZUWACHS
+	if (WarpDriveProduction > 0) {
+		formattedWarpDrive = '+' + WarpDriveProduction;
+	}
+	else { formattedWarpDrive = String(WarpDriveProduction); }
+
+	document.getElementById('calculatedWarpDrive').textContent = formattedWarpDrive;
+
+
+	// EFFEKTIV EPS ZUWACHS
 	// Formatieren der effektiven EPS-Produktion basierend auf ihrem Wert
 	let formattedEpsEffektiv;
 	if (EpsProduction > 0) {
@@ -405,7 +419,7 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	// Überprüfen, ob der Wert die effektive EPS-Produktion nicht überschreitet
 	document.getElementById('EffektivEPS').textContent = formattedEpsEffektiv;
 
-	// WARP ZUWACHS
+	// EFFEKTIV WARP ZUWACHS
 	if ((maxwarpdrive - warpdrive) > 0) {
 		formatedWarpDifferenz = '+' + (maxwarpdrive - warpdrive);
 	}
