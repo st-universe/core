@@ -368,18 +368,21 @@ function adjustCellWidth(image) {
 	}
 	else { cell.style.minWidth = cellWidth + 'px'; }
 }
-function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effektiveps, warpdrive, maxwarpdrive) {
+function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effektiveps, eps, maxeps, warpdrive, maxwarpdrive) {
 	// Wandle reactoroutput, epsusage, flightcost und effektiveps in Integer um, falls sie keine gültigen Zahlen sind
 	reactoroutput = parseInt(reactoroutput, 10);
 	epsusage = parseInt(epsusage, 10);
 	flightcost = parseInt(flightcost, 10);
 	effektiveps = parseInt(effektiveps, 10);
+	eps = parseInt(eps, 10);
+	maxeps = parseInt(maxeps, 10);
 	warpdrive = parseInt(warpdrive, 10);
 	maxwarpdrive = parseInt(maxwarpdrive, 10);
 
 	// Berechne die effektive EPS-Produktion und runde sie auf einen Integer
 	const warpCoreSplit = parseInt(value);
 	const EpsProduction = Math.round((reactoroutput - epsusage) * warpCoreSplit / 100);
+	const EffektivEpsProduction = Math.round((reactoroutput - epsusage) * warpCoreSplit / 100);
 	const WarpDriveProduction = Math.round((1 - (warpCoreSplit / 100)) * (reactoroutput - epsusage) / flightcost);
 	document.getElementById('calculatedEPS').textContent = EpsProduction;
 	document.getElementById('calculatedWarpDrive').textContent = WarpDriveProduction;
@@ -389,23 +392,18 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	// Formatieren der effektiven EPS-Produktion basierend auf ihrem Wert
 	let formattedEpsEffektiv;
 	if (EpsProduction > 0) {
-		formattedEpsEffektiv = '+' + EpsProduction;
+		if (EpsProduction <= (maxeps - eps)) {
+			formattedEpsEffektiv = '+' + EpsProduction;
+		}
+		if (EpsProduction > (maxeps - eps)) {
+			formattedEpsEffektiv = '+' + (maxeps - eps);
+		}
 	} else {
 		formattedEpsEffektiv = String(EpsProduction);
 	}
 
-	if (effektiveps > 0) {
-		formattedEffektivEPS = '+' + effektiveps;
-	} else {
-		formattedEffektivEPS = String(effektiveps);
-	}
-
 	// Überprüfen, ob der Wert die effektive EPS-Produktion nicht überschreitet
-	if (EpsProduction <= effektiveps) {
-		document.getElementById('EffektivEPS').textContent = formattedEpsEffektiv;
-	} else {
-		document.getElementById('EffektivEPS').textContent = formattedEffektivEPS;
-	}
+	document.getElementById('EffektivEPS').textContent = formattedEpsEffektiv;
 
 	// WARP ZUWACHS
 	if ((maxwarpdrive - warpdrive) > 0) {
