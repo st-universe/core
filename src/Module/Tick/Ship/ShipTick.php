@@ -119,6 +119,8 @@ final class ShipTick implements ShipTickInterface
                 }
             }
 
+
+
             $availableEps = $eps->getEps();
         } else {
             if ($warpcore != null) {
