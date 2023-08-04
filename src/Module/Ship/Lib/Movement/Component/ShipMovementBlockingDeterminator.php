@@ -34,6 +34,7 @@ final class ShipMovementBlockingDeterminator implements ShipMovementBlockingDete
             $energyCostPerField = $ship->getRump()->getFlightEcost();
             $tractorBeamTarget = $ship->getTractoringShip();
             $shipEnergyStorage = $epsSystem->getEps();
+            $warpdrivesystem = $wrapper->getWarpDriveSystemData();
 
             if ($tractorBeamTarget !== null) {
                 $tractoredShipEnergyCostPerField = $tractorBeamTarget->getRump()->getFlightEcost() + $energyCostPerField;
@@ -55,6 +56,14 @@ final class ShipMovementBlockingDeterminator implements ShipMovementBlockingDete
                     'Die %s hat nicht genug Energie für den Flug (%d benötigt)',
                     $ship->getName(),
                     $energyCostPerField
+                );
+            }
+
+            // zu wenig Warpantriebsenergie zum weiterfliegen
+            if ($warpdrivesystem->getWarpDrive() < 1) {
+                $reasons[] = sprintf(
+                    'Die %s hat nicht genug Warpantriebsenergie für den Flug',
+                    $ship->getName()
                 );
             }
         }
