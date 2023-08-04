@@ -548,7 +548,7 @@ final class ShipMover implements ShipMoverInterface
         //zu wenig WarpDriveKapazität zum weiterfliegen
         if (
             $ship->getWarpState()
-            && ($warpdriveSystem === null || $warpdriveSystem->getWarpDrive() < 1)
+            && (($warpdriveSystem === null || $warpdriveSystem->getWarpDrive() < 1))
         ) {
             $this->addLostShip(
                 $wrapper,
