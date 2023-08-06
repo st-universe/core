@@ -384,7 +384,7 @@
                 title="User ist offline" />
             </tal:block>
           </div>
-          <div tal:condition=":post/isUserDeleted" tal:content="structure bbcode:post/getUserName">USER</div>
+          <div tal:condition="not:post/isUserDeleted" tal:content="structure bbcode:post/getUserName">USER</div>
         </div>
         <div class="box_body" style="margin: 0; padding: 0;">
           <div class="knGrid">
