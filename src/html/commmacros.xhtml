@@ -375,97 +375,98 @@
     <div style="overflow: hidden; text-overflow: ellipsis" tal:repeat="post KN_POSTINGS">
       <div id="kn_post_${post/getId}" class="${post/getDivClass}">
         <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
-          <div tal:condition="post/getUser">
-            <div tal:condition="not:post/isUserDeleted">
+          <div tal:condition="post/isUserDeleted">
+            <div tal:condition="post/getUser">
               <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span
                 tal:replace="post/getUser/getId">ID</span>) <tal:block tal:condition="post/getUser/isShowOnlineState">
                 <img tal:condition="post/getUser/isOnline" src="/assets/buttons/user_online.png"
                   title="User ist online" />
                 <img tal:condition="not:post/getUser/isOnline" src="/assets/buttons/user_offline.png"
                   title="User ist offline" />
+              </tal:block>
             </div>
-  </tal:block>
-  </div>
-  <div tal:condition="post/isUserDeleted"> <span tal:replace="structure bbcode:post/getUserName">USER</span></div>
-  </div>
-  <div class="box_body" style="margin: 0; padding: 0;">
-    <div class="knGrid">
-      <div class="knGridText">
-        <div style="padding: 10px;">
-          <tal:block tal:condition="post/getPlot">
-            <span tal:content="post/getPlot/getTitle" class="knh1">PLOTTITLE</span>
-            <span>(<a href="?SHOW_PLOT=1&plotid=${post/getPlot/getId}" target="_blank">Zum Plot</a>)</span>
-            <br tal:condition="post/getTitle" />
-          </tal:block>
-          <tal:block tal:condition="post/getTitle">
-            <span tal:content="post/getTitle" class="knh2">KNTITLE</span>
-          </tal:block>
-          <br />
-          <br />
-          <span tal:content="structure nl2br:post/getText">TEXT</span>
-        </div>
-      </div>
-      <div class="knGridUser">
-        <div class="segment">
-          <div class="negative" tal:condition="post/isNewerThanMark" tal:content="datetime:post/getDate">DATE
           </div>
-          <div tal:condition="not: post/isNewerThanMark" tal:content="datetime:post/getDate"
-            style="text-align: center; width: 100%">DATE</div>
-        </div>
-        <div class="segment">
-          <div tal:condition="post/getUser/isNpc">NPC</div>
-          <div class="knUserAvatar">
-            <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER post/getUser" />
+          <div tal:condition="not:post/isUserDeleted"> <span tal:replace="structure bbcode:post/getUserName">USER</span>
           </div>
-          <span title="Beitrag-ID" tal:replace="post/getId">POSTID</span>
-          <br />
         </div>
-        <div class="segment" tal:condition="post/displayContactLinks" tal:define="id post/getUser/getId">
-          <img src="/assets/rassen/${post/getUser/getFactionId}s.png" />
-          <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
-          <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
-        </div>
-        <div class="segment" tal:condition="exists: KN_OFFSET">
-          <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1"
-            onmouseover="cp('mark${post/getId}','buttons/lese2', 'png')"
-            onmouseout="cp('mark${post/getId}','buttons/lese1', 'png')">
-            <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark${post/getId}" />
-          </a>
-          <tal:block tal:condition="post/isEditAble">
-            <a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2', 'png')"
-              onmouseout="cp('edit${post/getId}','buttons/knedit1', 'png')">
-              <img src="/assets/buttons/knedit1.png" title="Beitrag editieren" name="edit${post/getId}" />
-            </a>
-            <a href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}"
-              onmouseover="cp('x${post/getId}','buttons/x2', 'png')"
-              onmouseout="cp('x${post/getId}','buttons/x1', 'png')">
-              <img src="/assets/buttons/x1.png" title="Beitrag löschen" name="x${post/getId}" />
-            </a>
-          </tal:block>
+        <div class="box_body" style="margin: 0; padding: 0;">
+          <div class="knGrid">
+            <div class="knGridText">
+              <div style="padding: 10px;">
+                <tal:block tal:condition="post/getPlot">
+                  <span tal:content="post/getPlot/getTitle" class="knh1">PLOTTITLE</span>
+                  <span>(<a href="?SHOW_PLOT=1&plotid=${post/getPlot/getId}" target="_blank">Zum Plot</a>)</span>
+                  <br tal:condition="post/getTitle" />
+                </tal:block>
+                <tal:block tal:condition="post/getTitle">
+                  <span tal:content="post/getTitle" class="knh2">KNTITLE</span>
+                </tal:block>
+                <br />
+                <br />
+                <span tal:content="structure nl2br:post/getText">TEXT</span>
+              </div>
+            </div>
+            <div class="knGridUser">
+              <div class="segment">
+                <div class="negative" tal:condition="post/isNewerThanMark" tal:content="datetime:post/getDate">DATE
+                </div>
+                <div tal:condition="not: post/isNewerThanMark" tal:content="datetime:post/getDate"
+                  style="text-align: center; width: 100%">DATE</div>
+              </div>
+              <div class="segment">
+                <div tal:condition="post/getUser/isNpc">NPC</div>
+                <div class="knUserAvatar">
+                  <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER post/getUser" />
+                </div>
+                <span title="Beitrag-ID" tal:replace="post/getId">POSTID</span>
+                <br />
+              </div>
+              <div class="segment" tal:condition="post/displayContactLinks" tal:define="id post/getUser/getId">
+                <img src="/assets/rassen/${post/getUser/getFactionId}s.png" />
+                <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
+                <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
+              </div>
+              <div class="segment" tal:condition="exists: KN_OFFSET">
+                <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1"
+                  onmouseover="cp('mark${post/getId}','buttons/lese2', 'png')"
+                  onmouseout="cp('mark${post/getId}','buttons/lese1', 'png')">
+                  <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark${post/getId}" />
+                </a>
+                <tal:block tal:condition="post/isEditAble">
+                  <a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2', 'png')"
+                    onmouseout="cp('edit${post/getId}','buttons/knedit1', 'png')">
+                    <img src="/assets/buttons/knedit1.png" title="Beitrag editieren" name="edit${post/getId}" />
+                  </a>
+                  <a href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}"
+                    onmouseover="cp('x${post/getId}','buttons/x2', 'png')"
+                    onmouseout="cp('x${post/getId}','buttons/x1', 'png')">
+                    <img src="/assets/buttons/x1.png" title="Beitrag löschen" name="x${post/getId}" />
+                  </a>
+                </tal:block>
+              </div>
+            </div>
+            <div class="knGridRating">
+              <div class="segment" tal:condition="post/getEditDate">
+                <span class="knedit">Bearbeitet: ${datetime:post/getEditDate}</span>
+              </div>
+              <div class="segment" id="kn_rating_${post/getId}" tal:define="userCanRate post/userCanRate">
+                <div tal:condition="userCanRate" class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</div>
+                <div style="display: inline-block" tal:condition="post/getRatingBar"
+                  tal:content="structure post/getRatingBar">STATUS</div>
+                <div tal:condition="userCanRate" class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</div>
+              </div>
+              <div class="segment">
+                <a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount}
+                  <span>Kommentare</span></a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="knGridRating">
-        <div class="segment" tal:condition="post/getEditDate">
-          <span class="knedit">Bearbeitet: ${datetime:post/getEditDate}</span>
-        </div>
-        <div class="segment" id="kn_rating_${post/getId}" tal:define="userCanRate post/userCanRate">
-          <div tal:condition="userCanRate" class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</div>
-          <div style="display: inline-block" tal:condition="post/getRatingBar"
-            tal:content="structure post/getRatingBar">STATUS</div>
-          <div tal:condition="userCanRate" class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</div>
-        </div>
-        <div class="segment">
-          <a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount}
-            <span>Kommentare</span></a>
-        </div>
-      </div>
+      <br />
     </div>
-  </div>
-  </div>
-  <br />
-  </div>
-  <br />
-  <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
+    <br />
+    <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
   </tal:block>
 </metal:macro>
 
