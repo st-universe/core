@@ -33,6 +33,8 @@ interface KnItemInterface
 
     public function isNewerThanMark(): bool;
 
+    public function isUserDeleted(): bool;
+
     public function userCanRate(): bool;
 
     public function userHasRated(): bool;

@@ -70,6 +70,12 @@ class KnPost implements KnPostInterface
     private ?int $user_id = 0;
 
     /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $del_user_id = 0;
+
+    /**
      * @Column(type="integer")
      *
      */
@@ -171,6 +177,18 @@ class KnPost implements KnPostInterface
     public function getUserId(): int
     {
         return $this->user_id;
+    }
+
+    public function getdelUserId(): ?int
+    {
+        return $this->del_user_id;
+    }
+
+    public function setdelUserId(?int $userid): KnPostInterface
+    {
+        $this->del_user_id = $userid;
+
+        return $this;
     }
 
     public function getUser(): UserInterface
