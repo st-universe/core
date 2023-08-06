@@ -26,6 +26,10 @@ interface KnPostInterface
 
     public function getUserId(): int;
 
+    public function getdelUserId(): ?int;
+
+    public function setdelUserId(?int $userid): KnPostInterface;
+
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): KnPostInterface;

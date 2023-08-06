@@ -100,6 +100,11 @@ final class KnItem implements KnItemInterface
         return $this->post->getUsername();
     }
 
+    public function isUserDeleted(): bool
+    {
+        return $this->post->getUserId() !== 1;
+    }
+
     public function isNewerThanMark(): bool
     {
         return $this->post->getId() > $this->currentUser->getKnMark();
