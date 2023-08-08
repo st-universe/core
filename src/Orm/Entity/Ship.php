@@ -287,7 +287,7 @@ class Ship implements ShipInterface
 
     /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
-     * @JoinColumn(name="fleets_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="fleets_id", referencedColumnName="id")
      */
     private ?FleetInterface $fleet = null;
 
