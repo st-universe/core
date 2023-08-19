@@ -403,7 +403,7 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	if (WarpDriveProduction > 0) {
 		formattedWarpDrive = '+' + WarpDriveProduction;
 	}
-	else { formattedWarpDrive = String(WarpDriveProduction); }
+	else { formattedWarpDrive = String(0); }
 
 	document.getElementById('calculatedWarpDrive').textContent = formattedWarpDrive;
 
