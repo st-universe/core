@@ -368,7 +368,7 @@ function adjustCellWidth(image) {
 	}
 	else { cell.style.minWidth = cellWidth + 'px'; }
 }
-function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effektiveps, eps, maxeps, warpdrive, maxwarpdrive) {
+function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effektiveps, eps, maxeps, warpdrive, maxwarpdrive, reactorload) {
 	// Wandle reactoroutput, epsusage, flightcost und effektiveps in Integer um, falls sie keine gültigen Zahlen sind
 	reactoroutput = parseInt(reactoroutput, 10);
 	epsusage = parseInt(epsusage, 10);
@@ -378,11 +378,17 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	maxeps = parseInt(maxeps, 10);
 	warpdrive = parseInt(warpdrive, 10);
 	maxwarpdrive = parseInt(maxwarpdrive, 10);
+	reactorload = parseInt(reactorload, 10);
+
+	if (reactoroutput > reactorload) {
+		reactoroutput = reactorload;
+	}
+
 
 	// Berechne die effektive EPS-Produktion und runde sie auf einen Integer
 	const warpCoreSplit = parseInt(value);
-	const EpsProduction = Math.round((reactoroutput - epsusage) * warpCoreSplit / 100);
-	const EffektivEpsProduction = Math.round((reactoroutput - epsusage) * warpCoreSplit / 100);
+	const EpsProduction = Math.round(reactoroutput * warpCoreSplit / 100);
+	const EffektivEpsProduction = Math.round((reactoroutput * warpCoreSplit / 100) - epsusage);
 	const WarpDriveProduction = Math.round((1 - (warpCoreSplit / 100)) * (reactoroutput - epsusage) / flightcost);
 
 	// EPS ZUWACHS
@@ -405,15 +411,15 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	// EFFEKTIV EPS ZUWACHS
 	// Formatieren der effektiven EPS-Produktion basierend auf ihrem Wert
 	let formattedEpsEffektiv;
-	if (EpsProduction > 0) {
-		if (EpsProduction <= (maxeps - eps)) {
-			formattedEpsEffektiv = '+' + EpsProduction;
+	if (EffektivEpsProduction > 0) {
+		if (EffektivEpsProduction <= (maxeps - eps)) {
+			formattedEpsEffektiv = '+' + EffektivEpsProduction;
 		}
-		if (EpsProduction > (maxeps - eps)) {
+		if (EffektivEpsProduction > (maxeps - eps)) {
 			formattedEpsEffektiv = '+' + (maxeps - eps);
 		}
 	} else {
-		formattedEpsEffektiv = String(EpsProduction);
+		formattedEpsEffektiv = String(EffektivEpsProduction);
 	}
 
 	// Überprüfen, ob der Wert die effektive EPS-Produktion nicht überschreitet

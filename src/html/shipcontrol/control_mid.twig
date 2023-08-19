@@ -140,15 +140,16 @@
 <br />
 <table class="tcal">
     <tr>
-        <th colspan="3">
+        <th colspan="4">
             <img src="assets/buttons/fleet.png" title="Flottenkontrolle" />
             <span>Flottenkontrolle</span>
         </th>
     </tr>
     <tr>
-        <td class="darkbg" style="width: 40%;">Aktivieren</td>
-        <td class="darkbg" style="width: 40%;">Deaktivieren</td>
-        <td class="darkbg" style="width: 20%;">Alarmstufe</td>
+        <td class="darkbg" style="width: 35%;">Aktivieren</td>
+        <td class="darkbg" style="width: 35%;">Deaktivieren</td>
+        <td class="darkbg" style="width: 15%;">Alarmstufe</td>
+        <td class="darkbg" style="width: 15%;">Optionen</td>
     </tr>
     <tr>
         <td>
@@ -202,6 +203,11 @@
             </a>
             <a href="?B_FLEET_ALERT_RED=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/alert3_2.png" title="Flotte: Alarmstufe Rot" />
+            </a>
+        </td>
+        <td>
+            <a href="?B_FLEET_WARP_SPLIT=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
+                <img src="assets/buttons/bar2.png" title="Flotte: Warpsplit anwenden" />
             </a>
         </td>
     </tr>

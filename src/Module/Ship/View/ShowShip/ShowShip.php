@@ -215,7 +215,7 @@ final class ShowShip implements ViewControllerInterface
             $ship = $wrapper->get();
 
             $game->addExecuteJS(sprintf(
-                'updateEPSSplitValue(%d,%d,%d,%d,%d,%d,%d,%d,%d);',
+                'updateEPSSplitValue(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);',
                 $warpCoreSystem->getWarpCoreSplit(),
                 $ship->getReactorOutput(),
                 $wrapper->getEpsUsage(),
@@ -224,7 +224,8 @@ final class ShowShip implements ViewControllerInterface
                 $epsSystem->getEps(),
                 $epsSystem->getMaxEps(),
                 $warpDriveSystem->getWarpDrive(),
-                $warpDriveSystem->getMaxWarpDrive()
+                $warpDriveSystem->getMaxWarpDrive(),
+                $ship->getReactorLoad()
             ), true);
         }
     }

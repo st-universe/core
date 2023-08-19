@@ -49,4 +49,9 @@ interface ActivatorDeactivatorHelperInterface
         int $alertState,
         GameControllerInterface $game
     ): void;
+
+    public function setWarpSplitFleet(
+        int $shipId,
+        GameControllerInterface $game
+    ): void;
 }

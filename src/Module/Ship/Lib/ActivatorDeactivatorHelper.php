@@ -413,4 +413,37 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             }
         }
     }
+
+    public function setWarpSplitFleet(
+        int $shipId,
+        GameControllerInterface $game
+    ): void {
+        $userId = $game->getUser()->getId();
+
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+            $shipId,
+            $userId
+        );
+        $warpsplit = $wrapper->getWarpCoreSystemData()->getWarpCoreSplit();
+
+        $fleetWrapper = $wrapper->getFleetWrapper();
+        if ($fleetWrapper === null) {
+            throw new RuntimeException('ship not in fleet');
+        }
+
+        $success = false;
+        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+            if ($wrapper->getWarpDriveSystemData() !== null) {
+                $wrapper->getWarpCoreSystemData()->setWarpCoreSplit($warpsplit)->update();
+            }
+        }
+
+        // only show info if at least one ship was able to change
+        if (!$success) {
+            return;
+        }
+
+
+        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: Warpkernsplit auf %d gesetzt'), $warpsplit));
+    }
 }
