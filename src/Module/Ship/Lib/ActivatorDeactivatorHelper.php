@@ -445,6 +445,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
 
 
-        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: Warpkernsplit auf %d gesetzt'), $warpsplit));
+        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: Warpkernsplit von %d Prozent auf Flotte angewendet'), $warpsplit));
     }
 }
