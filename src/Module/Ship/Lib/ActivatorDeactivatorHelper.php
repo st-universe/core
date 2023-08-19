@@ -434,6 +434,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $success = false;
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
             if ($wrapper->getWarpDriveSystemData() !== null) {
+                $success = true;
                 $wrapper->getWarpCoreSystemData()->setWarpCoreSplit($warpsplit)->update();
             }
         }
