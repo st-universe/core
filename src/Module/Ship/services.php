@@ -82,6 +82,7 @@ use Stu\Module\Ship\Action\FleetDeactivatePhaser\FleetDeactivatePhaser;
 use Stu\Module\Ship\Action\FleetDeactivateShields\FleetDeactivateShields;
 use Stu\Module\Ship\Action\FleetDeactivateTorpedo\FleetDeactivateTorpedo;
 use Stu\Module\Ship\Action\FleetDeactivateWarp\FleetDeactivateWarp;
+use Stu\Module\Ship\Action\FleetWarpSplit\FleetWarpSplit;
 use Stu\Module\Ship\Action\HideFleet\HideFleet;
 use Stu\Module\Ship\Action\InterceptShip\InterceptShip;
 use Stu\Module\Ship\Action\JoinFleet\JoinFleetFromNbs;
@@ -395,6 +396,7 @@ return [
         FleetDeactivateCloak::ACTION_IDENTIFIER => autowire(FleetDeactivateCloak::class),
         FleetActivateWarp::ACTION_IDENTIFIER => autowire(FleetActivateWarp::class),
         FleetDeactivateWarp::ACTION_IDENTIFIER => autowire(FleetDeactivateWarp::class),
+        FleetWarpSplit::ACTION_IDENTIFIER => autowire(FleetWarpSplit::class),
         FleetAlertGreen::ACTION_IDENTIFIER => autowire(FleetAlertGreen::class),
         FleetAlertYellow::ACTION_IDENTIFIER => autowire(FleetAlertYellow::class),
         FleetAlertRed::ACTION_IDENTIFIER => autowire(FleetAlertRed::class),
