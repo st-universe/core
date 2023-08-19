@@ -403,7 +403,7 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	if (WarpDriveProduction > 0) {
 		formattedWarpDrive = '+' + WarpDriveProduction;
 	}
-	else { formattedWarpDrive = String(0); }
+	else { formattedWarpDrive = String(WarpDriveProduction); }
 
 	document.getElementById('calculatedWarpDrive').textContent = formattedWarpDrive;
 
@@ -434,7 +434,7 @@ function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effekti
 	if (WarpDriveProduction > 0) {
 		formatedWarpDriveProduction = '+' + WarpDriveProduction;
 	}
-	else { formatedWarpDriveProduction = String(WarpDriveProduction); }
+	else { formatedWarpDriveProduction = String(0); }
 
 	if ((maxwarpdrive - warpdrive) < WarpDriveProduction) {
 		document.getElementById('EffektivWarpDrive').textContent = formatedWarpDifferenz;
