@@ -168,6 +168,7 @@ function startServerTimer() {
 }
 var selectedFieldType = 0;
 var selectedSystemType = 0;
+var fieldeventselector = 0;
 var tmpfield = 0;
 function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
@@ -177,6 +178,10 @@ function showMapBy(path) {
 }
 function refreshMapSectionNav(path) {
         ajax_update('map_section_nav', path);
+}
+function fieldEventSelector(type) {
+        $('fieldtypeselector').innerHTML = '<div style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px; background-color: rgba(255, 0, 0, 0.5);"></div>';
+        selectedFieldEvent = type;
 }
 function selectMapFieldType(type) {
         $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
