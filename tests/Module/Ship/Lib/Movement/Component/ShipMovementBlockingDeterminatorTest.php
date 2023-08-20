@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
 use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
@@ -56,6 +57,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $tractorBeamTarget = $this->mock(ShipInterface::class);
         $epsSystemData = $this->mock(EpsSystemData::class);
+        $warpDriveSystemData = $this->mock(WarpDriveSystemData::class);
 
         $shipName = 'some-name';
         $tractorBeamTargetEnergyCostPerField = 666;
@@ -69,6 +71,11 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystemData);
+        $shipWrapper->shouldReceive('getWarpDriveSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($warpDriveSystemData);
+
 
         $ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
@@ -114,6 +121,8 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $epsSystemData = $this->mock(EpsSystemData::class);
+        $warpDriveSystemData = $this->mock(WarpDriveSystemData::class);
+
 
         $shipName = 'some-name';
         $energyCostPerField = 42;
@@ -126,6 +135,10 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystemData);
+        $shipWrapper->shouldReceive('getWarpDriveSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($warpDriveSystemData);
 
         $ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
@@ -166,6 +179,8 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $epsSystemData = $this->mock(EpsSystemData::class);
+        $warpDriveSystemData = $this->mock(WarpDriveSystemData::class);
+
 
         $energyCostPerField = 42;
 
@@ -177,6 +192,10 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystemData);
+        $shipWrapper->shouldReceive('getWarpDriveSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($warpDriveSystemData);
 
         $ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
