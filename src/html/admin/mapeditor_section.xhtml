@@ -49,7 +49,8 @@
 									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj" style="cursor: pointer ! important;"
 										onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)"
-										onclick="setNewFieldType(this,${data/getId});">&nbsp;</div>
+										onclick="updateField(this,${data/getId});">
+										&nbsp;</div>
 								</td>
 							</tr>
 						</table>
@@ -151,6 +152,57 @@
 						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_5">
 							<img src="/assets/map/${data/getType}.png" title="runtime" style="cursor: pointer;"
 								tal:attributes="title data/getName" onclick="selectMapFieldType('${data/getType}')" />
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div style="margin-left: 150px; width: 150px; float: left">
+			<div class="divhead">Gewähltes Feld</div>
+			<div class="divbody" id="systemtypeselector">Keins</div>
+			<br />
+			<table class="use">
+				<tr>
+					<td style="vertical-align: top;">
+						<div tal:repeat="data POSSIBLE_SYSTEM_TYPES/row_0">
+							<img src="/assets/map/systemtypes/${data/getId}.png" title="runtime"
+								style="cursor: pointer;" tal:attributes="title data/getDescription"
+								onclick="selectSystemType('${data/getId}')" />
+						</div>
+					</td>
+					<td style="vertical-align: top;">
+						<div tal:repeat="data POSSIBLE_SYSTEM_TYPES/row_1">
+							<img src="/assets/map/systemtypes/${data/getId}.png" title="runtime"
+								style="cursor: pointer;" tal:attributes="title data/getDescription"
+								onclick="selectSystemType('${data/getId}')" />
+						</div>
+					</td>
+					<td style="vertical-align: top;">
+						<div tal:repeat="data POSSIBLE_SYSTEM_TYPES/row_2">
+							<img src="/assets/map/systemtypes/${data/getId}.png" title="runtime"
+								style="cursor: pointer;" tal:attributes="title data/getDescription"
+								onclick="selectSystemType('${data/getId}')" />
+						</div>
+					</td>
+					<td style="vertical-align: top;">
+						<div tal:repeat="data POSSIBLE_SYSTEM_TYPES/row_3">
+							<img src="/assets/map/systemtypes/${data/getId}.png" title="runtime"
+								style="cursor: pointer;" tal:attributes="title data/getDescription"
+								onclick="selectSystemType('${data/getId}')" />
+						</div>
+					</td>
+					<td style="vertical-align: top;">
+						<div tal:repeat="data POSSIBLE_SYSTEM_TYPES/row_4">
+							<img src="/assets/map/systemtypes/${data/getId}.png" title="runtime"
+								style="cursor: pointer;" tal:attributes="title data/getDescription"
+								onclick="selectSystemType('${data/getId}')" />
+						</div>
+					</td>
+					<td style="vertical-align: top;">
+						<div tal:repeat="data POSSIBLE_SYSTEM_TYPES/row_5">
+							<img src="/assets/map/systemtypes/${data/getId}.png" title="runtime"
+								style="cursor: pointer;" tal:attributes="title data/getDescription"
+								onclick="selectSystemType('${data/getId}')" />
 						</div>
 					</td>
 				</tr>

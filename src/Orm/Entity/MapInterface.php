@@ -28,6 +28,10 @@ interface MapInterface
 
     public function setSystemsId(?int $systems_id): MapInterface;
 
+    public function getSystemTypeId(): ?int;
+
+    public function setSystemTypeId(?int $system_type_id): MapInterface;
+
     public function getInfluenceAreaId(): ?int;
 
     public function setInfluenceAreaId(?int $influenceAreaId): MapInterface;

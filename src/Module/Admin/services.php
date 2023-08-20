@@ -12,6 +12,9 @@ use Stu\Module\Admin\Action\Map\CreateInfluenceAreas\CreateInfluenceAreas;
 use Stu\Module\Admin\Action\Map\EditField\EditField;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequest;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequestInterface;
+use Stu\Module\Admin\Action\Map\EditSystemType\EditSystemType;
+use Stu\Module\Admin\Action\Map\EditSystemType\EditSystemTypeRequest;
+use Stu\Module\Admin\Action\Map\EditSystemType\EditSystemTypeRequestInterface;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemField;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequest;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequestInterface;
@@ -52,12 +55,14 @@ use function DI\get;
 
 return [
     EditFieldRequestInterface::class => autowire(EditFieldRequest::class),
+    EditSystemTypeRequestInterface::class => autowire(EditSystemTypeRequest::class),
     ShowSystemRequestInterface::class => autowire(ShowSystemRequest::class),
     ShowSystemEditFieldRequestInterface::class => autowire(ShowSystemEditFieldRequest::class),
     EditSystemFieldRequestInterface::class => autowire(EditSystemFieldRequest::class),
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
+        EditSystemType::ACTION_IDENTIFIER => autowire(EditSystemType::class),
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
         ManualColonyTick::ACTION_IDENTIFIER => autowire(ManualColonyTick::class),
