@@ -62,6 +62,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
         $shipName = 'some-name';
         $tractorBeamTargetEnergyCostPerField = 666;
         $energyCostPerField = 42;
+        $WarpDrive = 666;
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
@@ -103,6 +104,10 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($tractorBeamTargetEnergyCostPerField);
+        $warpDriveSystemData->shouldReceive('getWarpDrive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($WarpDrive);
 
         static::assertSame(
             [
@@ -126,6 +131,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
 
         $shipName = 'some-name';
         $energyCostPerField = 42;
+        $WarpDrive = 666;
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
@@ -161,6 +167,10 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($energyCostPerField - 1);
+        $warpDriveSystemData->shouldReceive('getWarpDrive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($WarpDrive);
 
         static::assertSame(
             [
@@ -183,6 +193,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
 
 
         $energyCostPerField = 42;
+        $WarpDrive = 666;
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
@@ -214,6 +225,11 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($energyCostPerField);
+        $warpDriveSystemData->shouldReceive('getWarpDrive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($WarpDrive);
+
 
         static::assertSame(
             [],
