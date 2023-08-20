@@ -9,8 +9,10 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
+use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
 
 final class EditSection implements ViewControllerInterface
 {
@@ -24,16 +26,20 @@ final class EditSection implements ViewControllerInterface
 
     private StarmapUiFactoryInterface $starmapUiFactory;
 
+    private StarSystemTypeRepositoryInterface $starSystemTypeRepository;
+
     public function __construct(
         ShowSectionRequestInterface $request,
         LayerRepositoryInterface $layerRepository,
         StarmapUiFactoryInterface $starmapUiFactory,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository
+        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
+        StarSystemTypeRepositoryInterface $starSystemTypeRepository
     ) {
         $this->request = $request;
         $this->layerRepository = $layerRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->starmapUiFactory = $starmapUiFactory;
+        $this->starSystemTypeRepository = $starSystemTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -116,6 +122,14 @@ final class EditSection implements ViewControllerInterface
             $possibleFieldTypes['row_' . ($key % 6)][] = $value;
         }
 
+        $possibleSystemTypes = ['row_0', 'row_1', 'row_2', 'row_3', 'row_4', 'row_5'];
+        foreach ($this->starSystemTypeRepository->findAll() as $key => $value) {
+            if (!$value->getIsGenerateable()) {
+                continue;
+            }
+            $possibleSystemTypes['row_' . ($key % 6)][] = $value;
+        }
+
         $game->setTemplateFile('html/admin/mapeditor_section.xhtml');
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
@@ -130,6 +144,7 @@ final class EditSection implements ViewControllerInterface
         );
         $game->setPageTitle(_('Sektion anzeigen'));
         $game->setTemplateVar('POSSIBLE_FIELD_TYPES', $possibleFieldTypes);
+        $game->setTemplateVar('POSSIBLE_SYSTEM_TYPES', $possibleSystemTypes);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
         $game->setTemplateVar('SECTION_ID', $section_id);
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));

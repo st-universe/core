@@ -34,6 +34,6 @@ final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements M
             throw new RuntimeException('this should not happen');
         }
 
-        $systemData->setWarpCoreSplit(50)->update();
+        $systemData->setWarpCoreSplit(100)->update();
     }
 }

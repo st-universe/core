@@ -167,6 +167,7 @@ function startServerTimer() {
 
 }
 var selectedFieldType = 0;
+var selectedSystemType = 0;
 var tmpfield = 0;
 function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
@@ -181,6 +182,10 @@ function selectMapFieldType(type) {
         $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
         selectedFieldType = type;
 }
+function selectSystemType(type) {
+        $('systemtypeselector').innerHTML = '<img src="' + gfx_path + '/map/systemtypes/' + type + '.png" />';
+        selectedSystemType = type;
+}
 function toggleMapfieldType(obj) {
         if (selectedFieldType == 0) {
                 return;
@@ -194,14 +199,35 @@ function toggleMapfieldType(obj) {
         tmpfield = 0;
         return;
 }
+function updateField(obj, fieldid) {
+        if (selectedFieldType == 0 && selectedSystemType == 0) {
+                alert("Es wurde weder ein Systemtyp noch ein Feldtyp ausgewählt");
+                return;
+        }
+        if (selectedFieldType != 0) {
+                ajax_update(false, '/admin/?B_EDIT_FIELD=1&field=' + fieldid + '&type=' + selectedFieldType);
+                obj.parentNode.style.backgroundImage = "url(" + gfx_path + "/map/" + selectedFieldType + ".png)";
+                tmpfield = obj.parentNode.style.backgroundImage;
+        }
+        if (selectedSystemType != 0) {
+                ajax_update(false, '/admin/?B_EDIT_SYSTEMTYPE_FIELD=1&field=' + fieldid + '&type=' + selectedSystemType);
+        }
+}
 function setNewFieldType(obj, fieldid) {
-        if (selectedFieldType == 0) {
-                alert("Es wurde kein Feldtyp ausgewaehlt");
+        if (selectedFieldType == 0 && selectedSystemType == 0) {
+                alert("Es wurde weder ein Systemtyp noch ein Feldtyp ausgewählt");
                 return;
         }
         ajax_update(false, '/admin/?B_EDIT_FIELD=1&field=' + fieldid + '&type=' + selectedFieldType);
         obj.parentNode.style.backgroundImage = "url(" + gfx_path + "/map/" + selectedFieldType + ".png)";
         tmpfield = obj.parentNode.style.backgroundImage;
+}
+function setNewSystemType(fieldid) {
+        if (selectedFieldType == 0 && selectedSystemType == 0) {
+                alert("Es wurde weder ein Systemtyp noch ein Feldtyp ausgewählt");
+                return;
+        }
+        ajax_update(false, '/admin/?B_EDIT_SYSTEMTYPE_FIELD=1&field=' + fieldid + '&type=' + selectedSystemType);
 }
 
 function openSystemFieldSelector(fieldid) {

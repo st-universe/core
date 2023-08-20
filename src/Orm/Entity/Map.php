@@ -261,6 +261,17 @@ class Map implements MapInterface
         return $this;
     }
 
+    public function getSystemTypeId(): ?int
+    {
+        return $this->system_type_id;
+    }
+
+    public function setSystemTypeId(?int $system_type_id): MapInterface
+    {
+        $this->system_type_id = $system_type_id;
+        return $this;
+    }
+
     public function getInfluenceAreaId(): ?int
     {
         return $this->influence_area_id;

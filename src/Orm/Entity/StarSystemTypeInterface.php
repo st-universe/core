@@ -21,4 +21,6 @@ interface StarSystemTypeInterface
     public function getFirstMassCenterType(): ?MassCenterTypeInterface;
 
     public function getSecondMassCenterType(): ?MassCenterTypeInterface;
+
+    public function getIsGenerateable(): ?bool;
 }

@@ -149,4 +149,9 @@ class StarSystemType implements StarSystemTypeInterface
     {
         return $this->secondMassCenterType;
     }
+
+    public function getIsGenerateable(): ?bool
+    {
+        return $this->is_generateable;
+    }
 }
