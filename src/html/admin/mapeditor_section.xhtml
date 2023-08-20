@@ -31,7 +31,8 @@
 							<tr tal:repeat="row LEFT_PREVIEW_ROW">
 								<td tal:repeat="data row/getFields" class="starmap"
 									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
-									<div class="lssobj">&nbsp;</div>
+									<div class="lssobj">&nbsp;
+									</div>
 								</td>
 							</tr>
 						</table>
@@ -50,7 +51,10 @@
 									<div class="lssobj" style="cursor: pointer ! important;"
 										onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)"
 										onclick="updateField(this,${data/getId});">
-										&nbsp;</div>
+										<div class="divbody"
+											style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px;"
+											id="fieldeventselector"></div>
+									</div>
 								</td>
 							</tr>
 						</table>
@@ -114,7 +118,7 @@
 			</table>
 			<br />
 			<div class="divhead">Gewähltes Feld</div>
-			<div class="divbody" id="fieldtypeselector">Keins</div>
+			<div class="divbody" id="fieldtypeselector"></div>
 			<br />
 			<table class="use">
 				<tr>
