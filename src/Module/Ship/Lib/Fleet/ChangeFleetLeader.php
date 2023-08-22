@@ -48,8 +48,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
                 $oldLeader,
                 new InformationWrapper()
             );
-
-            $this->fleetRepository->delete($fleet);
         } else {
             $newLeader->setIsFleetLeader(true);
             $this->shipRepository->save($newLeader);
@@ -61,7 +59,10 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
 
         $oldLeader->setFleet(null);
         $oldLeader->setIsFleetLeader(false);
-
         $this->shipRepository->save($oldLeader);
+
+        if ($newLeader === false) {
+            $this->fleetRepository->delete($fleet);
+        }
     }
 }
