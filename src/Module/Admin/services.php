@@ -27,6 +27,9 @@ use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegionRequestInterface;
 use Stu\Module\Admin\Action\Map\EditPassable\EditPassable;
 use Stu\Module\Admin\Action\Map\EditPassable\EditPassableRequest;
 use Stu\Module\Admin\Action\Map\EditPassable\EditPassableRequestInterface;
+use Stu\Module\Admin\Action\Map\EditBorder\EditBorder;
+use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequest;
+use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequestInterface;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
@@ -72,6 +75,7 @@ return [
     EditRegionRequestInterface::class => autowire(EditRegionRequest::class),
     EditAdminRegionRequestInterface::class => autowire(EditAdminRegionRequest::class),
     EditPassableRequestInterface::class => autowire(EditPassableRequest::class),
+    EditBorderRequestInterface::class => autowire(EditBorderRequest::class),
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
@@ -80,6 +84,7 @@ return [
         EditRegion::ACTION_IDENTIFIER => autowire(EditRegion::class),
         EditAdminRegion::ACTION_IDENTIFIER => autowire(EditAdminRegion::class),
         EditPassable::ACTION_IDENTIFIER => autowire(EditPassable::class),
+        EditBorder::ACTION_IDENTIFIER => autowire(EditBorder::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
         ManualColonyTick::ACTION_IDENTIFIER => autowire(ManualColonyTick::class),
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class)

@@ -15,6 +15,7 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
+use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
 
 final class EditSection implements ViewControllerInterface
 {
@@ -28,6 +29,8 @@ final class EditSection implements ViewControllerInterface
 
     private MapRegionRepositoryInterface $mapRegionRepository;
 
+    private MapBorderTypeRepositoryInterface $mapBorderTypeRepository;
+
     private StarmapUiFactoryInterface $starmapUiFactory;
 
     private StarSystemTypeRepositoryInterface $starSystemTypeRepository;
@@ -37,6 +40,7 @@ final class EditSection implements ViewControllerInterface
         LayerRepositoryInterface $layerRepository,
         StarmapUiFactoryInterface $starmapUiFactory,
         MapRegionRepositoryInterface $mapRegionRepository,
+        MapBorderTypeRepositoryInterface $mapBorderTypeRepository,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
         StarSystemTypeRepositoryInterface $starSystemTypeRepository
     ) {
@@ -44,6 +48,7 @@ final class EditSection implements ViewControllerInterface
         $this->layerRepository = $layerRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->starmapUiFactory = $starmapUiFactory;
+        $this->mapBorderTypeRepository = $mapBorderTypeRepository;
         $this->mapRegionRepository = $mapRegionRepository;
         $this->starSystemTypeRepository = $starSystemTypeRepository;
     }
@@ -152,6 +157,11 @@ final class EditSection implements ViewControllerInterface
             $possibleAdminRegion['row_' . ($key % 1)][] = $value;
         }
 
+        $possibleBorder = ['row_0'];
+        foreach ($this->mapBorderTypeRepository->findAll() as $key => $value) {
+            $possibleBorder['row_' . ($key % 1)][] = $value;
+        }
+
         $game->setTemplateFile('html/admin/mapeditor_section.xhtml');
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
@@ -168,6 +178,7 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_FIELD_TYPES', $possibleFieldTypes);
         $game->setTemplateVar('POSSIBLE_SYSTEM_TYPES', $possibleSystemTypes);
         $game->setTemplateVar('POSSIBLE_REGION', $possibleRegion);
+        $game->setTemplateVar('POSSIBLE_BORDER', $possibleBorder);
         $game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegion);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
         $game->setTemplateVar('SECTION_ID', $section_id);
