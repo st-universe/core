@@ -172,7 +172,10 @@ var fieldeventselector = 0;
 var selectedRegion = 0;
 var adminregionselector = 0;
 var passableselector = 0;
+var borderselector = 0;
 var tmpfield = 0;
+var fieldevent = 0;
+var bordercolor = '';
 function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
 }
@@ -184,7 +187,7 @@ function refreshMapSectionNav(path) {
 }
 function fieldEventSelector(type) {
         var cells = document.querySelectorAll('.starmap');
-
+        fieldevent = type;
         if (type === 0) {
                 console.log("Executing type 0");
                 cells.forEach(function (cell) {
@@ -276,6 +279,16 @@ function selectAdminRegion(type, name) {
         }
         adminregionselector = type;
 }
+function selectBorder(type, name, color) {
+        if (type === 0) {
+                $('borderselector').innerHTML = 'Nichts gewählt';
+        }
+        else {
+                $('borderselector').innerHTML = name;
+        }
+        borderselector = type;
+        bordercolor = color;
+}
 function selectPassable(type) {
         if (type === 0) {
                 $('passable').innerHTML = 'Nichts gewählt';
@@ -302,8 +315,8 @@ function toggleMapfieldType(obj) {
         return;
 }
 function updateField(obj, fieldid) {
-        if (selectedFieldType == 0 && selectedSystemType == 0 && selectedRegion == 0 && adminregionselector == 0 && passableselector == 0) {
-                alert("Es wurde weder ein Systemtyp, Region, AdminRegion, Passiebarkeit noch ein Feldtyp ausgewählt");
+        if (selectedFieldType == 0 && selectedSystemType == 0 && selectedRegion == 0 && adminregionselector == 0 && passableselector == 0 && borderselector == 0) {
+                alert("Es wurde weder ein Systemtyp, Region, AdminRegion, Border, Passiebarkeit noch ein Feldtyp ausgewählt");
                 return;
         }
         if (selectedFieldType != 0) {
@@ -313,15 +326,31 @@ function updateField(obj, fieldid) {
         }
         if (selectedSystemType != 0) {
                 ajax_update(false, '/admin/?B_EDIT_SYSTEMTYPE_FIELD=1&field=' + fieldid + '&type=' + selectedSystemType);
+                if (fieldevent == 3) {
+                        obj.parentNode.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+                }
         }
         if (selectedRegion != 0) {
                 ajax_update(false, '/admin/?B_EDIT_REGION=1&field=' + fieldid + '&region=' + selectedRegion);
+                if (fieldevent == 1) {
+                        obj.parentNode.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+                }
         }
         if (adminregionselector != 0) {
                 ajax_update(false, '/admin/?B_EDIT_ADMIN_REGION=1&field=' + fieldid + '&adminregion=' + adminregionselector);
+                if (fieldevent == 2) {
+                        obj.parentNode.style.backgroundColor = 'rgba(0, 0, 255, 0.5)';
+                }
         }
         if (passableselector != 0) {
                 ajax_update(false, '/admin/?B_EDIT_PASSABLE=1&field=' + fieldid + '&passable=' + passableselector);
+                if (fieldevent == 4) {
+                        obj.parentNode.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+                }
+        }
+        if (borderselector != 0) {
+                ajax_update(false, '/admin/?B_EDIT_BORDER=1&field=' + fieldid + '&border=' + borderselector);
+                obj.parentNode.style.border = '1px solid'.bordercolor;
         }
 }
 function setNewFieldType(obj, fieldid) {

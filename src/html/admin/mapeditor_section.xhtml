@@ -129,7 +129,7 @@
 				</tr>
 			</table>
 			<img src="/assets/buttons/selfdes2.png" title="Deselekt" style="cursor: pointer;"
-				onclick="selectMapFieldType(0); selectSystemType(0); selectRegion(0, 'Keins'); selectAdminRegion(0, 'Keins'); selectPassable(0)" />
+				onclick="selectMapFieldType(0); selectSystemType(0); selectRegion(0, 'Keins'); selectAdminRegion(0, 'Keins'); selectPassable(0); selectBorder(0, 'Keins')" />
 			<br />
 			<div onclick="togglePanel('fieldtypeselectorPanel')"
 				style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Map Feld</div>
@@ -333,8 +333,34 @@
 									</div>
 								</table>
 							</div>
+							<div onclick="togglePanel('borderselectorPanel')"
+								style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Border
+								Type
+							</div>
+							<div id="borderselectorPanel"
+								style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+								<div class="divbody" style="width: 230px;">
+									<table class="use">
+										<div style="width: 150px; float: left">
+											<div class="divhead">Gewählte Border</div>
+											<div class="divbody" id="borderselector">Keins</div>
+											<br />
+											<table class="use">
+												<tr>
+													<td style="vertical-align: top;">
+														<div tal:repeat="data POSSIBLE_BORDER/row_0">
+															<span title="runtime" style="cursor: pointer;"
+																tal:attributes="title data/getDescription"
+																onclick="selectBorder('${data/getId}','${data/getDescription}','${data/getColor}')">${data/getDescription}</span>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</table>
+								</div>
+							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
