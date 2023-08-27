@@ -138,7 +138,18 @@ final class EditSection implements ViewControllerInterface
 
         $possibleRegion = ['row_0'];
         foreach ($this->mapRegionRepository->findAll() as $key => $value) {
+            if ($value->getId() < 100) {
+                continue;
+            }
             $possibleRegion['row_' . ($key % 1)][] = $value;
+        }
+
+        $possibleAdminRegion = ['row_0'];
+        foreach ($this->mapRegionRepository->findAll() as $key => $value) {
+            if ($value->getId() >= 100) {
+                continue;
+            }
+            $possibleAdminRegion['row_' . ($key % 1)][] = $value;
         }
 
         $game->setTemplateFile('html/admin/mapeditor_section.xhtml');
@@ -157,6 +168,7 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_FIELD_TYPES', $possibleFieldTypes);
         $game->setTemplateVar('POSSIBLE_SYSTEM_TYPES', $possibleSystemTypes);
         $game->setTemplateVar('POSSIBLE_REGION', $possibleRegion);
+        $game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegion);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
         $game->setTemplateVar('SECTION_ID', $section_id);
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
