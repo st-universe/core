@@ -183,12 +183,15 @@ function fieldEventSelector(type) {
         var cells = document.querySelectorAll('.starmap');
 
         if (type === 0) {
+                console.log("Executing type 0");
                 cells.forEach(function (cell) {
                         var divbody = cell.querySelector('.divbody');
-                        divbody.style.backgroundColor = '';
+                        console.log("divbody:", divbody);
+                        if (divbody) {
+                                divbody.style.backgroundColor = '';
+                        }
                 });
         }
-
         if (type === 1) {
                 cells.forEach(function (cell) {
                         var regionValue = cell.getAttribute('data-region');
@@ -202,7 +205,7 @@ function fieldEventSelector(type) {
 
         if (type === 2) {
                 cells.forEach(function (cell) {
-                        var regionValue = cell.getAttribute('data-admin-region'); /
+                        var regionValue = cell.getAttribute('data-admin-region');
 
                         if (regionValue > 1) {
                                 var divbody = cell.querySelector('.divbody');
