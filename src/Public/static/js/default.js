@@ -180,9 +180,49 @@ function refreshMapSectionNav(path) {
         ajax_update('map_section_nav', path);
 }
 function fieldEventSelector(type) {
-        $('fieldtypeselector').innerHTML = '<div style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px; background-color: rgba(255, 0, 0, 0.5);"></div>';
-        selectedFieldEvent = type;
+        var cells = document.querySelectorAll('.starmap');
+
+        if (type === 0) {
+                cells.forEach(function (cell) {
+                        var divbody = cell.querySelector('.divbody');
+                        divbody.style.backgroundColor = '';
+                });
+        }
+
+        if (type === 1) {
+                cells.forEach(function (cell) {
+                        var regionValue = cell.getAttribute('data-region');
+
+                        if (regionValue > 1) {
+                                var divbody = cell.querySelector('.divbody');
+                                divbody.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+                        }
+                });
+        }
+
+        if (type === 2) {
+                cells.forEach(function (cell) {
+                        var regionValue = cell.getAttribute('data-admin-region'); /
+
+                        if (regionValue > 1) {
+                                var divbody = cell.querySelector('.divbody');
+                                divbody.style.backgroundColor = 'rgba(0, 0, 255, 0.5)';
+                        }
+                });
+        }
+
+        if (type === 3) {
+                cells.forEach(function (cell) {
+                        var regionValue = cell.getAttribute('data-system-type-id');
+
+                        if (regionValue > 1) {
+                                var divbody = cell.querySelector('.divbody');
+                                divbody.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+                        }
+                });
+        }
 }
+
 function selectMapFieldType(type) {
         $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
         selectedFieldType = type;
