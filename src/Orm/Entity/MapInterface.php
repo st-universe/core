@@ -40,9 +40,13 @@ interface MapInterface
 
     public function setBordertypeId(?int $bordertype_id): MapInterface;
 
-    public function getRegionId(): int;
+    public function getRegionId(): ?int;
 
     public function setRegionId(?int $region_id): MapInterface;
+
+    public function getAdminRegionId(): ?int;
+
+    public function setAdminRegionId(?int $admin_region_id): MapInterface;
 
     public function getLayer(): LayerInterface;
 

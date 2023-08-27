@@ -294,7 +294,7 @@ class Map implements MapInterface
         return $this;
     }
 
-    public function getRegionId(): int
+    public function getRegionId(): ?int
     {
         return $this->region_id;
     }
@@ -302,6 +302,17 @@ class Map implements MapInterface
     public function setRegionId(?int $region_id): MapInterface
     {
         $this->region_id = $region_id;
+        return $this;
+    }
+
+    public function getAdminRegionId(): ?int
+    {
+        return $this->admin_region_id;
+    }
+
+    public function setAdminRegionId(?int $admin_region_id): MapInterface
+    {
+        $this->admin_region_id = $admin_region_id;
         return $this;
     }
 

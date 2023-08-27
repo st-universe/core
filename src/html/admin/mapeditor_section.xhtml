@@ -2,6 +2,16 @@
 <metal:macro metal:use-macro="../sitemacros.xhtml/admindefaults">
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="../sitemacros.xhtml/breadcrumb" />
+		<div>
+			<img src="/assets/buttons/alert0.png" title="deselect" style="cursor: pointer;"
+				onclick="fieldEventSelector(0)" />
+			<img src="/assets/buttons/alert1.png" title="region id" style="cursor: pointer;"
+				onclick="fieldEventSelector(1)" />
+			<img src="/assets/buttons/alert2.png" title="admin region id" style="cursor: pointer;"
+				onclick="fieldEventSelector(2)" />
+			<img src="/assets/buttons/alert3.png" title="system type id" style="cursor: pointer;"
+				onclick="fieldEventSelector(3)" />
+		</div>
 		<div style="float: left">
 			<table cellpadding="0" cellspacing="0">
 				<tr>
@@ -47,13 +57,13 @@
 							<tr tal:repeat="yrow MAP_FIELDS">
 								<th tal:content="yrow/getRow">y</th>
 								<td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
-									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+									tal:attributes="data-region data/getRegionId;data-admin-region data/getAdminRegionId;data-system-type-id data/getSystemTypeId;style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj" style="cursor: pointer ! important;"
 										onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)"
 										onclick="updateField(this,${data/getId});">
 										<div class="divbody"
-											style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px;"
-											id="fieldeventselector"></div>
+											style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px;">
+										</div>
 									</div>
 								</td>
 							</tr>
@@ -120,7 +130,7 @@
 			<div class="divhead">Gewähltes Feld</div>
 			<div class="divbody" id="fieldtypeselector"></div>
 			<br />
-			<table class="use">
+			<!-- <table class="use">
 				<tr>
 					<td style="vertical-align: top;">
 						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_0">
@@ -160,6 +170,7 @@
 					</td>
 				</tr>
 			</table>
+		-->
 		</div>
 		<div style="margin-left: 150px; width: 150px; float: left">
 			<div class="divhead">Gewähltes Feld</div>
