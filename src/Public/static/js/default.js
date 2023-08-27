@@ -169,6 +169,7 @@ function startServerTimer() {
 var selectedFieldType = 0;
 var selectedSystemType = 0;
 var fieldeventselector = 0;
+var selectedRegion = 0;
 var tmpfield = 0;
 function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
@@ -245,6 +246,10 @@ function selectSystemType(type) {
         $('systemtypeselector').innerHTML = '<img src="' + gfx_path + '/map/systemtypes/' + type + '.png" />';
         selectedSystemType = type;
 }
+function selectRegion(type, name) {
+        $('regionselector').innerHTML = name;
+        selectedRegion = type;
+}
 function toggleMapfieldType(obj) {
         if (selectedFieldType == 0) {
                 return;
@@ -259,8 +264,8 @@ function toggleMapfieldType(obj) {
         return;
 }
 function updateField(obj, fieldid) {
-        if (selectedFieldType == 0 && selectedSystemType == 0) {
-                alert("Es wurde weder ein Systemtyp noch ein Feldtyp ausgewählt");
+        if (selectedFieldType == 0 && selectedSystemType == 0 && selectedRegion == 0) {
+                alert("Es wurde weder ein Systemtyp, Region noch ein Feldtyp ausgewählt");
                 return;
         }
         if (selectedFieldType != 0) {
@@ -270,6 +275,9 @@ function updateField(obj, fieldid) {
         }
         if (selectedSystemType != 0) {
                 ajax_update(false, '/admin/?B_EDIT_SYSTEMTYPE_FIELD=1&field=' + fieldid + '&type=' + selectedSystemType);
+        }
+        if (selectedRegion != 0) {
+                ajax_update(false, '/admin/?B_EDIT_REGION=1&field=' + fieldid + '&region=' + selectedRegion);
         }
 }
 function setNewFieldType(obj, fieldid) {
@@ -459,4 +467,20 @@ function nodelistToString(list) {
 function snafu(colonyId, action, mode, sstr) {
         commodityId = $('commodityselector').getValue();
         goToUrl('/colony.php?id=' + colonyId + '&' + action + '=1&mode=' + mode + '&selection=' + commodityId + '&sstr=' + sstr);
+}
+function togglePanel(panelId) {
+        var panel = document.getElementById(panelId);
+        if (panel.style.display === "none") {
+                panel.style.display = "block";
+                loadImages(panel);
+        } else {
+                panel.style.display = "none";
+        }
+}
+function loadImages(panel) {
+        var images = panel.querySelectorAll("img[data-src]");
+        images.forEach(function (image) {
+                image.src = image.getAttribute("data-src");
+                image.removeAttribute("data-src");
+        });
 }
