@@ -11,6 +11,8 @@
 				onclick="fieldEventSelector(2)" />
 			<img src="/assets/buttons/alert3.png" title="system type id" style="cursor: pointer;"
 				onclick="fieldEventSelector(3)" />
+			<img src="/assets/buttons/block1.png" title="passable" style="cursor: pointer;"
+				onclick="fieldEventSelector(4)" />
 		</div>
 		<div style="float: left">
 			<table cellpadding="0" cellspacing="0">
@@ -57,7 +59,7 @@
 							<tr tal:repeat="yrow MAP_FIELDS">
 								<th tal:content="yrow/getRow">y</th>
 								<td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
-									tal:attributes="data-region data/getRegionId;data-admin-region data/getAdminRegionId;data-system-type-id data/getSystemTypeId;style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+									tal:attributes="data-passable data/getFieldType/getPassableAsInt;data-region data/getRegionId;data-admin-region data/getAdminRegionId;data-system-type-id data/getSystemTypeId;style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj" style="cursor: pointer ! important;"
 										onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)"
 										onclick="updateField(this,${data/getId});">

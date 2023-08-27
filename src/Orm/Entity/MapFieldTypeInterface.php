@@ -46,5 +46,7 @@ interface MapFieldTypeInterface
 
     public function setPassable(bool $passable): MapFieldTypeInterface;
 
+    public function getPassableAsInt(): int;
+
     public function getColonyClass(): ?ColonyClassInterface;
 }

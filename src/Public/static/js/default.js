@@ -224,6 +224,17 @@ function fieldEventSelector(type) {
                         }
                 });
         }
+
+        if (type === 4) {
+                cells.forEach(function (cell) {
+                        var regionValue = cell.getAttribute('data-passable');
+
+                        if (regionValue == 0) {
+                                var divbody = cell.querySelector('.divbody');
+                                divbody.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+                        }
+                });
+        }
 }
 
 function selectMapFieldType(type) {
