@@ -224,6 +224,11 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    public function getPassableAsInt(): int
+    {
+        return $this->passable ? 1 : 0;
+    }
+
     public function getColonyClass(): ?ColonyClassInterface
     {
         return $this->colonyClass;
