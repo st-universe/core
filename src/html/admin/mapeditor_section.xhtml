@@ -128,6 +128,8 @@
 					</td>
 				</tr>
 			</table>
+			<img src="/assets/buttons/selfdes2.png" title="Deselekt" style="cursor: pointer;"
+				onclick="selectMapFieldType(0); selectSystemType(0); selectRegion(0, 'Keins'); selectAdminRegion(0, 'Keins'); selectPassable(0)" />
 			<br />
 			<div onclick="togglePanel('fieldtypeselectorPanel')"
 				style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Map Feld</div>
@@ -274,6 +276,65 @@
 								</table>
 							</div>
 						</table>
+					</div>
+					<div onclick="togglePanel('adminregionselectorPanel')"
+						style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Admin Region
+						Type
+					</div>
+					<div id="adminregionselectorPanel"
+						style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+						<div class="divbody" style="width: 230px;">
+							<table class="use">
+								<div style="width: 150px; float: left">
+									<div class="divhead">Gewählte Admin Region</div>
+									<div class="divbody" id="adminregionselector">Keins</div>
+									<br />
+									<table class="use">
+										<tr>
+											<td style="vertical-align: top;">
+												<div tal:repeat="data POSSIBLE_ADMIN_REGION/row_0">
+													<span title="runtime" style="cursor: pointer;"
+														tal:attributes="title data/getDescription"
+														onclick="selectAdminRegion('${data/getId}','${data/getDescription}')">${data/getDescription}</span>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</table>
+						</div>
+						<div onclick="togglePanel('passableselectorPanel')"
+							style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Passable
+							Selector
+						</div>
+						<div id="passableselectorPanel"
+							style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+							<div class="divbody" style="width: 230px;">
+								<table class="use">
+									<div style="width: 150px; float: left">
+										<div class="divhead">Passable Selector</div>
+										<div class="divbody" id="passable">Keins</div>
+										<br />
+										<table class="use">
+											<tr>
+												<td style="vertical-align: top;">
+													<div>
+														<span style="cursor: pointer;"
+															onclick="selectPassable(1)">True</span>
+													</div>
+													<br />
+													<div>
+														<span style="cursor: pointer;"
+															onclick="selectPassable(2)">False</span>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</table>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>

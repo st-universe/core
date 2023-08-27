@@ -21,6 +21,12 @@ use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequestInterface;
 use Stu\Module\Admin\Action\Map\EditRegion\EditRegion;
 use Stu\Module\Admin\Action\Map\EditRegion\EditRegionRequest;
 use Stu\Module\Admin\Action\Map\EditRegion\EditRegionRequestInterface;
+use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegion;
+use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegionRequest;
+use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegionRequestInterface;
+use Stu\Module\Admin\Action\Map\EditPassable\EditPassable;
+use Stu\Module\Admin\Action\Map\EditPassable\EditPassableRequest;
+use Stu\Module\Admin\Action\Map\EditPassable\EditPassableRequestInterface;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
@@ -51,6 +57,7 @@ use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
 use Stu\Module\Admin\View\ShowUserLock\ShowUserLock;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
+use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\GameController;
 
 use function DI\autowire;
@@ -63,12 +70,16 @@ return [
     ShowSystemEditFieldRequestInterface::class => autowire(ShowSystemEditFieldRequest::class),
     EditSystemFieldRequestInterface::class => autowire(EditSystemFieldRequest::class),
     EditRegionRequestInterface::class => autowire(EditRegionRequest::class),
+    EditAdminRegionRequestInterface::class => autowire(EditAdminRegionRequest::class),
+    EditPassableRequestInterface::class => autowire(EditPassableRequest::class),
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
         EditSystemType::ACTION_IDENTIFIER => autowire(EditSystemType::class),
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
         EditRegion::ACTION_IDENTIFIER => autowire(EditRegion::class),
+        EditAdminRegion::ACTION_IDENTIFIER => autowire(EditAdminRegion::class),
+        EditPassable::ACTION_IDENTIFIER => autowire(EditPassable::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
         ManualColonyTick::ACTION_IDENTIFIER => autowire(ManualColonyTick::class),
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class)

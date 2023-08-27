@@ -170,6 +170,8 @@ var selectedFieldType = 0;
 var selectedSystemType = 0;
 var fieldeventselector = 0;
 var selectedRegion = 0;
+var adminregionselector = 0;
+var passableselector = 0;
 var tmpfield = 0;
 function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
@@ -239,16 +241,52 @@ function fieldEventSelector(type) {
 }
 
 function selectMapFieldType(type) {
-        $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
+        if (type === 0) {
+                $('fieldtypeselector').innerHTML = 'Nichts gewählt';
+        }
+        else {
+                $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
+        }
         selectedFieldType = type;
 }
 function selectSystemType(type) {
-        $('systemtypeselector').innerHTML = '<img src="' + gfx_path + '/map/systemtypes/' + type + '.png" />';
+        if (type === 0) {
+                $('systemtypeselector').innerHTML = 'Nichts gewählt';
+        }
+        else {
+                $('systemtypeselector').innerHTML = '<img src="' + gfx_path + '/map/systemtypes/' + type + '.png" />';
+        }
         selectedSystemType = type;
 }
 function selectRegion(type, name) {
-        $('regionselector').innerHTML = name;
+        if (type === 0) {
+                $('regionselector').innerHTML = 'Nichts gewählt';
+        }
+        else {
+                $('regionselector').innerHTML = name;
+        }
         selectedRegion = type;
+}
+function selectAdminRegion(type, name) {
+        if (type === 0) {
+                $('adminregionselector').innerHTML = 'Nichts gewählt';
+        }
+        else {
+                $('adminregionselector').innerHTML = name;
+        }
+        adminregionselector = type;
+}
+function selectPassable(type) {
+        if (type === 0) {
+                $('passable').innerHTML = 'Nichts gewählt';
+        }
+        if (type === 1) {
+                $('passable').innerHTML = 'True';
+        }
+        if (type === 2) {
+                $('passable').innerHTML = 'False';
+        }
+        passableselector = type;
 }
 function toggleMapfieldType(obj) {
         if (selectedFieldType == 0) {
@@ -264,8 +302,8 @@ function toggleMapfieldType(obj) {
         return;
 }
 function updateField(obj, fieldid) {
-        if (selectedFieldType == 0 && selectedSystemType == 0 && selectedRegion == 0) {
-                alert("Es wurde weder ein Systemtyp, Region noch ein Feldtyp ausgewählt");
+        if (selectedFieldType == 0 && selectedSystemType == 0 && selectedRegion == 0 && adminregionselector == 0 && passableselector == 0) {
+                alert("Es wurde weder ein Systemtyp, Region, AdminRegion, Passiebarkeit noch ein Feldtyp ausgewählt");
                 return;
         }
         if (selectedFieldType != 0) {
@@ -278,6 +316,12 @@ function updateField(obj, fieldid) {
         }
         if (selectedRegion != 0) {
                 ajax_update(false, '/admin/?B_EDIT_REGION=1&field=' + fieldid + '&region=' + selectedRegion);
+        }
+        if (adminregionselector != 0) {
+                ajax_update(false, '/admin/?B_EDIT_ADMIN_REGION=1&field=' + fieldid + '&adminregion=' + adminregionselector);
+        }
+        if (passableselector != 0) {
+                ajax_update(false, '/admin/?B_EDIT_PASSABLE=1&field=' + fieldid + '&passable=' + passableselector);
         }
 }
 function setNewFieldType(obj, fieldid) {
