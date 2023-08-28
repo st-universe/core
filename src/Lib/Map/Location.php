@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Map;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ReadableCollection;
 use InvalidArgumentException;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -41,11 +42,11 @@ class Location
     }
 
     /**
-     * @return Collection<int, AnomalyInterface>
+     * @return ReadableCollection<int, AnomalyInterface>
      */
-    public function getAnomalies(): Collection
+    public function getAnomalies(): ReadableCollection
     {
-        return $this->location->getAnomalies();
+        return $this->location->getAnomalies()->filter(fn (AnomalyInterface $anomaly): bool => $anomaly->isActive());
     }
 
     public function hasAnomaly(int $anomalyType): bool

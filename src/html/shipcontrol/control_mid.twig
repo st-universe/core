@@ -319,13 +319,11 @@
             {% set anomalies = ship.getLocation.getAnomalies %}
             <br />
             {% for anomaly in anomalies %}
-            {% if anomaly.isActive %}
             <a>
                 <img src="/assets/anomalies/{{ anomaly.getAnomalyType.getId }}.png"
                     name="{{ anomaly.getAnomalyType.getName }}" />
                 {{ anomaly.getAnomalyType.getName }}
             </a>
-            {% endif %}
             {% endfor %}
 
         </td>
