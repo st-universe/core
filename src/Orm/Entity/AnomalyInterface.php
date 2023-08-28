@@ -12,6 +12,8 @@ interface AnomalyInterface
 
     public function setRemainingTicks(int $remainingTicks): AnomalyInterface;
 
+    public function isActive(): bool;
+
     public function getAnomalyType(): AnomalyTypeInterface;
 
     public function setAnomalyType(AnomalyTypeInterface $anomalyType): AnomalyInterface;

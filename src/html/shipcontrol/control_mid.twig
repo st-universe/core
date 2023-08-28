@@ -317,16 +317,16 @@
             {{ _self.influenceArea(ship.getCurrentMapField.getInfluenceArea.getBase.getUser) }}
             {% endif %}
             {% set anomalies = ship.getLocation.getAnomalies %}
-            {% if anomalies %}
             <br />
             {% for anomaly in anomalies %}
+            {% if anomaly.isActive %}
             <a>
                 <img src="/assets/anomalies/{{ anomaly.getAnomalyType.getId }}.png"
                     name="{{ anomaly.getAnomalyType.getName }}" />
                 {{ anomaly.getAnomalyType.getName }}
             </a>
-            {% endfor %}
             {% endif %}
+            {% endfor %}
 
         </td>
         {% if starSystem %}
