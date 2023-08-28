@@ -143,7 +143,7 @@ final class EditSection implements ViewControllerInterface
 
         $possibleRegion = ['row_0'];
         foreach ($this->mapRegionRepository->findAll() as $key => $value) {
-            if ($value->getId() < 100) {
+            if ($value->getId() < 100 && $value->getDatabaseId() == null) {
                 continue;
             }
             $possibleRegion['row_' . ($key % 1)][] = $value;
