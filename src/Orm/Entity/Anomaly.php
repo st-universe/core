@@ -94,6 +94,11 @@ class Anomaly implements AnomalyInterface
         return $this;
     }
 
+    public function isActive(): bool
+    {
+        return $this->getRemainingTicks() > 0;
+    }
+
     public function getAnomalyType(): AnomalyTypeInterface
     {
         return $this->anomalyType;
