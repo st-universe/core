@@ -81,15 +81,19 @@ class LocationTest extends StuTestCase
     {
         $map = $this->mock(MapInterface::class);
         $anomalies = $this->mock(Collection::class);
+        $filteredAnomalies = $this->mock(Collection::class);
 
         $map->shouldReceive('getAnomalies')
             ->withNoArgs()
             ->once()
             ->andReturn($anomalies);
+        $anomalies->shouldReceive('filter')
+            ->once()
+            ->andReturn($filteredAnomalies);
 
         $location = new Location($map, null);
 
-        $this->assertSame($anomalies, $location->getAnomalies());
+        $this->assertSame($filteredAnomalies, $location->getAnomalies());
     }
 
     public function testHasAnomalyExpectFalseWhenNoAnomaliesPresent(): void
@@ -108,6 +112,28 @@ class LocationTest extends StuTestCase
         $this->assertFalse($result);
     }
 
+    public function testHasAnomalyExpectFalseWhenNoActiveMatchingAnomalyPresent(): void
+    {
+        $map = $this->mock(MapInterface::class);
+        $anomaly = $this->mock(AnomalyInterface::class);
+
+        $map->shouldReceive('getAnomalies')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$anomaly]));
+
+        $anomaly->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $location = new Location($map, null);
+
+        $result = $location->hasAnomaly(42);
+
+        $this->assertFalse($result);
+    }
+
     public function testHasAnomalyExpectFalseWhenNoMatchingAnomalyPresent(): void
     {
         $map = $this->mock(MapInterface::class);
@@ -118,6 +144,10 @@ class LocationTest extends StuTestCase
             ->once()
             ->andReturn(new ArrayCollection([$anomaly]));
 
+        $anomaly->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
         $anomaly->shouldReceive('getAnomalyType->getId')
             ->withNoArgs()
             ->once()
@@ -130,7 +160,7 @@ class LocationTest extends StuTestCase
         $this->assertFalse($result);
     }
 
-    public function testHasAnomalyExpectTrueWhenMatchingAnomalyPresent(): void
+    public function testHasAnomalyExpectTrueWhenMatchingAnomalyPresentAndActive(): void
     {
         $map = $this->mock(MapInterface::class);
         $anomaly = $this->mock(AnomalyInterface::class);
@@ -140,6 +170,10 @@ class LocationTest extends StuTestCase
             ->once()
             ->andReturn(new ArrayCollection([$anomaly]));
 
+        $anomaly->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
         $anomaly->shouldReceive('getAnomalyType->getId')
             ->withNoArgs()
             ->once()
