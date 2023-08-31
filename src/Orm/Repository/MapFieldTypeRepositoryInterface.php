@@ -8,6 +8,8 @@ use Stu\Orm\Entity\MapFieldTypeInterface;
 
 /**
  * @extends ObjectRepository<MapFieldType>
+ * 
+ * @method MapFieldTypeInterface[] findAll()
  */
 interface MapFieldTypeRepositoryInterface extends ObjectRepository
 {

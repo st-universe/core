@@ -10,6 +10,7 @@ use Stu\Orm\Entity\MapRegionInterface;
  * @extends ObjectRepository<MapRegion>
  *
  * @method null|MapRegionInterface find(integer$id)
+ * @method MapRegionInterface[] findAll()
  */
 interface MapRegionRepositoryInterface extends ObjectRepository
 {

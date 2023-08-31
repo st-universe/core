@@ -116,7 +116,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
         );
     }
 
-    public function testDetermineFailsDueToEnergyShortageForFlight(): void
+    public function testDetermineFailsDueToEnergyShortageForImpulseFlight(): void
     {
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -126,7 +126,6 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
 
         $shipName = 'some-name';
         $energyCostPerField = 42;
-        $WarpDrive = 666;
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
@@ -157,6 +156,80 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnNull();
+        $ship->shouldReceive('getImpulseState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $epsSystemData->shouldReceive('getEps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($energyCostPerField - 1);
+
+        static::assertSame(
+            [
+                sprintf(
+                    'Die %s hat nicht genug Energie für den Flug (%d benötigt)',
+                    $shipName,
+                    $energyCostPerField
+                ),
+            ],
+            $this->subject->determine([$shipWrapper])
+        );
+    }
+
+    public function testDetermineFailsDueToEnergyShortageForWarpdriveFlight(): void
+    {
+        $shipWrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $epsSystemData = $this->mock(EpsSystemData::class);
+        $warpDriveSystemData = $this->mock(WarpDriveSystemData::class);
+
+
+        $shipName = 'some-name';
+        $energyCostPerField = 42;
+
+        $shipWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($ship);
+        $shipWrapper->shouldReceive('getEpsSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($epsSystemData);
+        $shipWrapper->shouldReceive('getWarpDriveSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($warpDriveSystemData);
+
+        $ship->shouldReceive('hasEnoughCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipName);
+        $ship->shouldReceive('getRump->getFlightEcost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($energyCostPerField);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
+        $ship->shouldReceive('getImpulseState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -165,12 +238,12 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
         $warpDriveSystemData->shouldReceive('getWarpDrive')
             ->withNoArgs()
             ->once()
-            ->andReturn($WarpDrive);
+            ->andReturn(0);
 
         static::assertSame(
             [
                 sprintf(
-                    'Die %s hat nicht genug Energie für den Flug (%d benötigt)',
+                    'Die %s hat nicht genug Warpantriebsenergie für den Flug',
                     $shipName,
                     $energyCostPerField
                 ),
@@ -186,9 +259,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
         $epsSystemData = $this->mock(EpsSystemData::class);
         $warpDriveSystemData = $this->mock(WarpDriveSystemData::class);
 
-
         $energyCostPerField = 42;
-        $WarpDrive = 666;
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
@@ -220,10 +291,14 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($energyCostPerField);
-        $warpDriveSystemData->shouldReceive('getWarpDrive')
+        $ship->shouldReceive('getImpulseState')
             ->withNoArgs()
             ->once()
-            ->andReturn($WarpDrive);
+            ->andReturn(true);
+        $ship->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
 
         static::assertSame(

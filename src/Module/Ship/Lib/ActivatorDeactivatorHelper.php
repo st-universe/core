@@ -420,11 +420,17 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     ): void {
         $userId = $game->getUser()->getId();
 
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->getTargetWrapper(
             $shipId,
-            $userId
+            $userId,
+            false
         );
-        $warpsplit = $wrapper->getWarpCoreSystemData()->getWarpCoreSplit();
+
+        $warpCoreSystemData = $wrapper->getWarpCoreSystemData();
+        if ($warpCoreSystemData === null) {
+            throw new RuntimeException('no warpcore in fleet leader');
+        }
+        $warpsplit = $warpCoreSystemData->getWarpCoreSplit();
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($fleetWrapper === null) {
@@ -433,9 +439,11 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         $success = false;
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            if ($wrapper->getWarpDriveSystemData() !== null) {
+            $warpCoreSystemData = $wrapper->getWarpCoreSystemData();
+
+            if ($warpCoreSystemData !== null) {
                 $success = true;
-                $wrapper->getWarpCoreSystemData()->setWarpCoreSplit($warpsplit)->update();
+                $warpCoreSystemData->setWarpCoreSplit($warpsplit)->update();
             }
         }
 

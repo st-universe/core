@@ -8,6 +8,8 @@ use Stu\Orm\Entity\StarSystemTypeInterface;
 
 /**
  * @extends ObjectRepository<StarSystemType>
+ * 
+ * @method StarSystemTypeInterface[] findAll()
  */
 interface StarSystemTypeRepositoryInterface extends ObjectRepository
 {

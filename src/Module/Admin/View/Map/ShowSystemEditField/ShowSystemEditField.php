@@ -6,7 +6,6 @@ namespace Stu\Module\Admin\View\Map\ShowSystemEditField;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -32,7 +31,7 @@ final class ShowSystemEditField implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $possibleFieldTypes = ['row_0', 'row_1', 'row_2', 'row_3', 'row_4', 'row_5'];
+        $possibleFieldTypes = ['row_0' => [], 'row_1' => [], 'row_2' => [], 'row_3' => [], 'row_4' => [], 'row_5' => []];
         foreach ($this->mapFieldTypeRepository->findAll() as $key => $value) {
             if ($value->getIsSystem()) {
                 continue;
