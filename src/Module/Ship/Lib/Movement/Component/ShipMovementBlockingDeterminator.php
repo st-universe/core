@@ -51,7 +51,7 @@ final class ShipMovementBlockingDeterminator implements ShipMovementBlockingDete
             }
 
             // zu wenig E zum weiterfliegen
-            if ($shipEnergyStorage < $energyCostPerField) {
+            if ($ship->getImpulseState() && $shipEnergyStorage < $energyCostPerField) {
                 $reasons[] = sprintf(
                     'Die %s hat nicht genug Energie für den Flug (%d benötigt)',
                     $ship->getName(),
@@ -60,7 +60,11 @@ final class ShipMovementBlockingDeterminator implements ShipMovementBlockingDete
             }
 
             // zu wenig Warpantriebsenergie zum weiterfliegen
-            if ($warpdrivesystem->getWarpDrive() < 1) {
+            if (
+                $ship->getWarpState()
+                && ($warpdrivesystem === null
+                    || $warpdrivesystem->getWarpDrive() < 1)
+            ) {
                 $reasons[] = sprintf(
                     'Die %s hat nicht genug Warpantriebsenergie für den Flug',
                     $ship->getName()

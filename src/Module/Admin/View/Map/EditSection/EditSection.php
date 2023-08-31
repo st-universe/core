@@ -9,8 +9,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
-use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
@@ -125,7 +123,7 @@ final class EditSection implements ViewControllerInterface
             );
         }
 
-        $possibleFieldTypes = ['row_0', 'row_1', 'row_2', 'row_3', 'row_4', 'row_5'];
+        $possibleFieldTypes = ['row_0' => [], 'row_1' => [], 'row_2' => [], 'row_3' => [], 'row_4' => [], 'row_5' => []];
         foreach ($this->mapFieldTypeRepository->findAll() as $key => $value) {
             if ($value->getIsSystem()) {
                 continue;
@@ -133,7 +131,7 @@ final class EditSection implements ViewControllerInterface
             $possibleFieldTypes['row_' . ($key % 6)][] = $value;
         }
 
-        $possibleSystemTypes = ['row_0', 'row_1', 'row_2', 'row_3', 'row_4', 'row_5'];
+        $possibleSystemTypes = ['row_0' => [], 'row_1' => [], 'row_2' => [], 'row_3' => [], 'row_4' => [], 'row_5' => []];
         foreach ($this->starSystemTypeRepository->findAll() as $key => $value) {
             if (!$value->getIsGenerateable()) {
                 continue;
@@ -143,7 +141,7 @@ final class EditSection implements ViewControllerInterface
 
         $possibleRegion = ['row_0'];
         foreach ($this->mapRegionRepository->findAll() as $key => $value) {
-            if ($value->getId() < 133) {
+            if ($value->getId() < 100 && $value->getDatabaseEntry() === null) {
                 continue;
             }
             $possibleRegion['row_' . ($key % 1)][] = $value;

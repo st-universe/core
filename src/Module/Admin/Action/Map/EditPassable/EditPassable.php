@@ -7,8 +7,6 @@ namespace Stu\Module\Admin\Action\Map\EditPassable;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\Map;
-use Stu\Orm\Repository\MapRegionRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 
@@ -18,20 +16,16 @@ final class EditPassable implements ActionControllerInterface
 
     private EditPassableRequestInterface $editPassableRequest;
 
-    private MapRegionRepositoryInterface $mapRegionRepository;
-
     private MapRepositoryInterface $mapRepository;
 
     private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
     public function __construct(
         EditPassableRequestInterface $editPassableRequest,
-        MapRegionRepositoryInterface $mapRegionRepository,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
         MapRepositoryInterface $mapRepository
     ) {
         $this->editPassableRequest = $editPassableRequest;
-        $this->mapRegionRepository = $mapRegionRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->mapRepository = $mapRepository;
     }

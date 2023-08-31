@@ -377,16 +377,6 @@ parameters:
 			path: src/Module/Admin/Action/StartMirrorWorld.php
 
 		-
-			message: "#^'row_0'\\|'row_1'\\|'row_2'\\|'row_3'\\|'row_4'\\|'row_5'\\|non\\-empty\\-list\\<Stu\\\\Orm\\\\Entity\\\\MapFieldType\\> does not accept Stu\\\\Orm\\\\Entity\\\\MapFieldType\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/EditSection/EditSection.php
-
-		-
-			message: "#^Cannot assign new offset to array\\<int, Stu\\\\Orm\\\\Entity\\\\MapFieldType\\>\\|string\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/EditSection/EditSection.php
-
-		-
 			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
 			count: 3
 			path: src/Module/Admin/View/Map/EditSection/EditSection.php
@@ -565,16 +555,6 @@ parameters:
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowSystem/ShowSystem.php
-
-		-
-			message: "#^'row_0'\\|'row_1'\\|'row_2'\\|'row_3'\\|'row_4'\\|'row_5'\\|non\\-empty\\-list\\<Stu\\\\Orm\\\\Entity\\\\MapFieldType\\> does not accept Stu\\\\Orm\\\\Entity\\\\MapFieldType\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditField.php
-
-		-
-			message: "#^Cannot assign new offset to array\\<int, Stu\\\\Orm\\\\Entity\\\\MapFieldType\\>\\|string\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditField.php
 
 		-
 			message: "#^Parameter \\#2 \\$array of function array_map expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\UserInterface\\> given\\.$#"
@@ -2602,11 +2582,6 @@ parameters:
 			path: src/Module/Tick/Process/FinishTholianWebs.php
 
 		-
-			message: "#^Variable \\$availableWarpDrive might not be defined\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTick.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Tick/TickManager.php
@@ -3990,11 +3965,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/LotteryTicket.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Map\\:\\:getRegionId\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$administratedRegion type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapRegionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapRegion\\|null\\.$#"
