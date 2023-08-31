@@ -6,6 +6,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 
 interface ApplyDamageInterface
 {
@@ -22,8 +23,8 @@ interface ApplyDamageInterface
 
     public function damageShipSystem(
         ShipWrapperInterface $wrapper,
-        $system,
-        $dmg,
+        ShipSystemInterface $system,
+        int $dmg,
         InformationWrapper $informationWrapper
     ): bool;
 }

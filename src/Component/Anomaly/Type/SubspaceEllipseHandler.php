@@ -8,6 +8,7 @@ use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -17,7 +18,6 @@ use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollection;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -41,6 +41,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private StuRandom $stuRandom;
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
@@ -48,7 +50,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         ShipRepositoryInterface $shipRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         ApplyDamageInterface $applyDamage,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        StuRandom $stuRandom
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -57,6 +60,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->applyDamage = $applyDamage;
         $this->privateMessageSender = $privateMessageSender;
+        $this->stuRandom = $stuRandom;
     }
 
     public function checkForCreation(): void
@@ -135,7 +139,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 $this->applyDamage->damageShipSystem(
                     $wrapper,
                     $shieldSystem,
-                    $this->generateRandomValue(),
+                    $this->stuRandom->rand(1, 50, true),
                     $informations
                 );
                 $fightMessage->addMessageMerge($informations->getInformations());
@@ -155,23 +159,6 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             $fightMessagesForShips,
             $fightMessagesForBases
         );
-    }
-
-    public function generateRandomValue(): int
-    {
-        $mean = 25; // MW
-        $stdDeviation = 10; // FWHM
-
-        do {
-            $value = random_int(1, 50);
-            $probability = exp(-0.5 * (($value - $mean) / $stdDeviation) ** 2); // normal distribution
-            $randomProbability = random_int(0, mt_getrandmax()) / mt_getrandmax();
-
-
-            if ($randomProbability <= $probability) {
-                return $value;
-            }
-        } while (true);
     }
 
     public function letAnomalyDisappear(AnomalyInterface $anomaly): void
