@@ -53,4 +53,9 @@ final class FactionEnum
      * @var int
      */
     public const FACTION_PAKLED = 6;
+
+    /**
+     * @var int
+     */
+    public const FACTION_BORG = 9;
 }
