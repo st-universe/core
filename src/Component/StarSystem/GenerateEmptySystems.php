@@ -36,8 +36,15 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 
         $mapArray = $this->mapRepository->getWithEmptySystem($layer);
 
+        $count = 0;
+
         foreach ($mapArray as $map) {
             $this->starSystemCreation->recreateStarSystem($map);
+            $count++;
+
+            if ($count === 10) {
+                break;
+            }
         }
 
         return count($mapArray);

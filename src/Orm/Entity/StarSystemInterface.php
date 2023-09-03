@@ -16,9 +16,9 @@ interface StarSystemInterface
 
     public function setCy(int $cy): StarSystemInterface;
 
-    public function getType(): int;
+    public function getType(): StarSystemTypeInterface;
 
-    public function setType(int $type): StarSystemInterface;
+    public function setType(StarSystemTypeInterface $systemType): StarSystemInterface;
 
     public function getName(): string;
 

@@ -157,14 +157,14 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
-    public function getType(): int
+    public function getType(): StarSystemTypeInterface
     {
-        return $this->type;
+        return $this->systemType;
     }
 
-    public function setType(int $type): StarSystemInterface
+    public function setType(StarSystemTypeInterface $systemType): StarSystemInterface
     {
-        $this->type = $type;
+        $this->systemType = $systemType;
 
         return $this;
     }

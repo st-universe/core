@@ -35,13 +35,13 @@ final class GenerateEmptySystemsCommand extends Command
             );
     }
 
-    public function execute(int $layerId): void
+    public function execute(int $layerid): void
     {
         $io = $this->io();
 
         $component = $this->dic->get(GenerateEmptySystemsInterface::class);
 
-        $count = $component->generate($layerId);
+        $count = $component->generate($layerid);
 
         $io->ok(
             sprintf('Es wurden %d Systeme generiert.', $count),
