@@ -30,4 +30,5 @@ return [
     PlanetMoonGeneratorInterface::class => autowire(PlanetMoonGenerator::class),
     StarsystemGeneratorInterface::class => autowire(StarsystemGenerator::class),
     StarSystemCreationInterface::class => autowire(StarSystemCreation::class),
+    GenerateEmptySystemsInterface::class => autowire(GenerateEmptySystems::class),
 ];
