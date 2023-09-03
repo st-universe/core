@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 
@@ -13,13 +14,20 @@ use Stu\Orm\Entity\StarSystemInterface;
  */
 interface StarSystemRepositoryInterface extends ObjectRepository
 {
+    public function prototype(): StarSystemInterface;
+
+    public function save(StarSystemInterface $storage): void;
     /**
-     * @return list<StarSystemInterface>
+     * @return array<StarSystemInterface>
      */
     public function getByLayer(int $layerId): array;
 
     /**
-     * @return list<StarSystemInterface>
+     * @return array<StarSystemInterface>
      */
     public function getWithoutDatabaseEntry(): array;
+
+    public function getNumberOfSystemsToGenerate(LayerInterface $layer): int;
+
+    public function getRandomFreeSystemName(): string;
 }

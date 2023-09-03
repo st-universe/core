@@ -14,6 +14,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 
@@ -276,6 +277,24 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             )
             ->setParameters([
                 'ids' => $finalIds
+            ])
+            ->getResult();
+    }
+
+    public function getWithEmptySystem(LayerInterface $layer): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m from %s m
+                    WHERE m.system_type_id IS NOT NULL
+                    AND m.systems_id IS NULL
+                    AND m.layer = :layer',
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'layer' => $layer
             ])
             ->getResult();
     }

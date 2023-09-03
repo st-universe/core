@@ -47,10 +47,14 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
      */
     public function getRumpCategoryInfo(int $cx, int $cy): array;
 
+    public function prototype(): StarSystemMapInterface;
+
     public function save(StarSystemMapInterface $starSystemMap): void;
 
     /**
      * @return array<StarSystemMapInterface>
      */
     public function getForSubspaceEllipseCreation(): array;
+
+    public function truncateByStarSystem(StarSystemInterface $starSystem): void;
 }

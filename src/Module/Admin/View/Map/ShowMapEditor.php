@@ -29,7 +29,7 @@ final class ShowMapEditor implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/admin/mapeditor_overview.xhtml');
+        $game->setTemplateFile('html/admin/mapeditor_overview.twig', true);
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->setPageTitle(_('Karteneditor'));
 
@@ -38,7 +38,10 @@ final class ShowMapEditor implements ViewControllerInterface
 
         $layerId = request::getInt('layerid');
         $layer = $layerId === 0 ? current($layers) : $layers[$layerId];
-        $game->setTemplateVar('LAYERID', $layer->getId());
+
+        if ($layer === false) {
+            return;
+        }
 
         //HEADROW
         $xHeadRow = [];
@@ -56,10 +59,15 @@ final class ShowMapEditor implements ViewControllerInterface
             }
         }
 
+        $systemList = $this->starSystemRepository->getByLayer($layer->getId());
+        $numberOfSystemsToGenerate = $this->starSystemRepository->getNumberOfSystemsToGenerate($layer);
+
+        $game->setTemplateVar('LAYERID', $layer->getId());
         $game->setTemplateVar('LAYERS', $layers);
         $game->setTemplateVar('X_HEAD_ROW', $xHeadRow);
         $game->setTemplateVar('SECTIONS', $sections);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
-        $game->setTemplateVar('SYSTEM_LIST', $this->starSystemRepository->getByLayer($layer->getId()));
+        $game->setTemplateVar('SYSTEM_LIST', $systemList);
+        $game->setTemplateVar('NUMBER_OF_SYSTEMS_TO_GENERATE', $numberOfSystemsToGenerate);
     }
 }

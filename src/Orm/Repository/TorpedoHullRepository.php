@@ -34,14 +34,14 @@ final class TorpedoHullRepository extends EntityRepository implements TorpedoHul
 
     public function getModificatorMinAndMax(): array
     {
-        $min =  $this->getEntityManager()->createQuery(
+        $min =  (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT min(th.modificator) FROM %s th',
                 TorpedoHull::class
             )
         )->getSingleScalarResult();
 
-        $max =  $this->getEntityManager()->createQuery(
+        $max =  (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT max(th.modificator) FROM %s th',
                 TorpedoHull::class

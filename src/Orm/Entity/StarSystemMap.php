@@ -160,16 +160,16 @@ class StarSystemMap implements StarSystemMapInterface
         return $this->systems_id;
     }
 
-    public function setSystemId(int $systemId): StarSystemMapInterface
-    {
-        $this->systems_id = $systemId;
-
-        return $this;
-    }
-
     public function getSystem(): StarSystemInterface
     {
         return $this->starSystem;
+    }
+
+    public function setSystem(StarSystemInterface $starSystem): StarSystemMapInterface
+    {
+        $this->starSystem = $starSystem;
+
+        return $this;
     }
 
     public function getFieldId(): int
