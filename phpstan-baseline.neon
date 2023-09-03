@@ -397,21 +397,6 @@ parameters:
 			path: src/Module/Admin/View/Map/EditSection/EditSection.php
 
 		-
-			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|false\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapEditor.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|false\\.$#"
-			count: 2
-			path: src/Module/Admin/View/Map/ShowMapEditor.php
-
-		-
-			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|false\\.$#"
-			count: 2
-			path: src/Module/Admin/View/Map/ShowMapEditor.php
-
-		-
 			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
@@ -1123,11 +1108,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonySurface\\:\\:isResearched\\(\\) has parameter \\$researched with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonySurface.php
-
-		-
-			message: "#^Parameter \\#1 \\$str of function base64_decode expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonySurface.php
 

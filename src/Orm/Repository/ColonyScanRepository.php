@@ -105,7 +105,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
 
     public function getSurfaceArray(int $id): string
     {
-        return $this->getEntityManager()
+        return strval($this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT cs.mask
@@ -117,12 +117,12 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
             ->setParameters([
                 'id' => $id
             ])
-            ->getSingleScalarResult();
+            ->getSingleScalarResult());
     }
 
     public function getSurfaceWidth(int $id): int
     {
-        return $this->getEntityManager()
+        return (int)$this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT c.surface_width

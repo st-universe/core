@@ -30,6 +30,8 @@ use Stu\Module\Admin\Action\Map\EditPassable\EditPassableRequestInterface;
 use Stu\Module\Admin\Action\Map\EditBorder\EditBorder;
 use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequest;
 use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequestInterface;
+use Stu\Module\Admin\Action\Map\GenerateEmptySystems\GenerateEmptySystems;
+use Stu\Module\Admin\Action\Map\RegenerateSystem\RegenerateSystem;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
@@ -106,7 +108,9 @@ return [
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
         StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class),
         ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class),
-        CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class)
+        CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class),
+        GenerateEmptySystems::ACTION_IDENTIFIER => autowire(GenerateEmptySystems::class),
+        RegenerateSystem::ACTION_IDENTIFIER => autowire(RegenerateSystem::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

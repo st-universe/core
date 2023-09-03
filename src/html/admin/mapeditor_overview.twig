@@ -1,0 +1,59 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<div>
+	<select onchange="window.location.href='/admin/?SHOW_MAP_EDITOR=1&layerid=' + this.value">
+		{% for layer in LAYERS %}
+		{% if layer.getId == LAYERID %}
+		<option value="{{ layer.getId }}" selected="1">{{ layer.getName }}</option>
+		{% else %}
+		<option value="{{ layer.getId }}">{{ layer.getName }}</option>
+		{% endif %}
+		{% endfor %}
+	</select>
+</div>
+<br />
+<table class="tcal">
+	<tr>
+		<th>x|y</th>
+		{% for data in X_HEAD_ROW %}
+		{% set value = data * FIELDS_PER_SECTION %}
+		<th>{{ value }}</th>
+		{% endfor %}
+	</tr>
+	{% for rowy in SECTIONS %}
+	<tr>
+		{% set content = loop.index * FIELDS_PER_SECTION %}
+		{% set rowIndex = loop.index %}
+		<th style="width: 30px;">{{ content }}</th>
+		{% for data in rowy %}
+		<td>
+			<a
+				href="/admin/?SHOW_EDIT_MAP_SECTION=1&x={{ loop.index }}&y={{ rowIndex }}&sec={{ data }}&layerid={{ LAYERID }}">
+				{{ data }}</a>
+		</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+<br />
+<table class="tcal">
+	<tr>
+		<th>Sternensysteme</th>
+	</tr>
+	{% if NUMBER_OF_SYSTEMS_TO_GENERATE > 0 %}
+	<tr>
+		<td><a href="/admin/?GENERATE_EMPTY_SYSTEMS=1&layerid={{ LAYERID }}">{{ NUMBER_OF_SYSTEMS_TO_GENERATE }}
+				leere Systeme generieren</a></td>
+	</tr>
+	{% endif %}
+	<tr>
+		<td>
+			{% for system in SYSTEM_LIST %}
+			<div><a href="/admin/?SHOW_SYSTEM=1&sysid={{ system.getId }}">{{ system.getName }}</a></div>
+			{% endfor %}
+		</td>
+	</tr>
+</table>
+{% endblock %}

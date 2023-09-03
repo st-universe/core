@@ -147,7 +147,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
 
     public function getAmountByUserOnColonies(int $userId): int
     {
-        return $this->getEntityManager()->createQuery(
+        return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(ca.id)
                 FROM %s ca
@@ -160,7 +160,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
 
     public function getAmountByUserOnShips(UserInterface $user): int
     {
-        return $this->getEntityManager()
+        return (int)$this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT count(ca.id)
@@ -176,7 +176,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
 
     public function getAmountByUserAtTradeposts(UserInterface $user): int
     {
-        return $this->getEntityManager()
+        return (int)$this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT count(ca.id)

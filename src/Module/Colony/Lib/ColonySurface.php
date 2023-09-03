@@ -208,13 +208,17 @@ final class ColonySurface implements ColonySurfaceInterface
             return;
         }
 
-        if ($this->colony->getMask() === null) {
+        $mask = $this->colony->getMask();
+
+        if ($mask === null) {
             $planetConfig = $this->planetGenerator->generateColony(
                 $this->colony->getColonyClassId(),
                 $this->colony->getSystem()->getBonusFieldAmount()
             );
 
-            $this->colony->setMask(base64_encode(serialize($planetConfig->getFieldArray())));
+            $mask = base64_encode(serialize($planetConfig->getFieldArray()));
+
+            $this->colony->setMask($mask);
             $this->colony->setSurfaceWidth($planetConfig->getSurfaceWidth());
 
             $this->colonyRepository->save($this->colony);
@@ -222,7 +226,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
         $fields = $this->colony->getPlanetFields()->toArray();
 
-        $surface = unserialize(base64_decode($this->colony->getMask()));
+        $surface = unserialize(base64_decode($mask));
         foreach ($surface as $fieldId => $type) {
             if (!array_key_exists($fieldId, $fields)) {
                 $newField = $this->planetFieldRepository->prototype();

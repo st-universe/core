@@ -89,7 +89,7 @@ class StarSystem implements StarSystemInterface
      * @Column(type="boolean")
      *
      */
-    private bool $is_wormhole;
+    private bool $is_wormhole = false;
 
     /**
      *

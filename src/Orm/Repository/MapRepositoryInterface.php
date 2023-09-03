@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 
@@ -68,4 +69,9 @@ interface MapRepositoryInterface extends ObjectRepository
      * @return array<MapInterface>
      */
     public function getForSubspaceEllipseCreation(): array;
+
+    /**
+     * @return array<MapInterface>
+     */
+    public function getWithEmptySystem(LayerInterface $layer): array;
 }

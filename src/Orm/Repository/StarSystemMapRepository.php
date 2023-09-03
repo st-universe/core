@@ -184,6 +184,11 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->getResult();
     }
 
+    public function prototype(): StarSystemMapInterface
+    {
+        return new StarSystemMap();
+    }
+
     public function save(StarSystemMapInterface $starSystemMap): void
     {
         $em = $this->getEntityManager();
@@ -263,5 +268,17 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 'ids' => $finalIds
             ])
             ->getResult();
+    }
+
+    public function truncateByStarSystem(StarSystemInterface $starSystem): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s sm WHERE sm.systems_id = :systemId',
+                StarSystemMap::class
+            )
+        )
+            ->setParameters(['systemId' => $starSystem->getId()])
+            ->execute();
     }
 }

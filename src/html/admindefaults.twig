@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu">
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#121220" />
+    <script src="{{ JAVASCRIPTPATH }}/js/prototype.js" type="text/javascript"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/scriptaculous.js" type="text/javascript"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/admin.js" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
+    <title>{{ PAGETITLE|bbcode2txt }}</title>
+    <script language="JavaScript">
+        var gfx_path = '/assets';
+    </script>
+    <script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/overlib.js"></script>
+    <script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/drag.js"></script>
+    <script language="javascript" src="{{ JAVASCRIPTPATH }}/js/overlib_exclusive.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/{{ USER.getCss }}.css" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+</head>
+
+<body onload="startUp();">
+    <div id="overDiv">...</div>
+    <div class="container">
+        <div class="header">
+            <div class="header_box header_box_user border_box action" onclick="goToUrl('/maindesk.php'); return false;">
+                <div style="margin: 5px">
+                    <div class="user_box_grid">
+                        <div class="user_box_avatar">
+                            {% from 'html/macros.twig' import useravatar %}
+                            {{ useravatar(USER) }}
+                        </div>
+                        <div class="user_box_details">
+                            <div class="userBoxDetailName">
+                                {{ USER.getName|bbcode }}
+                            </div>
+                            <span>ID:</span> {{ USER.getId }}<span>,
+                                Prestige:</span> {{ USER.getPrestige }}<br />
+
+                            <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()"
+                                title="Notizzettel öffnen" onmouseover="cp('headerNotiz','buttons/notiz2')"
+                                onmouseout="cp('headerNotiz','buttons/notiz1')">
+                                <img src="/assets/buttons/notiz1.png" name="headerNotiz" />
+                            </a>
+                            <a href="/pm.php?WRITE_PM=1" onmouseover="cp('writePm','buttons/msg2')"
+                                onmouseout="cp('writePm','buttons/msg1')">
+                                <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header_box header_box_pm border_box" id="navlet_newpm">
+                {% from 'html/commmacros.twig' import newpmnavlet %}
+                {{ newpmnavlet(PM_NAVLET) }}
+            </div>
+            {% if CURRENT_RESEARCH %}
+            <div class="header_box header_box_research border_box action"
+                onclick="showResearchDetails({{ CURRENT_RESEARCH.getResearch.getId }}); return false;">
+                <div class="researchNavlet">
+                    <div class="researchNavletName">{{ CURRENT_RESEARCH.getResearch.getName }}</div>
+                    <div class="researchNavletImage">
+                        <img src="/assets/research/{{ CURRENT_RESEARCH.getResearch.getId }}.png"
+                            title="Forschung: {{ CURRENT_RESEARCH.getResearch.getName }}" />
+                    </div>
+                    <div class="researchNavletDetails">
+                        <div>
+                            {% autoescape false %}
+                            {{ CURRENT_RESEARCH_STATUS }}
+                            {% endautoescape %}
+                        </div>
+                        <div style="padding-top: 5px;">
+                            <img style="width: 15px"
+                                src="/assets/commodities/{{ CURRENT_RESEARCH.getResearch.getCommodityId }}.png"
+                                title="{{ CURRENT_RESEARCH.getResearch.getCommodity.getName }}" />
+                            <span>{{ CURRENT_RESEARCH.getProgress }}</span> / <span>{{
+                                CURRENT_RESEARCH.getResearch.getPoints }}</span> (+<span>{{
+                                CURRENT_RESEARCH_PRODUCTION_COMMODITY }}</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="header_box header_box_research border_box action" onclick="goToUrl('/research.php')"
+                onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')"
+                onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')">
+                <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png"
+                    id="header_menu_research" title="Forschung" />
+                <div style="margin-top: 5px">Keine Forschung</div>
+            </div>
+            {% endif %}
+            <div class="header_box header_box_col border_box" id="navlet_colonies">
+                {% from 'html/macros.twig' import coloniesnavlet %}
+                {{ coloniesnavlet(COLONIES) }}
+            </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('index.php?B_LOGOUT=1')"
+                onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
+                onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout"
+                        src="/assets/navigation/menu_logout0.png" title="Logout" />
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+            {% if WIKI %}
+            <div class="header_box header_box_help border_box action" onclick="openNewTab('{{ WIKI }}')"
+                onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')"
+                onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu"
+                        src="/assets/navigation/menu_doku0.png" title="Wiki" />
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+            {% endif %}
+            {% if FORUM %}
+            <div class="header_box header_box_help border_box action" onclick="openNewTab('{{ FORUM }}')"
+                onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')"
+                onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board"
+                        src="/assets/navigation/menu_scripts0.png" title="Forum" />
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')"
+                onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')"
+                onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_settings"
+                        src="/assets/navigation/menu_option0.png" title="Einstellungen" />
+                    <div style="margin-top: 5px">Einstellungen</div>
+                </div>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                <div style="width: 100%; padding-left: 12px; padding-right: 10px">
+                    {% from 'html/macros.twig' import navigation %}
+                    {{ navigation(USER.hasStationsNavigation, ISADMIN) }}
+                    <div class="border_box navigation_item_servertime">
+                        <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
+                        <span id="servertime" style="display: none;">{{ date()|date('M, d Y G:i:s') }}</span>
+                        <span>Runde: {{ GAMETURN }}<br />
+                            <span>Version: <a href="{{ FORUM }}/viewforum.php?f=12">{{ GAME_VERSION }}</a></span><br />
+                    </div>
+                </div>
+            </div>
+            <div class="innerContent">
+                {% block body %}
+                ...
+                {% endblock %}
+                <script type="text/javascript">
+                    setTimeout('updatePMNavlet()', 60000);
+                </script>
+            </div>
+            <div class="footer">
+                {% set benchmark = BENCHMARK %}
+                Rendered in {{ benchmark.executionTime }} - Memory usage: {{ benchmark.memoryPeakUsage }}
+            </div>
+        </div>
+    </div>
+    {% if EXECUTEJSAFTERRENDER %}
+    <script language="Javascript">
+        {% for item in EXECUTEJSAFTERRENDER %}
+        {{ item }}
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+
+</html>

@@ -7,14 +7,29 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemName;
 
 /**
  * @extends EntityRepository<StarSystem>
  */
 final class StarSystemRepository extends EntityRepository implements StarSystemRepositoryInterface
 {
+    public function prototype(): StarSystemInterface
+    {
+        return new StarSystem();
+    }
+
+    public function save(StarSystemInterface $storage): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($storage);
+    }
+
     public function getByLayer(int $layerId): array
     {
         return $this->getEntityManager()
@@ -49,5 +64,41 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 'categoryId' => DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM,
             ])
             ->getResult();
+    }
+
+    public function getNumberOfSystemsToGenerate(LayerInterface $layer): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(m.id) from %s m
+                    WHERE m.system_type_id IS NOT NULL
+                    AND m.systems_id IS NULL
+                    AND m.layer = :layer',
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'layer' => $layer
+            ])
+            ->getSingleScalarResult();
+    }
+
+    public function getRandomFreeSystemName(): string
+    {
+        return strval($this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ssm.name, RANDOM() AS rand from %s ssm
+                    WHERE NOT EXISTS (SELECT ss.id
+                                        FROM %s ss
+                                        WHERE ss.name = ssm.name)
+                    ORDER BY rand',
+                    StarSystemName::class,
+                    StarSystem::class
+                )
+            )
+            ->setMaxResults(1)
+            ->getSingleScalarResult());
     }
 }

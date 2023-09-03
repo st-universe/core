@@ -1,0 +1,29 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<table>
+	<tr>
+		<td><a href="/admin/?REGENERATE_SYSTEM=1&sysid={{ SYSTEM_ID }}">System neu generieren</a></td>
+	</tr>
+</table>
+
+<table class="use">
+	<tr>
+		<th>x|y</th>
+		{% for head in HEAD_ROW %}
+		<th>{{ head }}</th>
+		{% endfor %}
+	</tr>
+	{% for yrow in MAP_FIELDS %}
+	<tr>
+		<th>{{ yrow.getRow }}</th>
+		{% for data in yrow.getSystemFields %}
+		<td class="starmap" id="{{ data.getSX }}_{{ data.getSY }}" style="{{ data.getFieldStyle }}">
+			<div class="lssobj" onclick="openSystemFieldSelector({{ data.getId }});" id="runtime">&nbsp;</div>
+		</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

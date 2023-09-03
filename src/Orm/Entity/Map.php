@@ -326,6 +326,12 @@ class Map implements MapInterface
         return $this->starSystem;
     }
 
+    public function setSystem(StarSystemInterface $starSystem): MapInterface
+    {
+        $this->starSystem = $starSystem;
+        return $this;
+    }
+
     public function getInfluenceArea(): ?StarSystemInterface
     {
         return $this->influenceArea;

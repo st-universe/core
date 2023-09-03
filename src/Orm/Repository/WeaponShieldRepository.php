@@ -34,14 +34,14 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
 
     public function getModificatorMinAndMax(): array
     {
-        $min =  $this->getEntityManager()->createQuery(
+        $min =  (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT min(ws.modificator) FROM %s ws',
                 WeaponShield::class
             )
         )->getSingleScalarResult();
 
-        $max =  $this->getEntityManager()->createQuery(
+        $max =  (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT max(ws.modificator) FROM %s ws',
                 WeaponShield::class

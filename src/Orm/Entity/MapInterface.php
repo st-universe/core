@@ -52,6 +52,8 @@ interface MapInterface
 
     public function getSystem(): ?StarSystemInterface;
 
+    public function setSystem(StarSystemInterface $starSystem): MapInterface;
+
     public function getInfluenceArea(): ?StarSystemInterface;
 
     public function setInfluenceArea(?StarSystemInterface $influenceArea): MapInterface;
