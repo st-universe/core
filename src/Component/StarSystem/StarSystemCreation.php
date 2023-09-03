@@ -110,8 +110,6 @@ final class StarSystemCreation implements StarSystemCreationInterface
         StarSystemInterface $starSystem,
         SystemMapDataInterface $mapData
     ): void {
-        $this->starSystemMapRepository->truncateByStarSystem($starSystem);
-
         $fieldData = $mapData->getFieldData();
 
         for ($y = 1; $y <= $mapData->getHeight(); $y++) {
@@ -146,6 +144,8 @@ final class StarSystemCreation implements StarSystemCreationInterface
             $starSystem = $this->starSystemRepository->prototype();
             $map->setSystem($starSystem);
             $this->mapRepository->save($map);
+        } else {
+            $this->starSystemMapRepository->truncateByStarSystem($starSystem);
         }
 
         return $starSystem;
