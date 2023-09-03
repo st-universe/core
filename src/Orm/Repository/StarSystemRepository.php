@@ -86,19 +86,21 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
 
     public function getRandomFreeSystemName(): string
     {
-        return strval($this->getEntityManager()
+        $freeNames = $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT ssm.name, RAND() AS rand from %s ssm
+                    'SELECT ssm FROM %s ssm
                     WHERE NOT EXISTS (SELECT ss.id
                                         FROM %s ss
-                                        WHERE ss.name = ssm.name)
-                    ORDER BY rand',
+                                        WHERE ss.name = ssm.name)',
                     StarSystemName::class,
                     StarSystem::class
                 )
             )
-            ->setMaxResults(1)
-            ->getSingleScalarResult());
+            ->getResult();
+
+        shuffle($freeNames);
+
+        return current($freeNames);
     }
 }
