@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Cli\ColonyTickCommand;
 use Stu\Component\Cli\GameResetCommand;
+use Stu\Component\Cli\GenerateEmptySystemsCommand;
 use Stu\Component\Cli\MaintenanceTickCommand;
 use Stu\Component\Cli\ManagerTickCommand;
 use Stu\Component\Cli\ProcessTickCommand;
@@ -58,6 +59,9 @@ Init::run(
         $app->add(new MaintenanceTickCommand($dic));
         $app->add(new ProcessTickCommand($dic));
         $app->add(new ManagerTickCommand($dic));
+
+        // system generation
+        $app->add(new GenerateEmptySystemsCommand($dic));
 
         // reset
         $app->add(new GameResetCommand($dic));
