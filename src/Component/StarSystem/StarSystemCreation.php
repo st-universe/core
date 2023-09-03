@@ -136,7 +136,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
     private function getRandomSystemName(): string
     {
-        return $this->starSystemRepository->getRandomFreeSystemName();
+        return $this->starSystemRepository->getRandomFreeSystemName()->getName();
     }
 
     private function getStarSystem(MapInterface $map): StarSystemInterface
