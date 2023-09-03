@@ -89,7 +89,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
         return strval($this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT ssm.name, RANDOM() AS rand from %s ssm
+                    'SELECT ssm.name, RAND() AS rand from %s ssm
                     WHERE NOT EXISTS (SELECT ss.id
                                         FROM %s ss
                                         WHERE ss.name = ssm.name)
