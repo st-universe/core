@@ -97,7 +97,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
     ): void {
         $starSystem->setCx($map->getCx());
         $starSystem->setCy($map->getCy());
-        $starSystem->setType($systemType->getId());
+        $starSystem->setType($systemType);
         $starSystem->setName($this->getRandomSystemName());
         $starSystem->setMaxX($mapData->getWidth());
         $starSystem->setMaxY($mapData->getHeight());
