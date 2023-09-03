@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemNameInterface;
 
 /**
  * @extends ObjectRepository<StarSystem>
@@ -29,5 +30,5 @@ interface StarSystemRepositoryInterface extends ObjectRepository
 
     public function getNumberOfSystemsToGenerate(LayerInterface $layer): int;
 
-    public function getRandomFreeSystemName(): string;
+    public function getRandomFreeSystemName(): StarSystemNameInterface;
 }

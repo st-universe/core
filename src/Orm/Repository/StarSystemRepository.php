@@ -12,6 +12,7 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemName;
+use Stu\Orm\Entity\StarSystemNameInterface;
 
 /**
  * @extends EntityRepository<StarSystem>
@@ -84,7 +85,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getSingleScalarResult();
     }
 
-    public function getRandomFreeSystemName(): string
+    public function getRandomFreeSystemName(): StarSystemNameInterface
     {
         $freeNames = $this->getEntityManager()
             ->createQuery(
