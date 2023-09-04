@@ -8,12 +8,20 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\StarSystemType;
+use Stu\Orm\Entity\StarSystemTypeInterface;
 
 /**
  * @extends EntityRepository<StarSystemType>
  */
 final class StarSystemTypeRepository extends EntityRepository implements StarSystemTypeRepositoryInterface
 {
+    public function save(StarSystemTypeInterface $type): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($type);
+    }
+
     public function getWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()

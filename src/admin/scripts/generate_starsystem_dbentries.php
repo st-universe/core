@@ -13,10 +13,11 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
     $repository = $dic->get(DatabaseEntryRepositoryInterface::class);
+    $systemRepository = $dic->get(StarSystemRepositoryInterface::class);
     $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM);
     $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM);
 
-    $result = $dic->get(StarSystemRepositoryInterface::class)->getWithoutDatabaseEntry();
+    $result = $systemRepository->getWithoutDatabaseEntry();
     foreach ($result as $obj) {
         $db = $repository->prototype();
         $db->setCategory($category);
@@ -28,7 +29,7 @@ Init::run(function (ContainerInterface $dic): void {
 
         $repository->save($db);
 
-        $obj->setDatabaseId($db->getId());
-        $obj->save();
+        $obj->setDatabaseEntry($db);
+        $systemRepository->save($obj);
     }
 });
