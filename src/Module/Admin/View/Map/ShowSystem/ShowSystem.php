@@ -56,7 +56,7 @@ final class ShowSystem implements ViewControllerInterface
             sprintf(_('System %s editieren'), $system->getName())
         );
         $game->setPageTitle(_('Sektion anzeigen'));
-        $game->setTemplateVar('SYSTEM_ID', $system->getId());
+        $game->setTemplateVar('SYSTEM', $system);
         $game->setTemplateVar('HEAD_ROW', range(1, $system->getMaxX()));
         $game->setTemplateVar('MAP_FIELDS', $fields);
         $game->setTemplateVar('PREVIOUS', $this->starSystemRepository->getPreviousStarSystem($system));
