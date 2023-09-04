@@ -98,12 +98,11 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                     StarSystem::class
                 )
             )
-            ->setMaxResults($amount)
             ->getResult();
 
         shuffle($freeNames);
 
-        return $freeNames;
+        return array_slice($freeNames, 0, $amount);
     }
 
     public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface
