@@ -14,8 +14,13 @@
 		<tr>
 			<th>{{ yrow.getRow }}</th>
 			{% for data in yrow.getSystemFields %}
-			<td class="starmap" id="{{ data.getSX }}_{{ data.getSY }}" style="{{ data.getFieldStyle }}">
-				<div class="lssobj" onclick="openSystemFieldSelector({{ data.getId }});" id="runtime">&nbsp;</div>
+			<td class="lss" id="{{ data.getSX }}_{{ data.getSY }}" style="background-size: cover;">
+				<div class="lssobj imgOverlayText"
+					style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+					<img src="assets/map/starmap/{{ data.getBackgroundId }}.png" style="z-index: 1;" />
+					<img class="lssColoShield" src="assets/map/{{ data.getFieldGraphicID }}.png" style="z-index: 2;" />
+					<div class="lssobj" onclick="openSystemFieldSelector({{ data.getId }});" id="runtime">&nbsp;</div>
+				</div>
 			</td>
 			{% endfor %}
 		</tr>

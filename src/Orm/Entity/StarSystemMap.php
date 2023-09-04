@@ -189,6 +189,24 @@ class StarSystemMap implements StarSystemMapInterface
         return $this;
     }
 
+    public function getBackgroundId(): string
+    {
+
+        $x = (string)$this->getSx();
+        $y = (string)$this->getSy();
+
+
+        $x = str_pad($x, 2, '0', STR_PAD_LEFT);
+        $y = str_pad($y, 2, '0', STR_PAD_LEFT);
+
+
+        $backgroundId = $y . $x;
+
+        return $backgroundId;
+    }
+
+
+
     public function getColony(): ?ColonyInterface
     {
         return $this->colony;
@@ -213,6 +231,18 @@ class StarSystemMap implements StarSystemMapInterface
     {
         return "background-image: url('/assets/map/" . $this->getFieldId() . ".png'); opacity:1;";
     }
+
+    public function getFieldGraphicID(): int
+    {
+        $fieldId = $this->getFieldId();
+
+        if ($fieldId === 1) {
+            return 0;
+        } else {
+            return $fieldId;
+        }
+    }
+
 
     public function getShips(): Collection
     {

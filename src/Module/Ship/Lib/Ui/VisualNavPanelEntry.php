@@ -109,6 +109,34 @@ class VisualNavPanelEntry
         return $this->data['type'];
     }
 
+    public function getFieldGraphicID(): int
+    {
+        $fieldId = $this->getMapfieldType();
+
+
+        if ($fieldId === 1) {
+            return 0;
+        } else {
+
+            return $fieldId;
+        }
+    }
+
+    public function getSystemBackgroundId(): string
+    {
+
+        $x = (string)$this->getPosX();
+        $y = (string)$this->getPosY();
+
+        $x = str_pad($x, 2, '0', STR_PAD_LEFT);
+        $y = str_pad($y, 2, '0', STR_PAD_LEFT);
+
+        $backgroundId = $y . $x;
+
+        return $backgroundId;
+    }
+
+
     public function getLayer(): ?int
     {
         return $this->data['layer'];
@@ -192,8 +220,8 @@ class VisualNavPanelEntry
     public function isCurrentShipPosition(): bool
     {
         return $this->getSystemId() == $this->currentShipSysId
-        && $this->getPosX() == $this->currentShipPosX
-        && $this->getPosY() == $this->currentShipPosY;
+            && $this->getPosX() == $this->currentShipPosX
+            && $this->getPosY() == $this->currentShipPosY;
     }
 
     public function getBorder(): string

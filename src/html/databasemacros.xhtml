@@ -106,18 +106,23 @@
       </tr>
       <tr tal:repeat="yaxis map/fields">
         <th tal:content="repeat/yaxis/key">CY</th>
-        <td tal:repeat="xaxis yaxis" class="starmap"
-          style="background-image: url('assets/map/${xaxis/map/getFieldType/getType}.png');">
-          <a tal:condition="xaxis/showPm" href="javascript:void(0);"
-            onclick="openPmWindow(${THIS/getUser/getId},${xaxis/map/getColony/getId},1,5)"
-            title="Nachricht an ${bbcode2txt:xaxis/map/getColony/getUser/getName} verfassen">
-            <img src="assets/map/pm.png" /></a>
-          <div tal:condition="not:xaxis/showPm" class="starmapInner">&nbsp;
+        <td tal:repeat="xaxis yaxis" class="lss" style="background-size: cover;">
+          <div class="lssobj imgOverlayText"
+            style=" position: relative !important; top: 0px; height: 30px; width: 30px">
+            <img src="assets/map/starmap/${xaxis/map/getBackgroundId}.png" style="z-index: 1;" />
+            <img class="lssColoShield" src="assets/map/${xaxis/map/getFieldGraphicID}.png" style="z-index: 2;" />
+            <div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px;"
+              tal:condition="xaxis/showPm" href="javascript:void(0);"
+              onclick="openPmWindow(${THIS/getUser/getId},${xaxis/map/getColony/getId},1,5)"
+              title="Nachricht an ${bbcode2txt:xaxis/map/getColony/getUser/getName} verfassen">
+              <img class="lssColoShield" src="assets/map/pm.png" style="z-index: 3;" />
+            </div>
           </div>
         </td>
       </tr>
     </table>
   </div>
+
   <div style="width: 200px; padding-left: 5px;display: table-cell; width: 150px; vertical-align:top;">
     <div class="divhead" style="width: 200px;" tal:content="SYSTEM/getName">NAME</div>
     <div class="divbody">

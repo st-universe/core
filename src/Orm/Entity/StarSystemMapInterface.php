@@ -30,6 +30,10 @@ interface StarSystemMapInterface
 
     public function getFieldType(): MapFieldTypeInterface;
 
+    public function getBackgroundId(): string;
+
+    public function getFieldGraphicID(): int;
+
     public function setFieldType(MapFieldTypeInterface $mapFieldType): StarSystemMapInterface;
 
     public function getColony(): ?ColonyInterface;
