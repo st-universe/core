@@ -37,12 +37,14 @@
                 <div style="{{ heightAndWidth }} position: relative !important; top: 0px;" class="lssobj imgOverlayText"
                     onclick="{{ entry.getOnClick }}">
                     {{ _self.lssCellLayers(entry.getLayer, entry.getMapfieldType, fontSize, heightAndWidth,
-                    entry.getDisplayCount, ship.getSubspaceState, entry.getSubspaceCode, entry.getShieldState) }}
+                    entry.getDisplayCount, ship.getSubspaceState, entry.getSubspaceCode, entry.getShieldState,
+                    entry.getSystemBackgroundId, ship.getStarsystemMap, entry.getFieldGraphicID) }}
                 </div>
                 {% else %}
                 <div class="imgOverlayText" style="{{ heightAndWidth }} position: relative !important; top: 0px;">
                     {{ _self.lssCellLayers(entry.getLayer, entry.getMapfieldType, fontSize, heightAndWidth,
-                    entry.getDisplayCount, ship.getSubspaceState, entry.getSubspaceCode, entry.getShieldState) }}
+                    entry.getDisplayCount, ship.getSubspaceState, entry.getSubspaceCode, entry.getShieldState,
+                    entry.getSystemBackgroundId, ship.getStarsystemMap, entry.getFieldGraphicID) }}
                 </div>
                 {% endif %}
             </td>
@@ -167,14 +169,20 @@
 {% endmacro %}
 
 {% macro lssCellLayers(layerId, fieldType, fontSize, heightAndWidth, displayCount, subspaceState, subspaceCode
-, colonyShieldState) %}
+, colonyShieldState, systemBackgroundId, starsystem, fieldgraphicid) %}
+{% if starsystem %}
+<img src="assets/map/starmap/{{ systemBackgroundId }}.png" style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
+<img src="assets/map/{{ fieldgraphicid }}.png" class="lssSubspaceOverShield"
+    style="z-index: 1; {{ heightAndWidth }} opacity:2;" />
+{% else %}
 <img src="assets/map/{{ layerId }}/{{ fieldType }}.png" style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
+{% endif %}
 {% if colonyShieldState %}
-<img src="assets/planets/s1.png" class="lssColoShield" style="z-index: 2; {{ heightAndWidth }}" />
+<img src="assets/planets/s1.png" class="lssColoShield" style="z-index: 3; {{ heightAndWidth }}" />
 {% endif %}
 {% if subspaceState and subspaceCode %}
 <img src="assets/subspace/generated/{{ subspaceCode }}.png" class="lssSubspaceOverShield"
-    style="z-index: 3; {{ heightAndWidth }}" />
+    style="z-index: 4; {{ heightAndWidth }}" />
 {% endif %}
 <div style="{{ fontSize }}" class="centered">{{ displayCount }}
 </div>
