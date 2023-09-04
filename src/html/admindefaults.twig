@@ -139,8 +139,8 @@
         <div style="margin-top: 80px;">
             <div class="sidebar">
                 <div style="width: 100%; padding-left: 12px; padding-right: 10px">
-                    {% from 'html/macros.twig' import navigation %}
-                    {{ navigation(USER.hasStationsNavigation, ISADMIN) }}
+                    {% from 'html/macros.twig' import adminnavigation %}
+                    {{ adminnavigation() }}
                     <div class="border_box navigation_item_servertime">
                         <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
                         <span id="servertime" style="display: none;">{{ date()|date('M, d Y G:i:s') }}</span>
@@ -166,7 +166,7 @@
     {% if EXECUTEJSAFTERRENDER %}
     <script language="Javascript">
         {% for item in EXECUTEJSAFTERRENDER %}
-        {{ item }}
+        { { item } }
         {% endfor %}
     </script>
     {% endif %}
