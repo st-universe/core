@@ -60,7 +60,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function recreateStarSystem(MapInterface $map): void
+    public function recreateStarSystem(MapInterface $map, string $randomSystemName): ?StarSystemInterface
     {
         $this->loggerUtil->init('SysGen', LoggerEnum::LEVEL_ERROR);
 
@@ -78,7 +78,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
             $systemType->getIsGenerateable() === null
             || $systemType->getIsGenerateable() === false
         ) {
-            return;
+            return null;
         }
 
         $firstMassCenterType = $systemType->getFirstMassCenterType();
@@ -95,20 +95,23 @@ final class StarSystemCreation implements StarSystemCreationInterface
         );
 
         $starSystem = $this->getStarSystem($map);
-        $this->initializeStarSystem($systemType, $map, $starSystem, $systemMapData);
+        $this->initializeStarSystem($systemType, $map, $starSystem, $systemMapData, $randomSystemName);
         $this->starSystemRepository->save($starSystem);
+
+        return $starSystem;
     }
 
     private function initializeStarSystem(
         StarSystemTypeInterface $systemType,
         MapInterface $map,
         StarSystemInterface $starSystem,
-        SystemMapDataInterface $mapData
+        SystemMapDataInterface $mapData,
+        string $randomSystemName
     ): void {
         $starSystem->setCx($map->getCx());
         $starSystem->setCy($map->getCy());
         $starSystem->setType($systemType);
-        $starSystem->setName($this->getRandomSystemName());
+        $starSystem->setName($randomSystemName);
         $starSystem->setMaxX($mapData->getWidth());
         $starSystem->setMaxY($mapData->getHeight());
         $starSystem->setBonusFieldAmount($this->stuRandom->rand(0, 3, true, 2));
@@ -155,11 +158,6 @@ final class StarSystemCreation implements StarSystemCreationInterface
         }
 
         return $this->fieldTypeCache[$fieldId];
-    }
-
-    private function getRandomSystemName(): string
-    {
-        return $this->starSystemRepository->getRandomFreeSystemName()->getName();
     }
 
     private function getStarSystem(MapInterface $map): StarSystemInterface

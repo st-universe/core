@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action\Map\RegenerateSystem;
 
 use request;
+use RuntimeException;
 use Stu\Component\StarSystem\StarSystemCreationInterface;
 use Stu\Module\Admin\View\Map\ShowSystem\ShowSystem;
 use Stu\Module\Control\ActionControllerInterface;
@@ -43,7 +44,12 @@ final class RegenerateSystem implements ActionControllerInterface
             return;
         }
 
-        $this->starSystemCreation->recreateStarSystem($map);
+        $systemName = current($this->starSystemRepository->getRandomFreeSystemNames(1));
+        if ($systemName === false) {
+            throw new RuntimeException('no free system name available');
+        }
+
+        $this->starSystemCreation->recreateStarSystem($map, $systemName->getName());
 
         $game->addInformation('Das System wurde neu generiert.');
     }
