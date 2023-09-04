@@ -39,7 +39,7 @@ final class ShowSystem implements ViewControllerInterface
 
         $fields = [];
         foreach (range(1, $system->getMaxY()) as $value) {
-            $fields[] = $this->starmapUiFactory->createYRow(0, $value, 1, $system->getMaxX(), $system->getId());
+            $fields[] = $this->starmapUiFactory->createYRow(0, $value, 1, $system->getMaxX(), $system);
         }
 
         $game->setTemplateFile('html/admin/mapeditor_system.twig', true);

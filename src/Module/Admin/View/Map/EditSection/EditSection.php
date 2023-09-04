@@ -67,13 +67,13 @@ final class EditSection implements ViewControllerInterface
 
         $fields = [];
         foreach (range($miny, $maxy) as $value) {
-            $fields[] = $this->starmapUiFactory->createYRow($layerId, $value, $minx, $maxx);
+            $fields[] = $this->starmapUiFactory->createYRow($layerId, $value, $minx, $maxx, 0);
         }
 
         if ($yCoordinate - 1 >= 1) {
             $game->setTemplateVar(
                 'TOP_PREVIEW_ROW',
-                $this->starmapUiFactory->createYRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION - MapEnum::FIELDS_PER_SECTION, $minx, $maxx)->getFields()
+                $this->starmapUiFactory->createYRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION - MapEnum::FIELDS_PER_SECTION, $minx, $maxx, 0)->getFields()
             );
         } else {
             $game->setTemplateVar('TOP_PREVIEW_ROW', false);
@@ -81,7 +81,7 @@ final class EditSection implements ViewControllerInterface
         if ($yCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getHeight()) {
             $game->setTemplateVar(
                 'BOTTOM_PREVIEW_ROW',
-                $this->starmapUiFactory->createYRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION + 1, $minx, $maxx)->getFields()
+                $this->starmapUiFactory->createYRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION + 1, $minx, $maxx, 0)->getFields()
             );
         } else {
             $game->setTemplateVar(
@@ -92,7 +92,7 @@ final class EditSection implements ViewControllerInterface
         if ($xCoordinate - 1 >= 1) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = $this->starmapUiFactory->createYRow($layerId, $i, $minx - 1, $minx - 1);
+                $row[] = $this->starmapUiFactory->createYRow($layerId, $i, $minx - 1, $minx - 1, 0);
             }
 
             $game->setTemplateVar(
@@ -109,7 +109,7 @@ final class EditSection implements ViewControllerInterface
         if ($xCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getWidth()) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = $this->starmapUiFactory->createYRow($layerId, $i, $maxx + 1, $maxx + 1);
+                $row[] = $this->starmapUiFactory->createYRow($layerId, $i, $maxx + 1, $maxx + 1, 0);
             }
 
             $game->setTemplateVar(
