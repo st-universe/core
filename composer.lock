@@ -3371,16 +3371,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.32",
+            "version": "1.10.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "c47e47d3ab03137c0e121e77c4d2cb58672f6d44"
+                "reference": "03b1cf9f814ba0863c4e9affea49a4d1ed9a2ed1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c47e47d3ab03137c0e121e77c4d2cb58672f6d44",
-                "reference": "c47e47d3ab03137c0e121e77c4d2cb58672f6d44",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/03b1cf9f814ba0863c4e9affea49a4d1ed9a2ed1",
+                "reference": "03b1cf9f814ba0863c4e9affea49a4d1ed9a2ed1",
                 "shasum": ""
             },
             "require": {
@@ -3429,7 +3429,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-24T21:54:50+00:00"
+            "time": "2023-09-04T12:20:53+00:00"
         },
         {
             "name": "phpstan/phpstan-mockery",
@@ -3928,7 +3928,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/starsystem-generator.git",
-                "reference": "7da6716a1aac5df545b2d9ac604e3f5362f66d3e"
+                "reference": "3fbbe68638ff96f957d778efbe7913c694ab3caf"
             },
             "require": {
                 "php": "^8.2"
@@ -3991,7 +3991,7 @@
                 "MIT"
             ],
             "description": "ST-Universe Starsystem Generator Source Code",
-            "time": "2023-09-04T09:56:31+00:00"
+            "time": "2023-09-04T11:57:02+00:00"
         },
         {
             "name": "symfony/cache",
@@ -8991,7 +8991,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "9191471c7178877a7ecef1700039917a4f40852d"
+                "reference": "e1f3911918b8f0b84ef74a79a2b0b86e6466c763"
             },
             "require": {
                 "ext-gd": "*",
@@ -9004,7 +9004,7 @@
                 "proprietary"
             ],
             "description": "STU Assets",
-            "time": "2023-09-04T08:41:22+00:00"
+            "time": "2023-09-04T12:19:54+00:00"
         },
         {
             "name": "symfony/finder",
