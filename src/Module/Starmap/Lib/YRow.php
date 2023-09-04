@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -19,9 +20,9 @@ class YRow
 
     protected int $maxx;
 
-    protected int $systemId;
+    protected int|StarSystemInterface $system;
 
-    /** @var null|array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null> */
+    /** @var null|array<MapInterface|null>|array<StarSystemMapInterface|null> */
     protected $fields;
 
     private MapRepositoryInterface $mapRepository;
@@ -35,19 +36,19 @@ class YRow
         int $cury,
         int $minx,
         int $maxx,
-        int $systemId = 0
+        int|StarSystemInterface $system
     ) {
         $this->layerId = $layerId;
         $this->row = $cury;
         $this->minx = $minx;
         $this->maxx = $maxx;
-        $this->systemId = $systemId;
+        $this->system = $system;
         $this->mapRepository = $mapRepository;
         $this->systemMapRepository = $systemMapRepository;
     }
 
     /**
-     * @return array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null>
+     * @return array<StarSystemMapInterface|null>|array<MapInterface|null>
      */
     public function getFields(): iterable
     {
@@ -65,18 +66,27 @@ class YRow
     }
 
     /**
-     * @return array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null>
+     * @return array<StarSystemMapInterface|null>|array<MapInterface|null>
      */
     public function getSystemFields()
     {
         if ($this->fields === null) {
             $this->fields = [];
-            for ($i = $this->minx; $i <= $this->maxx; $i++) {
-                $this->fields[] = $this->systemMapRepository->getByCoordinates(
-                    $this->systemId,
-                    $i,
-                    $this->row
+
+            if ($this->system instanceof StarSystemInterface) {
+                $this->fields = array_filter(
+                    $this->system->getFields()->toArray(),
+                    fn (StarSystemMapInterface $systemMap) => $systemMap->getSy() === $this->row
                 );
+            } else {
+
+                for ($i = $this->minx; $i <= $this->maxx; $i++) {
+                    $this->fields[] = $this->systemMapRepository->getByCoordinates(
+                        $this->system,
+                        $i,
+                        $this->row
+                    );
+                }
             }
         }
         return $this->fields;

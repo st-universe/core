@@ -64,7 +64,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $systemType = $map->getStarSystemType();
 
         if ($systemType === null) {
-            throw new RuntimeException('foo');
+            throw new RuntimeException(sprintf('no system type configured on mapId %d', $map->getId()));
         }
 
         $this->loggerUtil->log(sprintf('systemType: %d, isGenerateable: %s', $systemType->getId(), $systemType->getIsGenerateable() ? 'true' : 'false'));
@@ -73,17 +73,14 @@ final class StarSystemCreation implements StarSystemCreationInterface
             $systemType->getIsGenerateable() === null
             || $systemType->getIsGenerateable() === false
         ) {
-            $this->loggerUtil->log('not');
-            //return;
+            return;
         }
-
-        $this->loggerUtil->log('A');
 
         $firstMassCenterType = $systemType->getFirstMassCenterType();
         $secondMassCenterType = $systemType->getSecondMassCenterType();
 
         if ($firstMassCenterType === null) {
-            throw new RuntimeException('foo');
+            throw new RuntimeException(sprintf('first mass center is null, systemTypeId %d', $systemType->getId()));
         }
 
         $systemMapData = $this->starsystemGenerator->generate(
@@ -95,8 +92,6 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $starSystem = $this->getStarSystem($map);
         $this->initializeStarSystem($systemType, $map, $starSystem, $systemMapData);
         $this->starSystemRepository->save($starSystem);
-
-        $this->loggerUtil->log('B');
     }
 
     private function initializeStarSystem(

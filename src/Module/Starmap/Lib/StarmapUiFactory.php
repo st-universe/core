@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -47,7 +48,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         int $cury,
         int $minx,
         int $maxx,
-        int $systemId = 0
+        int|StarSystemInterface $system
     ): YRow {
         return new YRow(
             $this->mapRepository,
@@ -56,7 +57,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
             $cury,
             $minx,
             $maxx,
-            $systemId
+            $system
         );
     }
 
