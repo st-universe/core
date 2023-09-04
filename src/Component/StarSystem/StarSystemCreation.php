@@ -8,10 +8,12 @@ use RuntimeException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\MapFieldTypeInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\MassCenterTypeInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemTypeInterface;
+use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -27,21 +29,29 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
     private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
+    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
+
     private StarsystemGeneratorInterface $starsystemGenerator;
 
     private LoggerUtilInterface $loggerUtil;
+
+    /** @var array<int, MapFieldTypeInterface> */
+    private array $fieldTypeCache = [];
 
     public function __construct(
         StarSystemRepositoryInterface $starSystemRepository,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
+        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
         StarsystemGeneratorInterface $starsystemGenerator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->starSystemRepository = $starSystemRepository;
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->starsystemGenerator = $starsystemGenerator;
+
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -127,9 +137,25 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $systemMap->setSx($x);
         $systemMap->setSy($y);
         $systemMap->setSystem($starSystem);
-        $systemMap->setFieldId($fieldId);
+        $systemMap->setFieldType($this->getFieldType($fieldId));
 
         $this->starSystemMapRepository->save($systemMap);
+
+        $starSystem->getFields()->add($systemMap);
+    }
+
+    private function getFieldType(int $fieldId): MapFieldTypeInterface
+    {
+        if (!array_key_exists($fieldId, $this->fieldTypeCache)) {
+            $fieldType = $this->mapFieldTypeRepository->find($fieldId === 0 ? 1 : $fieldId);
+
+            if ($fieldType === null) {
+                throw new RuntimeException(sprintf('fieldId %d does not exist', $fieldId));
+            }
+            $this->fieldTypeCache[$fieldId] = $fieldType;
+        }
+
+        return $this->fieldTypeCache[$fieldId];
     }
 
     private function getRandomSystemName(): string
@@ -146,6 +172,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
             $this->mapRepository->save($map);
         } else {
             $this->starSystemMapRepository->truncateByStarSystem($starSystem);
+            $starSystem->getFields()->clear();
         }
 
         return $starSystem;

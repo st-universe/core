@@ -177,16 +177,16 @@ class StarSystemMap implements StarSystemMapInterface
         return $this->field_id;
     }
 
-    public function setFieldId(int $fieldId): StarSystemMapInterface
-    {
-        $this->field_id = $fieldId;
-
-        return $this;
-    }
-
     public function getFieldType(): MapFieldTypeInterface
     {
         return $this->mapFieldType;
+    }
+
+    public function setFieldType(MapFieldTypeInterface $mapFieldType): StarSystemMapInterface
+    {
+        $this->mapFieldType = $mapFieldType;
+
+        return $this;
     }
 
     public function getColony(): ?ColonyInterface

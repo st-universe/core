@@ -28,9 +28,9 @@ interface StarSystemMapInterface
 
     public function getFieldId(): int;
 
-    public function setFieldId(int $fieldId): StarSystemMapInterface;
-
     public function getFieldType(): MapFieldTypeInterface;
+
+    public function setFieldType(MapFieldTypeInterface $mapFieldType): StarSystemMapInterface;
 
     public function getColony(): ?ColonyInterface;
 

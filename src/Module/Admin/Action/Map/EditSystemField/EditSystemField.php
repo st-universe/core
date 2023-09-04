@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditSystemField;
 
+use RuntimeException;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -35,8 +36,13 @@ final class EditSystemField implements ActionControllerInterface
     {
         /** @var StarSystemMapInterface $selectedField */
         $selectedField = $this->starSystemMapRepository->find($this->editSystemFieldRequest->getFieldId());
-        $type = $this->mapFieldTypeRepository->find($this->editSystemFieldRequest->getFieldType());
-        $selectedField->setFieldId($type->getId());
+        $fieldTypeId = $this->editSystemFieldRequest->getFieldType();
+        $type = $this->mapFieldTypeRepository->find($fieldTypeId);
+
+        if ($type === null) {
+            throw new RuntimeException(sprintf('fieldType with id %d does not exist', $fieldTypeId));
+        }
+        $selectedField->setFieldType($type);
 
         $this->starSystemMapRepository->save($selectedField);
 
