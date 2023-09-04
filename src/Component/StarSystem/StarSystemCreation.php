@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\StarSystem;
 
 use RuntimeException;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -33,6 +34,8 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
     private StarsystemGeneratorInterface $starsystemGenerator;
 
+    private StuRandom $stuRandom;
+
     private LoggerUtilInterface $loggerUtil;
 
     /** @var array<int, MapFieldTypeInterface> */
@@ -44,6 +47,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
         StarsystemGeneratorInterface $starsystemGenerator,
+        StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->starSystemRepository = $starSystemRepository;
@@ -51,6 +55,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->starsystemGenerator = $starsystemGenerator;
+        $this->stuRandom = $stuRandom;
 
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -106,8 +111,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $starSystem->setName($this->getRandomSystemName());
         $starSystem->setMaxX($mapData->getWidth());
         $starSystem->setMaxY($mapData->getHeight());
-        //TODO bonus felder
-        //database entry erstellen
+        $starSystem->setBonusFieldAmount($this->stuRandom->rand(0, 3, true, 2));
         $this->createSystemMapEntries($starSystem, $mapData);
     }
 

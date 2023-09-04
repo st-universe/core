@@ -7,10 +7,10 @@ namespace Stu\Module\Control;
  */
 class StuRandom
 {
-    public function rand(int $min, int $max, bool $useStandardNormalDistribution = false): int
+    public function rand(int $min, int $max, bool $useStandardNormalDistribution = false, int $mean = null): int
     {
         if ($useStandardNormalDistribution) {
-            return $this->generateRandomValueStandardNormalDistribution($min, $max);
+            return $this->generateRandomValueStandardNormalDistribution($min, $max, $mean);
         }
 
         return random_int($min, $max);
@@ -21,14 +21,14 @@ class StuRandom
         return array_rand($array);
     }
 
-    private function generateRandomValueStandardNormalDistribution(int $min, int $max): int
+    private function generateRandomValueStandardNormalDistribution(int $min, int $max, ?int $mean): int
     {
-        $mean = (int)(($min + $max) / 2); // MW
-        $stdDeviation = (int) ($mean / 2.5); // FWHM
+        $usedMean = $mean === null ? (($min + $max) / 2) : $mean; // MW
+        $stdDeviation = $usedMean / 2.5; // FWHM
 
         do {
             $value = random_int($min, $max);
-            $probability = exp(-0.5 * (($value - $mean) / $stdDeviation) ** 2); // normal distribution
+            $probability = exp(-0.5 * (($value - $usedMean) / $stdDeviation) ** 2); // normal distribution
             $randomProbability = random_int(0, mt_getrandmax()) / mt_getrandmax();
 
             if ($randomProbability <= $probability) {
