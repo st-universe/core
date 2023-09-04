@@ -12,6 +12,8 @@ use Stu\StarsystemGenerator\Component\MassCenterGenerator;
 use Stu\StarsystemGenerator\Component\MassCenterGeneratorInterface;
 use Stu\StarsystemGenerator\Component\PlanetMoonGenerator;
 use Stu\StarsystemGenerator\Component\PlanetMoonGeneratorInterface;
+use Stu\StarsystemGenerator\Component\PlanetPlacement;
+use Stu\StarsystemGenerator\Component\PlanetPlacementInterface;
 use Stu\StarsystemGenerator\Component\SizeGenerator;
 use Stu\StarsystemGenerator\Component\SizeGeneratorInterface;
 use Stu\StarsystemGenerator\Config\PlanetMoonProbabilities;
@@ -27,6 +29,7 @@ return [
     MassCenterGeneratorInterface::class => autowire(MassCenterGenerator::class),
     AsteroidRingGeneratorInterface::class => autowire(AsteroidRingGenerator::class),
     PlanetMoonProbabilitiesInterface::class => autowire(PlanetMoonProbabilities::class),
+    PlanetPlacementInterface::class => autowire(PlanetPlacement::class),
     PlanetMoonGeneratorInterface::class => autowire(PlanetMoonGenerator::class),
     StarsystemGeneratorInterface::class => autowire(StarsystemGenerator::class),
     StarSystemCreationInterface::class => autowire(StarSystemCreation::class),
