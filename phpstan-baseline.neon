@@ -362,11 +362,6 @@ parameters:
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/EditSystemField/EditSystemField.php
-
-		-
 			message: "#^Cannot call method close\\(\\) on Directory\\|false\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/StartMirrorWorld.php
@@ -5720,16 +5715,6 @@ parameters:
 			path: src/admin/scripts/generate_rump_dbentries.php
 
 		-
-			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\:\\:save\\(\\)\\.$#"
-			count: 1
-			path: src/admin/scripts/generate_starsystem_dbentries.php
-
-		-
-			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\:\\:setDatabaseId\\(\\)\\.$#"
-			count: 1
-			path: src/admin/scripts/generate_starsystem_dbentries.php
-
-		-
 			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"
 			count: 1
 			path: src/admin/scripts/generate_starsystem_dbentries.php
@@ -5738,16 +5723,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$typeObject of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setTypeObject\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface\\|null given\\.$#"
 			count: 1
 			path: src/admin/scripts/generate_starsystem_dbentries.php
-
-		-
-			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface\\:\\:save\\(\\)\\.$#"
-			count: 1
-			path: src/admin/scripts/generate_starsystemtype_dbentries.php
-
-		-
-			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface\\:\\:setDatabaseId\\(\\)\\.$#"
-			count: 1
-			path: src/admin/scripts/generate_starsystemtype_dbentries.php
 
 		-
 			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"

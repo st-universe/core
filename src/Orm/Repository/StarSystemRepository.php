@@ -104,4 +104,44 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
 
         return current($freeNames);
     }
+
+    public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ss FROM %s ss
+                    JOIN %s m
+                    WITH m.systems_id = ss.id
+                    WHERE ss.id < :currentId
+                    AND m.layer = :layer
+                    ORDER BY ss.id DESC',
+                    StarSystem::class,
+                    Map::class
+                )
+            )
+            ->setParameters(['layer' => $current->getLayer(), 'currentId' => $current->getId()])
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
+    public function getNextStarSystem(StarSystemInterface $current): ?StarSystemInterface
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ss FROM %s ss
+                    JOIN %s m
+                    WITH m.systems_id = ss.id
+                    WHERE ss.id > :currentId
+                    AND m.layer = :layer
+                    ORDER BY ss.id ASC',
+                    StarSystem::class,
+                    Map::class
+                )
+            )
+            ->setParameters(['layer' => $current->getLayer(), 'currentId' => $current->getId()])
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
 }

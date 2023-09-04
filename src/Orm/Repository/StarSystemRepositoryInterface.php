@@ -18,6 +18,7 @@ interface StarSystemRepositoryInterface extends ObjectRepository
     public function prototype(): StarSystemInterface;
 
     public function save(StarSystemInterface $storage): void;
+
     /**
      * @return array<StarSystemInterface>
      */
@@ -31,4 +32,8 @@ interface StarSystemRepositoryInterface extends ObjectRepository
     public function getNumberOfSystemsToGenerate(LayerInterface $layer): int;
 
     public function getRandomFreeSystemName(): StarSystemNameInterface;
+
+    public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface;
+
+    public function getNextStarSystem(StarSystemInterface $current): ?StarSystemInterface;
 }

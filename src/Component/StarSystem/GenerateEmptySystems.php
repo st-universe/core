@@ -47,6 +47,6 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
             }
         }
 
-        return count($mapArray);
+        return $count;
     }
 }

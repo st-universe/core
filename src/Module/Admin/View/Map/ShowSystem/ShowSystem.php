@@ -59,5 +59,7 @@ final class ShowSystem implements ViewControllerInterface
         $game->setTemplateVar('SYSTEM_ID', $system->getId());
         $game->setTemplateVar('HEAD_ROW', range(1, $system->getMaxX()));
         $game->setTemplateVar('MAP_FIELDS', $fields);
+        $game->setTemplateVar('PREVIOUS', $this->starSystemRepository->getPreviousStarSystem($system));
+        $game->setTemplateVar('NEXT', $this->starSystemRepository->getNextStarSystem($system));
     }
 }
