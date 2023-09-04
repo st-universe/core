@@ -22,40 +22,42 @@
 		{% endfor %}
 	</table>
 </div>
-<div style="margin-left: 10px; float: left">
-	<table class="tcal">
-		{% if SYSTEM.getMapField %}
-		<tr>
-			<td>System-Koordinaten</td>
-			<td style="text-align: right;">{{ SYSTEM.getMapField.getSectorString }}</td>
-		</tr>
-		{% endif %}
-		<tr>
-			<td>System-Typ</td>
-			<td style="text-align: right;">{{ SYSTEM.getType.getDescription }}</td>
-		</tr>
-	</table>
-</div>
-<div style="margin-left: 10px; margin-top: 10px; width: 100px; float: left">
-	<table class="tcal">
-		<tr>
-			<td>
-				{% if PREVIOUS %}
-				<a href="/admin/?SHOW_SYSTEM=1&sysid={{ PREVIOUS.getId }}" style="display: block;">&lt;</a>
-				{% else %}
-				x
-				{% endif %}
-			</td>
-			<td style="text-align: center;"><a href="/admin/?REGENERATE_SYSTEM=1&sysid={{ SYSTEM.getId }}"><img
-						src="/assets/buttons/update1.png" title="System neu generieren" /></a></td>
-			<td style="text-align: right;">
-				{% if NEXT %}
-				<a href="/admin/?SHOW_SYSTEM=1&sysid={{ NEXT.getId }}" style="display: block;">&gt;</a>
-				{% else %}
-				x
-				{% endif %}
-			</td>
-		</tr>
-	</table>
+<div style="margin-left: 10px; float: left;">
+	<div>
+		<table class=" tcal">
+			{% if SYSTEM.getMapField %}
+			<tr>
+				<td>System-Koordinaten</td>
+				<td style="text-align: right;">{{ SYSTEM.getMapField.getSectorString }}</td>
+			</tr>
+			{% endif %}
+			<tr>
+				<td>System-Typ</td>
+				<td style="text-align: right;">{{ SYSTEM.getType.getDescription }}</td>
+			</tr>
+		</table>
+	</div>
+	<div style="margin-top: 10px;">
+		<table class="tcal">
+			<tr>
+				<td>
+					{% if PREVIOUS %}
+					<a href="/admin/?SHOW_SYSTEM=1&sysid={{ PREVIOUS.getId }}" style="display: block;">&lt;</a>
+					{% else %}
+					x
+					{% endif %}
+				</td>
+				<td style="text-align: center;"><a href="/admin/?REGENERATE_SYSTEM=1&sysid={{ SYSTEM.getId }}"><img
+							src="/assets/buttons/update1.png" title="System neu generieren" /></a></td>
+				<td style="text-align: right;">
+					{% if NEXT %}
+					<a href="/admin/?SHOW_SYSTEM=1&sysid={{ NEXT.getId }}" style="display: block;">&gt;</a>
+					{% else %}
+					x
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
 {% endblock %}
