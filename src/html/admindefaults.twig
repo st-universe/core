@@ -166,7 +166,7 @@
     {% if EXECUTEJSAFTERRENDER %}
     <script language="Javascript">
         {% for item in EXECUTEJSAFTERRENDER %}
-        { { item } }
+        {{ item }}
         {% endfor %}
     </script>
     {% endif %}
