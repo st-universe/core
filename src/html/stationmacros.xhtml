@@ -216,20 +216,22 @@
             tal:attributes="class entry/getCSSClass" tal:content="entry/getRow">.</td>
           <td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
             tal:attributes="class entry/getCSSClass"
-            style="background-image: url(assets/map/${entry/getMapfieldType}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
+            style="background-image: url(assets/map/starmap/${entry/getSystemBackgroundId}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
             <tal:block tal:condition="entry/isClickable">
               <div style="width: ${viewportScale}vw; height: ${viewportScale}vw; top: 0px !important;"
                 class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
+                <img src="assets/map/${entry/getFieldGraphicID}.png" class="lssSubspaceOverShield"
+                  style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                 <tal:block tal:condition="entry/getShieldState">
                   <img src="assets/planets/s1.png" class="lssColoShield"
-                    style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+                    style="width: ${viewportScale}vw; height: ${viewportScale}vw; z-index: 2;" />
                   <img tal:condition="php:SHIP.getSubspaceState() AND code" src="assets/subspace/generated/${code}.png"
                     class="lssSubspaceOverShield"
-                    style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+                    style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                 </tal:block>
                 <tal:block tal:condition="not:entry/getShieldState">
                   <img tal:condition="php:SHIP.getSubspaceState() AND code" src="assets/subspace/generated/${code}.png"
-                    style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+                    style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                 </tal:block>
                 <div style="font-size: ${viewportFont}vw;" class="centered" tal:content="entry/getDisplayCount">.
                 </div>
@@ -242,11 +244,11 @@
                     style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                   <img tal:condition="php:SHIP.getSubspaceState() AND code" src="assets/subspace/generated/${code}.png"
                     class="lssSubspaceOverShield"
-                    style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+                    style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                 </tal:block>
                 <tal:block tal:condition="not:entry/getShieldState">
                   <img tal:condition="php:SHIP.getSubspaceState() AND code" src="assets/subspace/generated/${code}.png"
-                    style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+                    style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                 </tal:block>
                 <div style="font-size: ${viewportFont}vw;" class="centered" tal:content="entry/getDisplayCount">.
                 </div>
