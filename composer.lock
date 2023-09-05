@@ -3928,7 +3928,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/starsystem-generator.git",
-                "reference": "3fbbe68638ff96f957d778efbe7913c694ab3caf"
+                "reference": "adbf781be20aa36288a5d7b0c334f20a5d12f967"
             },
             "require": {
                 "php": "^8.2"
@@ -3991,7 +3991,7 @@
                 "MIT"
             ],
             "description": "ST-Universe Starsystem Generator Source Code",
-            "time": "2023-09-04T11:57:02+00:00"
+            "time": "2023-09-05T15:14:28+00:00"
         },
         {
             "name": "symfony/cache",
@@ -7760,16 +7760,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.3.2",
+            "version": "10.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "0dafb1175c366dd274eaa9a625e914451506bcd1"
+                "reference": "241ed4dd0db1c096984e62d414c4e1ac8d5dbff4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0dafb1175c366dd274eaa9a625e914451506bcd1",
-                "reference": "0dafb1175c366dd274eaa9a625e914451506bcd1",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/241ed4dd0db1c096984e62d414c4e1ac8d5dbff4",
+                "reference": "241ed4dd0db1c096984e62d414c4e1ac8d5dbff4",
                 "shasum": ""
             },
             "require": {
@@ -7841,7 +7841,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.3.2"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.3.3"
             },
             "funding": [
                 {
@@ -7857,7 +7857,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-15T05:34:23+00:00"
+            "time": "2023-09-05T04:34:51+00:00"
         },
         {
             "name": "psr/http-client",
@@ -8991,7 +8991,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "e1f3911918b8f0b84ef74a79a2b0b86e6466c763"
+                "reference": "768dd4b2e64c79877f5d690bde052e553a561137"
             },
             "require": {
                 "ext-gd": "*",
@@ -9004,7 +9004,7 @@
                 "proprietary"
             ],
             "description": "STU Assets",
-            "time": "2023-09-04T12:19:54+00:00"
+            "time": "2023-09-05T06:54:11+00:00"
         },
         {
             "name": "symfony/finder",
