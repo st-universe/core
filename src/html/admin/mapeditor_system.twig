@@ -45,7 +45,7 @@
 	<div style="margin-top: 10px;">
 		<table class="tcal">
 			<tr>
-				<td>
+				<td title="System zurück (Pfeiltaste links)">
 					{% if PREVIOUS %}
 					<a href="/admin/?SHOW_SYSTEM=1&sysid={{ PREVIOUS.getId }}" style="display: block;">&lt;</a>
 					{% else %}
@@ -53,8 +53,9 @@
 					{% endif %}
 				</td>
 				<td style="text-align: center;"><a href="/admin/?REGENERATE_SYSTEM=1&sysid={{ SYSTEM.getId }}"><img
-							src="/assets/buttons/update1.png" title="System neu generieren" /></a></td>
-				<td style="text-align: right;">
+							src="/assets/buttons/update1.png" title="System neu generieren (Pfeiltaste hoch)" /></a>
+				</td>
+				<td title="System vor (Pfeiltaste rechts)" style="text-align: right;">
 					{% if NEXT %}
 					<a href="/admin/?SHOW_SYSTEM=1&sysid={{ NEXT.getId }}" style="display: block;">&gt;</a>
 					{% else %}

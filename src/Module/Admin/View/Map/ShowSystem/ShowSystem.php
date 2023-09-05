@@ -55,11 +55,20 @@ final class ShowSystem implements ViewControllerInterface
             ),
             sprintf(_('System %s editieren'), $system->getName())
         );
+
+        $previousSystem = $this->starSystemRepository->getPreviousStarSystem($system);
+        $nextSystem = $this->starSystemRepository->getNextStarSystem($system);
+
         $game->setPageTitle(_('Sektion anzeigen'));
         $game->setTemplateVar('SYSTEM', $system);
         $game->setTemplateVar('HEAD_ROW', range(1, $system->getMaxX()));
         $game->setTemplateVar('MAP_FIELDS', $fields);
-        $game->setTemplateVar('PREVIOUS', $this->starSystemRepository->getPreviousStarSystem($system));
-        $game->setTemplateVar('NEXT', $this->starSystemRepository->getNextStarSystem($system));
+        $game->setTemplateVar('PREVIOUS', $previousSystem);
+        $game->setTemplateVar('NEXT', $nextSystem);
+
+        $game->addExecuteJS(sprintf('var currentId = %d;', $system->getId()));
+        $game->addExecuteJS(sprintf('var previousId = %d;', $previousSystem === null ? 0 : $previousSystem->getId()));
+        $game->addExecuteJS(sprintf('var nextId = %d;', $nextSystem === null ? 0 : $nextSystem->getId()));
+        $game->addExecuteJS("registerSystemEditorNavKey();");
     }
 }
