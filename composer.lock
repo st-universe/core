@@ -3928,7 +3928,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/starsystem-generator.git",
-                "reference": "7cc7ed35ab1e6512b36baf66ecac99d22a735d16"
+                "reference": "145860794d4d3591dd9cc8478b53ec3f2e01bae6"
             },
             "require": {
                 "php": "^8.2"
@@ -3991,7 +3991,7 @@
                 "MIT"
             ],
             "description": "ST-Universe Starsystem Generator Source Code",
-            "time": "2023-09-06T16:31:53+00:00"
+            "time": "2023-09-06T16:38:05+00:00"
         },
         {
             "name": "symfony/cache",
@@ -8991,7 +8991,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "768dd4b2e64c79877f5d690bde052e553a561137"
+                "reference": "c24a0b6ac336796cefe38de4294bac5221c9451f"
             },
             "require": {
                 "ext-gd": "*",
@@ -9004,7 +9004,7 @@
                 "proprietary"
             ],
             "description": "STU Assets",
-            "time": "2023-09-05T06:54:11+00:00"
+            "time": "2023-09-06T17:37:50+00:00"
         },
         {
             "name": "symfony/finder",
