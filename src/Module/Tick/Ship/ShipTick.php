@@ -355,21 +355,36 @@ final class ShipTick implements ShipTickInterface
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
     {
-        $system = $ship->getSystem();
+        $system = null;
+        $region = null;
+        $message = '';
+        $databaseEntry = null;
+
+        if ($ship->getMap() !== null) {
+            $region = $ship->getMap()->getMapRegion();
+            if ($region !== null) {
+                $message = 'der Region ' . $ship->getMap()->getMapRegion()->getDescription();
+                $databaseEntry = $region->getDatabaseEntry();
+            }
+        }
+        if ($ship->getSystem() != null) {
+            $system = $ship->getSystem();
+            $message = 'des Systems ' . $ship->getSystem()->getName();
+            $databaseEntry = $system->getDatabaseEntry();
+        }
 
         if (
             $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING
-            && $system !== null
+            && ($system !== null || $region !== null)
             && $this->game->getCurrentRound()->getTurn() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
             $this->astroEntryLib->finish($ship);
 
             $this->msg[] = sprintf(
-                _('Die Kartographierung des Systems %s wurde vollendet'),
-                $system->getName()
+                _('Die Kartographierung %s wurde vollendet'),
+                $message
             );
 
-            $databaseEntry = $system->getDatabaseEntry();
             if ($databaseEntry !== null) {
                 $userId = $ship->getUser()->getId();
                 $databaseEntryId = $databaseEntry->getId();

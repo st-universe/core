@@ -17,6 +17,8 @@ interface AstroEntryRepositoryInterface extends ObjectRepository
 
     public function getByUserAndSystem(int $userId, ?int $starSystemId): ?AstronomicalEntryInterface;
 
+    public function getByUserAndRegion(int $userId, ?int $regionId): ?AstronomicalEntryInterface;
+
     public function save(AstronomicalEntryInterface $entry): void;
 
     public function truncateAllAstroEntries(): void;

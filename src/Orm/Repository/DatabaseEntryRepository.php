@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use PhpTal\Php\Attribute\I18N\Data;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 
@@ -38,5 +39,12 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         $em = $this->getEntityManager();
 
         $em->persist($entry);
+    }
+
+    public function getById(int $Id): ?DatabaseEntryInterface
+    {
+        return $this->findOneBy([
+            'id' => $Id
+        ]);
     }
 }

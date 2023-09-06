@@ -28,6 +28,16 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         );
     }
 
+    public function getByUserAndRegion(int $userId, ?int $regionId): ?AstronomicalEntryInterface
+    {
+        return $this->findOneBy(
+            [
+                'user_id' => $userId,
+                'region_id' => $regionId
+            ]
+        );
+    }
+
     public function save(AstronomicalEntryInterface $entry): void
     {
         $em = $this->getEntityManager();

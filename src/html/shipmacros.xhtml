@@ -1421,6 +1421,16 @@
     </tr>
   </table>
 </metal:macro>
+<metal:macro metal:define-macro="astroregionentry">
+  <table class="tcal">
+    <tbody>
+      <tr tal:repeat="entry ENTRY">
+        <td><span tal:content="entry/getCx"></span>|<span tal:content="entry/getCy"></span></td>
+      </tr>
+    </tbody>
+  </table>
+</metal:macro>
+
 <metal:macro metal:define-macro="colonization">
   <div tal:attributes="style string:${COLONY_SURFACE/getSurfaceTileStyle}" tal:define="sstr THIS/getSessionString">
     <tal:block tal:repeat="field COLONY_SURFACE/getSurface">

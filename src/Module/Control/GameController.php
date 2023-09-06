@@ -5,6 +5,7 @@ namespace Stu\Module\Control;
 use Throwable;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpTal\Php\Attribute\I18N\Data;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Game\GameEnum;
@@ -49,6 +50,7 @@ use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -84,6 +86,8 @@ final class GameController implements GameControllerInterface
     private Ubench $benchmark;
 
     private CreateDatabaseEntryInterface $createDatabaseEntry;
+
+    private DatabaseEntryRepositoryInterface $databaseEntryRepository;
 
     private GameRequestRepositoryInterface $gameRequestRepository;
 
@@ -150,6 +154,7 @@ final class GameController implements GameControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
+        DatabaseEntryRepositoryInterface $databaseEntryRepository,
         CreateDatabaseEntryInterface $createDatabaseEntry,
         GameRequestRepositoryInterface $gameRequestRepository,
         GameTalRendererInterface $gameTalRenderer,
@@ -179,6 +184,7 @@ final class GameController implements GameControllerInterface
         $this->uuidGenerator = $uuidGenerator;
         $this->gameRequestSaver = $gameRequestSaver;
         $this->eventDispatcher = $eventDispatcher;
+        $this->databaseEntryRepository = $databaseEntryRepository;
     }
 
     /**
@@ -473,7 +479,7 @@ final class GameController implements GameControllerInterface
     {
         $userId = $this->getUser()->getId();
 
-        if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
+        if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false && $this->databaseEntryRepository->getById($databaseEntryId)->getCategoryId() != 4) {
             $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($this->getUser(), $databaseEntryId);
 
             if ($entry !== null) {

@@ -279,4 +279,53 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ])
             ->getResult();
     }
+
+    public function getWithEmptySystem(LayerInterface $layer): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m from %s m
+                    WHERE m.system_type_id IS NOT NULL
+                    AND m.systems_id IS NULL
+                    AND m.layer = :layer',
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'layer' => $layer
+            ])
+            ->getResult();
+    }
+
+    public function getRandomFieldsForAstroMeasurement(int $regionId): array
+    {
+        $result = [];
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+
+        $regionFields = $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT m.id as id
+                FROM stu_map m JOIN stu_map_ftypes mf ON m.field_id = mf.id
+                WHERE m.region_id = :regionId
+                AND mf.passable = TRUE
+                ORDER BY RANDOM()
+                ',
+                $rsm
+            )
+            ->setParameters([
+                'regionId' => $regionId,
+            ])
+            ->getResult();
+
+        $result = array_merge($result, $regionFields);
+        return array_values($result);
+    }
+
+    public function getById(int $id): ?MapInterface
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
 }

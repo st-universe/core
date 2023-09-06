@@ -241,26 +241,49 @@ final class ShowShip implements ViewControllerInterface
 
     private function getAstroState(ShipInterface $ship, GameControllerInterface $game): AstroStateWrapper
     {
-        $system = $ship->getSystem() ?? $ship->isOverSystem();
+        if ($ship->getSystem() != null) {
+            $system = $ship->getSystem() ?? $ship->isOverSystem();
+            $astroEntry = null;
+            if ($system === null || $system->getDatabaseEntry() === null) {
+                $state = AstronomicalMappingEnum::NONE;
+            } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
+                $state = AstronomicalMappingEnum::DONE;
+            } else {
+                $astroEntry = $this->astroEntryRepository->getByUserAndSystem(
+                    $ship->getUser()->getId(),
+                    $system->getId()
+                );
 
-        $astroEntry = null;
-        if ($system === null || $system->getDatabaseEntry() === null) {
-            $state = AstronomicalMappingEnum::NONE;
-        } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
-            $state = AstronomicalMappingEnum::DONE;
-        } else {
-            $astroEntry = $this->astroEntryRepository->getByUserAndSystem(
-                $ship->getUser()->getId(),
-                $system->getId()
-            );
+                $state = $astroEntry === null ? AstronomicalMappingEnum::PLANNABLE : $astroEntry->getState();
+            }
+            $turnsLeft = null;
+            if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
+                $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
+            }
+            return new AstroStateWrapper($state, $turnsLeft);
+        }
 
-            $state = $astroEntry === null ? AstronomicalMappingEnum::PLANNABLE : $astroEntry->getState();
+        if ($ship->getMap() !== null) {
+            $region = $ship->getMap()->getMapRegion();
+            $astroEntry = null;
+            if ($region === null || $region->getDatabaseEntry() === null) {
+                $state = AstronomicalMappingEnum::NONE;
+            } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $region->getDatabaseEntry()->getId())) {
+                $state = AstronomicalMappingEnum::DONE;
+            } else {
+                $astroEntry = $this->astroEntryRepository->getByUserAndRegion(
+                    $ship->getUser()->getId(),
+                    $region->getId()
+                );
+
+                $state = $astroEntry === null ? AstronomicalMappingEnum::PLANNABLE : $astroEntry->getState();
+            }
+            $turnsLeft = null;
+            if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
+                $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
+            }
+            return new AstroStateWrapper($state, $turnsLeft);
         }
-        $turnsLeft = null;
-        if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
-            $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
-        }
-        return new AstroStateWrapper($state, $turnsLeft);
     }
 
     private function doConstructionStuff(ShipInterface $ship, GameControllerInterface $game): void

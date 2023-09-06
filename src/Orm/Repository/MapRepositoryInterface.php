@@ -68,4 +68,13 @@ interface MapRepositoryInterface extends ObjectRepository
      * @return array<MapInterface>
      */
     public function getForSubspaceEllipseCreation(): array;
+
+    /**
+     * @return array<MapInterface>
+     */
+    public function getWithEmptySystem(LayerInterface $layer): array;
+
+    public function getRandomFieldsForAstroMeasurement(int $regionId): array;
+
+    public function getById(int $id): ?MapInterface;
 }

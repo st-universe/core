@@ -20,9 +20,13 @@ interface AstronomicalEntryInterface
 
     public function setAstroStartTurn(?int $turn): AstronomicalEntryInterface;
 
-    public function getSystem(): StarSystemInterface;
+    public function getSystem(): ?StarSystemInterface;
 
     public function setSystem(StarSystemInterface $starSystem): AstronomicalEntryInterface;
+
+    public function getRegion(): ?MapRegionInterface;
+
+    public function setRegion(MapRegionInterface $region): AstronomicalEntryInterface;
 
     public function getStarsystemMap1(): ?StarSystemMapInterface;
 
@@ -43,6 +47,10 @@ interface AstronomicalEntryInterface
     public function getStarsystemMap5(): ?StarSystemMapInterface;
 
     public function setStarsystemMap5(?StarSystemMapInterface $map): AstronomicalEntryInterface;
+
+    public function getRegionFields(): ?string;
+
+    public function setRegionFields(?string $regionfields): AstronomicalEntryInterface;
 
     public function isMeasured(): bool;
 }

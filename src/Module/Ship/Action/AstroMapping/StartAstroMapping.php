@@ -45,14 +45,23 @@ final class StartAstroMapping implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-
+        $message = '';
         $ship = $wrapper->get();
+        $entry = null;
 
-        if ($ship->getSystem() === null) {
-            return;
+        if ($ship->getSystem() != null) {
+
+
+            $entry = $this->astroEntryRepository->getByUserAndSystem($userId, $ship->getSystem()->getId());
+            $message = 'des Systems';
         }
 
-        $entry = $this->astroEntryRepository->getByUserAndSystem($userId, $ship->getSystem()->getId());
+        if ($ship->getMap() != null) {
+            if ($ship->getMap()->getMapRegion() != null) {
+                $entry = $this->astroEntryRepository->getByUserAndRegion($userId, $ship->getMap()->getMapRegion()->getId());
+                $message = 'der Region';
+            }
+        }
 
         if ($entry === null || $entry->getState() !== AstronomicalMappingEnum::MEASURED) {
             return;
@@ -91,8 +100,9 @@ final class StartAstroMapping implements ActionControllerInterface
         $this->shipRepository->save($ship);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
-        $game->addInformation("Die Kartographierung des Systems wird finalisiert");
+        $game->addInformation(sprintf(_("Die Kartographierung %s wird finalisiert"), $message));
     }
+
 
     public function performSessionCheck(): bool
     {

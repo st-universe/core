@@ -91,6 +91,9 @@ final class EnterWaypoint implements EnterWaypointInterface
         if ($waypoint instanceof StarSystemMapInterface) {
             $this->checkAstronomicalWaypoints->checkWaypoint($ship, $waypoint, $informations);
         }
+        if ($waypoint instanceof MapInterface) {
+            $this->checkAstronomicalWaypoints->checkWaypoint($ship, $waypoint, $informations);
+        }
     }
 
     private function isWormhole(MapInterface|StarSystemMapInterface $waypoint): bool

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Cache\Region;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -52,10 +53,10 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     private ?int $astro_start_turn = null;
 
     /**
-     * @Column(type="integer") *
+     * @Column(type="integer", nullable=true) *
      *
      */
-    private int $systems_id;
+    private ?int $systems_id = null;
 
     /**
      * @Column(type="integer", nullable=true) *
@@ -86,6 +87,18 @@ class AstronomicalEntry implements AstronomicalEntryInterface
      *
      */
     private ?int $starsystem_map_id_5 = null;
+
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     */
+    private ?int $region_id = null;
+
+    /**
+     * @Column(type="text", nullable=true) *
+     * 
+     */
+    private ?string $region_fields = null;
 
     /**
      *
@@ -136,6 +149,13 @@ class AstronomicalEntry implements AstronomicalEntryInterface
      */
     private ?StarSystemMapInterface $starsystem_map_5 = null;
 
+    /**
+     *
+     * @ManyToOne(targetEntity="MapRegion")
+     * @JoinColumn(name="region_id", referencedColumnName="id")
+     */
+    private MapRegionInterface $region;
+
     public function getId(): int
     {
         return $this->id;
@@ -179,7 +199,7 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this;
     }
 
-    public function getSystem(): StarSystemInterface
+    public function getSystem(): ?StarSystemInterface
     {
         return $this->starSystem;
     }
@@ -187,6 +207,17 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     public function setSystem(StarSystemInterface $starSystem): AstronomicalEntryInterface
     {
         $this->starSystem = $starSystem;
+        return $this;
+    }
+
+    public function getRegion(): ?MapRegionInterface
+    {
+        return $this->region;
+    }
+
+    public function setRegion(MapRegionInterface $region): AstronomicalEntryInterface
+    {
+        $this->region = $region;
         return $this;
     }
 
@@ -245,12 +276,28 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this;
     }
 
+    public function getRegionFields(): ?string
+    {
+        return $this->region_fields;
+    }
+
+    public function setRegionFields(?string $regionfields): AstronomicalEntryInterface
+    {
+        $this->region_fields = $regionfields;
+        return $this;
+    }
+
     public function isMeasured(): bool
     {
-        return $this->starsystem_map_1 == null
-            && $this->starsystem_map_2 == null
-            && $this->starsystem_map_3 == null
-            && $this->starsystem_map_4 == null
-            && $this->starsystem_map_5 == null;
+        if ($this->getSystem() != null) {
+            return $this->starsystem_map_1 == null
+                && $this->starsystem_map_2 == null
+                && $this->starsystem_map_3 == null
+                && $this->starsystem_map_4 == null
+                && $this->starsystem_map_5 == null;
+        }
+        if ($this->getRegion() != null) {
+            return $this->region_fields == null;
+        }
     }
 }

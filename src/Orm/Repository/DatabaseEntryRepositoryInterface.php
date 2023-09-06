@@ -23,4 +23,6 @@ interface DatabaseEntryRepositoryInterface extends ObjectRepository
     public function prototype(): DatabaseEntryInterface;
 
     public function save(DatabaseEntryInterface $entry): void;
+
+    public function getById(int $Id): ?DatabaseEntryInterface;
 }
