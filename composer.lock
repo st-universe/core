@@ -3928,7 +3928,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/starsystem-generator.git",
-                "reference": "adbf781be20aa36288a5d7b0c334f20a5d12f967"
+                "reference": "748deddbf84f498d5e3c9610c9dd19468e540688"
             },
             "require": {
                 "php": "^8.2"
@@ -3991,7 +3991,7 @@
                 "MIT"
             ],
             "description": "ST-Universe Starsystem Generator Source Code",
-            "time": "2023-09-05T15:14:28+00:00"
+            "time": "2023-09-06T16:07:58+00:00"
         },
         {
             "name": "symfony/cache",
