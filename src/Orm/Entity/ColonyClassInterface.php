@@ -50,11 +50,11 @@ interface ColonyClassInterface
 
     public function hasRing(): bool;
 
-    public function getMinRot(): ?int;
+    public function getMinRotation(): int;
 
-    public function setMinROt(?int $min_rot): ColonyClassInterface;
+    public function setMinRotation(int $rotation): ColonyClassInterface;
 
-    public function getMaxRot(): ?int;
+    public function getMaxRotation(): int;
 
-    public function setMaxROt(?int $max_rot): ColonyClassInterface;
+    public function setMaxRotation(int $rotation): ColonyClassInterface;
 }
