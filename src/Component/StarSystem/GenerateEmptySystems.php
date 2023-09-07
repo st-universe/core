@@ -6,6 +6,7 @@ namespace Stu\Component\StarSystem;
 
 use RuntimeException;
 use Stu\Component\StarSystem\StarSystemCreationInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -34,11 +35,18 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
         $this->starSystemCreation = $starSystemCreation;
     }
 
-    public function generate(int $layerId): int
+    public function generate(int $layerId, ?GameControllerInterface $game): int
     {
         $layer = $this->layerRepository->find($layerId);
         if ($layer === null) {
             throw new RuntimeException('layer does not exist');
+        }
+
+        if ($layer->isFinished()) {
+            if ($game !== null) {
+                $game->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
+            }
+            return 0;
         }
 
         $mapArray = $this->mapRepository->getWithEmptySystem($layer);
