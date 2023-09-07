@@ -49,4 +49,12 @@ interface ColonyClassInterface
     public function getColonyClassDeposits(): Collection;
 
     public function hasRing(): bool;
+
+    public function getMinRot(): ?int;
+
+    public function setMinROt(?int $min_rot): ColonyClassInterface;
+
+    public function getMaxRot(): ?int;
+
+    public function setMaxROt(?int $max_rot): ColonyClassInterface;
 }
