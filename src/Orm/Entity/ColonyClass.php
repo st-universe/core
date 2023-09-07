@@ -79,6 +79,18 @@ class ColonyClass implements ColonyClassInterface
     private bool $allow_start = false;
 
     /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $min_rot = null;
+
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $max_rot = null;
+
+    /**
      * @var DatabaseEntryInterface|null
      *
      * @OneToOne(targetEntity="DatabaseEntry")
@@ -203,5 +215,29 @@ class ColonyClass implements ColonyClassInterface
     public function hasRing(): bool
     {
         return $this->getSpecialId() == ColonyEnum::COLONY_CLASS_SPECIAL_RING;
+    }
+
+    public function getMinRot(): ?int
+    {
+        return $this->min_rot;
+    }
+
+    public function setMinROt(?int $min_rot): ColonyClassInterface
+    {
+        $this->min_rot = $min_rot;
+
+        return $this;
+    }
+
+    public function getMaxRot(): ?int
+    {
+        return $this->max_rot;
+    }
+
+    public function setMaxROt(?int $max_rot): ColonyClassInterface
+    {
+        $this->max_rot = $max_rot;
+
+        return $this;
     }
 }
