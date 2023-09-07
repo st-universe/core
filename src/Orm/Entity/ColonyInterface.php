@@ -84,6 +84,8 @@ interface ColonyInterface
 
     public function getRotationFactor(): int;
 
+    public function setRotationFactor(int $rotationFactor): ColonyInterface;
+
     public function getRotationTime(): int;
 
     public function getColonyTimeSeconds(): int;
@@ -111,6 +113,8 @@ interface ColonyInterface
     public function isInSystem(): bool;
 
     public function getStarsystemMap(): ?StarSystemMapInterface;
+
+    public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface;
 
     public function getSystem(): StarSystemInterface;
 

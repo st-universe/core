@@ -13,4 +13,5 @@ return [
     ColonyStorageManagerInterface::class => autowire(ColonyStorageManager::class),
     OrbitShipListRetrieverInterface::class => autowire(OrbitShipListRetriever::class),
     ColonyFunctionManagerInterface::class => autowire(ColonyFunctionManager::class),
+    ColonyCreationInterface::class => autowire(ColonyCreation::class),
 ];

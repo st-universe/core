@@ -171,7 +171,7 @@ class Colony implements ColonyInterface
     /**
      *
      * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
-     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
+     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?StarSystemMapInterface $starsystem_map = null;
 
@@ -493,6 +493,13 @@ class Colony implements ColonyInterface
         return $this->rotation_factor;
     }
 
+    public function setRotationFactor(int $rotationFactor): ColonyInterface
+    {
+        $this->rotation_factor = $rotationFactor;
+
+        return $this;
+    }
+
     public function getRotationTime(): int
     {
         return (int) (TimeConstants::ONE_DAY_IN_SECONDS * $this->getRotationFactor() / 100);
@@ -601,6 +608,13 @@ class Colony implements ColonyInterface
     public function getStarsystemMap(): ?StarSystemMapInterface
     {
         return $this->starsystem_map;
+    }
+
+    public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface
+    {
+        $this->starsystem_map = $systemMap;
+
+        return $this;
     }
 
     public function getSystem(): StarSystemInterface
