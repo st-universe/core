@@ -79,16 +79,16 @@ class ColonyClass implements ColonyClassInterface
     private bool $allow_start = false;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $min_rot = null;
+    private int $min_rot = 1;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $max_rot = null;
+    private int $max_rot = 1;
 
     /**
      * @var DatabaseEntryInterface|null
@@ -217,26 +217,26 @@ class ColonyClass implements ColonyClassInterface
         return $this->getSpecialId() == ColonyEnum::COLONY_CLASS_SPECIAL_RING;
     }
 
-    public function getMinRot(): ?int
+    public function getMinRotation(): int
     {
         return $this->min_rot;
     }
 
-    public function setMinROt(?int $min_rot): ColonyClassInterface
+    public function setMinRotation(int $rotation): ColonyClassInterface
     {
-        $this->min_rot = $min_rot;
+        $this->min_rot = $rotation;
 
         return $this;
     }
 
-    public function getMaxRot(): ?int
+    public function getMaxRotation(): int
     {
         return $this->max_rot;
     }
 
-    public function setMaxROt(?int $max_rot): ColonyClassInterface
+    public function setMaxRotation(int $rotation): ColonyClassInterface
     {
-        $this->max_rot = $max_rot;
+        $this->max_rot = $rotation;
 
         return $this;
     }
