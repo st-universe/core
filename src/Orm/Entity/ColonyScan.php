@@ -71,7 +71,7 @@ class ColonyScan implements ColonyScanInterface
     /**
      *
      * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colony_id", referencedColumnName="id")
+     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private ColonyInterface $colony;
 
