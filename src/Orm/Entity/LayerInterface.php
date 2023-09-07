@@ -14,5 +14,7 @@ interface LayerInterface
 
     public function isHidden(): bool;
 
+    public function isFinished(): bool;
+
     public function getSectorId(int $mapCx, int $mapCy): int;
 }

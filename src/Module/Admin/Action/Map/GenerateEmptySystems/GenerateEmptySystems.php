@@ -26,7 +26,7 @@ final class GenerateEmptySystems implements ActionControllerInterface
     {
         $game->setView(ShowMapEditor::VIEW_IDENTIFIER);
 
-        $count = $this->generateEmptySystems->generate(request::getInt('layerid'));
+        $count = $this->generateEmptySystems->generate(request::getInt('layerid'), $game);
 
         $game->addInformation(sprintf('Es wurden %d Systeme generiert.', $count));
     }

@@ -51,6 +51,12 @@ class Layer implements LayerInterface
      */
     private bool $is_hidden;
 
+    /**
+     * @Column(type="boolean", nullable=true)
+     *
+     */
+    private ?bool $is_finished = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -74,6 +80,15 @@ class Layer implements LayerInterface
     public function isHidden(): bool
     {
         return $this->is_hidden;
+    }
+
+    public function isFinished(): bool
+    {
+        if ($this->is_finished === null) {
+            return false;
+        }
+
+        return $this->is_finished;
     }
 
     public function getSectorId(int $mapCx, int $mapCy): int

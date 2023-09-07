@@ -41,7 +41,7 @@ final class GenerateEmptySystemsCommand extends Command
 
         $component = $this->dic->get(GenerateEmptySystemsInterface::class);
 
-        $count = $component->generate($layerid);
+        $count = $component->generate($layerid, null);
 
         $io->ok(
             sprintf('Es wurden %d Systeme generiert.', $count),

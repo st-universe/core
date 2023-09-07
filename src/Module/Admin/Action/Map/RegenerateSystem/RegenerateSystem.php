@@ -44,6 +44,11 @@ final class RegenerateSystem implements ActionControllerInterface
             return;
         }
 
+        if ($map->getLayer()->isFinished()) {
+            $game->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
+            return;
+        }
+
         $systemName = current($this->starSystemRepository->getRandomFreeSystemNames(1));
         if ($systemName === false) {
             throw new RuntimeException('no free system name available');
