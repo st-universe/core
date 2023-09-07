@@ -6,10 +6,10 @@ function showUserLock(userid) {
 
 function registerSystemEditorNavKey() {
 	document.addEventListener("keydown", (event) => {
-		if (event.key === "ArrowLeft") {
+		if (event.key === "ArrowLeft" && previousId > 0) {
 			document.location.href = '?SHOW_SYSTEM=1&sysid=' + previousId;
 		}
-		if (event.key === "ArrowRight") {
+		if (event.key === "ArrowRight" && nextId > 0) {
 			document.location.href = '?SHOW_SYSTEM=1&sysid=' + nextId;
 		}
 		if (event.key === "ArrowUp") {
