@@ -62,7 +62,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
     public function recreateStarSystem(MapInterface $map, string $randomSystemName): ?StarSystemInterface
     {
-        $this->loggerUtil->init('SysGen', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('SysGen', LoggerEnum::LEVEL_ERROR);
 
         $this->loggerUtil->log(sprintf('recreating for map: %s', $map->getSectorString()));
 
