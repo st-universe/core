@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Stu\Component\StarSystem;
 
 use RuntimeException;
+use Stu\Component\Colony\ColonyCreationInterface;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\MapFieldTypeInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\MassCenterTypeInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\StarSystemTypeInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -34,6 +36,8 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
     private StarsystemGeneratorInterface $starsystemGenerator;
 
+    private ColonyCreationInterface $colonyCreation;
+
     private StuRandom $stuRandom;
 
     private LoggerUtilInterface $loggerUtil;
@@ -47,6 +51,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
         StarsystemGeneratorInterface $starsystemGenerator,
+        ColonyCreationInterface $colonyCreation,
         StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -55,6 +60,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->starsystemGenerator = $starsystemGenerator;
+        $this->colonyCreation = $colonyCreation;
         $this->stuRandom = $stuRandom;
 
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -115,26 +121,73 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $starSystem->setMaxX($mapData->getWidth());
         $starSystem->setMaxY($mapData->getHeight());
         $starSystem->setBonusFieldAmount($this->stuRandom->rand(0, 3, true, 2));
-        $this->createSystemMapEntries($starSystem, $mapData);
+
+        $planetMoonIdentifiers = $this->createSystemMapEntries($starSystem, $mapData);
+
+        $this->createColonies($starSystem, $planetMoonIdentifiers);
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function createSystemMapEntries(
         StarSystemInterface $starSystem,
         SystemMapDataInterface $mapData
-    ): void {
+    ): array {
         $fieldData = $mapData->getFieldData();
+
+        $planetMoonIdentifiers = [];
 
         for ($y = 1; $y <= $mapData->getHeight(); $y++) {
             for ($x = 1; $x <= $mapData->getWidth(); $x++) {
                 $index = $x + ($y - 1) * $mapData->getWidth();
 
-                $this->createSystemMap($x, $y, $fieldData[$index], $starSystem);
+                $identifier = $this->createSystemMap(
+                    $index,
+                    $x,
+                    $y,
+                    $fieldData[$index],
+                    $starSystem,
+                    $mapData
+                );
+
+                if ($identifier !== null) {
+                    $planetMoonIdentifiers[sprintf('%d_%d', $x, $y)] = $identifier;
+                }
             }
+        }
+
+        return $planetMoonIdentifiers;
+    }
+
+    /**
+     * @param array<string, string> $planetMoonIdentifiers
+     */
+    private function createColonies(StarSystemInterface $starSystem, array $planetMoonIdentifiers): void
+    {
+        /**
+         * @var array<StarSystemMapInterface>
+         */
+        $systemMapsWithoutColony = array_filter(
+            $starSystem->getFields()->toArray(),
+            fn (StarSystemMapInterface $systemMap) => $systemMap->getFieldType()->getColonyClass() !== null
+        );
+
+        foreach ($systemMapsWithoutColony as $systemMap) {
+            $identifier = $planetMoonIdentifiers[sprintf('%d_%d', $systemMap->getSx(), $systemMap->getSy())];
+            $this->colonyCreation->create($systemMap, $identifier);
         }
     }
 
-    private function createSystemMap(int $x, int $y, int $fieldId, StarSystemInterface $starSystem): void
-    {
+    private function createSystemMap(
+        int $index,
+        int $x,
+        int $y,
+        int $fieldId,
+        StarSystemInterface $starSystem,
+        SystemMapDataInterface $mapData
+    ): ?string {
+
         $systemMap = $this->starSystemMapRepository->prototype();
         $systemMap->setSx($x);
         $systemMap->setSy($y);
@@ -142,8 +195,20 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $systemMap->setFieldType($this->getFieldType($fieldId));
 
         $this->starSystemMapRepository->save($systemMap);
-
         $starSystem->getFields()->add($systemMap);
+
+        $colonyClass = $systemMap->getFieldType()->getColonyClass();
+        if ($colonyClass !== null) {
+            if ($colonyClass->getType() === ColonyTypeEnum::COLONY_TYPE_ASTEROID) {
+                $identifer = sprintf('%s %s', $colonyClass->getName(), $starSystem->getName());
+            } else {
+                $identifer = sprintf('%s %s', $starSystem->getName(), $mapData->getIdentifier($index));
+            }
+
+            return $identifer;
+        }
+
+        return null;
     }
 
     private function getFieldType(int $fieldId): MapFieldTypeInterface
