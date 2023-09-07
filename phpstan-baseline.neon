@@ -1572,21 +1572,6 @@ parameters:
 			path: src/Module/Database/Lib/GraphInfo.php
 
 		-
-			message: "#^Cannot call method getDate\\(\\) on Stu\\\\Orm\\\\Entity\\\\DatabaseUserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryEntryTal\\:\\:getObject\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryEntryTalInterface\\:\\:getObject\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/Tal/DatabaseCategoryEntryTalInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTal\\:\\:getEntries\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Database/View/Category/Tal/DatabaseCategoryTal.php
@@ -1880,46 +1865,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\UserInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/View/Overview/Overview.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:getDistinctExcludeNames\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:getDistinctPositiveDependencyNames\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:getResearchState\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$dependencies type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:\\$excludes type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTechInterface\\:\\:getDistinctExcludeNames\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTechInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTechInterface\\:\\:getDistinctPositiveDependencyNames\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTechInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTechInterface\\:\\:getResearchState\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Research/TalSelectedTechInterface.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Research\\\\TechlistRetriever\\:\\:loadDependencies\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -2780,11 +2725,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/TradeLibFactoryInterface.php
-
-		-
-			message: "#^Parameter \\#1 \\$commodity of method Stu\\\\Orm\\\\Entity\\\\StorageInterface\\:\\:setCommodity\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradePostStorageManager.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
@@ -4735,26 +4675,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Max\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleLevel11Min\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:getModuleMandatory11\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"

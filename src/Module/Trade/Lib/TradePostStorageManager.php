@@ -6,6 +6,7 @@ namespace Stu\Module\Trade\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use InvalidArgumentException;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -51,7 +52,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         if ($this->storageSum === null) {
             $this->storageSum = array_reduce(
                 $this->getStorage()->toArray(),
-                fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+                fn (int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
                 0
             );
         }
@@ -84,7 +85,11 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         if ($stor === null) {
             $stor = $this->storageRepository->prototype();
             $stor->setUser($this->user);
-            $stor->setCommodity($this->commodityRepository->find($commodityId));
+            $commodity = $this->commodityRepository->find($commodityId);
+            if ($commodity === null) {
+                throw new InvalidArgumentException(sprintf('commodityId %d does not exist', $commodityId));
+            }
+            $stor->setCommodity($commodity);
             $stor->setTradePost($this->tradePost);
         }
         $stor->setAmount($stor->getAmount() + $amount);

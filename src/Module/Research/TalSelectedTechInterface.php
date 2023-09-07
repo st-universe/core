@@ -3,6 +3,7 @@
 namespace Stu\Module\Research;
 
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\ResearchedInterface;
 
 interface TalSelectedTechInterface
 {
@@ -24,12 +25,14 @@ interface TalSelectedTechInterface
 
     public function getCommodity(): CommodityInterface;
 
-    public function getResearchState();
+    public function getResearchState(): ?ResearchedInterface;
 
+    /** @return array<string, TechDependency> */
     public function getDistinctExcludeNames(): array;
 
     public function hasExcludes(): bool;
 
+    /** @return array<string, TechDependency> */
     public function getDistinctPositiveDependencyNames(): array;
 
     public function hasPositiveDependencies(): bool;

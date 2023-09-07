@@ -51,7 +51,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
      * @todo Refactor this
      * @see \Stu\Module\Database\View\DatabaseEntry\DatabaseEntry
      */
-    public function getObject()
+    public function getObject(): mixed
     {
         switch ($this->databaseEntry->getCategory()->getId()) {
             case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM:
@@ -103,6 +103,11 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         if ($this->wasDiscovered() === false) {
             return 0;
         }
-        return $this->userDiscovery->getDate();
+        $userDiscovery = $this->userDiscovery;
+        if ($userDiscovery === null) {
+            return 0;
+        }
+
+        return $userDiscovery->getDate();
     }
 }
