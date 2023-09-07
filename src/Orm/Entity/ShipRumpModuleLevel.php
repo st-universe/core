@@ -229,28 +229,28 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
     private int $module_level_8_max = 0;
 
     /**
-     * @Column(type="smallint", nullable=true)
+     * @Column(type="smallint")
      *
      */
-    private ?int $module_level_11 = 0;
+    private int $module_level_11 = 0;
 
     /**
-     * @Column(type="smallint", nullable=true)
+     * @Column(type="smallint")
      *
      */
-    private ?int $module_mandatory_11 = 0;
+    private int $module_mandatory_11 = 0;
 
     /**
-     * @Column(type="smallint", nullable=true)
+     * @Column(type="smallint")
      *
      */
-    private ?int $module_level_11_min = 0;
+    private int $module_level_11_min = 0;
 
     /**
-     * @Column(type="smallint", nullable=true)
+     * @Column(type="smallint")
      *
      */
-    private ?int $module_level_11_max = 0;
+    private int $module_level_11_max = 0;
 
     public function getId(): int
     {

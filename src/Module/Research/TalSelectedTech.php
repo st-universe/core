@@ -6,6 +6,7 @@ namespace Stu\Module\Research;
 
 use Stu\Orm\Entity\ResearchedInterface;
 use Noodlehaus\ConfigInterface;
+use RuntimeException;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\CommodityInterface;
@@ -32,8 +33,10 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     private ?ResearchedInterface $state = null;
 
+    /** @var null|array<string, TechDependency> */
     private ?array $excludes = null;
 
+    /** @var null|array<string, TechDependency> */
     private ?array $dependencies = null;
 
     public function __construct(
@@ -97,7 +100,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->research->getCommodity();
     }
 
-    public function getResearchState()
+    public function getResearchState(): ?ResearchedInterface
     {
         if ($this->state === null) {
             $this->state = $this->researchedRepository->getFor(
@@ -168,21 +171,34 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     public function getDonePoints(): int
     {
-        return $this->getPoints() - $this->getResearchState()->getActive();
+        $researchState = $this->getResearchState();
+
+        return $researchState === null
+            ? $this->getPoints()
+            : $this->getPoints() - $researchState->getActive();
     }
 
     public function isResearchFinished(): bool
     {
-        return $this->getResearchState()->getFinished() > 0;
+        $researchState = $this->getResearchState();
+
+        return $researchState === null
+            ? false
+            : $researchState->getFinished() > 0;
     }
 
     public function getStatusBar(): string
     {
+        $researchState = $this->getResearchState();
+        if ($researchState === null) {
+            throw new RuntimeException('can not call when no researchState present');
+        }
+
         return (new TalStatusBar())
             ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
             ->setLabel(_('Forschung'))
             ->setMaxValue($this->research->getPoints())
-            ->setValue($this->research->getPoints() - $this->getResearchState()->getActive())
+            ->setValue($this->research->getPoints() - $researchState->getActive())
             ->setSizeModifier(2)
             ->render();
     }

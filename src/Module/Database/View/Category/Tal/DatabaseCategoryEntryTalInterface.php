@@ -2,9 +2,16 @@
 
 namespace Stu\Module\Database\View\Category\Tal;
 
+use Stu\Orm\Entity\ColonyClassInterface;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemInterface;
+
 interface DatabaseCategoryEntryTalInterface
 {
-    public function getObject();
+    /**
+     * @return null|StarSystemInterface|ShipInterface|ColonyClassInterface
+     */
+    public function getObject(): mixed;
 
     public function wasDiscovered(): bool;
 
