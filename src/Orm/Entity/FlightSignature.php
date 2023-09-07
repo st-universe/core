@@ -112,7 +112,7 @@ class FlightSignature implements FlightSignatureInterface
     /**
      *
      * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
+     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?StarSystemMapInterface $starsystem_map = null;
 
