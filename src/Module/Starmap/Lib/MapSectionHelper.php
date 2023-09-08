@@ -38,7 +38,7 @@ final class MapSectionHelper
 
         $fields = [];
         foreach (range($miny, $maxy) as $value) {
-            $fields[] = $this->starmapUiFactory->createUserYRow($game->getUser(), $layerId, $value, $minx, $maxx);
+            $fields[] = $this->starmapUiFactory->createUserYRow($game->getUser(), $layer, $value, $minx, $maxx);
         }
 
         $game->setTemplateVar('SECTION_ID', $sectionId);

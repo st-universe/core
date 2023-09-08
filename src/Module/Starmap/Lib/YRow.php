@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use RuntimeException;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -12,7 +14,7 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class YRow
 {
-    protected int $layerId;
+    protected ?LayerInterface $layer;
 
     protected int $row;
 
@@ -32,13 +34,13 @@ class YRow
     public function __construct(
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $systemMapRepository,
-        int $layerId,
+        ?LayerInterface $layer,
         int $cury,
         int $minx,
         int $maxx,
         int|StarSystemInterface $system
     ) {
-        $this->layerId = $layerId;
+        $this->layer = $layer;
         $this->row = $cury;
         $this->minx = $minx;
         $this->maxx = $maxx;
@@ -55,8 +57,13 @@ class YRow
         if ($this->fields === null) {
             $this->fields = [];
             for ($i = $this->minx; $i <= $this->maxx; $i++) {
+                $layer = $this->layer;
+                if ($layer === null) {
+                    throw new RuntimeException('this should not happen');
+                }
+
                 $this->fields[] = $this->mapRepository->getByCoordinates(
-                    $this->layerId,
+                    $layer->getId(),
                     $i,
                     $this->row
                 );

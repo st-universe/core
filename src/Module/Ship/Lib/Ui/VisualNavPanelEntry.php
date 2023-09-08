@@ -24,7 +24,7 @@ class VisualNavPanelEntry
     /** @var null|int */
     public $currentShipSysId;
 
-    public ?int $row = null;
+    private ?int $row = null;
 
     private ?VisualNavPanelEntryData $data;
 
@@ -276,5 +276,12 @@ class VisualNavPanelEntry
     public function getRow(): ?int
     {
         return $this->row;
+    }
+
+    public function setRow(int $row): VisualNavPanelEntry
+    {
+        $this->row = $row;
+
+        return $this;
     }
 }

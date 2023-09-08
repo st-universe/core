@@ -192,7 +192,7 @@ class VisualNavPanel
             if (!array_key_exists($y, $rows)) {
                 $navPanelRow = $this->shipUiFactory->createVisualNavPanelRow();
                 $entry = $this->shipUiFactory->createVisualNavPanelEntry();
-                $entry->row = $y;
+                $entry->setRow($y);
                 $entry->setCSSClass('th');
                 $navPanelRow->addEntry($entry);
 
