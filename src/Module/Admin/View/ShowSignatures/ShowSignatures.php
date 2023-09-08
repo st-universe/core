@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\ShowSignatures;
 
 use request;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowSignatures implements ViewControllerInterface
@@ -21,14 +23,22 @@ final class ShowSignatures implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private EncodedMapInterface $encodedMap;
+
+    private LayerRepositoryInterface $layerRepository;
+
     public function __construct(
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        EncodedMapInterface $encodedMap,
+        LayerRepositoryInterface $layerRepository
     ) {
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->loggerUtilFactory = $loggerUtilFactory;
         $this->shipRepository = $shipRepository;
+        $this->encodedMap = $encodedMap;
+        $this->layerRepository = $layerRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,6 +48,7 @@ final class ShowSignatures implements ViewControllerInterface
             return;
         }
 
+        $layerId = request::postInt('layerid');
         $shipId = request::postInt('shipid');
         $userId = request::postInt('userid');
         $allyId = request::postInt('allyid');
@@ -47,6 +58,12 @@ final class ShowSignatures implements ViewControllerInterface
         $game->showMacro('html/admin/adminmacros.xhtml/signaturescan');
 
         $signatureRange = [];
+
+        $layer = $this->layerRepository->find($layerId);
+        if ($layer === null) {
+            $game->addInformation(sprintf('layerId %d existiert nicht', $layerId));
+            return;
+        }
 
         if ($shipId !== 0) {
             $game->addInformation(_('Aktion noch nicht möglich für Einzelschiff'));
@@ -63,6 +80,8 @@ final class ShowSignatures implements ViewControllerInterface
 
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
             $this->shipRepository,
+            $this->encodedMap,
+            $layer,
             $userId,
             $allyId,
             $this->loggerUtilFactory->getLoggerUtil(),

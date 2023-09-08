@@ -2,9 +2,10 @@
 <tal:block metal:use-macro="../sitemacros.xhtml/admindefaults">
     <tal:block metal:fill-slot="body">
         <tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
-        <form action="/admin/index.php" method="post" name="scriptform" id="scriptform">
+        <form action="/admin/index.php" method="post" name="scriptform1" id="scriptform1">
             <div class="divhead">Signaturen</div>
             <div class="divbody">
+                layer-ID<input type="text" size="5" name="layerid" id="layerid" value="1" />
                 ship-ID<input type="text" size="5" name="shipid" id="shipid" />
                 user-ID<input type="text" size="5" name="userid" id="userid" />
                 ally-ID<input type="text" size="5" name="allyid" id="allyid" />
@@ -12,6 +13,8 @@
                 <input type="submit" class="button" name="ADMIN_SHOW_SIGNATURES" value="Signaturen anzeigen"
                     id="showsigsbutton" />
             </div>
+        </form>
+        <form action="/admin/index.php" method="post" name="scriptform2" id="scriptform2">
             <div>
                 <a href="/admin/help/createBuildplan.php">create buildplan</a>
             </div>

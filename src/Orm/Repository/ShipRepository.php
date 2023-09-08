@@ -691,23 +691,24 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): iterable
+    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('posx', 'posx', 'integer');
-        $rsm->addScalarResult('posy', 'posy', 'integer');
-        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
-        $rsm->addScalarResult('type', 'type', 'integer');
-        $rsm->addScalarResult('layer', 'layer', 'integer');
 
-        $rsm->addScalarResult('d1c', 'd1c', 'integer');
-        $rsm->addScalarResult('d2c', 'd2c', 'integer');
-        $rsm->addScalarResult('d3c', 'd3c', 'integer');
-        $rsm->addScalarResult('d4c', 'd4c', 'integer');
+        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addFieldResult('d', 'posx', 'posx');
+        $rsm->addFieldResult('d', 'posy', 'posy');
+        $rsm->addFieldResult('d', 'shipcount', 'shipcount');
+        $rsm->addFieldResult('d', 'type', 'type');
+
+        $rsm->addFieldResult('d', 'd1c', 'd1c');
+        $rsm->addFieldResult('d', 'd2c', 'd2c');
+        $rsm->addFieldResult('d', 'd3c', 'd3c');
+        $rsm->addFieldResult('d', 'd4c', 'd4c');
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.cx as posx,a.cy as posy, d.type, a.layer_id AS layer,
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
                         WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id
@@ -758,23 +759,23 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): iterable
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('posx', 'posx', 'integer');
-        $rsm->addScalarResult('posy', 'posy', 'integer');
-        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
-        $rsm->addScalarResult('type', 'type', 'integer');
-        $rsm->addScalarResult('layer', 'layer', 'integer');
+        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addFieldResult('d', 'posx', 'posx');
+        $rsm->addFieldResult('d', 'posy', 'posy');
+        $rsm->addFieldResult('d', 'shipcount', 'shipcount');
+        $rsm->addFieldResult('d', 'type', 'type');
 
-        $rsm->addScalarResult('d1c', 'd1c', 'integer');
-        $rsm->addScalarResult('d2c', 'd2c', 'integer');
-        $rsm->addScalarResult('d3c', 'd3c', 'integer');
-        $rsm->addScalarResult('d4c', 'd4c', 'integer');
+        $rsm->addFieldResult('d', 'd1c', 'd1c');
+        $rsm->addFieldResult('d', 'd2c', 'd2c');
+        $rsm->addFieldResult('d', 'd3c', 'd3c');
+        $rsm->addFieldResult('d', 'd4c', 'd4c');
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.cx as posx,a.cy as posy, d.type, a.layer_id AS layer,
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
                         JOIN stu_user u ON b.user_id = u.id
