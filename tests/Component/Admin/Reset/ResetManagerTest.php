@@ -362,9 +362,6 @@ class ResetManagerTest extends StuTestCase
         $this->gameConfigRepository->shouldReceive('updateGameState')
             ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET)
             ->once();
-        $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE)
-            ->once();
 
         $this->manager->performReset($this->interactor);
     }

@@ -195,7 +195,6 @@ final class ResetManager implements ResetManagerInterface
         $this->resetSequences($io);
 
         $this->entityManager->commit();
-        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE, $io);
 
         $resetMs = hrtime(true) - $startTime;
 
