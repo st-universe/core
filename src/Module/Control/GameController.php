@@ -13,6 +13,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
+use Stu\Exception\ResetGameStateException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Exception\ShipDoesNotExistException;
@@ -621,6 +622,11 @@ final class GameController implements GameControllerInterface
             $this->setTemplateFile('html/maintenance.xhtml');
 
             $this->setTemplateVar('THIS', $this);
+        } catch (ResetGameStateException $e) {
+            $this->setPageTitle(_('Resetmodus'));
+            $this->setTemplateFile('html/gamereset.xhtml');
+
+            $this->setTemplateVar('THIS', $this);
         } catch (RelocationGameStateException $e) {
             $this->setPageTitle(_('Umzugsmodus'));
             $this->setTemplateFile('html/relocation.xhtml');
@@ -704,7 +710,7 @@ final class GameController implements GameControllerInterface
             }
 
             if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RESET) {
-                throw new MaintenanceGameStateException();
+                throw new ResetGameStateException();
             }
 
             if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
