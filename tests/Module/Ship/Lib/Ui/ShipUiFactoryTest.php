@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Ui;
 
 use Mockery\MockInterface;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -21,6 +22,9 @@ class ShipUiFactoryTest extends StuTestCase
     /** @var MockInterface&UserMapRepositoryInterface */
     private MockInterface $userMapRepository;
 
+    /** @var MockInterface&EncodedMapInterface */
+    private MockInterface $encodedMap;
+
     private MockInterface $shipRepository;
 
     private ShipUiFactory $subject;
@@ -30,11 +34,13 @@ class ShipUiFactoryTest extends StuTestCase
         $this->userLayerRepository = $this->mock(UserLayerRepositoryInterface::class);
         $this->userMapRepository = $this->mock(UserMapRepositoryInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->encodedMap = $this->mock(EncodedMapInterface::class);
 
         $this->subject = new ShipUiFactory(
             $this->userLayerRepository,
             $this->userMapRepository,
-            $this->shipRepository
+            $this->shipRepository,
+            $this->encodedMap
         );
     }
 
