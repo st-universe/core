@@ -89,24 +89,9 @@ class VisualNavPanel
     }
 
     /**
-     * @return iterable<array{
-     *     posx: int,
-     *     posy: int,
-     *     sysid: int,
-     *     shipcount: int,
-     *     cloakcount: int,
-     *     allycolor: string,
-     *     usercolor: string,
-     *     factioncolor: string,
-     *     type: int,
-     *     layer: int,
-     *     d1c?: int,
-     *     d2c?: int,
-     *     d3c?: int,
-     *     d4c?: int
-     * }>
+     * @return array<VisualNavPanelEntryData>
      */
-    public function getOuterSystemResult(): iterable
+    public function getOuterSystemResult(): array
     {
         $cx = $this->getShip()->getCX();
         $cy = $this->getShip()->getCY();
@@ -160,22 +145,9 @@ class VisualNavPanel
     }
 
     /**
-     * @return iterable<array{
-     *     posx: int,
-     *     posy: int,
-     *     sysid: int,
-     *     shipcount: int,
-     *     cloakcount: int,
-     *     shieldstate: bool,
-     *     type: int,
-     *     layer: int,
-     *     d1c?: int,
-     *     d2c?: int,
-     *     d3c?: int,
-     *     d4c?: int
-     * }>
+     * @return array<VisualNavPanelEntryData>
      */
-    public function getInnerSystemResult(): iterable
+    private function getInnerSystemResult(): iterable
     {
         return $this->shipRepository->getSensorResultInnerSystem(
             $this->getShip(),
@@ -210,7 +182,7 @@ class VisualNavPanel
         $rows = [];
 
         foreach ($result as $data) {
-            $y = $data['posy'];
+            $y = $data->getPosY();
 
             if ($y < 1) {
                 continue;
@@ -230,6 +202,7 @@ class VisualNavPanel
             $navPanelRow = $rows[$y];
             $entry = $this->shipUiFactory->createVisualNavPanelEntry(
                 $data,
+                $currentShip->getLayer(),
                 $this->isTachyonSystemActive,
                 $this->tachyonFresh,
                 $currentShip,

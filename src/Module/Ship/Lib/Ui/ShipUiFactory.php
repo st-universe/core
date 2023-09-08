@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -23,14 +25,18 @@ final class ShipUiFactory implements ShipUiFactoryInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private EncodedMapInterface $encodedMap;
+
     public function __construct(
         UserLayerRepositoryInterface $userLayerRepository,
         UserMapRepositoryInterface $userMapRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        EncodedMapInterface $encodedMap
     ) {
         $this->userLayerRepository = $userLayerRepository;
         $this->userMapRepository = $userMapRepository;
         $this->shipRepository = $shipRepository;
+        $this->encodedMap = $encodedMap;
     }
 
     public function createVisualNavPanel(
@@ -56,14 +62,17 @@ final class ShipUiFactory implements ShipUiFactoryInterface
     }
 
     public function createVisualNavPanelEntry(
-        array &$entry = [],
+        VisualNavPanelEntryData $data = null,
+        LayerInterface $layer = null,
         bool $isTachyonSystemActive = false,
         bool $tachyonFresh = false,
         ShipInterface $ship = null,
         StarSystemInterface $system = null
     ): VisualNavPanelEntry {
         return new VisualNavPanelEntry(
-            $entry,
+            $data,
+            $layer,
+            $this->encodedMap,
             $isTachyonSystemActive,
             $tachyonFresh,
             $ship,

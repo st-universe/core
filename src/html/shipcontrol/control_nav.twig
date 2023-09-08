@@ -36,15 +36,13 @@
                 {% if entry.isClickable %}
                 <div style="{{ heightAndWidth }} position: relative !important; top: 0px;" class="lssobj imgOverlayText"
                     onclick="{{ entry.getOnClick }}">
-                    {{ _self.lssCellLayers(entry.getLayer, entry.getMapfieldType, fontSize, heightAndWidth,
-                    entry.getDisplayCount, ship.getSubspaceState, entry.getSubspaceCode, entry.getShieldState,
-                    entry.getSystemBackgroundId, ship.getStarsystemMap, entry.getFieldGraphicID) }}
+                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth,
+                    ship.getSubspaceState, ship.getStarsystemMap) }}
                 </div>
                 {% else %}
                 <div class="imgOverlayText" style="{{ heightAndWidth }} position: relative !important; top: 0px;">
-                    {{ _self.lssCellLayers(entry.getLayer, entry.getMapfieldType, fontSize, heightAndWidth,
-                    entry.getDisplayCount, ship.getSubspaceState, entry.getSubspaceCode, entry.getShieldState,
-                    entry.getSystemBackgroundId, ship.getStarsystemMap, entry.getFieldGraphicID) }}
+                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth,
+                    ship.getSubspaceState, ship.getStarsystemMap) }}
                 </div>
                 {% endif %}
             </td>
@@ -168,22 +166,23 @@
 {% endif %}
 {% endmacro %}
 
-{% macro lssCellLayers(layerId, fieldType, fontSize, heightAndWidth, displayCount, subspaceState, subspaceCode
-, colonyShieldState, systemBackgroundId, starsystem, fieldgraphicid) %}
+{% macro lssCellLayers(lssCellData, fontSize, heightAndWidth, subspaceState, starsystem) %}
 {% if starsystem %}
-<img src="assets/map/starmap/{{ systemBackgroundId }}.png" style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
-<img src="assets/map/{{ fieldgraphicid }}.png" class="lssSubspaceOverShield"
-    style="z-index: 1; {{ heightAndWidth }} opacity:2;" />
+<img src="assets/map/starmap/{{ lssCellData.getSystemBackgroundId }}.png"
+    style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
+<img src="assets/map/{{ lssCellData.getFieldGraphicID }}.png" class="lssSubspaceOverShield"
+    style="z-index: 2; {{ heightAndWidth }} opacity:2;" />
 {% else %}
-<img src="assets/map/{{ layerId }}/{{ fieldType }}.png" style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
+<img src="assets/map/{{ lssCellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
 {% endif %}
-{% if colonyShieldState %}
+{% if lssCellData.getShieldState %}
 <img src="assets/planets/s1.png" class="lssColoShield" style="z-index: 3; {{ heightAndWidth }}" />
 {% endif %}
+{% set subspaceCode = lssCellData.getSubspaceCode %}
 {% if subspaceState and subspaceCode %}
 <img src="assets/subspace/generated/{{ subspaceCode }}.png" class="lssSubspaceOverShield"
     style="z-index: 4; {{ heightAndWidth }}" />
 {% endif %}
-<div style="{{ fontSize }}; z-index: 5;" class="centered">{{ displayCount }}
+<div style="{{ fontSize }}; z-index: 5;" class="centered">{{ lssCellData.getDisplayCount }}
 </div>
 {% endmacro %}

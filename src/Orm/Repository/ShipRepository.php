@@ -19,6 +19,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\TFleetShipItem;
 use Stu\Module\Ship\Lib\TShipItem;
+use Stu\Module\Ship\Lib\Ui\VisualNavPanelEntryData;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Fleet;
@@ -500,33 +501,33 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ShipInterface $ship,
         int $ignoreId,
         StarSystemInterface $system = null
-    ): iterable {
+    ): array {
         $doSubspace = $ship->getSubspaceState();
         $map = $ship->getStarsystemMap();
         $sensorRange = $ship->getSensorRange();
 
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('posx', 'posx', 'integer');
-        $rsm->addScalarResult('posy', 'posy', 'integer');
-        $rsm->addScalarResult('sysid', 'sysid', 'integer');
-        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
-        $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
-        $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
-        $rsm->addScalarResult('type', 'type', 'integer');
-        $rsm->addScalarResult('layer', 'layer', 'integer');
+        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addFieldResult('d', 'posx', 'posx');
+        $rsm->addFieldResult('d', 'posy', 'posy');
+        $rsm->addFieldResult('d', 'shipcount', 'shipcount');
+        $rsm->addFieldResult('d', 'cloakcount', 'cloakcount');
+        $rsm->addFieldResult('d', 'type', 'type');
+        $rsm->addFieldResult('d', 'shieldstate', 'shieldstate');
+        $rsm->addFieldResult('d', 'sysid', 'sysid');
 
         if ($doSubspace) {
-            $rsm->addScalarResult('d1c', 'd1c', 'integer');
-            $rsm->addScalarResult('d2c', 'd2c', 'integer');
-            $rsm->addScalarResult('d3c', 'd3c', 'integer');
-            $rsm->addScalarResult('d4c', 'd4c', 'integer');
+            $rsm->addFieldResult('d', 'd1c', 'd1c');
+            $rsm->addFieldResult('d', 'd2c', 'd2c');
+            $rsm->addFieldResult('d', 'd3c', 'd3c');
+            $rsm->addFieldResult('d', 'd4c', 'd4c');
 
             $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
         }
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.sx as posx, a.sy AS posy, a.systems_id AS sysid, d.type,  null AS layer,
+                'SELECT a.id, a.sx as posx, a.sy AS posy, a.systems_id AS sysid, d.type,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
                     WHERE a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
@@ -593,24 +594,24 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSensorResultOuterSystem(int $cx, int $cy, int $layerId, int $sensorRange, bool $doSubspace, int $ignoreId): iterable
+    public function getSensorResultOuterSystem(int $cx, int $cy, int $layerId, int $sensorRange, bool $doSubspace, int $ignoreId): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('posx', 'posx', 'integer');
-        $rsm->addScalarResult('posy', 'posy', 'integer');
-        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
-        $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
-        $rsm->addScalarResult('type', 'type', 'integer');
-        $rsm->addScalarResult('allycolor', 'allycolor');
-        $rsm->addScalarResult('usercolor', 'usercolor');
-        $rsm->addScalarResult('factioncolor', 'factioncolor');
-        $rsm->addScalarResult('layer', 'layer', 'integer');
+        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addFieldResult('d', 'posx', 'posx');
+        $rsm->addFieldResult('d', 'posy', 'posy');
+        $rsm->addFieldResult('d', 'shipcount', 'shipcount');
+        $rsm->addFieldResult('d', 'cloakcount', 'cloakcount');
+        $rsm->addFieldResult('d', 'type', 'type');
+        $rsm->addFieldResult('d', 'allycolor', 'allycolor');
+        $rsm->addFieldResult('d', 'usercolor', 'usercolor');
+        $rsm->addFieldResult('d', 'factioncolor', 'factioncolor');
 
         if ($doSubspace) {
-            $rsm->addScalarResult('d1c', 'd1c', 'integer');
-            $rsm->addScalarResult('d2c', 'd2c', 'integer');
-            $rsm->addScalarResult('d3c', 'd3c', 'integer');
-            $rsm->addScalarResult('d4c', 'd4c', 'integer');
+            $rsm->addFieldResult('d', 'd1c', 'd1c');
+            $rsm->addFieldResult('d', 'd2c', 'd2c');
+            $rsm->addFieldResult('d', 'd3c', 'd3c');
+            $rsm->addFieldResult('d', 'd4c', 'd4c');
 
             $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
         }
@@ -618,7 +619,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         //TODO increase performance of allycolor/usercolor/factioncolor calculation
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.cx AS posx,a.cy AS posy, d.type, a.layer_id AS layer,
+                'SELECT a.id, a.cx AS posx,a.cy AS posy, d.type,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
                     WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id
                     AND NOT EXISTS (SELECT ss.id

@@ -23,7 +23,7 @@
                                 tal:attributes="class entry/getCSSClass" tal:content="entry/getRow">.</td>
                             <td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
                                 tal:attributes="class entry/getCSSClass"
-                                style="background-image: url(../assets/map/${entry/getMapfieldType}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
+                                style="background-image: url(../assets/map/${entry/getLssCellData/getFieldGraphicID}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
                                 <tal:block>
                                     <div class="imgOverlayText">
                                         <img tal:condition="code" src="../assets/subspace/generated/${code}.png"

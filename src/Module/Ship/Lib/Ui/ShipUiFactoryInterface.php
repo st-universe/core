@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Ui;
 
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -23,26 +24,9 @@ interface ShipUiFactoryInterface
         StarSystemInterface $systemForSensorScan = null
     ): VisualNavPanel;
 
-    /**
-     * @param array{
-     *     posx: int,
-     *     posy: int,
-     *     sysid: int,
-     *     shipcount: int,
-     *     cloakcount: int,
-     *     allycolor: string,
-     *     usercolor: string,
-     *     factioncolor: string,
-     *     type: int,
-     *     layer: int,
-     *     d1c?: int,
-     *     d2c?: int,
-     *     d3c?: int,
-     *     d4c?: int
-     * } $entry
-     */
     public function createVisualNavPanelEntry(
-        array &$entry = [],
+        VisualNavPanelEntryData $data = null,
+        LayerInterface $layer = null,
         bool $isTachyonSystemActive = false,
         bool $tachyonFresh = false,
         ShipInterface $ship = null,

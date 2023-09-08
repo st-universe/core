@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
+use RuntimeException;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
 class VisualNavPanelEntry
 {
+    //TODO set currentShipInfo as Bean
     /** @var null|int */
     public $currentShipPosX;
 
@@ -22,26 +26,11 @@ class VisualNavPanelEntry
 
     public ?int $row = null;
 
-    /**
-     * @var array{
-     *     posx: int,
-     *     posy: int,
-     *     sysid: null|int,
-     *     shipcount: int,
-     *     cloakcount: int,
-     *     allycolor: string,
-     *     usercolor: string,
-     *     factioncolor: string,
-     *     shieldstate: null|bool,
-     *     type: int,
-     *    layer: int,
-     *     d1c?: int,
-     *     d2c?: int,
-     *     d3c?: int,
-     *     d4c?: int
-     * }
-     */
-    private array $data;
+    private ?VisualNavPanelEntryData $data;
+
+    private ?LayerInterface $layer;
+
+    private ?EncodedMapInterface $encodedMap;
 
     private bool $isTachyonSystemActive;
 
@@ -55,33 +44,18 @@ class VisualNavPanelEntry
 
     private string $cssClass = 'lss';
 
-    /**
-     * @param array{
-     *     posx: int,
-     *     posy: int,
-     *     sysid: ?int,
-     *     shipcount: int,
-     *     cloakcount: int,
-     *     allycolor: string,
-     *     usercolor: string,
-     *     factioncolor: string,
-     *     shieldstate: null|bool,
-     *     type: int,
-     *     layer: int,
-     *     d1c?: int,
-     *     d2c?: int,
-     *     d3c?: int,
-     *     d4c?: int
-     * } $entry
-     */
     public function __construct(
-        array &$entry,
+        ?VisualNavPanelEntryData $data,
+        ?LayerInterface $layer,
+        ?EncodedMapInterface $encodedMap,
         bool $isTachyonSystemActive = false,
         bool $tachyonFresh = false,
         ShipInterface $ship = null,
         StarSystemInterface $system = null
     ) {
-        $this->data = $entry;
+        $this->data = $data;
+        $this->layer = $layer;
+        $this->encodedMap = $encodedMap;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
         $this->ship = $ship;
@@ -89,30 +63,30 @@ class VisualNavPanelEntry
         $this->tachyonRange = $ship !== null ? ($ship->isBase() ? 7 : 3) : 0;
     }
 
-    public function getPosX(): int
+    private function getData(): VisualNavPanelEntryData
     {
-        return $this->data['posx'];
+        $data = $this->data;
+        if ($data === null) {
+            throw new RuntimeException('should not happen');
+        }
+        return $data;
     }
 
-    public function getPosY(): int
+    public function getLssCellData(): LssCellData
     {
-        return $this->data['posy'];
+        return new LssCellData(
+            $this->getSystemBackgroundId(),
+            $this->getFieldGraphicID(),
+            $this->getMapGraphicPath(),
+            $this->getData()->getShieldState(),
+            $this->getSubspaceCode(),
+            $this->getDisplayCount(),
+        );
     }
 
-    public function getSystemId(): int
+    private function getFieldGraphicID(): int
     {
-        return $this->data['sysid'] ?? 0;
-    }
-
-    public function getMapfieldType(): int
-    {
-        return $this->data['type'];
-    }
-
-    public function getFieldGraphicID(): int
-    {
-        $fieldId = $this->getMapfieldType();
-
+        $fieldId = $this->getData()->getMapfieldType();
 
         if ($fieldId === 1) {
             return 0;
@@ -122,55 +96,52 @@ class VisualNavPanelEntry
         }
     }
 
-    public function getSystemBackgroundId(): string
+    private function getSystemBackgroundId(): string
     {
-
-        $x = (string)$this->getPosX();
-        $y = (string)$this->getPosY();
-
-        $x = str_pad($x, 2, '0', STR_PAD_LEFT);
-        $y = str_pad($y, 2, '0', STR_PAD_LEFT);
-
-        $backgroundId = $y . $x;
-
-        return $backgroundId;
+        return sprintf(
+            '%02d%02d',
+            $this->getData()->getPosY(),
+            $this->getData()->getPosX()
+        );
     }
 
-
-    public function getLayer(): ?int
+    private function getMapGraphicPath(): string
     {
-        return $this->data['layer'];
+        $layer = $this->layer;
+        if ($layer === null) {
+            throw new RuntimeException('should not happen');
+        }
+
+        if ($layer->isEncoded()) {
+            $encodedMap = $this->encodedMap;
+            if ($encodedMap === null) {
+                throw new RuntimeException('should not happen');
+            }
+
+            return $encodedMap->getEncodedMapPath(
+                $this->getData()->getMapfieldType(),
+                $layer
+            );
+        }
+
+        return sprintf('%d/%d.png', $layer->getId(), $this->getData()->getMapfieldType());
     }
 
-    public function getShipCount(): int
+    private function getSubspaceCode(): ?string
     {
-        return $this->data['shipcount'];
-    }
-
-    public function hasCloakedShips(): bool
-    {
-        return $this->data['cloakcount'] > 0;
-    }
-
-    public function getShieldState(): bool
-    {
-        return $this->data['shieldstate'] ?? false;
-    }
-
-    public function hasShips(): bool
-    {
-        return $this->data['shipcount'] > 0;
-    }
-
-    public function getSubspaceCode(): ?string
-    {
-        $code = sprintf('%d%d%d%d', $this->getCode('d1c'), $this->getCode('d2c'), $this->getCode('d3c'), $this->getCode('d4c'));
+        $code = sprintf(
+            '%d%d%d%d',
+            $this->getCode($this->getData()->getDirection1Count()),
+            $this->getCode($this->getData()->getDirection2Count()),
+            $this->getCode($this->getData()->getDirection3Count()),
+            $this->getCode($this->getData()->getDirection4Count())
+        );
         return $code == '0000' ? null : $code;
     }
 
-    private function getCode(string $column): int
+    private function getCode(?int $value): int
     {
-        $shipCount = $this->data[$column] ?? 0;
+        $shipCount = $value ?? 0;
 
         if ($shipCount == 0) {
             return 0;
@@ -191,20 +162,20 @@ class VisualNavPanelEntry
         return 5;
     }
 
-    public function getDisplayCount(): string
+    private function getDisplayCount(): string
     {
-        if ($this->hasShips()) {
-            return (string) $this->getShipCount();
+        if ($this->getData()->getShipCount() > 0) {
+            return (string) $this->getData()->getShipCount();
         }
-        if ($this->hasCloakedShips()) {
+        if ($this->getData()->hasCloakedShips()) {
             if ($this->tachyonFresh) {
                 return "?";
             }
 
             if (
                 $this->isTachyonSystemActive
-                && abs($this->getPosX() - $this->currentShipPosX) < $this->tachyonRange
-                && abs($this->getPosY() - $this->currentShipPosY) < $this->tachyonRange
+                && abs($this->getData()->getPosX() - $this->currentShipPosX) < $this->tachyonRange
+                && abs($this->getData()->getPosY() - $this->currentShipPosY) < $this->tachyonRange
             ) {
                 return "?";
             }
@@ -212,16 +183,11 @@ class VisualNavPanelEntry
         return "";
     }
 
-    public function getCacheValue(): string
+    private function isCurrentShipPosition(): bool
     {
-        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getLayer() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble() . "_" . $this->getBorder();
-    }
-
-    public function isCurrentShipPosition(): bool
-    {
-        return $this->getSystemId() == $this->currentShipSysId
-            && $this->getPosX() == $this->currentShipPosX
-            && $this->getPosY() == $this->currentShipPosY;
+        return $this->getData()->getSystemId() == $this->currentShipSysId
+            && $this->getData()->getPosX() == $this->currentShipPosX
+            && $this->getData()->getPosY() == $this->currentShipPosY;
     }
 
     public function getBorder(): string
@@ -236,17 +202,17 @@ class VisualNavPanelEntry
             $this->ship !== null &&
             $this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER
         ) {
-            $factionColor = $this->data['factioncolor'] ?? null;
+            $factionColor = $this->getData()->getFactionColor();
             if (!empty($factionColor)) {
                 return $factionColor;
             }
 
-            $allyColor = $this->data['allycolor'] ?? null;
+            $allyColor = $this->getData()->getAllyColor();
             if (!empty($allyColor)) {
                 return $allyColor;
             }
 
-            $userColor = $this->data['usercolor'] ?? null;
+            $userColor = $this->getData()->getUserColor();
             if (!empty($userColor)) {
                 return $userColor;
             }
@@ -282,7 +248,8 @@ class VisualNavPanelEntry
         if (!$this->ship->canMove()) {
             return false;
         }
-        return !$this->isCurrentShipPosition() && ($this->getPosX() == $this->currentShipPosX || $this->getPosY() == $this->currentShipPosY);
+        return !$this->isCurrentShipPosition()
+            && ($this->getData()->getPosX() == $this->currentShipPosX || $this->getData()->getPosY() == $this->currentShipPosY);
     }
 
     public function getOnClick(): string
@@ -297,13 +264,13 @@ class VisualNavPanelEntry
         ) {
             return sprintf(
                 'showSectorScanWindow(this, %d, %d, %d, %s);',
-                $this->getPosX(),
-                $this->getPosY(),
+                $this->getData()->getPosX(),
+                $this->getData()->getPosY(),
                 $this->system !== null ? $this->system->getId() : 0,
                 $this->system !== null ? 'false' : 'true'
             );
         }
-        return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());
+        return sprintf('moveToPosition(%d,%d);', $this->getData()->getPosX(), $this->getData()->getPosY());
     }
 
     public function getRow(): ?int
