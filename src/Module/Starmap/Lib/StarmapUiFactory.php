@@ -50,7 +50,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
     }
 
     public function createYRow(
-        LayerInterface $layer,
+        ?LayerInterface $layer,
         int $cury,
         int $minx,
         int $maxx,
