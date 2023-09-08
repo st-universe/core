@@ -29,6 +29,11 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
         return new ColonySettings($this->getPath(), $this->getConfig());
     }
 
+    public function getMapSettings(): MapSettingsInterface
+    {
+        return new MapSettings($this->getPath(), $this->getConfig());
+    }
+
     public function getTempDir(): string
     {
         return $this->getStringConfigValue(self::SETTING_TEMP_DIR);
