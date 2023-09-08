@@ -18,4 +18,6 @@ interface GameSettingsInterface
     public function getAdminSettings(): AdminSettingsInterface;
 
     public function getColonySettings(): ColonySettingsInterface;
+
+    public function getMapSettings(): MapSettingsInterface;
 }
