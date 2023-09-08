@@ -32,5 +32,5 @@ interface StarmapUiFactoryInterface
     public function createExplorableStarmapItem(
         ExploreableStarMapInterface $exploreableStarMap,
         LayerInterface $layer
-    ): ExplorableStarMapItem;
+    ): ExplorableStarMapItemInterface;
 }

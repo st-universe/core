@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use RuntimeException;
+use Stu\Component\Map\EncodedMapInterface;
+use Stu\Module\Admin\View\Map\EditSection\StarMapItem;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -24,16 +25,19 @@ class YRow
 
     protected int|StarSystemInterface $system;
 
-    /** @var null|array<MapInterface|null>|array<StarSystemMapInterface|null> */
+    /** @var null|array<StarMapItem>|array<StarSystemMapInterface> */
     protected $fields;
 
     private MapRepositoryInterface $mapRepository;
 
     private StarSystemMapRepositoryInterface $systemMapRepository;
 
+    private EncodedMapInterface $encodedMap;
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $systemMapRepository,
+        EncodedMapInterface $encodedMap,
         ?LayerInterface $layer,
         int $cury,
         int $minx,
@@ -47,12 +51,13 @@ class YRow
         $this->system = $system;
         $this->mapRepository = $mapRepository;
         $this->systemMapRepository = $systemMapRepository;
+        $this->encodedMap = $encodedMap;
     }
 
     /**
-     * @return array<StarSystemMapInterface|null>|array<MapInterface|null>
+     * @return array<StarMapItem>|array<StarSystemMapInterface>
      */
-    public function getFields(): iterable
+    public function getFields(): array
     {
         if ($this->fields === null) {
             $this->fields = [];
@@ -62,20 +67,27 @@ class YRow
                     throw new RuntimeException('this should not happen');
                 }
 
-                $this->fields[] = $this->mapRepository->getByCoordinates(
+                $map = $this->mapRepository->getByCoordinates(
                     $layer->getId(),
                     $i,
                     $this->row
                 );
+
+                if ($map !== null) {
+                    $this->fields[] = new StarMapItem(
+                        $this->encodedMap,
+                        $map
+                    );
+                }
             }
         }
         return $this->fields;
     }
 
     /**
-     * @return array<StarSystemMapInterface|null>|array<MapInterface|null>
+     * @return array<StarMapItem>|array<StarSystemMapInterface>
      */
-    public function getSystemFields()
+    public function getSystemFields(): array
     {
         if ($this->fields === null) {
             $this->fields = [];
@@ -88,11 +100,14 @@ class YRow
             } else {
 
                 for ($i = $this->minx; $i <= $this->maxx; $i++) {
-                    $this->fields[] = $this->systemMapRepository->getByCoordinates(
+                    $systemMap = $this->systemMapRepository->getByCoordinates(
                         $this->system,
                         $i,
                         $this->row
                     );
+                    if ($systemMap !== null) {
+                        $this->fields[] = $systemMap;
+                    }
                 }
             }
         }
