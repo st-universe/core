@@ -57,6 +57,12 @@ class Layer implements LayerInterface
      */
     private ?bool $is_finished = null;
 
+    /**
+     * @Column(type="boolean", nullable=true)
+     *
+     */
+    private ?bool $is_encoded = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -89,6 +95,15 @@ class Layer implements LayerInterface
         }
 
         return $this->is_finished;
+    }
+
+    public function isEncoded(): bool
+    {
+        if ($this->is_encoded === null) {
+            return false;
+        }
+
+        return $this->is_encoded;
     }
 
     public function getSectorId(int $mapCx, int $mapCy): int
