@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\View\Map\EditSection;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Orm\Entity\MapInterface;
 
-class StarMapItem
+class MapItem
 {
     private EncodedMapInterface $encodedMap;
 
