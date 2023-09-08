@@ -79,6 +79,9 @@
     "colony": {
       "tick_worker": 1
     },
+    "map": {
+      "encryptionKey": "the key to encrypt map data"
+    },
     "useSemaphores": false,
     "imprint": {
       "name": "Max Mustermann",
