@@ -6,6 +6,8 @@ namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
+use Stu\Component\Map\EncodedMapInterface;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -23,6 +25,9 @@ class StarmapUiFactoryTest extends StuTestCase
     /** @var MockInterface&TradePostRepositoryInterface */
     private MockInterface $tradePostRepository;
 
+    /** @var MockInterface&EncodedMapInterface */
+    private MockInterface $encodedMap;
+
     /** @var MockInterface&Parser */
     private MockInterface $bbCodeParser;
 
@@ -31,13 +36,15 @@ class StarmapUiFactoryTest extends StuTestCase
     protected function setUp(): void
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);
-        $this->starSystemMapRepository = $this->mock(StarSystemMapRepositoryInterface::class);
         $this->tradePostRepository = $this->mock(TradePostRepositoryInterface::class);
+        $this->encodedMap = $this->mock(EncodedMapInterface::class);
+        $this->starSystemMapRepository = $this->mock(StarSystemMapRepositoryInterface::class);
         $this->bbCodeParser = $this->mock(Parser::class);
 
         $this->subject = new StarmapUiFactory(
             $this->mapRepository,
             $this->tradePostRepository,
+            $this->encodedMap,
             $this->bbCodeParser,
             $this->starSystemMapRepository
         );
@@ -56,7 +63,7 @@ class StarmapUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             YRow::class,
             $this->subject->createYRow(
-                111,
+                $this->mock(LayerInterface::class),
                 222,
                 333,
                 444,
@@ -71,6 +78,7 @@ class StarmapUiFactoryTest extends StuTestCase
             UserYRow::class,
             $this->subject->createUserYRow(
                 $this->mock(UserInterface::class),
+                $this->mock(LayerInterface::class),
                 111,
                 222,
                 333,
@@ -85,7 +93,8 @@ class StarmapUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             ExplorableStarMapItem::class,
             $this->subject->createExplorableStarmapItem(
-                $this->mock(ExploreableStarMapInterface::class)
+                $this->mock(ExploreableStarMapInterface::class),
+                $this->mock(LayerInterface::class)
             )
         );
     }
