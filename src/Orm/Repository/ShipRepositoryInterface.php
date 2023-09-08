@@ -160,34 +160,14 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return iterable<array{
-     *     posx: int,
-     *     posy: int,
-     *     shipcount: int,
-     *     type: int,
-     *     layer: int,
-     *     d1c: int,
-     *     d2c: int,
-     *     d3c: int,
-     *     d4c: int
-     * }>
+     * @return array<VisualNavPanelEntryData>
      */
-    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): iterable;
+    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): array;
 
     /**
-     * @return iterable<array{
-     *     posx: int,
-     *     posy: int,
-     *     shipcount: int,
-     *     type: int,
-     *    layer: int,
-     *     d1c: int,
-     *     d2c: int,
-     *     d3c: int,
-     *     d4c: int
-     * }>
+     * @return array<VisualNavPanelEntryData>
      */
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): iterable;
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): array;
 
     /**
      * @return array<TFleetShipItemInterface>

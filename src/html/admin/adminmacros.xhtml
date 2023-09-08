@@ -21,20 +21,22 @@
                             <td tal:condition="entry/getRow"
                                 style="width: ${viewportScale}vw; height: ${viewportScale}vw; font-size: ${viewportFont}vw;"
                                 tal:attributes="class entry/getCSSClass" tal:content="entry/getRow">.</td>
-                            <td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
-                                tal:attributes="class entry/getCSSClass"
-                                style="background-image: url(../assets/map/${entry/getLssCellData/getFieldGraphicID}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
-                                <tal:block>
-                                    <div class="imgOverlayText">
-                                        <img tal:condition="code" src="../assets/subspace/generated/${code}.png"
-                                            style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-                                        <div style="font-size: ${viewportFont}vw; color: cyan;" class="centered"
-                                            tal:content="entry/getDisplayCount">
-                                            .
+                            <tal:block tal:condition="not:entry/getRow">
+                                <td tal:define="lssCellData entry/getLssCellData"
+                                    tal:attributes="class entry/getCSSClass"
+                                    style="background-image: url(../assets/map/${lssCellData/getMapGraphicPath}); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
+                                    <tal:block tal:define="code lssCellData/getSubspaceCode">
+                                        <div class="imgOverlayText">
+                                            <img tal:condition="code" src="../assets/subspace/generated/${code}.png"
+                                                style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+                                            <div style="font-size: ${viewportFont}vw; color: cyan;" class="centered"
+                                                tal:content="lssCellData/getDisplayCount">
+                                                .
+                                            </div>
                                         </div>
-                                    </div>
-                                </tal:block>
-                            </td>
+                                    </tal:block>
+                                </td>
+                            </tal:block>
                         </tal:block>
                     </tr>
                 </table>

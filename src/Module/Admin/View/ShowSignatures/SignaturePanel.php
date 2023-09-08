@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
+use RuntimeException;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\Ui\VisualNavPanelEntry;
+use Stu\Module\Ship\Lib\Ui\VisualNavPanelEntryData;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class SignaturePanel
@@ -20,17 +25,25 @@ class SignaturePanel
 
     private ShipRepositoryInterface $shipRepository;
 
+    private EncodedMapInterface $encodedMap;
+
+    private LayerInterface $layer;
+
     /**
      * @param array{minx: int, maxx: int, miny: int, maxy: int} $entry
      */
     public function __construct(
         ShipRepositoryInterface $shipRepository,
+        EncodedMapInterface $encodedMap,
+        LayerInterface $layer,
         int $userId,
         int $allyId,
         LoggerUtilInterface $loggerUtil,
         array $entry
     ) {
         $this->shipRepository = $shipRepository;
+        $this->encodedMap = $encodedMap;
+        $this->layer = $layer;
         $this->userId = $userId;
         $this->allyId = $allyId;
         $this->data = $entry;
@@ -48,7 +61,10 @@ class SignaturePanel
         return $this->rows;
     }
 
-    public function getOuterSystemResult()
+    /**
+     * @return array<VisualNavPanelEntryData>
+     */
+    private function getOuterSystemResult(): array
     {
         if ($this->userId !== 0) {
             return $this->shipRepository->getSignaturesOuterSystemOfUser(
@@ -69,6 +85,8 @@ class SignaturePanel
                 $this->allyId
             );
         }
+
+        throw new RuntimeException('either userId or allyId has to be set');
     }
 
     public function loadLSS(): void
@@ -92,19 +110,21 @@ class SignaturePanel
         $rows = [];
 
         foreach ($result as $data) {
-            if ($data['posy'] < 1) {
+            if ($data->getPosY() < 1) {
                 continue;
             }
-            if ($data['posy'] != $y) {
-                $y = $data['posy'];
+            if ($data->getPosY() != $y) {
+                $y = $data->getPosY();
                 $rows[$y] = new SignaturePanelRow();
-                $entry = new SignaturePanelEntry();
+                $entry = new VisualNavPanelEntry(null, null, null);
                 $entry->setRow($y);
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            $entry = new SignaturePanelEntry(
-                $data
+            $entry = new VisualNavPanelEntry(
+                $data,
+                $this->layer,
+                $this->encodedMap
             );
             $rows[$y]->addEntry($entry);
         }
