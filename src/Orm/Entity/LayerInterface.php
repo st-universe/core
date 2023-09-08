@@ -16,5 +16,7 @@ interface LayerInterface
 
     public function isFinished(): bool;
 
+    public function isEncoded(): bool;
+
     public function getSectorId(int $mapCx, int $mapCy): int;
 }
