@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
-use Generator;
 use RuntimeException;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -24,6 +22,7 @@ class UserYRow extends YRow
         StarmapUiFactoryInterface $starmapUiFactory,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
+        EncodedMapInterface $encodedMap,
         UserInterface $user,
         LayerInterface $layer,
         int $cury,
@@ -34,6 +33,7 @@ class UserYRow extends YRow
         parent::__construct(
             $mapRepository,
             $starSystemMapRepository,
+            $encodedMap,
             $layer,
             $cury,
             $minx,
@@ -46,16 +46,16 @@ class UserYRow extends YRow
     }
 
     /**
-     * @return Generator<MapInterface|null>|Generator<StarSystemMapInterface|null>|Generator<ExplorableStarMapItemInterface|null>
+     * @return array<ExplorableStarMapItemInterface>
      */
-    public function getFields(): Generator
+    public function getFields(): array
     {
         $layer = $this->layer;
         if ($layer === null) {
             throw new RuntimeException('this should not happen');
         }
 
-        $result = $this->mapRepository->getExplored(
+        $maps = $this->mapRepository->getExplored(
             $this->user->getId(),
             $layer->getId(),
             $this->minx,
@@ -64,14 +64,18 @@ class UserYRow extends YRow
         );
         $hasExploredLayer = $this->user->hasExplored($layer->getId());
 
-        /** @var ExploreableStarMap $item */
-        foreach ($result as $item) {
+        $result = [];
+
+        foreach ($maps as $item) {
+
             $starmapItem = $this->starmapUiFactory->createExplorableStarmapItem($item, $layer);
             if (!$hasExploredLayer && $item->getUserId() === null) {
                 $starmapItem->setHide(true);
             }
 
-            yield $item->getCx() => $starmapItem;
+            $result[$item->getCx()] = $starmapItem;
         }
+
+        return $result;
     }
 }

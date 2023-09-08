@@ -59,6 +59,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         return new YRow(
             $this->mapRepository,
             $this->starSystemMapRepository,
+            $this->encodedMap,
             $layer,
             $cury,
             $minx,
@@ -79,6 +80,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
             $this,
             $this->mapRepository,
             $this->starSystemMapRepository,
+            $this->encodedMap,
             $user,
             $layer,
             $cury,

@@ -377,13 +377,6 @@ class Map implements MapInterface
         return 'border: 1px solid ' . $borderType->getColor();
     }
 
-    public function getFieldStyle(): string
-    {
-        // @todo hide unexplored fields
-        $style = "background-image: url('/assets/map/" . $this->getLayer()->getId() . "/" . $this->getFieldId() . ".png'); opacity:1;";
-        return $style . $this->getBorder();
-    }
-
     public function getShips(): Collection
     {
         return $this->ships;

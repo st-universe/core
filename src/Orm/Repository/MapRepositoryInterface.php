@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
@@ -48,22 +49,15 @@ interface MapRepositoryInterface extends ObjectRepository
     public function save(MapInterface $map): void;
 
     /**
-     * @return array<array{
-     *     id: int,
-     *     cx: int,
-     *     cy: int,
-     *     field_id: int,
-     *     bordertype_id: int,
-     *     user_id: int,
-     *     mapped: int,
-     *     system_name: string,
-     *     influence_area_id: int,
-     *     region_id: int,
-     *     tradepost_id: int,
-     *     region_description: string
-     * }>
+     * @return array<ExploreableStarMapInterface>
      */
-    public function getExplored(int $userId, int $layerId, int $startX, int $endX, int $cy): array;
+    public function getExplored(
+        int $userId,
+        int $layerId,
+        int $startX,
+        int $endX,
+        int $cy
+    ): array;
 
     /**
      * @return array<MapInterface>

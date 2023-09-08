@@ -173,8 +173,10 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     {
         if ($this->hide === true) {
             $imageUrl = '0.png';
-        } else {
+        } else if ($this->layer->isEncoded()) {
             $imageUrl = $this->encodedMap->getEncodedMapPath($this->getFieldId(), $this->getLayer());
+        } else {
+            $imageUrl = sprintf('%d/%d.png', $this->getLayer()->getId(), $this->getFieldId());
         }
 
         $style = "background-image: url('assets/map/" . $imageUrl . "'); opacity:1;";

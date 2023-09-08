@@ -5402,6 +5402,11 @@ parameters:
 			path: src/Orm/Repository/ColonyScanRepositoryInterface.php
 
 		-
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\MapRepository\\:\\:getForSubspaceEllipseCreation\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Repository/MapRepository.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getWorkerConsumingByColonyAndState\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Repository/PlanetFieldRepository.php
