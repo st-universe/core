@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
+use Stu\Component\Map\EncodedMapInterface;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 {
     private TradePostRepositoryInterface $tradePostRepository;
+
+    private EncodedMapInterface $encodedMap;
 
     private Parser $bbCodeParser;
 
@@ -20,14 +24,20 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
     private ExploreableStarMapInterface $exploreableStarMap;
 
+    private LayerInterface $layer;
+
     public function __construct(
         TradePostRepositoryInterface $tradePostRepository,
+        EncodedMapInterface $encodedMap,
         Parser $bbCodeParser,
-        ExploreableStarMapInterface $exploreableStarMap
+        ExploreableStarMapInterface $exploreableStarMap,
+        LayerInterface $layer
     ) {
         $this->tradePostRepository = $tradePostRepository;
+        $this->encodedMap = $encodedMap;
         $this->bbCodeParser = $bbCodeParser;
         $this->exploreableStarMap = $exploreableStarMap;
+        $this->layer = $layer;
     }
 
     public function getCx(): int
@@ -45,9 +55,9 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return $this->exploreableStarMap->getFieldId();
     }
 
-    public function getLayer(): ?int
+    public function getLayer(): LayerInterface
     {
-        return $this->exploreableStarMap->getLayer();
+        return $this->layer;
     }
 
     public function getTitle(): ?string
@@ -162,14 +172,12 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     public function getFieldStyle(): string
     {
         if ($this->hide === true) {
-            $type = 0;
-            $layer = '';
+            $imageUrl = '0.png';
         } else {
-            $type = $this->getFieldId();
-            $layer = $this->getLayer();
+            $imageUrl = $this->encodedMap->getEncodedMapPath($this->getFieldId(), $this->getLayer());
         }
 
-        $style = "background-image: url('assets/map/" . $layer . "/" . $type . ".png'); opacity:1;";
+        $style = "background-image: url('assets/map/" . $imageUrl . "'); opacity:1;";
         return $style . $this->getBorder();
     }
 }

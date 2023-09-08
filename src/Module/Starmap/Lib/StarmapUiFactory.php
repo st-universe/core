@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
+use Stu\Component\Map\EncodedMapInterface;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -18,22 +20,26 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
 {
     private MapRepositoryInterface $mapRepository;
 
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
     private TradePostRepositoryInterface $tradePostRepository;
 
+    private EncodedMapInterface $encodedMap;
+
     private Parser $parser;
+
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
     public function __construct(
         MapRepositoryInterface $mapRepository,
         TradePostRepositoryInterface $tradePostRepository,
+        EncodedMapInterface $encodedMap,
         Parser $parser,
         StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
         $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
         $this->tradePostRepository = $tradePostRepository;
+        $this->encodedMap = $encodedMap;
         $this->parser = $parser;
+        $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
     public function createMapSectionHelper(): MapSectionHelper
@@ -44,7 +50,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
     }
 
     public function createYRow(
-        int $layerId,
+        LayerInterface $layer,
         int $cury,
         int $minx,
         int $maxx,
@@ -53,7 +59,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         return new YRow(
             $this->mapRepository,
             $this->starSystemMapRepository,
-            $layerId,
+            $layer,
             $cury,
             $minx,
             $maxx,
@@ -63,7 +69,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
 
     public function createUserYRow(
         UserInterface $user,
-        int $layerId,
+        LayerInterface $layer,
         int $cury,
         int $minx,
         int $maxx,
@@ -74,7 +80,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
             $this->mapRepository,
             $this->starSystemMapRepository,
             $user,
-            $layerId,
+            $layer,
             $cury,
             $minx,
             $maxx,
@@ -83,12 +89,15 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
     }
 
     public function createExplorableStarmapItem(
-        ExploreableStarMapInterface $exploreableStarMap
+        ExploreableStarMapInterface $exploreableStarMap,
+        LayerInterface $layer
     ): ExplorableStarMapItem {
         return new ExplorableStarMapItem(
             $this->tradePostRepository,
+            $this->encodedMap,
             $this->parser,
-            $exploreableStarMap
+            $exploreableStarMap,
+            $layer
         );
     }
 }

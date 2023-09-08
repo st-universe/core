@@ -16,7 +16,7 @@ interface ExploreableStarMapInterface
 
     public function getFieldId(): int;
 
-    public function getLayer(): ?int;
+    public function getLayer(): int;
 
     public function getBordertypeId(): ?int;
 

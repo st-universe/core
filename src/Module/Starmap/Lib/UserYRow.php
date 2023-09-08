@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use Generator;
+use RuntimeException;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -23,7 +25,7 @@ class UserYRow extends YRow
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         UserInterface $user,
-        int $layerId,
+        LayerInterface $layer,
         int $cury,
         int $minx,
         int $maxx,
@@ -32,7 +34,7 @@ class UserYRow extends YRow
         parent::__construct(
             $mapRepository,
             $starSystemMapRepository,
-            $layerId,
+            $layer,
             $cury,
             $minx,
             $maxx,
@@ -48,18 +50,23 @@ class UserYRow extends YRow
      */
     public function getFields(): Generator
     {
+        $layer = $this->layer;
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $result = $this->mapRepository->getExplored(
             $this->user->getId(),
-            $this->layerId,
+            $layer->getId(),
             $this->minx,
             $this->maxx,
             $this->row
         );
-        $hasExploredLayer = $this->user->hasExplored($this->layerId);
+        $hasExploredLayer = $this->user->hasExplored($layer->getId());
 
         /** @var ExploreableStarMap $item */
         foreach ($result as $item) {
-            $starmapItem = $this->starmapUiFactory->createExplorableStarmapItem($item);
+            $starmapItem = $this->starmapUiFactory->createExplorableStarmapItem($item, $layer);
             if (!$hasExploredLayer && $item->getUserId() === null) {
                 $starmapItem->setHide(true);
             }
