@@ -13,7 +13,7 @@ interface StarmapUiFactoryInterface
     public function createMapSectionHelper(): MapSectionHelper;
 
     public function createYRow(
-        LayerInterface $layer,
+        ?LayerInterface $layer,
         int $cury,
         int $minx,
         int $maxx,
