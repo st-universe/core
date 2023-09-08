@@ -2267,16 +2267,6 @@ parameters:
 			path: src/Module/Ship/Lib/TholianWebUtilInterface.php
 
 		-
-			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\ShipUiFactory\\:\\:createVisualNavPanelEntry\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Ui/ShipUiFactory.php
-
-		-
-			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\ShipUiFactoryInterface\\:\\:createVisualNavPanelEntry\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Ui/ShipUiFactoryInterface.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowAstroEntry/ShowAstroEntry.php

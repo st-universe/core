@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Module\Ship\Lib\TShipItemInterface;
+use Stu\Module\Ship\Lib\Ui\VisualNavPanelEntryData;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
@@ -138,46 +139,25 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getNpcShipsForTick(): iterable;
 
     /**
-     * @return iterable<array{
-     *     posx: int,
-     *     posy: int,
-     *     sysid: int,
-     *     shipcount: int,
-     *     cloakcount: int,
-     *     shieldstate: bool,
-     *     type: int,
-     *     layer: int,
-     *     d1c?: int,
-     *     d2c?: int,
-     *     d3c?: int,
-     *     d4c?: int
-     * }>
+     * @return array<VisualNavPanelEntryData>
      */
     public function getSensorResultInnerSystem(
         ShipInterface $ship,
         int $ignoreId,
         StarSystemInterface $system = null
-    ): iterable;
+    ): array;
 
     /**
-     * @return iterable<array{
-     *     posx: int,
-     *     posy: int,
-     *     sysid: int,
-     *     shipcount: int,
-     *     cloakcount: int,
-     *     allycolor: string,
-     *     usercolor: string,
-     *     factioncolor: string,
-     *     type: int,
-     *     layer: int,
-     *     d1c?: int,
-     *     d2c?: int,
-     *     d3c?: int,
-     *     d4c?: int
-     * }>
+     * @return array<VisualNavPanelEntryData>
      */
-    public function getSensorResultOuterSystem(int $cx, int $cy, int $layerId, int $sensorRange, bool $doSubspace, int $ignoreId): iterable;
+    public function getSensorResultOuterSystem(
+        int $cx,
+        int $cy,
+        int $layerId,
+        int $sensorRange,
+        bool $doSubspace,
+        int $ignoreId
+    ): array;
 
     /**
      * @return iterable<array{
