@@ -6,7 +6,7 @@ namespace Stu\Module\Starmap\Lib;
 
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
-use Stu\Module\Admin\View\Map\EditSection\StarMapItem;
+use Stu\Module\Admin\View\Map\EditSection\MapItem;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -25,7 +25,7 @@ class YRow
 
     protected int|StarSystemInterface $system;
 
-    /** @var null|array<StarMapItem>|array<StarSystemMapInterface> */
+    /** @var null|array<MapItem>|array<StarSystemMapInterface> */
     protected $fields;
 
     private MapRepositoryInterface $mapRepository;
@@ -55,7 +55,7 @@ class YRow
     }
 
     /**
-     * @return array<StarMapItem>|array<StarSystemMapInterface>
+     * @return array<MapItem>|array<StarSystemMapInterface>
      */
     public function getFields(): array
     {
@@ -74,7 +74,7 @@ class YRow
                 );
 
                 if ($map !== null) {
-                    $this->fields[] = new StarMapItem(
+                    $this->fields[] = new MapItem(
                         $this->encodedMap,
                         $map
                     );
@@ -85,7 +85,7 @@ class YRow
     }
 
     /**
-     * @return array<StarMapItem>|array<StarSystemMapInterface>
+     * @return array<MapItem>|array<StarSystemMapInterface>
      */
     public function getSystemFields(): array
     {

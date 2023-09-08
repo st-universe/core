@@ -23,9 +23,9 @@
 						<table class="use" tal:condition="TOP_PREVIEW_ROW">
 							<tr>
 								<th style="width: 30px;">/\</th>
-								<td tal:repeat="starMapItem TOP_PREVIEW_ROW" class="starmap"
-									tal:attributes="id string:${starMapItem/getMap/getCX}_${starMapItem/getMap/getCY}">
-									<div class="lssobj"><img src="/assets/map/${starMapItem/getMapGraphicPath}" /></div>
+								<td tal:repeat="mapItem TOP_PREVIEW_ROW" class="starmap"
+									tal:attributes="id string:${mapItem/getMap/getCX}_${mapItem/getMap/getCY}">
+									<div class="lssobj"><img src="/assets/map/${mapItem/getMapGraphicPath}" /></div>
 								</td>
 							</tr>
 						</table>
@@ -41,10 +41,10 @@
 						<table class="use" tal:condition="LEFT_PREVIEW_ROW">
 							<th style="width: 30px;">&lt;</th>
 							<tr tal:repeat="row LEFT_PREVIEW_ROW">
-								<tal:block tal:repeat="starMapItem row/getFields">
-									<td tal:define="map starMapItem/getMap" class="starmap"
+								<tal:block tal:repeat="mapItem row/getFields">
+									<td tal:define="map mapItem/getMap" class="starmap"
 										tal:attributes="id string:${map/getCX}_${map/getCY}">
-										<div class="lssobj"><img src="/assets/map/${starMapItem/getMapGraphicPath}" />
+										<div class="lssobj"><img src="/assets/map/${mapItem/getMapGraphicPath}" />
 										</div>
 									</td>
 								</tal:block>
@@ -60,8 +60,8 @@
 							</tr>
 							<tr tal:repeat="yrow MAP_FIELDS">
 								<th tal:content="yrow/getRow">y</th>
-								<tal:block tal:repeat="starMapItem yrow/getFields">
-									<td tal:define="map starMapItem/getMap" class="starmap" style="runtime"
+								<tal:block tal:repeat="mapItem yrow/getFields">
+									<td tal:define="map mapItem/getMap" class="starmap" style="runtime"
 										tal:attributes="data-passable map/getFieldType/getPassableAsInt;data-region map/getRegionId;data-admin-region map/getAdminRegionId;data-system-type-id map/getSystemTypeId;id string:${map/getCX}_${map/getCY}">
 										<div class="lssobj" style="cursor: pointer ! important;"
 											onmouseover="toggleMapfieldType(this)"
@@ -69,7 +69,7 @@
 											<div class="divbody"
 												style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px;"
 												onclick="updateField(this,${map/getId});">
-												<img src="/assets/map/${starMapItem/getMapGraphicPath}" />
+												<img src="/assets/map/${mapItem/getMapGraphicPath}" />
 											</div>
 										</div>
 									</td>
@@ -82,10 +82,10 @@
 						<table class="use" tal:condition="RIGHT_PREVIEW_ROW">
 							<th>&gt;</th>
 							<tr tal:repeat="row RIGHT_PREVIEW_ROW">
-								<tal:block tal:repeat="starMapItem row/getFields">
-									<td tal:define="map starMapItem/getMap" class="starmap"
+								<tal:block tal:repeat="mapItem row/getFields">
+									<td tal:define="map mapItem/getMap" class="starmap"
 										tal:attributes="id string:${map/getCX}_${map/getCY}">
-										<div class="lssobj"><img src="/assets/map/${starMapItem/getMapGraphicPath}" />
+										<div class="lssobj"><img src="/assets/map/${mapItem/getMapGraphicPath}" />
 										</div>
 									</td>
 								</tal:block>
@@ -103,9 +103,9 @@
 						<table class="use" tal:condition="BOTTOM_PREVIEW_ROW">
 							<tr>
 								<th style="width: 30px;">\/</th>
-								<td tal:repeat="starMapItem BOTTOM_PREVIEW_ROW" class="starmap"
-									tal:attributes="id string:${starMapItem/getMap/getCX}_${starMapItem/getMap/getCY}">
-									<div class="lssobj"><img src="/assets/map/${starMapItem/getMapGraphicPath}" /></div>
+								<td tal:repeat="mapItem BOTTOM_PREVIEW_ROW" class="starmap"
+									tal:attributes="id string:${mapItem/getMap/getCX}_${mapItem/getMap/getCY}">
+									<div class="lssobj"><img src="/assets/map/${mapItem/getMapGraphicPath}" /></div>
 								</td>
 							</tr>
 						</table>
