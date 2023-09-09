@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
-use Stu\Component\Map\EncodedMapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
 class SystemScanPanelEntry extends SignaturePanelEntry
@@ -13,10 +12,9 @@ class SystemScanPanelEntry extends SignaturePanelEntry
 
     public function __construct(
         VisualPanelEntryData $data,
-        EncodedMapInterface $encodedMap,
         StarSystemInterface $system
     ) {
-        parent::__construct($data, null, $encodedMap);
+        parent::__construct($data, null, null);
 
         $this->system = $system;
     }

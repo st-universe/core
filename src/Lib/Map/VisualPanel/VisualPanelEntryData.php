@@ -57,9 +57,23 @@ class VisualPanelEntryData
         return $this->sysid;
     }
 
+    public function setSystemId(int $systemId): VisualPanelEntryData
+    {
+        $this->sysid = $systemId;
+
+        return $this;
+    }
+
     public function getMapfieldType(): int
     {
         return $this->type;
+    }
+
+    public function setMapfieldType(int $type): VisualPanelEntryData
+    {
+        $this->type = $type;
+
+        return $this;
     }
 
     public function getShipCount(): int

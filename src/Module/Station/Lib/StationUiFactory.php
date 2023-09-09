@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
-use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\SystemScanPanelEntry;
 use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -30,20 +29,16 @@ final class StationUiFactory implements StationUiFactoryInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private EncodedMapInterface $encodedMap;
-
     public function __construct(
         UserRepositoryInterface $userRepository,
         AllianceRepositoryInterface $allianceRepository,
         FactionRepositoryInterface $factionRepository,
-        ShipRepositoryInterface $shipRepository,
-        EncodedMapInterface $encodedMap
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->userRepository = $userRepository;
         $this->allianceRepository = $allianceRepository;
         $this->factionRepository = $factionRepository;
         $this->shipRepository = $shipRepository;
-        $this->encodedMap = $encodedMap;
     }
 
     public function createSystemScanPanel(
@@ -68,7 +63,6 @@ final class StationUiFactory implements StationUiFactoryInterface
     ): SystemScanPanelEntry {
         return new SystemScanPanelEntry(
             $data,
-            $this->encodedMap,
             $system
         );
     }

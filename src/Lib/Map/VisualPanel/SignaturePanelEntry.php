@@ -15,14 +15,14 @@ class SignaturePanelEntry implements VisualPanelElementInterface
 
     private ?LayerInterface $layer;
 
-    private EncodedMapInterface $encodedMap;
+    private ?EncodedMapInterface $encodedMap;
 
     private string $cssClass = 'lss';
 
     public function __construct(
         VisualPanelEntryData $data,
         ?LayerInterface $layer,
-        EncodedMapInterface $encodedMap
+        ?EncodedMapInterface $encodedMap
     ) {
         $this->data = $data;
         $this->layer = $layer;
@@ -72,9 +72,10 @@ class SignaturePanelEntry implements VisualPanelElementInterface
             return null;
         }
 
-        if ($layer->isEncoded()) {
+        $encodedMap = $this->encodedMap;
+        if ($layer->isEncoded() && $encodedMap !== null) {
 
-            return $this->encodedMap->getEncodedMapPath(
+            return $encodedMap->getEncodedMapPath(
                 $this->data->getMapfieldType(),
                 $layer
             );
