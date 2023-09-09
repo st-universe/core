@@ -7,6 +7,8 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
+use Stu\Lib\Map\VisualPanel\SignaturePanelEntry;
+use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -149,7 +151,8 @@ final class DatabaseEntry implements ViewControllerInterface
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
                 foreach ($starSystem->getFields() as $obj) {
                     $fields['fields'][$obj->getSY()][] = [
-                        'map' => $obj,
+                        'entry' => $this->createSignaturePanelEntry($obj),
+                        'colony' => $obj->getColony(),
                         'showPm' => $userHasColonyInSystem && $this->showPmHref($obj, $game->getUser())
                     ];
                 }
@@ -159,6 +162,15 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($game->getUser(), $entry_object_id));
                 break;
         }
+    }
+
+    private function createSignaturePanelEntry(StarSystemMapInterface $systemMap): SignaturePanelEntry
+    {
+        $data = new VisualPanelEntryData();
+        $data->setMapfieldType($systemMap->getFieldId())
+            ->setSystemId($systemMap->getSystemId());
+
+        return new SignaturePanelEntry($data, null, null);
     }
 
     private function hasUserColonyInSystem(UserInterface $user, int $systemId): bool
