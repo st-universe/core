@@ -171,7 +171,7 @@
 						name="actlss" />
 				</a>
 				{% endif %}
-				{% if not SHIP.getSystem or not SHIP.getSystem.isWormhole %}
+				{% if IS_MAP_BUTTON_VISIBLE %}
 				<a href="javascript:void(0);"
 					onclick="openStarMap(this,'{{ SHIP.getMapCX }}','{{ SHIP.getMapCY }}','{{ SHIP.getLayerId }}');"
 					onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">

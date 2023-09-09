@@ -30,10 +30,12 @@ use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
+use Stu\Orm\Repository\UserLayerRepositoryInterface;
 
 final class ShowShip implements ViewControllerInterface
 {
@@ -61,6 +63,8 @@ final class ShowShip implements ViewControllerInterface
 
     private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository;
 
+    private UserLayerRepositoryInterface $userLayerRepository;
+
     private StationUtilityInterface $stationUtility;
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
@@ -83,6 +87,7 @@ final class ShowShip implements ViewControllerInterface
         NbsUtilityInterface $nbsUtility,
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
         ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
+        UserLayerRepositoryInterface $userLayerRepository,
         StationUtilityInterface $stationUtility,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         ColonyLibFactoryInterface $colonyLibFactory,
@@ -100,6 +105,7 @@ final class ShowShip implements ViewControllerInterface
         $this->nbsUtility = $nbsUtility;
         $this->stationShipRepairRepository = $stationShipRepairRepository;
         $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
+        $this->userLayerRepository = $userLayerRepository;
         $this->stationUtility = $stationUtility;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtilFactory = $loggerUtilFactory;
@@ -166,6 +172,9 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('WRAPPER', $wrapper);
 
         if ($ship->getLss()) {
+
+            $this->createUserLayerIfNecessary($user, $ship);
+
             $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
                 $ship,
                 $game->getUser(),
@@ -187,8 +196,15 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
         $game->setTemplateVar('FIGHT_LIB', $this->fightLib);
+
+        $userLayers = $user->getUserLayers();
         if ($ship->hasTranswarp()) {
-            $game->setTemplateVar('USER_LAYERS', $user->getUserLayers());
+            $game->setTemplateVar('USER_LAYERS', $userLayers);
+        }
+
+        $layer = $ship->getLayer();
+        if ($layer !== null && $userLayers->containsKey($layer->getId())) {
+            $game->setTemplateVar('IS_MAP_BUTTON_VISIBLE', true);
         }
 
         $crewObj = $this->shipCrewCalculator->getCrewObj($rump);
@@ -203,6 +219,30 @@ final class ShowShip implements ViewControllerInterface
         $this->addWarpcoreSplitJavascript($wrapper, $game);
 
         $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));
+    }
+
+    private function createUserLayerIfNecessary(UserInterface $user, ShipInterface $ship): void
+    {
+        $layer = $ship->getLayer();
+        if ($layer === null) {
+            return;
+        }
+
+        if ($ship->getMap() === null) {
+            return;
+        }
+
+        $hasSeenLayer = $user->hasSeen($layer->getId());
+        if ($hasSeenLayer) {
+            return;
+        }
+
+        $userLayer = $this->userLayerRepository->prototype();
+        $userLayer->setLayer($layer);
+        $userLayer->setUser($user);
+        $this->userLayerRepository->save($userLayer);
+
+        $user->getUserLayers()->set($layer->getId(), $userLayer);
     }
 
     private function addWarpcoreSplitJavascript(ShipWrapperInterface $wrapper, GameControllerInterface $game): void

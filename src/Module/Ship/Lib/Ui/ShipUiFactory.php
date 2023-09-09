@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Ui;
 
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Map\VisualPanel\VisualNavPanelEntry;
+use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 /**
@@ -19,8 +19,6 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
  */
 final class ShipUiFactory implements ShipUiFactoryInterface
 {
-    private UserLayerRepositoryInterface $userLayerRepository;
-
     private UserMapRepositoryInterface $userMapRepository;
 
     private ShipRepositoryInterface $shipRepository;
@@ -28,60 +26,48 @@ final class ShipUiFactory implements ShipUiFactoryInterface
     private EncodedMapInterface $encodedMap;
 
     public function __construct(
-        UserLayerRepositoryInterface $userLayerRepository,
         UserMapRepositoryInterface $userMapRepository,
         ShipRepositoryInterface $shipRepository,
         EncodedMapInterface $encodedMap
     ) {
-        $this->userLayerRepository = $userLayerRepository;
         $this->userMapRepository = $userMapRepository;
         $this->shipRepository = $shipRepository;
         $this->encodedMap = $encodedMap;
     }
 
     public function createVisualNavPanel(
-        ShipInterface $ship,
+        ShipInterface $currentShip,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
         bool $isTachyonSystemActive,
-        bool $tachyonFresh,
-        StarSystemInterface $systemForSensorScan = null
+        bool $tachyonFresh
     ): VisualNavPanel {
         return new VisualNavPanel(
             $this,
-            $this->userLayerRepository,
             $this->userMapRepository,
             $this->shipRepository,
-            $ship,
+            $currentShip,
             $user,
             $loggerUtil,
             $isTachyonSystemActive,
-            $tachyonFresh,
-            $systemForSensorScan
+            $tachyonFresh
         );
     }
 
     public function createVisualNavPanelEntry(
-        VisualNavPanelEntryData $data = null,
-        LayerInterface $layer = null,
+        VisualPanelEntryData $data,
+        ?LayerInterface $layer,
+        ShipInterface $currentShip,
         bool $isTachyonSystemActive = false,
-        bool $tachyonFresh = false,
-        ShipInterface $ship = null,
-        StarSystemInterface $system = null
+        bool $tachyonFresh = false
     ): VisualNavPanelEntry {
         return new VisualNavPanelEntry(
             $data,
             $layer,
             $this->encodedMap,
+            $currentShip,
             $isTachyonSystemActive,
-            $tachyonFresh,
-            $ship,
-            $system
+            $tachyonFresh
         );
-    }
-
-    public function createVisualNavPanelRow(): VisualNavPanelRow
-    {
-        return new VisualNavPanelRow();
     }
 }

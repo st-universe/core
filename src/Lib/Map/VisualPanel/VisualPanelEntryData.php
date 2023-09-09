@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Ui;
+namespace Stu\Lib\Map\VisualPanel;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 /**
  * @Entity
  */
-class VisualNavPanelEntryData
+class VisualPanelEntryData
 {
     /** @Id @Column(type="integer") * */
     private int $posx = 0;
@@ -62,19 +62,6 @@ class VisualNavPanelEntryData
         return $this->type;
     }
 
-    public function getFieldGraphicID(): int
-    {
-        $fieldId = $this->getMapfieldType();
-
-
-        if ($fieldId === 1) {
-            return 0;
-        } else {
-
-            return $fieldId;
-        }
-    }
-
     public function getShipCount(): int
     {
         return $this->shipcount;
@@ -105,23 +92,31 @@ class VisualNavPanelEntryData
         return $this->shieldstate ?? false;
     }
 
-    public function getDirection1Count(): ?int
+    public function isSubspaceCodeAvailable(): bool
     {
-        return $this->d1c;
+        return $this->getDirection1Count() > 0
+            || $this->getDirection2Count() > 0
+            || $this->getDirection3Count() > 0
+            || $this->getDirection4Count() > 0;
     }
 
-    public function getDirection2Count(): ?int
+    public function getDirection1Count(): int
     {
-        return $this->d2c;
+        return $this->d1c ?? 0;
     }
 
-    public function getDirection3Count(): ?int
+    public function getDirection2Count(): int
     {
-        return $this->d3c;
+        return $this->d2c ?? 0;
     }
 
-    public function getDirection4Count(): ?int
+    public function getDirection3Count(): int
     {
-        return $this->d4c;
+        return $this->d3c ?? 0;
+    }
+
+    public function getDirection4Count(): int
+    {
+        return $this->d4c ?? 0;
     }
 }

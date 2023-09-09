@@ -6,19 +6,17 @@ namespace Stu\Module\Ship\Lib\Ui;
 
 use Mockery\MockInterface;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Map\VisualPanel\VisualNavPanelEntry;
+use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipUiFactoryTest extends StuTestCase
 {
-    /** @var MockInterface&UserLayerRepositoryInterface */
-    private MockInterface $userLayerRepository;
-
     /** @var MockInterface&UserMapRepositoryInterface */
     private MockInterface $userMapRepository;
 
@@ -31,13 +29,11 @@ class ShipUiFactoryTest extends StuTestCase
 
     protected function setUp(): void
     {
-        $this->userLayerRepository = $this->mock(UserLayerRepositoryInterface::class);
         $this->userMapRepository = $this->mock(UserMapRepositoryInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->encodedMap = $this->mock(EncodedMapInterface::class);
 
         $this->subject = new ShipUiFactory(
-            $this->userLayerRepository,
             $this->userMapRepository,
             $this->shipRepository,
             $this->encodedMap
@@ -62,15 +58,11 @@ class ShipUiFactoryTest extends StuTestCase
     {
         static::assertInstanceOf(
             VisualNavPanelEntry::class,
-            $this->subject->createVisualNavPanelEntry()
-        );
-    }
-
-    public function testCreateVisualNavPanelRowReturnsInstance(): void
-    {
-        static::assertInstanceOf(
-            VisualNavPanelRow::class,
-            $this->subject->createVisualNavPanelRow()
+            $this->subject->createVisualNavPanelEntry(
+                $this->mock(VisualPanelEntryData::class),
+                null,
+                $this->mock(ShipInterface::class)
+            )
         );
     }
 }

@@ -199,7 +199,7 @@
 <metal:block metal:define-macro="systemsensorscan">
   <div tal:condition="not:DONOTHING" style="float:left;">
     <table
-      tal:define="panel VISUAL_NAV_PANEL; viewportFont panel/getViewportForFont; viewportScale panel/getViewportPerColumn"
+      tal:define="panel SYSTEM_SCAN_PANEL; viewportFont panel/getViewportForFont; viewportScale panel/getViewportPerColumn"
       class="lssarea" cellpadding="0" cellspacing="0">
       <tr>
         <td style="font-size: ${viewportFont}vw; width: ${viewportScale}vw; height: ${viewportScale}vw;" class="th">
@@ -211,16 +211,17 @@
       </tr>
       <tr tal:repeat="row panel/getRows">
         <tal:block tal:repeat="entry row/getEntries">
-          <td tal:condition="entry/getRow"
+          <td tal:condition="entry/isRowIndex"
             style="width: ${viewportScale}vw; height: ${viewportScale}vw; font-size: ${viewportFont}vw;"
             tal:attributes="class entry/getCSSClass" tal:content="entry/getRow">.</td>
-          <tal:block tal:condition="not:entry/getRow">
+          <tal:block tal:condition="not:entry/isRowIndex">
             <td tal:define="lssCellData entry/getLssCellData" tal:attributes="class entry/getCSSClass"
               style="background-image: url(assets/map/starmap/${lssCellData/getSystemBackgroundId}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
               <tal:block tal:condition="entry/isClickable" tal:define="code lssCellData/getSubspaceCode">
                 <div style="width: ${viewportScale}vw; height: ${viewportScale}vw; top: 0px !important;"
                   class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
-                  <img src="assets/map/${lssCellData/getFieldGraphicID}.png" class="lssSubspaceOverShield"
+                  <img tal:condition="lssCellData/getFieldGraphicID"
+                    src="assets/map/${lssCellData/getFieldGraphicID}.png" class="lssSubspaceOverShield"
                     style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                   <tal:block tal:condition="lssCellData/getColonyShieldState">
                     <img src="assets/planets/s1.png" class="lssColoShield"
@@ -234,7 +235,8 @@
                       src="assets/subspace/generated/${code}.png"
                       style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                   </tal:block>
-                  <div style="font-size: ${viewportFont}vw;" class="centered" tal:content="lssCellData/getDisplayCount">
+                  <div tal:condition="lssCellData/getDisplayCount" style="font-size: ${viewportFont}vw;"
+                    class="centered" tal:content="lssCellData/getDisplayCount">
                     .
                   </div>
                 </div>
@@ -253,7 +255,8 @@
                       src="assets/subspace/generated/${code}.png"
                       style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
                   </tal:block>
-                  <div style="font-size: ${viewportFont}vw;" class="centered" tal:content="lssCellData/getDisplayCount">
+                  <div tal:condition="lssCellData/getDisplayCount" style="font-size: ${viewportFont}vw;"
+                    class="centered" tal:content="lssCellData/getDisplayCount">
                     .
                   </div>
                 </div>

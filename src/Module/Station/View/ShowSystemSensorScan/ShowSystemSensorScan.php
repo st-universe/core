@@ -9,7 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
+use Stu\Module\Station\Lib\StationUiFactoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowSystemSensorScan implements ViewControllerInterface
@@ -22,18 +22,18 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
     private LoggerUtilFactoryInterface $loggerUtilFactory;
 
-    private ShipUiFactoryInterface $shipUiFactory;
+    private StationUiFactoryInterface $stationUiFactory;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         MapRepositoryInterface $mapRepository,
-        ShipUiFactoryInterface $shipUiFactory,
+        StationUiFactoryInterface $stationUiFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->mapRepository = $mapRepository;
         $this->loggerUtilFactory = $loggerUtilFactory;
-        $this->shipUiFactory = $shipUiFactory;
+        $this->stationUiFactory = $stationUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,7 +64,8 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
         $game->showMacro('html/stationmacros.xhtml/systemsensorscan');
 
-        if ($mapField->getSystem() === null) {
+        $system = $mapField->getSystem();
+        if ($system === null) {
             return;
         }
 
@@ -76,13 +77,11 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             return;
         }
 
-        $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
+        $game->setTemplateVar('SYSTEM_SCAN_PANEL', $this->stationUiFactory->createSystemScanPanel(
             $ship,
             $game->getUser(),
             $this->loggerUtilFactory->getLoggerUtil(),
-            $ship->getTachyonState(),
-            false,
-            $mapField->getSystem()
+            $system
         ));
 
         $game->setTemplateVar('SHIP', $ship);

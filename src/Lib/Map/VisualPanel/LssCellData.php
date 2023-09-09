@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Ui;
+namespace Stu\Lib\Map\VisualPanel;
 
 class LssCellData
 {
@@ -11,7 +11,7 @@ class LssCellData
     private ?string $mapGraphicPath = null;
     private bool $colonyShieldState = false;
     private ?string $subspaceCode = null;
-    private string $displayCount = '';
+    private ?string $displayCount = null;
 
     public function __construct(
         ?string $systemBackgroundId,
@@ -19,7 +19,7 @@ class LssCellData
         ?string $mapGraphicPath,
         bool $colonyShieldState,
         ?string $subspaceCode,
-        string $displayCount
+        ?string $displayCount
     ) {
         $this->systemBackgroundId = $systemBackgroundId;
         $this->fieldGraphicId = $fieldGraphicId;
@@ -54,7 +54,7 @@ class LssCellData
         return $this->subspaceCode;
     }
 
-    public function getDisplayCount(): string
+    public function getDisplayCount(): ?string
     {
         return $this->displayCount;
     }
