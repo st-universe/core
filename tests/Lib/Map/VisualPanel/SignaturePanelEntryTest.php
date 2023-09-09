@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Ui;
+namespace Stu\Lib\Map\VisualPanel;
 
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Map\VisualPanel\SignaturePanelEntry;
+use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\StuTestCase;
 
-class VisualNavPanelEntryTest extends StuTestCase
+class SignaturePanelEntryTest extends StuTestCase
 {
     public static function provideGetSystemBackgroundIdData()
     {
@@ -30,7 +32,7 @@ class VisualNavPanelEntryTest extends StuTestCase
         bool $isEncoded,
         string $expectedMapGraphicPath
     ): void {
-        $data = mock(VisualNavPanelEntryData::class);
+        $data = mock(VisualPanelEntryData::class);
         $layer = mock(LayerInterface::class);
         $encodedMap = mock(EncodedMapInterface::class);
 
@@ -61,6 +63,12 @@ class VisualNavPanelEntryTest extends StuTestCase
         $data->shouldReceive('getShipCount')
             ->withNoArgs()
             ->andReturn(123);
+        $data->shouldReceive('getSystemId')
+            ->withNoArgs()
+            ->andReturn(666);
+        $data->shouldReceive('isSubspaceCodeAvailable')
+            ->withNoArgs()
+            ->andReturn(true);
 
         $layer->shouldReceive('isEncoded')
             ->withNoArgs()
@@ -75,7 +83,7 @@ class VisualNavPanelEntryTest extends StuTestCase
                 ->andReturn(5);
         }
 
-        $subject = new VisualNavPanelEntry($data, $layer, $encodedMap);
+        $subject = new SignaturePanelEntry($data, $layer, $encodedMap);
 
         $result = $subject->getLssCellData();
 

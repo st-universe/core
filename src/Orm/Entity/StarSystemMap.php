@@ -232,18 +232,6 @@ class StarSystemMap implements StarSystemMapInterface
         return "background-image: url('/assets/map/" . $this->getFieldId() . ".png'); opacity:1;";
     }
 
-    public function getFieldGraphicID(): int
-    {
-        $fieldId = $this->getFieldId();
-
-        if ($fieldId === 1) {
-            return 0;
-        } else {
-            return $fieldId;
-        }
-    }
-
-
     public function getShips(): Collection
     {
         return $this->ships;

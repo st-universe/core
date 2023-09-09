@@ -28,7 +28,7 @@
         {% for row in visualNavPanel.getRows %}
         <tr>
             {% for entry in row.getEntries %}
-            {% if entry.getRow %}
+            {% if entry.isRowIndex %}
             <td style="{{ heightAndWidth }} {{ fontSize }}" class="{{ entry.getCSSClass }}">{{ entry.getRow }}</td>
             {% else %}
             <td class="{{ entry.getCSSClass }}"
@@ -36,13 +36,11 @@
                 {% if entry.isClickable %}
                 <div style="{{ heightAndWidth }} position: relative !important; top: 0px;" class="lssobj imgOverlayText"
                     onclick="{{ entry.getOnClick }}">
-                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth,
-                    ship.getSubspaceState, ship.getStarsystemMap) }}
+                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
                 </div>
                 {% else %}
                 <div class="imgOverlayText" style="{{ heightAndWidth }} position: relative !important; top: 0px;">
-                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth,
-                    ship.getSubspaceState, ship.getStarsystemMap) }}
+                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
                 </div>
                 {% endif %}
             </td>
@@ -166,12 +164,14 @@
 {% endif %}
 {% endmacro %}
 
-{% macro lssCellLayers(lssCellData, fontSize, heightAndWidth, subspaceState, starsystem) %}
-{% if starsystem %}
+{% macro lssCellLayers(lssCellData, fontSize, heightAndWidth, subspaceState) %}
+{% if lssCellData.getSystemBackgroundId %}
 <img src="assets/map/starmap/{{ lssCellData.getSystemBackgroundId }}.png"
     style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
+{% if lssCellData.getFieldGraphicID %}
 <img src="assets/map/{{ lssCellData.getFieldGraphicID }}.png" class="lssSubspaceOverShield"
     style="z-index: 2; {{ heightAndWidth }} opacity:2;" />
+{% endif %}
 {% else %}
 <img src="assets/map/{{ lssCellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
 {% endif %}
@@ -183,6 +183,8 @@
 <img src="assets/subspace/generated/{{ subspaceCode }}.png" class="lssSubspaceOverShield"
     style="z-index: 4; {{ heightAndWidth }}" />
 {% endif %}
+{% if lssCellData.getDisplayCount %}
 <div style="{{ fontSize }}; z-index: 5;" class="centered">{{ lssCellData.getDisplayCount }}
 </div>
+{% endif %}
 {% endmacro %}

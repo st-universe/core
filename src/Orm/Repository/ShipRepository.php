@@ -15,11 +15,11 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\TFleetShipItem;
 use Stu\Module\Ship\Lib\TShipItem;
-use Stu\Module\Ship\Lib\Ui\VisualNavPanelEntryData;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Fleet;
@@ -507,7 +507,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $sensorRange = $ship->getSensorRange();
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addEntityResult(VisualPanelEntryData::class, 'd');
         $rsm->addFieldResult('d', 'posx', 'posx');
         $rsm->addFieldResult('d', 'posy', 'posy');
         $rsm->addFieldResult('d', 'shipcount', 'shipcount');
@@ -597,7 +597,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getSensorResultOuterSystem(int $cx, int $cy, int $layerId, int $sensorRange, bool $doSubspace, int $ignoreId): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addEntityResult(VisualPanelEntryData::class, 'd');
         $rsm->addFieldResult('d', 'posx', 'posx');
         $rsm->addFieldResult('d', 'posy', 'posy');
         $rsm->addFieldResult('d', 'shipcount', 'shipcount');
@@ -695,7 +695,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     {
         $rsm = new ResultSetMapping();
 
-        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addEntityResult(VisualPanelEntryData::class, 'd');
         $rsm->addFieldResult('d', 'posx', 'posx');
         $rsm->addFieldResult('d', 'posy', 'posy');
         $rsm->addFieldResult('d', 'shipcount', 'shipcount');
@@ -762,7 +762,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(VisualNavPanelEntryData::class, 'd');
+        $rsm->addEntityResult(VisualPanelEntryData::class, 'd');
         $rsm->addFieldResult('d', 'posx', 'posx');
         $rsm->addFieldResult('d', 'posy', 'posy');
         $rsm->addFieldResult('d', 'shipcount', 'shipcount');

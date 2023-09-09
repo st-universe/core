@@ -31,7 +31,10 @@ use Stu\Lib\SectorString;
  *         @Index(name="map_field_type_idx", columns={"field_id"}),
  *         @Index(name="map_layer_idx", columns={"layer_id"}),
  *         @Index(name="map_system_idx", columns={"systems_id"}),
- *         @Index(name="map_system_type_idx", columns={"system_type_id"})
+ *         @Index(name="map_system_type_idx", columns={"system_type_id"}),
+ *         @Index(name="map_influence_area_idx", columns={"influence_area_id"}),
+ *         @Index(name="map_bordertype_idx", columns={"bordertype_id"}),
+ *         @Index(name="map_admin_region_idx", columns={"admin_region_id"})
  *     },
  *     uniqueConstraints={
  *         @UniqueConstraint(name="map_coordinate_idx", columns={"layer_id", "cx", "cy"})

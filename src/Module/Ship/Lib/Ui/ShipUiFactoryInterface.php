@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
+use Stu\Lib\Map\VisualPanel\VisualNavPanelEntry;
+use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -16,22 +17,18 @@ use Stu\Orm\Entity\UserInterface;
 interface ShipUiFactoryInterface
 {
     public function createVisualNavPanel(
-        ShipInterface $ship,
+        ShipInterface $currentShip,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
         bool $isTachyonSystemActive,
-        bool $tachyonFresh,
-        StarSystemInterface $systemForSensorScan = null
+        bool $tachyonFresh
     ): VisualNavPanel;
 
     public function createVisualNavPanelEntry(
-        VisualNavPanelEntryData $data = null,
-        LayerInterface $layer = null,
+        VisualPanelEntryData $data,
+        ?LayerInterface $layer,
+        ShipInterface $currentShip,
         bool $isTachyonSystemActive = false,
-        bool $tachyonFresh = false,
-        ShipInterface $ship = null,
-        StarSystemInterface $system = null
+        bool $tachyonFresh = false
     ): VisualNavPanelEntry;
-
-    public function createVisualNavPanelRow(): VisualNavPanelRow;
 }
