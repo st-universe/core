@@ -115,7 +115,9 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         if (!$this->currentShip->canMove()) {
             return false;
         }
-        return !$this->isCurrentShipPosition();
+
+        return !$this->isCurrentShipPosition()
+            && ($this->data->getPosX() === $this->currentShip->getPosX() || $this->data->getPosY() === $this->currentShip->getPosY());
     }
 
     public function getOnClick(): string

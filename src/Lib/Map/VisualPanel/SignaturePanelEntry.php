@@ -9,8 +9,6 @@ use Stu\Orm\Entity\LayerInterface;
 
 class SignaturePanelEntry implements VisualPanelElementInterface
 {
-    public const ONLY_BACKGROUND_IMAGE = 1;
-
     protected VisualPanelEntryData $data;
 
     private ?LayerInterface $layer;
@@ -29,39 +27,22 @@ class SignaturePanelEntry implements VisualPanelElementInterface
         $this->encodedMap = $encodedMap;
     }
 
-    public function getLssCellData(): LssCellData
+    public function getCellData(): MapCellData|SystemCellData
     {
-        return new LssCellData(
-            $this->getSystemBackgroundId(),
-            $this->getFieldGraphicID(),
-            $this->getMapGraphicPath(),
+        if ($this->data->getSystemId() === null) {
+            return new MapCellData(
+                $this->getMapGraphicPath(),
+                $this->getSubspaceCode(),
+                $this->getDisplayCount(),
+            );
+        }
+        return new SystemCellData(
+            $this->data->getPosX(),
+            $this->data->getPosY(),
+            $this->data->getMapfieldType(),
             $this->data->getShieldState(),
             $this->getSubspaceCode(),
             $this->getDisplayCount(),
-        );
-    }
-
-    private function getFieldGraphicID(): ?int
-    {
-        $fieldId = $this->data->getMapfieldType();
-
-        if ($fieldId === self::ONLY_BACKGROUND_IMAGE) {
-            return null;
-        }
-
-        return $fieldId;
-    }
-
-    private function getSystemBackgroundId(): ?string
-    {
-        if ($this->data->getSystemId() === null) {
-            return null;
-        }
-
-        return sprintf(
-            '%02d%02d',
-            $this->data->getPosY(),
-            $this->data->getPosX()
         );
     }
 

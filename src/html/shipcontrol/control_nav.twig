@@ -36,11 +36,11 @@
                 {% if entry.isClickable %}
                 <div style="{{ heightAndWidth }} position: relative !important; top: 0px;" class="lssobj imgOverlayText"
                     onclick="{{ entry.getOnClick }}">
-                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
+                    {{ _self.lssCellLayers(entry.getCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
                 </div>
                 {% else %}
                 <div class="imgOverlayText" style="{{ heightAndWidth }} position: relative !important; top: 0px;">
-                    {{ _self.lssCellLayers(entry.getLssCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
+                    {{ _self.lssCellLayers(entry.getCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
                 </div>
                 {% endif %}
             </td>
@@ -164,27 +164,27 @@
 {% endif %}
 {% endmacro %}
 
-{% macro lssCellLayers(lssCellData, fontSize, heightAndWidth, subspaceState) %}
-{% if lssCellData.getSystemBackgroundId %}
-<img src="assets/map/starmap/{{ lssCellData.getSystemBackgroundId }}.png"
+{% macro lssCellLayers(cellData, fontSize, heightAndWidth, subspaceState) %}
+{% if cellData.getSystemBackgroundId %}
+<img src="assets/map/starmap/{{ cellData.getSystemBackgroundId }}.png"
     style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
-{% if lssCellData.getFieldGraphicID %}
-<img src="assets/map/{{ lssCellData.getFieldGraphicID }}.png" class="lssSubspaceOverShield"
+{% if cellData.getSystemFieldId %}
+<img src="assets/map/{{ cellData.getSystemFieldId }}.png" class="lssSubspaceOverShield"
     style="z-index: 2; {{ heightAndWidth }} opacity:2;" />
 {% endif %}
 {% else %}
-<img src="assets/map/{{ lssCellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
+<img src="assets/map/{{ cellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
 {% endif %}
-{% if lssCellData.getShieldState %}
+{% if cellData.getShieldState %}
 <img src="assets/planets/s1.png" class="lssColoShield" style="z-index: 3; {{ heightAndWidth }}" />
 {% endif %}
-{% set subspaceCode = lssCellData.getSubspaceCode %}
+{% set subspaceCode = cellData.getSubspaceCode %}
 {% if subspaceState and subspaceCode %}
 <img src="assets/subspace/generated/{{ subspaceCode }}.png" class="lssSubspaceOverShield"
     style="z-index: 4; {{ heightAndWidth }}" />
 {% endif %}
-{% if lssCellData.getDisplayCount %}
-<div style="{{ fontSize }}; z-index: 5;" class="centered">{{ lssCellData.getDisplayCount }}
+{% if cellData.getDisplayCount %}
+<div style="{{ fontSize }}; z-index: 5;" class="centered">{{ cellData.getDisplayCount }}
 </div>
 {% endif %}
 {% endmacro %}

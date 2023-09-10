@@ -22,16 +22,15 @@
                                 style="width: ${viewportScale}vw; height: ${viewportScale}vw; font-size: ${viewportFont}vw;"
                                 tal:attributes="class entry/getCSSClass" tal:content="entry/getRow">.</td>
                             <tal:block tal:condition="not:entry/isRowIndex">
-                                <td tal:define="lssCellData entry/getLssCellData"
-                                    tal:attributes="class entry/getCSSClass"
-                                    style="background-image: url(../assets/map/${lssCellData/getMapGraphicPath}); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
-                                    <tal:block tal:define="code lssCellData/getSubspaceCode">
+                                <td tal:define="cellData entry/getCellData" tal:attributes="class entry/getCSSClass"
+                                    style="background-image: url(../assets/map/${cellData/getMapGraphicPath}); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
+                                    <tal:block tal:define="code cellData/getSubspaceCode">
                                         <div class="imgOverlayText">
                                             <img tal:condition="code" src="../assets/subspace/generated/${code}.png"
                                                 style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-                                            <div tal:condition="lssCellData/getDisplayCount"
+                                            <div tal:condition="cellData/getDisplayCount"
                                                 style="font-size: ${viewportFont}vw; color: cyan;" class="centered"
-                                                tal:content="lssCellData/getDisplayCount">
+                                                tal:content="cellData/getDisplayCount">
                                                 .
                                             </div>
                                         </div>
