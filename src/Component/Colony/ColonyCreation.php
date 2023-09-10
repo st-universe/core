@@ -11,7 +11,6 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-//TODO unit tests
 final class ColonyCreation implements ColonyCreationInterface
 {
     private ColonyRepositoryInterface $colonyRepository;
