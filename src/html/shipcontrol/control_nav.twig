@@ -175,7 +175,7 @@
 {% else %}
 <img src="assets/map/{{ cellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
 {% endif %}
-{% if cellData.getShieldState %}
+{% if cellData.getColonyShieldState %}
 <img src="assets/planets/s1.png" class="lssColoShield" style="z-index: 3; {{ heightAndWidth }}" />
 {% endif %}
 {% set subspaceCode = cellData.getSubspaceCode %}
