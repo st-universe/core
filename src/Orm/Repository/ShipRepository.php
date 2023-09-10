@@ -354,7 +354,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.schilde<s.max_schilde
                 AND s.shield_regeneration_timer <= :regenerationThreshold
                 AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.ship_id) >= bp.crew
-                AND NOT EXISTS (SELECT a FROM %s a WHERE (a.map_id = s.map_id or a.starsystem_map_id = s.starsystem_map_id) AND a.anomaly_type_id = :anomalyType)',
+                AND NOT EXISTS (SELECT a FROM %s a WHERE (a.map_id = s.map_id or a.starsystem_map_id = s.starsystem_map_id) AND a.anomaly_type_id = :anomalyType AND a.remaining_ticks > 0)',
                 Ship::class,
                 ShipSystem::class,
                 ShipBuildplan::class,
