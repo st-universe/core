@@ -12,25 +12,23 @@ use Stu\StuTestCase;
 
 class SignaturePanelEntryTest extends StuTestCase
 {
-    public static function provideGetSystemBackgroundIdData()
+    public static function provideGetCellDataForSystemMapData()
     {
         return [
-            [1, 2, '0201', false, '5/42.png'],
-            [23, 2, '0223', true, 'ENCODED'],
-            [7, 14, '1407', true, 'ENCODED'],
-            [32, 16, '1632', true, 'ENCODED'],
+            [1, 2, '0201'],
+            [23, 2, '0223'],
+            [7, 14, '1407'],
+            [32, 16, '1632']
         ];
     }
 
     /**
-     * @dataProvider provideGetSystemBackgroundIdData
+     * @dataProvider provideGetCellDataForSystemMapData
      */
-    public function testGetLssCellData(
+    public function testGetCellDataForSystemMap(
         int $x,
         int $y,
-        string $expectedBackGroundId,
-        bool $isEncoded,
-        string $expectedMapGraphicPath
+        string $expectedBackGroundId
     ): void {
         $data = mock(VisualPanelEntryData::class);
         $layer = mock(LayerInterface::class);
@@ -70,6 +68,46 @@ class SignaturePanelEntryTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
+        $subject = new SignaturePanelEntry($data, $layer, null);
+
+        $result = $subject->getCellData();
+
+        $this->assertEquals($expectedBackGroundId, $result->getSystemBackgroundId());
+        $this->assertTrue($result->getColonyShieldState());
+    }
+
+    public static function provideGetCellDataForMapData()
+    {
+        return [
+            [false, '5/42.png'],
+            [true, 'ENCODED']
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetCellDataForMapData
+     */
+    public function testGetCellDataForMap(
+        bool $isEncoded,
+        string $expectedMapGraphicPath
+    ): void {
+        $data = mock(VisualPanelEntryData::class);
+        $layer = mock(LayerInterface::class);
+        $encodedMap = mock(EncodedMapInterface::class);
+
+        $data->shouldReceive('getMapfieldType')
+            ->withNoArgs()
+            ->andReturn(42);
+        $data->shouldReceive('getShipCount')
+            ->withNoArgs()
+            ->andReturn(123);
+        $data->shouldReceive('getSystemId')
+            ->withNoArgs()
+            ->andReturn(null);
+        $data->shouldReceive('isSubspaceCodeAvailable')
+            ->withNoArgs()
+            ->andReturn(false);
+
         $layer->shouldReceive('isEncoded')
             ->withNoArgs()
             ->andReturn($isEncoded);
@@ -85,11 +123,8 @@ class SignaturePanelEntryTest extends StuTestCase
 
         $subject = new SignaturePanelEntry($data, $layer, $encodedMap);
 
-        $result = $subject->getLssCellData();
+        $result = $subject->getCellData();
 
-        $this->assertEquals($expectedBackGroundId, $result->getSystemBackgroundId());
         $this->assertEquals($expectedMapGraphicPath, $result->getMapGraphicPath());
-        $this->assertTrue($result->getColonyShieldState());
-        $this->assertEquals("1222", $result->getSubspaceCode());
     }
 }

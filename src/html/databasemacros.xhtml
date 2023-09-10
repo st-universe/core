@@ -107,11 +107,11 @@
       <tr tal:repeat="yaxis map/fields">
         <th tal:content="repeat/yaxis/key">CY</th>
         <td tal:repeat="xaxis yaxis" class="lss" style="background-size: cover;">
-          <div class="lssobj imgOverlayText" tal:define="lssCellData xaxis/entry/getLssCellData"
+          <div class="lssobj imgOverlayText" tal:define="systemCellData xaxis/systemCellData"
             style=" position: relative !important; top: 0px; height: 30px; width: 30px">
-            <img src="assets/map/starmap/${lssCellData/getSystemBackgroundId}.png" style="z-index: 1;" />
-            <img tal:condition="lssCellData/getFieldGraphicID" class="lssColoShield"
-              src="assets/map/${lssCellData/getFieldGraphicID}.png" style="z-index: 2;" />
+            <img src="assets/map/starmap/${systemCellData/getSystemBackgroundId}.png" style="z-index: 1;" />
+            <img tal:condition="systemCellData/getSystemFieldId" class="lssColoShield"
+              src="assets/map/${systemCellData/getSystemFieldId}.png" style="z-index: 2;" />
             <div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px;"
               tal:condition="xaxis/showPm" href="javascript:void(0);"
               onclick="openPmWindow(${THIS/getUser/getId},${xaxis/colony/getId},1,5)"

@@ -17,9 +17,9 @@
 			<td class="lss" id="{{ data.getSX }}_{{ data.getSY }}" style="background-size: cover;">
 				<div class="lssobj imgOverlayText"
 					style=" position: relative !important; top: 0px; height: 30px; width: 30px">
-					<img src="/assets/map/starmap/{{ data.getBackgroundId }}.png" style="z-index: 1;" />
-					{% if data.getFieldGraphicID %}
-					<img class="lssColoShield" src="/assets/map/{{ data.getFieldGraphicID }}.png" style="z-index: 2;" />
+					<img src="/assets/map/starmap/{{ data.getSystemBackgroundId }}.png" style="z-index: 1;" />
+					{% if data.getSystemFieldId %}
+					<img class="lssColoShield" src="/assets/map/{{ data.getSystemFieldId }}.png" style="z-index: 2;" />
 					{% endif %}
 					<div class="lssobj" onclick="openSystemFieldSelector({{ data.getId }});" id="runtime">&nbsp;</div>
 				</div>
