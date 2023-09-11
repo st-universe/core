@@ -32,8 +32,14 @@
 							title="z.B. +49 176 55555, 0049170666666 oder +491501234567" src="assets/buttons/info2.png"
 							style="height:16px;" /></div>
 					<div class="divbody">
-						<input value="+49" type="text" class="text" size="25" name="mobile" id="mobile"
-							onblur="checkMobile(this,this.value)" />
+						<select id="countryCodeSelect"
+							onchange="toggleCountryCodeDropdown(this.value); updateMobileValue()">
+							<option value="+49">(DE) +49</option>
+							<option value="+43">(AT) +43</option>
+							<option value="+41">(CH) +41</option>
+						</select>
+						<input type="text" class="text" size="25" name="mobile" id="mobile"
+							onblur="checkMobile(this,this.value); updateMobileValue()" />
 						<span id="mobileerror" style="display: none; color: #FF0000;">Fehler</span>
 						<span id="mobileok" style="display: none; color: Green;">OK</span>
 						<div id="mobiledup" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist bereits
@@ -44,6 +50,8 @@
 							beachten</div>
 						<div id="mobileblk" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist blockiert
 						</div>
+						<br />
+						Deine Nummer: <div name="combinedMobileValue" id="combinedMobileValue"></div>
 					</div>
 				</tal:block>
 				<br />
@@ -75,14 +83,12 @@
 				<div id="factionerror" style="display:none; color: #FF0000">Es wurde keine Fraktion gewählt</div>
 				<div class="divhead">Fraktion wählen</div>
 				<tal:block tal:repeat="data POSSIBLE_FACTIONS">
-					<div class="divbody"
-						style="display: block; cursor: pointer; background-color: ${data/getColor}"
+					<div class="divbody" style="display: block; cursor: pointer; background-color: ${data/getColor}"
 						onclick="toggleFaction(${data/getId}); selectFaction(${data/getId});"
 						tal:condition="data/hasFreePlayerSlots">
 						<metal:macro metal:use-macro="faction_entry" />
 					</div>
-					<div class="divbody"
-						style="display: block; cursor: pointer; background-color: ${data/getColor}"
+					<div class="divbody" style="display: block; cursor: pointer; background-color: ${data/getColor}"
 						tal:condition="not:data/hasFreePlayerSlots" onclick="toggleFaction(${data/getId})">
 						<metal:macro metal:use-macro="faction_entry" />
 					</div>

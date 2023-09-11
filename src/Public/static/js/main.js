@@ -48,7 +48,9 @@ function checkEmail(el, value) {
 	$('emailok').show();
 	return true;
 }
-function checkMobile(el, value) {
+function checkMobile(el, number) {
+	var countryCode = document.getElementById('countryCodeSelect').value;
+	value = countryCode + number;
 	if (value.length < 10) {
 		$('mobileok').hide();
 		$('mobileerror').show();
@@ -199,5 +201,10 @@ function regVarCheck(vari, value) {
 		}
 	});
 	return varcheck;
-
+}
+function updateMobileValue() {
+	var countryCode = document.getElementById('countryCodeSelect').value;
+	var mobileNumber = document.getElementById('mobile').value;
+	var combinedValue = countryCode + mobileNumber;
+	document.getElementById('combinedMobileValue').textContent = combinedValue;
 }
