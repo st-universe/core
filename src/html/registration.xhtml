@@ -29,11 +29,10 @@
 				<br />
 				<tal:block tal:condition="IS_SMS_REGISTRATION">
 					<div class="divhead">Mobilfunknummer zur SMS Verifikation (DE/AT/CH)<img
-							title="z.B. +49 176 55555, 0049170666666 oder +491501234567" src="assets/buttons/info2.png"
-							style="height:16px;" /></div>
+							title="z.B. 176 55555, 170666666 oder 1501234567 (ohne führende Null)"
+							src="assets/buttons/info2.png" style="height:16px;" /></div>
 					<div class="divbody">
-						<select id="countryCodeSelect"
-							onchange="toggleCountryCodeDropdown(this.value); updateMobileValue()">
+						<select id="countryCodeSelect" onchange="updateMobileValue()">
 							<option value="+49">(DE) +49</option>
 							<option value="+43">(AT) +43</option>
 							<option value="+41">(CH) +41</option>
@@ -50,6 +49,7 @@
 							beachten</div>
 						<div id="mobileblk" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist blockiert
 						</div>
+						<br />
 						<br />
 						Deine Nummer: <div name="combinedMobileValue" id="combinedMobileValue"></div>
 					</div>
