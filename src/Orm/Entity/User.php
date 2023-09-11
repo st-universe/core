@@ -410,6 +410,18 @@ class User implements UserInterface
         return $this->colonies;
     }
 
+    public function hasColony(): bool
+    {
+        if (
+            $this->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
+            || $this->getState() === UserEnum::USER_STATE_UNCOLONIZED
+        ) {
+            return false;
+        }
+
+        return !$this->getColonies()->isEmpty();
+    }
+
     public function getState(): int
     {
         return $this->state;

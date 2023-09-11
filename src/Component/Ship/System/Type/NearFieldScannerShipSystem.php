@@ -9,7 +9,6 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -31,10 +30,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
 
     public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
-        if (
-            $ship->getUser()->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
-            || $ship->getUser()->getState() === UserEnum::USER_STATE_UNCOLONIZED
-        ) {
+        if (!$ship->getUser()->hasColony()) {
             $reason = _('noch keine Kolonie kolonisiert wurde');
             return false;
         }

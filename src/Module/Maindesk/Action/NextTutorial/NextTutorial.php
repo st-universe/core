@@ -26,7 +26,7 @@ final class NextTutorial implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP || $user->getState() === UserEnum::USER_STATE_UNCOLONIZED) {
+        if (!$user->hasColony()) {
             throw new AccessViolation();
         } elseif ($user->getState() === UserEnum::USER_STATE_TUTORIAL1) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL2);
