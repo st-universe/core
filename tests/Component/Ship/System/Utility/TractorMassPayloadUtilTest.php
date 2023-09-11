@@ -4,23 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Mockery;
 use Mockery\MockInterface;
-use Stu\Component\Ship\System\Data\EpsSystemData;
-use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
-use Stu\Component\Ship\System\Exception\AlreadyActiveException;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
-use Stu\Component\Ship\System\Exception\DeactivationConditionsNotMetException;
-use Stu\Component\Ship\System\Exception\InsufficientCrewException;
-use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
-use Stu\Component\Ship\System\Exception\InvalidSystemException;
-use Stu\Component\Ship\System\Exception\SystemCooldownException;
-use Stu\Component\Ship\System\Exception\SystemDamagedException;
-use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
-use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
-use Stu\Component\Ship\System\Exception\SystemNotFoundException;
-use Stu\Module\Control\StuTime;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
+use Stu\Lib\InformationWrapper;
+use Stu\Module\Control\StuRandom;
+use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -28,688 +17,250 @@ use Stu\StuTestCase;
 
 class TractorMassPayloadUtilTest extends StuTestCase
 {
-    /**
-     * @var MockInterface|ShipInterface
-     */
+    /** @var MockInterface|ApplyDamageInterface */
+    private $applyDamage;
+
+    /** @var MockInterface|ShipSystemManagerInterface */
+    private $shipSystemManager;
+
+    /** @var MockInterface|StuRandom */
+    private $stuRandom;
+
+    /** @var MockInterface|ShipInterface */
     private $ship;
 
-    /**
-     * @var MockInterface|ShipWrapperInterface
-     */
+    /** @var MockInterface|ShipInterface */
+    private $tractoredShip;
+
+    /** @var MockInterface|ShipWrapperInterface */
     private $wrapper;
 
-    /**
-     * @var MockInterface|ShipSystemInterface
-     */
-    private $shipSystem;
-
-    /**
-     * @var null|MockInterface|ShipSystemTypeInterface
-     */
-    private $systemType;
-
-    /**
-     * @var null|MockInterface|StuTime
-     */
-    private $stuTimeMock;
-
-    private $system_id = 666;
-
-    /**
-     * @var ShipSystemManager|null
-     */
-    private $manager;
+    private TractorMassPayloadUtilInterface $subject;
 
     public function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        //INJECTED
+        $this->applyDamage = $this->mock(ApplyDamageInterface::class);
+        $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
+        $this->stuRandom = $this->mock(StuRandom::class);
+
+        //PARAMS
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->shipSystem = $this->mock(ShipSystemInterface::class);
-        $this->systemType = $this->mock(ShipSystemTypeInterface::class);
+        $this->ship = $this->mock(ShipInterface::class);
+        $this->tractoredShip = $this->mock(ShipInterface::class);
 
-        $this->stuTimeMock = $this->mock(StuTime::class);
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->ship);
 
-        $this->manager = new ShipSystemManager([
-            $this->system_id => $this->systemType,
-        ], $this->stuTimeMock);
+        $this->subject = new TractorMassPayloadUtil(
+            $this->applyDamage,
+            $this->shipSystemManager,
+            $this->stuRandom
+        );
     }
 
-    public function testActivateFailsIfSystemNotAvailable(): void
+    public function testTryToTowExpectDeactivationWhenToHeavy(): void
     {
-        $this->expectException(SystemNotFoundException::class);
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection());
-
-        $this->stuTimeMock->shouldReceive('time')
+        $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
-
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateFailsIfSystemDestroyed(): void
-    {
-        $this->expectException(SystemDamagedException::class);
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(0);
-
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateFailsIfSystemNotActivatable(): void
-    {
-        $this->expectException(SystemNotActivatableException::class);
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_ALWAYS_OFF);
-
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateFailsIfSystemAlreadyOn(): void
-    {
-        $this->expectException(AlreadyActiveException::class);
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_ON);
-
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateFailsOnInsufficientCrew(): void
-    {
-        $this->expectException(InsufficientCrewException::class);
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->ship->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturnFalse();
-
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
-
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateFailsOnInsufficientEnergy(): void
-    {
-        $this->expectException(InsufficientEnergyException::class);
-        $epsSystem = $this->mock(EpsSystemData::class);
-
-        $energyCosts = 2;
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper and eps
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($epsSystem);
-        $epsSystem->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
-        $this->ship->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturnTrue();
-
-        $this->systemType->shouldReceive('getEnergyUsageForActivation')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($energyCosts);
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
-
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateFailsIfSystemPreConditionsFail(): void
-    {
-        $this->expectException(ActivationConditionsNotMetException::class);
-        $epsSystem = $this->mock(EpsSystemData::class);
-
-        $energyCosts = 1;
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper and eps
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($epsSystem);
-        $epsSystem->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
-        $this->ship->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturnTrue();
-
-        $this->systemType->shouldReceive('getEnergyUsageForActivation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($energyCosts);
-        $this->systemType->shouldReceive('checkActivationConditions')->with(
-            $this->ship,
-            Mockery::on(function (&$reason) {
-                $reason = 'reason';
-                return true;
-            })
-        )->once()
-            ->andReturnFalse();
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
-        $this->shipSystem->shouldReceive('getCooldown')
-            ->withNoArgs()
-            ->once()
-            ->andReturnNull();
-
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateActivatesSystemNoCooldown(): void
-    {
-        $energyCosts = 1;
-        $epsSystem = $this->mock(EpsSystemData::class);
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper and eps
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsSystemData')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($epsSystem);
-        $epsSystem->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-        $epsSystem->shouldReceive('lowerEps')
-            ->with(1)
-            ->once()
-            ->andReturnSelf();
-        $epsSystem->shouldReceive('update')
-            ->withNoArgs()
-            ->once();
-
-        $this->ship->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturnTrue();
-
-        $this->systemType->shouldReceive('getEnergyUsageForActivation')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($energyCosts);
-        $this->systemType->shouldReceive('getCooldownSeconds')
-            ->withNoArgs()
-            ->once()
-            ->andReturnNull();
-        $this->systemType->shouldReceive('checkActivationConditions')
-            ->with($this->ship, Mockery::any())
-            ->once()
-            ->andReturnTrue();
-        $this->systemType->shouldReceive('activate')
-            ->with($this->wrapper, $this->manager)
-            ->once();
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
-        $this->shipSystem->shouldReceive('getCooldown')
-            ->withNoArgs()
-            ->once()
-            ->andReturnNull();
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateActivatesSystemOldCooldown(): void
-    {
-        $energyCosts = 1;
-        $epsSystem = $this->mock(EpsSystemData::class);
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper and eps
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsSystemData')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($epsSystem);
-        $epsSystem->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-        $epsSystem->shouldReceive('lowerEps')
-            ->with(1)
-            ->once()
-            ->andReturnSelf();
-        $epsSystem->shouldReceive('update')
-            ->withNoArgs()
-            ->once();
-
-
-        $this->ship->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturnTrue();
-
-        $this->systemType->shouldReceive('getEnergyUsageForActivation')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($energyCosts);
-        $this->systemType->shouldReceive('getCooldownSeconds')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(5);
-        $this->systemType->shouldReceive('checkActivationConditions')
-            ->with($this->ship, Mockery::any())
-            ->once()
-            ->andReturnTrue();
-        $this->systemType->shouldReceive('activate')
-            ->with($this->wrapper, $this->manager)
-            ->once();
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
-        $this->shipSystem->shouldReceive('getCooldown')
+        $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn(41);
-        $this->shipSystem->shouldReceive('setCooldown')
-            ->with(47)
-            ->once();
+            ->andReturn('SHIP');
 
-        $this->stuTimeMock->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-
-        $this->manager->activate($this->wrapper, $this->system_id);
-    }
-
-    public function testActivateActivatesSystemLastingCooldown(): void
-    {
-        $this->expectException(SystemCooldownException::class);
-        $epsSystem = $this->mock(EpsSystemData::class);
-
-        $energyCosts = 1;
-
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-
-        //wrapper and eps
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($epsSystem);
-        $epsSystem->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
-        $this->ship->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturnTrue();
-
-        $this->systemType->shouldReceive('getEnergyUsageForActivation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($energyCosts);
-
-        $this->shipSystem->shouldReceive('getStatus')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(100);
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
-        $this->shipSystem->shouldReceive('getCooldown')
+        $this->tractoredShip->shouldReceive('getRump->getTractorMass')
             ->withNoArgs()
             ->once()
             ->andReturn(43);
+        $this->tractoredShip->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('TSHIP');
 
-        $this->stuTimeMock->shouldReceive('time')
+        $this->shipSystemManager->shouldReceive('deactivate')
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->once();
+
+        $reason = $this->subject->tryToTow($this->wrapper, $this->tractoredShip);
+
+        $this->assertEquals('Traktoremitter der SHIP war nicht stark genug um die TSHIP zu ziehen und wurde daher deaktiviert', $reason);
+    }
+
+    public function testTryToTowExpectSuccessWhenPotentEnough(): void
+    {
+        $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->wrapper, $this->system_id);
+        $this->tractoredShip->shouldReceive('getRump->getTractorMass')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $reason = $this->subject->tryToTow($this->wrapper, $this->tractoredShip);
+
+        $this->assertNull($reason);
     }
 
-    public function testDeactivateErrorsOnUnKnownSystem(): void
+    public function testTractorSystemSurvivedTowingExpectTrueWhenThresholdReached(): void
     {
-        $this->expectException(InvalidSystemException::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
 
-        $this->manager->deactivate($this->wrapper, 42);
+        $this->ship->shouldReceive('getTractorPayload')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->tractoredShip->shouldReceive('getRump->getTractorMass')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(90);
+
+        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
+
+        $this->assertTrue($result);
     }
 
-    public function testDeactivateErrorsOnNotDeactivatable(): void
+    public function testTractorSystemSurvivedTowingExpectTrueWhenOverTresholdButRandomMissed(): void
     {
-        $this->expectException(SystemNotDeactivatableException::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
 
-        $this->ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_ALWAYS_ON);
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
+            ->andReturn(100);
 
-        $this->manager->deactivate($this->wrapper, $this->system_id);
+        $this->tractoredShip->shouldReceive('getRump->getTractorMass')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(91);
+
+        $this->stuRandom->shouldReceive('rand')
+            ->with(1, 10)
+            ->once()
+            ->andReturn(2);
+
+        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
+
+        $this->assertTrue($result);
     }
 
-    public function testDeactivateErrorsOnAlreadyOff(): void
+    public function testTractorSystemSurvivedTowingExpectTrueWhenOverTresholdAndStillHealthy(): void
     {
-        $this->expectException(AlreadyOffException::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
+        $system = $this->mock(ShipSystemInterface::class);
 
-        $this->ship->shouldReceive('getSystems')
+        $damage = 7;
+
+        $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->shipSystem->shouldReceive('getMode')
+            ->andReturn(100);
+        $this->ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)
+            ->once()
+            ->andReturn($system);
+        $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_OFF);
-        //wrapper
-        $this->wrapper->shouldReceive('get')
+            ->andReturn('SHIP');
+
+        $this->tractoredShip->shouldReceive('getRump->getTractorMass')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->ship);
+            ->andReturn(91);
 
-        $this->manager->deactivate($this->wrapper, $this->system_id);
-    }
+        $this->stuRandom->shouldReceive('rand')
+            ->with(1, 10)
+            ->once()
+            ->andReturn(1);
+        $this->stuRandom->shouldReceive('rand')
+            ->with(5, 25)
+            ->once()
+            ->andReturn($damage);
 
-    public function testDeactivateErrorsIfSystemPreConditionsFail(): void
-    {
-        $this->expectException(DeactivationConditionsNotMetException::class);
+        $this->applyDamage->shouldReceive('damageShipSystem')
+            ->with($this->wrapper, $system, $damage, $informationWrapper)
+            ->once()
+            ->andReturn(false);
 
-        $this->ship->shouldReceive('getSystems')
+        $system->shouldReceive('getStatus')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_ON);
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
+            ->andReturn(666);
 
-        $this->systemType->shouldReceive('checkDeactivationConditions')->with(
-            $this->wrapper,
-            Mockery::on(function (&$reason) {
-                $reason = 'reason';
-                return true;
-            })
-        )->once()
-            ->andReturnFalse();
-
-        $this->manager->deactivate($this->wrapper, $this->system_id);
-    }
-
-    public function testDeactivateDeactivates(): void
-    {
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->systemType->shouldReceive('checkDeactivationConditions')
-            ->with($this->wrapper, Mockery::any())
-            ->once()
-            ->andReturnTrue();
-
-        $this->shipSystem->shouldReceive('getMode')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipSystemModeEnum::MODE_ON);
-
-        $this->systemType->shouldReceive('deactivate')
-            ->with($this->wrapper)
+        $informationWrapper->shouldReceive('addInformation')
+            ->with(
+                'Traktoremitter der SHIP ist überbelastet und wurde dadurch beschädigt, Status: 666%',
+            )
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
-        $this->manager->deactivate($this->wrapper, $this->system_id);
+        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
+
+        $this->assertTrue($result);
     }
 
-    public function testDeactivateAllIgnoresDeactivationErrors(): void
+    public function testTractorSystemSurvivedTowingExpectFalseWhenOverTresholdAndDestroyed(): void
     {
-        $this->shipSystem->shouldReceive('getSystemType')
+        $informationWrapper = $this->mock(InformationWrapper::class);
+        $system = $this->mock(ShipSystemInterface::class);
+
+        $damage = 7;
+
+        $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->system_id);
-
-        $this->ship->shouldReceive('getSystems')
+            ->andReturn(100);
+        $this->ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)
+            ->once()
+            ->andReturn($system);
+        $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->shipSystem]));
+            ->andReturn('SHIP');
 
-        $this->systemType->shouldReceive('deactivate')
-            ->with($this->wrapper)
-            ->once()
-            ->andThrow(new InvalidSystemException());
-        //wrapper
-        $this->wrapper->shouldReceive('get')
+        $this->tractoredShip->shouldReceive('getRump->getTractorMass')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->ship);
-
-        $this->manager->deactivateAll($this->wrapper);
-    }
-
-    public function testDeactivateAllDeactivatesAllSystems(): void
-    {
-        $this->shipSystem->shouldReceive('getSystemType')
+            ->andReturn(91);
+        $this->tractoredShip->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->system_id);
+            ->andReturn('TSHIP');
 
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()
+        $this->stuRandom->shouldReceive('rand')
+            ->with(1, 10)
             ->once()
-            ->andReturn(new ArrayCollection([$this->shipSystem]));
-        $this->systemType->shouldReceive('deactivate')
-            ->with($this->wrapper)
+            ->andReturn(1);
+        $this->stuRandom->shouldReceive('rand')
+            ->with(5, 25)
+            ->once()
+            ->andReturn($damage);
+
+        $this->applyDamage->shouldReceive('damageShipSystem')
+            ->with($this->wrapper, $system, $damage, $informationWrapper)
+            ->once()
+            ->andReturn(true);
+
+        $this->shipSystemManager->shouldReceive('deactivate')
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->once()
+            ->andReturn(true);
+
+        $informationWrapper->shouldReceive('addInformation')
+            ->with(
+                'Traktoremitter der SHIP wurde zerstört. Die TSHIP wird nicht weiter gezogen',
+            )
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
-        $this->manager->deactivateAll($this->wrapper);
+        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
+
+        $this->assertFalse($result);
     }
 }
