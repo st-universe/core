@@ -12,6 +12,7 @@ use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -44,6 +45,32 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
 
         $this->system = new NearFieldScannerShipSystem($this->astroEntryLib);
+    }
+
+    public static function provideCheckActivationConditionsReturnsFalseIfNoColonyData()
+    {
+        return [
+            [UserEnum::USER_STATE_COLONIZATION_SHIP, false, 'noch keine Kolonie kolonisiert wurde'],
+            [UserEnum::USER_STATE_UNCOLONIZED, false, 'noch keine Kolonie kolonisiert wurde'],
+            [UserEnum::USER_STATE_ACTIVE, true, null],
+        ];
+    }
+
+    /**
+     * @dataProvider provideCheckActivationConditionsReturnsFalseIfNoColonyData
+     */
+    public function testCheckActivationConditions(int $userState, bool $expectedResult, ?string $expectedReason): void
+    {
+        $this->ship->shouldReceive('getUser->getState')
+            ->withNoArgs()
+            ->andReturn($userState);
+
+        $reason = null;
+
+        $result = $this->system->checkActivationConditions($this->ship, $reason);
+
+        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($expectedReason, $reason);
     }
 
     public function testCheckDeactivationConditionsReturnsFalseIfAlertRed(): void
