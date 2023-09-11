@@ -27,7 +27,7 @@ final class LastTutorial implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP || $user->getState() === UserEnum::USER_STATE_UNCOLONIZED) {
+        if (!$user->hasColony()) {
             throw new AccessViolation();
         }
 

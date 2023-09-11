@@ -11,7 +11,6 @@ use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Lib\Map\VisualPanel\VisualPanelRow;
 use Stu\Lib\Map\VisualPanel\VisualPanelRowIndex;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -86,10 +85,7 @@ class VisualNavPanel extends AbstractVisualPanel
 
     private function isUserMapActive(int $layerId): bool
     {
-        if (
-            $this->user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
-            || $this->user->getState() === UserEnum::USER_STATE_UNCOLONIZED
-        ) {
+        if (!$this->user->hasColony()) {
             return false;
         }
 

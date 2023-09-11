@@ -12,7 +12,6 @@ use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -50,20 +49,19 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     public static function provideCheckActivationConditionsReturnsFalseIfNoColonyData()
     {
         return [
-            [UserEnum::USER_STATE_COLONIZATION_SHIP, false, 'noch keine Kolonie kolonisiert wurde'],
-            [UserEnum::USER_STATE_UNCOLONIZED, false, 'noch keine Kolonie kolonisiert wurde'],
-            [UserEnum::USER_STATE_ACTIVE, true, null],
+            [false, false, 'noch keine Kolonie kolonisiert wurde'],
+            [true, true, null],
         ];
     }
 
     /**
      * @dataProvider provideCheckActivationConditionsReturnsFalseIfNoColonyData
      */
-    public function testCheckActivationConditions(int $userState, bool $expectedResult, ?string $expectedReason): void
+    public function testCheckActivationConditions(bool $hasColony, bool $expectedResult, ?string $expectedReason): void
     {
-        $this->ship->shouldReceive('getUser->getState')
+        $this->ship->shouldReceive('getUser->hasColony')
             ->withNoArgs()
-            ->andReturn($userState);
+            ->andReturn($hasColony);
 
         $reason = null;
 

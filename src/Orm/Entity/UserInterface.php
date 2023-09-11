@@ -56,6 +56,8 @@ interface UserInterface
      */
     public function getColonies(): Collection;
 
+    public function hasColony(): bool;
+
     public function getState(): int;
 
     public function isLocked(): bool;
