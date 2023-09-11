@@ -207,4 +207,5 @@ function updateMobileValue() {
 	var mobileNumber = document.getElementById('mobile').value;
 	var combinedValue = countryCode + mobileNumber;
 	document.getElementById('combinedMobileValue').textContent = combinedValue;
+	document.getElementById('combinedMobileValueInput').value = combinedValue;
 }
