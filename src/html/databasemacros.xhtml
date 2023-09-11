@@ -112,12 +112,10 @@
             <img src="assets/map/starmap/${systemCellData/getSystemBackgroundId}.png" style="z-index: 1;" />
             <img tal:condition="systemCellData/getSystemFieldId" class="lssColoShield"
               src="assets/map/${systemCellData/getSystemFieldId}.png" style="z-index: 2;" />
-            <div class="lssobj imgOverlayText" style=" position: relative !important; top: 0px;"
-              tal:condition="xaxis/showPm" href="javascript:void(0);"
+            <a tal:condition="xaxis/showPm" href="javascript:void(0);"
               onclick="openPmWindow(${THIS/getUser/getId},${xaxis/colony/getId},1,5)"
-              title="Nachricht an ${bbcode2txt:xaxis/colony/getUser/getName} verfassen">
-              <img class="lssColoShield" src="assets/map/pm.png" style="z-index: 3;" />
-            </div>
+              title="Nachricht an ${bbcode2txt:xaxis/colony/getUser/getName} verfassen"><img class="lssColoShield"
+                src="assets/map/pm.png" style="z-index: 3;" /></a>
           </div>
         </td>
       </tr>
