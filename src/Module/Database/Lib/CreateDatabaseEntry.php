@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Database\Lib;
 
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
@@ -37,6 +38,13 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
     public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface
     {
         if ($databaseEntryId === 0) {
+            return null;
+        }
+
+        if (
+            $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
+            || $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
+        ) {
             return null;
         }
 
