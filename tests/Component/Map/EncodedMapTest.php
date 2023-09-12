@@ -57,6 +57,6 @@ class EncodedMapTest extends StuTestCase
 
         $result = $this->subject->getEncodedMapPath(42, $layer);
 
-        $this->assertEquals('5/encoded/MTJSaW1w/Wk9WUS9C/Yw==.png', $result);
+        $this->assertEquals('5/encoded/4d544a53/61573177/576b3957/55533943/59773d3d.png', $result);
     }
 }
