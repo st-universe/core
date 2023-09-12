@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\FirstColony;
 
-use Stu\Exception\AccessViolation;
+use InvalidArgumentException;
+use RuntimeException;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,6 +15,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
@@ -75,30 +77,39 @@ final class FirstColony implements ActionControllerInterface
             return;
         }
 
+        $faction = $user->getFaction();
+        if ($faction === null) {
+            return;
+        }
+
+        $startingBuilding =  $this->buildingRepository->find($faction->getStartBuildingId());
+        if ($startingBuilding === null) {
+            throw new RuntimeException(sprintf('buildingId %d not found', $faction->getStartBuildingId()));
+        }
         $this->planetColonization->colonize(
             $colony,
             $user->getId(),
-            $this->buildingRepository->find($user->getFaction()->getStartBuildingId())
+            $startingBuilding
         );
 
         $this->colonyStorageManager->upperStorage(
             $colony,
-            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
+            $this->getCommodity(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
             150
         );
         $this->colonyStorageManager->upperStorage(
             $colony,
-            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
+            $this->getCommodity(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
             150
         );
         $this->colonyStorageManager->upperStorage(
             $colony,
-            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DURANIUM),
+            $this->getCommodity(CommodityTypeEnum::COMMODITY_DURANIUM),
             150
         );
         $this->colonyStorageManager->upperStorage(
             $colony,
-            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DEUTERIUM),
+            $this->getCommodity(CommodityTypeEnum::COMMODITY_DEUTERIUM),
             100
         );
 
@@ -110,6 +121,16 @@ final class FirstColony implements ActionControllerInterface
         $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
 
         $game->redirectTo('./colony.php?id=' . $colony->getId());
+    }
+
+    private function getCommodity(int $commodityId): CommodityInterface
+    {
+        $commodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DEUTERIUM);
+        if ($commodity === null) {
+            throw new InvalidArgumentException(sprintf('commodityId %d does not exist', $commodityId));
+        }
+
+        return $commodity;
     }
 
     public function performSessionCheck(): bool
