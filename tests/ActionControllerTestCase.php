@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
 
-abstract class ActionControllerTest extends StuTestCase
+abstract class ActionControllerTestCase extends StuTestCase
 {
     /** @var MockInterface&GameControllerInterface */
     protected MockInterface $game;
