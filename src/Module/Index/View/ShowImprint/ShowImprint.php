@@ -31,5 +31,6 @@ final class ShowImprint implements ViewControllerInterface
         $game->setTemplateVar('IMPRINT_CITY', $this->config->get('game.imprint.city'));
         $game->setTemplateVar('IMPRINT_COUNTRY', $this->config->get('game.imprint.country'));
         $game->setTemplateVar('IMPRINT_EMAIL', $this->config->get('game.imprint.email'));
+        $game->setTemplateVar('IMPRINT_PHONE', $this->config->get('game.imprint.phone'));
     }
 }
