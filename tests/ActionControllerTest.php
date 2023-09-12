@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Control;
+namespace Stu;
 
 use Mockery\MockInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
 
 abstract class ActionControllerTest extends StuTestCase
