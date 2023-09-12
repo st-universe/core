@@ -581,12 +581,14 @@
             <tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
               <a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
                 title="Karte des Systems öffnen">
-                <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" title="Sternensystem" />
+                <img src="assets/map/systemtypes/${COLONY/getSystem/getSystemType/getId}.png"
+                  title="${COLONY/getSystem/getSystemType/getDescription}" />
                 <span>${COLONY/getSystem/getName} (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
               </a>
             </tal:block>
             <tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
-              <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" title="Sternensystem" />
+              <img src="assets/map/systemtypes/${COLONY/getSystem/getSystemType/getId}.png"
+                title="${COLONY/getSystem/getSystemType/getDescription}" />
               <span>${COLONY/getSystem/getName} (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
             </tal:block>
             <div>
