@@ -4,17 +4,24 @@ use Stu\Exception\InvalidParamException;
 
 class request
 {
+    /** @var array<string, mixed> */
+    private static ?array $mockVars = null;
+
     /**
-     * @return array<int|string, mixed>
+     * @return array<string, mixed>
      */
     public static function getvars(): array
     {
+        if (self::$mockVars !== null) {
+            return self::$mockVars;
+        }
+
         global $_GET;
         return $_GET;
     }
 
     /**
-     * @return array<int|string, mixed>
+     * @return array<string, mixed>
      */
     public static function postvars(): array
     {
@@ -176,5 +183,11 @@ class request
     {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
             && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+    }
+
+    /** @param array<string, mixed> $mockVars */
+    public static function setMockVars(?array $mockVars): void
+    {
+        self::$mockVars = $mockVars;
     }
 }

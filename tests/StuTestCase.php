@@ -8,11 +8,18 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use ReflectionClass;
+use request;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 abstract class StuTestCase extends MockeryTestCase
 {
+
+    protected function tearDown(): void
+    {
+        request::setMockVars(null);
+    }
+
     /**
      * @template TClass of object
      *
