@@ -9,6 +9,7 @@ use Stu\Component\Image\ImageCreationInterface;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -32,9 +33,17 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         $this->imageCreation = $imageCreation;
     }
 
-    //TODO handle layer input
     public function handle(GameControllerInterface $game): void
     {
+        $showAllyAreas = request::getInt('showAlly');
+        $layerId = request::getIntFatal('layerid');
+
+        $layer = $this->layerRepository->find($layerId);
+        if ($layer === null) {
+            $game->addInformation(sprintf('layerId %d does not exist', $layerId));
+            return;
+        }
+
         $game->appendNavigationPart(
             sprintf(
                 '/admin/?%s=1',
@@ -44,13 +53,11 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         );
         $game->setTemplateFile('html/admin/influenceareas.xhtml');
 
-        $game->setTemplateVar('GRAPH', $this->imageCreation->gdImageInSrc($this->buildImage()));
+        $game->setTemplateVar('GRAPH', $this->imageCreation->gdImageInSrc($this->buildImage($layer, $showAllyAreas !== 0)));
     }
 
-    private function buildImage()
+    private function buildImage(LayerInterface $layer, bool $showAllyAreas): mixed
     {
-        $showAllyAreas = request::getInt('showAlly');
-        $layer = $this->layerRepository->find(MapEnum::LAYER_ID_CRAGGANMORE);
         $img = imagecreatetruecolor($layer->getWidth() * 15, $layer->getHeight() * 15);
 
         // mapfields
@@ -72,7 +79,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             $border = imagecreatetruecolor(15, 15);
             if ($data->getSystem() !== null) {
                 $col = imagecolorallocate($border, 255, 0, 0);
-            } elseif ($showAllyAreas !== 0) {
+            } elseif ($showAllyAreas) {
                 $influenceArea = $data->getInfluenceArea();
                 if ($influenceArea !== null) {
                     $base = $influenceArea->getBase();

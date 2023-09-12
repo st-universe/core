@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
-use Stu\Component\Map\MapEnum;
+use request;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -31,11 +31,17 @@ final class ShowMapOverall implements ViewControllerInterface
         $this->config = $config;
     }
 
-    //TODO handle layer input
     public function handle(GameControllerInterface $game): void
     {
+        $layerId = request::getIntFatal('layerid');
+
+        $layer = $this->layerRepository->find($layerId);
+        if ($layer === null) {
+            $game->addInformation(sprintf('layerId %d does not exist', $layerId));
+            return;
+        }
+
         $types = [];
-        $layer = $this->layerRepository->find(MapEnum::LAYER_ID_CRAGGANMORE);
         $img = imagecreatetruecolor($layer->getWidth() * 15, $layer->getHeight() * 15);
 
         // mapfields
@@ -45,7 +51,7 @@ final class ShowMapOverall implements ViewControllerInterface
 
         $webrootWithoutPublic = str_replace("/Public", "", $this->config->getGameSettings()->getWebroot());
 
-        foreach ($this->mapRepository->getAllOrdered(MapEnum::LAYER_ID_CRAGGANMORE) as $data) {
+        foreach ($this->mapRepository->getAllOrdered($layerId) as $data) {
             if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;
