@@ -25,6 +25,9 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class Colonize implements ActionControllerInterface
 {
@@ -39,6 +42,10 @@ final class Colonize implements ActionControllerInterface
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private PlanetColonizationInterface $planetColonization;
+
+    private ColonyStorageManagerInterface $colonyStorageManager;
+
+    private CommodityRepositoryInterface $commodityRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
 
@@ -61,6 +68,8 @@ final class Colonize implements ActionControllerInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         PlanetColonizationInterface $planetColonization,
         ColonyRepositoryInterface $colonyRepository,
+        ColonyStorageManagerInterface $colonyStorageManager,
+        CommodityRepositoryInterface $commodityRepository,
         ShipRemoverInterface $shipRemover,
         InteractionCheckerInterface $interactionChecker,
         ColonizationCheckerInterface $colonizationChecker,
@@ -74,6 +83,8 @@ final class Colonize implements ActionControllerInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->planetColonization = $planetColonization;
         $this->colonyRepository = $colonyRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
+        $this->commodityRepository = $commodityRepository;
         $this->shipRemover = $shipRemover;
         $this->interactionChecker = $interactionChecker;
         $this->colonizationChecker = $colonizationChecker;
@@ -126,14 +137,41 @@ final class Colonize implements ActionControllerInterface
         if (!$user->hasColony()) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL1);
             $this->userRepository->save($user);
-        }
+            $this->planetColonization->colonize(
+                $colony,
+                $userId,
+                $this->buildingRepository->find($base_building->getBuildingId()),
+                $field
+            );
+            $this->colonyStorageManager->upperStorage(
+                $colony,
+                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
+                150
+            );
+            $this->colonyStorageManager->upperStorage(
+                $colony,
+                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
+                150
+            );
+            $this->colonyStorageManager->upperStorage(
+                $colony,
+                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DURANIUM),
+                150
+            );
+            $this->colonyStorageManager->upperStorage(
+                $colony,
+                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DEUTERIUM),
+                100
+            );
+        } else {
 
-        $this->planetColonization->colonize(
-            $colony,
-            $userId,
-            $this->buildingRepository->find($base_building->getBuildingId()),
-            $field
-        );
+            $this->planetColonization->colonize(
+                $colony,
+                $userId,
+                $this->buildingRepository->find($base_building->getBuildingId()),
+                $field
+            );
+        }
 
 
         $this->transferCrewToColony($ship, $colony);

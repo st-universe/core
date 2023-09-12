@@ -346,8 +346,8 @@
                     ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
             </a>
             {% else %}
-            <img src="assets/map/{{ starSystem.getMapField.getFieldId }}.png" style="width: 15px; height: 15px;"
-                title="Sternensystem" />
+            <img src="assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
+                style="width: 15px; height: 15px;" title="{{ starSystem.getSystemType.getDescription }}" />
             <span>{{ starSystem.getName }}
                 ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
             {% endif %}
@@ -362,8 +362,9 @@
         {% else %}
         {% if ship.isOverSystem %}
         <td>
-            <img src="assets/map/{{ ship.isOverSystem.getMapField.getFieldId }}.png" style="width: 15px; height: 15px;"
-                title="Sternensystem" />
+            <img src="assets/map/systemtypes/{{ ship.isOverSystem.getMapField.getSystem.getSystemType.getId  }}.png"
+                style="width: 15px; height: 15px;"
+                title="{{ ship.isOverSystem.getMapField.getSystem.getSystemType.getDescription  }}" />
             {{ ship.isOverSystem.getName }}<br />
             {% if ship.hasWarpdrive %}
             <a href="ship.php?B_ENTER_STARSYSTEM=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
