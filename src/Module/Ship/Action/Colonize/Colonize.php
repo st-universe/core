@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Colonize;
 
+use InvalidArgumentException;
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
@@ -27,6 +28,7 @@ use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class Colonize implements ActionControllerInterface
@@ -129,8 +131,13 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
-        $base_building = $this->shipRumpColonizationBuildingRepository->findByShipRump($ship->getRump());
-        if ($base_building === null) {
+        $shipRumpColonizationBuilding = $this->shipRumpColonizationBuildingRepository->findByShipRump($ship->getRump());
+        if ($shipRumpColonizationBuilding === null) {
+            return;
+        }
+
+        $building = $this->buildingRepository->find($shipRumpColonizationBuilding->getBuildingId());
+        if ($building === null) {
             return;
         }
 
@@ -140,27 +147,27 @@ final class Colonize implements ActionControllerInterface
             $this->planetColonization->colonize(
                 $colony,
                 $userId,
-                $this->buildingRepository->find($base_building->getBuildingId()),
+                $building,
                 $field
             );
             $this->colonyStorageManager->upperStorage(
                 $colony,
-                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
+                $this->getCommodity(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
                 150
             );
             $this->colonyStorageManager->upperStorage(
                 $colony,
-                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
+                $this->getCommodity(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
                 150
             );
             $this->colonyStorageManager->upperStorage(
                 $colony,
-                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DURANIUM),
+                $this->getCommodity(CommodityTypeEnum::COMMODITY_DURANIUM),
                 150
             );
             $this->colonyStorageManager->upperStorage(
                 $colony,
-                $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DEUTERIUM),
+                $this->getCommodity(CommodityTypeEnum::COMMODITY_DEUTERIUM),
                 100
             );
         } else {
@@ -168,7 +175,7 @@ final class Colonize implements ActionControllerInterface
             $this->planetColonization->colonize(
                 $colony,
                 $userId,
-                $this->buildingRepository->find($base_building->getBuildingId()),
+                $building,
                 $field
             );
         }
@@ -187,6 +194,16 @@ final class Colonize implements ActionControllerInterface
             ShowColony::VIEW_IDENTIFIER,
             $colony->getId()
         ));
+    }
+
+    private function getCommodity(int $commodityId): CommodityInterface
+    {
+        $commodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DEUTERIUM);
+        if ($commodity === null) {
+            throw new InvalidArgumentException(sprintf('commodityId %d does not exist', $commodityId));
+        }
+
+        return $commodity;
     }
 
     private function transferCrewToColony(ShipInterface $ship, ColonyInterface $colony): void

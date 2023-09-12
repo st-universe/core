@@ -357,11 +357,6 @@ parameters:
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
 
 		-
-			message: "#^Variable \\$new might not be defined\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
 			message: "#^Cannot call method close\\(\\) on Directory\\|false\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/StartMirrorWorld.php
@@ -1577,16 +1572,6 @@ parameters:
 			path: src/Module/History/View/Overview/OverviewRequestInterface.php
 
 		-
-			message: "#^Cannot call method getStartBuildingId\\(\\) on Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Maindesk/Action/FirstColony/FirstColony.php
-
-		-
-			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Maindesk/Action/FirstColony/FirstColony.php
-
-		-
 			message: "#^Parameter \\#1 \\$data of method Stu\\\\Module\\\\Control\\\\StuHashInterface\\:\\:hash\\(\\) expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Module/Maindesk/Action/SmsVerification/SmsVerification.php
@@ -1770,11 +1755,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Research\\\\TechlistRetriever\\:\\:loadExcludes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Research/TechlistRetriever.php
-
-		-
-			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/Colonize/Colonize.php
 
 		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
