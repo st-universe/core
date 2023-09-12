@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Mockery\MockInterface;
 use request;
+use Stu\ActionControllerTest;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Control\ActionControllerTest;
 use Stu\Module\Ship\Action\ActivateShields\ActivateShields;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
