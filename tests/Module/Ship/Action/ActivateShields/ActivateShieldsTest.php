@@ -6,13 +6,13 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Mockery\MockInterface;
 use request;
-use Stu\ActionControllerTest;
+use Stu\ActionControllerTestCase;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Action\ActivateShields\ActivateShields;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
-class ActivateShieldsTest extends ActionControllerTest
+class ActivateShieldsTest extends ActionControllerTestCase
 {
     /** @var MockInterface&ActivatorDeactivatorHelperInterface */
     private MockInterface $helper;
