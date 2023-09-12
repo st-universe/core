@@ -115,6 +115,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         $ship = $wrapper->get();
         $this->shipSystemManager->deactivateAll($wrapper);
+        $user = $ship->getUser();
 
         $this->leaveFleet->leaveFleet($ship);
 
@@ -158,6 +159,11 @@ final class ShipRemover implements ShipRemoverInterface
         // delete ship systems
         $this->shipSystemRepository->truncateByShip($ship->getId());
         $ship->getSystems()->clear();
+
+        if ($user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP) {
+            $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
+            $this->userRepository->save($user);
+        }
 
         // delete torpedo storage
         $this->clearTorpedo->clearTorpedoStorage($wrapper);
