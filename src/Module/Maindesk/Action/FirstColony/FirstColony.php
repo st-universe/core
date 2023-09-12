@@ -12,12 +12,19 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
     private FirstColonyRequestInterface $firstColonyRequest;
+
+    private ColonyStorageManagerInterface $colonyStorageManager;
+
+    private CommodityRepositoryInterface $commodityRepository;
 
     private BuildingRepositoryInterface $buildingRepository;
 
@@ -32,12 +39,16 @@ final class FirstColony implements ActionControllerInterface
         BuildingRepositoryInterface $buildingRepository,
         PlanetColonizationInterface $planetColonization,
         ColonyRepositoryInterface $colonyRepository,
+        ColonyStorageManagerInterface $colonyStorageManager,
+        CommodityRepositoryInterface $commodityRepository,
         UserRepositoryInterface $userRepository
     ) {
         $this->firstColonyRequest = $firstColonyRequest;
         $this->buildingRepository = $buildingRepository;
         $this->planetColonization = $planetColonization;
         $this->colonyRepository = $colonyRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
+        $this->commodityRepository = $commodityRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -68,6 +79,27 @@ final class FirstColony implements ActionControllerInterface
             $colony,
             $user->getId(),
             $this->buildingRepository->find($user->getFaction()->getStartBuildingId())
+        );
+
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
+            150
+        );
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
+            150
+        );
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DURANIUM),
+            150
+        );
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DEUTERIUM),
+            100
         );
 
         $user->setState(UserEnum::USER_STATE_TUTORIAL1);
