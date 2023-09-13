@@ -125,7 +125,7 @@ final class FirstColony implements ActionControllerInterface
 
     private function getCommodity(int $commodityId): CommodityInterface
     {
-        $commodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_DEUTERIUM);
+        $commodity = $this->commodityRepository->find($commodityId);
         if ($commodity === null) {
             throw new InvalidArgumentException(sprintf('commodityId %d does not exist', $commodityId));
         }
