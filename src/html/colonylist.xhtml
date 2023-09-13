@@ -38,7 +38,7 @@
 								title="Kolonie wird verteidigt" style="height:20px;" /> <span
 								tal:content="structure bbcode:colony/getName">NAME</span></a>
 						<div>
-							<img src="assets/map/${colony/getSystem/getMapField/getFieldId}.png"
+							<img src="assets/map/systemtypes/${colony/getSystem/getSystemType/getId}.png"
 								tal:attributes="title system/getSystemType/getDescription"
 								style="width: 15px; height: 15px;" /> ${colony/getSX}|${colony/getSY}
 							(${system/getName}-System ${system/getCX}|${system/getCY})
@@ -140,7 +140,8 @@
 						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
 							<td style="vertical-align: middle;">
 								<div style="display: table-cell; width: 55px;">
-									<img src="assets/commodities/${prod/commodity_id}.png" tal:attributes="title prod/commodity_name" />
+									<img src="assets/commodities/${prod/commodity_id}.png"
+										tal:attributes="title prod/commodity_name" />
 								</div>
 								<div style="display: table-cell; vertical-align: middle"
 									tal:content="prod/commodity_name">NAME</div>
