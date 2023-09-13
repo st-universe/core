@@ -45,7 +45,6 @@ class KnPostArchiv implements KnPostArchivInterface
     private ?string $version = '';
 
     /**
-     * @Id
      * @Column(type="integer", nullable=true)
      *
      */
