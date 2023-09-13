@@ -40,16 +40,17 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     public function getCrewLimit(): int
     {
         return (int) floor(
-            min(
-                10 + max(
-                    ($this->getPositiveEffectPrimary() - (4 * max(
-                        0,
-                        $this->getNegativeEffect() - $this->getPositiveEffectSecondary()
-                    ))),
-                    0
-                ),
-                $this->colony->getWorkers()
-            ) / 5 * $this->getLifeStandardPercentage() / 100
+            10 +
+                min(
+                    max(
+                        ($this->getPositiveEffectPrimary() - (4 * max(
+                            0,
+                            $this->getNegativeEffect() - $this->getPositiveEffectSecondary()
+                        ))),
+                        0
+                    ),
+                    $this->colony->getWorkers()
+                ) / 5 * $this->getLifeStandardPercentage() / 100
         );
     }
 
