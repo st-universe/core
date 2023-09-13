@@ -341,7 +341,8 @@
             {% if starSystemEntryTal.wasDiscovered %}
             <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank"
                 title="Karte des Systems öffnen">
-                <img src="assets/map/{{ starSystem.getMapField.getFieldId }}.png" style="width: 15px; height: 15px;" />
+                <img src="assets/map/systemtypes/{{ starSystem.getMapField.getFieldId }}.png"
+                    style="width: 15px; height: 15px;" />
                 <span>{{ starSystem.getName }}
                     ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
             </a>
