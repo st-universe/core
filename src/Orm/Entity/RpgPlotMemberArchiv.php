@@ -17,10 +17,10 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotMemberArchivRepository")
  * @Table(
  *     name="stu_plots_members_archiv",
- *     uniqueConstraints={@UniqueConstraint(name="plot_user_idx", columns={"plot_id", "user_id"})}
+ *     uniqueConstraints={@UniqueConstraint(name="plot_archiv_user_idx", columns={"plot_id", "user_id"})}
  * )
  */
-class RpgPlotArchivMember implements RpgPlotMemberArchivInterface
+class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
 {
     /**
      * @Id

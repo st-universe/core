@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping\Table;
  *     }
  * )
  **/
-class RpgArchivPlot implements RpgPlotArchivInterface
+class RpgPlotArchiv implements RpgPlotArchivInterface
 {
     /**
      * @Id
