@@ -37,22 +37,22 @@ class RpgPlotArchivMember implements RpgPlotMemberArchivInterface
     private ?string $version = '';
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      * 
      */
-    private int $former_id = 0;
+    private ?int $former_id = 0;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $plot_id = 0;
+    private ?int $plot_id = 0;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $user_id = 0;
+    private ?int $user_id = 0;
 
     /**
      *
