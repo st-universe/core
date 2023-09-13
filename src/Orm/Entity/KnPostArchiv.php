@@ -46,10 +46,10 @@ class KnPostArchiv implements KnPostArchivInterface
 
     /**
      * @Id
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $former_id;
+    private ?int $former_id;
 
     /**
      * @Column(type="string", nullable=true)
@@ -58,22 +58,22 @@ class KnPostArchiv implements KnPostArchivInterface
     private ?string $titel = '';
 
     /**
-     * @Column(type="text")
+     * @Column(type="text", nullable=true)
      *
      */
-    private string $text = '';
+    private ?string $text = '';
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $date = 0;
+    private ?int $date = 0;
 
     /**
-     * @Column(type="string")
+     * @Column(type="string", nullable=true)
      *
      */
-    private string $username = '';
+    private ?string $username = '';
 
     /**
      * @Column(type="integer", nullable=true)
@@ -88,10 +88,10 @@ class KnPostArchiv implements KnPostArchivInterface
     private ?int $del_user_id = 0;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $lastedit = 0;
+    private ?int $lastedit = 0;
 
     /**
      * @Column(type="integer", nullable=true)

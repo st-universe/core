@@ -35,40 +35,40 @@ class KnCommentArchiv implements KnCommentArchivInterface
     private ?string $version = '';
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      * 
      */
-    private int $former_id = 0;
+    private ?int $former_id = 0;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $post_id = 0;
+    private ?int $post_id = 0;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $user_id = 0;
+    private ?int $user_id = 0;
 
     /**
-     * @Column(type="string")
+     * @Column(type="string", nullable=true)
      *
      */
-    private string $username = '';
+    private ?string $username = '';
 
     /**
-     * @Column(type="string")
+     * @Column(type="string", nullable=true)
      *
      */
-    private string $text = '';
+    private ?string $text = '';
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", nullable=true)
      *
      */
-    private int $date = 0;
+    private ?int $date = 0;
 
     /**
      * @Column(type="integer", nullable=true)
