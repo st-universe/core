@@ -108,6 +108,14 @@ final class DealsTakeOffer implements ActionControllerInterface
             ));
         }
 
+        if ($selectedDeal->getWantPrestige() !== null) {
+            $userprestige = $game->getUser()->getPrestige();
+            if ($userprestige < $selectedDeal->getWantPrestige()) {
+                $game->addInformation(_('Du hast nicht genügend Prestige'));
+                return;
+            }
+        }
+
         if ($selectedDeal->getwantCommodityId() !== null || $selectedDeal->getWantPrestige() !== null) {
             if ($selectedDeal->getwantCommodityId() !== null) {
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
