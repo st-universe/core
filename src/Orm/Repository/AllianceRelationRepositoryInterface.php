@@ -24,7 +24,7 @@ interface AllianceRelationRepositoryInterface extends ObjectRepository
 
     public function getPendingCountByAlliances(int $allianceId, int $opponentId): int;
 
-    public function getByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelationInterface;
+    public function getByAlliancePair(int $allianceId, int $opponentId): array;
 
     /**
      * @return array<AllianceRelationInterface>

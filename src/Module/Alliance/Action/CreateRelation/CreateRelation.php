@@ -75,17 +75,13 @@ final class CreateRelation implements ActionControllerInterface
         }
 
         // check if a relation exists
-        $existingRelation = $this->allianceRelationRepository->getByAlliancePair($allianceId, $counterpartId);
-        if ($existingRelation !== null) {
-            $existingRelationType = $existingRelation->getType();
-            if ($existingRelationType === $typeId) {
-                return;
-            }
+        $existingRelations = $this->allianceRelationRepository->getByAlliancePair($allianceId, $counterpartId);
 
-            if (
-                $existingRelationType === AllianceEnum::ALLIANCE_RELATION_WAR
-                && $typeId !== AllianceEnum::ALLIANCE_RELATION_PEACE
-            ) {
+        // Iteriere durch die gefundenen Einträge
+        foreach ($existingRelations as $existingRelation) {
+            $existingRelationType = $existingRelation->getType();
+
+            if ($existingRelationType === $typeId) {
                 return;
             }
         }
