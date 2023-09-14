@@ -12,6 +12,7 @@ use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class NearFieldScannerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -30,7 +31,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
 
     public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
-        if (!$ship->getUser()->hasColony()) {
+        if (!$ship->getUser()->hasColony() && $ship->getUser()->getId() >= UserEnum::USER_FIRST_ID) {
             $reason = _('noch keine Kolonie kolonisiert wurde');
             return false;
         }
