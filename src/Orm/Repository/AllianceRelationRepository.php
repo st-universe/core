@@ -68,7 +68,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->getSingleScalarResult();
     }
 
-    public function getByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelationInterface
+    public function getByAlliancePair(int $allianceId, int $opponentId): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -81,8 +81,9 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
                 'allianceId' => $allianceId,
                 'opponentId' => $opponentId
             ])
-            ->getOneOrNullResult();
+            ->getResult();
     }
+
 
     public function getActiveByAlliance(int $allianceId): array
     {
