@@ -66,7 +66,20 @@ final class Register implements ActionControllerInterface
         $loginname = trim(mb_strtolower($this->registerRequest->getLoginName()));
         $email = trim(mb_strtolower($this->registerRequest->getEmailAddress()));
 
-        $mobileNumber = $this->registerRequest->getMobileNumber();
+        $countryCode = $this->registerRequest->getCountryCode();
+        $mobile = $this->registerRequest->getMobileNumber();
+
+        $mobileNumber  = $countryCode . $mobile;
+
+        if ($mobile === '') {
+            return;
+        }
+
+        if ($countryCode === '') {
+            return;
+        }
+
+        $mobileNumber  = $countryCode . $mobile;
 
         if ($mobileNumber === '') {
             return;

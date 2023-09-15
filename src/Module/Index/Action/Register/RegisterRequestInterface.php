@@ -10,6 +10,8 @@ interface RegisterRequestInterface
 
     public function getMobileNumber(): string;
 
+    public function getCountryCode(): string;
+
     public function getFactionId(): int;
 
     public function getToken(): string;

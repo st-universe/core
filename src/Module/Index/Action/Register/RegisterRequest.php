@@ -22,7 +22,12 @@ final class RegisterRequest implements RegisterRequestInterface
 
     public function getMobileNumber(): string
     {
-        return trim($this->queryParameter('combinedMobileValue')->string()->defaultsToIfEmpty(''));
+        return trim($this->queryParameter('mobile')->string()->defaultsToIfEmpty(''));
+    }
+
+    public function getCountryCode(): string
+    {
+        return $this->queryParameter('countrycode')->string()->defaultsToIfEmpty('');
     }
 
     public function getFactionId(): int

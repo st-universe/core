@@ -32,7 +32,8 @@
 							title="z.B. 176 55555, 170666666 oder 1501234567 (ohne führende Null)"
 							src="assets/buttons/info2.png" style="height:16px;" /></div>
 					<div class="divbody">
-						<select id="countryCodeSelect" onchange="updateMobileValue()">
+						<select selected="true" id="countryCodeSelect" name="countrycode"
+							onchange="updateMobileValue()">
 							<option value="+49">(DE) +49</option>
 							<option value="+43">(AT) +43</option>
 							<option value="+41">(CH) +41</option>
@@ -52,7 +53,6 @@
 						<br />
 						<br />
 						Deine Nummer: <div name="combinedMobileValue" id="combinedMobileValue"></div>
-						<input type="hidden" id="combinedMobileValueInput" name="combinedMobileValue" value="" />
 					</div>
 				</tal:block>
 				<br />
