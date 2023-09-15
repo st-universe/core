@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\KnPostArchivRepository")
@@ -25,9 +26,13 @@ use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
  *     indexes={
  *         @Index(name="plot_archiv_idx", columns={"plot_id"}),
  *         @Index(name="kn_post_archiv_date_idx", columns={"date"}),
+ *     },
+ *     uniqueConstraints={
+ *         @UniqueConstraint(name="unique_kn_archiv_former_id", columns={"former_id"}) 
  *     }
  * )
- **/
+ */
+
 class KnPostArchiv implements KnPostArchivInterface
 {
     /**
