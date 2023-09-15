@@ -39,7 +39,7 @@
 							<option value="+41">(CH) +41</option>
 						</select>
 						<input type="text" class="text" size="25" name="mobile" id="mobile"
-							oninput="updateMobileValue()" />
+							oninput="checkMobile(this,this.value); updateMobileValue()" />
 						<span id="mobileerror" style="display: none; color: #FF0000;">Fehler</span>
 						<span id="mobileok" style="display: none; color: Green;">OK</span>
 						<div id="mobiledup" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist bereits

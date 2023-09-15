@@ -48,8 +48,9 @@ function checkEmail(el, value) {
 	$('emailok').show();
 	return true;
 }
-function checkMobile(combinedValue) {
-	value = combinedValue;
+function checkMobile(el, number) {
+	var countryCode = document.getElementById('countryCodeSelect').value;
+	value = countryCode + number;
 	if (value.length < 10) {
 		$('mobileok').hide();
 		$('mobileerror').show();
@@ -204,15 +205,6 @@ function regVarCheck(vari, value) {
 function updateMobileValue() {
 	var countryCode = document.getElementById('countryCodeSelect').value;
 	var mobileNumber = document.getElementById('mobile').value;
-	mobileNumber = mobileNumber.replace(/\s+/g, '');
-
-	if (mobileNumber.startsWith("0") ||
-		mobileNumber.startsWith("+49") || mobileNumber.startsWith("+43") || mobileNumber.startsWith("+41")) {
-		mobileNumber = mobileNumber.replace(/^0+|\+49|\+43|\+41/g, '');
-	}
-
-
 	var combinedValue = countryCode + mobileNumber;
-	checkMobile(combinedValue);
 	document.getElementById('combinedMobileValue').textContent = combinedValue;
 }
