@@ -63,7 +63,7 @@ class SignaturePanel extends AbstractVisualPanel
                 $this->data['maxx'],
                 $this->data['miny'],
                 $this->data['maxy'],
-                MapEnum::LAYER_ID_CRAGGANMORE,
+                MapEnum::LAYER_ID_TULLAMORE,
                 $this->userId
             );
         } elseif ($this->allyId !== 0) {
@@ -72,7 +72,7 @@ class SignaturePanel extends AbstractVisualPanel
                 $this->data['maxx'],
                 $this->data['miny'],
                 $this->data['maxy'],
-                MapEnum::LAYER_ID_CRAGGANMORE,
+                MapEnum::LAYER_ID_TULLAMORE,
                 $this->allyId
             );
         }

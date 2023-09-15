@@ -91,7 +91,7 @@ class Ship implements ShipInterface
      * @Column(type="integer", length=5)
      *
      */
-    private int $layer_id = MapEnum::LAYER_ID_CRAGGANMORE;
+    private int $layer_id = MapEnum::LAYER_ID_TULLAMORE;
 
     /**
      * @Column(type="integer", length=5)
