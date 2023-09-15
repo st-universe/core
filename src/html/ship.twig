@@ -122,6 +122,7 @@
 				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
 				<span id="EffektivEPS"></span>
 				{% else %}
+				<span>{{ WRAPPER.getEffectiveEpsProduction|addPlusCharacter }}</span>
 				{% endif %}
 				(<span class="neg">{{ WRAPPER.getEpsUsage }}</span>/<span class="neg">{{ WRAPPER.getWarpcoreUsage
 					}}</span>)
