@@ -206,9 +206,9 @@ function updateMobileValue() {
 	var mobileNumber = document.getElementById('mobile').value;
 	mobileNumber = mobileNumber.replace(/\s+/g, '');
 
-	if (mobileNumber.startsWith("0") || mobileNumber.startsWith("00") ||
+	if (mobileNumber.startsWith("0") ||
 		mobileNumber.startsWith("+49") || mobileNumber.startsWith("+43") || mobileNumber.startsWith("+41")) {
-		mobileNumber = mobileNumber.replace(/^0+|^00|\+49|\+43|\+41/g, '');
+		mobileNumber = mobileNumber.replace(/^0+|\+49|\+43|\+41/g, '');
 	}
 
 
