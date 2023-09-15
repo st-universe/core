@@ -48,8 +48,7 @@ function checkEmail(el, value) {
 	$('emailok').show();
 	return true;
 }
-function checkMobile(el, number) {
-	var countryCode = document.getElementById('countryCodeSelect').value;
+function checkMobile(number, countryCode) {
 	value = countryCode + number;
 	if (value.length < 10) {
 		$('mobileok').hide();
@@ -206,6 +205,6 @@ function updateMobileValue() {
 	var countryCode = document.getElementById('countryCodeSelect').value;
 	var mobileNumber = document.getElementById('mobile').value;
 	var combinedValue = countryCode + mobileNumber;
+	checkMobile(mobileNumber, countryCode);
 	document.getElementById('combinedMobileValue').textContent = combinedValue;
-	document.getElementById('combinedMobileValueInput').value = combinedValue;
 }
