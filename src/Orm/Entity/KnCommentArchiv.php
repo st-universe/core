@@ -12,12 +12,18 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\KnCommentArchivRepository")
  * @Table(
- *     name="stu_kn_comments_archiv" )
- **/
+ *     name="stu_kn_comments_archiv",
+ *     uniqueConstraints={
+ *         @UniqueConstraint(name="unique_comments_former_id", columns={"former_id"}) 
+ *     }
+ * )
+ */
+
 class KnCommentArchiv implements KnCommentArchivInterface
 {
     /**
