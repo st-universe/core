@@ -57,7 +57,7 @@ class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
     /**
      *
      * @ManyToOne(targetEntity="RpgPlotArchiv", inversedBy="members")
-     * @JoinColumn(name="plot_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="plot_id", referencedColumnName="former_id", onDelete="CASCADE")
      */
     private RpgPlotArchivInterface $rpgPlot;
 
