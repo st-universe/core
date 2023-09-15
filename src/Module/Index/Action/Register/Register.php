@@ -81,6 +81,14 @@ final class Register implements ActionControllerInterface
 
         $mobileNumber  = $countryCode . $mobile;
 
+        if (strpos($mobileNumber, "00490049") === 0) {
+            $mobileNumber = "0049" . substr($mobileNumber, 8);
+        } elseif (strpos($mobileNumber, "00430043") === 0) {
+            $mobileNumber = "0043" . substr($mobileNumber, 8);
+        } elseif (strpos($mobileNumber, "00410041") === 0) {
+            $mobileNumber = "0041" . substr($mobileNumber, 8);
+        }
+
 
         $this->playerCreator->createWithMobileNumber(
             $loginname,
