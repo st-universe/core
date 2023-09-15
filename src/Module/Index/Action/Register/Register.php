@@ -69,15 +69,6 @@ final class Register implements ActionControllerInterface
         $countryCode = $this->registerRequest->getCountryCode();
         $mobile = $this->registerRequest->getMobileNumber();
 
-        $mobileNumber  = $countryCode . $mobile;
-
-        if ($mobile === '') {
-            return;
-        }
-
-        if ($countryCode === '') {
-            return;
-        }
 
         $mobileNumber  = $countryCode . $mobile;
 
