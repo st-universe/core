@@ -116,7 +116,7 @@ class KnPostArchiv implements KnPostArchivInterface
     /**
      *
      * @ManyToOne(targetEntity="RpgPlotArchiv", inversedBy="posts")
-     * @JoinColumn(name="plot_id", referencedColumnName="id")
+     * @JoinColumn(name="plot_id", referencedColumnName="former_id")
      */
     private ?RpgPlotArchivInterface $rpgPlot = null;
 
