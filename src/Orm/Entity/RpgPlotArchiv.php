@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotArchivRepository")
@@ -20,6 +22,10 @@ use Doctrine\ORM\Mapping\Table;
  *     name="stu_plots_archiv",
  *     indexes={
  *         @Index(name="rpg_plot_archiv_end_date_idx", columns={"end_date"}),
+ *     },
+ *     uniqueConstraints={
+ *         @UniqueConstraint(name="unique_plot_id", columns={"id"}),
+ *         @UniqueConstraint(name="unique_former_id", columns={"former_id"})
  *     }
  * )
  **/
