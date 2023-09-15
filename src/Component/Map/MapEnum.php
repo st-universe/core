@@ -9,6 +9,7 @@ final class MapEnum
     //LAYERS
     public const LAYER_ID_WORMHOLES = 0;
     public const LAYER_ID_CRAGGANMORE = 1;
+    public const LAYER_ID_TULLAMORE = 2;
 
     //SECTIONS
     public const FIELDS_PER_SECTION = 20;
