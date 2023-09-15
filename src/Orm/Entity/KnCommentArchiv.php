@@ -85,7 +85,7 @@ class KnCommentArchiv implements KnCommentArchivInterface
     /**
      *
      * @ManyToOne(targetEntity="KnPostArchiv")
-     * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="post_id", referencedColumnName="former_id", onDelete="CASCADE")
      */
     private KnPostArchivInterface $post;
 
