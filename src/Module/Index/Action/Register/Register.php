@@ -89,7 +89,9 @@ final class Register implements ActionControllerInterface
             $mobileNumber = "0041" . substr($mobileNumber, 8);
         }
 
-
+        if ($mobileNumber === '') {
+            return;
+        }
         $this->playerCreator->createWithMobileNumber(
             $loginname,
             $email,
