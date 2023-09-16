@@ -69,6 +69,11 @@ final class Register implements ActionControllerInterface
         $countryCode = $this->registerRequest->getCountryCode();
         $mobile = $this->registerRequest->getMobileNumber();
 
+        if (preg_match('/^(\\+49|\\+43|\\+41|0+)/', $mobile, $matches)) {
+            $mobile = substr($mobile, strlen($matches[0]));
+        }
+        $mobile = str_replace(' ', '', $mobile);
+
 
         $mobileNumber  = $countryCode . $mobile;
 
