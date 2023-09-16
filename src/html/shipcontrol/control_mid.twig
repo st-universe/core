@@ -403,12 +403,14 @@
         <td style="width: 50%;">
             {{ _self.colonyImageAndName(shipId, currentColony, ownsCurrentColony) }}
             <div>
+                {% if currentColony.getUser.isContactable and not ownsCurrentColony %}
                 {% set fromType = ship.isBase ? 4 : 2 %}
                 <a href="javascript:void(0);" onmouseover="cp('pm_to_colony','buttons/msg2', 'png');"
                     onmouseout="cp('pm_to_colony','buttons/msg1', 'png');"
                     onclick="closePopup();openPmWindow({{ shipId }}, {{ colonyId }}, {{ fromType }},5);"><img
                         src="/assets/buttons/msg1.png" name="pm_to_colony" title="Nachricht an Kolonie senden" /></a>
                 {{ currentColony.getUser.getName|bbcode }}
+                {% endif %}
             </div>
         </td>
         <td style="width: 50%;">

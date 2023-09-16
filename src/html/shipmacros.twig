@@ -387,6 +387,7 @@
     {% endif %}
 </td>
 <td>
+    {% if nbsItem.isContactable %}
     {% set fromType = SHIP.isBase ? 4 : 2 %}
     {% set toType = nbsItem.isBase ? 4 : 2 %}
     <a href="javascript:void(0);"
@@ -395,6 +396,7 @@
         onmouseover="cp('nbsPm{{ nbsItem.getId }}','buttons/msg2')"
         onmouseout="cp('nbsPm{{ nbsItem.getId }}','buttons/msg1')">
         <img src="/assets/buttons/msg1.png" name="nbsPm{{ nbsItem.getId }}" /></a>
+    {% endif %}
     {{ nbsItem.getUserName|bbcode }} ({{ nbsItem.getUserId }})
 </td>
 {% endif %}
