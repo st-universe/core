@@ -17,5 +17,5 @@ final class TradeEnum
     public const BASIC_TRADE_SELL_MODIFIER = 10;
 
     // Deals
-    public const DEALS_FERG_TRADEPOST_ID = 59;
+    public const DEALS_FERG_TRADEPOST_ID = 2;
 }
