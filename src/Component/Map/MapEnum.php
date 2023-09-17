@@ -6,6 +6,9 @@ namespace Stu\Component\Map;
 
 final class MapEnum
 {
+    //DEFAULT LAYER
+    public const DEFAULT_LAYER = self::LAYER_ID_TULLAMORE;
+
     //LAYERS
     public const LAYER_ID_WORMHOLES = 0;
     public const LAYER_ID_CRAGGANMORE = 1;

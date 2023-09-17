@@ -57,7 +57,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 
     private function createDefaultUserLayer(UserInterface $user): void
     {
-        $defaultLayer = $this->layerRepository->find(MapEnum::LAYER_ID_TULLAMORE);
+        $defaultLayer = $this->layerRepository->find(MapEnum::DEFAULT_LAYER);
 
         if ($defaultLayer === null) {
             throw new RuntimeException('the default layer should be available');
@@ -68,7 +68,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $userLayer->setUser($user);
 
         $this->userLayerRepository->save($userLayer);
-        $user->getUserLayers()->set(MapEnum::LAYER_ID_TULLAMORE, $userLayer);
+        $user->getUserLayers()->set(MapEnum::DEFAULT_LAYER, $userLayer);
     }
 
     private function createDefaultStartResearch(UserInterface $user): void

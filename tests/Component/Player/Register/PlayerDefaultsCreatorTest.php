@@ -133,7 +133,7 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
             ->andReturnSelf();
 
         $this->layerRepository->shouldReceive('find')
-            ->with(MapEnum::LAYER_ID_TULLAMORE)
+            ->with(MapEnum::DEFAULT_LAYER)
             ->once()
             ->andReturn($layer);
         $this->userLayerRepository->shouldReceive('prototype')
@@ -150,7 +150,7 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
             ->with($user)
             ->once();
         $user->shouldReceive('getUserLayers->set')
-            ->with(MapEnum::LAYER_ID_TULLAMORE, $userLayer)
+            ->with(MapEnum::DEFAULT_LAYER, $userLayer)
             ->once();
 
         $this->defaultsCreator->createDefault($user);

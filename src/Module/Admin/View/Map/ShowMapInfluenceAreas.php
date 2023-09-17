@@ -6,7 +6,6 @@ namespace Stu\Module\Admin\View\Map;
 
 use request;
 use Stu\Component\Image\ImageCreationInterface;
-use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\LayerInterface;
@@ -65,7 +64,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         $cury = 0;
         $curx = 0;
 
-        foreach ($this->mapRepository->getAllOrdered(MapEnum::LAYER_ID_TULLAMORE) as $data) {
+        foreach ($this->mapRepository->getAllOrdered($layer->getId()) as $data) {
             $col = null;
 
             if ($startY !== $data->getCy()) {
