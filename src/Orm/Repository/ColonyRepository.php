@@ -188,4 +188,31 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameter('userId', $user->getId())
             ->getResult();
     }
+
+    public function getColoniesNetWorth(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('sum', 'sum', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT u.id as user_id, bc.commodity_id as commodity_id, sum(bc.count) as sum
+                FROM stu_user u
+                JOIN stu_colonies c
+                ON u.id = c.user_id 
+                JOIN stu_colonies_fielddata cf
+                ON cf.colonies_id = c.id
+                JOIN stu_buildings_cost bc 
+                ON cf.buildings_id = bc.buildings_id 
+                WHERE u.id >= :firstUserId
+                AND cf.buildings_id IS NOT NULL
+                AND cf.aktiv = 1
+                GROUP BY u.id, bc.commodity_id',
+                $rsm
+            )
+            ->setParameters(['firstUserId' => UserEnum::USER_FIRST_ID])
+            ->getResult();
+    }
 }

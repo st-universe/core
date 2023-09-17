@@ -40,6 +40,7 @@
 				<a href="?SHOW_TOP_CREW=1">Die Top 10 der Ausbilder</a><br />
 				<a href="?SHOW_TOP_LATINUM=1">Die 10 Söhne des Nagus</a><br />
 				<a href="?SHOW_TOP_ACTIV_TRADEPOST=1">Die 10 aktivsten Handelsposten</a><br />
+				<a href="?SHOW_COLONY_WORTH=1">Die Top 10 der Architekten</a><br />
 			</div>
 		</div>
 		<div style="width: 300px; margin-left: 5px; float: left;">
@@ -255,6 +256,50 @@
 					<h1>Handelsposten</h1>
 					<p>In dieser Liste werden die 10 Handelsposten mit den meisten Transaktionen in den letzten 7 Tagen
 						aufgeführt.</p>
+					<br />
+					<p>Diese Liste wird jede Stunde aktualisiert.</p>
+				</div>
+			</div>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="top_architects">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<div class="statisticsToplist">
+				<div phptal:cache="1h">
+					<ul class="statistics">
+						<li tal:repeat="entry ARCHITECTS_LIST">
+							<div class="userGrid">
+								<div class="placement">
+									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+								</div>
+								<div class="userprofile">
+									<metal:macro metal:use-macro="macros.xhtml/useravatar"
+										tal:define="USER entry/getUser" />
+								</div>
+								<div class="userName" tal:content="structure bbcode:entry/getUser/getName">USER</div>
+								<div>
+									Punkte: <span tal:content="entry/getPoints">AMOUNT</span>
+								</div>
+								<div>
+									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow"
+										tal:define="id entry/getUser/getId" />
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h1>Architekten</h1>
+					<p>In dieser Liste werden die 10 Spieler mit den imposantesten Koloniebuilds im Spiel aufgeführt.
+					</p>
+					<p>Der Wert aller gebauten Gebäude auf sämtlichen Kolonien wird aufsummiert und in Relation zu allen
+						Spielern gesetzt.
+						Der Punktestand kann jeden Tick variieren.</p>
+					<br />
+					<p>Dein eigener Punktstand: <span tal:replace="USER_POINTS">POINTS</span></p>
 					<br />
 					<p>Diese Liste wird jede Stunde aktualisiert.</p>
 				</div>

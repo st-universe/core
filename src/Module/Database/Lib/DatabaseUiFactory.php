@@ -90,4 +90,15 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
             $item
         );
     }
+
+    public function createDatabaseTopListArchitects(
+        int $userId,
+        string $points
+    ): DatabaseTopListArchitects {
+        return new DatabaseTopListArchitects(
+            $this->userRepository,
+            $userId,
+            $points
+        );
+    }
 }

@@ -14,6 +14,7 @@ use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Module\Database\View\ColonyWorthRanking\ColonyWorthRanking;
 use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
 use Stu\Module\Database\View\CrewRanking\CrewRanking;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
@@ -54,6 +55,7 @@ return [
         DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
         FlightRanking::VIEW_IDENTIFIER => autowire(FlightRanking::class),
+        ColonyWorthRanking::VIEW_IDENTIFIER => autowire(ColonyWorthRanking::class),
         CommoditiesOverview::VIEW_IDENTIFIER => autowire(CommoditiesOverview::class),
         LatinumRanking::VIEW_IDENTIFIER => autowire(LatinumRanking::class),
         ShowColonySurface::VIEW_IDENTIFIER => autowire(ShowColonySurface::class),
