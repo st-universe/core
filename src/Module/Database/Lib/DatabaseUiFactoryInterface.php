@@ -39,4 +39,9 @@ interface DatabaseUiFactoryInterface
     public function createDatabaseTopListFlights(
         array $item
     ): DatabaseTopListFlights;
+
+    public function createDatabaseTopListArchitects(
+        int $userId,
+        string $points
+    ): DatabaseTopListArchitects;
 }
