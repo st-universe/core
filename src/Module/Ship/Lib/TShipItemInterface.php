@@ -41,8 +41,6 @@ interface TShipItemInterface
 
     public function getUserId(): int;
 
-    public function isContactable(): bool;
-
     public function getUserName(): string;
 
     public function getRumpCategoryId(): int;

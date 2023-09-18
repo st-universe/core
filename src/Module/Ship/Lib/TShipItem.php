@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Lib;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 /**
  * @Entity
@@ -163,11 +162,6 @@ class TShipItem implements TShipItemInterface
     public function getUserId(): int
     {
         return $this->user_id;
-    }
-
-    public function isContactable(): bool
-    {
-        return $this->getUserId() != UserEnum::USER_NOONE;
     }
 
     public function getUserName(): string
