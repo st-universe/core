@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -43,11 +44,14 @@ final class FinishTerraformingJobs implements ProcessTickHandlerInterface
             $this->colonyTerraformingRepository->delete($field);
             $txt = "Kolonie " . $colony->getName() . ": " . $field->getTerraforming()->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";
 
+            $href = sprintf('colony.php?%s=1&id=%d', ShowColony::VIEW_IDENTIFIER, $colony->getId());
+
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
                 $colony->getUserId(),
                 $txt,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
+                $href
             );
         }
     }
