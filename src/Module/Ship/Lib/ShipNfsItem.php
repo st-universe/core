@@ -9,6 +9,7 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class ShipNfsItem
 {
@@ -119,6 +120,12 @@ final class ShipNfsItem
     {
         return $this->item->getUserId();
     }
+
+    public function isContactable(): bool
+    {
+        return $this->getUserId() != UserEnum::USER_NOONE;
+    }
+
     public function getUserName(): string
     {
         return $this->item->getUserName();
