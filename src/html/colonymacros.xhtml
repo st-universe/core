@@ -1504,7 +1504,13 @@
           </div>
           <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
             <span style="font-weight: bold;">${FIELD/getBuilding/getName}</span><br />
-            <span>auf</span> ${planetFieldTypeDescription:FIELD/getFieldType}
+            <div onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
+              <span>auf</span> ${planetFieldTypeDescription:FIELD/getFieldType} <a
+                href="https://wiki.stuniverse.de/index.php?title=Kartenfelder" target="_blank">
+                <img src="assets/buttons/info1.png" name="fieldinfo" width="12" height="12"
+                  title="Wiki-Info über Kartenfelder" />
+              </a>
+            </div>
           </div>
           <div>
             <div style="display: table-cell; padding-top: 5px;" tal:content="structure FIELD/getConstructionStatusBar">
@@ -1530,8 +1536,13 @@
             <div style="display: table-cell;">
               <img src="assets/generated/fields/t${FIELD/getFieldType}.png" /><br />
             </div>
-            <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
-              ${planetFieldTypeDescription:FIELD/getFieldType}
+            <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;"
+              onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
+              ${planetFieldTypeDescription:FIELD/getFieldType} <a
+                href="https://wiki.stuniverse.de/index.php?title=Kartenfelder" target="_blank">
+                <img src="assets/buttons/info1.png" name="fieldinfo" width="12" height="12"
+                  title="Wiki-Info über Kartenfelder" />
+              </a>
             </div>
           </div>
           <div tal:condition="FIELD/hasBuilding">
@@ -1544,7 +1555,13 @@
             </div>
             <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
               <span style="font-weight: bold;">${FIELD/getBuilding/getName}</span><br />
-              <span>auf</span> ${planetFieldTypeDescription:FIELD/getFieldType}<br />
+              <div onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
+                <span>auf</span> ${planetFieldTypeDescription:FIELD/getFieldType} <a
+                  href="https://wiki.stuniverse.de/index.php?title=Kartenfelder" target="_blank">
+                  <img src="assets/buttons/info1.png" name="fieldinfo" width="12" height="12"
+                    title="Wiki-Info über Kartenfelder" />
+                </a>
+              </div><br />
               <span>Integrität</span>: ${FIELD/getIntegrity}/${FIELD/getBuilding/getIntegrity}
             </div>
             <br /><br />
