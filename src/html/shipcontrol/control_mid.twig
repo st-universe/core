@@ -579,7 +579,11 @@
 {% elseif astroStateWrapper.isDone %}
 <br />
 <img src="/assets/buttons/map1.png" />
+{% if starSystem %}
 <span>System ist kartographiert</span>
+{% else %}
+<span>Region ist kartographiert</span>
+{% endif %}
 {% endif %}
 {% endmacro %}
 
