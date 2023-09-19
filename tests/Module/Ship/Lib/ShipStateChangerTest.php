@@ -124,7 +124,7 @@ class ShipStateChangerTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
+            ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
         $this->ship->shouldReceive('isUnderRepair')
             ->withNoArgs()
             ->once()

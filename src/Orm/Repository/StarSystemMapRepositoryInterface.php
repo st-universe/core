@@ -38,9 +38,9 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return array<int, array{id: int}>
+     * @return array<int>
      */
-    public function getRandomFieldsForAstroMeasurement(int $starSystemId): array;
+    public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId): array;
 
     /**
      * @return array<array{category_name: string, amount: int}>

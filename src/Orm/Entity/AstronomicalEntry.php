@@ -19,7 +19,8 @@ use Doctrine\ORM\Mapping\Table;
  *     name="stu_astro_entry",
  *     indexes={
  *         @Index(name="astro_entry_user_idx", columns={"user_id"}),
- *         @Index(name="astro_entry_star_system_idx", columns={"systems_id"})
+ *         @Index(name="astro_entry_star_system_idx", columns={"systems_id"}),
+ *         @Index(name="astro_entry_map_region_idx", columns={"region_id"})
  *     }
  * )
  **/
@@ -52,40 +53,22 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     private ?int $astro_start_turn = null;
 
     /**
-     * @Column(type="integer") *
+     * @Column(type="integer", nullable=true) *
      *
      */
-    private int $systems_id;
+    private ?int $systems_id = null;
 
     /**
      * @Column(type="integer", nullable=true) *
      *
      */
-    private ?int $starsystem_map_id_1 = null;
+    private ?int $region_id = null;
 
     /**
-     * @Column(type="integer", nullable=true) *
-     *
+     * @Column(type="text") *
+     * 
      */
-    private ?int $starsystem_map_id_2 = null;
-
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
-    private ?int $starsystem_map_id_3 = null;
-
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
-    private ?int $starsystem_map_id_4 = null;
-
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
-    private ?int $starsystem_map_id_5 = null;
+    private string $field_ids = '';
 
     /**
      *
@@ -99,42 +82,15 @@ class AstronomicalEntry implements AstronomicalEntryInterface
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
-    private StarSystemInterface $starSystem;
+    private ?StarSystemInterface $starSystem;
+
 
     /**
      *
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id_1", referencedColumnName="id")
+     * @ManyToOne(targetEntity="MapRegion")
+     * @JoinColumn(name="region_id", referencedColumnName="id")
      */
-    private ?StarSystemMapInterface $starsystem_map_1 = null;
-
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id_2", referencedColumnName="id")
-     */
-    private ?StarSystemMapInterface $starsystem_map_2 = null;
-
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id_3", referencedColumnName="id")
-     */
-    private ?StarSystemMapInterface $starsystem_map_3 = null;
-
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id_4", referencedColumnName="id")
-     */
-    private ?StarSystemMapInterface $starsystem_map_4 = null;
-
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id_5", referencedColumnName="id")
-     */
-    private ?StarSystemMapInterface $starsystem_map_5 = null;
+    private ?MapRegionInterface $region;
 
     public function getId(): int
     {
@@ -179,7 +135,7 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this;
     }
 
-    public function getSystem(): StarSystemInterface
+    public function getSystem(): ?StarSystemInterface
     {
         return $this->starSystem;
     }
@@ -190,67 +146,30 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this;
     }
 
-    public function getStarsystemMap1(): ?StarSystemMapInterface
+    public function getRegion(): ?MapRegionInterface
     {
-        return $this->starsystem_map_1;
+        return $this->region;
     }
 
-    public function setStarsystemMap1(?StarSystemMapInterface $map): AstronomicalEntryInterface
+    public function setRegion(MapRegionInterface $region): AstronomicalEntryInterface
     {
-        $this->starsystem_map_1 = $map;
+        $this->region = $region;
         return $this;
     }
 
-    public function getStarsystemMap2(): ?StarSystemMapInterface
+    public function getFieldIds(): string
     {
-        return $this->starsystem_map_2;
+        return $this->field_ids;
     }
 
-    public function setStarsystemMap2(?StarSystemMapInterface $map): AstronomicalEntryInterface
+    public function setFieldIds(string $fieldIds): AstronomicalEntryInterface
     {
-        $this->starsystem_map_2 = $map;
-        return $this;
-    }
-
-    public function getStarsystemMap3(): ?StarSystemMapInterface
-    {
-        return $this->starsystem_map_3;
-    }
-
-    public function setStarsystemMap3(?StarSystemMapInterface $map): AstronomicalEntryInterface
-    {
-        $this->starsystem_map_3 = $map;
-        return $this;
-    }
-
-    public function getStarsystemMap4(): ?StarSystemMapInterface
-    {
-        return $this->starsystem_map_4;
-    }
-
-    public function setStarsystemMap4(?StarSystemMapInterface $map): AstronomicalEntryInterface
-    {
-        $this->starsystem_map_4 = $map;
-        return $this;
-    }
-
-    public function getStarsystemMap5(): ?StarSystemMapInterface
-    {
-        return $this->starsystem_map_5;
-    }
-
-    public function setStarsystemMap5(?StarSystemMapInterface $map): AstronomicalEntryInterface
-    {
-        $this->starsystem_map_5 = $map;
+        $this->field_ids = $fieldIds;
         return $this;
     }
 
     public function isMeasured(): bool
     {
-        return $this->starsystem_map_1 == null
-            && $this->starsystem_map_2 == null
-            && $this->starsystem_map_3 == null
-            && $this->starsystem_map_4 == null
-            && $this->starsystem_map_5 == null;
+        return empty($this->getFieldIds());
     }
 }

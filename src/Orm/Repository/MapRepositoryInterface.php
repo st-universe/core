@@ -68,4 +68,10 @@ interface MapRepositoryInterface extends ObjectRepository
      * @return array<MapInterface>
      */
     public function getWithEmptySystem(LayerInterface $layer): array;
+
+
+    /**
+     * @return array<int>
+     */
+    public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage): array;
 }

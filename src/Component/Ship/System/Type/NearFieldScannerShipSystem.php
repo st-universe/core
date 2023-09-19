@@ -12,7 +12,6 @@ use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class NearFieldScannerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -31,7 +30,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
 
     public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
-        if (!$ship->getUser()->hasColony() && $ship->getUser()->getId() >= UserEnum::USER_FIRST_ID) {
+        if (!$ship->getUser()->hasColony() && !$ship->getUser()->isNpc()) {
             $reason = _('noch keine Kolonie kolonisiert wurde');
             return false;
         }
@@ -66,7 +65,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
 
-            if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
                 $this->astroEntryLib->cancelAstroFinalizing($ship);
             }
         }
@@ -78,7 +77,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
 
-            if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
                 $this->astroEntryLib->cancelAstroFinalizing($ship);
             }
         }

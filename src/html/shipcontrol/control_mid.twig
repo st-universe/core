@@ -517,14 +517,24 @@
 {% set shipId = ship.getId %}
 {% set starSystem = ship.getSystem %}
 {% set shipAstroState = ship.getAstroState %}
+{% set region = ship.getMapRegion %}
 {% if astroStateWrapper.isPlannable %}
 <br />
-{% if starSystem and shipAstroState %}
+{% if shipAstroState %}
+{% if starSystem %}
 <a href="?B_PLAN_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
     onmouseout="cp('astroButton','buttons/map1')">
     <img src="/assets/buttons/map1.png" name="astroButton" />
     <span>System kartographieren</span>
 </a>
+{% endif %}
+{% if region %}
+<a href="?B_PLAN_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
+    onmouseout="cp('astroButton','buttons/map1')">
+    <img src="/assets/buttons/map1.png" name="astroButton" />
+    <span>Region kartographieren</span>
+</a>
+{% endif %}
 {% endif %}
 {% if ship.isOverSystem or not shipAstroState %}
 <img src="/assets/buttons/map1.png" />
@@ -544,7 +554,7 @@
 {% endif %}
 {% elseif astroStateWrapper.isMeasured %}
 <br />
-{% if starSystem and shipAstroState %}
+{% if shipAstroState and (starSystem or region) %}
 <a href="?B_START_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
     onmouseout="cp('astroButton','buttons/map1')">
     <img src="/assets/buttons/map1.png" name="astroButton" />

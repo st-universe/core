@@ -72,7 +72,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->getResult();
     }
 
-    public function getRandomFieldsForAstroMeasurement(int $starSystemId): array
+    public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId): array
     {
         $result = [];
 
@@ -148,7 +148,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             $result = array_merge($result, $otherFields);
         }
 
-        return array_values($result);
+        return array_map(fn (array $data) => $data['id'], $result);
     }
 
     public function getRumpCategoryInfo(int $cx, int $cy): array

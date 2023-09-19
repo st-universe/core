@@ -49,19 +49,23 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     public static function provideCheckActivationConditionsReturnsFalseIfNoColonyData()
     {
         return [
-            [false, false, 'noch keine Kolonie kolonisiert wurde'],
-            [true, true, null],
+            [false, false, false, 'noch keine Kolonie kolonisiert wurde'],
+            [false, true, true, null],
+            [true, false, true, null],
         ];
     }
 
     /**
      * @dataProvider provideCheckActivationConditionsReturnsFalseIfNoColonyData
      */
-    public function testCheckActivationConditions(bool $hasColony, bool $expectedResult, ?string $expectedReason): void
+    public function testCheckActivationConditions(bool $hasColony, bool $isNpc, bool $expectedResult, ?string $expectedReason): void
     {
         $this->ship->shouldReceive('getUser->hasColony')
             ->withNoArgs()
             ->andReturn($hasColony);
+        $this->ship->shouldReceive('getUser->isNpc')
+            ->withNoArgs()
+            ->andReturn($isNpc);
 
         $reason = null;
 
@@ -200,7 +204,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->with()
             ->once()
-            ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
+            ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();
@@ -245,7 +249,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->with()
             ->once()
-            ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
+            ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();

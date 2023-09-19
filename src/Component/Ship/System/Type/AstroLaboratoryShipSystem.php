@@ -52,7 +52,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
@@ -62,7 +62,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
     }

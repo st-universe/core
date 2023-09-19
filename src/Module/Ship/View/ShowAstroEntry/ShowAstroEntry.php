@@ -10,6 +10,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowAstroEntry implements ViewControllerInterface
 {
@@ -19,12 +21,20 @@ final class ShowAstroEntry implements ViewControllerInterface
 
     private AstroEntryRepositoryInterface $astroEntryRepository;
 
+    private MapRepositoryInterface $mapRepository;
+
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        AstroEntryRepositoryInterface $astroEntryRepository
+        AstroEntryRepositoryInterface $astroEntryRepository,
+        MapRepositoryInterface $mapRepository,
+        StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->astroEntryRepository = $astroEntryRepository;
+        $this->mapRepository = $mapRepository;
+        $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,12 +46,23 @@ final class ShowAstroEntry implements ViewControllerInterface
             $userId
         );
 
-        $system = $ship->getSystem() ?? $ship->isOverSystem();
-        $entry = $this->astroEntryRepository->getByUserAndSystem($ship->getUser()->getId(), $system->getId());
+        $astroEntry = $this->astroEntryRepository->getByShipLocation($ship);
+        if ($astroEntry === null) {
+            return;
+        }
 
         $game->setPageTitle("anzufliegende Messpunkte");
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/astroentry');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/astroentries');
 
-        $game->setTemplateVar('ENTRY', $entry);
+        $system = $ship->getSystem() ?? $ship->isOverSystem();
+        $repository = $system !== null ? $this->starSystemMapRepository : $this->mapRepository;
+
+        $game->setTemplateVar(
+            'FIELDS',
+            array_map(
+                fn (int $id) => $repository->find($id),
+                unserialize($astroEntry->getFieldIds())
+            )
+        );
     }
 }

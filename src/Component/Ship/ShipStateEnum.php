@@ -8,7 +8,7 @@ final class ShipStateEnum
 {
     public const SHIP_STATE_NONE = 0;
     public const SHIP_STATE_REPAIR_PASSIVE = 1;
-    public const SHIP_STATE_SYSTEM_MAPPING = 2;
+    public const SHIP_STATE_ASTRO_FINALIZING = 2;
     public const SHIP_STATE_UNDER_CONSTRUCTION = 3;
     public const SHIP_STATE_REPAIR_ACTIVE = 4;
     public const SHIP_STATE_UNDER_SCRAPPING = 5;
@@ -22,8 +22,8 @@ final class ShipStateEnum
                 return _("0_none");
             case self::SHIP_STATE_REPAIR_PASSIVE:
                 return _("1_repair_passive");
-            case self::SHIP_STATE_SYSTEM_MAPPING:
-                return _("2_system_mapping");
+            case self::SHIP_STATE_ASTRO_FINALIZING:
+                return _("2_astro_finalizing");
             case self::SHIP_STATE_UNDER_CONSTRUCTION:
                 return _("3_under_construction");
             case self::SHIP_STATE_REPAIR_ACTIVE:

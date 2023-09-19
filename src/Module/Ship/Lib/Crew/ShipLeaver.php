@@ -77,7 +77,7 @@ final class ShipLeaver implements ShipLeaverInterface
             $this->undockShips($ship);
         }
 
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 

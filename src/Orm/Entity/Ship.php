@@ -1260,6 +1260,16 @@ class Ship implements ShipInterface
         return $this->map;
     }
 
+    public function getMapRegion(): ?MapRegionInterface
+    {
+        $map = $this->getMap();
+        if ($map === null) {
+            return null;
+        }
+
+        return $map->getMapRegion();
+    }
+
     public function updateLocation(?MapInterface $map, ?StarSystemMapInterface $starsystem_map): ShipInterface
     {
         $this->setMap($map);
@@ -1518,7 +1528,7 @@ class Ship implements ShipInterface
         return $icon;
     }
 
-    public function getCurrentMapField()
+    public function getCurrentMapField(): StarSystemMapInterface|MapInterface
     {
         return $this->getStarsystemMap() ?? $this->getMap();
     }
