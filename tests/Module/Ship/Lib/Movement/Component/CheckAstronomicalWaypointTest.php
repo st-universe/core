@@ -55,7 +55,7 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->andReturn(true);
 
         $this->astroEntryRepository->shouldReceive('getByShipLocation')
-            ->with($ship)
+            ->with($ship, false)
             ->once()
             ->andReturn(null);
 
@@ -112,7 +112,7 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->once();
 
         $this->astroEntryRepository->shouldReceive('getByShipLocation')
-            ->with($ship)
+            ->with($ship, false)
             ->once()
             ->andReturn($astroEntry);
         $this->astroEntryRepository->shouldReceive('save')
@@ -173,7 +173,7 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->once();
 
         $this->astroEntryRepository->shouldReceive('getByShipLocation')
-            ->with($ship)
+            ->with($ship, false)
             ->once()
             ->andReturn($astroEntry);
         $this->astroEntryRepository->shouldReceive('save')
@@ -236,7 +236,7 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->once();
 
         $this->astroEntryRepository->shouldReceive('getByShipLocation')
-            ->with($ship)
+            ->with($ship, false)
             ->once()
             ->andReturn($astroEntry);
         $this->astroEntryRepository->shouldReceive('save')
