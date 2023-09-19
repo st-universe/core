@@ -308,9 +308,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->createNativeQuery(
                 'SELECT m.id FROM stu_map m
                 JOIN stu_map_ftypes mf
-                WITH m.field_id = mf.id
+                ON m.field_id = mf.id
                 WHERE m.region_id = :regionId
-                AND mf.passable IS true',
+                AND mf.passable IS true
+                ORDER BY RANDOM()',
                 $rsm
             )
             ->setParameters([
@@ -318,6 +319,9 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ])
             ->getResult();
 
-        return array_map(fn (array $data) => $data['id'], $mapIdResultSet);
+        $amount = (int)ceil(count($mapIdResultSet) * $maxPercentage / 100);
+        $subset = array_slice($mapIdResultSet, 0, $amount);
+
+        return array_map(fn (array $data) => $data['id'], $subset);
     }
 }
