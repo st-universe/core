@@ -110,10 +110,6 @@ class CheckAstronomicalWaypointTest extends StuTestCase
         $astroEntry->shouldReceive('setFieldIds')
             ->with("a:4:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;}")
             ->once();
-        $astroEntry->shouldReceive('isMeasured')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $this->astroEntryRepository->shouldReceive('getByShipLocation')
             ->with($ship)
@@ -172,10 +168,6 @@ class CheckAstronomicalWaypointTest extends StuTestCase
         $astroEntry->shouldReceive('setFieldIds')
             ->with("")
             ->once();
-        $astroEntry->shouldReceive('isMeasured')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $astroEntry->shouldReceive('setState')
             ->with(AstronomicalMappingEnum::MEASURED)
             ->once();

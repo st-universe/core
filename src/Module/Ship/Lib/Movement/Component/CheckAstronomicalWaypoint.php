@@ -43,7 +43,7 @@ class CheckAstronomicalWaypoint implements CheckAstronomicalWaypointInterface
             if (is_integer($key)) {
                 unset($idsToMap[$key]);
 
-                if ($astroEntry->isMeasured()) {
+                if (empty($idsToMap)) {
                     $astroEntry->setFieldIds('');
                     $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
                     $informations->addInformation(sprintf(_('Die %s hat alle Kartographierungs-Messpunkte erreicht'), $ship->getName()));
