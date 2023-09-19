@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -35,46 +34,46 @@ class KnCommentArchiv implements KnCommentArchivInterface
     private int $id;
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
      */
-    private ?string $version = '';
+    private string $version = '';
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      * 
      */
-    private ?int $former_id = 0;
+    private int $former_id = 0;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $post_id = 0;
+    private int $post_id = 0;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $user_id = 0;
+    private int $user_id = 0;
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
      */
-    private ?string $username = '';
+    private string $username = '';
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
      */
-    private ?string $text = '';
+    private string $text = '';
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="integer", nullable=true)

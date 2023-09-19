@@ -34,7 +34,7 @@ interface KnPostArchivInterface
 
     public function setdelUserId(?int $userid): KnPostArchivInterface;
 
-    public function getEditDate(): int;
+    public function getEditDate(): ?int;
 
     public function setEditDate(int $editDate): KnPostArchivInterface;
 

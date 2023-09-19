@@ -24,7 +24,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
 
     public function prototype(): RpgPlotArchivInterface
     {
-        return new RpgPlotArchivInterface();
+        return new RpgPlotArchiv();
     }
 
     public function save(RpgPlotArchivInterface $rpgPlot): void

@@ -44,46 +44,46 @@ class KnPostArchiv implements KnPostArchivInterface
     private int $id;
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
      */
-    private ?string $version = '';
+    private string $version = '';
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $former_id;
-
-    /**
-     * @Column(type="string", nullable=true)
-     *
-     */
-    private ?string $titel = '';
-
-    /**
-     * @Column(type="text", nullable=true)
-     *
-     */
-    private ?string $text = '';
-
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
-    private ?int $date = 0;
+    private int $former_id;
 
     /**
      * @Column(type="string", nullable=true)
      *
      */
-    private ?string $username = '';
+    private ?string $titel;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="text")
      *
      */
-    private ?int $user_id = 0;
+    private string $text = '';
+
+    /**
+     * @Column(type="integer")
+     *
+     */
+    private int $date = 0;
+
+    /**
+     * @Column(type="string")
+     *
+     */
+    private string $username = '';
+
+    /**
+     * @Column(type="integer")
+     *
+     */
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -210,7 +210,7 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
-    public function getEditDate(): int
+    public function getEditDate(): ?int
     {
         return $this->lastedit;
     }

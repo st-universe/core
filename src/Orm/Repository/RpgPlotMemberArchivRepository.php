@@ -23,7 +23,7 @@ final class RpgPlotMemberArchivRepository extends EntityRepository implements Rp
 
     public function prototype(): RpgPlotMemberArchivInterface
     {
-        return new RpgPlotMemberArchivInterface();
+        return new RpgPlotMemberArchiv();
     }
 
     public function save(RpgPlotMemberArchivInterface $rpgPlotMember): void
