@@ -264,6 +264,27 @@ class Module implements ModuleInterface
         return $this->crew;
     }
 
+    public function getCrewByFactionAndRumpLvl(?int $factionId, int $rumpModuleLvl = null): int
+    {
+        $result = $this->getCrew();
+
+        if (
+            $this->getFactionId() !== null
+            && $this->getFactionId() !== $factionId
+        ) {
+            $result += 1;
+        }
+
+        if (
+            $rumpModuleLvl !== null
+            && $this->getLevel() > $rumpModuleLvl
+        ) {
+            $result += 1;
+        }
+
+        return $result;
+    }
+
     public function setCrew(int $crew): ModuleInterface
     {
         $this->crew = $crew;
