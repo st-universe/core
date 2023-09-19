@@ -24,7 +24,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
         $ship->setAstroStartTurn(null);
 
-        $entry = $this->astroEntryRepository->getByShipLocation($ship);
+        $entry = $this->astroEntryRepository->getByShipLocation($ship, false);
 
         $entry->setState(AstronomicalMappingEnum::MEASURED);
         $entry->setAstroStartTurn(null);
@@ -36,7 +36,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
         $ship->setAstroStartTurn(null);
 
-        $entry = $this->astroEntryRepository->getByShipLocation($ship);
+        $entry = $this->astroEntryRepository->getByShipLocation($ship, false);
 
         $entry->setState(AstronomicalMappingEnum::DONE);
         $entry->setAstroStartTurn(null);

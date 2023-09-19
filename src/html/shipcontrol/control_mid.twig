@@ -1,4 +1,5 @@
-{% macro control_mid(wrapper, astroState, isTachyonActive, starSystemEntryTal, currentColony, canColonize) %}
+{% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
+canColonize) %}
 
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
@@ -268,7 +269,8 @@
                 <img src="/assets/buttons/lupe1.png" name="sectorScanButton" />
                 <span>Sektor {{ ship.getPosX }}|{{ ship.getPosY }} scannen</span>
             </a>
-            {{ _self.astroStates(ship, astroState) }}
+            {{ _self.astroStates(ship, astroStateSystem) }}
+            {{ _self.astroStates(ship, astroStateRegion) }}
             {% if isTachyonActive %}
             <br />
             {% if ship.getTachyonState %}
@@ -515,36 +517,27 @@
 
 {% macro astroStates(ship, astroStateWrapper) %}
 {% set shipId = ship.getId %}
-{% set starSystem = ship.getSystem %}
+{% set target = astroStateWrapper.isSystem ? ship.getSystem : ship.getMapRegion %}
 {% set shipAstroState = ship.getAstroState %}
-{% set region = ship.getMapRegion %}
 {% if astroStateWrapper.isPlannable %}
 <br />
-{% if shipAstroState %}
-{% if starSystem %}
+{% if shipAstroState and target %}
 <a href="?B_PLAN_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
     onmouseout="cp('astroButton','buttons/map1')">
     <img src="/assets/buttons/map1.png" name="astroButton" />
-    <span>System kartographieren</span>
+    <span>{{ astroStateWrapper.getType }} kartographieren</span>
 </a>
 {% endif %}
-{% if region %}
-<a href="?B_PLAN_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
-    onmouseout="cp('astroButton','buttons/map1')">
-    <img src="/assets/buttons/map1.png" name="astroButton" />
-    <span>Region kartographieren</span>
-</a>
-{% endif %}
-{% endif %}
-{% if ship.isOverSystem or not shipAstroState %}
+{% if astroStateWrapper.isSystem and (ship.isOverSystem or not shipAstroState) %}
 <img src="/assets/buttons/map1.png" />
-<span>System nicht kartographiert</span>
+<span>{{ astroStateWrapper.getType }} nicht kartographiert</span>
 {% endif %}
 {% elseif astroStateWrapper.isPlanned %}
 <br />
 {% if ship.getAstroState %}
-<a href="javascript:void(0);" onclick="showAstroEntryWindow()" onmouseover="cp('astroButton','buttons/map1')"
-    onmouseout="cp('astroButton','buttons/map2')">
+{% set isSystem = astroStateWrapper.isSystem ? 1 : 0 %}
+<a href="javascript:void(0);" onclick="showAstroEntryWindow({{ isSystem }})"
+    onmouseover="cp('astroButton','buttons/map1')" onmouseout="cp('astroButton','buttons/map2')">
     <img src="/assets/buttons/map2.png" name="astroButton" />
     <span>Messpunkte ansehen</span>
 </a>
@@ -554,14 +547,14 @@
 {% endif %}
 {% elseif astroStateWrapper.isMeasured %}
 <br />
-{% if shipAstroState and (starSystem or region) %}
+{% if shipAstroState and target %}
 <a href="?B_START_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
     onmouseout="cp('astroButton','buttons/map1')">
     <img src="/assets/buttons/map1.png" name="astroButton" />
     <span>Kartographierung finalisieren</span>
 </a>
 {% endif %}
-{% if ship.isOverSystem or not shipAstroState %}
+{% if astroStateWrapper.isSystem and (ship.isOverSystem or not shipAstroState) %}
 <img src="/assets/buttons/map1.png" />
 <span>Kartographierung ist geplant</span>
 {% endif %}
@@ -579,11 +572,7 @@
 {% elseif astroStateWrapper.isDone %}
 <br />
 <img src="/assets/buttons/map1.png" />
-{% if starSystem %}
-<span>System ist kartographiert</span>
-{% else %}
-<span>Region ist kartographiert</span>
-{% endif %}
+<span>{{ astroStateWrapper.getType }} ist kartographiert</span>
 {% endif %}
 {% endmacro %}
 

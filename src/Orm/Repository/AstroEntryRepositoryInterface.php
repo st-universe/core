@@ -16,7 +16,7 @@ interface AstroEntryRepositoryInterface extends ObjectRepository
 {
     public function prototype(): AstronomicalEntryInterface;
 
-    public function getByShipLocation(ShipInterface $ship): ?AstronomicalEntryInterface;
+    public function getByShipLocation(ShipInterface $ship, bool $showOverSystem = true): ?AstronomicalEntryInterface;
 
     public function save(AstronomicalEntryInterface $entry): void;
 

@@ -19,6 +19,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
@@ -191,7 +192,8 @@ final class ShowShip implements ViewControllerInterface
 
         $this->nbsUtility->setNbsTemplateVars($ship, $game, $this->session, $tachyonActive);
 
-        $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
+        $game->setTemplateVar('ASTRO_STATE_SYSTEM', $this->getAstroState($ship, $game, true));
+        $game->setTemplateVar('ASTRO_STATE_REGION', $this->getAstroState($ship, $game, false));
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CAN_COLONIZE', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
@@ -280,9 +282,13 @@ final class ShowShip implements ViewControllerInterface
         return $ship->getStarsystemMap()->getColony();
     }
 
-    private function getAstroState(ShipInterface $ship, GameControllerInterface $game): AstroStateWrapper
+    private function getAstroState(ShipInterface $ship, GameControllerInterface $game, bool $isSystem): AstroStateWrapper
     {
-        $databaseEntry = $this->getDatabaseEntryForShipLocation($ship);
+        //$this->loggerUtil->init('SS', LoggerEnum::LEVEL_ERROR);
+
+        $databaseEntry = $this->getDatabaseEntryForShipLocation($ship, $isSystem);
+
+        $this->loggerUtil->log(sprintf('databaseEntry: %d', $databaseEntry !== null ? $databaseEntry->getId() : 0));
 
         $astroEntry = null;
 
@@ -291,7 +297,9 @@ final class ShowShip implements ViewControllerInterface
         } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $databaseEntry->getId())) {
             $state = AstronomicalMappingEnum::DONE;
         } else {
-            $astroEntry = $this->astroEntryRepository->getByShipLocation($ship);
+            $astroEntry = $this->astroEntryRepository->getByShipLocation($ship, $isSystem);
+
+            $this->loggerUtil->log(sprintf('isSystem: %b, astroEntry?: %b', $isSystem, $astroEntry !== null));
 
             $state = $astroEntry === null ? AstronomicalMappingEnum::PLANNABLE : $astroEntry->getState();
         }
@@ -299,18 +307,28 @@ final class ShowShip implements ViewControllerInterface
         if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
             $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
         }
-        return new AstroStateWrapper($state, $turnsLeft);
+
+        $wrapper = new AstroStateWrapper($state, $turnsLeft, $isSystem);
+
+        $this->loggerUtil->log(sprintf('type: %s', $wrapper->getType()));
+
+        return $wrapper;
     }
 
-    private function getDatabaseEntryForShipLocation(ShipInterface $ship): ?DatabaseEntryInterface
+    private function getDatabaseEntryForShipLocation(ShipInterface $ship, bool $isSystem): ?DatabaseEntryInterface
     {
-        $system = $ship->getSystem() ?? $ship->isOverSystem();
-        if ($system !== null) {
-            return $system->getDatabaseEntry();
+        if ($isSystem) {
+            $system = $ship->getSystem() ?? $ship->isOverSystem();
+            if ($system !== null) {
+                return $system->getDatabaseEntry();
+            }
+
+            return null;
         }
 
         $mapRegion = $ship->getMapRegion();
         if ($mapRegion !== null) {
+            $this->loggerUtil->log('mapREgion found');
             return $mapRegion->getDatabaseEntry();
         }
 

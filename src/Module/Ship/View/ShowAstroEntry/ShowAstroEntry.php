@@ -46,7 +46,9 @@ final class ShowAstroEntry implements ViewControllerInterface
             $userId
         );
 
-        $astroEntry = $this->astroEntryRepository->getByShipLocation($ship);
+        $isRegion = request::getIntFatal('isRegion');
+
+        $astroEntry = $this->astroEntryRepository->getByShipLocation($ship, !$isRegion);
         if ($astroEntry === null) {
             return;
         }

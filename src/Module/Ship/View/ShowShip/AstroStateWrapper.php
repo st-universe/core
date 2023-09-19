@@ -10,10 +10,13 @@ class AstroStateWrapper
 
     private ?int $turnsLeft;
 
-    public function __construct(int $state, ?int $turnsLeft)
+    private bool $isSystem;
+
+    public function __construct(int $state, ?int $turnsLeft, bool $isSystem)
     {
         $this->state = $state;
         $this->turnsLeft = $turnsLeft;
+        $this->isSystem = $isSystem;
     }
 
     public function isPlannable(): bool
@@ -39,5 +42,15 @@ class AstroStateWrapper
     public function getTurnsLeft(): ?int
     {
         return $this->turnsLeft;
+    }
+
+    public function isSystem(): bool
+    {
+        return $this->isSystem;
+    }
+
+    public function getType(): string
+    {
+        return $this->isSystem() ? 'System' : 'Region';
     }
 }

@@ -47,7 +47,7 @@ final class StartAstroMapping implements ActionControllerInterface
         );
         $message = '';
         $ship = $wrapper->get();
-        $entry = $this->astroEntryRepository->getByShipLocation($ship);
+        $entry = $this->astroEntryRepository->getByShipLocation($ship, false);
         if ($entry === null || $entry->getState() !== AstronomicalMappingEnum::MEASURED) {
             return;
         }
