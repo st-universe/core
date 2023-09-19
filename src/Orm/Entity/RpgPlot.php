@@ -78,7 +78,7 @@ class RpgPlot implements RpgPlotInterface
      *
      * @OneToMany(targetEntity="RpgPlotMember", mappedBy="rpgPlot", indexBy="user_id")
      */
-    private ArrayCollection $members;
+    private Collection $members;
 
     /**
      *
