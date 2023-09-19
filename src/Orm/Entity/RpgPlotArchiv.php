@@ -40,40 +40,40 @@ class RpgPlotArchiv implements RpgPlotArchivInterface
     private int $id;
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
      */
-    private ?string $version = '';
+    private string $version = '';
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      * 
      */
-    private ?int $former_id = 0;
+    private int $former_id = 0;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $user_id = 0;
+    private int $user_id = 0;
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
      */
-    private ?string $title = '';
+    private string $title = '';
 
     /**
-     * @Column(type="text", nullable=true)
+     * @Column(type="text")
      *
      */
-    private ?string $description = '';
+    private string $description = '';
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $start_date = 0;
+    private int $start_date = 0;
 
     /**
      * @Column(type="integer", nullable=true)

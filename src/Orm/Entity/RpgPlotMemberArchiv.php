@@ -31,28 +31,28 @@ class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
     private int $id;
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
      */
-    private ?string $version = '';
+    private string $version = '';
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      * 
      */
-    private ?int $former_id = 0;
+    private int $former_id = 0;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $plot_id = 0;
+    private int $plot_id = 0;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $user_id = 0;
+    private int $user_id = 0;
 
     /**
      *
