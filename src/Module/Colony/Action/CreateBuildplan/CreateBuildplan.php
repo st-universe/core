@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\CreateBuildplan;
 use Doctrine\ORM\EntityManagerInterface;
 
 use request;
+use RuntimeException;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Exception\AccessViolation;
@@ -15,7 +16,6 @@ use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
@@ -129,15 +129,9 @@ final class CreateBuildplan implements ActionControllerInterface
                         continue;
                     }
 
-                    if ($specialMod->getFactionId() !== null) {
-                        if ($game->getUser()->getFactionId() !== $specialMod->getFactionId()) {
-                            $crew = $specialMod->getCrew() + 1;
-                        }
-                    } else {
-                        $crew = $specialMod->getCrew();
-                    }
-
+                    $crew = $specialMod->getCrewByFactionAndRumpLvl($user->getFactionId(), $rump->getModuleLevel());
                     $crew_usage += $crew;
+
                     $modules[$id] = $specialMod;
                     $sigmod[$id] = $id;
                     $specialCount++;
@@ -157,20 +151,14 @@ final class CreateBuildplan implements ActionControllerInterface
             }
             $mod = null;
             if (current($module) > 0) {
-                /** @var ModuleInterface $mod */
-                $mod = $this->moduleRepository->find((int) current($module));
-                if ($mod->getFactionId() !== null) {
-                    if ($game->getUser()->getFactionId() !== $mod->getFactionId()) {
-                        $crew = $mod->getCrew() + 1;
-                    }
-                } else {
-                    $crew = $mod->getCrew();
+                $moduleId = (int) current($module);
+                $mod = $this->moduleRepository->find($moduleId);
+                if ($mod === null) {
+                    throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                 }
-                if ($mod->getLevel() > $rump->getModuleLevel()) {
-                    $crew_usage += $crew + 1;
-                } else {
-                    $crew_usage += $crew;
-                }
+
+                $crew = $mod->getCrewByFactionAndRumpLvl($user->getFactionId(), $rump->getModuleLevel());
+                $crew_usage += $crew;
             } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
                 $this->exitOnError($game);
                 return;

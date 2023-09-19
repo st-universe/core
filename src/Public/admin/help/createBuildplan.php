@@ -9,7 +9,6 @@ use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -73,6 +72,9 @@ Init::run(function (ContainerInterface $dic): void {
         $moduleSpecialList = request::postArray('special_mod');
         if (count($moduleList) >= $mod_level->getMandatoryModulesCount()) {
             $user = $userRepo->find($userId);
+            if ($user === null) {
+                throw new RuntimeException('userId %d does not exist', $userId);
+            }
 
             $signature = ShipBuildplan::createSignature(array_merge($moduleList, $moduleSpecialList));
             $plan = $buildplanRepo->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
@@ -97,19 +99,12 @@ Init::run(function (ContainerInterface $dic): void {
 
                 foreach ($moduleList as $moduleId) {
                     $module = $moduleRepo->find($moduleId);
-                    if ($module->getFactionId() !== null) {
-                        if ($user->getFactionId() !== $module->getFactionId()) {
-                            $crew = $module->getCrew() + 1;
-                        }
-                    } else {
-                        $crew = $module->getCrew();
+                    if ($module === null) {
+                        throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                     }
 
-                    if ($module->getLevel() > $rump->getModuleLevel()) {
-                        $crew_usage += $crew + 1;
-                    } else {
-                        $crew_usage += $crew;
-                    }
+                    $crew = $module->getCrewByFactionAndRumpLvl($user->getFactionId(), $rump->getModuleLevel());
+                    $crew_usage += $crew;
 
                     $mod = $buildplanModuleRepo->prototype();
                     $mod->setModuleType($module->getType());
@@ -123,13 +118,11 @@ Init::run(function (ContainerInterface $dic): void {
 
                 foreach ($moduleSpecialList as $moduleId) {
                     $module = $moduleRepo->find($moduleId);
-                    if ($module->getFactionId() !== null) {
-                        if ($user->getFactionId() !== $module->getFactionId()) {
-                            $crew = $module->getCrew() + 1;
-                        }
-                    } else {
-                        $crew = $module->getCrew();
+                    if ($module === null) {
+                        throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                     }
+
+                    $crew = $module->getCrewByFactionAndRumpLvl($user->getFactionId());
                     $crew_usage += $crew;
 
                     $mod = $buildplanModuleRepo->prototype();

@@ -159,16 +159,11 @@ final class BuildShip implements ActionControllerInterface
                     foreach ($module as $id) {
                         $specialMod = $this->moduleRepository->find((int) $id);
                         if ($specialMod === null) {
-                            throw new RuntimeException(sprintf('moduleId %d does noe exist', $id));
+                            throw new RuntimeException(sprintf('moduleId %d does not exist', $id));
                         }
 
-                        if ($specialMod->getFactionId() !== null) {
-                            if ($game->getUser()->getFactionId() !== $specialMod->getFactionId()) {
-                                $crew_usage += $specialMod->getCrew() + 1;
-                            }
-                        } else {
-                            $crew_usage += $specialMod->getCrew();
-                        }
+                        $crew = $specialMod->getCrewByFactionAndRumpLvl($game->getUser()->getFactionId());
+                        $crew_usage += $crew;
                         $modules[$id] = $specialMod;
                         $sigmod[$id] = $id;
                         $specialCount++;
@@ -185,20 +180,17 @@ final class BuildShip implements ActionControllerInterface
                     continue;
                 }
                 if (current($module) > 0) {
-                    /** @var ModuleInterface $mod */
-                    $mod = $this->moduleRepository->find((int) current($module));
-                    if ($mod->getFactionId() !== null) {
-                        if ($game->getUser()->getFactionId() !== $mod->getFactionId()) {
-                            $crew = $mod->getCrew() + 1;
-                        }
-                    } else {
-                        $crew = $mod->getCrew();
+                    $moduleId = (int) current($module);
+                    $mod = $this->moduleRepository->find($moduleId);
+                    if ($mod === null) {
+                        throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                     }
-                    if ($mod->getLevel() > $rump->getModuleLevel()) {
-                        $crew_usage += $crew + 1;
-                    } else {
-                        $crew_usage += $crew;
-                    }
+
+                    $crew = $mod->getCrewByFactionAndRumpLvl(
+                        $game->getUser()->getFactionId(),
+                        $rump->getModuleLevel()
+                    );
+                    $crew_usage += $crew;
                 } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
                     return;
                 }

@@ -2980,22 +2980,12 @@ parameters:
 			path: src/Public/admin/help/createBuildplan.php
 
 		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 3
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
 			count: 3
 			path: src/Public/admin/help/createBuildplan.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
-			message: "#^Cannot call method getLevel\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
 			count: 1
 			path: src/Public/admin/help/createBuildplan.php
 
@@ -3020,27 +3010,7 @@ parameters:
 			path: src/Public/admin/help/createBuildplan.php
 
 		-
-			message: "#^Cannot call method getSpecials\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
-			message: "#^Cannot call method getType\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
-			count: 2
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
-			message: "#^Parameter \\#1 \\$module of method Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\:\\:setModule\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface, Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null given\\.$#"
-			count: 2
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
 			message: "#^Parameter \\#1 \\$shipRump of method Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\:\\:setRump\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
-			count: 1
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Public/admin/help/createBuildplan.php
 
