@@ -111,6 +111,12 @@ class Module implements ModuleInterface
     private int $ecost = 0;
 
     /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $faction_id = null;
+
+    /**
      * @var ResearchInterface
      *
      * @ManyToOne(targetEntity="Research")
@@ -124,6 +130,14 @@ class Module implements ModuleInterface
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private CommodityInterface $commodity;
+
+    /**
+     * @var FactionInterface
+     *
+     * @ManyToOne(targetEntity="Faction")
+     * @JoinColumn(name="faction_id", referencedColumnName="id")
+     */
+    private $faction;
 
     /**
      * @var ShipRumpRoleInterface
@@ -334,11 +348,23 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    public function getFactionId(): ?int
+    {
+        return $this->faction_id;
+    }
+
+    public function setFactionId(int $factionId): ?ModuleInterface
+    {
+        $this->faction_id = $factionId;
+
+        return $this;
+    }
+
     public function hasSpecial($special_id): bool
     {
         if ($this->specialAbilities === null) {
             $this->specialAbilities = array_map(
-                fn(ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId(),
+                fn (ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId(),
                 $this->getSpecials()->toArray()
             );
         }
@@ -361,7 +387,7 @@ class Module implements ModuleInterface
 
         usort(
             $array,
-            fn(ModuleCostInterface $a, ModuleCostInterface $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
+            fn (ModuleCostInterface $a, ModuleCostInterface $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
         );
 
         return array_values($array);
@@ -385,5 +411,10 @@ class Module implements ModuleInterface
     public function getWeaponShield(): Collection
     {
         return $this->weaponShield;
+    }
+
+    public function getFaction(): ?FactionInterface
+    {
+        return $this->faction;
     }
 }
