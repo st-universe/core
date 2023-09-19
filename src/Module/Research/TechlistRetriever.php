@@ -37,10 +37,10 @@ final class TechlistRetriever implements TechlistRetrieverInterface
     public function getResearchList(UserInterface $user): array
     {
         $finished_list = array_map(
-            fn(ResearchedInterface $researched): int => $researched->getResearch()->getId(),
+            fn (ResearchedInterface $researched): int => $researched->getResearch()->getId(),
             array_filter(
                 $this->getFinishedResearchList($user),
-                fn(ResearchedInterface $researched): bool => $researched->getFinished() > 0
+                fn (ResearchedInterface $researched): bool => $researched->getFinished() > 0
             )
         );
 
@@ -61,42 +61,43 @@ final class TechlistRetriever implements TechlistRetrieverInterface
             }
 
             $key = $obj->getId();
+
+            // excludelogic
             if (isset($excludes[$key])) {
                 foreach ($excludes[$key] as $exclude) {
-                    if (
-                        in_array($exclude->getResearchId(), $finished_list)
-                    ) {
+                    if (in_array($exclude->getResearchId(), $finished_list)) {
                         continue 2;
                     }
                 }
             }
-            if (!isset($dependencies[$key])) {
-                $list_result[$key] = $obj;
-                continue;
-            }
-            $grouped_list = [];
-            foreach ($dependencies[$key] as $dependency) {
-                if (!isset($grouped_list[$dependency->getMode()])) {
-                    $grouped_list[$dependency->getMode()] = [];
-                }
-                if ($dependency->getMode() != ResearchEnum::RESEARCH_MODE_EXCLUDE) {
-                    $grouped_list[$dependency->getMode()][] = $dependency;
-                }
-            }
-            foreach ($grouped_list as $group) {
-                $found = false;
-                foreach ($group as $dependency) {
-                    if (in_array($dependency->getDependsOn(), $finished_list)) {
-                        $found = true;
+
+            // dependencie logic
+            if (isset($dependencies[$key])) {
+                // check for AND condition
+                foreach ($dependencies[$key]['AND'] as $and_condition) {
+                    if (!in_array($and_condition, $finished_list)) {
+                        continue 2;
                     }
                 }
-                if (!$found) {
-                    continue 2;
+
+                // check for OR condition
+                if (!empty($dependencies[$key]['OR'])) {
+                    $or_condition_met = false;
+                    foreach ($dependencies[$key]['OR'] as $or_condition) {
+                        if (in_array($or_condition, $finished_list)) {
+                            $or_condition_met = true;
+                            break;
+                        }
+                    }
+                    if (!$or_condition_met) {
+                        continue;
+                    }
                 }
             }
 
             $list_result[$key] = $obj;
         }
+
 
         foreach ($this->factionRepository->findAll() as $faction) {
             $startResearch = $faction->getStartResearch();
@@ -121,10 +122,20 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
         foreach ($dependencies_result as $dependency) {
             $research_id = $dependency->getResearchId();
-            if (array_key_exists($research_id, $dependencies) === false) {
-                $dependencies[$research_id] = [];
+            $mode = $dependency->getMode();
+
+            if (!isset($dependencies[$research_id])) {
+                $dependencies[$research_id] = [
+                    'AND' => [],
+                    'OR' => []
+                ];
             }
-            $dependencies[$research_id][] = $dependency;
+
+            if ($mode === ResearchEnum::RESEARCH_MODE_REQUIRE) {
+                $dependencies[$research_id]['AND'][] = $dependency->getDependsOn();
+            } elseif ($mode === ResearchEnum::RESEARCH_MODE_REQUIRE_SOME) {
+                $dependencies[$research_id]['OR'][] = $dependency->getDependsOn();
+            }
         }
 
         return $dependencies;
