@@ -367,8 +367,6 @@ interface ShipInterface
 
     public function getCurrentMapField(): StarSystemMapInterface|MapInterface;
 
-    public function getCurrentMapFieldLayer(): string;
-
     public function getShieldRegenerationRate(): int;
 
     public function canIntercept(): bool;

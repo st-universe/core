@@ -454,8 +454,9 @@ class Ship implements ShipInterface
 
     public function getLayer(): ?LayerInterface
     {
-        if ($this->getMap() !== null) {
-            return $this->getMap()->getLayer();
+        $map = $this->getMap();
+        if ($map !== null) {
+            return $map->getLayer();
         }
 
         return $this->getSystem()->getLayer();
@@ -1296,19 +1297,20 @@ class Ship implements ShipInterface
         return $this->starsystem_map;
     }
 
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface
+    public function setStarsystemMap(?StarSystemMapInterface $systemMap): ShipInterface
     {
-        $this->starsystem_map = $starsystem_map;
+        $this->starsystem_map = $systemMap;
 
-        if ($starsystem_map !== null) {
-            $system = $starsystem_map->getSystem();
-            if ($system->isWormhole()) {
+        if ($systemMap !== null) {
+            $system = $systemMap->getSystem();
+            $layer = $system->getLayer();
+            if ($layer === null) {
                 $this->setLayerId(MapEnum::LAYER_ID_WORMHOLES);
             } else {
-                $this->setLayerId($system->getMapField()->getLayer()->getId());
+                $this->setLayerId($layer->getId());
             }
-            $this->setCx($starsystem_map->getSystem()->getCx());
-            $this->setCy($starsystem_map->getSystem()->getCy());
+            $this->setCx($systemMap->getSystem()->getCx());
+            $this->setCy($systemMap->getSystem()->getCy());
         }
 
         return $this;
@@ -1346,11 +1348,12 @@ class Ship implements ShipInterface
 
     public function getSectorId(): ?int
     {
-        if ($this->getLayer() === null) {
+        $layer = $this->getLayer();
+        if ($layer === null) {
             return null;
         }
 
-        return $this->getLayer()->getSectorId($this->getMapCX(), $this->getMapCY());
+        return $layer->getSectorId($this->getMapCX(), $this->getMapCY());
     }
 
     public function getBuildplan(): ?ShipBuildplanInterface
@@ -1531,11 +1534,6 @@ class Ship implements ShipInterface
     public function getCurrentMapField(): StarSystemMapInterface|MapInterface
     {
         return $this->getStarsystemMap() ?? $this->getMap();
-    }
-
-    public function getCurrentMapFieldLayer(): string
-    {
-        return $this->getStarsystemMap() !== null ? '' : (string) $this->getMap()->getLayer()->getId();
     }
 
     private function getShieldRegenerationPercentage(): int
