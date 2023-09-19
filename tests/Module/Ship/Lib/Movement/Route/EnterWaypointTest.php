@@ -7,9 +7,12 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Mockery\MockInterface;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Ship\Lib\Movement\Component\CheckAstronomicalWaypoint;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreatorInterface;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\WormholeEntryInterface;
 use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
@@ -26,8 +29,8 @@ class EnterWaypointTest extends StuTestCase
     /** @var MockInterface&WormholeEntryRepositoryInterface */
     private MockInterface $wormholeEntryRepository;
 
-    /** @var MockInterface&CheckAstronomicalWaypointsInterface */
-    private MockInterface $checkAstronomicalWaypoints;
+    /** @var MockInterface&CheckAstronomicalWaypointInterface */
+    private MockInterface $checkAstronomicalWaypoint;
 
     /** @var MockInterface&StuTime */
     private MockInterface $stuTime;
@@ -39,14 +42,14 @@ class EnterWaypointTest extends StuTestCase
         $this->flightSignatureCreator = $this->mock(FlightSignatureCreatorInterface::class);
         $this->updateFlightDirection = $this->mock(UpdateFlightDirectionInterface::class);
         $this->wormholeEntryRepository = $this->mock(WormholeEntryRepositoryInterface::class);
-        $this->checkAstronomicalWaypoints = $this->mock(CheckAstronomicalWaypointsInterface::class);
+        $this->checkAstronomicalWaypoint = $this->mock(CheckAstronomicalWaypoint::class);
         $this->stuTime = $this->mock(StuTime::class);
 
         $this->subject = new EnterWaypoint(
             $this->flightSignatureCreator,
             $this->updateFlightDirection,
             $this->wormholeEntryRepository,
-            $this->checkAstronomicalWaypoints,
+            $this->checkAstronomicalWaypoint,
             $this->stuTime
         );
     }
@@ -65,6 +68,14 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('updateLocation')
             ->with($waypoint, null)
             ->once();
+        $ship->shouldReceive('getSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $ship->shouldReceive('getMapRegion')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(MapRegionInterface::class));
 
         $oldWaypoint->shouldReceive('getSystem->isWormhole')
             ->withNoArgs()
@@ -73,6 +84,10 @@ class EnterWaypointTest extends StuTestCase
 
         $this->updateFlightDirection->shouldReceive('updateWhenSystemExit')
             ->with($ship, $oldWaypoint)
+            ->once();
+
+        $this->checkAstronomicalWaypoint->shouldReceive('checkWaypoint')
+            ->with($ship, $informations)
             ->once();
 
         $this->subject->enterNextWaypoint(
@@ -99,6 +114,14 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('updateLocation')
             ->with($waypoint, null)
             ->once();
+        $ship->shouldReceive('getSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $ship->shouldReceive('getMapRegion')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $oldWaypoint->shouldReceive('getSystem->isWormhole')
             ->withNoArgs()
@@ -141,14 +164,18 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('updateLocation')
             ->with(null, $waypoint)
             ->once();
+        $ship->shouldReceive('getSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(StarSystemInterface::class));
 
         $waypoint->shouldReceive('getSystem->isWormhole')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
 
-        $this->checkAstronomicalWaypoints->shouldReceive('checkWaypoint')
-            ->with($ship, $waypoint, $informations)
+        $this->checkAstronomicalWaypoint->shouldReceive('checkWaypoint')
+            ->with($ship, $informations)
             ->once();
 
         $this->subject->enterNextWaypoint(
@@ -180,14 +207,18 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('setCy')
             ->with(0)
             ->once();
+        $ship->shouldReceive('getSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(StarSystemInterface::class));
 
         $waypoint->shouldReceive('getSystem->isWormhole')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
 
-        $this->checkAstronomicalWaypoints->shouldReceive('checkWaypoint')
-            ->with($ship, $waypoint, $informations)
+        $this->checkAstronomicalWaypoint->shouldReceive('checkWaypoint')
+            ->with($ship,  $informations)
             ->once();
 
         $this->subject->enterNextWaypoint(
@@ -213,6 +244,10 @@ class EnterWaypointTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($oldWaypoint);
+        $ship->shouldReceive('getSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(StarSystemInterface::class));
 
         $waypoint->shouldReceive('getSystem->isWormhole')
             ->withNoArgs()
@@ -228,8 +263,8 @@ class EnterWaypointTest extends StuTestCase
             ->with($ship, 42, $oldWaypoint, $waypoint)
             ->once();
 
-        $this->checkAstronomicalWaypoints->shouldReceive('checkWaypoint')
-            ->with($ship, $waypoint, $informations)
+        $this->checkAstronomicalWaypoint->shouldReceive('checkWaypoint')
+            ->with($ship,  $informations)
             ->once();
 
         $this->subject->enterNextWaypoint(

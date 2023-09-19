@@ -28,6 +28,7 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -281,18 +282,16 @@ final class ShowShip implements ViewControllerInterface
 
     private function getAstroState(ShipInterface $ship, GameControllerInterface $game): AstroStateWrapper
     {
-        $system = $ship->getSystem() ?? $ship->isOverSystem();
+        $databaseEntry = $this->getDatabaseEntryForShipLocation($ship);
 
         $astroEntry = null;
-        if ($system === null || $system->getDatabaseEntry() === null) {
+
+        if ($databaseEntry === null) {
             $state = AstronomicalMappingEnum::NONE;
-        } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
+        } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $databaseEntry->getId())) {
             $state = AstronomicalMappingEnum::DONE;
         } else {
-            $astroEntry = $this->astroEntryRepository->getByUserAndSystem(
-                $ship->getUser()->getId(),
-                $system->getId()
-            );
+            $astroEntry = $this->astroEntryRepository->getByShipLocation($ship);
 
             $state = $astroEntry === null ? AstronomicalMappingEnum::PLANNABLE : $astroEntry->getState();
         }
@@ -301,6 +300,21 @@ final class ShowShip implements ViewControllerInterface
             $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
         }
         return new AstroStateWrapper($state, $turnsLeft);
+    }
+
+    private function getDatabaseEntryForShipLocation(ShipInterface $ship): ?DatabaseEntryInterface
+    {
+        $system = $ship->getSystem() ?? $ship->isOverSystem();
+        if ($system !== null) {
+            return $system->getDatabaseEntry();
+        }
+
+        $mapRegion = $ship->getMapRegion();
+        if ($mapRegion !== null) {
+            return $mapRegion->getDatabaseEntry();
+        }
+
+        return null;
     }
 
     private function doConstructionStuff(ShipInterface $ship, GameControllerInterface $game): void

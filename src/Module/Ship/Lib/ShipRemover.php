@@ -119,7 +119,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         $this->leaveFleet->leaveFleet($ship);
 
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
@@ -298,7 +298,7 @@ final class ShipRemover implements ShipRemoverInterface
     {
         $this->leaveFleet->leaveFleet($ship);
 
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 

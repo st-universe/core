@@ -188,8 +188,6 @@ use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreator;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreatorInterface;
-use Stu\Module\Ship\Lib\Movement\Route\CheckAstronomicalWaypoints;
-use Stu\Module\Ship\Lib\Movement\Route\CheckAstronomicalWaypointsInterface;
 use Stu\Module\Ship\Lib\Movement\Route\CheckDestination;
 use Stu\Module\Ship\Lib\Movement\Route\CheckDestinationInterface;
 use Stu\Module\Ship\Lib\Movement\Route\EnterWaypoint;
@@ -227,6 +225,8 @@ use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManager;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtility;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\Movement\Component\CheckAstronomicalWaypoint;
+use Stu\Module\Ship\Lib\Movement\Component\CheckAstronomicalWaypointInterface;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
@@ -313,7 +313,7 @@ return [
     CheckDestinationInterface::class => autowire(CheckDestination::class),
     LoadWaypointsInterface::class => autowire(LoadWaypoints::class),
     UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
-    CheckAstronomicalWaypointsInterface::class => autowire(CheckAstronomicalWaypoints::class),
+    CheckAstronomicalWaypointInterface::class => autowire(CheckAstronomicalWaypoint::class),
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),

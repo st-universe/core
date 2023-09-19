@@ -1392,35 +1392,16 @@
     </form>
   </tal:block>
 </metal:macro>
-<metal:macro metal:define-macro="astroentry">
+<metal:macro metal:define-macro="astroentries">
   <table class="tcal">
-    <tr tal:condition="ENTRY/getStarsystemMap1">
-      <td>
-        <span>(${ENTRY/getStarsystemMap1/getSx}|${ENTRY/getStarsystemMap1/getSy})</span>
-      </td>
-    </tr>
-    <tr tal:condition="ENTRY/getStarsystemMap2">
-      <td>
-        <span>(${ENTRY/getStarsystemMap2/getSx}|${ENTRY/getStarsystemMap2/getSy})</span>
-      </td>
-    </tr>
-    <tr tal:condition="ENTRY/getStarsystemMap3">
-      <td>
-        <span>(${ENTRY/getStarsystemMap3/getSx}|${ENTRY/getStarsystemMap3/getSy})</span>
-      </td>
-    </tr>
-    <tr tal:condition="ENTRY/getStarsystemMap4">
-      <td>
-        <span>(${ENTRY/getStarsystemMap4/getSx}|${ENTRY/getStarsystemMap4/getSy})</span>
-      </td>
-    </tr>
-    <tr tal:condition="ENTRY/getStarsystemMap5">
-      <td>
-        <span>(${ENTRY/getStarsystemMap5/getSx}|${ENTRY/getStarsystemMap5/getSy})</span>
-      </td>
-    </tr>
+    <tbody>
+      <tr tal:repeat="field FIELDS">
+        <td>${field/getSectorString}</td>
+      </tr>
+    </tbody>
   </table>
 </metal:macro>
+
 <metal:macro metal:define-macro="colonization">
   <div tal:attributes="style string:${COLONY_SURFACE/getSurfaceTileStyle}" tal:define="sstr THIS/getSessionString">
     <tal:block tal:repeat="field COLONY_SURFACE/getSurface">

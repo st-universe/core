@@ -407,7 +407,7 @@ final class ShipWrapper implements ShipWrapperInterface
         if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
             return ['rep2', sprintf('%s repariert die Station', $isBase ? 'Stationscrew' : 'Schiffscrew')];
         }
-        if ($state === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+        if ($state === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             return ['map1', 'Schiff kartographiert'];
         }
 

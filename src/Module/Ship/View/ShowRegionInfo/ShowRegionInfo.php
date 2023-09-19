@@ -50,12 +50,6 @@ final class ShowRegionInfo implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $databaseEntry = $region->getDatabaseEntry();
-        if ($databaseEntry !== null) {
-            //TODO reactivate when astro mapping for regions implemented
-            //$game->checkDatabaseItem($databaseEntry->getId());
-        }
-
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/regioninfo');
         $game->setPageTitle(sprintf('Details: %s', $region->getDescription()));
 

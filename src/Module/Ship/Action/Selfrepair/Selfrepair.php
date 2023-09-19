@@ -85,7 +85,7 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getState() == ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+        if ($ship->getState() == ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }

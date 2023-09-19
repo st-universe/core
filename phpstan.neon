@@ -8,6 +8,7 @@ parameters:
     - src/Public/assets
   ignoreErrors:
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never written, only read#'
+    - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) type mapping mismatch: property can contain Stu\\Orm\\Entity\\(\w+)\|null but database expects Stu\\Orm\\Entity\\(\w+)\|null.#'
   parallel:
     jobSize: 20
     maximumNumberOfProcesses: 8

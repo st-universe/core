@@ -19,6 +19,7 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -355,38 +356,59 @@ final class ShipTick implements ShipTickInterface
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
     {
-        $system = $ship->getSystem();
+        [$message, $databaseEntry] = $this->getDatabaseEntryForShipLocation($ship);
 
         if (
-            $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING
-            && $system !== null
+            $ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING
+            && $databaseEntry !== null
             && $this->game->getCurrentRound()->getTurn() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
             $this->astroEntryLib->finish($ship);
 
             $this->msg[] = sprintf(
-                _('Die Kartographierung des Systems %s wurde vollendet'),
-                $system->getName()
+                _('Die Kartographierung %s wurde vollendet'),
+                $message
             );
 
-            $databaseEntry = $system->getDatabaseEntry();
-            if ($databaseEntry !== null) {
-                $userId = $ship->getUser()->getId();
-                $databaseEntryId = $databaseEntry->getId();
+            $userId = $ship->getUser()->getId();
+            $databaseEntryId = $databaseEntry->getId();
 
-                if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
-                    $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($ship->getUser(), $databaseEntryId);
+            if (!$this->databaseUserRepository->exists($userId, $databaseEntryId)) {
+                $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($ship->getUser(), $databaseEntryId);
 
-                    if ($entry !== null) {
-                        $this->msg[] = sprintf(
-                            _('Neuer Datenbankeintrag: %s (+%d Punkte)'),
-                            $entry->getDescription(),
-                            $entry->getCategory()->getPoints()
-                        );
-                    }
+                if ($entry !== null) {
+                    $this->msg[] = sprintf(
+                        _('Neuer Datenbankeintrag: %s (+%d Punkte)'),
+                        $entry->getDescription(),
+                        $entry->getCategory()->getPoints()
+                    );
                 }
             }
         }
+    }
+
+    /**
+     * @return array{0: string|null, 1: DatabaseEntryInterface|null}
+     */
+    private function getDatabaseEntryForShipLocation(ShipInterface $ship): array
+    {
+        $system = $ship->getSystem();
+        if ($system !== null) {
+            return [
+                'des Systems ' . $system->getName(),
+                $system->getDatabaseEntry()
+            ];
+        }
+
+        $mapRegion = $ship->getMapRegion();
+        if ($mapRegion !== null) {
+            return [
+                'der Region ' . $mapRegion->getDescription(),
+                $mapRegion->getDatabaseEntry()
+            ];
+        }
+
+        return [null, null];
     }
 
     private function doTrackerDeviceStuff(ShipWrapperInterface $wrapper): void

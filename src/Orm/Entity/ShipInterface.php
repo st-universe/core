@@ -282,6 +282,8 @@ interface ShipInterface
 
     public function setMap(?MapInterface $map): ShipInterface;
 
+    public function getMapRegion(): ?MapRegionInterface;
+
     public function getStarsystemMap(): ?StarSystemMapInterface;
 
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface;
@@ -363,10 +365,7 @@ interface ShipInterface
 
     public function getHoldingWebBackgroundStyle(): string;
 
-    /**
-     * @return StarSystemMapInterface|MapInterface
-     */
-    public function getCurrentMapField();
+    public function getCurrentMapField(): StarSystemMapInterface|MapInterface;
 
     public function getCurrentMapFieldLayer(): string;
 

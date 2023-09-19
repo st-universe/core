@@ -113,7 +113,7 @@ class RegisterTest extends StuTestCase
     public function testHandleDoNothingIfRegistrationExceptionOccurs(): void
     {
         $factionId = 4;
-        $mobileNumber = '12345';
+        $mobileNumber = ' 12345 ';
 
         $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
@@ -138,6 +138,10 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($mobileNumber);
+        $this->registerRequest->shouldReceive('getCountryCode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('+49');
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -150,7 +154,7 @@ class RegisterTest extends StuTestCase
             ->andReturn(2);
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, $mobileNumber)
+            ->with('login', 'email', $this->faction, '+4912345')
             ->once()
             ->andThrow(new LoginNameInvalidException());
 
@@ -186,6 +190,10 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('');
+        $this->registerRequest->shouldReceive('getCountryCode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('');
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -203,7 +211,7 @@ class RegisterTest extends StuTestCase
     public function testHandleShowFinishRegistrationIfSmsRegistrationSuccessful(): void
     {
         $factionId = 123;
-        $mobileNumber = '12345';
+        $mobileNumber = ' 12345';
 
         $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
@@ -228,6 +236,10 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($mobileNumber);
+        $this->registerRequest->shouldReceive('getCountryCode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(+49);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -244,7 +256,7 @@ class RegisterTest extends StuTestCase
             ->once();
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, $mobileNumber)
+            ->with('login', 'email', $this->faction, '+4912345')
             ->once();
 
         $this->subject->handle($this->game);

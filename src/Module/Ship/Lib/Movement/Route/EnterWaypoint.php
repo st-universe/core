@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Ship\Lib\Movement\Component\CheckAstronomicalWaypointInterface;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreatorInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -21,7 +22,7 @@ final class EnterWaypoint implements EnterWaypointInterface
 
     private WormholeEntryRepositoryInterface $wormholeEntryRepository;
 
-    private CheckAstronomicalWaypointsInterface $checkAstronomicalWaypoints;
+    private CheckAstronomicalWaypointInterface $checkAstronomicalWaypoint;
 
     private StuTime $stuTime;
 
@@ -29,13 +30,13 @@ final class EnterWaypoint implements EnterWaypointInterface
         FlightSignatureCreatorInterface $flightSignatureCreator,
         UpdateFlightDirectionInterface $updateFlightDirection,
         WormholeEntryRepositoryInterface $wormholeEntryRepository,
-        CheckAstronomicalWaypointsInterface $checkAstronomicalWaypoints,
+        CheckAstronomicalWaypointInterface $checkAstronomicalWaypoint,
         StuTime $stuTime
     ) {
         $this->flightSignatureCreator = $flightSignatureCreator;
         $this->updateFlightDirection = $updateFlightDirection;
         $this->wormholeEntryRepository = $wormholeEntryRepository;
-        $this->checkAstronomicalWaypoints = $checkAstronomicalWaypoints;
+        $this->checkAstronomicalWaypoint = $checkAstronomicalWaypoint;
         $this->stuTime = $stuTime;
     }
 
@@ -88,8 +89,8 @@ final class EnterWaypoint implements EnterWaypointInterface
             $this->updateFlightDirection->updateWhenSystemExit($ship, $oldWaypoint);
         }
 
-        if ($waypoint instanceof StarSystemMapInterface) {
-            $this->checkAstronomicalWaypoints->checkWaypoint($ship, $waypoint, $informations);
+        if ($ship->getSystem() !== null || $ship->getMapRegion() !== null) {
+            $this->checkAstronomicalWaypoint->checkWaypoint($ship, $informations);
         }
     }
 

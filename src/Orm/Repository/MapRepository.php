@@ -298,4 +298,26 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ])
             ->getResult();
     }
+
+    public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+
+        $mapIdResultSet = $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT m.id FROM stu_map m
+                JOIN stu_map_ftypes mf
+                WITH m.field_id = mf.id
+                WHERE m.region_id = :regionId
+                AND mf.passable IS true',
+                $rsm
+            )
+            ->setParameters([
+                'regionId' => $regionId,
+            ])
+            ->getResult();
+
+        return array_map(fn (array $data) => $data['id'], $mapIdResultSet);
+    }
 }

@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 /**
  * @extends EntityRepository<AstronomicalEntry>
@@ -18,12 +19,16 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         return new AstronomicalEntry();
     }
 
-    public function getByUserAndSystem(int $userId, ?int $starSystemId): ?AstronomicalEntryInterface
+    public function getByShipLocation(ShipInterface $ship): ?AstronomicalEntryInterface
     {
+        $system = $ship->getSystem() ?? $ship->isOverSystem();
+        $mapRegion = $ship->getMapRegion();
+
         return $this->findOneBy(
             [
-                'user_id' => $userId,
-                'systems_id' => $starSystemId
+                'user_id' => $ship->getUser()->getId(),
+                'systems_id' => $system === null ? null : $system->getId(),
+                'region_id' => $mapRegion === null ? null : $mapRegion->getId()
             ]
         );
     }
