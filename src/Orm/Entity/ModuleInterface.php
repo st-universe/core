@@ -88,4 +88,10 @@ interface ModuleInterface
      * @return Collection<int, WeaponShieldInterface>
      */
     public function getWeaponShield(): Collection;
+
+    public function getFaction(): ?FactionInterface;
+
+    public function getFactionId(): ?int;
+
+    public function setFactionId(int $factionId): ?ModuleInterface;
 }

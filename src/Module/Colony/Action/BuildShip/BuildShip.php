@@ -162,7 +162,13 @@ final class BuildShip implements ActionControllerInterface
                             throw new RuntimeException(sprintf('moduleId %d does noe exist', $id));
                         }
 
-                        $crew_usage += $specialMod->getCrew();
+                        if ($specialMod->getFactionId() !== null) {
+                            if ($game->getUser()->getFactionId() !== $specialMod->getFactionId()) {
+                                $crew_usage += $specialMod->getCrew() + 1;
+                            }
+                        } else {
+                            $crew_usage += $specialMod->getCrew();
+                        }
                         $modules[$id] = $specialMod;
                         $sigmod[$id] = $id;
                         $specialCount++;
@@ -181,10 +187,17 @@ final class BuildShip implements ActionControllerInterface
                 if (current($module) > 0) {
                     /** @var ModuleInterface $mod */
                     $mod = $this->moduleRepository->find((int) current($module));
-                    if ($mod->getLevel() > $rump->getModuleLevel()) {
-                        $crew_usage += $mod->getCrew() + 1;
+                    if ($mod->getFactionId() !== null) {
+                        if ($game->getUser()->getFactionId() !== $mod->getFactionId()) {
+                            $crew = $mod->getCrew() + 1;
+                        }
                     } else {
-                        $crew_usage += $mod->getCrew();
+                        $crew = $mod->getCrew();
+                    }
+                    if ($mod->getLevel() > $rump->getModuleLevel()) {
+                        $crew_usage += $crew + 1;
+                    } else {
+                        $crew_usage += $crew;
                     }
                 } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
                     return;

@@ -97,11 +97,18 @@ Init::run(function (ContainerInterface $dic): void {
 
                 foreach ($moduleList as $moduleId) {
                     $module = $moduleRepo->find($moduleId);
+                    if ($module->getFactionId() !== null) {
+                        if ($user->getFactionId() !== $module->getFactionId()) {
+                            $crew = $module->getCrew() + 1;
+                        }
+                    } else {
+                        $crew = $module->getCrew();
+                    }
 
                     if ($module->getLevel() > $rump->getModuleLevel()) {
-                        $crew_usage += $module->getCrew() + 1;
+                        $crew_usage += $crew + 1;
                     } else {
-                        $crew_usage += $module->getCrew();
+                        $crew_usage += $crew;
                     }
 
                     $mod = $buildplanModuleRepo->prototype();
@@ -116,7 +123,14 @@ Init::run(function (ContainerInterface $dic): void {
 
                 foreach ($moduleSpecialList as $moduleId) {
                     $module = $moduleRepo->find($moduleId);
-                    $crew_usage += $module->getCrew();
+                    if ($module->getFactionId() !== null) {
+                        if ($user->getFactionId() !== $module->getFactionId()) {
+                            $crew = $module->getCrew() + 1;
+                        }
+                    } else {
+                        $crew = $module->getCrew();
+                    }
+                    $crew_usage += $crew;
 
                     $mod = $buildplanModuleRepo->prototype();
                     $mod->setModuleType($module->getType());
