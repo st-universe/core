@@ -19,10 +19,13 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         return new AstronomicalEntry();
     }
 
-    public function getByShipLocation(ShipInterface $ship): ?AstronomicalEntryInterface
+    public function getByShipLocation(ShipInterface $ship, bool $showOverSystem = true): ?AstronomicalEntryInterface
     {
-        $system = $ship->getSystem() ?? $ship->isOverSystem();
-        $mapRegion = $ship->getMapRegion();
+        $system = $ship->getSystem();
+        if ($system === null && $showOverSystem) {
+            $system = $ship->isOverSystem();
+        }
+        $mapRegion = $system === null ? $ship->getMapRegion() : null;
 
         return $this->findOneBy(
             [

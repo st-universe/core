@@ -27,7 +27,7 @@ class CheckAstronomicalWaypoint implements CheckAstronomicalWaypointInterface
             return;
         }
 
-        $astroEntry = $this->astroEntryRepository->getByShipLocation($ship);
+        $astroEntry = $this->astroEntryRepository->getByShipLocation($ship, false);
         if ($astroEntry === null) {
             return;
         }

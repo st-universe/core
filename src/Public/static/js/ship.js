@@ -125,10 +125,11 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
 		ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
 	}
 }
-function showAstroEntryWindow() {
+function showAstroEntryWindow(isSystem) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ASTRO_ENTRY=1');
+	isSystemParam = isSystem ? '&isSystem=1' : '&isSystem=0';
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ASTRO_ENTRY=1' + isSystemParam);
 }
 function openStarMap(obj, cx, cy, layerid) {
 	closeAjaxWindow();
