@@ -2757,11 +2757,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 2
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php

@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowSectorScan;
 
 use request;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -23,6 +26,8 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private EncodedMapInterface $encodedMap;
+
     /** @var array<int> */
     private array $fadedSignaturesUncloaked = [];
 
@@ -32,11 +37,13 @@ final class ShowSectorScan implements ViewControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        FlightSignatureRepositoryInterface $flightSignatureRepository
+        FlightSignatureRepositoryInterface $flightSignatureRepository,
+        EncodedMapInterface $encodedMap
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
+        $this->encodedMap = $encodedMap;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -83,6 +90,7 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('MAP_PATH', $this->getMapPath($ship));
         $game->setTemplateVar('ERROR', false);
     }
 
@@ -117,5 +125,16 @@ final class ShowSectorScan implements ViewControllerInterface
         }
 
         return $filteredSigs;
+    }
+
+    private function getMapPath(ShipInterface $ship): string
+    {
+        $currentMapField = $ship->getCurrentMapField();
+
+        if ($currentMapField instanceof MapInterface) {
+            return $this->encodedMap->getEncodedMapPath($currentMapField->getFieldId(), $currentMapField->getLayer());
+        } else {
+            return sprintf('%d.png', $currentMapField->getFieldId());
+        }
     }
 }
