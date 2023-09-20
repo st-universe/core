@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
+use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Lib\InformationWrapper;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -19,13 +22,20 @@ class CheckAstronomicalWaypointTest extends StuTestCase
     /** @var MockInterface&AstroEntryRepositoryInterface */
     private MockInterface $astroEntryRepository;
 
+    /** @var MockInterface&CreatePrestigeLogInterface */
+    private MockInterface $createPrestigeLog;
+
     private CheckAstronomicalWaypointInterface $subject;
 
     protected function setUp(): void
     {
         $this->astroEntryRepository = $this->mock(AstroEntryRepositoryInterface::class);
+        $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
 
-        $this->subject = new CheckAstronomicalWaypoint($this->astroEntryRepository);
+        $this->subject = new CheckAstronomicalWaypoint(
+            $this->astroEntryRepository,
+            $this->createPrestigeLog
+        );
     }
 
     public function testCheckWaypointExpectNothingWhenAstroStateOff(): void
@@ -69,6 +79,7 @@ class CheckAstronomicalWaypointTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
         $map = $this->mock(MapInterface::class);
+        $user = $this->mock(UserInterface::class);
         $informations = $this->mock(InformationWrapper::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
 
@@ -80,13 +91,15 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SHIP');
+        $ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user);
         $ship->shouldReceive('getCurrentMapField')
             ->withNoArgs()
             ->once()
             ->andReturn($map);
         $ship->shouldReceive('getSectorString')
             ->withNoArgs()
-            ->once()
             ->andReturn('SECTOR');
         $ship->shouldReceive('getState')
             ->withNoArgs()
@@ -119,6 +132,15 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->with($astroEntry)
             ->once();
 
+        $this->createPrestigeLog->shouldReceive('createLog')
+            ->with(
+                1,
+                '1 Prestige erhalten für Kartographierungs-Messpunkt "SECTOR"',
+                $user,
+                Mockery::any()
+            )
+            ->once();
+
         $informations->shouldReceive('addInformation')
             ->with('Die SHIP hat einen Kartographierungs-Messpunkt erreicht: SECTOR')
             ->once();
@@ -133,6 +155,7 @@ class CheckAstronomicalWaypointTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
         $map = $this->mock(MapInterface::class);
+        $user = $this->mock(UserInterface::class);
         $informations = $this->mock(InformationWrapper::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
 
@@ -143,6 +166,9 @@ class CheckAstronomicalWaypointTest extends StuTestCase
         $ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('SHIP');
+        $ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user);
         $ship->shouldReceive('getCurrentMapField')
             ->withNoArgs()
             ->once()
@@ -151,6 +177,10 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(5555);
+        $ship->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR');
 
         $map->shouldReceive('getId')
             ->withNoArgs()
@@ -178,6 +208,15 @@ class CheckAstronomicalWaypointTest extends StuTestCase
             ->andReturn($astroEntry);
         $this->astroEntryRepository->shouldReceive('save')
             ->with($astroEntry)
+            ->once();
+
+        $this->createPrestigeLog->shouldReceive('createLog')
+            ->with(
+                1,
+                '1 Prestige erhalten für Kartographierungs-Messpunkt "SECTOR"',
+                $user,
+                Mockery::any()
+            )
             ->once();
 
         $informations->shouldReceive('addInformation')
