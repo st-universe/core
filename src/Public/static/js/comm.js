@@ -1,27 +1,27 @@
 function openNewCatWindow() {
 	elt = 'newcatwin';
-	openPJsWin(elt,300);
-	ajax_update(elt,"/pm.php?SHOW_NEW_CAT=1");
+	openPJsWin(elt, 300);
+	ajax_update(elt, "/pm.php?SHOW_NEW_CAT=1");
 }
 
 function addNewCategory() {
 	name = $('catname').value;
-	if (name.length<1) {
+	if (name.length < 1) {
 		alert('Es wurde kein Name eingegeben');
 		return;
 	}
-	ajax_update('catlist','/pm.php?B_ADD_PMCATEGORY=1&'+Form.Element.serialize('catname'));
+	ajax_update('catlist', '/pm.php?B_ADD_PMCATEGORY=1&' + Form.Element.serialize('catname'));
 	cClick();
 }
 
 function changeCategoryName() {
 	name = $('catname').value;
-	if (name.length<1) {
+	if (name.length < 1) {
 		alert('Es wurde kein Name eingegeben');
 		return;
 	}
 	catid = document.forms['editcat'].elements['pmcat'].value;
-	ajax_update('catlist','/pm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat='+catid+'&'+Form.Element.serialize('catname'));
+	ajax_update('catlist', '/pm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat=' + catid + '&' + Form.Element.serialize('catname'));
 	cClick();
 }
 
@@ -36,13 +36,13 @@ function deleteMarkedPMs() {
 }
 
 function markAllPMs() {
-	for(var i=0;i<document.pmlist.length;++i) {
+	for (var i = 0; i < document.pmlist.length; ++i) {
 		document.forms.pmlist.elements[i].checked = true;
 	}
 }
 
 function unMarkAllPMs() {
-	for(var i=0;i<document.pmlist.length;++i) {
+	for (var i = 0; i < document.pmlist.length; ++i) {
 		document.forms.pmlist.elements[i].checked = false;
 	}
 }
@@ -60,47 +60,47 @@ function deleteMarkedIgnores() {
 }
 
 function markAllContacts() {
-	for(var i=0;i<document.contactlist.length;++i) {
+	for (var i = 0; i < document.contactlist.length; ++i) {
 		document.forms.contactlist.elements[i].checked = true;
 	}
 }
 
 function unMarkAllContacts() {
-	for(var i=0;i<document.contactlist.length;++i) {
+	for (var i = 0; i < document.contactlist.length; ++i) {
 		document.forms.contactlist.elements[i].checked = false;
 	}
 }
 
 function showPMCategoryWindow(catid) {
 	elt = 'cateditwin';
-	openWindow(elt,1,300);
-	ajax_update(elt,"/pm.php?SHOW_EDIT_CAT=1&pmcat="+catid);
+	openWindow(elt, 1, 300);
+	ajax_update(elt, "/pm.php?SHOW_EDIT_CAT=1&pmcat=" + catid);
 }
 
 function updateRecipient() {
-	var number=document.newpm.recid.selectedIndex;
-	if (number<=0 || number>=document.newpm.recid.options.length) {
-		document.newpm.recipient.value="";
+	var number = document.newpm.recid.selectedIndex;
+	if (number <= 0 || number >= document.newpm.recid.options.length) {
+		document.newpm.recipient.value = "";
 	} else {
-		var Text=document.newpm.recid.options[number].value;
-		document.newpm.recipient.value=Text;
+		var Text = document.newpm.recid.options[number].value;
+		document.newpm.recipient.value = Text;
 	}
 }
 
 function showKnComments(postingId) {
 	elt = 'kncomments';
-	openWindow(elt,1,450);
-	ajax_update(elt,"comm.php?SHOW_KN_COMMENTS=1&posting="+postingId);
+	openWindow(elt, 1, 450);
+	ajax_update(elt, "comm.php?SHOW_KN_COMMENTS=1&posting=" + postingId);
 }
 function postComment(postingId) {
 	comment = Form.Element.serialize('comment');
-	ajax_update('kncomments',"comm.php?B_POST_COMMENT=1&posting="+postingId+"&"+comment);
+	ajax_update('kncomments', "comm.php?B_POST_COMMENT=1&posting=" + postingId + "&" + comment);
 }
 function deletePostingComment(postingId, commentId) {
-	ajax_update('kncomments',"comm.php?B_DELETE_COMMENT=1&posting="+postingId+"&comment="+commentId);
+	ajax_update('kncomments', "comm.php?B_DELETE_COMMENT=1&posting=" + postingId + "&comment=" + commentId);
 }
 function updateCategoryOrder() {
-	ajax_update(false,'/pm.php?B_PMCATEGORY_SORT=1&catlist='+Sortable.sequence('catlist').join(','));
+	ajax_update(false, '/pm.php?B_PMCATEGORY_SORT=1&catlist=' + Sortable.sequence('catlist').join(','));
 }
 function movePm(pmId) {
 	$('move_pm').value = pmId;
@@ -113,12 +113,12 @@ function saveContactComment(contactId) {
 	document.forms.contactlist.submit();
 }
 function emptyContactComment(contactId) {
-	$('contact_comment_input_'+contactId).value='';
+	$('contact_comment_input_' + contactId).value = '';
 	saveContactComment(contactId)
 }
 function rateKnPost(postId, rating) {
 	ajaxPostUpdate(
-		'kn_rating_'+postId,
+		'kn_rating_' + postId,
 		'comm.php?B_RATE_KN_POST=1',
 		{
 			'postid': postId,
@@ -126,3 +126,38 @@ function rateKnPost(postId, rating) {
 		}
 	);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+	let translatableSpans = document.querySelectorAll(".translatable-content");
+
+	function replaceTranslateContent(spanElement) {
+		let content = spanElement.innerHTML;
+		let regex = /\[translate\]([\s\S]*?)\[translation\]([\s\S]*?)\[\/translate\]/g;
+
+		let newContent = content.replace(regex, function (match, p1, p2) {
+			return `<span class="translatable" data-original="${p1}" data-translation="${p2}">${p1}</span>`;
+		});
+
+		spanElement.innerHTML = newContent;
+	}
+
+	translatableSpans.forEach(span => replaceTranslateContent(span));
+	translatableSpans.forEach(span => {
+		span.addEventListener("click", function (event) {
+			let clickedElement = event.target;
+
+			if (clickedElement.classList.contains("translatable")) {
+				let originalContent = clickedElement.getAttribute("data-original");
+				let translatedContent = clickedElement.getAttribute("data-translation");
+
+				if (originalContent && translatedContent) {
+					if (clickedElement.innerHTML === translatedContent) {
+						clickedElement.innerHTML = originalContent;
+					} else {
+						clickedElement.innerHTML = translatedContent;
+					}
+				}
+			}
+		});
+	});
+});
