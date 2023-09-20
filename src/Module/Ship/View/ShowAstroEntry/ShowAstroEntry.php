@@ -65,12 +65,24 @@ final class ShowAstroEntry implements ViewControllerInterface
         }
         $repository = $system !== null ? $this->starSystemMapRepository : $this->mapRepository;
 
+        $fieldIdArray = unserialize($astroEntry->getFieldIds());
+
         $game->setTemplateVar(
             'FIELDS',
             array_map(
                 fn (int $id) => $repository->find($id),
-                unserialize($astroEntry->getFieldIds())
+                $fieldIdArray
             )
         );
+
+        $game->setTemplateVar('GRID_COLUMNS', $this->getGridColumns(count($fieldIdArray)));
+    }
+
+    private function getGridColumns(int $fieldCount): string
+    {
+        $columnCount = $fieldCount < 10 ? 1 : (int)sqrt($fieldCount);
+        $percentage = (int)(100 / $columnCount);
+
+        return implode(' ', array_fill(0, $columnCount, sprintf('%s%%', $percentage)));
     }
 }
