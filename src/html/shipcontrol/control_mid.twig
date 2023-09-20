@@ -539,11 +539,11 @@ canColonize) %}
 <a href="javascript:void(0);" onclick="showAstroEntryWindow({{ isSystem }})"
     onmouseover="cp('astroButton','buttons/map1')" onmouseout="cp('astroButton','buttons/map2')">
     <img src="/assets/buttons/map2.png" name="astroButton" />
-    <span>Messpunkte ansehen</span>
+    <span>Messpunkte ansehen ({{ astroStateWrapper.getType }})</span>
 </a>
 {% else %}
 <img src="/assets/buttons/map2.png" />
-<span>Kartographierung ist geplant</span>
+<span>Kartographierung ist geplant ({{ astroStateWrapper.getType }})</span>
 {% endif %}
 {% elseif astroStateWrapper.isMeasured %}
 <br />
@@ -551,12 +551,12 @@ canColonize) %}
 <a href="?B_START_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
     onmouseout="cp('astroButton','buttons/map1')">
     <img src="/assets/buttons/map1.png" name="astroButton" />
-    <span>Kartographierung finalisieren</span>
+    <span>Kartographierung finalisieren ({{ astroStateWrapper.getType }})</span>
 </a>
 {% endif %}
 {% if astroStateWrapper.isSystem and (ship.isOverSystem or not shipAstroState) %}
 <img src="/assets/buttons/map1.png" />
-<span>Kartographierung ist geplant</span>
+<span>Kartographierung ist geplant ({{ astroStateWrapper.getType }})</span>
 {% endif %}
 {% elseif astroStateWrapper.isFinishing %}
 {% set turnsLeft = astroStateWrapper.getTurnsLeft %}
