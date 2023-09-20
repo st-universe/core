@@ -56,7 +56,13 @@ final class ShowAstroEntry implements ViewControllerInterface
         $game->setPageTitle("anzufliegende Messpunkte");
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/astroentries');
 
-        $system = $ship->getSystem() ?? $ship->isOverSystem();
+        $system = null;
+        if ($isSystem) {
+            $system = $ship->getSystem();
+            if ($system === null) {
+                $system = $ship->isOverSystem();
+            }
+        }
         $repository = $system !== null ? $this->starSystemMapRepository : $this->mapRepository;
 
         $game->setTemplateVar(
