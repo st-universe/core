@@ -7,16 +7,22 @@ namespace Stu\Module\Ship\Lib\Movement\Component;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Lib\InformationWrapper;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 class CheckAstronomicalWaypoint implements CheckAstronomicalWaypointInterface
 {
-    protected AstroEntryRepositoryInterface $astroEntryRepository;
+    private AstroEntryRepositoryInterface $astroEntryRepository;
 
-    public function __construct(AstroEntryRepositoryInterface $astroEntryRepository)
-    {
+    private CreatePrestigeLogInterface $createPrestigeLog;
+
+    public function __construct(
+        AstroEntryRepositoryInterface $astroEntryRepository,
+        CreatePrestigeLogInterface $createPrestigeLog
+    ) {
         $this->astroEntryRepository = $astroEntryRepository;
+        $this->createPrestigeLog = $createPrestigeLog;
     }
 
     public function checkWaypoint(
@@ -51,6 +57,8 @@ class CheckAstronomicalWaypoint implements CheckAstronomicalWaypointInterface
                     $astroEntry->setFieldIds(serialize($idsToMap));
                     $this->addReachedWaypointInfo($informations, $ship);
                 }
+
+                $this->createPrestigeLog($ship);
             }
         }
 
@@ -66,6 +74,16 @@ class CheckAstronomicalWaypoint implements CheckAstronomicalWaypointInterface
         }
 
         $this->astroEntryRepository->save($astroEntry);
+    }
+
+    private function createPrestigeLog(ShipInterface $ship): void
+    {
+        $this->createPrestigeLog->createLog(
+            1,
+            sprintf('1 Prestige erhalten für Kartographierungs-Messpunkt "%s"', $ship->getSectorString()),
+            $ship->getUser(),
+            time()
+        );
     }
 
     private function addReachedWaypointInfo(InformationWrapper $informations, ShipInterface $ship): void
