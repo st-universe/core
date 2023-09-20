@@ -81,8 +81,8 @@ final class ShowAstroEntry implements ViewControllerInterface
     private function getGridColumns(int $fieldCount): string
     {
         $columnCount = $fieldCount < 10 ? 1 : (int)sqrt($fieldCount);
-        $percentage = (int)(100 / $columnCount);
+        $width = $columnCount === 1 ? '100%' : '60px';
 
-        return implode(' ', array_fill(0, $columnCount, sprintf('%s%%', $percentage)));
+        return implode(' ', array_fill(0, $columnCount, $width));
     }
 }
