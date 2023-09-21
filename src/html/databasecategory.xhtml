@@ -153,23 +153,7 @@
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered">
 				<td>
-					<table>
-						<tr>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}11.png" /></td>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}21.png" /></td>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}31.png" /></td>
-						</tr>
-						<tr>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}12.png" /></td>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}22.png" /></td>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}32.png" /></td>
-						</tr>
-						<tr>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}13.png" /></td>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}23.png" /></td>
-							<td style="padding: 1px;"><img src="assets/map/${data/getObjectId}33.png" /></td>
-						</tr>
-					</table>
+					<img src="assets/map/systemtypes/${data/getObjectId}.png" />
 				</td>
 				<td>
 					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
