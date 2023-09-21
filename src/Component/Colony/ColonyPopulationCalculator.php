@@ -145,7 +145,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
             return 0;
         }
         // TBD: depends on social things. return dummy for now
-        $im = ceil(($this->colony->getMaxBev() - $this->colony->getPopulation()) / 4);
+        $im = ceil(($this->colony->getMaxBev() - $this->colony->getPopulation()) / 3);
         if ($this->colony->getPopulation() + $im > $this->colony->getMaxBev()) {
             $im = $this->colony->getMaxBev() - $this->colony->getPopulation();
         }
@@ -156,7 +156,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
             return 0;
         }
         return (int) round(
-            $im / 100 * $this->colony->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 100
+            $im / 100 * $this->colony->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50
         );
     }
 
