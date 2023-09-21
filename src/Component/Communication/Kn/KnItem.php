@@ -165,4 +165,9 @@ final class KnItem implements KnItemInterface
             ->setValue($this->getRating())
             ->render();
     }
+    public function hasTranslation(): bool
+    {
+        $text = $this->getText();
+        return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
 }
