@@ -9,13 +9,19 @@
 			<table class="tcal">
 				<tal:block tal:condition="exists:PREVIEW">
 					<tr>
-						<th>Vorschau</th>
+						<th>
+							Vorschau
+							<a onmouseover="cp('translate','buttons/translate1', 'png')"
+								onmouseout="cp('translate','buttons/translate0', 'png')">
+								<img src="assets/buttons/translate0.png" alt="Übersetzen"
+									style="cursor:pointer; margin-left: 5px;"
+									onclick="toggleAllTranslations(this)" /></a>
+						</th>
 					</tr>
 					<tr>
 						<td>
 							<span class="translatable-content" tal:content="structure nl2br:PREVIEW"></span>
 						</td>
-
 					</tr>
 				</tal:block>
 				<tr>
