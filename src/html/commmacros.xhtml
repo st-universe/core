@@ -427,6 +427,13 @@
                 <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
               </div>
               <div class="segment" tal:condition="exists: KN_OFFSET">
+                <tal:block tal:condition="post/hasTranslation">
+                  <a onmouseover="cp('translate${post/getId}','buttons/translate1', 'png')"
+                    onmouseout="cp('translate${post/getId}','buttons/translate0', 'png')">
+                    <img src="/assets/buttons/translate0.png" alt="Toggle Translations"
+                      onclick="toggleAll(this.closest('.box_body'))" style="cursor: pointer;" title="Alles übersetzen"
+                      name="translate${post/getId}" /></a>
+                </tal:block>
                 <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1"
                   onmouseover="cp('mark${post/getId}','buttons/lese2', 'png')"
                   onmouseout="cp('mark${post/getId}','buttons/lese1', 'png')">

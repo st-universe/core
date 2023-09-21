@@ -50,4 +50,6 @@ interface KnItemInterface
     public function getRating(): int;
 
     public function getRatingBar(): string;
+
+    public function hasTranslation(): bool;
 }

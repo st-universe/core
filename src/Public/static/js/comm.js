@@ -161,3 +161,23 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 });
+
+let allTranslated = false;
+
+function toggleAll(boxBodyElement) {
+	let translationSpan = boxBodyElement.querySelector('.translatable-content');
+
+	let translatableSections = translationSpan.querySelectorAll('.translatable');
+	translatableSections.forEach(span => {
+		let originalContent = span.getAttribute('data-original');
+		let translatedContent = span.getAttribute('data-translation');
+
+		if (originalContent && translatedContent) {
+			if (span.innerHTML === translatedContent) {
+				span.innerHTML = originalContent;
+			} else {
+				span.innerHTML = translatedContent;
+			}
+		}
+	});
+}
