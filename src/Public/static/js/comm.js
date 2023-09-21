@@ -181,3 +181,13 @@ function toggleAll(boxBodyElement) {
 		}
 	});
 }
+
+function toggleAllTranslations(buttonElement) {
+	let currentRow = buttonElement.closest("tr");
+	let nextRow = currentRow.nextElementSibling;
+	let boxBodyElement = nextRow.querySelector("td");
+
+	toggleAll(boxBodyElement);
+}
+
+
