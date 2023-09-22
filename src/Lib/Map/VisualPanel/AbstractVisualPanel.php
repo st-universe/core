@@ -14,8 +14,14 @@ abstract class AbstractVisualPanel
     /** @var null|array<int, VisualPanelRow> */
     private ?array $rows = null;
 
+    /** @var null|array<int, VisualPanelRow> */
+    private ?array $extendedrows = null;
+
     /** @var null|array<array{value: int}> */
     protected ?array $headRow = null;
+
+    /** @var null|array<array{value: int}> */
+    protected ?array $extendedheadRow = null;
 
     private ?float $viewport = null;
 
@@ -45,10 +51,24 @@ abstract class AbstractVisualPanel
         return $this->rows;
     }
 
+    public function getExtendedRows(): array
+    {
+        if ($this->extendedrows === null) {
+            $this->extendedrows = $this->loadExtendedLSS();
+        }
+        return $this->extendedrows;
+    }
+
+
     /**
      * @return array<VisualPanelRow>
      */
     protected abstract function loadLSS(): array;
+
+    /**
+     * @return array<VisualPanelRow>
+     */
+    protected abstract function loadExtendedLSS(): array;
 
     protected abstract function getPanelViewportPercentage(): int;
 
