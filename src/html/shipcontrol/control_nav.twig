@@ -11,32 +11,6 @@
 
 <div style="float:left; padding-bottom:5px;">
     <table class="lssarea" cellpadding="0" cellspacing="0">
-
-        {% for extendedrow in visualNavPanel.getExtendedRows %}
-        <tr>
-            {% for extendedentry in extendedrow.getEntries %}
-            {% if extendedentry.isRowIndex %}
-            {% else %}
-            {% if extendedentry.isClickable %}
-            <div style="display: none;" class="lssobj imgOverlayText" onclick="{{ extendedentry.getOnClick }}">
-                {{ _self.lssCellLayers(extendedentry.getCellData, fontSize, heightAndWidth, ship.getSubspaceState)
-                }}
-            </div>
-            {% else %}
-            <div class="imgOverlayText" style="display: none;">
-                {{ _self.lssCellLayers(extendedentry.getCellData, fontSize, heightAndWidth, ship.getSubspaceState)
-                }}
-            </div>
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-</div>
-
-<div style="float:left; padding-bottom:5px;">
-    <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
             <td style="text-align: center; {{ height }} position: relative !important; top: 0px;">
                 <a href="ship.php?B_DEACTIVATE_LSS=1&id={{ ship.getId }}"
@@ -45,7 +19,6 @@
                         style="{{ heightAndWidth }} position: relative !important; top: 0px;"
                         title="Langstreckensensoren deaktivieren" /></a>
             </td>
-
             {% for row in visualNavPanel.getHeadRow %}
             <td style="{{ fontSize }} {{ heightAndWidth }} position: relative !important; top: 0px;" class="th">{{
                 row.value }}

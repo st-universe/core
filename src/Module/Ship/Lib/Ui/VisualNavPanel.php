@@ -159,62 +159,6 @@ class VisualNavPanel extends AbstractVisualPanel
         return $rows;
     }
 
-    protected function loadExtendedLSS(): array
-    {
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-        if ($this->showOuterMap()) {
-            $result = $this->getExtendedOuterSystemResult();
-        } else {
-            $result = $this->getInnerSystemResult();
-        }
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-        }
-
-        $currentShip = $this->currentShip;
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-
-        $extendedrows = [];
-
-        foreach ($result as $data) {
-            $y = $data->getPosY();
-
-            if ($y < 1) {
-                continue;
-            }
-
-            //create new row if y changed
-            if (!array_key_exists($y, $extendedrows)) {
-                $extendednavPanelRow = new VisualPanelRow();
-                $rowIndex = new VisualPanelRowIndex($y, 'th');
-                $extendednavPanelRow->addEntry($rowIndex);
-
-                $extendedrows[$y] = $extendednavPanelRow;
-            }
-
-            $extendednavPanelRow = $extendedrows[$y];
-            $extendedentry = $this->shipUiFactory->createVisualNavPanelEntry(
-                $data,
-                $currentShip->getLayer(),
-                $currentShip,
-                $this->isTachyonSystemActive,
-                $this->tachyonFresh
-            );
-            $extendednavPanelRow->addEntry($extendedentry);
-        }
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            //$this->loggerUtil->log(sprintf("\tloadLSS-loop, seconds: %F", $endTime - $startTime));
-        }
-
-        return $extendedrows;
-    }
-
     /**
      * @return array<array{value: int}>
      */
@@ -262,75 +206,10 @@ class VisualNavPanel extends AbstractVisualPanel
         return $this->headRow;
     }
 
-    public function getExtendedHeadRow(): array
-    {
-        if ($this->extendedheadRow === null) {
-            $cx = $this->showOuterMap() ? $this->currentShip->getCx() : $this->currentShip->getPosX();
-            $range = $this->currentShip->getSensorRange() * 2;
-            $min = $cx - $range;
-            $max = $cx + $range;
-
-            $row = [];
-
-            while ($min <= $max) {
-                if ($min < 1) {
-                    $min++;
-                    continue;
-                }
-                if ($this->showOuterMap()) {
-                    if ($this->currentShip->getLayer() === null) {
-                        throw new RuntimeException('layer should not be null if outside of system');
-                    }
-
-                    if ($min > $this->currentShip->getLayer()->getWidth()) {
-                        break;
-                    }
-                }
-                if (!$this->showOuterMap()) {
-                    if ($this->currentShip->getSystem() === null) {
-                        throw new RuntimeException('system should not be null if inside of system');
-                    }
-
-                    if ($min > $this->currentShip->getSystem()->getMaxX()) {
-                        break;
-                    }
-                }
-                $extendedrow[]['value'] = $min;
-                $min++;
-            }
-
-            $this->extendedheadRow = $extendedrow;
-        }
-
-        return $this->extendedheadRow;
-    }
-
     protected function getPanelViewportPercentage(): int
     {
         return $this->currentShip->isBase() ? 50 : 33;
     }
-
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    private function getExtendedOuterSystemResult(): array
-    {
-        $cx = $this->currentShip->getCX();
-        $cy = $this->currentShip->getCY();
-        $range = $this->currentShip->getSensorRange() * 2;
-
-        $layerId = $this->currentShip->getLayerId();
-
-        return $this->shipRepository->getSensorResultOuterSystem(
-            $cx,
-            $cy,
-            $layerId,
-            $range,
-            $this->currentShip->getSubspaceState(),
-            $this->user->getId()
-        );
-    }
-
 
     private function showOuterMap(): bool
     {
