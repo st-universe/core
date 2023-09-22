@@ -9,6 +9,20 @@
 {% set width = 'width: ' ~ viewportScale ~ 'vw;' %}
 {% set heightAndWidth = height ~ width %}
 
+{% set extendedEntries = visualNavPanel.getExtendedLSS() %}
+
+{% set graphicsPaths = {} %}
+
+{% for entry in extendedEntries %}
+{% set graphicsPaths = graphicsPaths|merge({(entry.cellData.getMapGraphicPath()): true}) %}
+{% endfor %}
+
+{% for path, _ in graphicsPaths %}
+
+<img src="{{ path }}" alt="" style="display:none;">
+{% endfor %}
+
+
 <div style="float:left; padding-bottom:5px;">
     <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>

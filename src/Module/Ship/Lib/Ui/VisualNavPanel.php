@@ -211,6 +211,64 @@ class VisualNavPanel extends AbstractVisualPanel
         return $this->currentShip->isBase() ? 50 : 33;
     }
 
+    /**
+     * @return array<VisualPanelEntryData>
+     */
+    private function getExtendedOuterSystemResult(): array
+    {
+        $cx = $this->currentShip->getCX();
+        $cy = $this->currentShip->getCY();
+        $range = $this->currentShip->getSensorRange() * 2;
+
+        $layerId = $this->currentShip->getLayerId();
+
+        return $this->shipRepository->getSensorResultOuterSystem(
+            $cx,
+            $cy,
+            $layerId,
+            $range,
+            $this->currentShip->getSubspaceState(),
+            $this->user->getId()
+        );
+    }
+
+    public function getExtendedLSS(): array
+    {
+        $result = $this->getExtendedOuterSystemResult();
+
+        $currentShip = $this->currentShip;
+        $rows = [];
+
+        foreach ($result as $data) {
+            $y = $data->getPosY();
+
+            if ($y < 1) {
+                continue;
+            }
+
+            if (!array_key_exists($y, $rows)) {
+                $navPanelRow = new VisualPanelRow();
+                $rowIndex = new VisualPanelRowIndex($y, 'th');
+                $navPanelRow->addEntry($rowIndex);
+                $rows[$y] = $navPanelRow;
+            }
+
+            $navPanelRow = $rows[$y];
+            $entry = $this->shipUiFactory->createVisualNavPanelEntry(
+                $data,
+                $currentShip->getLayer(),
+                $currentShip,
+                $this->isTachyonSystemActive,
+                $this->tachyonFresh
+            );
+            $navPanelRow->addEntry($entry);
+        }
+
+        return $rows;
+    }
+
+
+
     private function showOuterMap(): bool
     {
         return $this->currentShip->getSystem() === null
