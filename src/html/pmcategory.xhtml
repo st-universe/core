@@ -28,8 +28,9 @@
             <div class="box_body" style="margin: 0; padding: 0;">
               <div class="pmGrid">
                 <div class="knGridText">
-                  <div style="padding: 10px;">
-                    <span tal:content="structure bbcode:nl2br:post/getText">TEXT</span>
+                  <div style=" padding: 10px;">
+                    <span class="translatable-content" id="message${post/getId}"
+                      tal:content="structure bbcode:nl2br:post/getText">TEXT</span>
                   </div>
                   <div style="padding: 10px;" tal:condition="post/getHref">
                     <a href="${post/getHref}&sstr=${THIS/getSessionString}" title="ansehen"
@@ -58,6 +59,13 @@
                   </div>
                   <div class="segment" tal:define="id post/getSender/getId">
                     <tal:block tal:condition="post/displayUserLinks">
+                      <a tal:condition="post/hasTranslation"
+                        onmouseover="cp('translate${post/getId}','buttons/translate1', 'png')"
+                        onmouseout="cp('translate${post/getId}','buttons/translate0', 'png')">
+                        <img src="assets/buttons/translate0.png" alt="Übersetzen"
+                          style="cursor:pointer; margin-left: 5px;" onclick="toggleTranslation('message${post/getId}')"
+                          name="translate${post/getId}" />
+                      </a>
                       <a href="?WRITE_PM=1&reply=${post/getId}"
                         onmouseover="cp('reply${post/getId}','buttons/msg2', 'png');"
                         onmouseout="cp('reply${post/getId}','buttons/msg1', 'png');">

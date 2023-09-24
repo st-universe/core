@@ -557,3 +557,76 @@ function loadImages(panel) {
                 image.removeAttribute("data-src");
         });
 }
+document.addEventListener("DOMContentLoaded", function () {
+        let translatableSpans = document.querySelectorAll(".translatable-content");
+
+        function replaceTranslateContent(spanElement) {
+                let content = spanElement.innerHTML;
+                let regex = /\[translate\]([\s\S]*?)\[translation\]([\s\S]*?)\[\/translate\]/g;
+
+                let newContent = content.replace(regex, function (match, p1, p2) {
+                        return `<span class="translatable" data-original="${p1}" data-translation="${p2}">${p1}</span>`;
+                });
+
+                spanElement.innerHTML = newContent;
+        }
+
+        translatableSpans.forEach(span => replaceTranslateContent(span));
+        translatableSpans.forEach(span => {
+                span.addEventListener("click", function (event) {
+                        let clickedElement = event.target;
+
+                        if (clickedElement.classList.contains("translatable")) {
+                                let originalContent = clickedElement.getAttribute("data-original");
+                                let translatedContent = clickedElement.getAttribute("data-translation");
+
+                                if (originalContent && translatedContent) {
+                                        if (clickedElement.innerHTML === translatedContent) {
+                                                clickedElement.innerHTML = originalContent;
+                                        } else {
+                                                clickedElement.innerHTML = translatedContent;
+                                        }
+                                }
+                        }
+                });
+        });
+});
+
+let allTranslated = false;
+
+function toggleAll(boxBodyElement) {
+        let translationSpan = boxBodyElement.querySelector('.translatable-content');
+
+        if (translationSpan) {
+                let translatableSections = translationSpan.querySelectorAll('.translatable');
+                translatableSections.forEach(span => {
+                        let originalContent = span.getAttribute('data-original');
+                        let translatedContent = span.getAttribute('data-translation');
+
+                        if (originalContent && translatedContent) {
+                                if (span.innerHTML === translatedContent) {
+                                        span.innerHTML = originalContent;
+                                } else {
+                                        span.innerHTML = translatedContent;
+                                }
+                        }
+                });
+        }
+}
+function toggleTranslation(targetId) {
+        let translationSpan = document.getElementById(targetId);
+        if (translationSpan) {
+                let translatableSections = translationSpan.querySelectorAll('.translatable');
+                translatableSections.forEach(span => {
+                        let originalContent = span.getAttribute('data-original');
+                        let translatedContent = span.getAttribute('data-translation');
+                        if (originalContent && translatedContent) {
+                                if (span.innerHTML === translatedContent) {
+                                        span.innerHTML = originalContent;
+                                } else {
+                                        span.innerHTML = translatedContent;
+                                }
+                        }
+                });
+        }
+}

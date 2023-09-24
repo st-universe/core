@@ -71,4 +71,6 @@ interface AllianceInterface
      * @return Collection<int, AllianceJobInterface>
      */
     public function getJobs(): Collection;
+
+    public function hasTranslation(): bool;
 }

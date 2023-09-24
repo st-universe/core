@@ -17,6 +17,15 @@
               <a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
               <a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
             </tal:block>
+            <tal:block tal:condition="ALLIANCE/hasTranslation">
+              <a onmouseover="cp('translate','buttons/translate1', 'png')"
+                onmouseout="cp('translate','buttons/translate0', 'png')"
+                onclick="toggleTranslation('allianceDescription')">
+                <img src="/assets/buttons/translate0.png" alt="Toggle Translations" style="cursor: pointer;"
+                  title="Alliance Description übersetzen" name="translate" />
+              </a>
+
+            </tal:block>
           </div>
           <div class="allianceActionsJoinLeave">
             <a tal:condition="CAN_LEAVE_ALLIANCE" href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}"
@@ -28,7 +37,8 @@
         </div>
         <div class="allianceDescriptionMissing" tal:condition="not:DESCRIPTION">Keine Allianz-Beschreibung hinterlegt
         </div>
-        <div class="allianceDescription" tal:condition="DESCRIPTION" tal:content="structure nl2br:DESCRIPTION">
+        <div class="allianceDescription translatable-content" tal:condition="DESCRIPTION" id="allianceDescription"
+          tal:content="structure nl2br:DESCRIPTION">
           DESCRIPTION</div>
       </div>
       <div>

@@ -64,8 +64,16 @@
 			<br style="clear: both;" />
 			<br />
 			<tal:block tal:condition="DESCRIPTION">
-				<div class="divhead" style="width: 530px;">Beschreibung</div>
-				<div class="divbody" style="width: 530px; word-wrap: break-word;"
+				<div class="divhead" style="width: 530px;">Beschreibung <a tal:condition="PROFILE/hasTranslation"
+						onmouseover="cp('translate','buttons/translate1', 'png')"
+						onmouseout="cp('translate','buttons/translate0', 'png')">
+
+						<img src="assets/buttons/translate0.png" alt="Übersetzen"
+							style="cursor:pointer; margin-left: 5px;" onclick="toggleTranslation('description')"
+							name="translate" />
+
+					</a></div>
+				<div id="description" class="divbody translatable-content" style="width: 530px; word-wrap: break-word;"
 					tal:content="structure nl2br:DESCRIPTION">DESCRIPTION</div>
 				<br />
 			</tal:block>

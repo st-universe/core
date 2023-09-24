@@ -54,6 +54,16 @@
 									<span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span
 										tal:replace="post/getSender/getId">ID</span>)
 								</td>
+								<a tal:condition="post/hasTranslation"
+									onmouseover="cp('translate${post/getId}','buttons/translate1', 'png')"
+									onmouseout="cp('translate${post/getId}','buttons/translate0', 'png')">
+									<td style="width: 20px; text-align: center;">
+										<img src="assets/buttons/translate0.png" alt="Übersetzen"
+											style="cursor:pointer; margin-left: 5px;"
+											onclick="toggleTranslation('message${post/getId}')"
+											name="translate${post/getId}" />
+									</td>
+								</a>
 								<td tal:content="datetime:post/getDate" style="width: 120px; text-align: center;">DATE
 								</td>
 							</tr>
@@ -61,7 +71,8 @@
 						<table class="tcal">
 							<tr>
 								<td colspan="2" style="vertical-align: top;">
-									<span tal:content="structure bbcode:nl2br:post/getText">TEXT</span>
+									<span id="message${post/getId}" class="translatable-content"
+										tal:content="structure bbcode:nl2br:post/getText">TEXT</span>
 								</td>
 							</tr>
 						</table>

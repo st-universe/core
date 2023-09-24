@@ -245,4 +245,10 @@ class PrivateMessage implements PrivateMessageInterface
 
         return $this;
     }
+
+    public function hasTranslation(): bool
+    {
+        $text = $this->getText();
+        return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
 }
