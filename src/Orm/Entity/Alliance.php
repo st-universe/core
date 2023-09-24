@@ -256,4 +256,10 @@ class Alliance implements AllianceInterface
     {
         return $this->getName();
     }
+
+    public function hasTranslation(): bool
+    {
+        $text = $this->getDescription();
+        return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
 }

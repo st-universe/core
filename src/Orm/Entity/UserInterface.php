@@ -178,4 +178,6 @@ interface UserInterface
     public function isNpc(): bool;
 
     public function getUserLock(): ?UserLockInterface;
+
+    public function hasTranslation(): bool;
 }

@@ -139,4 +139,10 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         }
         return $this->sendercontact;
     }
+
+    public function hasTranslation(): bool
+    {
+        $text = $this->getText();
+        return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
 }

@@ -51,4 +51,6 @@ interface PrivateMessageInterface
     public function setRecipient(UserInterface $recipient): PrivateMessageInterface;
 
     public function setDeleted(int $timestamp): PrivateMessageInterface;
+
+    public function hasTranslation(): bool;
 }

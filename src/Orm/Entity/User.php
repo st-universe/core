@@ -759,4 +759,10 @@ class User implements UserInterface
     {
         return sprintf('userName: %s', $this->getName());
     }
+
+    public function hasTranslation(): bool
+    {
+        $text = $this->getDescription();
+        return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
 }
