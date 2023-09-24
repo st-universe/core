@@ -474,7 +474,10 @@ final class GameController implements GameControllerInterface
     {
         $userId = $this->getUser()->getId();
 
-        if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
+        if (
+            $databaseEntryId > 0
+            && !$this->databaseUserRepository->exists($userId, $databaseEntryId)
+        ) {
             $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($this->getUser(), $databaseEntryId);
 
             if ($entry !== null) {
