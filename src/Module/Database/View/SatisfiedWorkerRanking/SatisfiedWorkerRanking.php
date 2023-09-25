@@ -53,6 +53,8 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
         $game->setPageTitle('/ Datenbank / Die Top 10 besten Arbeitgeber');
         $game->showMacro('html/database.xhtml/top_employer');
 
+        $game->setTemplateVar('USER_ID', $game->getUser()->getId());
+
         $game->setTemplateVar(
             'EMPLOYER_LIST',
             array_map(

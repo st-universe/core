@@ -60,6 +60,11 @@ interface ColonyRepositoryInterface extends ObjectRepository
     public function getColoniesNetWorth(): array;
 
     /**
+     * @return array<array{user_id: int, commodity_id: int, sum: int}>
+     */
+    public function getColoniesProductionNetWorth(): array;
+
+    /**
      * @return array<array{user_id: int, satisfied: int}>
      */
     public function getSatisfiedWorkerTop10(): array;
