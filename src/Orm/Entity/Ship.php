@@ -1651,7 +1651,7 @@ class Ship implements ShipInterface
 
     public function hasNbsLss(): bool
     {
-        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER);
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LSS);
     }
 
     public function hasUplink(): bool

@@ -22,6 +22,7 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpDrive;
+use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSensor;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
@@ -129,10 +130,11 @@ final class ShipCreator implements ShipCreatorInterface
             ShipModuleTypeEnum::MODULE_TYPE_EPS => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_EPS)),
             ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE)),
             ShipModuleTypeEnum::MODULE_TYPE_WARPCORE => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpcore($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_WARPCORE)),
-            ShipModuleTypeEnum::MODULE_TYPE_REACTOR => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_REACTOR)),
+            ShipModuleTypeEnum::MODULE_TYPE_FUSIONREACTOR => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_FUSIONREACTOR)),
             ShipModuleTypeEnum::MODULE_TYPE_COMPUTER => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_COMPUTER)),
             ShipModuleTypeEnum::MODULE_TYPE_PHASER => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_PHASER)),
             ShipModuleTypeEnum::MODULE_TYPE_TORPEDO => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_TORPEDO)),
+            ShipModuleTypeEnum::MODULE_TYPE_SENSOR => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SENSOR)),
             ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE)),
             ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface {
                 $specialMods = $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL);
@@ -221,21 +223,25 @@ final class ShipCreator implements ShipCreatorInterface
                     $systems[ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE] = $module->getModule();
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_REACTOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR] = $module->getModule();
-                    break;
-                case ShipModuleTypeEnum::MODULE_TYPE_WARPCORE:
-                    $systems[ShipSystemTypeEnum::SYSTEM_WARPCORE] = $module->getModule();
-                    break;
+                    if ($module->getModule()->getId() === ShipModuleTypeEnum::MODULE_ID_FUSIONREACTOR) {
+                        $systems[ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR] = $module->getModule();
+                        break;
+                    } else {
+                        $systems[ShipSystemTypeEnum::SYSTEM_WARPCORE] = $module->getModule();
+                        break;
+                    }
                 case ShipModuleTypeEnum::MODULE_TYPE_COMPUTER:
                     $systems[ShipSystemTypeEnum::SYSTEM_COMPUTER] = $module->getModule();
-                    $systems[ShipSystemTypeEnum::SYSTEM_LSS] = 0;
-                    $systems[ShipSystemTypeEnum::SYSTEM_NBS] = 0;
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_PHASER:
                     $systems[ShipSystemTypeEnum::SYSTEM_PHASER] = $module->getModule();
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_TORPEDO:
                     $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO] = $module->getModule();
+                    break;
+                case ShipModuleTypeEnum::MODULE_TYPE_SENSOR:
+                    $systems[ShipSystemTypeEnum::SYSTEM_LSS] = $module->getModule();
+                    $systems[ShipSystemTypeEnum::SYSTEM_NBS] = 0;
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
                     $this->addSpecialSystems($module->getModule(), $systems);

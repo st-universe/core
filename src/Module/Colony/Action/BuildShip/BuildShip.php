@@ -141,65 +141,64 @@ final class BuildShip implements ActionControllerInterface
         $sigmod = [];
         $crew_usage = $rump->getBaseCrew();
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
-            if ($i !== ShipModuleTypeEnum::MODULE_TYPE_REACTOR) {
-                $module = request::postArray('mod_' . $i);
-                if (
-                    $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
-                    && $moduleLevels->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
-                    && count($module) == 0
-                ) {
-                    $game->addInformationf(
-                        _('Es wurde kein Modul des Typs %s ausgewählt'),
-                        ModuleTypeDescriptionMapper::getDescription($i)
-                    );
-                    return;
-                }
-                if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                    $specialCount = 0;
-                    foreach ($module as $id) {
-                        $specialMod = $this->moduleRepository->find((int) $id);
-                        if ($specialMod === null) {
-                            throw new RuntimeException(sprintf('moduleId %d does not exist', $id));
-                        }
 
-                        $crew = $specialMod->getCrewByFactionAndRumpLvl($game->getUser()->getFactionId());
-                        $crew_usage += $crew;
-                        $modules[$id] = $specialMod;
-                        $sigmod[$id] = $id;
-                        $specialCount++;
-                    }
-
-                    if ($specialCount > $rump->getSpecialSlots()) {
-                        $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
-                        return;
-                    }
-                    continue;
-                }
-                if (count($module) == 0 || current($module) == 0) {
-                    $sigmod[$i] = 0;
-                    continue;
-                }
-                if (current($module) > 0) {
-                    $moduleId = (int) current($module);
-                    $mod = $this->moduleRepository->find($moduleId);
-                    if ($mod === null) {
-                        throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
-                    }
-
-                    $crew = $mod->getCrewByFactionAndRumpLvl(
-                        $game->getUser()->getFactionId(),
-                        $rump->getModuleLevel()
-                    );
-                    $crew_usage += $crew;
-                } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
-                    return;
-                }
-                if ($mod === null) {
-                    throw new RuntimeException(sprintf('moduleId %d does not exist', (int)current($module)));
-                }
-                $modules[current($module)] = $mod;
-                $sigmod[$i] = $mod->getId();
+            $module = request::postArray('mod_' . $i);
+            if (
+                $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
+                && $moduleLevels->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
+                && count($module) == 0
+            ) {
+                $game->addInformationf(
+                    _('Es wurde kein Modul des Typs %s ausgewählt'),
+                    ModuleTypeDescriptionMapper::getDescription($i)
+                );
+                return;
             }
+            if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
+                $specialCount = 0;
+                foreach ($module as $id) {
+                    $specialMod = $this->moduleRepository->find((int) $id);
+                    if ($specialMod === null) {
+                        throw new RuntimeException(sprintf('moduleId %d does not exist', $id));
+                    }
+
+                    $crew = $specialMod->getCrewByFactionAndRumpLvl($game->getUser()->getFactionId());
+                    $crew_usage += $crew;
+                    $modules[$id] = $specialMod;
+                    $sigmod[$id] = $id;
+                    $specialCount++;
+                }
+
+                if ($specialCount > $rump->getSpecialSlots()) {
+                    $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    return;
+                }
+                continue;
+            }
+            if (count($module) == 0 || current($module) == 0) {
+                $sigmod[$i] = 0;
+                continue;
+            }
+            if (current($module) > 0) {
+                $moduleId = (int) current($module);
+                $mod = $this->moduleRepository->find($moduleId);
+                if ($mod === null) {
+                    throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
+                }
+
+                $crew = $mod->getCrewByFactionAndRumpLvl(
+                    $game->getUser()->getFactionId(),
+                    $rump->getModuleLevel()
+                );
+                $crew_usage += $crew;
+            } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
+                return;
+            }
+            if ($mod === null) {
+                throw new RuntimeException(sprintf('moduleId %d does not exist', (int)current($module)));
+            }
+            $modules[current($module)] = $mod;
+            $sigmod[$i] = $mod->getId();
         }
         if ($crew_usage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));

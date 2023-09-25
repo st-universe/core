@@ -231,7 +231,7 @@ function showModuleSelectTab(obj, tabId) {
 	$('module_select_tab_' + tabId).show();
 	currentTab = $('module_select_tab_' + tabId);
 }
-function replaceTabImage(type, moduleId, commodityId, module_crew, module_lvl) {
+function replaceTabImage(type, moduleId, commodityId, module_crew, module_lvl, userfaction, modulefaction) {
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
@@ -241,6 +241,11 @@ function replaceTabImage(type, moduleId, commodityId, module_crew, module_lvl) {
 		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
+		if (modulefaction != null) {
+			if (userfaction != modulefaction) {
+				module_crew += 1;
+			}
+		}
 		updateCrewCount(type, module_crew, module_lvl);
 	}
 	enableShipBuildButton();

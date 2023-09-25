@@ -19,7 +19,7 @@
           <div class="box">
             <div class="box_title" style="margin: 0; padding: 0">Modultyp-Auswahl</div>
             <div class="box_body">
-              <table class="tcal" id="module_select_tabs">
+              <table class="tcal" id="module_select_tabs" style=" table-layout: fixed;">
                 <tr>
                   <metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab"
                     tal:define="moduleType string:1" />
@@ -29,6 +29,8 @@
                     tal:define="moduleType string:6" />
                   <metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab"
                     tal:define="moduleType string:4" />
+                  <metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab"
+                    tal:define="moduleType string:10" />
                   <metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab"
                     tal:define="moduleType string:11" />
                   <td></td>
@@ -199,7 +201,7 @@
             <input type="radio"
               tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getCommodityId}/1"
               name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}"
-              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getCommodityId},${module/getModule/getCrew},${module/getModule/getLevel})" />
+              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getCommodityId},${module/getModule/getCrew},${module/getModule/getLevel},${COLONY/getUser/getFactionId},${module/getModule/getFactionId})" />
             <img src="assets/commodities/${module/getModule/getCommodityId}.png" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
@@ -312,6 +314,11 @@
       <img src="assets/buttons/modul_special_${special/getId}.png" tal:attributes="title special/getName" /> <span
         tal:content="special/getName"></span>
     </div>
+  </metal:macro>
+  <metal:macro metal:define-macro="moduleselector_stats_type_10">
+    <img src="assets/buttons/modul_screen_10.png" tal:attributes="title module/getModule/getDescription" />
+    <span>Sensorenreichweite</span>: <span
+      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseSensorRange')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_11">
     <img src="assets/buttons/modul_screen_11.png" tal:attributes="title module/getModule/getDescription" />
