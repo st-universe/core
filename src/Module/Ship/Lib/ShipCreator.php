@@ -223,7 +223,6 @@ final class ShipCreator implements ShipCreatorInterface
 
             switch ($module->getType()) {
                 case ShipModuleTypeEnum::MODULE_TYPE_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_LSS] = $module;
                     $systems[ShipSystemTypeEnum::SYSTEM_NBS] = 0;
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
