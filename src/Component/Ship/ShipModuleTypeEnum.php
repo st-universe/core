@@ -17,12 +17,11 @@ final class ShipModuleTypeEnum
     public const MODULE_TYPE_TORPEDO = 8;
     public const MODULE_TYPE_SPECIAL = 9;
     public const MODULE_TYPE_SENSOR = 10;
-    public const STANDARD_MODULE_TYPE_COUNT = 11;
     public const MODULE_TYPE_WARPDRIVE = 11;
 
-    // other module types
-    public const MODULE_TYPE_WARPCORE = 5;
-    public const MODULE_TYPE_FUSIONREACTOR = 5;
+    public const STANDARD_MODULE_TYPE_COUNT = 11;
+
+    // specific module ids
     public const MODULE_ID_FUSIONREACTOR = 11501;
 
     //mandatory types
