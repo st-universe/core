@@ -217,6 +217,32 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
+    public function getColoniesProductionNetWorth(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('sum', 'sum', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT c.user_id, bc.commodity_id, SUM(bc.count) AS sum
+                FROM stu_colonies c
+                JOIN stu_colonies_fielddata cf
+                ON cf.colonies_id = c.id 
+                JOIN stu_buildings_commodity bc
+                ON cf.buildings_id = bc.buildings_id
+                JOIN stu_commodity co
+                ON bc.commodity_id = co.id
+                WHERE co.type = :typeStandard
+                AND bc.count > 0
+                GROUP BY c.user_id, bc.commodity_id',
+                $rsm
+            )
+            ->setParameters(['typeStandard' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD])
+            ->getResult();
+    }
+
     public function getSatisfiedWorkerTop10(): array
     {
         $rsm = new ResultSetMapping();

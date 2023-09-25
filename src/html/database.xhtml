@@ -41,6 +41,7 @@
 				<a href="?SHOW_TOP_LATINUM=1">Die 10 Söhne des Nagus</a><br />
 				<a href="?SHOW_TOP_ACTIV_TRADEPOST=1">Die 10 aktivsten Handelsposten</a><br />
 				<a href="?SHOW_COLONY_WORTH=1">Die Top 10 der Architekten</a><br />
+				<a href="?SHOW_COLONY_PRODUCTION_WORTH=1">Die Top 10 der Produzenten</a><br />
 				<a href="?SHOW_SATISFIED_WORKER=1">Die Top 10 der besten Arbeitgeber</a><br />
 			</div>
 		</div>
@@ -308,6 +309,50 @@
 		</tal:block>
 	</tal:block>
 </metal:macro>
+<metal:macro metal:define-macro="top_producers">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<div class="statisticsToplist">
+				<div>
+					<ul class="statistics">
+						<li tal:repeat="entry PRODUCERS_LIST">
+							<div class="userGrid">
+								<div class="placement">
+									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+								</div>
+								<div class="userprofile">
+									<metal:macro metal:use-macro="macros.xhtml/useravatar"
+										tal:define="USER entry/getUser" />
+								</div>
+								<div class="userName" tal:content="structure bbcode:entry/getUser/getName">USER</div>
+								<div>
+									Punkte: <span tal:content="entry/getPoints">AMOUNT</span>
+								</div>
+								<div>
+									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow"
+										tal:define="id entry/getUser/getId" />
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h1>Produzenten</h1>
+					<p>In dieser Liste werden die 10 Spieler mit der ergiebigsten Produktion im Spiel aufgeführt.
+					</p>
+					<p>Der Wert aller produzierter Waren von sämtlichen Kolonien wird aufsummiert und in Relation zu
+						allen Spielern gesetzt.
+						Der Punktestand kann jeden Tick variieren.</p>
+					<br />
+					<p>Dein eigener Punktestand: <span tal:condition="exists: USER_POINTS">${USER_POINTS}</span><span
+							tal:condition="not: exists: USER_POINTS">0.00</span></p>
+					<br />
+				</div>
+			</div>
+		</tal:block>
+	</tal:block>
+</metal:macro>
 <metal:macro metal:define-macro="top_employer">
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
@@ -343,7 +388,7 @@
 					<p>Als zufriedene Arbeitnehmer werden alle Arbeiter auf Kolonien angesehen, welche durch hohen
 						Lebensstandard abgedeckt sind.</p>
 					<br />
-					<p tal:condition="exists:USER_POINTS">Dein eigener Punktestand: <span
+					<p phptal:cache="1h per USER_ID" tal:condition="exists:USER_POINTS">Dein eigener Punktestand: <span
 							tal:replace="USER_POINTS">POINTS</span></p>
 					<br />
 					<p>Diese Liste wird jede Stunde aktualisiert.</p>
