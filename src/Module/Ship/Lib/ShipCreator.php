@@ -206,43 +206,28 @@ final class ShipCreator implements ShipCreatorInterface
             $systems[ShipSystemTypeEnum::SYSTEM_UPLINK] = 0;
         }
 
-        foreach ($modules as $module) {
-            switch ($module->getModule()->getType()) {
-                case ShipModuleTypeEnum::MODULE_TYPE_SHIELDS:
-                    $systems[ShipSystemTypeEnum::SYSTEM_SHIELDS] = $module->getModule();
-                    break;
-                case ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE:
-                    $systems[ShipSystemTypeEnum::SYSTEM_WARPDRIVE] = $module->getModule();
-                    break;
-                case ShipModuleTypeEnum::MODULE_TYPE_EPS:
-                    $systems[ShipSystemTypeEnum::SYSTEM_EPS] = $module->getModule();
-                    break;
-                case ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE:
-                    $systems[ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE] = $module->getModule();
-                    break;
-                case ShipModuleTypeEnum::MODULE_TYPE_REACTOR:
-                    if ($module->getModule()->getId() === ShipModuleTypeEnum::MODULE_ID_FUSIONREACTOR) {
-                        $systems[ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR] = $module->getModule();
-                        break;
-                    } else {
-                        $systems[ShipSystemTypeEnum::SYSTEM_WARPCORE] = $module->getModule();
-                        break;
-                    }
-                case ShipModuleTypeEnum::MODULE_TYPE_COMPUTER:
-                    $systems[ShipSystemTypeEnum::SYSTEM_COMPUTER] = $module->getModule();
-                    break;
-                case ShipModuleTypeEnum::MODULE_TYPE_PHASER:
-                    $systems[ShipSystemTypeEnum::SYSTEM_PHASER] = $module->getModule();
-                    break;
-                case ShipModuleTypeEnum::MODULE_TYPE_TORPEDO:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO] = $module->getModule();
-                    break;
+        foreach ($modules as $buildplanmodule) {
+            $module = $buildplanmodule->getModule();
+
+            $systemType = $module->getSystemType();
+            if (
+                $systemType === null
+                && array_key_exists($module->getType(), ShipModuleTypeEnum::MODULE_TYPE_TO_SYSTEM_TYPE)
+            ) {
+                $systemType = ShipModuleTypeEnum::MODULE_TYPE_TO_SYSTEM_TYPE[$module->getType()];
+            }
+
+            if ($systemType !== null) {
+                $systems[$systemType] = $module;
+            }
+
+            switch ($module->getType()) {
                 case ShipModuleTypeEnum::MODULE_TYPE_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_LSS] = $module->getModule();
+                    $systems[ShipSystemTypeEnum::SYSTEM_LSS] = $module;
                     $systems[ShipSystemTypeEnum::SYSTEM_NBS] = 0;
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
-                    $this->addSpecialSystems($module->getModule(), $systems);
+                    $this->addSpecialSystems($module, $systems);
                     break;
             }
         }

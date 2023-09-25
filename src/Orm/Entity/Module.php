@@ -117,6 +117,12 @@ class Module implements ModuleInterface
     private ?int $faction_id = null;
 
     /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $system_type = 0;
+
+    /**
      * @var ResearchInterface
      *
      * @ManyToOne(targetEntity="Research")
@@ -379,6 +385,11 @@ class Module implements ModuleInterface
         $this->faction_id = $factionId;
 
         return $this;
+    }
+
+    public function getSystemType(): ?int
+    {
+        return $this->system_type;
     }
 
     public function hasSpecial($special_id): bool
