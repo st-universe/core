@@ -73,12 +73,14 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
-    public function createDatabaseTopListDiscoverer(
-        array $item
-    ): DatabaseTopListDiscover {
-        return new DatabaseTopListDiscover(
+    public function createDatabaseTopListWithPoints(
+        int $userId,
+        string $points
+    ): DatabaseTopListWithPoints {
+        return new DatabaseTopListWithPoints(
             $this->userRepository,
-            $item
+            $userId,
+            $points
         );
     }
 
@@ -88,17 +90,6 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         return new DatabaseTopListFlights(
             $this->userRepository,
             $item
-        );
-    }
-
-    public function createDatabaseTopListArchitects(
-        int $userId,
-        string $points
-    ): DatabaseTopListArchitects {
-        return new DatabaseTopListArchitects(
-            $this->userRepository,
-            $userId,
-            $points
         );
     }
 }

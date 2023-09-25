@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
@@ -198,7 +199,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT u.id as user_id, bc.commodity_id as commodity_id, sum(bc.count) as sum
+                'SELECT u.id as user_id, bc.commodity_id AS commodity_id, SUM(bc.count) AS sum
                 FROM stu_user u
                 JOIN stu_colonies c
                 ON u.id = c.user_id 
@@ -213,6 +214,43 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 $rsm
             )
             ->setParameters(['firstUserId' => UserEnum::USER_FIRST_ID])
+            ->getResult();
+    }
+
+    public function getSatisfiedWorkerTop10(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('satisfied', 'satisfied', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT c.user_id,
+                    LEAST(
+                        COALESCE(SUM(c.bev_work), 0),
+                        (SELECT COALESCE(SUM(bc.count), 0)
+                        FROM stu_colonies c2
+                        JOIN stu_colonies_fielddata cf
+                        ON cf.colonies_id = c2.id
+                        JOIN stu_buildings b
+                        ON cf.buildings_id = b.id
+                        JOIN stu_buildings_commodity bc
+                        ON b.id = bc.buildings_id
+                        WHERE c2.user_id = c.user_id
+                        AND bc.commodity_id = :lifeStandard
+                        AND cf.aktiv = 1)
+                    ) AS satisfied
+                FROM stu_colonies c
+                WHERE c.user_id >= :firstUserId
+                GROUP BY c.user_id
+                ORDER BY satisfied DESC
+                LIMIT 10',
+                $rsm
+            )
+            ->setParameters([
+                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'lifeStandard' => CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD
+            ])
             ->getResult();
     }
 }

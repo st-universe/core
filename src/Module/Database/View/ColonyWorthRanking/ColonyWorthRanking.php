@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\ColonyWorthRanking;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Database\Lib\DatabaseTopListArchitects;
+use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -47,7 +47,7 @@ final class ColonyWorthRanking implements ViewControllerInterface
         $game->setTemplateVar(
             'ARCHITECTS_LIST',
             array_map(
-                fn (int $userId, float $points): DatabaseTopListArchitects => $this->databaseUiFactory->createDatabaseTopListArchitects(
+                fn (int $userId, float $points): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints(
                     $userId,
                     $this->floatPointsToPercentageString($points)
                 ),
