@@ -96,4 +96,6 @@ interface ModuleInterface
     public function getFactionId(): ?int;
 
     public function setFactionId(int $factionId): ?ModuleInterface;
+
+    public function getSystemType(): ?int;
 }
