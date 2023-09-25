@@ -17,10 +17,10 @@ class ModuleTypeDescriptionMapper
                 return _("EPS-Leistung");
             case ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE:
                 return _("Antrieb");
-            case ShipModuleTypeEnum::MODULE_TYPE_WARPCORE:
+            case ShipModuleTypeEnum::MODULE_TYPE_REACTOR:
                 return _("Reaktor");
             case ShipModuleTypeEnum::MODULE_TYPE_COMPUTER:
-                return _("Sensoren");
+                return _("Computer");
             case ShipModuleTypeEnum::MODULE_TYPE_PHASER:
                 return _("Energiewaffe");
             case ShipModuleTypeEnum::MODULE_TYPE_TORPEDO:
@@ -29,6 +29,8 @@ class ModuleTypeDescriptionMapper
                 return _("Spezial");
             case ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE:
                 return _("Warpantrieb");
+            case ShipModuleTypeEnum::MODULE_TYPE_SENSOR:
+                return _("Sensoren");
         }
         return '';
     }

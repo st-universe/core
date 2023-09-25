@@ -232,6 +232,30 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
      * @Column(type="smallint")
      *
      */
+    private int $module_level_10 = 0;
+
+    /**
+     * @Column(type="smallint")
+     *
+     */
+    private int $module_mandatory_10 = 0;
+
+    /**
+     * @Column(type="smallint")
+     *
+     */
+    private int $module_level_10_min = 0;
+
+    /**
+     * @Column(type="smallint")
+     *
+     */
+    private int $module_level_10_max = 0;
+
+    /**
+     * @Column(type="smallint")
+     *
+     */
     private int $module_level_11 = 0;
 
     /**
@@ -653,6 +677,54 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
+    public function getModuleLevel10(): int
+    {
+        return $this->module_level_10;
+    }
+
+    public function setModuleLevel10(int $moduleLevel10): ShipRumpModuleLevelInterface
+    {
+        $this->module_level_10 = $moduleLevel10;
+
+        return $this;
+    }
+
+    public function getModuleMandatory10(): int
+    {
+        return $this->module_mandatory_10;
+    }
+
+    public function setModuleMandatory10(int $moduleMandatory10): ShipRumpModuleLevelInterface
+    {
+        $this->module_mandatory_10 = $moduleMandatory10;
+
+        return $this;
+    }
+
+    public function getModuleLevel10Min(): int
+    {
+        return $this->module_level_10_min;
+    }
+
+    public function setModuleLevel10Min(int $moduleLevel10Min): ShipRumpModuleLevelInterface
+    {
+        $this->module_level_10_min = $moduleLevel10Min;
+
+        return $this;
+    }
+
+    public function getModuleLevel10Max(): int
+    {
+        return $this->module_level_10_max;
+    }
+
+    public function setModuleLevel10Max(int $moduleLevel10Max): ShipRumpModuleLevelInterface
+    {
+        $this->module_level_10_max = $moduleLevel10Max;
+
+        return $this;
+    }
+
     public function getModuleLevel11(): int
     {
         return $this->module_level_11;
@@ -712,6 +784,7 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
             $this->getModuleMandatory6() +
             $this->getModuleMandatory7() +
             $this->getModuleMandatory8() +
+            $this->getModuleMandatory10() +
             $this->getModuleMandatory11();
     }
 }

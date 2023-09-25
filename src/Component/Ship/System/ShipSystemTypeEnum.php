@@ -38,6 +38,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_THOLIAN_WEB = 28;
     public const SYSTEM_RPG_MODULE = 29;
 
+
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
     public const SYSTEM_PRIORITIES = [
@@ -48,7 +49,8 @@ final class ShipSystemTypeEnum
         ShipSystemTypeEnum::SYSTEM_DEFLECTOR => 4,
         ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => 3,
         ShipSystemTypeEnum::SYSTEM_WARPDRIVE => 3,
-        ShipSystemTypeEnum::SYSTEM_COMPUTER => 2,
+        ShipSystemTypeEnum::SYSTEM_LSS => 2,
+        ShipSystemTypeEnum::SYSTEM_NBS => 2,
         ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => 0,
         ShipSystemTypeEnum::SYSTEM_CLOAK => 0
     ];

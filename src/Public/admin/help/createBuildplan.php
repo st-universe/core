@@ -62,10 +62,11 @@ Init::run(function (ContainerInterface $dic): void {
             ShipModuleTypeEnum::MODULE_TYPE_SHIELDS,
             ShipModuleTypeEnum::MODULE_TYPE_EPS,
             ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE,
-            ShipModuleTypeEnum::MODULE_TYPE_WARPCORE,
+            ShipModuleTypeEnum::MODULE_TYPE_REACTOR,
             ShipModuleTypeEnum::MODULE_TYPE_COMPUTER,
             ShipModuleTypeEnum::MODULE_TYPE_PHASER,
             ShipModuleTypeEnum::MODULE_TYPE_TORPEDO,
+            ShipModuleTypeEnum::MODULE_TYPE_SENSOR,
             ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE,
         ];
         $moduleList = request::postArray('mod');
