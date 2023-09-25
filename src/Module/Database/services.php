@@ -24,6 +24,7 @@ use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\LatinumRanking\LatinumRanking;
 use Stu\Module\Database\View\Overview\Overview;
+use Stu\Module\Database\View\SatisfiedWorkerRanking\SatisfiedWorkerRanking;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurface;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequest;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequestInterface;
@@ -58,6 +59,7 @@ return [
         ColonyWorthRanking::VIEW_IDENTIFIER => autowire(ColonyWorthRanking::class),
         CommoditiesOverview::VIEW_IDENTIFIER => autowire(CommoditiesOverview::class),
         LatinumRanking::VIEW_IDENTIFIER => autowire(LatinumRanking::class),
+        SatisfiedWorkerRanking::VIEW_IDENTIFIER => autowire(SatisfiedWorkerRanking::class),
         ShowColonySurface::VIEW_IDENTIFIER => autowire(ShowColonySurface::class),
         ShowCommoditiesLocations::VIEW_IDENTIFIER => autowire(ShowCommoditiesLocations::class),
         ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class),

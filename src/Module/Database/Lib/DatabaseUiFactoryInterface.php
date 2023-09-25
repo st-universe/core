@@ -26,12 +26,10 @@ interface DatabaseUiFactoryInterface
         array $item
     ): DatabaseTopListCrew;
 
-    /**
-     * @param array{user_id: int, points: int} $item
-     */
-    public function createDatabaseTopListDiscoverer(
-        array $item
-    ): DatabaseTopListDiscover;
+    public function createDatabaseTopListWithPoints(
+        int $userId,
+        string $points
+    ): DatabaseTopListWithPoints;
 
     /**
      * @param array{user_id: int, sc: int, race: null|int, shipc: int} $item
@@ -39,9 +37,4 @@ interface DatabaseUiFactoryInterface
     public function createDatabaseTopListFlights(
         array $item
     ): DatabaseTopListFlights;
-
-    public function createDatabaseTopListArchitects(
-        int $userId,
-        string $points
-    ): DatabaseTopListArchitects;
 }

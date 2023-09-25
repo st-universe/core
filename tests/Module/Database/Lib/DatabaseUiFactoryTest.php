@@ -72,11 +72,11 @@ class DatabaseUiFactoryTest extends StuTestCase
         );
     }
 
-    public function testCreateDatabaseTopListDiscovererReturnsInstance(): void
+    public function testCreateDatabaseTopListWithPointsReturnsInstance(): void
     {
         static::assertInstanceOf(
-            DatabaseTopListDiscover::class,
-            $this->subject->createDatabaseTopListDiscoverer(['user_id' => 666])
+            DatabaseTopListWithPoints::class,
+            $this->subject->createDatabaseTopListWithPoints(42, '666')
         );
     }
 

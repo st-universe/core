@@ -6,7 +6,7 @@ namespace Stu\Module\Database\Lib;
 
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-class DatabaseTopListArchitects extends DatabaseTopList
+class DatabaseTopListWithPoints extends DatabaseTopList
 {
     private string $points;
 
