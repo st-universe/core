@@ -35,9 +35,10 @@
 		<div style="width: 300px; float: left;">
 			<div class="divhead">Highscores</div>
 			<div class="divbody">
-				<div>Wissenschaft</div>
+				<div>Siedler</div>
 				<div class="divbody">
 					<a href="?SHOW_TOP_DISCOVER=1">Die 10 besten Entdecker</a><br />
+					<a href="?SHOW_TOP_RPG=1">Die 10 bestbewerteten RPG-Schreiber</a><br />
 				</div>
 				<div>Schiffe (anonym)</div>
 				<div class="divbody">
@@ -102,6 +103,46 @@
 					<p>Zu Entdeckungen zählen Sternensysteme, Schiffs-Typen, Handelsposten uvm., die unter anderem durch
 						das Scannen bestimmer Objekte erlangt
 						und danach im <a href="/database.php">Datenbank-Bereich</a> eingesehen werden können.</p>
+					<br />
+					<p>Dein eigener Punktestand: <span tal:replace="USER_COUNT">POINTS</span></p>
+					<br />
+					<p>Diese Liste wird jede Stunde aktualisiert.</p>
+				</div>
+			</div>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="top_rpg_user">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<div class="statisticsToplist">
+				<div phptal:cache="1h">
+					<ul class="statistics">
+						<li tal:repeat="entry PRESTIGE_LIST">
+							<div class="userGrid">
+								<div class="placement">
+									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+								</div>
+								<div class="userprofile">
+									<metal:macro metal:use-macro="macros.xhtml/useravatar"
+										tal:define="USER entry/getUser" />
+								</div>
+								<div class="userName" tal:content="structure bbcode:entry/getUser/getName">USER</div>
+								<div>
+									Rating: <span tal:content="entry/getPoints">AMOUNT</span>
+								</div>
+								<div>
+									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow"
+										tal:define="id entry/getUser/getId" />
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h1>RPG-Schreiber</h1>
+					<p>In dieser Liste werden die 10 Spieler mit der besten RPG-Bewertung im Spiel aufgeführt.</p>
 					<br />
 					<p>Dein eigener Punktestand: <span tal:replace="USER_COUNT">POINTS</span></p>
 					<br />

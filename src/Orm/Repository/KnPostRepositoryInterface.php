@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<KnPost>
@@ -53,4 +54,11 @@ interface KnPostRepositoryInterface extends ObjectRepository
     public function searchByContent(string $content): array;
 
     public function truncateAllEntities(): void;
+
+    /**
+     * @return array<array{user_id: int, votes: int}>
+     */
+    public function getRpgVotesTop10(): array;
+
+    public function getRpgVotesOfUser(UserInterface $user): ?int;
 }

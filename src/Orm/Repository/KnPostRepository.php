@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<KnPost>
@@ -124,5 +127,47 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
                 KnPost::class
             )
         )->execute();
+    }
+
+    public function getRpgVotesTop10(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('votes', 'votes', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT kn.user_id, SUM(value::float) AS votes
+            FROM stu_kn kn
+            CROSS JOIN LATERAL json_each_text(kn.ratings)
+            WHERE kn.user_id >= :firstUserId
+            GROUP BY kn.user_id
+            ORDER BY votes DESC
+            LIMIT 10',
+            $rsm
+        )
+            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->getResult();
+    }
+
+    public function getRpgVotesOfUser(UserInterface $user): ?int
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('votes', 'votes', 'integer');
+
+        $result = $this->getEntityManager()->createNativeQuery(
+            'SELECT SUM(value::int) as votes
+            FROM stu_kn kn
+            CROSS JOIN LATERAL json_each_text(kn.ratings)
+            WHERE kn.user_id = :userId',
+            $rsm
+        )
+            ->setParameter('userId', $user->getId())
+            ->getSingleScalarResult();
+
+        if ($result === null) {
+            return null;
+        }
+
+        return (int) $result;
     }
 }
