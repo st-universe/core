@@ -25,6 +25,7 @@ use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\LatinumRanking\LatinumRanking;
 use Stu\Module\Database\View\Overview\Overview;
+use Stu\Module\Database\View\RpgRanking\RpgRanking;
 use Stu\Module\Database\View\SatisfiedWorkerRanking\SatisfiedWorkerRanking;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurface;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequest;
@@ -61,6 +62,7 @@ return [
         ColonyProductionWorthRanking::VIEW_IDENTIFIER => autowire(ColonyProductionWorthRanking::class),
         CommoditiesOverview::VIEW_IDENTIFIER => autowire(CommoditiesOverview::class),
         LatinumRanking::VIEW_IDENTIFIER => autowire(LatinumRanking::class),
+        RpgRanking::VIEW_IDENTIFIER => autowire(RpgRanking::class),
         SatisfiedWorkerRanking::VIEW_IDENTIFIER => autowire(SatisfiedWorkerRanking::class),
         ShowColonySurface::VIEW_IDENTIFIER => autowire(ShowColonySurface::class),
         ShowCommoditiesLocations::VIEW_IDENTIFIER => autowire(ShowCommoditiesLocations::class),
