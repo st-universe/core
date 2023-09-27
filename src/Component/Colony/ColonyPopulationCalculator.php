@@ -155,7 +155,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         if ($im < 0) {
             return 0;
         }
-        return (int) round(
+        return (int) floor(
             $im / 100 * $this->colony->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50
         );
     }
