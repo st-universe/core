@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
 use Stu\Lib\InformationWrapper;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class FightMessageCollection implements FightMessageCollectionInterface
 {
@@ -32,7 +33,7 @@ final class FightMessageCollection implements FightMessageCollectionInterface
         foreach ($this->messages as $message) {
             $recipientId = $message->getRecipientId();
 
-            if ($recipientId === null) {
+            if ($recipientId === null || $recipientId === UserEnum::USER_NOONE) {
                 continue;
             }
 
