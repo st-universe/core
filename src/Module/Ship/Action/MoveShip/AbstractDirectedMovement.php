@@ -6,6 +6,8 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
@@ -26,18 +28,22 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
     private ShipMoverInterface $shipMover;
 
+    private DistributedMessageSenderInterface $distributedMessageSender;
+
     public function __construct(
         MoveShipRequestInterface $moveShipRequest,
         ShipLoaderInterface $shipLoader,
         ShipMoverInterface $shipMover,
         FlightRouteFactoryInterface $flightRouteFactory,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        DistributedMessageSenderInterface $distributedMessageSender
     ) {
         $this->moveShipRequest = $moveShipRequest;
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
         $this->flightRouteFactory = $flightRouteFactory;
         $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->distributedMessageSender = $distributedMessageSender;
     }
 
     abstract protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool;
@@ -64,6 +70,14 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
             $this->getFlightRoute($wrapper)
         );
         $game->addInformationWrapper($messages->getInformationDump());
+
+
+        $this->distributedMessageSender->distributeMessageCollection(
+            $messages,
+            $userId,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
+
 
         if ($ship->isDestroyed()) {
             return;

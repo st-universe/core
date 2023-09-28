@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -41,6 +42,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private DistributedMessageSenderInterface $distributedMessageSender;
+
     private StuRandom $stuRandom;
 
     public function __construct(
@@ -51,6 +54,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         ShipWrapperFactoryInterface $shipWrapperFactory,
         ApplyDamageInterface $applyDamage,
         PrivateMessageSenderInterface $privateMessageSender,
+        DistributedMessageSenderInterface $distributedMessageSender,
         StuRandom $stuRandom
     ) {
         $this->mapRepository = $mapRepository;
@@ -60,6 +64,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->applyDamage = $applyDamage;
         $this->privateMessageSender = $privateMessageSender;
+        $this->distributedMessageSender = $distributedMessageSender;
         $this->stuRandom = $stuRandom;
     }
 
@@ -191,27 +196,24 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         FightMessageCollectionInterface $messageCollectionForShips,
         FightMessageCollectionInterface $messageCollectionForBases
     ): void {
-        $this->sendMessageDump($sectorString, $messageCollectionForShips, false);
-        $this->sendMessageDump($sectorString, $messageCollectionForBases, true);
-    }
 
-    private function sendMessageDump(string $sectorString, FightMessageCollectionInterface $messageCollection, bool $isBase): void
-    {
-        foreach ($messageCollection->getRecipientIds() as $recipientId) {
-            $informations = $messageCollection->getInformationDump($recipientId);
+        $header = sprintf(
+            "[b][color=red]Subraumellipse in Sektor %s[/color][/b]",
+            $sectorString
+        );
 
-            $pm = sprintf(
-                "[b][color=red]Subraumellipse in Sektor %s[/color][/b]\n\n%s",
-                $sectorString,
-                $informations->getInformationsAsString()
-            );
+        $this->distributedMessageSender->distributeMessageCollection(
+            $messageCollectionForShips,
+            UserEnum::USER_NOONE,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $header
+        );
 
-            $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
-                $recipientId,
-                $pm,
-                $isBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-        }
+        $this->distributedMessageSender->distributeMessageCollection(
+            $messageCollectionForBases,
+            UserEnum::USER_NOONE,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            $header
+        );
     }
 }

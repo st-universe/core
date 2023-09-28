@@ -7,6 +7,9 @@ namespace Stu\Module\Ship\Action\MoveShip;
 use Mockery\MockInterface;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
@@ -35,6 +38,9 @@ class DirectedMovementTest extends StuTestCase
     /** @var MockInterface&StarSystemMapRepositoryInterface */
     private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
+    /** @var MockInterface&DistributedMessageSenderInterface */
+    private DistributedMessageSenderInterface $distributedMessageSender;
+
     protected function setUp(): void
     {
         $this->moveShipRequest = $this->mock(MoveShipRequestInterface::class);
@@ -42,6 +48,7 @@ class DirectedMovementTest extends StuTestCase
         $this->shipMover = $this->mock(ShipMoverInterface::class);
         $this->flightRouteFactory = $this->mock(FlightRouteFactoryInterface::class);
         $this->starSystemMapRepository = $this->mock(StarSystemMapRepositoryInterface::class);
+        $this->distributedMessageSender = $this->mock(DistributedMessageSenderInterface::class);
     }
 
     public static function moveDataProvider(): array
@@ -71,13 +78,13 @@ class DirectedMovementTest extends StuTestCase
     ): void {
         $userId = 666;
         $shipId = 42;
-        $informations = $this->mock(InformationWrapper::class);
 
         $ship = $this->mock(ShipInterface::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
         $holdingWeb = $this->mock(TholianWebInterface::class);
 
         /** @var AbstractDirectedMovement $subject */
@@ -86,7 +93,8 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -147,7 +155,16 @@ class DirectedMovementTest extends StuTestCase
                 $flightRoute
             )
             ->once()
+            ->andReturn($messages);
+
+        $messages->shouldReceive('getInformationDump')
+            ->withNoArgs()
+            ->once()
             ->andReturn($informationWrapper);
+
+        $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
+            ->with($messages, $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP)
+            ->once();
 
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -181,7 +198,8 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -225,7 +243,8 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -277,7 +296,8 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -326,7 +346,6 @@ class DirectedMovementTest extends StuTestCase
     {
         $userId = 666;
         $shipId = 42;
-        $message = 'some-message';
         $shipPosX = 5;
         $shipPosY = 5;
         $destX = 6;
@@ -337,6 +356,7 @@ class DirectedMovementTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
         $holdingWeb = $this->mock(TholianWebInterface::class);
 
@@ -345,7 +365,8 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -406,7 +427,16 @@ class DirectedMovementTest extends StuTestCase
                 $flightRoute
             )
             ->once()
+            ->andReturn($messages);
+
+        $messages->shouldReceive('getInformationDump')
+            ->withNoArgs()
+            ->once()
             ->andReturn($informationWrapper);
+
+        $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
+            ->with($messages, $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP)
+            ->once();
 
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -435,6 +465,7 @@ class DirectedMovementTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
         $holdingWeb = $this->mock(TholianWebInterface::class);
 
@@ -443,7 +474,8 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -500,7 +532,16 @@ class DirectedMovementTest extends StuTestCase
                 $flightRoute
             )
             ->once()
+            ->andReturn($messages);
+
+        $messages->shouldReceive('getInformationDump')
+            ->withNoArgs()
+            ->once()
             ->andReturn($informationWrapper);
+
+        $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
+            ->with($messages, $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP)
+            ->once();
 
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()

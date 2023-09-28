@@ -10,8 +10,8 @@ use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
@@ -21,7 +21,6 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TholianWebInterface;
 
 //TODO unit tests and request class
 final class AttackShip implements ActionControllerInterface
@@ -30,7 +29,7 @@ final class AttackShip implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private PrivateMessageSenderInterface $privateMessageSender;
+    private DistributedMessageSenderInterface $distributedMessageSender;
 
     private ShipAttackCycleInterface $shipAttackCycle;
 
@@ -46,7 +45,7 @@ final class AttackShip implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
+        DistributedMessageSenderInterface $distributedMessageSender,
         ShipAttackCycleInterface $shipAttackCycle,
         InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
@@ -55,7 +54,7 @@ final class AttackShip implements ActionControllerInterface
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
+        $this->distributedMessageSender = $distributedMessageSender;
         $this->shipAttackCycle = $shipAttackCycle;
         $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
@@ -222,22 +221,18 @@ final class AttackShip implements ActionControllerInterface
         FightMessageCollectionInterface $messageCollection,
         bool $isTargetBase
     ): void {
-        foreach ($messageCollection->getRecipientIds() as $recipientId) {
-            $messageDump = $messageCollection->getInformationDump($recipientId);
 
-            $pm = sprintf(
-                _("Kampf in Sektor %s\n%s"),
-                $sectorString,
-                $messageDump->getInformationsAsString()
-            );
+        $header = sprintf(
+            _("Kampf in Sektor %s"),
+            $sectorString
+        );
 
-            $this->privateMessageSender->send(
-                $userId,
-                $recipientId,
-                $pm,
-                $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-        }
+        $this->distributedMessageSender->distributeMessageCollection(
+            $messageCollection,
+            $userId,
+            $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $header
+        );
     }
 
     /**
