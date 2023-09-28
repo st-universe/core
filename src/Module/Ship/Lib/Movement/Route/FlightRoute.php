@@ -7,7 +7,9 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
-use Stu\Lib\InformationWrapper;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -21,6 +23,12 @@ final class FlightRoute implements FlightRouteInterface
     private LoadWaypointsInterface $loadWaypoints;
 
     private EnterWaypointInterface $enterWaypoint;
+
+    /** @var array<string, FlightConsequenceInterface>  */
+    private array $flightConsequences;
+
+    /** @var array<string, FlightConsequenceInterface> */
+    private array $postFlightConsequences;
 
     //Members
     private bool $isTraversing = false;
@@ -36,14 +44,22 @@ final class FlightRoute implements FlightRouteInterface
      */
     private Collection $waypoints;
 
+    /**
+     * @param array<string, FlightConsequenceInterface> $flightConsequences
+     * @param array<string, FlightConsequenceInterface> $postFlightConsequences
+     */
     public function __construct(
         CheckDestinationInterface $checkDestination,
         LoadWaypointsInterface $loadWaypoints,
-        EnterWaypointInterface $enterWaypoint
+        EnterWaypointInterface $enterWaypoint,
+        array $flightConsequences,
+        array $postFlightConsequences,
     ) {
         $this->checkDestination = $checkDestination;
         $this->loadWaypoints = $loadWaypoints;
         $this->enterWaypoint = $enterWaypoint;
+        $this->flightConsequences = $flightConsequences;
+        $this->postFlightConsequences = $postFlightConsequences;
 
         $this->waypoints = new ArrayCollection();
     }
@@ -78,6 +94,7 @@ final class FlightRoute implements FlightRouteInterface
     public function setDestinationViaCoordinates(ShipInterface $ship, int $x, int $y): FlightRouteInterface
     {
         $start = $ship->getCurrentMapField();
+        $this->current = $start;
         $destination = $this->checkDestination->validate($ship, $x, $y);
 
         if ($start !== $destination) {
@@ -86,6 +103,11 @@ final class FlightRoute implements FlightRouteInterface
         }
 
         return $this;
+    }
+
+    public function getCurrentWaypoint(): MapInterface|StarSystemMapInterface
+    {
+        return $this->current;
     }
 
     public function getNextWaypoint(): MapInterface|StarSystemMapInterface
@@ -115,16 +137,36 @@ final class FlightRoute implements FlightRouteInterface
     }
 
     public function enterNextWaypoint(
-        ShipInterface $ship,
-        MapInterface|StarSystemMapInterface $nextWaypoint,
-        InformationWrapper $informations
+        ShipWrapperInterface $wrapper,
+        FightMessageCollectionInterface $messages
     ): void {
+
+        // flight consequences
+        $this->walkConsequences($this->flightConsequences, $wrapper, $messages);
+
+        // enter waypoint
         $this->enterWaypoint->enterNextWaypoint(
-            $ship,
+            $wrapper->get(),
             $this->isTraversing,
-            $nextWaypoint,
-            $this->wormholeEntry,
-            $informations
+            $this->getNextWaypoint(),
+            $this->wormholeEntry
+        );
+
+        // post flight consequences
+        $this->walkConsequences($this->postFlightConsequences, $wrapper, $messages);
+    }
+
+    /**
+     * @param array<string, FlightConsequenceInterface> $consequences
+     */
+    private function walkConsequences(
+        array $consequences,
+        ShipWrapperInterface $wrapper,
+        FightMessageCollectionInterface $messages
+    ): void {
+        array_walk(
+            $consequences,
+            fn (FlightConsequenceInterface $consequence) => $consequence->trigger($wrapper, $this, $messages)
         );
     }
 
@@ -136,5 +178,45 @@ final class FlightRoute implements FlightRouteInterface
     public function getRouteMode(): int
     {
         return $this->routeMode;
+    }
+
+    public function isTraversing(): bool
+    {
+        return $this->isTraversing;
+    }
+
+    public function isImpulseDriveNeeded(): bool
+    {
+        $routeMode = $this->getRouteMode();
+
+        if (
+            $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY
+            || $routeMode === RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY
+        ) {
+            return true;
+        }
+
+        return $routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT
+            && $this->getNextWaypoint() instanceof StarSystemMapInterface;
+    }
+
+    public function isWarpDriveNeeded(): bool
+    {
+        $routeMode = $this->getRouteMode();
+
+        if (
+            $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT
+            || $routeMode === RouteModeEnum::ROUTE_MODE_TRANSWARP
+        ) {
+            return true;
+        }
+
+        return $routeMode === RouteModeEnum::ROUTE_MODE_FLIGHT
+            && $this->getNextWaypoint() instanceof MapInterface;
+    }
+
+    public function isTranswarpCoilNeeded(): bool
+    {
+        return $this->getRouteMode() === RouteModeEnum::ROUTE_MODE_TRANSWARP;
     }
 }

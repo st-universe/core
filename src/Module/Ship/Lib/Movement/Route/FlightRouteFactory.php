@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -17,14 +18,28 @@ final class FlightRouteFactory implements FlightRouteFactoryInterface
 
     private EnterWaypoint $enterWaypoint;
 
+    /** @var array<string, FlightConsequenceInterface>  */
+    private array $flightConsequences;
+
+    /** @var array<string, FlightConsequenceInterface> */
+    private array $postFlightConsequences;
+
+    /**
+     * @param array<string, FlightConsequenceInterface> $flightConsequences
+     * @param array<string, FlightConsequenceInterface> $postFlightConsequences
+     */
     public function __construct(
         CheckDestinationInterface $checkDestination,
         LoadWaypointsInterface $loadWaypoints,
-        EnterWaypoint $enterWaypoint
+        EnterWaypoint $enterWaypoint,
+        array $flightConsequences,
+        array $postFlightConsequences,
     ) {
         $this->checkDestination = $checkDestination;
         $this->loadWaypoints = $loadWaypoints;
         $this->enterWaypoint = $enterWaypoint;
+        $this->flightConsequences = $flightConsequences;
+        $this->postFlightConsequences = $postFlightConsequences;
     }
 
     public function getRouteForMapDestination(MapInterface|StarSystemMapInterface $destination): FlightRouteInterface
@@ -47,7 +62,9 @@ final class FlightRouteFactory implements FlightRouteFactoryInterface
         return new FlightRoute(
             $this->checkDestination,
             $this->loadWaypoints,
-            $this->enterWaypoint
+            $this->enterWaypoint,
+            $this->flightConsequences,
+            $this->postFlightConsequences
         );
     }
 }

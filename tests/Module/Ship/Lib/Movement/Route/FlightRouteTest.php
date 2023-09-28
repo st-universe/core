@@ -8,6 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Lib\InformationWrapper;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -25,6 +28,8 @@ class FlightRouteTest extends StuTestCase
     /** @var MockInterface&EnterWaypointInterface */
     private MockInterface $enterWaypoint;
 
+    private FlightConsequenceInterface $flightConsequence;
+
     private FlightRouteInterface $subject;
 
     protected function setUp(): void
@@ -33,10 +38,14 @@ class FlightRouteTest extends StuTestCase
         $this->loadWaypoints = $this->mock(LoadWaypointsInterface::class);
         $this->enterWaypoint = $this->mock(EnterWaypointInterface::class);
 
+        $this->flightConsequence = $this->mock(FlightConsequenceInterface::class);
+
         $this->subject = new FlightRoute(
             $this->checkDestination,
             $this->loadWaypoints,
-            $this->enterWaypoint
+            $this->enterWaypoint,
+            [$this->flightConsequence],
+            [$this->flightConsequence]
         );
     }
 
@@ -44,7 +53,8 @@ class FlightRouteTest extends StuTestCase
     {
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
 
         $this->subject->setDestination($map);
 
@@ -55,12 +65,19 @@ class FlightRouteTest extends StuTestCase
                 $ship,
                 false,
                 $map,
-                null,
-                $informationWrapper
+                null
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $map, $informationWrapper);
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $this->flightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->twice();
+
+        $this->subject->enterNextWaypoint($wrapper, $messages);
 
         $this->subject->stepForward();
 
@@ -71,8 +88,9 @@ class FlightRouteTest extends StuTestCase
     public function testSetDestinationExpectOneSystemMapWaypoint(): void
     {
         $map = $this->mock(StarSystemMapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
 
         $this->subject->setDestination($map);
 
@@ -83,12 +101,19 @@ class FlightRouteTest extends StuTestCase
                 $ship,
                 false,
                 $map,
-                null,
-                $informationWrapper
+                null
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $map, $informationWrapper);
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $this->flightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->twice();
+
+        $this->subject->enterNextWaypoint($wrapper, $messages);
 
         $this->subject->stepForward();
 
@@ -100,13 +125,18 @@ class FlightRouteTest extends StuTestCase
     {
         $wormholeEntry = $this->mock(WormholeEntryInterface::class);
         $systemMap = $this->mock(StarSystemMapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
 
         $wormholeEntry->shouldReceive('getSystemMap')
             ->withNoArgs()
             ->once()
             ->andReturn($systemMap);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
 
         $this->subject->setDestinationViaWormhole($wormholeEntry, true);
 
@@ -115,12 +145,15 @@ class FlightRouteTest extends StuTestCase
                 $ship,
                 false,
                 $systemMap,
-                $wormholeEntry,
-                $informationWrapper
+                $wormholeEntry
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $systemMap, $informationWrapper);
+        $this->flightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->twice();
+
+        $this->subject->enterNextWaypoint($wrapper, $messages);
 
         $this->subject->stepForward();
 
@@ -132,13 +165,18 @@ class FlightRouteTest extends StuTestCase
     {
         $wormholeEntry = $this->mock(WormholeEntryInterface::class);
         $map = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
 
         $wormholeEntry->shouldReceive('getMap')
             ->withNoArgs()
             ->once()
             ->andReturn($map);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
 
         $this->subject->setDestinationViaWormhole($wormholeEntry, false);
 
@@ -147,12 +185,15 @@ class FlightRouteTest extends StuTestCase
                 $ship,
                 false,
                 $map,
-                $wormholeEntry,
-                $informationWrapper
+                $wormholeEntry
             )
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $map, $informationWrapper);
+        $this->flightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->twice();
+
+        $this->subject->enterNextWaypoint($wrapper, $messages);
 
         $this->subject->stepForward();
 
@@ -184,8 +225,9 @@ class FlightRouteTest extends StuTestCase
         $start = $this->mock(MapInterface::class);
         $first = $this->mock(MapInterface::class);
         $destination = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $informations = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($first);
@@ -194,6 +236,10 @@ class FlightRouteTest extends StuTestCase
         $ship->shouldReceive('getCurrentMapField')
             ->withNoArgs()
             ->andReturn($start);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
 
         $this->checkDestination->shouldReceive('validate')
             ->with($ship, 42, 5)
@@ -210,10 +256,14 @@ class FlightRouteTest extends StuTestCase
         $this->assertEquals($first, $this->subject->getNextWaypoint());
 
         $this->enterWaypoint->shouldReceive('enterNextWaypoint')
-            ->with($ship, true, $first, null, $informations)
+            ->with($ship, true, $first, null)
             ->once();
 
-        $this->subject->enterNextWaypoint($ship, $first, $informations);
+        $this->flightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->twice();
+
+        $this->subject->enterNextWaypoint($wrapper, $messages);
 
         $this->subject->stepForward();
 
