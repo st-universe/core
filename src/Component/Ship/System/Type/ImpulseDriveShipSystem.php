@@ -14,11 +14,6 @@ final class ImpulseDriveShipSystem extends AbstractShipSystemType implements Shi
         return ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE;
     }
 
-    public function getEnergyUsageForActivation(): int
-    {
-        return 0;
-    }
-
     public function getEnergyConsumption(): int
     {
         return 0;
