@@ -51,18 +51,10 @@ use Stu\Component\Ship\System\Type\WarpdriveShipSystem;
 use Stu\Component\Ship\System\Type\WebEmitterShipSystem;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
-use Stu\Component\Ship\UpdateLocation\Handler\PostFlight\AstroMappingHandler;
-use Stu\Component\Ship\UpdateLocation\Handler\PostFlight\PostFlightTractorHandler;
-use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\PreFlightTractorHandler;
-use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\ShipRepairHandler;
-use Stu\Component\Ship\UpdateLocation\UpdateLocationConsequences;
-use Stu\Component\Ship\UpdateLocation\UpdateLocationConsequencesInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
 
 use function DI\autowire;
 use function DI\create;
-use function DI\get;
 
 return [
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
@@ -105,23 +97,6 @@ return [
             ShipSystemTypeEnum::SYSTEM_RPG_MODULE => autowire(RPGShipSystem::class)
         ],
         autowire(StuTime::class)
-    ),
-    UpdateLocationConsequencesInterface::class => create(UpdateLocationConsequences::class)->constructor(
-        //get(UserRepositoryInterface::class),
-
-        // preMove Handler
-        //.. TODO
-        [
-            'ShipRepairHandler' => autowire(ShipRepairHandler::class),
-            'PreFlightTractorHandler' => autowire(PreFlightTractorHandler::class)
-        ],
-
-        // postMove Handler
-        [
-            'AstroMappingHandler' => autowire(AstroMappingHandler::class),
-            'ShipPostFlightTractorHandlerRepairHandler' => autowire(PostFlightTractorHandler::class)
-        ],
-        get(LoggerUtilFactoryInterface::class),
     ),
     ShipCrewCalculatorInterface::class => autowire(ShipCrewCalculator::class),
 ];
