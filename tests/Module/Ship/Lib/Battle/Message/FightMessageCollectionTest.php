@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\StuTestCase;
 
 class FightMessageCollectionTest extends StuTestCase
@@ -19,6 +20,7 @@ class FightMessageCollectionTest extends StuTestCase
     {
         $fightMessage1 = $this->mock(FightMessageInterface::class);
         $fightMessage2 = $this->mock(FightMessageInterface::class);
+        $fightMessage3 = $this->mock(FightMessageInterface::class);
 
         $fightMessage1->shouldReceive('getRecipientId')
             ->withNoArgs()
@@ -27,10 +29,13 @@ class FightMessageCollectionTest extends StuTestCase
         $fightMessage2->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(5);
+        $fightMessage3->shouldReceive('getRecipientId')
+            ->withNoArgs()
+            ->andReturn(UserEnum::USER_NOONE);
 
         $this->subject->add($fightMessage1);
         $this->subject->add($fightMessage2);
-        $this->subject->add($fightMessage2);
+        $this->subject->add($fightMessage3);
 
         $result = $this->subject->getRecipientIds();
 
