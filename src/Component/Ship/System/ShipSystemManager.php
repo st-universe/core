@@ -85,6 +85,13 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
     }
 
+    public function getEnergyUsageForActivation(int $shipSystemId): int
+    {
+        $system = $this->lookupSystem($shipSystemId);
+
+        return $system->getEnergyUsageForActivation();
+    }
+
     public function getEnergyConsumption(int $shipSystemId): int
     {
         $system = $this->lookupSystem($shipSystemId);
