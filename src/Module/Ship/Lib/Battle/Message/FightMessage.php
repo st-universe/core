@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
+use Stu\Module\PlayerSetting\Lib\UserEnum;
+
 final class FightMessage implements FightMessageInterface
 {
     /**
@@ -19,11 +21,11 @@ final class FightMessage implements FightMessageInterface
      * @param array<string>|null $msg
      */
     public function __construct(
-        int $senderId,
-        ?int $recipientId,
+        ?int $senderId = null,
+        ?int $recipientId = null,
         ?array $msg = null
     ) {
-        $this->senderId = $senderId;
+        $this->senderId = $senderId ?? UserEnum::USER_NOONE;
         $this->recipientId = $recipientId;
         if ($msg !== null) {
             $this->msg = $msg;
