@@ -36,6 +36,8 @@ interface ShipSystemManagerInterface
 
     public function deactivateAll(ShipWrapperInterface $wrapper): void;
 
+    public function getEnergyUsageForActivation(int $shipSystemId): int;
+
     public function getEnergyConsumption(int $shipSystemId): int;
 
     public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface;
