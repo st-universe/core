@@ -49,6 +49,8 @@ use Stu\Module\Message\Action\SwitchContactMode\SwitchContactModeRequestInterfac
 use Stu\Module\Message\Action\WritePm\WritePm;
 use Stu\Module\Message\Action\WritePm\WritePmRequest;
 use Stu\Module\Message\Action\WritePm\WritePmRequestInterface;
+use Stu\Module\Message\Lib\DistributedMessageSender;
+use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageSender;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageUiFactory;
@@ -78,6 +80,7 @@ use Stu\Module\Message\View\ShowWriteQuickPm\ShowWriteQuickPm;
 use function DI\autowire;
 
 return [
+    DistributedMessageSenderInterface::class => autowire(DistributedMessageSender::class),
     PrivateMessageSenderInterface::class => autowire(PrivateMessageSender::class),
     OverviewRequestInterface::class => autowire(OverviewRequest::class),
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
