@@ -198,7 +198,6 @@ use Stu\Module\Ship\Lib\Movement\Route\LoadWaypoints;
 use Stu\Module\Ship\Lib\Movement\Route\LoadWaypointsInterface;
 use Stu\Module\Ship\Lib\Movement\Route\UpdateFlightDirection;
 use Stu\Module\Ship\Lib\Movement\Route\UpdateFlightDirectionInterface;
-use Stu\Module\Ship\Lib\Movement\ShipMovementComponentsFactory;
 use Stu\Module\Ship\Lib\Movement\ShipMovementInformationAdder;
 use Stu\Module\Ship\Lib\Movement\ShipMovementInformationAdderInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMover;
@@ -225,8 +224,29 @@ use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManager;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtility;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\Movement\Component\CheckAstronomicalWaypoint;
-use Stu\Module\Ship\Lib\Movement\Component\CheckAstronomicalWaypointInterface;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DockConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveActivationConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveDeactivationConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\EpsConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\FlightDirectionConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RepairConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TholianWebConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TractorConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\WarpdriveConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\AlertRedConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightDirectionConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightTractorConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\BlockedCondition;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\CrewCondition;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughEpsCondition;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughWarpdriveCondition;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\HealthyDriveCondition;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheck;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
@@ -262,13 +282,10 @@ use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
 use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
-    ShipMoverInterface::class => autowire(ShipMover::class)
-        ->constructorParameter(
-            'shipMovementComponentsFactory',
-            autowire(ShipMovementComponentsFactory::class)
-        ),
+    ShipMoverInterface::class => autowire(ShipMover::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     InteractionCheckerInterface::class => autowire(InteractionChecker::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
@@ -308,13 +325,50 @@ return [
     AlertLevelBasedReactionInterface::class => autowire(AlertLevelBasedReaction::class),
     SalvageEmergencyPodsRequestInterface::class => autowire(SalvageEmergencyPodsRequest::class),
     FlightSignatureCreatorInterface::class => autowire(FlightSignatureCreator::class),
-    FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class),
     EnterWaypointInterface::class => autowire(EnterWaypoint::class),
     CheckDestinationInterface::class => autowire(CheckDestination::class),
     LoadWaypointsInterface::class => autowire(LoadWaypoints::class),
     UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
-    CheckAstronomicalWaypointInterface::class => autowire(CheckAstronomicalWaypoint::class),
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
+    PreFlightConditionsCheckInterface::class => autowire(PreFlightConditionsCheck::class)
+        ->constructorParameter(
+            'conditions',
+            [
+                autowire(BlockedCondition::class),
+                autowire(CrewCondition::class),
+                autowire(HealthyDriveCondition::class),
+                autowire(EnoughEpsCondition::class),
+                autowire(EnoughWarpdriveCondition::class)
+            ]
+        ),
+    'flight_consequences' => [
+        autowire(RepairConsequence::class),
+        autowire(DockConsequence::class),
+        autowire(AstroMappingConsequence::class),
+        autowire(TholianWebConsequence::class),
+        autowire(DriveDeactivationConsequence::class),
+        autowire(DriveActivationConsequence::class),
+        autowire(EpsConsequence::class),
+        autowire(WarpdriveConsequence::class),
+        autowire(TractorConsequence::class),
+        autowire(FlightDirectionConsequence::class),
+    ],
+    'post_flight_consequences' => [
+        autowire(PostFlightDirectionConsequence::class),
+        autowire(PostFlightAstroMappingConsequence::class),
+        autowire(DeactivateTranswarpConsequence::class),
+        autowire(PostFlightTractorConsequence::class),
+        autowire(DeflectorConsequence::class),
+        autowire(AlertRedConsequence::class)
+    ],
+    FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
+        ->constructorParameter(
+            'flightConsequences',
+            get('flight_consequences')
+        )->constructorParameter(
+            'postFlightConsequences',
+            get('post_flight_consequences')
+        ),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
