@@ -8,7 +8,10 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -55,7 +58,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     public function tractorSystemSurvivedTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,
-        InformationWrapper $informations
+        FightMessageCollectionInterface $messages
     ): bool {
         $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
@@ -64,6 +67,8 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         // damage tractor system if mass over 90% of max
         if (($mass > self::POSSIBLE_DAMAGE_THRESHOLD * $payload) && $this->stuRandom->rand(1, 10) === 1) {
             $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
+
+            $informations = new InformationWrapper();
 
             if ($this->applyDamage->damageShipSystem($wrapper, $system, $this->stuRandom->rand(5, 25), $informations)) {
                 //tractor destroyed
@@ -82,6 +87,8 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
                     $system->getStatus()
                 ));
             }
+
+            $messages->add(new FightMessage(UserEnum::USER_NOONE, null, $informations->getInformations()));
         }
 
         return true;

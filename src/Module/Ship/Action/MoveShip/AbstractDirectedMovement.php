@@ -59,11 +59,11 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
         $ship = $wrapper->get();
 
-        $informationWrapper = $this->shipMover->checkAndMove(
+        $messages = $this->shipMover->checkAndMove(
             $wrapper,
             $this->getFlightRoute($wrapper)
         );
-        $game->addInformationWrapper($informationWrapper);
+        $game->addInformationWrapper($messages->getInformationDump());
 
         if ($ship->isDestroyed()) {
             return;
