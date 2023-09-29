@@ -308,7 +308,6 @@ canColonize) %}
             {% endif %}
             {% set mapRegion = ship.getCurrentMapField.getMapRegion %}
             {% if mapRegion %}
-            <br />
             <a href="javascript:void(0);" onclick="showRegionInfo({{ mapRegion.getId }})"
                 onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
                 <img src="/assets/buttons/info1.png" name="mapRegionButton" />
@@ -527,6 +526,7 @@ canColonize) %}
     <img src="/assets/buttons/map1.png" name="astroButton" />
     <span>{{ astroStateWrapper.getType }} kartographieren</span>
 </a>
+<br />
 {% endif %}
 {% if astroStateWrapper.isSystem and (ship.isOverSystem or not shipAstroState) %}
 <img src="/assets/buttons/map1.png" />
