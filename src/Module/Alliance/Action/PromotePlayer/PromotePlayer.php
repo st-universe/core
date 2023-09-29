@@ -86,6 +86,7 @@ final class PromotePlayer implements ActionControllerInterface
         }
 
         $this->allianceJobRepository->truncateByUser($playerId);
+        $alliance->getJobs()->remove($type);
 
         $text = '';
         $view = Management::VIEW_IDENTIFIER;
