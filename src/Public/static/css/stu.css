@@ -135,14 +135,14 @@ th {
 }
 
 td.th {
-  background-color: var(--color-42);
+  background-color: var(--color-7);
   color: #dddddd;
   text-align: center;
   font-weight: bold;
 }
 
 .ttop {
-  background-color: var(--color-43);
+  background-color: var(--color-7);
   color: #dddddd;
   padding: 3px;
   font-weight: bold;
@@ -150,7 +150,7 @@ td.th {
 
 .tcal td.m,
 .use td.m {
-  background-color: var(--color-45);
+  background-color: var(--color-7);
   color: #dddddd;
 }
 
@@ -246,9 +246,9 @@ select {
 }
 
 input {
-  color: var(--color-46);
+  color: var(--color-4);
   padding: 2px;
-  background-color: var(--color-51);
+  background-color: var(--color-15);
   border: 1px solid var(--color-16);
 }
 
@@ -264,7 +264,7 @@ input {
 
 button {
   background-color: #000000;
-  color: var(--color-40);
+  color: var(--color-1);
   padding: 1px;
   border: 1px double #262323;
   height: 15px;
@@ -485,9 +485,9 @@ a.linkbutton {
   text-align: center;
   display: inline-block;
   padding: 3px;
-  background-color: var(--color-34);
+  background-color: var(--color-15);
   border: 1px solid var(--color-16);
-  color: var(--color-35);
+  color: var(--color-4);
   white-space: nowrap;
 }
 
@@ -666,7 +666,7 @@ a.tradebutton:hover {
 .divbody {
   border: 1px solid #262323;
   padding: 3px;
-  color: var(--color-36);
+  color: var(--color-6);
 }
 
 .userbox {
@@ -699,7 +699,7 @@ div.userTerritory img {
 }
 
 table.tcal tr:nth-child(odd) td {
-  background-color: var(--color-37);
+  background-color: var(--color-17);
 }
 
 table.population td {
@@ -810,8 +810,8 @@ td.module_select_base {
 
 td.module_select_base_selected {
   width: 20%;
-  background-color: var(--color-28) ! important;
-  color: var(--color-30);
+  background-color: var(--color-17) ! important;
+  color: var(--color-3);
   font-weight: bold;
 }
 
@@ -909,7 +909,7 @@ div.navigation_item_servertime {
   color: #9d9d9d;
   vertical-align: middle;
   margin-top: 2vh;
-  background-color: var(--color-48);
+  background-color: var(--color-24);
 }
 
 div.navigation_item_planets {
@@ -936,7 +936,7 @@ div.header_box_help:hover,
 div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
-  background-color: var(--color-31);
+  background-color: var(--color-19);
   color: #dddddd ! important;
 }
 
@@ -954,7 +954,7 @@ div.header_box {
   height: 70px;
   float: left;
   color: #9d9d9d;
-  background-color: var(--color-32);
+  background-color: var(--color-24);
 }
 
 div.header_box_user {
@@ -1012,7 +1012,7 @@ div.border_box p {
 }
 
 div.box div.box_title {
-  background-color: var(--color-38);
+  background-color: var(--color-7);
   color: var(--color-27);
   padding: 1px;
   text-align: center;
@@ -1144,12 +1144,12 @@ ul.pm_categories li:not(:first-child) {
 }
 
 .title {
-  background-color: var(--color-41);
+  background-color: var(--color-7);
   padding: 3px;
 }
 
 div.list:nth-child(even) {
-  background-color: var(--color-39);
+  background-color: var(--color-13);
 }
 
 div.list {
@@ -1356,7 +1356,7 @@ div.pmGrid {
 
 div.knGridText {
   grid-row-start: span 2;
-  background-color: var(--color-33);
+  background-color: var(--color-24);
 }
 
 div.knGridUser {
@@ -1457,7 +1457,7 @@ div.finishedResearchList div.finishedResearchListItem {
   display: inline-grid;
   grid-template-columns: 45px auto;
   grid-column-gap: 10px;
-  background-color: var(--color-29);
+  background-color: var(--color-17);
 }
 
 div.finishedResearchListItemImage {
@@ -1498,7 +1498,7 @@ div.researchNavletImage img {
 div.header {
   height: 80px;
   width: 100%;
-  background-color: var(--color-50);
+  background-color: var(--color-7);
   z-Index: 111111111;
   grid-column: 1 / span 2;
   top: 0;
