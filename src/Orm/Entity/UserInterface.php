@@ -116,6 +116,10 @@ interface UserInterface
 
     public function setShowPmReadReceipt(bool $showPmReadReceipt): UserInterface;
 
+    public function getDeals(): bool;
+
+    public function setDeals(bool $deals): UserInterface;
+
     public function isSaveLogin(): bool;
 
     public function setSaveLogin(bool $save_login): UserInterface;

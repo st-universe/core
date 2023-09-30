@@ -235,6 +235,12 @@ class User implements UserInterface
     private string $css = 'schwarz';
 
     /**
+     * @Column(type="boolean", options={"default": false})
+     *
+     */
+    private bool $deals = false;
+
+    /**
      *
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
@@ -691,6 +697,17 @@ class User implements UserInterface
     public function getRpgBehaviorText(): string
     {
         return UserRpgEnum::getRpgBehaviorText($this->getRpgBehavior());
+    }
+
+    public function getDeals(): bool
+    {
+        return $this->deals;
+    }
+
+    public function setDeals(bool $deals): UserInterface
+    {
+        $this->deals = $deals;
+        return $this;
     }
 
     public function isOnline(): bool
