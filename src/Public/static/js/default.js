@@ -630,3 +630,40 @@ function toggleTranslation(targetId) {
                 });
         }
 }
+
+if (userDeals) {
+        setTimeout(function () {
+            showPopup();
+        }, 3000);
+    }
+    
+    function showPopup() {
+        var popup = document.getElementById('nagus');
+        var popupContent = '<div class="header_box border_box action" style="text-align: center; margin: 5px 0 0 15px; padding: 5px;"> <a href="/trade.php?SHOW_DEALS=1"><img id="romImage" src="/assets/buttons/romblinck.png" style="width: 50px; height: 50px;" alt="Zu den Deals gehen"></a> </div>';
+        popup.innerHTML = popupContent;
+        popup.style.display = 'block';
+    
+
+        var romImage = document.getElementById('romImage');
+    
+        romImage.addEventListener('mouseover', function () {
+            romImage.title = 'Neue Deals: Zu den Deals gehen';
+        });
+    
+        romImage.addEventListener('mouseout', function () {
+            romImage.title = '';
+        });
+    
+        setTimeout(function () {
+            closePopup();
+            setTimeout(function () {
+                showPopup();
+            }, 2000);
+        }, 7000);
+    }
+    
+    function closePopup() {
+        var popup = document.getElementById('nagus');
+        popup.style.display = 'none';
+    }
+    
