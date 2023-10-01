@@ -98,7 +98,7 @@ div.navlet {
 }
 
 input.text {
-  background-color: #1b1b1f;
+  background-color: var(--color-59);
   border: 1px solid var(--color-8);
   color: var(--color-2);
 }
@@ -657,7 +657,7 @@ a.tradebutton:hover {
 
 .divhead {
   background-color: var(--color-20);
-  color: #dddddd;
+  color: var(--color-55);
   text-align: center;
   padding: 3px;
   font-weight: bold;
@@ -906,7 +906,7 @@ div.navigation_item_servertime {
   font-size: 80% ! important;
   text-align: center;
   padding: 5px;
-  color: #9d9d9d;
+  color: var(--color-52);
   vertical-align: middle;
   margin-top: 2vh;
   background-color: var(--color-48);
@@ -937,23 +937,23 @@ div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
   background-color: var(--color-31);
-  color: #dddddd ! important;
+  color: var(--color-56) ! important;
 }
 
 div.header_box_logout:hover {
   background-color: var(--color-25);
-  color: #dddddd ! important;
+  color: var(--color-57) ! important;
 }
 
 div.navigation_item:hover {
-  color: #dddddd ! important;
+  color: var(--color-58) ! important;
 }
 
 div.header_box {
   font-size: 75%;
   height: 70px;
   float: left;
-  color: #9d9d9d;
+  color: var(--color-54);
   background-color: var(--color-32);
 }
 
@@ -1027,7 +1027,7 @@ div.box div.box_body {
 }
 
 div.box {
-  border: 1px solid var(--color-15);
+  border: 1px solid var(--color-53);
   border-radius: 3px 3px 3px 3px;
 }
 
