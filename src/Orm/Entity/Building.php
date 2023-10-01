@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Building\BuildingEnum;
+use Doctrine\Common\Collections\Criteria;
+
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingRepository")
@@ -376,7 +378,10 @@ class Building implements BuildingInterface
 
     public function getCosts(): Collection
     {
-        return $this->costs;
+        $criteria = Criteria::create()
+            ->orderBy(['commodity_id' => Criteria::ASC]);
+
+        return $this->costs->matching($criteria);
     }
 
     public function getCommodities(): Collection
