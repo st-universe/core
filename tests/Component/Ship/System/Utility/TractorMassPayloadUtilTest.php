@@ -10,8 +10,8 @@ use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -111,7 +111,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     public function teststressTractorSystemForTowingExpectTrueWhenThresholdReached(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
@@ -128,7 +128,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     public function teststressTractorSystemForTowingExpectTrueWhenOverTresholdButRandomMissed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
@@ -150,7 +150,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     public function teststressTractorSystemForTowingExpectTrueWhenOverTresholdAndStillHealthy(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $damage = 7;
@@ -194,7 +194,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
         $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 $message = $m;
                 return true;
@@ -207,7 +207,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     public function teststressTractorSystemForTowingExpectFalseWhenOverTresholdAndDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $damage = 7;
@@ -255,7 +255,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
         $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 $message = $m;
                 return true;

@@ -156,13 +156,13 @@ final class ActivateTractorBeam implements ActionControllerInterface
                 $attacker = [$target->getId() => $target];
             }
 
-            $fightMessageCollection = $this->shipAttackCycle->cycle(
+            $messageCollection = $this->shipAttackCycle->cycle(
                 $this->shipWrapperFactory->wrapShips($attacker),
                 $this->shipWrapperFactory->wrapShips($defender),
                 true
             );
 
-            $informations = $fightMessageCollection->getInformationDump();
+            $informations = $messageCollection->getInformationDump();
             $game->addInformationWrapper($informations);
 
             $this->privateMessageSender->send(

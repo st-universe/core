@@ -2,7 +2,7 @@
 
 namespace Stu\Component\Ship\System\Utility;
 
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -16,6 +16,6 @@ interface TractorMassPayloadUtilInterface
     public function stressTractorSystemForTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void;
 }

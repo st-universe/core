@@ -8,8 +8,8 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -51,7 +51,7 @@ class AstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -67,7 +67,7 @@ class AstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenNotFinalizing(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -87,7 +87,7 @@ class AstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectCancelWhenFinalizing(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -108,7 +108,7 @@ class AstroMappingConsequenceTest extends StuTestCase
 
         $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 if ($m->getRecipientId() === 123) {
                     $message = $m;

@@ -3,8 +3,8 @@
 namespace Stu\Module\Ship\Lib\Movement;
 
 use InvalidArgumentException;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -15,12 +15,12 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         ShipInterface $ship,
         bool $isFleetMode,
         int $routeMode,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         $name = $isFleetMode ? 'Flotte' : $ship->getName();
 
-        $message = new FightMessage();
+        $message = new Message();
         $messages->add($message);
 
         switch ($routeMode) {
@@ -76,12 +76,12 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         string $leadShipName,
         bool $isFleetMode,
         int $routeMode,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         $name = $isFleetMode ? 'gesamte Flotte' : $leadShipName;
 
-        $message = new FightMessage();
+        $message = new Message();
         $messages->add($message);
 
         switch ($routeMode) {
@@ -140,11 +140,11 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         ShipInterface $ship,
         ShipInterface $tractoredShip,
         int $routeMode,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
         $tractoredShipName = $tractoredShip->getName();
 
-        $message = new FightMessage(
+        $message = new Message(
             $ship->getUser()->getId(),
             $tractoredShip->getUser()->getId()
         );

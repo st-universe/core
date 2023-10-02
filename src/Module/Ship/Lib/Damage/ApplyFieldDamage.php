@@ -7,8 +7,8 @@ namespace Stu\Module\Ship\Lib\Damage;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
@@ -35,7 +35,7 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
         int $damage,
         bool $isAbsolutDmg,
         string $cause,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         //ship itself
@@ -65,11 +65,11 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
         int $damage,
         bool $isAbsolutDmg,
         string $cause,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
         $ship = $wrapper->get();
 
-        $message = new FightMessage(null, $ship->getUser()->getId());
+        $message = new Message(null, $ship->getUser()->getId());
         $messages->add($message);
 
         $shipName = $ship->getName();

@@ -7,14 +7,14 @@ namespace Stu\Module\Ship\Lib\Battle\Message;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
-final class FightMessageCollection implements FightMessageCollectionInterface
+final class MessageCollection implements MessageCollectionInterface
 {
     /**
-     * @var FightMessageInterface[]
+     * @var MessageInterface[]
      */
     private array $messages = [];
 
-    public function add(FightMessageInterface $msg): void
+    public function add(MessageInterface $msg): void
     {
         $this->messages[] = $msg;
     }

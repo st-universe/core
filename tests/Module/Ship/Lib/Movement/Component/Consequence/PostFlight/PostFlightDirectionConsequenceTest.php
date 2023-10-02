@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
 use Mockery\MockInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreatorInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -55,7 +55,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -71,7 +71,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenNotTraversing(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -91,7 +91,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
 
     public function testTriggerExpectDirectionUpdateOnlyWhenTractored(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $oldWaypoint = $this->mock(MapInterface::class);
         $newWaypoint = $this->mock(MapInterface::class);
 
@@ -131,7 +131,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
 
     public function testTriggerExpectFlightSignaturesWhenNotTractored(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $oldWaypoint = $this->mock(MapInterface::class);
         $newWaypoint = $this->mock(MapInterface::class);
 

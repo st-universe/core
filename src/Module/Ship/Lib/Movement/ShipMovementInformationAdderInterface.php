@@ -3,7 +3,7 @@
 namespace Stu\Module\Ship\Lib\Movement;
 
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface ShipMovementInformationAdderInterface
@@ -12,7 +12,7 @@ interface ShipMovementInformationAdderInterface
         ShipInterface $ship,
         bool $isFleetMode,
         int $routeMode,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void;
 
     public function reachedDestinationDestroyed(
@@ -20,13 +20,13 @@ interface ShipMovementInformationAdderInterface
         string $leadShipName,
         bool $isFleetMode,
         int $routeMode,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void;
 
     public function pulledTractoredShip(
         ShipInterface $ship,
         ShipInterface $tractoredShip,
         int $routeMode,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void;
 }

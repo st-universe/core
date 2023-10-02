@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -48,7 +48,7 @@ class PostFlightTractorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -64,7 +64,7 @@ class PostFlightTractorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenNotTractoring(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -84,7 +84,7 @@ class PostFlightTractorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectTractorSystemStress(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $tractoredShip = $this->mock(ShipInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')

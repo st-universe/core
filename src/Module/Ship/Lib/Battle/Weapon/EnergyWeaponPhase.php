@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -25,7 +25,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         array $targetPool,
         bool $isAlertRed = false
     ): array {
-        $fightMessages = [];
+        $messages = [];
 
         $targetWrapper = $targetPool[array_rand($targetPool)];
 
@@ -46,10 +46,10 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $target = $targetWrapper->get();
 
-            $fightMessage = new FightMessage($attacker->getUser()->getId(), $target->getUser()->getId());
-            $fightMessages[] = $fightMessage;
+            $message = new Message($attacker->getUser()->getId(), $target->getUser()->getId());
+            $messages[] = $message;
 
-            $fightMessage->add(sprintf(
+            $message->add(sprintf(
                 "Die %s feuert mit einem %s auf die %s",
                 $attacker->getName(),
                 $weapon->getName(),
@@ -59,7 +59,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             if (
                 $attacker->getHitChance() * (100 - $target->getEvadeChance()) < random_int(1, 10000)
             ) {
-                $fightMessage->add("Die " . $target->getName() . " wurde verfehlt");
+                $message->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
             $isCritical = $this->isCritical($weapon, $target->getCloakState());
@@ -72,7 +72,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setIsPhaserDamage(true);
             $this->setWeaponShieldModificator($target, $weapon, $damage_wrapper);
 
-            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
+            $message->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
 
             if ($target->isDestroyed()) {
                 if ($isAlertRed) {
@@ -104,7 +104,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 $this->checkForPrestige($attacker->getUser(), $target);
 
                 $targetId = $target->getId();
-                $fightMessage->add($this->shipRemover->destroy($targetWrapper));
+                $message->add($this->shipRemover->destroy($targetWrapper));
 
                 unset($targetPool[$targetId]);
 
@@ -114,7 +114,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             }
         }
 
-        return $fightMessages;
+        return $messages;
     }
 
     public function fireAtBuilding(

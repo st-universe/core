@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Message;
 
-interface FightMessageInterface
+interface MessageInterface
 {
     public function getSenderId(): int;
 

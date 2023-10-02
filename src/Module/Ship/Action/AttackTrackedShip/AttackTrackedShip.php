@@ -113,12 +113,12 @@ final class AttackTrackedShip implements ActionControllerInterface
 
         [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
 
-        $fightMessageCollection = $this->shipAttackCycle->cycle(
+        $messageCollection = $this->shipAttackCycle->cycle(
             $this->shipWrapperFactory->wrapShips($attacker),
             $this->shipWrapperFactory->wrapShips($defender)
         );
 
-        $informations = $fightMessageCollection->getInformationDump();
+        $informations = $messageCollection->getInformationDump();
 
         $pm = sprintf(
             _("Kampf in Sektor %s\n%s"),

@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -24,7 +24,7 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
         if ($wrapper->get()->isTractored()) {
             return;
@@ -50,11 +50,11 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence
     private function deactivateSystem(
         ShipWrapperInterface $wrapper,
         int $systemId,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
         $ship = $wrapper->get();
 
-        $message = new FightMessage();
+        $message = new Message();
         $messages->add($message);
 
         $this->shipSystemManager->deactivate($wrapper, $systemId, true);

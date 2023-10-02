@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle\Message;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
-final class FightMessage implements FightMessageInterface
+final class Message implements MessageInterface
 {
     /**
      * @var array<string>

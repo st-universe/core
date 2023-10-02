@@ -9,7 +9,7 @@ use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
@@ -86,7 +86,7 @@ class DirectedMovementTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $holdingWeb = $this->mock(TholianWebInterface::class);
 
         /** @var AbstractDirectedMovement $subject */
@@ -494,7 +494,7 @@ class DirectedMovementTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
         $holdingWeb = $this->mock(TholianWebInterface::class);
 
@@ -606,7 +606,7 @@ class DirectedMovementTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
         $holdingWeb = $this->mock(TholianWebInterface::class);
 
