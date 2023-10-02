@@ -66,9 +66,11 @@ final class ShowSystem implements ViewControllerInterface
         $game->setTemplateVar('PREVIOUS', $previousSystem);
         $game->setTemplateVar('NEXT', $nextSystem);
 
-        $game->addExecuteJS(sprintf('var currentId = %d;', $system->getId()));
-        $game->addExecuteJS(sprintf('var previousId = %d;', $previousSystem === null ? 0 : $previousSystem->getId()));
-        $game->addExecuteJS(sprintf('var nextId = %d;', $nextSystem === null ? 0 : $nextSystem->getId()));
-        $game->addExecuteJS("registerSystemEditorNavKey();");
+        $game->addExecuteJS(sprintf(
+            'registerSystemEditorNavKeys(%d, %d, %d);',
+            $previousSystem === null ? 0 : $previousSystem->getId(),
+            $system->getId(),
+            $nextSystem === null ? 0 : $nextSystem->getId()
+        ));
     }
 }
