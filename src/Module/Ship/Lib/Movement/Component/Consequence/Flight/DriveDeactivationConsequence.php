@@ -54,6 +54,10 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence
     ): void {
         $ship = $wrapper->get();
 
+        if (!$ship->hasShipSystem($systemId)) {
+            return;
+        }
+
         $message = new Message();
         $messages->add($message);
 
