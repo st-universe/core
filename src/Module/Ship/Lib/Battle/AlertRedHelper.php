@@ -323,14 +323,14 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
         //$this->loggerUtil->log(sprintf('before_shipAttackCycle, attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
 
-        $fightMessageCollection = $this->shipAttackCycle->cycle(
+        $messageCollection = $this->shipAttackCycle->cycle(
             $this->shipWrapperFactory->wrapShips($attacker),
             $this->shipWrapperFactory->wrapShips($defender),
             false,
             true
         );
 
-        $fightInformations = $fightMessageCollection->getInformationDump();
+        $fightInformations = $messageCollection->getInformationDump();
 
         if (empty($fightInformations->getInformations())) {
             //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);

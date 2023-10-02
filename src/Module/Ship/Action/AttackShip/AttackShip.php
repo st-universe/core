@@ -14,7 +14,7 @@ use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -138,7 +138,7 @@ final class AttackShip implements ActionControllerInterface
 
         [$attacker, $defender, $fleet, $isWebSituation] = $this->getAttackerDefender($ship, $target);
 
-        $fightMessageCollection = $this->shipAttackCycle->cycle(
+        $messageCollection = $this->shipAttackCycle->cycle(
             $this->shipWrapperFactory->wrapShips($attacker),
             $this->shipWrapperFactory->wrapShips($defender),
             $isWebSituation
@@ -147,11 +147,11 @@ final class AttackShip implements ActionControllerInterface
         $this->sendPms(
             $userId,
             $ship->getSectorString(),
-            $fightMessageCollection,
+            $messageCollection,
             !$isWebSituation && $isTargetBase
         );
 
-        $informations = $fightMessageCollection->getInformationDump();
+        $informations = $messageCollection->getInformationDump();
 
         if ($this->isActiveTractorShipWarped($ship, $target)) {
             //Alarm-Rot check for ship
@@ -218,7 +218,7 @@ final class AttackShip implements ActionControllerInterface
     private function sendPms(
         int $userId,
         string $sectorString,
-        FightMessageCollectionInterface $messageCollection,
+        MessageCollectionInterface $messageCollection,
         bool $isTargetBase
     ): void {
 

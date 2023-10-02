@@ -7,9 +7,9 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -33,7 +33,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         $ship = $wrapper->get();
@@ -53,7 +53,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
 
         $fieldId = $ship->getCurrentMapField()->getId();
 
-        $message = new FightMessage(null, $ship->getUser()->getId());
+        $message = new Message(null, $ship->getUser()->getId());
         $messages->add($message);
 
         if ($astroEntry->getState() === AstronomicalMappingEnum::PLANNED) {
@@ -102,7 +102,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
         );
     }
 
-    private function addReachedWaypointInfo(FightMessageInterface $message, ShipInterface $ship): void
+    private function addReachedWaypointInfo(MessageInterface $message, ShipInterface $ship): void
     {
         $message->add(sprintf(
             _('Die %s hat einen Kartographierungs-Messpunkt erreicht: %s'),

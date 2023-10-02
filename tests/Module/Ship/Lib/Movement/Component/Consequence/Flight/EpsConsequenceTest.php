@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
@@ -44,7 +44,7 @@ class EpsConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -60,7 +60,7 @@ class EpsConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenShipTractored(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -102,7 +102,7 @@ class EpsConsequenceTest extends StuTestCase
         int $tractorCost = null,
         int $expectedCost = null
     ): void {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $epsSystem = $this->mock(EpsSystemData::class);
 
         $this->ship->shouldReceive('isDestroyed')

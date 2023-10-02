@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -51,7 +51,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -67,7 +67,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenTractored(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -87,7 +87,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenNoDeflectorCost(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -122,7 +122,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectSpecialDamageAndDestruction(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -176,7 +176,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectSpecialDamageAndNoDestruction(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -234,7 +234,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectDamageWhenDeflectorDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $epsSystem = $this->mock(EpsSystemData::class);
 
@@ -291,7 +291,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectDamageWhenNoEpsInstalled(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -352,7 +352,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectDamageWhenNotEnoughEnergyForDeflector(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $epsSystem = $this->mock(EpsSystemData::class);
 
@@ -426,7 +426,7 @@ class DeflectorConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNoDamageWhenEnoughEnergyForDeflector(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $epsSystem = $this->mock(EpsSystemData::class);
 

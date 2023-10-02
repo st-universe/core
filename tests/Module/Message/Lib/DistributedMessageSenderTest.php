@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\StuTestCase;
 
 class DistributedMessageSenderTest extends StuTestCase
@@ -29,7 +29,7 @@ class DistributedMessageSenderTest extends StuTestCase
 
     public function testDistributeMessageCollection(): void
     {
-        $messageCollection = $this->mock(FightMessageCollectionInterface::class);
+        $messageCollection = $this->mock(MessageCollectionInterface::class);
         $info1 = $this->mock(InformationWrapper::class);
         $info2 = $this->mock(InformationWrapper::class);
 

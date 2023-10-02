@@ -6,16 +6,16 @@ namespace Stu\Module\Ship\Lib\Battle\Message;
 
 use Stu\StuTestCase;
 
-class FightMessageTest extends StuTestCase
+class MessageTest extends StuTestCase
 {
     private int $senderId = 5;
     private int $recipientId = 42;
 
-    private FightMessageInterface $subject;
+    private MessageInterface $subject;
 
     public function setUp(): void
     {
-        $this->subject = new FightMessage(
+        $this->subject = new Message(
             $this->senderId,
             $this->recipientId
         );
@@ -23,7 +23,7 @@ class FightMessageTest extends StuTestCase
 
     public function testConstructor(): void
     {
-        $this->subject = new FightMessage(
+        $this->subject = new Message(
             $this->senderId,
             $this->recipientId,
             ['foo']

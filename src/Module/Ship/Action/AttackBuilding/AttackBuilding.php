@@ -16,7 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
@@ -173,7 +173,7 @@ final class AttackBuilding implements ActionControllerInterface
             if ($attackerPool === []) {
                 break;
             }
-            $this->addFightMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool));
+            $this->addMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool));
         }
 
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
@@ -189,7 +189,7 @@ final class AttackBuilding implements ActionControllerInterface
             if ($attackerPool === []) {
                 break;
             }
-            $this->addFightMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));
+            $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));
         }
 
         // OFFENSE OF ATTACKING SHIPS
@@ -249,11 +249,11 @@ final class AttackBuilding implements ActionControllerInterface
     }
 
     /**
-     * @param FightMessageInterface[] $fightMessages
+     * @param MessageInterface[] $messages
      */
-    private function addFightMessageMerge(array $fightMessages): void
+    private function addMessageMerge(array $messages): void
     {
-        foreach ($fightMessages as $message) {
+        foreach ($messages as $message) {
             $this->informations->addInformationArray($message->getMessage());
         }
     }

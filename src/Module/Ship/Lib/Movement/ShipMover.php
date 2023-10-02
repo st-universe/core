@@ -4,9 +4,9 @@ namespace Stu\Module\Ship\Lib\Movement;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollection;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollection;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -31,7 +31,7 @@ final class ShipMover implements ShipMoverInterface
 
     private bool $hasTravelled = false;
 
-    private FightMessageCollectionInterface $messages;
+    private MessageCollectionInterface $messages;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
@@ -44,12 +44,12 @@ final class ShipMover implements ShipMoverInterface
         $this->preFlightConditionsCheck = $preFlightConditionsCheck;
         $this->alertRedHelper = $alertRedHelper;
 
-        $this->messages = new FightMessageCollection();
+        $this->messages = new MessageCollection();
     }
 
     private function addInformation(string $value): void
     {
-        $this->messages->add(new FightMessage(UserEnum::USER_NOONE, null, [$value]));
+        $this->messages->add(new Message(UserEnum::USER_NOONE, null, [$value]));
     }
 
     /**
@@ -57,13 +57,13 @@ final class ShipMover implements ShipMoverInterface
      */
     private function addInformationMerge(array $value): void
     {
-        $this->messages->add(new FightMessage(UserEnum::USER_NOONE, null, $value));
+        $this->messages->add(new Message(UserEnum::USER_NOONE, null, $value));
     }
 
     public function checkAndMove(
         ShipWrapperInterface $leadShipWrapper,
         FlightRouteInterface $flightRoute
-    ): FightMessageCollectionInterface {
+    ): MessageCollectionInterface {
 
         $leadShip = $leadShipWrapper->get();
         $leadShipName = $leadShip->getName();

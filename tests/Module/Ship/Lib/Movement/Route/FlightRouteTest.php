@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Config\Init;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -59,7 +59,7 @@ class FlightRouteTest extends StuTestCase
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->subject->setDestination($map, false);
 
@@ -95,7 +95,7 @@ class FlightRouteTest extends StuTestCase
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->subject->setDestination($map, true);
 
@@ -131,7 +131,7 @@ class FlightRouteTest extends StuTestCase
         $map = $this->mock(StarSystemMapInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->subject->setDestination($map, false);
 
@@ -168,7 +168,7 @@ class FlightRouteTest extends StuTestCase
         $systemMap = $this->mock(StarSystemMapInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $wormholeEntry->shouldReceive('getSystemMap')
             ->withNoArgs()
@@ -208,7 +208,7 @@ class FlightRouteTest extends StuTestCase
         $map = $this->mock(MapInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $wormholeEntry->shouldReceive('getMap')
             ->withNoArgs()
@@ -268,7 +268,7 @@ class FlightRouteTest extends StuTestCase
         $destination = $this->mock(MapInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $waypoints = new ArrayCollection();
 
         $waypoints->add($first);

@@ -9,8 +9,8 @@ use Mockery\MockInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -62,7 +62,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -78,7 +78,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectNothingWhenAstroStateOff(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -99,7 +99,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     public function testTriggerExpectNothingWhenNeitherInSystemNorInRegion(): void
     {
 
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -128,7 +128,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     public function testTriggerExpectNothingWhenNoAstroEntryPresent(): void
     {
 
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -160,7 +160,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $map = $this->mock(MapInterface::class);
         $user = $this->mock(UserInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -236,7 +236,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 $message = $m;
 
@@ -258,7 +258,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $map = $this->mock(MapInterface::class);
         $user = $this->mock(UserInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -337,7 +337,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 $message = $m;
 
@@ -358,7 +358,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     {
         $map = $this->mock(MapInterface::class);
         $user = $this->mock(UserInterface::class);
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
@@ -426,7 +426,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $message = null;
 
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 $message = $m;
 

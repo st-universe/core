@@ -9,8 +9,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -57,7 +57,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     public function stressTractorSystemForTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
         $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
@@ -85,7 +85,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
                 ));
             }
 
-            $messages->add(new FightMessage(null, null, $informations->getInformations()));
+            $messages->add(new Message(null, null, $informations->getInformations()));
         }
     }
 }

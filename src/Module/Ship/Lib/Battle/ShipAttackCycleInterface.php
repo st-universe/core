@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface ShipAttackCycleInterface
@@ -18,5 +18,5 @@ interface ShipAttackCycleInterface
         array $defendingShips,
         bool $oneWay = false,
         bool $isAlertRed = false
-    ): FightMessageCollectionInterface;
+    ): MessageCollectionInterface;
 }

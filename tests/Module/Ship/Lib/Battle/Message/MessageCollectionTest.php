@@ -7,48 +7,48 @@ namespace Stu\Module\Ship\Lib\Battle\Message;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\StuTestCase;
 
-class FightMessageCollectionTest extends StuTestCase
+class MessageCollectionTest extends StuTestCase
 {
-    private FightMessageCollectionInterface $subject;
+    private MessageCollectionInterface $subject;
 
     public function setUp(): void
     {
-        $this->subject = new FightMessageCollection();
+        $this->subject = new MessageCollection();
     }
 
     public function testGetRecipientIds(): void
     {
-        $fightMessage1 = $this->mock(FightMessageInterface::class);
-        $fightMessage2 = $this->mock(FightMessageInterface::class);
-        $fightMessage3 = $this->mock(FightMessageInterface::class);
-        $fightMessage4 = $this->mock(FightMessageInterface::class);
+        $message1 = $this->mock(MessageInterface::class);
+        $message2 = $this->mock(MessageInterface::class);
+        $message3 = $this->mock(MessageInterface::class);
+        $message4 = $this->mock(MessageInterface::class);
 
-        $fightMessage1->shouldReceive('getRecipientId')
+        $message1->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
-        $fightMessage1->shouldReceive('isEmpty')
+        $message1->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage2->shouldReceive('getRecipientId')
+        $message2->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(5);
-        $fightMessage2->shouldReceive('isEmpty')
+        $message2->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage3->shouldReceive('getRecipientId')
+        $message3->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(UserEnum::USER_NOONE);
-        $fightMessage3->shouldReceive('isEmpty')
+        $message3->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage4->shouldReceive('isEmpty')
+        $message4->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(true);
 
-        $this->subject->add($fightMessage1);
-        $this->subject->add($fightMessage2);
-        $this->subject->add($fightMessage3);
+        $this->subject->add($message1);
+        $this->subject->add($message2);
+        $this->subject->add($message3);
 
         $result = $this->subject->getRecipientIds();
 
@@ -57,25 +57,25 @@ class FightMessageCollectionTest extends StuTestCase
 
     public function testGetInformationDumpExpectEverythingWhenParameterIsNull(): void
     {
-        $fightMessage1 = $this->mock(FightMessageInterface::class);
-        $fightMessage2 = $this->mock(FightMessageInterface::class);
+        $message1 = $this->mock(MessageInterface::class);
+        $message2 = $this->mock(MessageInterface::class);
 
-        $fightMessage1->shouldReceive('isEmpty')
+        $message1->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage1->shouldReceive('getMessage')
+        $message1->shouldReceive('getMessage')
             ->withNoArgs()
             ->once()
             ->andReturn(['message1-a', 'message1-b']);
-        $fightMessage2->shouldReceive('isEmpty')
+        $message2->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage2->shouldReceive('getMessage')
+        $message2->shouldReceive('getMessage')
             ->withNoArgs()
             ->once()
             ->andReturn(['message2-a', 'message2-b']);
 
-        $this->subject->addMultiple([$fightMessage1, $fightMessage2]);
+        $this->subject->addMultiple([$message1, $message2]);
 
         $result = $this->subject->getInformationDump();
 
@@ -84,71 +84,71 @@ class FightMessageCollectionTest extends StuTestCase
 
     public function testGetInformationDumpExpectFilteredResultWhenParameterIsNotNull(): void
     {
-        $fightMessage5to42 = $this->mock(FightMessageInterface::class);
-        $fightMessage2 = $this->mock(FightMessageInterface::class);
-        $fightMessage5to666 = $this->mock(FightMessageInterface::class);
-        $fightMessage42to5 = $this->mock(FightMessageInterface::class);
+        $message5to42 = $this->mock(MessageInterface::class);
+        $message2 = $this->mock(MessageInterface::class);
+        $message5to666 = $this->mock(MessageInterface::class);
+        $message42to5 = $this->mock(MessageInterface::class);
 
-        $fightMessage5to42->shouldReceive('isEmpty')
+        $message5to42->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage5to42->shouldReceive('getSenderId')
+        $message5to42->shouldReceive('getSenderId')
             ->withNoArgs()
             ->once()
             ->andReturn(5);
-        $fightMessage5to42->shouldReceive('getRecipientId')
+        $message5to42->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->twice()
             ->andReturn(42);
-        $fightMessage5to42->shouldReceive('getMessage')
+        $message5to42->shouldReceive('getMessage')
             ->withNoArgs()
             ->once()
             ->andReturn(['message5to42-a', 'message5to42-b']);
 
-        $fightMessage2->shouldReceive('isEmpty')
+        $message2->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage2->shouldReceive('getSenderId')
+        $message2->shouldReceive('getSenderId')
             ->withNoArgs()
             ->once()
             ->andReturn(2);
-        $fightMessage2->shouldReceive('getRecipientId')
+        $message2->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(null);
-        $fightMessage2->shouldReceive('getMessage')
+        $message2->shouldReceive('getMessage')
             ->withNoArgs()
             ->once()
             ->andReturn(['message2-a', 'message2-b']);
 
-        $fightMessage5to666->shouldReceive('isEmpty')
+        $message5to666->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage5to666->shouldReceive('getSenderId')
+        $message5to666->shouldReceive('getSenderId')
             ->withNoArgs()
             ->once()
             ->andReturn(5);
-        $fightMessage5to666->shouldReceive('getRecipientId')
+        $message5to666->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(666);
 
-        $fightMessage42to5->shouldReceive('isEmpty')
+        $message42to5->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-        $fightMessage42to5->shouldReceive('getSenderId')
+        $message42to5->shouldReceive('getSenderId')
             ->withNoArgs()
             ->andReturn(42);
-        $fightMessage42to5->shouldReceive('getRecipientId')
+        $message42to5->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(5);
-        $fightMessage42to5->shouldReceive('getMessage')
+        $message42to5->shouldReceive('getMessage')
             ->withNoArgs()
             ->once()
             ->andReturn(['message42to5']);
 
-        $this->subject->add($fightMessage5to42);
-        $this->subject->add($fightMessage2);
-        $this->subject->add($fightMessage5to666);
-        $this->subject->add($fightMessage42to5);
+        $this->subject->add($message5to42);
+        $this->subject->add($message2);
+        $this->subject->add($message5to666);
+        $this->subject->add($message42to5);
 
         $result = $this->subject->getInformationDump(42);
 

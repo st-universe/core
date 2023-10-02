@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ShipAttacker;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
@@ -200,7 +200,7 @@ class ShipAttackCycleTest extends StuTestCase
         $this->energyWeaponPhase->shouldReceive('fire')
             ->with($shipAttacker, $defenders, true)
             ->once()
-            ->andReturn([new FightMessage(1, 2, ['energy'])]);
+            ->andReturn([new Message(1, 2, ['energy'])]);
         $this->fightLib->shouldReceive('filterInactiveShips')
             ->with($defenders)
             ->once()
@@ -208,7 +208,7 @@ class ShipAttackCycleTest extends StuTestCase
         $this->projectileWeaponPhase->shouldReceive('fire')
             ->with($shipAttacker, $defenders, true)
             ->once()
-            ->andReturn([new FightMessage(1, 2, ['projectile'])]);
+            ->andReturn([new Message(1, 2, ['projectile'])]);
 
         $collection = $this->subject->cycle($attackers, $defenders, true, true);
 

@@ -4,12 +4,12 @@ namespace Stu\Module\Ship\Lib\Battle\Message;
 
 use Stu\Lib\InformationWrapper;
 
-interface FightMessageCollectionInterface
+interface MessageCollectionInterface
 {
-    public function add(FightMessageInterface $msg): void;
+    public function add(MessageInterface $msg): void;
 
     /**
-     * @param FightMessageInterface[] $messages
+     * @param MessageInterface[] $messages
      */
     //TODO use InformationWrapper
     public function addMultiple(array $messages): void;

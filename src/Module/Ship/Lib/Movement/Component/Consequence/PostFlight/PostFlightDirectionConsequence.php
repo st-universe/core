@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreatorInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -28,7 +28,7 @@ class PostFlightDirectionConsequence extends AbstractFlightConsequence
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         $ship = $wrapper->get();

@@ -6,9 +6,9 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -25,13 +25,13 @@ class DriveActivationConsequence extends AbstractFlightConsequence
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
         if ($wrapper->get()->isTractored()) {
             return;
         }
 
-        $message = new FightMessage();
+        $message = new Message();
         $messages->add($message);
 
         if ($flightRoute->isImpulseDriveNeeded()) {
@@ -62,7 +62,7 @@ class DriveActivationConsequence extends AbstractFlightConsequence
     private function activate(
         ShipWrapperInterface $wrapper,
         int $systemId,
-        FightMessageInterface $message
+        MessageInterface $message
     ): void {
         $ship = $wrapper->get();
 

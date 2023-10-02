@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollection;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollection;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
@@ -48,10 +48,10 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         array $defenders,
         bool $oneWay = false,
         bool $isAlertRed = false
-    ): FightMessageCollectionInterface {
-        $fightMessages = new FightMessageCollection();
+    ): MessageCollectionInterface {
+        $messages = new MessageCollection();
 
-        $this->getReady($attackers, $defenders, $oneWay, $fightMessages);
+        $this->getReady($attackers, $defenders, $oneWay, $messages);
 
         $firstStrike = true;
         $usedShipIds = [];
@@ -73,13 +73,13 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
             $shipAttacker = $this->attackerProviderFactory->getShipAttacker($matchup->getAttacker());
 
-            $fightMessages->addMultiple($this->energyWeaponPhase->fire(
+            $messages->addMultiple($this->energyWeaponPhase->fire(
                 $shipAttacker,
                 $targetShipWrappers,
                 $isAlertRed
             ));
 
-            $fightMessages->addMultiple($this->projectileWeaponPhase->fire(
+            $messages->addMultiple($this->projectileWeaponPhase->fire(
                 $shipAttacker,
                 $this->fightLib->filterInactiveShips($targetShipWrappers),
                 $isAlertRed
@@ -94,7 +94,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
             $this->shipRepository->save($wrapper->get());
         }
 
-        return $fightMessages;
+        return $messages;
     }
 
     /**
@@ -105,24 +105,24 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         array $attackers,
         array $defenders,
         bool $oneWay,
-        FightMessageCollectionInterface $fightMessages
+        MessageCollectionInterface $messages
     ): void {
         foreach ($attackers as $attacker) {
-            $fightMessage = new FightMessage(
+            $message = new Message(
                 $attacker->get()->getUser()->getId(),
                 null,
                 $this->fightLib->ready($attacker)->getInformations()
             );
-            $fightMessages->add($fightMessage);
+            $messages->add($message);
         }
         if (!$oneWay) {
             foreach ($defenders as $defender) {
-                $fightMessage = new FightMessage(
+                $message = new Message(
                     $defender->get()->getUser()->getId(),
                     null,
                     $this->fightLib->ready($defender)->getInformations()
                 );
-                $fightMessages->add($fightMessage);
+                $messages->add($message);
             }
         }
     }

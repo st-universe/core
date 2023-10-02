@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -22,7 +22,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         array $targetPool,
         bool $isAlertRed = false
     ): array {
-        $fightMessages = [];
+        $messages = [];
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
             if ($targetPool === []) {
@@ -47,14 +47,14 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $attacker->lowerTorpedoCount(1);
             $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
 
-            $fightMessage = new FightMessage($attacker->getUser()->getId(), $target->getUser()->getId());
-            $fightMessages[] = $fightMessage;
+            $message = new Message($attacker->getUser()->getId(), $target->getUser()->getId());
+            $messages[] = $message;
 
-            $fightMessage->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
+            $message->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
 
             $hitchance = $attacker->getHitChance();
             if ($hitchance * (100 - $target->getEvadeChance()) < random_int(1, 10000)) {
-                $fightMessage->add("Die " . $target->getName() . " wurde verfehlt");
+                $message->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
 
@@ -69,7 +69,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setIsTorpedoDamage(true);
             $this->setTorpedoHullModificator($target, $torpedo, $damage_wrapper);
 
-            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
+            $message->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
 
             if ($target->isDestroyed()) {
                 unset($targetPool[$target->getId()]);
@@ -100,11 +100,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                     }
                 }
                 $this->checkForPrestige($attacker->getUser(), $target);
-                $fightMessage->add($this->shipRemover->destroy($targetWrapper));
+                $message->add($this->shipRemover->destroy($targetWrapper));
             }
         }
 
-        return $fightMessages;
+        return $messages;
     }
 
     public function fireAtBuilding(

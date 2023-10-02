@@ -8,8 +8,8 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -36,7 +36,7 @@ class TractorConsequence extends AbstractFlightConsequence
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         $ship = $wrapper->get();
@@ -46,7 +46,7 @@ class TractorConsequence extends AbstractFlightConsequence
             return;
         }
 
-        $message = new FightMessage();
+        $message = new Message();
         $messages->add($message);
 
         $tractoredShipFleet = $tractoredShip->getFleet();

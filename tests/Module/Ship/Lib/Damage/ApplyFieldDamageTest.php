@@ -10,8 +10,8 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -58,7 +58,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
     public function testDamageDoesAbsolutDamageToShipAndTractoredShip(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $informations = $this->mock(InformationWrapper::class);
         $Tinformations = $this->mock(InformationWrapper::class);
 
@@ -148,7 +148,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
         $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 if ($m->getRecipientId() === 666) {
                     $message = $m;
@@ -160,7 +160,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
         $Tmessage = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$Tmessage) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$Tmessage) {
 
                 if ($m->getRecipientId() === 667) {
                     $Tmessage = $m;
@@ -191,7 +191,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
     public function testDamageDoesPercentageDamageToShipAndDestroys(): void
     {
-        $messages = $this->mock(FightMessageCollectionInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
         $informations = $this->mock(InformationWrapper::class);
 
         $this->ship->shouldReceive('getUser->getId')
@@ -246,7 +246,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
         $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
 
                 $message = $m;
 

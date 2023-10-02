@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -144,7 +144,7 @@ final class FlightRoute implements FlightRouteInterface
 
     public function enterNextWaypoint(
         ShipWrapperInterface $wrapper,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         // flight consequences
@@ -168,7 +168,7 @@ final class FlightRoute implements FlightRouteInterface
     private function walkConsequences(
         array $consequences,
         ShipWrapperInterface $wrapper,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
         array_walk(
             $consequences,

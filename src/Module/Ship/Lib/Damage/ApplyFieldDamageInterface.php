@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Damage;
 
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface ApplyFieldDamageInterface
@@ -12,6 +12,6 @@ interface ApplyFieldDamageInterface
         int $damage,
         bool $isAbsolutDmg,
         string $cause,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void;
 }

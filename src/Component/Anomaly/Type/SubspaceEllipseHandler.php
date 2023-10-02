@@ -14,9 +14,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollection;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollection;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -95,16 +95,16 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $location = $anomaly->getLocation();
         $spacecrafts = $location->getShips();
 
-        $fightMessagesForShips = new FightMessageCollection();
-        $fightMessagesForBases = new FightMessageCollection();
+        $messagesForShips = new MessageCollection();
+        $messagesForBases = new MessageCollection();
 
-        $intro = new FightMessage(
+        $intro = new Message(
             UserEnum::USER_NOONE,
             null
         );
 
-        $fightMessagesForShips->add($intro);
-        $fightMessagesForBases->add($intro);
+        $messagesForShips->add($intro);
+        $messagesForBases->add($intro);
 
         foreach ($spacecrafts as $spacecraft) {
 
@@ -125,8 +125,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 continue;
             }
 
-            $fightMessage = new FightMessage(UserEnum::USER_NOONE, $spacecraft->getUser()->getId());
-            $fightMessage->add($spacecraft->getName());
+            $message = new Message(UserEnum::USER_NOONE, $spacecraft->getUser()->getId());
+            $message->add($spacecraft->getName());
 
             if ($shieldSystem->getMode() > ShipSystemModeEnum::MODE_OFF) {
                 $shieldSystem->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -134,7 +134,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
             if ($spacecraft->getShield() > 0) {
                 $spacecraft->setShield(0);
-                $fightMessage->add('- die Schilde wurden entladen');
+                $message->add('- die Schilde wurden entladen');
             }
 
             if ($shieldSystem->getStatus() > 0) {
@@ -147,13 +147,13 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                     $this->stuRandom->rand(1, 50, true),
                     $informations
                 );
-                $fightMessage->addMessageMerge($informations->getInformations());
+                $message->addMessageMerge($informations->getInformations());
             }
 
             if ($spacecraft->isBase()) {
-                $fightMessagesForBases->add($fightMessage);
+                $messagesForBases->add($message);
             } else {
-                $fightMessagesForShips->add($fightMessage);
+                $messagesForShips->add($message);
             }
 
             $this->shipRepository->save($spacecraft);
@@ -161,8 +161,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         $this->informSpacecraftOwnersAboutConsequences(
             $anomaly->getLocation()->getSectorString(),
-            $fightMessagesForShips,
-            $fightMessagesForBases
+            $messagesForShips,
+            $messagesForBases
         );
     }
 
@@ -193,8 +193,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
     private function informSpacecraftOwnersAboutConsequences(
         string $sectorString,
-        FightMessageCollectionInterface $messageCollectionForShips,
-        FightMessageCollectionInterface $messageCollectionForBases
+        MessageCollectionInterface $messageCollectionForShips,
+        MessageCollectionInterface $messageCollectionForBases
     ): void {
 
         $header = sprintf(

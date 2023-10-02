@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\Message;
+use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -24,13 +24,13 @@ class AstroMappingConsequence extends AbstractFlightConsequence
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
-        FightMessageCollectionInterface $messages
+        MessageCollectionInterface $messages
     ): void {
 
         $ship = $wrapper->get();
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $message = new FightMessage(
+            $message = new Message(
                 null,
                 $ship->getUser()->getId(),
                 [sprintf('Die %s hat die Kartographierung abgebrochen', $ship->getName())]
