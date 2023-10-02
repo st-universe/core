@@ -139,11 +139,6 @@ parameters:
 			path: src/Component/Ship/System/Type/WebEmitterShipSystem.php
 
 		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 1
 			path: src/Component/Station/StationUtility.php

@@ -109,6 +109,29 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
             return true;
         }
 
+        $fleet = $ship->getFleet();
+
+        if (
+            $fleet !== null
+            && $ship->isFleetLeader()
+            && $fleet->getDefendedColony() !== null
+        ) {
+            $game->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
+
+            return true;
+        }
+
+        if (
+            $fleet !== null
+            && $ship->isFleetLeader()
+            && $fleet->getBlockedColony() !== null
+        ) {
+            $game->addInformation(_('Flug während Kolonie-Blockierung nicht möglich'));
+
+            return true;
+        }
+
+
         return $this->isSanityCheckFaultyConcrete($wrapper, $game);
     }
 }

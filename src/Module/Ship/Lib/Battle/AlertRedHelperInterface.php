@@ -4,21 +4,15 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface AlertRedHelperInterface
 {
     public function doItAll(
         ShipInterface $ship,
-        ?GameControllerInterface $game,
+        ?GameControllerInterface $game = null,
         ?ShipInterface $tractoringShip = null
     ): ?InformationWrapper;
-
-    /**
-     * @return ShipWrapperInterface[]
-     */
-    public function getShips(ShipInterface $leadShip): array;
 
     /**
      * @return array<ShipInterface>

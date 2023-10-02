@@ -31,6 +31,10 @@ final class FightMessageCollection implements FightMessageCollectionInterface
         $recipientIds = [];
 
         foreach ($this->messages as $message) {
+            if ($message->isEmpty()) {
+                continue;
+            }
+
             $recipientId = $message->getRecipientId();
 
             if ($recipientId === null || $recipientId === UserEnum::USER_NOONE) {
@@ -50,6 +54,10 @@ final class FightMessageCollection implements FightMessageCollectionInterface
         $result = new InformationWrapper();
 
         foreach ($this->messages as $message) {
+            if ($message->isEmpty()) {
+                continue;
+            }
+
             if (
                 $userId === null
                 || $message->getSenderId() === $userId

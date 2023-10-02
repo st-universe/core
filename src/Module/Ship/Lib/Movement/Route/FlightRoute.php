@@ -64,12 +64,18 @@ final class FlightRoute implements FlightRouteInterface
         $this->waypoints = new ArrayCollection();
     }
 
-    public function setDestination(MapInterface|StarSystemMapInterface $destination): FlightRouteInterface
-    {
+    public function setDestination(
+        MapInterface|StarSystemMapInterface $destination,
+        bool $isTranswarp
+    ): FlightRouteInterface {
         $this->waypoints->add($destination);
 
         if ($destination instanceof MapInterface) {
-            $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT;
+            if ($isTranswarp) {
+                $this->routeMode = RouteModeEnum::ROUTE_MODE_TRANSWARP;
+            } else {
+                $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT;
+            }
         } else {
             $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY;
         }

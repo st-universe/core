@@ -13,9 +13,9 @@ interface TractorMassPayloadUtilInterface
         ShipInterface $tractoredShip
     ): ?string;
 
-    public function tractorSystemSurvivedTowing(
+    public function stressTractorSystemForTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,
         FightMessageCollectionInterface $messages
-    ): bool;
+    ): void;
 }

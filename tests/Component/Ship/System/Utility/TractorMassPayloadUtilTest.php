@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
+use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
-use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -107,9 +109,9 @@ class TractorMassPayloadUtilTest extends StuTestCase
         $this->assertNull($reason);
     }
 
-    public function testTractorSystemSurvivedTowingExpectTrueWhenThresholdReached(): void
+    public function teststressTractorSystemForTowingExpectTrueWhenThresholdReached(): void
     {
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
 
         $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
@@ -121,14 +123,12 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn(90);
 
-        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
-
-        $this->assertTrue($result);
+        $this->subject->stressTractorSystemForTowing($this->wrapper, $this->tractoredShip, $messages);
     }
 
-    public function testTractorSystemSurvivedTowingExpectTrueWhenOverTresholdButRandomMissed(): void
+    public function teststressTractorSystemForTowingExpectTrueWhenOverTresholdButRandomMissed(): void
     {
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
 
         $this->ship->shouldReceive('getTractorPayload')
             ->withNoArgs()
@@ -145,14 +145,12 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
-        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
-
-        $this->assertTrue($result);
+        $this->subject->stressTractorSystemForTowing($this->wrapper, $this->tractoredShip, $messages);
     }
 
-    public function testTractorSystemSurvivedTowingExpectTrueWhenOverTresholdAndStillHealthy(): void
+    public function teststressTractorSystemForTowingExpectTrueWhenOverTresholdAndStillHealthy(): void
     {
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $damage = 7;
@@ -185,7 +183,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->andReturn($damage);
 
         $this->applyDamage->shouldReceive('damageShipSystem')
-            ->with($this->wrapper, $system, $damage, $informationWrapper)
+            ->with($this->wrapper, $system, $damage, Mockery::any())
             ->once()
             ->andReturn(false);
 
@@ -194,20 +192,22 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn(666);
 
-        $informationWrapper->shouldReceive('addInformation')
-            ->with(
-                'Traktoremitter der SHIP ist überbelastet und wurde dadurch beschädigt, Status: 666%',
-            )
-            ->once();
+        $message = null;
+        $messages->shouldReceive('add')
+            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
 
-        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
+                $message = $m;
+                return true;
+            }));
 
-        $this->assertTrue($result);
+        $this->subject->stressTractorSystemForTowing($this->wrapper, $this->tractoredShip, $messages);
+
+        $this->assertEquals(['Traktoremitter der SHIP ist überbelastet und wurde dadurch beschädigt, Status: 666%'], $message->getMessage());
     }
 
-    public function testTractorSystemSurvivedTowingExpectFalseWhenOverTresholdAndDestroyed(): void
+    public function teststressTractorSystemForTowingExpectFalseWhenOverTresholdAndDestroyed(): void
     {
-        $informationWrapper = $this->mock(InformationWrapper::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $damage = 7;
@@ -244,7 +244,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->andReturn($damage);
 
         $this->applyDamage->shouldReceive('damageShipSystem')
-            ->with($this->wrapper, $system, $damage, $informationWrapper)
+            ->with($this->wrapper, $system, $damage, Mockery::any())
             ->once()
             ->andReturn(true);
 
@@ -253,14 +253,16 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $informationWrapper->shouldReceive('addInformation')
-            ->with(
-                'Traktoremitter der SHIP wurde zerstört. Die TSHIP wird nicht weiter gezogen',
-            )
-            ->once();
+        $message = null;
+        $messages->shouldReceive('add')
+            ->with(Mockery::on(function (FightMessageInterface $m) use (&$message) {
 
-        $result = $this->subject->tractorSystemSurvivedTowing($this->wrapper, $this->tractoredShip, $informationWrapper);
+                $message = $m;
+                return true;
+            }));
 
-        $this->assertFalse($result);
+        $this->subject->stressTractorSystemForTowing($this->wrapper, $this->tractoredShip, $messages);
+
+        $this->assertEquals(['Traktoremitter der SHIP wurde zerstört. Die TSHIP wird nicht weiter gezogen'], $message->getMessage());
     }
 }

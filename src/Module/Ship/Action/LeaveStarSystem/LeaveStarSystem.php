@@ -29,24 +29,6 @@ final class LeaveStarSystem extends AbstractDirectedMovement
             return true;
         }
 
-        if (
-            $ship->isFleetLeader()
-            && $ship->getFleet() !== null
-            && $ship->getFleet()->getDefendedColony() !== null
-        ) {
-            $game->addInformation(_('Verlassen des Systems während Kolonie-Verteidigung nicht möglich'));
-            return true;
-        }
-
-        if (
-            $ship->isFleetLeader()
-            && $ship->getFleet() !== null
-            && $ship->getFleet()->getBlockedColony() !== null
-        ) {
-            $game->addInformation(_('Verlassen des Systems während Kolonie-Blockierung nicht möglich'));
-            return true;
-        }
-
         return false;
     }
 
