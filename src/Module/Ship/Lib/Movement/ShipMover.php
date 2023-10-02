@@ -25,7 +25,7 @@ final class ShipMover implements ShipMoverInterface
     private AlertRedHelperInterface $alertRedHelper;
 
     /**
-     * @var array<ShipInterface>
+     * @var array<int, array{0: ShipInterface, 1:ShipInterface}>
      */
     private array $tractoredShips = [];
 
@@ -178,8 +178,8 @@ final class ShipMover implements ShipMoverInterface
                 );
             }
         }
-        foreach ($this->tractoredShips as $ship) {
-            $this->shipRepository->save($ship);
+        foreach ($this->getTractoredShips() as $tractoredShip) {
+            $this->shipRepository->save($tractoredShip);
         }
 
         if ($this->areAllShipsDestroyed($wrappers)) {
@@ -219,9 +219,15 @@ final class ShipMover implements ShipMoverInterface
             if (
                 $tractoredShip !== null
             ) {
-                $this->tractoredShips[] = $tractoredShip;
+                $this->tractoredShips[] = [$fleetShip, $tractoredShip];
             }
         }
+    }
+
+    /** @return array<ShipInterface> */
+    private function getTractoredShips(): array
+    {
+        return array_map(fn (array $ships) => $ships[0], $this->tractoredShips);
     }
 
     /**
