@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;

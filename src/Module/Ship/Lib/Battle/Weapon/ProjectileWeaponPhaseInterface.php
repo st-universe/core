@@ -3,7 +3,7 @@
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
+use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;

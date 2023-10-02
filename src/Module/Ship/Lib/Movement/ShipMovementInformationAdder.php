@@ -3,8 +3,8 @@
 namespace Stu\Module\Ship\Lib\Movement;
 
 use InvalidArgumentException;
-use Stu\Module\Ship\Lib\Battle\Message\Message;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\Message;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Orm\Entity\ShipInterface;
 

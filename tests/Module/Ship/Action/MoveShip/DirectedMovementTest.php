@@ -9,7 +9,7 @@ use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;

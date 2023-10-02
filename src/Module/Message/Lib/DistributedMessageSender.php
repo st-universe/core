@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 
 final class DistributedMessageSender implements DistributedMessageSenderInterface
 {

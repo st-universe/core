@@ -9,8 +9,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Battle\Message\Message;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\Message;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 

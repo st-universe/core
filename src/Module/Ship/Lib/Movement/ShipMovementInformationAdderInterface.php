@@ -3,7 +3,7 @@
 namespace Stu\Module\Ship\Lib\Movement;
 
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface ShipMovementInformationAdderInterface
