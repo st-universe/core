@@ -58,6 +58,10 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence
             return;
         }
 
+        if (!$ship->getSystemState($systemId)) {
+            return;
+        }
+
         $message = new Message();
         $messages->add($message);
 

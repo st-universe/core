@@ -88,10 +88,12 @@ class DriveDeactivationConsequenceTest extends StuTestCase
     public static function provideTriggerData()
     {
         return [
-            [true, false, false, ShipSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [true, false, true, ShipSystemTypeEnum::SYSTEM_WARPDRIVE],
-            [false, true, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
-            [false, true, true, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
+            [true, false, ShipSystemTypeEnum::SYSTEM_WARPDRIVE, false],
+            [true, false, ShipSystemTypeEnum::SYSTEM_WARPDRIVE, true, false],
+            [true, false, ShipSystemTypeEnum::SYSTEM_WARPDRIVE, true, true],
+            [false, true, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, false],
+            [false, true, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true, false],
+            [false, true, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true, true],
         ];
     }
 
@@ -101,8 +103,9 @@ class DriveDeactivationConsequenceTest extends StuTestCase
     public function testTrigger(
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
+        int $systemId,
         bool $hasShipSystem,
-        int $expectedSystemId
+        bool $isSystemActive = null,
     ): void {
         $messages = $this->mock(MessageCollectionInterface::class);
 
@@ -121,7 +124,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('SHIP');
         $this->ship->shouldReceive('hasShipSystem')
-            ->with($expectedSystemId)
+            ->with($systemId)
             ->andReturn($hasShipSystem);
 
         $this->flightRoute->shouldReceive('isImpulseDriveNeeded')
@@ -134,12 +137,16 @@ class DriveDeactivationConsequenceTest extends StuTestCase
             ->andReturn($isWarpdriveNeeded);
 
         if ($hasShipSystem) {
-            $this->shipSystemManager->shouldReceive('deactivate')
-                ->with($this->wrapper, $expectedSystemId, true)
-                ->once();
+            $this->ship->shouldReceive('getSystemState')
+                ->with($systemId)
+                ->andReturn($isSystemActive);
         }
 
-        if ($hasShipSystem) {
+        if ($hasShipSystem && $isSystemActive) {
+            $this->shipSystemManager->shouldReceive('deactivate')
+                ->with($this->wrapper, $systemId, true)
+                ->once();
+
             $message = null;
             $messages->shouldReceive('add')
                 ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
@@ -155,12 +162,12 @@ class DriveDeactivationConsequenceTest extends StuTestCase
             $messages
         );
 
-        if ($hasShipSystem) {
+        if ($hasShipSystem && $isSystemActive) {
             $this->assertEquals(
                 [sprintf(
                     'Die SHIP deaktiviert %s %s',
-                    $expectedSystemId === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
-                    ShipSystemTypeEnum::getDescription($expectedSystemId)
+                    $systemId === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
+                    ShipSystemTypeEnum::getDescription($systemId)
                 )],
                 $message->getMessage()
             );

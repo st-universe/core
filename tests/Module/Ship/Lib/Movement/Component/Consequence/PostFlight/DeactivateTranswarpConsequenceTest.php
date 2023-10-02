@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
@@ -121,6 +123,10 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SHIP');
 
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
@@ -131,10 +137,20 @@ class DeactivateTranswarpConsequenceTest extends StuTestCase
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL, true)
             ->once();
 
+        $message = null;
+        $messages->shouldReceive('add')
+            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+
+                $message = $m;
+                return true;
+            }));
+
         $this->subject->trigger(
             $this->wrapper,
             $this->flightRoute,
             $messages
         );
+
+        $this->assertEquals(['Die SHIP deaktiviert die Transwarpspule'], $message->getMessage());
     }
 }
