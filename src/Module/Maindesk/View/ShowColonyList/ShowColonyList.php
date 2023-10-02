@@ -25,10 +25,14 @@ final class ShowColonyList implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $active = $user->getState();
+        $state = $user->getState();
 
-        if ($active !== UserEnum::USER_STATE_UNCOLONIZED) {
-            throw new AccessViolation(sprintf(_('User is not uncolonized, but tried to enter first-colony-list. Fool: %d, Active: %d'), $user->getId(), $active));
+        if ($state !== UserEnum::USER_STATE_UNCOLONIZED) {
+            throw new AccessViolation(sprintf(
+                _('User is not uncolonized, but tried to enter first-colony-list. Fool: %d, State: %d'),
+                $user->getId(),
+                $state
+            ));
         }
         $game->setTemplateFile("html/maindesk_colonylist.xhtml");
         $game->setPageTitle("Kolonie gründen");
