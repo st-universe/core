@@ -80,4 +80,12 @@ class FightMessageTest extends StuTestCase
 
         $this->assertEquals(['foo', 'test'], $msg);
     }
+
+    public function testIsEmpty(): void
+    {
+        $this->subject->add(null);
+        $this->subject->addMessageMerge([]);
+
+        $this->assertTrue($this->subject->isEmpty());
+    }
 }

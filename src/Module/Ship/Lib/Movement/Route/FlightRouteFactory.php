@@ -42,9 +42,11 @@ final class FlightRouteFactory implements FlightRouteFactoryInterface
         $this->postFlightConsequences = $postFlightConsequences;
     }
 
-    public function getRouteForMapDestination(MapInterface|StarSystemMapInterface $destination): FlightRouteInterface
-    {
-        return $this->getFlightRoutePrototype()->setDestination($destination);
+    public function getRouteForMapDestination(
+        MapInterface|StarSystemMapInterface $destination,
+        bool $isTranswarp = false
+    ): FlightRouteInterface {
+        return $this->getFlightRoutePrototype()->setDestination($destination, $isTranswarp);
     }
 
     public function getRouteForWormholeDestination(WormholeEntryInterface $destination, bool $isEntry): FlightRouteInterface

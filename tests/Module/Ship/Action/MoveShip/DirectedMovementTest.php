@@ -16,6 +16,8 @@ use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -129,6 +131,9 @@ class DirectedMovementTest extends StuTestCase
         $ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
             ->andReturn($holdingWeb);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn(null);
 
         $holdingWeb->shouldReceive('isFinished')
             ->withNoArgs()
@@ -342,6 +347,139 @@ class DirectedMovementTest extends StuTestCase
         $subject->handle($game);
     }
 
+    public function testHandleExpectNoMovementWhenFleetIsDefending(): void
+    {
+        $userId = 666;
+        $shipId = 42;
+
+        $ship = $this->mock(ShipInterface::class);
+        $fleet = $this->mock(FleetInterface::class);
+        $shipWrapper = $this->mock(ShipWrapperInterface::class);
+        $game = $this->mock(GameControllerInterface::class);
+
+        $subject = new MoveShipRight(
+            $this->moveShipRequest,
+            $this->shipLoader,
+            $this->shipMover,
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
+        );
+
+        $this->moveShipRequest->shouldReceive('getShipId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipId);
+
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn($fleet);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(true);
+        $fleet->shouldReceive('getDefendedColony')
+            ->withNoArgs()
+            ->andReturn($this->mock(ColonyInterface::class));
+
+        $game->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+        $game->shouldReceive('addInformation')
+            ->with('Flug während Kolonie-Verteidigung nicht möglich')
+            ->once();
+
+        $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
+            ->with($shipId, $userId)
+            ->once()
+            ->andReturn($shipWrapper);
+
+        $shipWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $subject->handle($game);
+    }
+
+    public function testHandleExpectNoMovementWhenFleetIsBlocking(): void
+    {
+        $userId = 666;
+        $shipId = 42;
+
+        $ship = $this->mock(ShipInterface::class);
+        $fleet = $this->mock(FleetInterface::class);
+        $shipWrapper = $this->mock(ShipWrapperInterface::class);
+        $game = $this->mock(GameControllerInterface::class);
+
+        $subject = new MoveShipRight(
+            $this->moveShipRequest,
+            $this->shipLoader,
+            $this->shipMover,
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository,
+            $this->distributedMessageSender
+        );
+
+        $this->moveShipRequest->shouldReceive('getShipId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipId);
+
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn($fleet);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(true);
+        $fleet->shouldReceive('getDefendedColony')
+            ->withNoArgs()
+            ->andReturn(null);
+        $fleet->shouldReceive('getBlockedColony')
+            ->withNoArgs()
+            ->andReturn($this->mock(ColonyInterface::class));
+
+        $game->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+        $game->shouldReceive('addInformation')
+            ->with('Flug während Kolonie-Blockierung nicht möglich')
+            ->once();
+
+        $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
+            ->with($shipId, $userId)
+            ->once()
+            ->andReturn($shipWrapper);
+
+        $shipWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $subject->handle($game);
+    }
+
     public function testHandleEndsIfDestroyed(): void
     {
         $userId = 666;
@@ -401,6 +539,9 @@ class DirectedMovementTest extends StuTestCase
         $ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
             ->andReturn($holdingWeb);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn(null);
 
         $holdingWeb->shouldReceive('isFinished')
             ->withNoArgs()
@@ -506,6 +647,9 @@ class DirectedMovementTest extends StuTestCase
         $ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
             ->andReturn($holdingWeb);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn(null);
 
         $holdingWeb->shouldReceive('isFinished')
             ->withNoArgs()

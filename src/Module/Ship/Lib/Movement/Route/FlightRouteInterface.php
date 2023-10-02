@@ -13,7 +13,10 @@ use Stu\Orm\Entity\WormholeEntryInterface;
 
 interface FlightRouteInterface
 {
-    public function setDestination(MapInterface|StarSystemMapInterface $destination): FlightRouteInterface;
+    public function setDestination(
+        MapInterface|StarSystemMapInterface $destination,
+        bool $isTranswarp
+    ): FlightRouteInterface;
 
     public function setDestinationViaWormhole(
         WormholeEntryInterface $wormholeEntry,

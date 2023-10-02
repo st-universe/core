@@ -19,4 +19,6 @@ interface FightMessageInterface
      * @param array<string> $msg
      */
     public function addMessageMerge(array $msg): void;
+
+    public function isEmpty(): bool;
 }

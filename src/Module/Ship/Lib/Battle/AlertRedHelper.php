@@ -48,8 +48,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->playerRelationDeterminator = $playerRelationDeterminator;
     }
 
-    public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): ?InformationWrapper
-    {
+    public function doItAll(
+        ShipInterface $ship,
+        ?GameControllerInterface $game = null,
+        ?ShipInterface $tractoringShip = null
+    ): ?InformationWrapper {
         //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
 
         $informations = new InformationWrapper();
@@ -110,7 +113,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
     /**
      * @return ShipWrapperInterface[]
      */
-    public function getShips(ShipInterface $leadShip): array
+    private function getShips(ShipInterface $leadShip): array
     {
         if ($leadShip->getFleet() !== null) {
             return $this->shipWrapperFactory->wrapShips($leadShip->getFleet()->getShips()->toArray());

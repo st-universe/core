@@ -49,14 +49,14 @@ class FlightRouteTest extends StuTestCase
         );
     }
 
-    public function testSetDestinationExpectOneMapWaypoint(): void
+    public function testSetDestinationExpectOneMapWaypointWhenNotTranswarp(): void
     {
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $messages = $this->mock(FightMessageCollectionInterface::class);
 
-        $this->subject->setDestination($map);
+        $this->subject->setDestination($map, false);
 
         $this->assertSame($map, $this->subject->getNextWaypoint());
 
@@ -85,6 +85,42 @@ class FlightRouteTest extends StuTestCase
         $this->assertEquals(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT, $this->subject->getRouteMode());
     }
 
+    public function testSetDestinationExpectOneMapWaypointWhenTranswarp(): void
+    {
+        $map = $this->mock(MapInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $messages = $this->mock(FightMessageCollectionInterface::class);
+
+        $this->subject->setDestination($map, true);
+
+        $this->assertSame($map, $this->subject->getNextWaypoint());
+
+        $this->enterWaypoint->shouldReceive('enterNextWaypoint')
+            ->with(
+                $ship,
+                false,
+                $map,
+                null
+            )
+            ->once();
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $this->flightConsequence->shouldReceive('trigger')
+            ->with($wrapper, $this->subject, $messages)
+            ->twice();
+
+        $this->subject->enterNextWaypoint($wrapper, $messages);
+
+        $this->subject->stepForward();
+
+        $this->assertTrue($this->subject->isDestinationArrived());
+        $this->assertEquals(RouteModeEnum::ROUTE_MODE_TRANSWARP, $this->subject->getRouteMode());
+    }
+
     public function testSetDestinationExpectOneSystemMapWaypoint(): void
     {
         $map = $this->mock(StarSystemMapInterface::class);
@@ -92,7 +128,7 @@ class FlightRouteTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $messages = $this->mock(FightMessageCollectionInterface::class);
 
-        $this->subject->setDestination($map);
+        $this->subject->setDestination($map, false);
 
         $this->assertSame($map, $this->subject->getNextWaypoint());
 
@@ -289,7 +325,7 @@ class FlightRouteTest extends StuTestCase
     {
         $map = $this->mock(MapInterface::class);
 
-        $this->subject->setDestination($map);
+        $this->subject->setDestination($map, false);
 
         $this->assertSame($map, $this->subject->getNextWaypoint());
 

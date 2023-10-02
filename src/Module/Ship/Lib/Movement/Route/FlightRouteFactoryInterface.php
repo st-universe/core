@@ -12,7 +12,8 @@ use Stu\Orm\Entity\WormholeEntryInterface;
 interface FlightRouteFactoryInterface
 {
     public function getRouteForMapDestination(
-        MapInterface|StarSystemMapInterface $destination
+        MapInterface|StarSystemMapInterface $destination,
+        bool $isTranswarp = false
     ): FlightRouteInterface;
 
     public function getRouteForWormholeDestination(

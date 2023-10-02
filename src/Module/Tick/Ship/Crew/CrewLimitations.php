@@ -249,7 +249,7 @@ final class CrewLimitations implements CrewLimitationsInterface
 
         //do alert red stuff
         if ($doAlertRedCheck) {
-            $this->alertRedHelper->doItAll($randomShip, null);
+            $this->alertRedHelper->doItAll($randomShip);
         }
 
         return count($crewArray);

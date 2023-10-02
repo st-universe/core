@@ -8,7 +8,6 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
@@ -55,11 +54,11 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return null;
     }
 
-    public function tractorSystemSurvivedTowing(
+    public function stressTractorSystemForTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,
         FightMessageCollectionInterface $messages
-    ): bool {
+    ): void {
         $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
         $payload = $ship->getTractorPayload();
@@ -78,8 +77,6 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
                     $tractoredShip->getName()
                 ));
                 $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
-
-                return false;
             } else {
                 $informations->addInformation(sprintf(
                     _('Traktoremitter der %s ist überbelastet und wurde dadurch beschädigt, Status: %d%%'),
@@ -88,9 +85,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
                 ));
             }
 
-            $messages->add(new FightMessage(UserEnum::USER_NOONE, null, $informations->getInformations()));
+            $messages->add(new FightMessage(null, null, $informations->getInformations()));
         }
-
-        return true;
     }
 }

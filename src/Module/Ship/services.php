@@ -224,6 +224,8 @@ use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManager;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtility;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\Damage\ApplyFieldDamage;
+use Stu\Module\Ship\Lib\Damage\ApplyFieldDamageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DockConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveActivationConsequence;
@@ -234,7 +236,6 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RepairConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TholianWebConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TractorConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\WarpdriveConsequence;
-use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\AlertRedConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeactivateTranswarpConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
@@ -291,6 +292,7 @@ return [
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),
+    ApplyFieldDamageInterface::class => autowire(ApplyFieldDamage::class),
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     FightLibInterface::class => autowire(FightLib::class),
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
@@ -358,8 +360,7 @@ return [
         autowire(PostFlightAstroMappingConsequence::class),
         autowire(DeactivateTranswarpConsequence::class),
         autowire(PostFlightTractorConsequence::class),
-        autowire(DeflectorConsequence::class),
-        autowire(AlertRedConsequence::class)
+        autowire(DeflectorConsequence::class)
     ],
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
         ->constructorParameter(

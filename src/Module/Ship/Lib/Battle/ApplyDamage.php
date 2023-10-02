@@ -15,7 +15,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
-//TODO unit tests
+//TODO unit tests and move to Lib/Damage
 final class ApplyDamage implements ApplyDamageInterface
 {
     private ShipSystemManagerInterface $shipSystemManager;

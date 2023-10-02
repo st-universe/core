@@ -64,4 +64,9 @@ final class FightMessage implements FightMessageInterface
 
         $this->msg = array_merge($this->msg, $msg);
     }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->getMessage());
+    }
 }
