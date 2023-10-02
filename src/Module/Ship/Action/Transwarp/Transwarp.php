@@ -57,6 +57,10 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
+        if ($wrapper->get()->getTranswarpCooldown() !== null) {
+            return true;
+        }
+
         // target check
         $cx = request::postInt('transwarpcx');
         $cy = request::postInt('transwarpcy');

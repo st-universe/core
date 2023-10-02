@@ -69,15 +69,17 @@
     {% endif %}
     {% if ship.hasTranswarp %}
     <tr>
+        {% set cooldown = ship.getTranswarpCooldown %}
         <td style="width:50%;">
             <img src="assets/buttons/transw.png" title="Transwarpantrieb" />
             Transwarpantrieb
-            {% if ship.getTranswarpCooldown %}
+            {% if cooldown %}
             <span><br />
-                Gesperrt bis {{ ship.getTranswarpCooldown|datetime }}</span>
+                Gesperrt bis {{ cooldown|datetime }}</span>
             {% endif %}
         </td>
         <td>
+            {% if not cooldown %}
             Areal:
             <select name="transwarplayer">
                 {% for userlayer in userLayers %}
@@ -93,6 +95,7 @@
             <input type="text" size="2" name="transwarpcy" id="transwarpcy"
                 onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
             <input type="submit" class="button" name="B_TRANSWARP" value="Transwarpflug" id="transwarpButton" />
+            {% endif %}
         </td>
     </tr>
     {% endif %}
