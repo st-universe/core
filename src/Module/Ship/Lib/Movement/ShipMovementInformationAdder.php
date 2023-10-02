@@ -66,6 +66,13 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
             case RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT:
                 $message->add($isFleetMode ? 'Die Flotte hat das Wurmloch verlassen' : 'Das Wurmloch wurde verlassen');
                 break;
+            case RouteModeEnum::ROUTE_MODE_TRANSWARP:
+                $message->add(sprintf(
+                    _('Die %s verlässt den Transwarpkanal in Sektor %s'),
+                    $name,
+                    $ship->getSectorString()
+                ));
+                break;
             default:
                 throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
         }
@@ -127,6 +134,14 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 $message->add(
                     sprintf(
                         _('Beim Verlassen des Wurmlochs wurde die %s zerstört'),
+                        $name
+                    )
+                );
+                break;
+            case RouteModeEnum::ROUTE_MODE_TRANSWARP:
+                $message->add(
+                    sprintf(
+                        _('Beim Verlassen des Transwarpkanals wurde die %s zerstört'),
                         $name
                     )
                 );
