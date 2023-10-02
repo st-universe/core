@@ -6,9 +6,9 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\Battle\Message\Message;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\Message\MessageInterface;
+use Stu\Module\Ship\Lib\Message\Message;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;

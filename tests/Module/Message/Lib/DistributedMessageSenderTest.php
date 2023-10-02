@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
 use Stu\Lib\InformationWrapper;
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\StuTestCase;
 
 class DistributedMessageSenderTest extends StuTestCase

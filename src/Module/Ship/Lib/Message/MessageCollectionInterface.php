@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Ship\Lib\Battle\Message;
+namespace Stu\Module\Ship\Lib\Message;
 
 use Stu\Lib\InformationWrapper;
 

@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Damage;
 
-use Stu\Module\Ship\Lib\Battle\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface ApplyFieldDamageInterface

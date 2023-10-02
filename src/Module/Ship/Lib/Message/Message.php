@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle\Message;
+namespace Stu\Module\Ship\Lib\Message;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
