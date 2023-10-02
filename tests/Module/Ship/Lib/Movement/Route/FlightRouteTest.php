@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
-use Stu\Lib\InformationWrapper;
+use Stu\Config\Init;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -17,6 +17,11 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\WormholeEntryInterface;
 use Stu\StuTestCase;
 
+use function DI\get;
+
+/**
+ * @runTestsInSeparateProcesses Avoid global settings to cause trouble within other tests
+ */
 class FlightRouteTest extends StuTestCase
 {
     /** @var MockInterface&CheckDestinationInterface */
@@ -332,5 +337,43 @@ class FlightRouteTest extends StuTestCase
         $this->subject->abortFlight();
 
         $this->assertTrue($this->subject->isDestinationArrived());
+    }
+
+    public function testAllFlightConsequencesRegistered(): void
+    {
+        error_reporting(0);
+
+        $output = 'some-output';
+
+        static::expectOutputString($output);
+
+        $container = null;
+        $app = function ($c) use ($output, &$container): void {
+            $container = $c;
+            echo $output;
+        };
+
+        Init::run($app);
+
+        $this->assertEquals(10, count(get('flight_consequences')->resolve($container)));
+    }
+
+    public function testAllPostFlightConsequencesRegistered(): void
+    {
+        error_reporting(0);
+
+        $output = 'some-output';
+
+        static::expectOutputString($output);
+
+        $container = null;
+        $app = function ($c) use ($output, &$container): void {
+            $container = $c;
+            echo $output;
+        };
+
+        Init::run($app);
+
+        $this->assertEquals(5, count(get('post_flight_consequences')->resolve($container)));
     }
 }
