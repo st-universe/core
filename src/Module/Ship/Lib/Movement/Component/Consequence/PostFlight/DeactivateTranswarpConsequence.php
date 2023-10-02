@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -33,6 +34,15 @@ class DeactivateTranswarpConsequence extends AbstractFlightConsequence
 
         if ($flightRoute->getRouteMode() === RouteModeEnum::ROUTE_MODE_TRANSWARP) {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL, true);
+
+            $message = new Message();
+            $messages->add($message);
+
+            $message->add(sprintf(
+                _('Die %s deaktiviert die %s'),
+                $wrapper->get()->getName(),
+                ShipSystemTypeEnum::getDescription(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)
+            ));
         }
     }
 }
