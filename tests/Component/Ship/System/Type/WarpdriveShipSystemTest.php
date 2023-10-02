@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -211,70 +210,10 @@ class WarpdriveShipSystemTest extends StuTestCase
         );
     }
 
-    public function testActivateActivatesAndDisablesTraktorbeamOnEnergyShortage(): void
-    {
-        $system = $this->mock(ShipSystemInterface::class);
-        $epsSystem = $this->mock(EpsSystemData::class);
-
-        $this->ship->shouldReceive('setDockedTo')
-            ->with(null)
-            ->once();
-        $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)
-            ->once()
-            ->andReturn($system);
-        $system->shouldReceive('setMode')
-            ->with(ShipSystemModeEnum::MODE_ON)
-            ->once();
-
-        //wrapper and eps
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getTractoredShipWrapper')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(ShipWrapperInterface::class));
-        $this->wrapper->shouldReceive('getEpsSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($epsSystem);
-        $epsSystem->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
-        $dockedShip = Mockery::mock(ShipInterface::class);
-        $dockedShipsCollection = new ArrayCollection([$dockedShip]);
-        $this->ship->shouldReceive('getDockedShips')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($dockedShipsCollection);
-
-        $dockedShip->shouldReceive('setDockedTo')
-            ->with(null)
-            ->once();
-
-        $this->shipRepositoryMock->shouldReceive('save')
-            ->with($dockedShip)
-            ->once();
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($this->wrapper, ShipStateEnum::SHIP_STATE_NONE)
-            ->once();
-        $this->managerMock->shouldReceive('deactivate')
-            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
-            ->once();
-
-        $this->system->activate($this->wrapper, $this->managerMock);
-        $this->assertTrue($dockedShipsCollection->isEmpty());
-    }
-
     public function testActivateActivatesAndActivatesWarpStateOnTraktorShip(): void
     {
         $system = $this->mock(ShipSystemInterface::class);
         $traktorBeamShipWrapper = $this->mock(ShipWrapperInterface::class);
-        $epsSystem = $this->mock(EpsSystemData::class);
 
         //DOCKING STUFF
         $this->ship->shouldReceive('setDockedTo')
@@ -300,21 +239,6 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($epsSystem);
-        $epsSystem->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(2);
-        $epsSystem->shouldReceive('lowerEps')
-            ->with(1)
-            ->once()
-            ->andReturnSelf();
-        $epsSystem->shouldReceive('update')
-            ->withNoArgs()
-            ->once();
 
         $this->wrapper->shouldReceive('getTractoredShipWrapper')
             ->withNoArgs()

@@ -68,14 +68,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
         $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
         if ($tractoredShipWrapper !== null) {
-            $eps = $wrapper->getEpsSystemData();
-            if ($eps !== null && $eps->getEps() > $this->getEnergyUsageForActivation()) {
-                $this->shipStateChanger->changeShipState($tractoredShipWrapper, ShipStateEnum::SHIP_STATE_NONE);
-
-                $eps->lowerEps($this->getEnergyUsageForActivation())->update();
-            } else {
-                $manager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
-            }
+            $this->shipStateChanger->changeShipState($tractoredShipWrapper, ShipStateEnum::SHIP_STATE_NONE);
         }
     }
 

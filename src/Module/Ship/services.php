@@ -349,11 +349,11 @@ return [
         autowire(DockConsequence::class),
         autowire(AstroMappingConsequence::class),
         autowire(TholianWebConsequence::class),
+        autowire(TractorConsequence::class),
         autowire(DriveDeactivationConsequence::class),
         autowire(DriveActivationConsequence::class),
         autowire(EpsConsequence::class),
         autowire(WarpdriveConsequence::class),
-        autowire(TractorConsequence::class),
         autowire(FlightDirectionConsequence::class)
     ],
     'post_flight_consequences' => [

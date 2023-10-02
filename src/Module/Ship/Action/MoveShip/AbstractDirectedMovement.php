@@ -13,6 +13,7 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -52,6 +53,8 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+
         $userId = $game->getUser()->getId();
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -80,10 +83,9 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
 
         if ($ship->isDestroyed()) {
+            $game->setView(Overview::VIEW_IDENTIFIER);
             return;
         }
-
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool
