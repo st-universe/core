@@ -15,6 +15,7 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
@@ -221,6 +222,9 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
+        $game->shouldReceive('setView')
+            ->with(ShowShip::VIEW_IDENTIFIER)
+            ->once();
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
@@ -272,6 +276,9 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($userId);
         $game->shouldReceive('addInformation')
             ->with('Das Schiff wird von einem Traktorstrahl gehalten')
+            ->once();
+        $game->shouldReceive('setView')
+            ->with(ShowShip::VIEW_IDENTIFIER)
             ->once();
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
@@ -334,6 +341,10 @@ class DirectedMovementTest extends StuTestCase
         $game->shouldReceive('addInformation')
             ->with('Das Schiff ist in einem Energienetz gefangen')
             ->once();
+        $game->shouldReceive('setView')
+            ->with(ShowShip::VIEW_IDENTIFIER)
+            ->once();
+
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
@@ -398,6 +409,9 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($userId);
         $game->shouldReceive('addInformation')
             ->with('Flug während Kolonie-Verteidigung nicht möglich')
+            ->once();
+        $game->shouldReceive('setView')
+            ->with(ShowShip::VIEW_IDENTIFIER)
             ->once();
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
@@ -466,6 +480,9 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($userId);
         $game->shouldReceive('addInformation')
             ->with('Flug während Kolonie-Blockierung nicht möglich')
+            ->once();
+        $game->shouldReceive('setView')
+            ->with(ShowShip::VIEW_IDENTIFIER)
             ->once();
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
@@ -585,6 +602,12 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($userId);
         $game->shouldReceive('addInformationWrapper')
             ->with($informationWrapper)
+            ->once();
+        $game->shouldReceive('setView')
+            ->with(ShowShip::VIEW_IDENTIFIER)
+            ->once();
+        $game->shouldReceive('setView')
+            ->with(Overview::VIEW_IDENTIFIER)
             ->once();
 
         $subject->handle($game);
