@@ -136,13 +136,14 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         $rsm->addScalarResult('votes', 'votes', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT kn.user_id, SUM(value::float) AS votes
+            "SELECT kn.user_id, SUM(value::int) AS votes
             FROM stu_kn kn
             CROSS JOIN LATERAL json_each_text(kn.ratings)
             WHERE kn.user_id >= :firstUserId
+            AND kn.ratings #>> '{}' != '[]'
             GROUP BY kn.user_id
             ORDER BY votes DESC
-            LIMIT 10',
+            LIMIT 10",
             $rsm
         )
             ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
@@ -155,10 +156,11 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         $rsm->addScalarResult('votes', 'votes', 'integer');
 
         $result = $this->getEntityManager()->createNativeQuery(
-            'SELECT SUM(value::int) as votes
+            "SELECT SUM(value::int) as votes
             FROM stu_kn kn
             CROSS JOIN LATERAL json_each_text(kn.ratings)
-            WHERE kn.user_id = :userId',
+            WHERE kn.user_id = :userId
+            AND kn.ratings #>> '{}' != '[]'",
             $rsm
         )
             ->setParameter('userId', $user->getId())
