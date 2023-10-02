@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight;
 
 use Mockery;
+use Stu\Config\Init;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\StuTestCase;
 
-class PreFlightConditionsChecktTest extends StuTestCase
+use function DI\get;
+
+/**
+ * @runTestsInSeparateProcesses Avoid global settings to cause trouble within other tests
+ */
+class PreFlightConditionsCheckTest extends StuTestCase
 {
     public static function provideCheckPreconditionsData()
     {
@@ -70,5 +76,24 @@ class PreFlightConditionsChecktTest extends StuTestCase
         $result = $subject->checkPreconditions([$wrapper1, $wrapper2], $flightRoute, $isFixedFleetMode);
 
         $this->assertEquals($conditionCheckResult, $result);
+    }
+
+    public function testAllConditionsRegistered(): void
+    {
+        error_reporting(0);
+
+        $output = 'some-output';
+
+        static::expectOutputString($output);
+
+        $container = null;
+        $app = function ($c) use ($output, &$container): void {
+            $container = $c;
+            echo $output;
+        };
+
+        Init::run($app);
+
+        $this->assertEquals(5, count(get('pre_flight_conditions')->resolve($container)));
     }
 }

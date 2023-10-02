@@ -332,16 +332,17 @@ return [
     LoadWaypointsInterface::class => autowire(LoadWaypoints::class),
     UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
+    'pre_flight_conditions' => [
+        autowire(BlockedCondition::class),
+        autowire(CrewCondition::class),
+        autowire(HealthyDriveCondition::class),
+        autowire(EnoughEpsCondition::class),
+        autowire(EnoughWarpdriveCondition::class)
+    ],
     PreFlightConditionsCheckInterface::class => autowire(PreFlightConditionsCheck::class)
         ->constructorParameter(
             'conditions',
-            [
-                autowire(BlockedCondition::class),
-                autowire(CrewCondition::class),
-                autowire(HealthyDriveCondition::class),
-                autowire(EnoughEpsCondition::class),
-                autowire(EnoughWarpdriveCondition::class)
-            ]
+            get('pre_flight_conditions')
         ),
     'flight_consequences' => [
         autowire(RepairConsequence::class),
@@ -353,7 +354,7 @@ return [
         autowire(EpsConsequence::class),
         autowire(WarpdriveConsequence::class),
         autowire(TractorConsequence::class),
-        autowire(FlightDirectionConsequence::class),
+        autowire(FlightDirectionConsequence::class)
     ],
     'post_flight_consequences' => [
         autowire(PostFlightDirectionConsequence::class),
