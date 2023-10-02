@@ -4,7 +4,7 @@ function showUserLock(userid) {
 	ajax_update('elt', '/admin/?SHOW_USER_LOCK=1&uid=' + userid);
 }
 
-function registerSystemEditorNavKey() {
+function registerSystemEditorNavKeys(previousId, currentId, nextId) {
 	document.addEventListener("keydown", (event) => {
 		if (event.key === "ArrowLeft" && previousId > 0) {
 			document.location.href = '?SHOW_SYSTEM=1&sysid=' + previousId;
