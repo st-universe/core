@@ -120,7 +120,7 @@ class Module implements ModuleInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $system_type = 0;
+    private ?int $system_type = null;
 
     /**
      * @var ResearchInterface
