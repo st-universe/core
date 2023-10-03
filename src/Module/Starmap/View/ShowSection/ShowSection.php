@@ -51,7 +51,7 @@ final class ShowSection implements ViewControllerInterface
             throw new SanityCheckException('User tried to access an unseen layer');
         }
 
-        $game->setTemplateFile('html/starmap_section.xhtml');
+        $game->setTemplateFile('html/starmapSection.twig', true);
         $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
         $game->appendNavigationPart(
             sprintf(
