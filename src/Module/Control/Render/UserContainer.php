@@ -13,6 +13,7 @@ final class UserContainer
     private string $css;
     private int $prestige;
     private bool $hasStationsNavigation;
+    private bool $showDeals;
 
     public function __construct(
         int $id,
@@ -22,6 +23,7 @@ final class UserContainer
         string $css,
         int $prestige,
         bool $hasStationsNavigation,
+        bool $showDeals
     ) {
         $this->id = $id;
         $this->avatar = $avatar;
@@ -30,6 +32,7 @@ final class UserContainer
         $this->css = $css;
         $this->prestige = $prestige;
         $this->hasStationsNavigation = $hasStationsNavigation;
+        $this->showDeals = $showDeals;
     }
 
     public function getId(): int
@@ -65,5 +68,10 @@ final class UserContainer
     public function hasStationsNavigation(): bool
     {
         return $this->hasStationsNavigation;
+    }
+
+    public function showDeals(): int
+    {
+        return $this->showDeals ? 1 : 0;
     }
 }
