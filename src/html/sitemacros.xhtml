@@ -558,6 +558,11 @@
     </div>
   </div>
   <br />
+  <script language="Javascript" tal:condition="THIS/getExecuteJS">
+    <tal:block tal:repeat="item THIS/getExecuteJS">
+      ${item}
+    </tal:block>
+  </script>
   <metal:macro metal:use-macro="systeminformation" tal:condition="THIS/getInformation" />
   <metal:macro metal:use-macro="achievements" />
   <div id="result" style="display: none;" tal:condition="not:THIS/getInformation">..</div>
@@ -570,11 +575,6 @@
 	</script>
 </metal:block>
 <metal:block metal:define-macro="systeminformation">
-  <script language="Javascript" tal:condition="THIS/getExecuteJS">
-    <tal:block tal:repeat="item THIS/getExecuteJS">
-      ${item}
-    </tal:block>
-  </script>
   <div id="result">
     <table class="use">
       <tr>

@@ -13,15 +13,6 @@
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 </metal:macro>
-<metal:block metal:define-macro="initial_js">
-  <script language="Javascript">
-    var sstr = '${THIS/getSessionString}';
-    var shipid = ${ WRAPPER/get/getId};
-  </script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js"></script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/station.js"></script>
-</metal:block>
 <metal:block metal:define-macro="show_ship_alvl">
   <table style="width: 100%;" tal:define="sstr THIS/getSessionString">
     <tr>
