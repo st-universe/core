@@ -235,6 +235,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 JOIN stu_commodity co
                 ON bc.commodity_id = co.id
                 WHERE co.type = :typeStandard
+                AND co.name != \'Latinum\'
                 AND bc.count > 0
                 AND cf.aktiv = 1
                 GROUP BY c.user_id, bc.commodity_id',
