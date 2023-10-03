@@ -84,7 +84,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
                 $user->getFactionId(),
                 $user->getCss(),
                 $user->getPrestige(),
-                $user->hasStationsNavigation()
+                $user->hasStationsNavigation(),
+                $user->getDeals()
             ));
         }
     }
