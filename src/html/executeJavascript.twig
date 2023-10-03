@@ -1,7 +1,9 @@
 {% if EXECUTEJS %}
 <script language="Javascript">
     {% for item in EXECUTEJS %}
+    {% autoescape false %}
     {{ item }}
+    {% endautoescape %}
     {% endfor %}
 </script>
 {% endif %}
