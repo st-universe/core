@@ -448,7 +448,7 @@ final class GameController implements GameControllerInterface
 
     public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void
     {
-        $this->loggerUtil->init('JS', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('JS', LoggerEnum::LEVEL_ERROR);
 
         switch ($when) {
             case GameEnum::JS_EXECUTION_BEFORE_RENDER:
