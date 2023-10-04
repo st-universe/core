@@ -46,7 +46,8 @@ class StarmapUiFactoryTest extends StuTestCase
             $this->tradePostRepository,
             $this->encodedMap,
             $this->bbCodeParser,
-            $this->starSystemMapRepository
+            $this->starSystemMapRepository,
+            $this->initLoggerUtil()
         );
     }
 

@@ -173,8 +173,7 @@
 				</a>
 				{% endif %}
 				{% if IS_MAP_BUTTON_VISIBLE %}
-				<a href="javascript:void(0);"
-					onclick="openStarMap(this,'{{ SHIP.getMapCX }}','{{ SHIP.getMapCY }}','{{ SHIP.getLayerId }}');"
+				<a href="javascript:void(0);" onclick="openStarMap(this,{{ SHIP.getId }});"
 					onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
 					<img src="assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
 				</a>

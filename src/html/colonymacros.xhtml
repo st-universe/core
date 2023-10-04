@@ -19,6 +19,7 @@
   </script>
   <script type="text/javascript" src="${THIS/getJavascriptPath}/js/colony.js"></script>
   <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/starmap.js"></script>
 </metal:block>
 <metal:block metal:define-macro="initial_js_light">
   <script language="Javascript">
@@ -1194,118 +1195,6 @@
       </table>
     </div>
   </metal:macro>
-</metal:block>
-<metal:block metal:define-macro="cm_telescope">
-  <metal:macro metal:use-macro="colonymenu_container">
-    <div metal:fill-slot="containment">
-      <table class="tcal">
-        <tr>
-          <td style="width: 50%;" class="colonymenu">
-            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
-              &lt;&lt; Zurück zum Koloniemenü
-            </a>
-          </td>
-          <td style="width: 50%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/16}">
-            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(16);">
-              <span>Subraumteleskop</span>
-            </a>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </metal:macro>
-  <div>
-    <br />
-    <metal:macro metal:use-macro="telescope_nav" />
-    <div style="margin-left: 10px; width: 100px; float: left">
-      <table class="tcal">
-        <tr>
-          <th colspan="2">Energie</th>
-        </tr>
-        <tr>
-          <td>verfügbar:</td>
-          <td id="current_energy">${COLONY/getEps}</td>
-        </tr>
-        <tr>
-          <td>benötigt:</td>
-          <td id="needed_energy">?</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</metal:block>
-<metal:block metal:define-macro="telescope_nav">
-  <div id="map_section_nav">
-    <div style="float: left"
-      onmouseout="$('needed_energy').innerHTML = '?'; $('needed_energy').style.color = '#dddddd';">
-      <table cellpadding="0" cellspacing="0">
-        <tr>
-          <td>
-            <table class="use">
-              <tr>
-                <th>x|y</th>
-                <th tal:repeat="head HEAD_ROW" tal:content="head">..</th>
-              </tr>
-              <tr tal:repeat="yrow MAP_FIELDS">
-                <th tal:content="yrow/getRow">y</th>
-                <td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
-                  tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
-                  <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
-                    style="cursor: auto ! important;">
-                    <a tal:condition="data/getHref" href="javascript:void(0)"
-                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});"
-                      onclick="showTelescopeScan(${data/getCx}, ${data/getCy});">
-                      <img src="/assets/map/${data/getIcon}.png" style=" height: 28px; width: 28px;" />
-                    </a>
-                  </div>
-                  <tal:block tal:condition="not:data/getIcon">
-                    <div tal:condition="data/getTitle"
-                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});"
-                      onclick="showTelescopeScan(${data/getCx}, ${data/getCy});" title="${data/getTitle}"
-                      class="starmapInner" style="cursor: auto ! important;">&nbsp;
-                    </div>
-                    <div tal:condition="not:data/getTitle"
-                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});"
-                      onclick="showTelescopeScan(${data/getCx}, ${data/getCy});" class="starmapInner"
-                      style="cursor: auto ! important;">&nbsp;
-                    </div>
-                  </tal:block>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div style="margin-left: 10px; width: 100px; float: left">
-      <table class="tcal">
-        <tr>
-          <th colspan="3">Navigation</th>
-        </tr>
-        <tr>
-          <td style="text-align: center" colspan="3">
-            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_UP}'); closeAjaxWindow();"
-              style="display: block;" tal:condition="exists:NAV_UP">/\</a>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 33%;"><a href="javascript:void(0)"
-              onclick="refreshMapSectionNav('${NAV_LEFT}'); closeAjaxWindow();" tal:condition="exists:NAV_LEFT"
-              style="display: block;">&lt;</a></td>
-          <td style="width: 33%; text-align: center;" tal:content="SECTION_ID">SEC</td>
-          <td style="width: 33%; text-align: right;"><a href="javascript:void(0)"
-              onclick="refreshMapSectionNav('${NAV_RIGHT}'); closeAjaxWindow();" tal:condition="exists:NAV_RIGHT"
-              style="display: block;">&gt;</a></td>
-        </tr>
-        <tr>
-          <td style="text-align: center" colspan="3">
-            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_DOWN}'); closeAjaxWindow();"
-              tal:condition="exists:NAV_DOWN" style="display: block;">\/</a>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
 </metal:block>
 <metal:macro metal:define-macro="telescopescan">
   <table class="tcal" style="width: 300px;">

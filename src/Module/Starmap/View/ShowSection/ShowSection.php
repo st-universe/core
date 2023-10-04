@@ -42,9 +42,7 @@ final class ShowSection implements ViewControllerInterface
             throw new SanityCheckException('Invalid layer');
         }
 
-        $xCoordinate = $this->showSectionRequest->getXCoordinate($layer);
-        $yCoordinate = $this->showSectionRequest->getYCoordinate($layer);
-        $sectionId = $this->showSectionRequest->getSectionId();
+        $section = $this->showSectionRequest->getSection();
 
         // Sanity check if user knows layer
         if (!$game->getUser()->hasSeen($layer->getId())) {
@@ -55,13 +53,11 @@ final class ShowSection implements ViewControllerInterface
         $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
         $game->appendNavigationPart(
             sprintf(
-                'starmap.php?SHOW_SECTION=1&x=%d&y=%d&sec=%d&layerid=%d',
-                $xCoordinate,
-                $yCoordinate,
-                $sectionId,
+                'starmap.php?SHOW_SECTION=1&section=%d&layerid=%d',
+                $section,
                 $layer->getId()
             ),
-            sprintf(_('Sektion %d anzeigen'), $sectionId)
+            sprintf(_('Sektion %d anzeigen'), $section)
         );
         $game->setPageTitle(_('Sektion anzeigen'));
 
@@ -69,11 +65,13 @@ final class ShowSection implements ViewControllerInterface
         $helper->setTemplateVars(
             $game,
             $layer,
-            $xCoordinate,
-            $yCoordinate,
-            $sectionId,
+            $section,
+        );
+
+        $game->addExecuteJS(sprintf(
+            "registerNavKeys('%s', '%s');",
             ModuleViewEnum::MODULE_VIEW_STARMAP,
             RefreshSection::VIEW_IDENTIFIER
-        );
+        ));
     }
 }

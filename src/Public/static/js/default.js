@@ -179,12 +179,7 @@ var bordercolor = '';
 function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
 }
-function showMapBy(path) {
-        ajax_update('elt', path);
-}
-function refreshMapSectionNav(path) {
-        ajax_update('map_section_nav', path);
-}
+
 function fieldEventSelector(type) {
         var cells = document.querySelectorAll('.starmap');
         fieldevent = type;
@@ -633,37 +628,36 @@ function toggleTranslation(targetId) {
 
 if (userDeals) {
         setTimeout(function () {
-            showPopup();
+                showPopup();
         }, 3000);
-    }
-    
-    function showPopup() {
+}
+
+function showPopup() {
         var popup = document.getElementById('nagus');
         var popupContent = '<div class="header_box border_box action" style="text-align: center; margin: 5px 0 0 15px; padding: 5px; overflow: hidden; "> <a href="/trade.php?SHOW_DEALS=1"><img id="romImage" src="/assets/buttons/romblinck.gif" style="width: 65px; clip: rect(0px, 0px, 50px, 0px);" alt="Zu den Deals gehen"></a> </div>';
         popup.innerHTML = popupContent;
         popup.style.display = 'block';
-    
+
 
         var romImage = document.getElementById('romImage');
-    
+
         romImage.addEventListener('mouseover', function () {
-            romImage.title = 'Neue Deals: Zu den Deals gehen';
+                romImage.title = 'Neue Deals: Zu den Deals gehen';
         });
-    
+
         romImage.addEventListener('mouseout', function () {
-            romImage.title = '';
+                romImage.title = '';
         });
-    
+
         setTimeout(function () {
-            closePopup();
-            setTimeout(function () {
-                showPopup();
-            }, 2000);
+                closePopup();
+                setTimeout(function () {
+                        showPopup();
+                }, 2000);
         }, 7000);
-    }
-    
-    function closePopup() {
+}
+
+function closePopup() {
         var popup = document.getElementById('nagus');
         popup.style.display = 'none';
-    }
-    
+}

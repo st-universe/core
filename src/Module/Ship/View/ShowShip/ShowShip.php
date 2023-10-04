@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\View\ShowShip;
 
 use NavPanel;
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
@@ -269,7 +270,7 @@ final class ShowShip implements ViewControllerInterface
                 $warpDriveSystem->getWarpDrive(),
                 $warpDriveSystem->getMaxWarpDrive(),
                 $ship->getReactorLoad()
-            ), true);
+            ), GameEnum::JS_EXECUTION_AFTER_RENDER);
         }
     }
 

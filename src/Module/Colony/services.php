@@ -81,7 +81,6 @@ use Stu\Module\Colony\Lib\PlanetFieldTypeRetriever;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Colony\View\Overview\Overview;
 use Stu\Module\Colony\View\RefreshColonyEps\RefreshColonyEps;
-use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequest;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequestInterface;
@@ -308,7 +307,6 @@ return [
         ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
         ShowWaste::VIEW_IDENTIFIER => autowire(ShowWaste::class),
         ShowSubspaceTelescope::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescope::class),
-        RefreshSubspaceSection::VIEW_IDENTIFIER => autowire(RefreshSubspaceSection::class),
         ShowSubspaceTelescopeScan::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescopeScan::class),
         RefreshColonyEps::VIEW_IDENTIFIER => autowire(RefreshColonyEps::class)
     ],

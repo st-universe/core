@@ -18,9 +18,13 @@
         </th>
       </tr>
     </table>
+    {% if TEMPLATE %}
+    {% include TEMPLATE %}
+    {% else %}
     {% block content %}
     ...
     {% endblock %}
+    {% endif %}
   </div>
 </body>
 
