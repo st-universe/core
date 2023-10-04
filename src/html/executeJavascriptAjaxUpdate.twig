@@ -1,0 +1,9 @@
+{% if EXECUTEJSAJAXUPDATE %}
+<script language="Javascript">
+    {% for item in EXECUTEJSAJAXUPDATE %}
+    {% autoescape false %}
+    {{ item }}
+    {% endautoescape %}
+    {% endfor %}
+</script>
+{% endif %}
