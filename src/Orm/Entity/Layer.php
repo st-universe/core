@@ -106,8 +106,23 @@ class Layer implements LayerInterface
         return $this->is_encoded;
     }
 
+    public function getSectorsHorizontal(): int
+    {
+        return (int)ceil($this->getWidth() / MapEnum::FIELDS_PER_SECTION);
+    }
+
+    public function getSectorsVertical(): int
+    {
+        return (int)ceil($this->getHeight() / MapEnum::FIELDS_PER_SECTION);
+    }
+
+    public function getSectorCount(): int
+    {
+        return $this->getSectorsVertical() * $this->getSectorsHorizontal();
+    }
+
     public function getSectorId(int $mapCx, int $mapCy): int
     {
-        return $mapCx + ($mapCy - 1) * (int)ceil($this->getWidth() / MapEnum::FIELDS_PER_SECTION);
+        return $mapCx + ($mapCy - 1) * $this->getSectorsHorizontal();
     }
 }

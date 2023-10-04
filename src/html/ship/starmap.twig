@@ -1,0 +1,52 @@
+{# needs following variables: HEAD_ROW, MAP_FIELDS ) #}
+<div>
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                <div id="navup" onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')"
+                    style="width: 100%; display: block; cursor: pointer; text-align: center;"
+                    onclick="refreshMapSectionTable(4);">
+                    <img src="assets/buttons/b_up1.png" name="aup" />
+                </div>
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <div id="navleft" onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')"
+                    style="width: 100%; display: block; cursor: pointer; text-align: center;"
+                    onclick="refreshMapSectionTable(1);">
+                    <img src="assets/buttons/b_from1.png" name="aleft" />
+                </div>
+            </td>
+            <td style="width: 30px;">&nbsp;</td>
+            <td>
+                {% include 'html/starmapSectionTable.twig' %}
+            </td>
+            <td style="width: 30px;">&nbsp;</td>
+            <td>
+                <div id="navright" onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')"
+                    style="width: 100%; display: block; cursor: pointer; text-align: center;"
+                    onclick="refreshMapSectionTable(3);">
+                    <img src="assets/buttons/b_to1.png" name="aright" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                <div id="navdown" onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')"
+                    style="width: 100%; display: block; cursor: pointer; text-align: center;"
+                    onclick="refreshMapSectionTable(2);">
+                    <img src="assets/buttons/b_down1.png" name="adown" />
+                </div>
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</div>

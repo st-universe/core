@@ -1,0 +1,39 @@
+{# needs following variables: HEAD_ROW, MAP_FIELDS) #}
+{% include 'html/executeJavascriptAjaxUpdate.twig' %}
+<table id="starmapsectiontable" class="use">
+    <tr>
+        <th>x|y</th>
+        {% for head in HEAD_ROW %}
+        <th>{{ head }}</th>
+        {% endfor %}
+    </tr>
+    {% for yrow in MAP_FIELDS %}
+    <tr>
+        <th>{{ yrow.getRow }}</th>
+        {% for data in yrow.getFields %}
+        <td class="starmap" style="{{ data.getFieldStyle }}" id="{{ data.getCX }}_{{ data.getCY }}">
+            {% if data.getIcon %}
+            <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
+                {% if data.getHref %}
+                <a href="{{ data.getHref }}">
+                    <img src="/assets/map/{{ data.getIcon }}.png" style=" height: 28px; width: 28px;" />
+                </a>
+                {% else %}
+                <img src="/assets/map/{{ data.getIcon }}.png" style="height: 28px; width: 28px;" />
+                {% endif %}
+            </div>
+            {% else %}
+            {% if data.getTitle %}
+            <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
+                &nbsp;
+            </div>
+            {% else %}
+            <div class="starmapInner" style="cursor: auto ! important;">&nbsp;
+            </div>
+            {% endif %}
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>

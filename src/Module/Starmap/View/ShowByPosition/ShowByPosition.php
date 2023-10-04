@@ -4,59 +4,56 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowByPosition;
 
+use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
-use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
-use Stu\Orm\Repository\LayerRepositoryInterface;
+use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 
 final class ShowByPosition implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_STARMAP_POSITION';
 
-    private ShowSectionRequestInterface $request;
-
-    private LayerRepositoryInterface $layerRepository;
+    private ShipLoaderInterface $shipLoader;
 
     private StarmapUiFactoryInterface $starmapUiFactory;
 
     public function __construct(
-        ShowSectionRequestInterface $request,
-        StarmapUiFactoryInterface $starmapUiFactory,
-        LayerRepositoryInterface $layerRepository
+        ShipLoaderInterface $shipLoader,
+        StarmapUiFactoryInterface $starmapUiFactory
     ) {
-        $this->request = $request;
-        $this->layerRepository = $layerRepository;
+        $this->shipLoader = $shipLoader;
         $this->starmapUiFactory = $starmapUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $layerId = $this->request->getLayerId();
-        $layer = $this->layerRepository->find($layerId);
+        $ship =  $this->shipLoader->getByIdAndUser(request::getIntFatal('sid'), $game->getUser()->getId(), true);
 
-        $xCoordinate = $this->request->getXCoordinate($layer);
-        $yCoordinate = $this->request->getYCoordinate($layer);
-        $sectionId = $this->request->getSectionId();
+        $layer = $ship->getLayer();
+        $section = $ship->getSectorId();
 
-        //sanity check if user knows layer
-        if (!$game->getUser()->hasSeen($layer->getId())) {
-            throw new SanityCheckException('user tried to access unseen layer');
+        if ($layer === null || $section === null) {
+            throw new SanityCheckException('ship is in wormhole');
         }
 
-        $game->setMacroInAjaxWindow('html/macros.xhtml/starmap');
+        $game->setMacroInAjaxWindow('html/ship/starmap.twig', true);
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(
             $game,
             $layer,
-            $xCoordinate,
-            $yCoordinate,
-            $sectionId,
-            ModuleViewEnum::MODULE_VIEW_STARMAP,
-            self::VIEW_IDENTIFIER
+            $section
         );
+
+        $game->addExecuteJS(sprintf(
+            "registerNavKeys('%s', '%s');",
+            ModuleViewEnum::MODULE_VIEW_STARMAP,
+            RefreshSection::VIEW_IDENTIFIER
+        ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
     }
 }

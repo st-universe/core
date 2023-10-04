@@ -1,7 +1,6 @@
-{# needs following variables: HEAD_ROW, MAP_FIELDS ) #}
-
 <div id="elt">
-    <div style="float: left">
+    <div style="float: left"
+        onmouseout="$('needed_energy').innerHTML = '?'; $('needed_energy').style.color = '#dddddd';">
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <td>
@@ -13,25 +12,28 @@
     <div style="margin-left: 10px; width: 100px; float: left">
         <table class="tcal">
             <tr>
+                <th colspan="3">Navigation</th>
+            </tr>
+            <tr>
                 <td style="text-align: center" colspan="3">
-                    <a id="navup" href="javascript:void(0)" onclick="refreshMapSectionTable(4);"
+                    <a id="navup" href="javascript:void(0)" onclick="refreshMapSectionTable(4); closeAjaxWindow();"
                         style="display: block;">/\</a>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <a id="navleft" href="javascript:void(0)" onclick="refreshMapSectionTable(1);"
+                <td style="width: 33%;">
+                    <a id="navleft" href="javascript:void(0)" onclick="refreshMapSectionTable(1); closeAjaxWindow();"
                         style="display: block;">&lt;</a>
                 </td>
-                <td style="text-align: center;">{{ SECTION_ID }}</td>
-                <td style="text-align: right;">
-                    <a id="navright" href="javascript:void(0)" onclick="refreshMapSectionTable(3);"
+                <td style="width: 33%; text-align: center;">{{ SECTION_ID }}</td>
+                <td style="width: 33%; text-align: right;">
+                    <a id="navright" href="javascript:void(0)" onclick="refreshMapSectionTable(3); closeAjaxWindow();"
                         style="display: block;">&gt;</a>
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center" colspan="3">
-                    <a id="navdown" href="javascript:void(0)" onclick="refreshMapSectionTable(2);"
+                    <a id="navdown" href="javascript:void(0)" onclick="refreshMapSectionTable(2); closeAjaxWindow();"
                         style="display: block;">\/</a>
                 </td>
             </tr>

@@ -1,0 +1,37 @@
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<table class="tcal">
+    <tr>
+        <td style="width: 50%;" class="colonymenu">
+            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
+                &lt;&lt; Zurück zum Koloniemenü
+            </a>
+        </td>
+        <td style="width: 50%;" class="colonymenu {{ COLONY_MENU_SELECTOR.16 }}">
+            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(16);">
+                <span>Subraumteleskop</span>
+            </a>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+{% endembed %}
+<div>
+    <br />
+    {% include 'html/colony/telescopeNavigation.twig' %}
+    <div style="margin-left: 10px; width: 100px; float: left">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Energie</th>
+            </tr>
+            <tr>
+                <td>verfügbar:</td>
+                <td id="current_energy">{{ COLONY.getEps }}</td>
+            </tr>
+            <tr>
+                <td>benötigt:</td>
+                <td id="needed_energy">?</td>
+            </tr>
+        </table>
+    </div>
+</div>

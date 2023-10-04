@@ -6,6 +6,7 @@ namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -28,24 +29,29 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
 
     private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
         TradePostRepositoryInterface $tradePostRepository,
         EncodedMapInterface $encodedMap,
         Parser $parser,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->mapRepository = $mapRepository;
         $this->tradePostRepository = $tradePostRepository;
         $this->encodedMap = $encodedMap;
         $this->parser = $parser;
         $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function createMapSectionHelper(): MapSectionHelper
     {
         return new MapSectionHelper(
-            $this
+            $this,
+            $this->loggerUtilFactory
         );
     }
 

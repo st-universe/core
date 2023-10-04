@@ -21,8 +21,7 @@
 				<tr tal:repeat="rowy SECTIONS">
 					<th style="width: 30px;" tal:content="php:repeat.rowy.number*FIELDS_PER_SECTION">Y</th>
 					<td tal:repeat="data rowy">
-						<a
-							href="?SHOW_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}&layerid=${LAYERID}">Sektor
+						<a href="?SHOW_SECTION=1&section=${data}&layerid=${LAYERID}">Sektor
 							<span tal:content="data">SEC</span></a>
 					</td>
 				</tr>

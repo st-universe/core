@@ -18,5 +18,11 @@ interface LayerInterface
 
     public function isEncoded(): bool;
 
+    public function getSectorsHorizontal(): int;
+
+    public function getSectorsVertical(): int;
+
+    public function getSectorCount(): int;
+
     public function getSectorId(int $mapCx, int $mapCy): int;
 }

@@ -131,11 +131,11 @@ function showAstroEntryWindow(isSystem) {
 	isSystemParam = isSystem ? '&isSystem=1' : '&isSystem=0';
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ASTRO_ENTRY=1' + isSystemParam);
 }
-function openStarMap(obj, cx, cy, layerid) {
+function openStarMap(obj, shipId) {
 	closeAjaxWindow();
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
-	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy + '&sec=0&layerid=' + layerid);
+	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&sid=' + shipId);
 }
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
