@@ -579,7 +579,7 @@
   </form>
 </metal:block>
 <metal:block metal:define-macro="show_ship_scan">
-  <metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
+  <metal:block metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   <tal:block tal:condition="exists:TARGETWRAPPER">
     <div class="box">
       <div class="box_body">
