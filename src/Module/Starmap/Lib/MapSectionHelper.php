@@ -32,6 +32,7 @@ final class MapSectionHelper
         GameControllerInterface $game,
         LayerInterface $layer,
         int $currentSection,
+        bool $isMapEditor = false,
         int $direction = null
     ): void {
         //$this->loggerUtil->init('MSH', LoggerEnum::LEVEL_ERROR);
@@ -52,7 +53,11 @@ final class MapSectionHelper
 
         $fields = [];
         foreach (range($miny, $maxy) as $value) {
-            $fields[] = $this->starmapUiFactory->createUserYRow($game->getUser(), $layer, $value, $minx, $maxx);
+            if ($isMapEditor) {
+                $fields[] = $this->starmapUiFactory->createYRow($layer, $value, $minx, $maxx, 0);
+            } else {
+                $fields[] = $this->starmapUiFactory->createUserYRow($game->getUser(), $layer, $value, $minx, $maxx);
+            }
         }
 
         $game->setTemplateVar('SECTION_ID', $section);
@@ -65,6 +70,68 @@ final class MapSectionHelper
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
 
         $this->enableNavOptions($xCoordinate, $yCoordinate, $layer, $game);
+
+        if ($isMapEditor) {
+            $this->enablePreviewRows(
+                $xCoordinate,
+                $yCoordinate,
+                $minx,
+                $maxx,
+                $miny,
+                $maxy,
+                $layer,
+                $game
+            );
+        }
+    }
+
+    private function enablePreviewRows(
+        int $xCoordinate,
+        int $yCoordinate,
+        int $minx,
+        int $maxx,
+        int $miny,
+        int $maxy,
+        LayerInterface $layer,
+        GameControllerInterface $game
+    ): void {
+        if ($yCoordinate - 1 >= 1) {
+            $game->setTemplateVar(
+                'TOP_PREVIEW_ROW',
+                $this->starmapUiFactory->createYRow($layer, $yCoordinate * MapEnum::FIELDS_PER_SECTION - MapEnum::FIELDS_PER_SECTION, $minx, $maxx, 0)->getFields()
+            );
+        }
+
+        if ($yCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getHeight()) {
+            $game->setTemplateVar(
+                'BOTTOM_PREVIEW_ROW',
+                $this->starmapUiFactory->createYRow($layer, $yCoordinate * MapEnum::FIELDS_PER_SECTION + 1, $minx, $maxx, 0)->getFields()
+            );
+        }
+
+        if ($xCoordinate - 1 >= 1) {
+            $row = [];
+            for ($i = $miny; $i <= $maxy; $i++) {
+                $row[] = $this->starmapUiFactory->createYRow($layer, $i, $minx - 1, $minx - 1, 0);
+            }
+
+            $game->setTemplateVar(
+                'LEFT_PREVIEW_ROW',
+                $row
+            );
+        }
+
+        if ($xCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getWidth()) {
+            $row = [];
+            for ($i = $miny; $i <= $maxy; $i++) {
+                $row[] = $this->starmapUiFactory->createYRow($layer, $i, $maxx + 1, $maxx + 1, 0);
+            }
+
+            $game->setTemplateVar(
+                'RIGHT_PREVIEW_ROW',
+                $row
+            );
+        }
     }
 
     private function enableNavOptions(

@@ -29,8 +29,7 @@
 		<th style="width: 30px;">{{ content }}</th>
 		{% for data in rowy %}
 		<td>
-			<a
-				href="/admin/?SHOW_EDIT_MAP_SECTION=1&x={{ loop.index }}&y={{ rowIndex }}&sec={{ data }}&layerid={{ LAYERID }}">
+			<a href="/admin/?SHOW_EDIT_MAP_SECTION=1&section={{ data }}&layerid={{ LAYERID }}">
 				{{ data }}</a>
 		</td>
 		{% endfor %}

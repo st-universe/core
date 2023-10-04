@@ -1,0 +1,9 @@
+{% if EXECUTEJSAFTERRENDER %}
+<script language="Javascript">
+    {% for item in EXECUTEJSAFTERRENDER %}
+    {% autoescape false %}
+    {{ item }}
+    {% endautoescape %}
+    {% endfor %}
+</script>
+{% endif %}

@@ -1,0 +1,425 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<div>
+	<img src="/assets/buttons/alert0.png" title="deselect" style="cursor: pointer;" onclick="fieldEventSelector(0)" />
+	<img src="/assets/buttons/alert1.png" title="region id" style="cursor: pointer;" onclick="fieldEventSelector(1)" />
+	<img src="/assets/buttons/alert2.png" title="admin region id" style="cursor: pointer;"
+		onclick="fieldEventSelector(2)" />
+	<img src="/assets/buttons/alert3.png" title="system type id" style="cursor: pointer;"
+		onclick="fieldEventSelector(3)" />
+	<img src="/assets/buttons/block1.png" title="passable" style="cursor: pointer;" onclick="fieldEventSelector(4)" />
+</div>
+<div style="float: left">
+	<table cellpadding="0" cellspacing="0">
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>
+				{% if TOP_PREVIEW_ROW %}
+				<table class="use">
+					<tr>
+						<th style="width: 30px;">/\</th>
+						{% for mapItem in TOP_PREVIEW_ROW %}
+						<td class="starmap" id="{{ mapItem.getMap.getCX }}_{{ mapItem.getMap.getCY }}">
+							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
+						</td>
+						{% endfor %}
+					</tr>
+				</table>
+				{% endif %}
+			</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			{% set colspan = FIELDS_PER_SECTION + 1 %}
+			<td colspan="runtime" colspan="{{ colspan }}" style="height: 30px;"></td>
+		</tr>
+		<tr>
+			<td>
+				{% if LEFT_PREVIEW_ROW %}
+				<table class="use">
+					<th style="width: 30px;">&lt;</th>
+					{% for row in LEFT_PREVIEW_ROW %}
+					<tr>
+						{% for mapItem in row.getFields %}
+						{% set map = mapItem.getMap %}
+						<td class="starmap" id="{{ map.getCX }}_{{ map.getCY }}">
+							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
+							</div>
+						</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</table>
+				{% endif %}
+			</td>
+			<td style="width: 30px;">&nbsp;</td>
+			<td>
+				<table class="use">
+					<tr>
+						<th style="width: 30px;">x|y</th>
+						{% for head in HEAD_ROW %}
+						<th>{{ head }}</th>
+						{% endfor %}
+					</tr>
+					{% for yrow in MAP_FIELDS %}
+					<tr>
+						<th>{{ yrow.getRow }}</th>
+						{% for mapItem in yrow.getFields %}
+						{% set map = mapItem.getMap %}
+						<td class="starmap" style="runtime" data-passable="{{ map.getFieldType.getPassableAsInt }}"
+							data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
+							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCX }}_{{ map.getCY }}">
+							<div class="lssobj" style="cursor: pointer ! important;"
+								onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)">
+								<div class="divbody"
+									style="/*! position: absolute; */ /*! top: 0; */ /*! left: 0; */ width: 30px; height: 30px;"
+									onclick="updateField(this,{{ map.getId }});">
+									<img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
+								</div>
+							</div>
+						</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</table>
+			</td>
+			<td style="width: 30px;">&nbsp;</td>
+			<td>
+				{% if RIGHT_PREVIEW_ROW %}
+				<table class="use">
+					<th>&gt;</th>
+					{% for row in RIGHT_PREVIEW_ROW %}
+					<tr>
+						{% for mapItem in row.getFields %}
+						{% set map = mapItem.getMap %}
+						<td class="starmap" id="{{ map.getCX }}_{{ map.getCY }}">
+							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
+							</div>
+						</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</table>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			{% set colspan = FIELDS_PER_SECTION + 1 %}
+			<td colspan="runtime" colspan="{{ colspan }}" style="height: 30px;"></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>
+				{% if BOTTOM_PREVIEW_ROW %}
+				<table class="use">
+					<tr>
+						<th style="width: 30px;">\/</th>
+						{% for mapItem in BOTTOM_PREVIEW_ROW %}
+						<td class="starmap" id="{{ mapItem.getMap.getCX }}_{{ mapItem.getMap.getCY }}">
+							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
+						</td>
+						{% endfor %}
+					</tr>
+				</table>
+				{% endif %}
+			</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+</div>
+<div style="margin-left: 10px; width: 100px; float: left">
+	<table class="tcal">
+		<tr>
+			<td style="text-align: center" colspan="3">
+				<a id="navup" href="javascript:void(0)" onclick="refreshMapSection(4, true);"
+					style="display: block;">/\</a>
+			</td>
+		</tr>
+		<tr>
+			<td> <a id="navleft" href="javascript:void(0)" onclick="refreshMapSection(1, true);"
+					style="display: block;">&lt;</a></td>
+			<td style="text-align: center;">{{ SECTION_ID }}</td>
+			<td style="text-align: right;">
+				<a id="navright" href="javascript:void(0)" onclick="refreshMapSection(3, true);"
+					style="display: block;">&gt;</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: center" colspan="3">
+				<a id="navdown" href="javascript:void(0)" onclick="refreshMapSection(2, true);"
+					style="display: block;">\/</a>
+			</td>
+		</tr>
+	</table>
+	<img src="/assets/buttons/selfdes2.png" title="Deselekt" style="cursor: pointer;"
+		onclick="selectMapFieldType(0); selectSystemType(0); selectRegion(0, 'Keins'); selectAdminRegion(0, 'Keins'); selectPassable(0); selectBorder(0, 'Keins')" />
+	<br />
+	<div onclick="togglePanel('fieldtypeselectorPanel')"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Map Feld</div>
+	<div id="fieldtypeselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+		<div class="divbody" style="width: 230px;">
+			<table class="use">
+				<div class="divhead">Gewähltes Feld</div>
+				<div class="divbody" id="fieldtypeselector">Keins</div>
+				<br />
+				<table class="use">
+					<tr>
+						<td style="vertical-align: top;">
+							{% for data in POSSIBLE_FIELD_TYPES.row_0 %}
+							<div>
+								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
+									style="cursor: pointer;" title="{{ data.getName }}"
+									onclick="selectMapFieldType('{{ data.getType }}')" />
+							</div>
+							{% endfor %}
+						</td>
+						<td style="vertical-align: top;">
+							{% for data in POSSIBLE_FIELD_TYPES.row_1 %}
+							<div>
+								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
+									style="cursor: pointer;" title="{{ data.getName }}"
+									onclick="selectMapFieldType('{{ data.getType }}')" />
+							</div>
+							{% endfor %}
+						</td>
+						<td style="vertical-align: top;">
+							{% for data in POSSIBLE_FIELD_TYPES.row_2 %}
+							<div>
+								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
+									style="cursor: pointer;" title="{{ data.getName }}"
+									onclick="selectMapFieldType('{{ data.getType }}')" />
+							</div>
+							{% endfor %}
+						</td>
+						<td style="vertical-align: top;">
+							{% for data in POSSIBLE_FIELD_TYPES.row_3 %}
+							<div>
+								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
+									style="cursor: pointer;" title="{{ data.getName }}"
+									onclick="selectMapFieldType('{{ data.getType }}')" />
+							</div>
+							{% endfor %}
+						</td>
+						<td style="vertical-align: top;">
+							{% for data in POSSIBLE_FIELD_TYPES.row_4 %}
+							<div>
+								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
+									style="cursor: pointer;" title="{{ data.getName }}"
+									onclick="selectMapFieldType('{{ data.getType }}')" />
+							</div>
+							{% endfor %}
+						</td>
+						<td style="vertical-align: top;">
+							{% for data in POSSIBLE_FIELD_TYPES.row_5 %}
+							<div>
+								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
+									style="cursor: pointer;" title="{{ data.getName }}"
+									onclick="selectMapFieldType('{{ data.getType }}')" />
+							</div>
+							{% endfor %}
+						</td>
+					</tr>
+				</table>
+			</table>
+		</div>
+	</div>
+
+
+
+	<div onclick="togglePanel('systemtypeselectorPanel')"
+		style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 650px;">System Type
+	</div>
+	<div id="systemtypeselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 650px;">
+		<div class="divbody" style="width: 630px;">
+			<table class="use">
+				<div style="width: 150px; float: left">
+					<div class="divhead">Gewähltes Feld</div>
+					<div class="divbody" id="systemtypeselector">Keins</div>
+					<br />
+					<table class="use">
+						<tr>
+							<td style="vertical-align: top;">
+								{% for data in POSSIBLE_FIELD_TYPES.row_0 %}
+								<div>
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+										style="cursor: pointer;" title="{{ data.getDescription }}"
+										onclick="selectSystemType('{{ data.getId }}')" />
+								</div>
+								{% endfor %}
+							</td>
+							<td style="vertical-align: top;">
+								{% for data in POSSIBLE_FIELD_TYPES.row_1 %}
+								<div>
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+										style="cursor: pointer;" title="{{ data.getDescription }}"
+										onclick="selectSystemType('{{ data.getId }}')" />
+								</div>
+								{% endfor %}
+							</td>
+							<td style="vertical-align: top;">
+								{% for data in POSSIBLE_FIELD_TYPES.row_2 %}
+								<div>
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+										style="cursor: pointer;" title="{{ data.getDescription }}"
+										onclick="selectSystemType('{{ data.getId }}')" />
+								</div>
+								{% endfor %}
+							</td>
+							<td style="vertical-align: top;">
+								{% for data in POSSIBLE_FIELD_TYPES.row_3 %}
+								<div>
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+										style="cursor: pointer; ;" title="{{ data.getDescription }}"
+										onclick="selectSystemType('{{ data.getId }}')" />
+								</div>
+								{% endfor %}
+							</td>
+							<td style="vertical-align: top;">
+								{% for data in POSSIBLE_FIELD_TYPES.row_4 %}
+								<div>
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+										style="cursor: pointer; " title="{{ data.getDescription }}"
+										onclick="selectSystemType('{{ data.getId }}')" />
+								</div>
+								{% endfor %}
+							</td>
+							<td style="vertical-align: top;">
+								{% for data in POSSIBLE_FIELD_TYPES.row_5 %}
+								<div>
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+										style="cursor: pointer;" title="{{ data.getDescription }}"
+										onclick="selectSystemType('{{ data.getId }}')" />
+								</div>
+								{% endfor %}
+							</td>
+						</tr>
+					</table>
+				</div>
+			</table>
+		</div>
+		<div onclick="togglePanel('regionselectorPanel')"
+			style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Region Type
+		</div>
+		<div id="regionselectorPanel" style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+			<div class="divbody" style="width: 230px;">
+				<table class="use">
+					<div style="width: 150px; float: left">
+						<div class="divhead">Gewählte Region</div>
+						<div class="divbody" id="regionselector">Keins</div>
+						<br />
+						<table class="use">
+							<tr>
+								<td style="vertical-align: top;">
+									{% for data in POSSIBLE_REGION.row_0 %}
+									<div>
+										<span title="runtime" style="cursor: pointer;" title="{{ data.getDescription }}"
+											onclick="selectRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
+											data.getDescription}}</span>
+									</div>
+									{% endfor %}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</table>
+			</div>
+			<div onclick="togglePanel('adminregionselectorPanel')"
+				style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Admin Region
+				Type
+			</div>
+			<div id="adminregionselectorPanel"
+				style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+				<div class="divbody" style="width: 230px;">
+					<table class="use">
+						<div style="width: 150px; float: left">
+							<div class="divhead">Gewählte Admin Region</div>
+							<div class="divbody" id="adminregionselector">Keins</div>
+							<br />
+							<table class="use">
+								<tr>
+									<td style="vertical-align: top;">
+										{% for data in POSSIBLE_ADMIN_REGION.row_0 %}
+										<div>
+											<span title="runtime" style="cursor: pointer;"
+												title="{{ data.getDescription }}"
+												onclick="selectAdminRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
+												data.getDescription}}</span>
+										</div>
+										{% endfor %}
+									</td>
+								</tr>
+							</table>
+						</div>
+					</table>
+				</div>
+				<div onclick="togglePanel('passableselectorPanel')"
+					style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Passable
+					Selector
+				</div>
+				<div id="passableselectorPanel"
+					style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+					<div class="divbody" style="width: 230px;">
+						<table class="use">
+							<div style="width: 150px; float: left">
+								<div class="divhead">Passable Selector</div>
+								<div class="divbody" id="passable">Keins</div>
+								<br />
+								<table class="use">
+									<tr>
+										<td style="vertical-align: top;">
+											<div>
+												<span style="cursor: pointer;" onclick="selectPassable(1)">True</span>
+											</div>
+											<br />
+											<div>
+												<span style="cursor: pointer;" onclick="selectPassable(2)">False</span>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</table>
+					</div>
+					<div onclick="togglePanel('borderselectorPanel')"
+						style="cursor: pointer; padding: 10px; border: 1px solid #575757; width: 250px;">Border
+						Type
+					</div>
+					<div id="borderselectorPanel"
+						style="display: none; padding: 10px; border: 1px solid #575757; width: 250px;">
+						<div class="divbody" style="width: 230px;">
+							<table class="use">
+								<div style="width: 150px; float: left">
+									<div class="divhead">Gewählte Border</div>
+									<div class="divbody" id="borderselector">Keins</div>
+									<br />
+									<table class="use">
+										<tr>
+											<td style="vertical-align: top;">
+												{% for data in POSSIBLE_BORDER.row_0 %}
+												<div>
+													<span title="runtime" style="cursor: pointer;"
+														title="{{ data.getDescription }}"
+														onclick="selectBorder('{{ data.getId }}','{{ data.getDescription}}','{{ data.getColor}}')">{{
+														data.getDescription}}</span>
+												</div>
+												{% endfor %}
+											</td>
+										</tr>
+									</table>
+								</div>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% include 'html/executeJavascriptAjaxUpdate.twig' %}
+{% endblock %}

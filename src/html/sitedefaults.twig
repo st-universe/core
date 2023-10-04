@@ -166,15 +166,7 @@
             </div>
         </div>
     </div>
-    {% if EXECUTEJSAFTERRENDER %}
-    <script language="Javascript">
-        {% for item in EXECUTEJSAFTERRENDER %}
-        {% autoescape false %}
-		{{ item }}
-		{% endautoescape %}
-        {% endfor %}
-    </script>
-    {% endif %}
+    {% include 'html/executeJavascriptAfterRender.twig' %}
 </body>
 
 </html>
