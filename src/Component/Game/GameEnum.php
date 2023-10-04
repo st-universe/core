@@ -26,6 +26,11 @@ final class GameEnum
     //commnet stuff
     public const KN_PER_SITE = 6;
 
+    // javascript execution
+    public const JS_EXECUTION_BEFORE_RENDER = 1;
+    public const JS_EXECUTION_AFTER_RENDER = 2;
+    public const JS_EXECUTION_AJAX_UPDATE = 3;
+
     /**
      * Returns the textual representation for a game state
      */

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -21,7 +22,7 @@ interface GameControllerInterface
 
     public function setMacroAndTemplate(string $macro, string $tpl): void;
 
-    public function setMacroInAjaxWindow(string $macro): void;
+    public function setMacroInAjaxWindow(string $macro, bool $isTwig = false): void;
 
     public function showMacro(string $macro, bool $isTwig = false): void;
 
@@ -86,7 +87,10 @@ interface GameControllerInterface
     /** @return array<string> */
     public function getExecuteJsAfterRender(): array;
 
-    public function addExecuteJS(string $value, bool $executeAfterRender = false): void;
+    /** @return array<string> */
+    public function getExecuteJsAjaxUpdate(): array;
+
+    public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void;
 
     public function redirectTo(string $href): void;
 

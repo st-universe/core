@@ -118,6 +118,9 @@ final class GameController implements GameControllerInterface
     /** @var array<string> */
     private array $execjsAfterRender = [];
 
+    /** @var array<string> */
+    private array $execjsAjaxUpdate = [];
+
     private ?GameTurnInterface $currentRound = null;
 
     /** @var array<string> */
@@ -221,10 +224,16 @@ final class GameController implements GameControllerInterface
         $this->setTemplateFile($tpl);
     }
 
-    public function setMacroInAjaxWindow(string $macro): void
+    public function setMacroInAjaxWindow(string $macro, bool $isTwig = false): void
     {
         $this->macro = $macro;
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
+
+        if ($isTwig) {
+            $this->setTemplateFile('html/ajaxwindow.twig', true);
+            $this->setTemplateVar('TEMPLATE', $macro);
+        } else {
+            $this->setTemplateFile('html/ajaxwindow.xhtml');
+        }
     }
 
     public function showMacro(string $macro, bool $isTwig = false): void
@@ -432,12 +441,28 @@ final class GameController implements GameControllerInterface
         return $this->execjsAfterRender;
     }
 
-    public function addExecuteJS(string $value, bool $executeAfterRender = false): void
+    public function getExecuteJsAjaxUpdate(): array
     {
-        if ($executeAfterRender) {
-            $this->execjsAfterRender[] = $value;
-        } else {
-            $this->execjs[] = $value;
+        return $this->execjsAjaxUpdate;
+    }
+
+    public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void
+    {
+        $this->loggerUtil->init('JS', LoggerEnum::LEVEL_ERROR);
+
+        switch ($when) {
+            case GameEnum::JS_EXECUTION_BEFORE_RENDER:
+                $this->execjs[] = $value;
+                $this->loggerUtil->log(sprintf('before: %s', $value));
+                break;
+            case GameEnum::JS_EXECUTION_AFTER_RENDER:
+                $this->execjsAfterRender[] = $value;
+                $this->loggerUtil->log(sprintf('after: %s', $value));
+                break;
+            case GameEnum::JS_EXECUTION_AJAX_UPDATE:
+                $this->execjsAjaxUpdate[] = $value;
+                $this->loggerUtil->log(sprintf('update: %s', $value));
+                break;
         }
     }
 
