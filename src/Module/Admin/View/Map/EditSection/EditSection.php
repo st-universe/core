@@ -117,7 +117,6 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_BORDER', $possibleBorder);
         $game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegion);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
-        $game->setTemplateVar('SECTION_ID', $section_id);
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(
