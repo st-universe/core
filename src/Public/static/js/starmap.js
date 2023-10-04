@@ -32,7 +32,10 @@ function updateSectionAndLayer(section, layerId) {
 	currentSection = section;
 	currentLayerId = layerId;
 
-	$('sectionid').innerHTML = section;
+	sectionIdElement = $('sectionid');
+	if (sectionIdElement != null) {
+		$('sectionid').innerHTML = section;
+	}
 }
 
 var canNavigateLeft = true;
