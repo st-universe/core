@@ -6,6 +6,7 @@ namespace Stu\Module\Control\Render;
 
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -50,12 +51,20 @@ class GameTalRendererTest extends StuTestCase
             ->with($user, $talPage)
             ->once();
 
+        $game->shouldReceive('getExecuteJS')
+            ->with(GameEnum::JS_EXECUTION_BEFORE_RENDER)
+            ->once()
+            ->andReturn(['JAVASCRIPT']);
+
         $talPage->shouldReceive('parse')
             ->withNoArgs()
             ->once()
             ->andReturn($output);
         $talPage->shouldReceive('setVar')
             ->with('THIS', $game)
+            ->once();
+        $talPage->shouldReceive('setVar')
+            ->with('EXECUTEJSBEFORERENDER', ['JAVASCRIPT'])
             ->once();
         $talPage->shouldReceive('setVar')
             ->with('USER', $user)

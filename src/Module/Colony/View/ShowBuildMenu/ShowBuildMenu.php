@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildMenu;
 
+use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\BuildMenuWrapper;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -57,24 +58,15 @@ final class ShowBuildMenu implements ViewControllerInterface
         $this->colonyGuiHelper->register($colony, $game);
 
         $menus = [];
-        $menus[1]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
-            $colonyId,
-            $userId,
-            1,
-            0
-        );
-        $menus[2]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
-            $colonyId,
-            $userId,
-            2,
-            0
-        );
-        $menus[3]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
-            $colonyId,
-            $userId,
-            3,
-            0
-        );
+
+        foreach (BuildMenuEnum::BUILDMENU_IDS as $id) {
+            $menus[$id]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+                $colonyId,
+                $userId,
+                $id,
+                0
+            );
+        }
 
         $game->showMacro('html/colonymacros.xhtml/cm_buildmenu');
 

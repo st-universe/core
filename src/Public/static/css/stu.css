@@ -520,14 +520,7 @@ a.linkbutton_red:hover {
 td.buildmenu {
   text-align: center;
   font-size: 0.8vw;
-}
-
-td.buildmenu1 {
   padding-right: 10px;
-}
-
-td.buildmenu3 {
-  padding-left: 10px;
 }
 
 td.shipimage {
