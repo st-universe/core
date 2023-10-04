@@ -158,20 +158,4 @@ final class BuildingEnum
      * @var int
      */
     public const SHIELD_BATTERY_CAPACITY = 10000;
-
-    // other
-    /**
-     * @var int
-     */
-    public const BUILDMENU_SOCIAL = 1;
-
-    /**
-     * @var int
-     */
-    public const BUILDMENU_INDUSTRY = 2;
-
-    /**
-     * @var int
-     */
-    public const BUILDMENU_INFRASTRUCTURE = 3;
 }
