@@ -1,6 +1,6 @@
-{% if EXECUTEJS %}
+{% if EXECUTEJSBEFORERENDER %}
 <script language="Javascript">
-    {% for item in EXECUTEJS %}
+    {% for item in EXECUTEJSBEFORERENDER %}
     {% autoescape false %}
     {{ item }}
     {% endautoescape %}

@@ -558,8 +558,8 @@
     </div>
   </div>
   <br />
-  <script language="Javascript" tal:condition="THIS/getExecuteJS">
-    <tal:block tal:repeat="item THIS/getExecuteJS">
+  <script language="Javascript" tal:condition="EXECUTEJSBEFORERENDER">
+    <tal:block tal:repeat="item EXECUTEJSBEFORERENDER">
       ${item}
     </tal:block>
   </script>

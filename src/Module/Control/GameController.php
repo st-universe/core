@@ -112,14 +112,8 @@ final class GameController implements GameControllerInterface
 
     private string $macro = '';
 
-    /** @var array<string> */
+    /** @var array<int, array<string>> */
     private array $execjs = [];
-
-    /** @var array<string> */
-    private array $execjsAfterRender = [];
-
-    /** @var array<string> */
-    private array $execjsAjaxUpdate = [];
 
     private ?GameTurnInterface $currentRound = null;
 
@@ -431,36 +425,30 @@ final class GameController implements GameControllerInterface
         $this->pagetitle = $title;
     }
 
-    public function getExecuteJS(): array
+    public function getExecuteJS(int $when): ?array
     {
-        return $this->execjs;
-    }
+        if (!array_key_exists($when, $this->execjs)) {
+            return null;
+        }
 
-    public function getExecuteJsAfterRender(): array
-    {
-        return $this->execjsAfterRender;
-    }
-
-    public function getExecuteJsAjaxUpdate(): array
-    {
-        return $this->execjsAjaxUpdate;
+        return $this->execjs[$when];
     }
 
     public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void
     {
-        //$this->loggerUtil->init('JS', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init('JS', LoggerEnum::LEVEL_ERROR);
 
         switch ($when) {
             case GameEnum::JS_EXECUTION_BEFORE_RENDER:
-                $this->execjs[] = $value;
+                $this->execjs[$when][] = $value;
                 $this->loggerUtil->log(sprintf('before: %s', $value));
                 break;
             case GameEnum::JS_EXECUTION_AFTER_RENDER:
-                $this->execjsAfterRender[] = $value;
+                $this->execjs[$when][] = $value;
                 $this->loggerUtil->log(sprintf('after: %s', $value));
                 break;
             case GameEnum::JS_EXECUTION_AJAX_UPDATE:
-                $this->execjsAjaxUpdate[] = $value;
+                $this->execjs[$when][] = $value;
                 $this->loggerUtil->log(sprintf('update: %s', $value));
                 break;
         }

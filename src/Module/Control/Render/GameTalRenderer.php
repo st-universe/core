@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render;
 
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -38,6 +39,7 @@ final class GameTalRenderer implements GameTalRendererInterface
         TalPageInterface $talPage
     ): string {
         $talPage->setVar('THIS', $game);
+        $talPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
         $talPage->setVar('USER', $user);
         $talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         $talPage->setVar('WIKI', $this->config->get('wiki.base_url'));
