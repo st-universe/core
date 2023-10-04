@@ -558,11 +558,6 @@
     </div>
   </div>
   <br />
-  <script language="Javascript" tal:condition="EXECUTEJSBEFORERENDER">
-    <tal:block tal:repeat="item EXECUTEJSBEFORERENDER">
-      ${item}
-    </tal:block>
-  </script>
   <metal:macro metal:use-macro="systeminformation" tal:condition="THIS/getInformation" />
   <metal:macro metal:use-macro="achievements" />
   <div id="result" style="display: none;" tal:condition="not:THIS/getInformation">..</div>
@@ -575,24 +570,32 @@
 	</script>
 </metal:block>
 <metal:block metal:define-macro="systeminformation">
-  <div id="result">
-    <table class="use">
-      <tr>
-        <th>Meldung</th>
-      </tr>
-      <tr>
-        <td>
-          <div tal:repeat="notification THIS/getInformation" tal:content="structure bbcode:notification/getText">.</div>
-          <tal:block tal:repeat="notification THIS/getInformation">
-            <a tal:condition="notification/getLink" href="${notification/getLink}" class="linkbutton">
-              Zum Schiff wechseln
-            </a>
-          </tal:block>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <br />
+  <script language="Javascript" tal:condition="EXECUTEJSBEFORERENDER">
+    <tal:block tal:repeat="item EXECUTEJSBEFORERENDER">
+      ${item}
+    </tal:block>
+  </script>
+  <tal:block tal:condition="THIS/getInformation">
+    <div id="result">
+      <table class="use">
+        <tr>
+          <th>Meldung</th>
+        </tr>
+        <tr>
+          <td>
+            <div tal:repeat="notification THIS/getInformation" tal:content="structure bbcode:notification/getText">.
+            </div>
+            <tal:block tal:repeat="notification THIS/getInformation">
+              <a tal:condition="notification/getLink" href="${notification/getLink}" class="linkbutton">
+                Zum Schiff wechseln
+              </a>
+            </tal:block>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br />
+  </tal:block>
 </metal:block>
 <metal:block metal:define-macro="siteonly">
   <html lang="de">
