@@ -650,14 +650,14 @@ function showPopup() {
         });
 
         setTimeout(function () {
-                closePopup();
+                closeNagusPopup();
                 setTimeout(function () {
                         showPopup();
                 }, 2000);
         }, 7000);
 }
 
-function closePopup() {
+function closeNagusPopup() {
         var popup = document.getElementById('nagus');
         popup.style.display = 'none';
 }
