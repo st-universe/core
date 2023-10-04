@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Movement\Route;
+namespace Stu\Module\Ship\Lib\Movement\Component;
 
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;

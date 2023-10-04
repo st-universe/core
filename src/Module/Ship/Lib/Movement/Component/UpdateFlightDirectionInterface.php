@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Movement\Route;
+namespace Stu\Module\Ship\Lib\Movement\Component;
 
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;

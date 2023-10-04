@@ -10,7 +10,7 @@ use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
-use Stu\Module\Ship\Lib\Movement\Route\UpdateFlightDirectionInterface;
+use Stu\Module\Ship\Lib\Movement\Component\UpdateFlightDirectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
