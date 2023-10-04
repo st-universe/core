@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\RefreshSection;
 
+use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -43,13 +44,14 @@ final class RefreshSection implements ViewControllerInterface
             throw new SanityCheckException('user tried to access unseen layer');
         }
 
-        $game->showMacro('html/starmapSectionTable.twig', true);
+        $game->showMacro(request::getStringFatal('macro'), true);
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(
             $game,
             $layer,
             $section,
+            false,
             $this->request->getDirection()
         );
     }

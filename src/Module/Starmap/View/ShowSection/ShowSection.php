@@ -69,9 +69,10 @@ final class ShowSection implements ViewControllerInterface
         );
 
         $game->addExecuteJS(sprintf(
-            "registerNavKeys('%s', '%s');",
+            "registerNavKeys('%s.php', '%s', '%s', false);",
             ModuleViewEnum::MODULE_VIEW_STARMAP,
-            RefreshSection::VIEW_IDENTIFIER
+            RefreshSection::VIEW_IDENTIFIER,
+            'html/starmapSectionTable.twig'
         ));
     }
 }

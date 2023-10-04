@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map\EditSection;
 
 use RuntimeException;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -62,59 +63,6 @@ final class EditSection implements ViewControllerInterface
 
         $section_id = $this->request->getSection();
 
-        //TODO use twig and extend mMapSectionHelper!
-
-        $xCoordinate = $game->getUser()->getId();
-        $yCoordinate = $game->getUser()->getId();
-
-        $maxx = $xCoordinate * MapEnum::FIELDS_PER_SECTION;
-        $minx = $maxx - MapEnum::FIELDS_PER_SECTION + 1;
-        $maxy = $yCoordinate * MapEnum::FIELDS_PER_SECTION;
-        $miny = $maxy - MapEnum::FIELDS_PER_SECTION + 1;
-
-        $fields = [];
-        foreach (range($miny, $maxy) as $value) {
-            $fields[] = $this->starmapUiFactory->createYRow($layer, $value, $minx, $maxx, 0);
-        }
-
-        if ($yCoordinate - 1 >= 1) {
-            $game->setTemplateVar(
-                'TOP_PREVIEW_ROW',
-                $this->starmapUiFactory->createYRow($layer, $yCoordinate * MapEnum::FIELDS_PER_SECTION - MapEnum::FIELDS_PER_SECTION, $minx, $maxx, 0)->getFields()
-            );
-        }
-
-        if ($yCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getHeight()) {
-            $game->setTemplateVar(
-                'BOTTOM_PREVIEW_ROW',
-                $this->starmapUiFactory->createYRow($layer, $yCoordinate * MapEnum::FIELDS_PER_SECTION + 1, $minx, $maxx, 0)->getFields()
-            );
-        }
-
-        if ($xCoordinate - 1 >= 1) {
-            $row = [];
-            for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = $this->starmapUiFactory->createYRow($layer, $i, $minx - 1, $minx - 1, 0);
-            }
-
-            $game->setTemplateVar(
-                'LEFT_PREVIEW_ROW',
-                $row
-            );
-        }
-
-        if ($xCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getWidth()) {
-            $row = [];
-            for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = $this->starmapUiFactory->createYRow($layer, $i, $maxx + 1, $maxx + 1, 0);
-            }
-
-            $game->setTemplateVar(
-                'RIGHT_PREVIEW_ROW',
-                $row
-            );
-        }
-
         $possibleFieldTypes = ['row_0' => [], 'row_1' => [], 'row_2' => [], 'row_3' => [], 'row_4' => [], 'row_5' => []];
         foreach ($this->mapFieldTypeRepository->findAll() as $key => $value) {
             if ($value->getIsSystem()) {
@@ -152,7 +100,7 @@ final class EditSection implements ViewControllerInterface
             $possibleBorder['row_' . ($key % 1)][] = $value;
         }
 
-        $game->setTemplateFile('html/admin/mapeditor_section.xhtml');
+        $game->setTemplateFile('html/admin/mapeditor_section.twig', true);
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(
@@ -170,7 +118,19 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegion);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
         $game->setTemplateVar('SECTION_ID', $section_id);
-        $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
-        $game->setTemplateVar('MAP_FIELDS', $fields);
+
+        $helper = $this->starmapUiFactory->createMapSectionHelper();
+        $helper->setTemplateVars(
+            $game,
+            $layer,
+            $section_id,
+            true,
+            $this->request->getDirection()
+        );
+
+        $game->addExecuteJS(sprintf(
+            "registerNavKeys('admin/', '%s', '', true);",
+            self::VIEW_IDENTIFIER
+        ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
     }
 }
