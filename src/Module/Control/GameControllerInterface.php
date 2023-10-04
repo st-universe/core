@@ -81,14 +81,8 @@ interface GameControllerInterface
 
     public function setPageTitle(string $title): void;
 
-    /** @return array<string> */
-    public function getExecuteJS(): array;
-
-    /** @return array<string> */
-    public function getExecuteJsAfterRender(): array;
-
-    /** @return array<string> */
-    public function getExecuteJsAjaxUpdate(): array;
+    /** @return array<string>|null */
+    public function getExecuteJS(int $when): ?array;
 
     public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void;
 

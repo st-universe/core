@@ -60,7 +60,6 @@ final class MapSectionHelper
             }
         }
 
-        $game->setTemplateVar('SECTION_ID', $section);
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
         $game->setTemplateVar('MAP_FIELDS', $fields);
         $game->addExecuteJS(sprintf(

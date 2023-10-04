@@ -31,6 +31,8 @@ var currentLayerId = 0;
 function updateSectionAndLayer(section, layerId) {
 	currentSection = section;
 	currentLayerId = layerId;
+
+	$('sectionid').innerHTML = section;
 }
 
 var canNavigateLeft = true;

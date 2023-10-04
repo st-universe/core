@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render;
 
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
 use Stu\Module\Twig\TwigPageInterface;
@@ -63,9 +64,9 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('PAGETITLE', $game->getPageTitle());
         $twigPage->setVar('INFORMATION', $game->getInformation());
         $twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
-        $twigPage->setVar('EXECUTEJS', $game->getExecuteJS());
-        $twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJsAfterRender());
-        $twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJsAjaxUpdate());
+        $twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
+        $twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));
+        $twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
         $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
         $twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
         $twigPage->setVar('ISADMIN', $game->isAdmin());
