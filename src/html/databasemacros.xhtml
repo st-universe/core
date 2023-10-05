@@ -92,10 +92,10 @@
   </table>
 </metal:macro>
 <metal:block metal:define-macro="initial_js">
-  <script language="Javascript">
+  <script>
     var sstr = '${THIS/getSessionString}';
   </script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/database.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/database.js"></script>
 </metal:block>
 <metal:macro metal:define-macro="starsystem">
   <div style="display: table-cell">

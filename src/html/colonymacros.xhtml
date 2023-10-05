@@ -10,23 +10,23 @@
   <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
 </metal:macro>
 <metal:block metal:define-macro="initial_js">
-  <script language="Javascript">
+  <script>
     var sstr = '${THIS/getSessionString}';
     var colonyid = ${ COLONY/getId};
     var colonyMapX = ${ COLONY/getSystem/getCx};
     var colonyMapY = ${ COLONY/getSystem/getCy};
     var scrollOffset = 6;
   </script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/colony.js"></script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/starmap.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/colony.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/starmap.js"></script>
 </metal:block>
 <metal:block metal:define-macro="initial_js_light">
-  <script language="Javascript">
+  <script>
     var sstr = '${THIS/getSessionString}';
   </script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/colony.js"></script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/colony.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
 </metal:block>
 <metal:block metal:define-macro="buildmenu">
   <input type="hidden" name="buildmenu${menutype}_offset" id="buildmenu${menutype}_offset"

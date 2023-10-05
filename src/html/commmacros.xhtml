@@ -1,9 +1,9 @@
 <html xmlns:stu="stu">
 <metal:block metal:define-macro="initial_js">
-  <script language="Javascript">
+  <script>
     var sstr = '${THIS/getSessionString}';
   </script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/comm.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/comm.js"></script>
 </metal:block>
 
 <metal:macro metal:define-macro="knnavigation">
@@ -141,7 +141,7 @@
 </metal:macro>
 
 <tal:block metal:define-macro="catsortjs">
-  <script type="text/javascript" defer="defer">
+  <script defer="defer">
     Sortable.create('catlist', {
       tag: 'li',
       onUpdate: updateCategoryOrder,
@@ -343,7 +343,7 @@
     <br tal:condition="not:repeat/data/end" />
   </tal:block>
   <div class="divhead" tal:condition="not:COMMENTS" style="text-align: center;">Keine Kommentare vorhanden</div>
-  <script type="text/javascript">
+  <script>
     $('comment').addEventListener(
       "keyup",
       function () {
