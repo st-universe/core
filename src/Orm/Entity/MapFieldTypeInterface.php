@@ -34,9 +34,7 @@ interface MapFieldTypeInterface
 
     public function setSpecialDamage(int $specialDamage): MapFieldTypeInterface;
 
-    public function getSpecialDamageInnerSystem(): int;
-
-    public function setSpecialDamageInnerSystem(int $specialDamageInnerSystem): MapFieldTypeInterface;
+    public function getSpecialDamageType(): ?int;
 
     public function getView(): bool;
 
