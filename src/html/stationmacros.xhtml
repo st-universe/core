@@ -1,10 +1,10 @@
 <html xmlns:stu="stu">
 <metal:block metal:define-macro="initial_js">
-  <script language="Javascript">
+  <script>
     var sstr = '${THIS/getSessionString}';
   </script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/station.js"></script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/station.js"></script>
+  <script src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
 </metal:block>
 <metal:macro metal:define-macro="stationcost">
   <tal:block tal:condition="not:ERROR">

@@ -1,9 +1,9 @@
 <html xmlns:stu="stu">
 <metal:block metal:define-macro="initial_js">
-	<script language="Javascript">
+	<script>
 		var sstr = '${THIS/getSessionString}';
 	</script>
-	<script type="text/javascript" src="${THIS/getJavascriptPath}/js/ally.js"></script>
+	<script src="${THIS/getJavascriptPath}/js/ally.js"></script>
 </metal:block>
 <metal:block metal:define-macro="topic_settings">
 	<form action="alliance.php" method="post">
@@ -55,10 +55,8 @@
 	</form>
 </metal:block>
 <metal:block metal:define-macro="alliance_avatar">
-	<img
-		tal:condition="alliance/getAvatar"
-		tal:attributes="src string:${ASSET_PATHS/alliance}/${alliance/getAvatar}.png"
-	/>
+	<img tal:condition="alliance/getAvatar"
+		tal:attributes="src string:${ASSET_PATHS/alliance}/${alliance/getAvatar}.png" />
 </metal:block>
 <metal:block metal:define-macro="memberrumpinfo">
 	<table class="tcal" tal:condition="not:ERROR">

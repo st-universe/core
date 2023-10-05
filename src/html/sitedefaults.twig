@@ -5,19 +5,19 @@
 <head>
     <meta charset="utf-8" />
     <meta name="theme-color" content="#121220" />
-    <script src="{{ JAVASCRIPTPATH }}/js/prototype.js" type="text/javascript"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/scriptaculous.js" type="text/javascript"></script>
-    <script language="Javascript">
+    <script src="{{ JAVASCRIPTPATH }}/js/prototype.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/scriptaculous.js"></script>
+    <script>
         var userDeals = {{ USER.showDeals }};
     </script>
-    <script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
     <title>{{ PAGETITLE|bbcode2txt }}</title>
-    <script language="JavaScript">
+    <script>
         var gfx_path = '/assets';
     </script>
-    <script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/overlib.js"></script>
-    <script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/drag.js"></script>
-    <script language="javascript" src="{{ JAVASCRIPTPATH }}/js/overlib_exclusive.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/overlib.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/drag.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/overlib_exclusive.js"></script>
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/{{ USER.getCss }}.css" />
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/stu.css" />
     <link rel="shortcut icon" href="/assets/favicon.ico" />
@@ -156,7 +156,7 @@
                 {% block body %}
                 ...
                 {% endblock %}
-                <script type="text/javascript">
+                <script>
                     setTimeout('updatePMNavlet()', 60000);
                 </script>
             </div>
