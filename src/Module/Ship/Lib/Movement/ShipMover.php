@@ -4,6 +4,7 @@ namespace Stu\Module\Ship\Lib\Movement;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollection;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -22,14 +23,9 @@ final class ShipMover implements ShipMoverInterface
 
     private PreFlightConditionsCheckInterface $preFlightConditionsCheck;
 
+    private LeaveFleetInterface $leaveFleet;
+
     private AlertRedHelperInterface $alertRedHelper;
-
-    /**
-     * @var array<int, array{0: ShipInterface, 1:ShipInterface}>
-     */
-    private array $tractoredShips = [];
-
-    private bool $hasTravelled = false;
 
     private MessageCollectionInterface $messages;
 
@@ -37,11 +33,13 @@ final class ShipMover implements ShipMoverInterface
         ShipRepositoryInterface $shipRepository,
         ShipMovementInformationAdderInterface $shipMovementInformationAdder,
         PreFlightConditionsCheckInterface $preFlightConditionsCheck,
+        LeaveFleetInterface $leaveFleet,
         AlertRedHelperInterface $alertRedHelper
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipMovementInformationAdder = $shipMovementInformationAdder;
         $this->preFlightConditionsCheck = $preFlightConditionsCheck;
+        $this->leaveFleet = $leaveFleet;
         $this->alertRedHelper = $alertRedHelper;
 
         $this->messages = new MessageCollection();
@@ -70,6 +68,7 @@ final class ShipMover implements ShipMoverInterface
         $fleet = $leadShip->getFleet();
 
         $isFleetMode = $leadShip->isFleetLeader();
+        $hasToLeaveFleet = $fleet !== null && !$isFleetMode;
         $fleetWrapper = $leadShipWrapper->getFleetWrapper();
 
         $wrappers = $isFleetMode && $fleetWrapper !== null ? $fleetWrapper->getShipWrappers() : [$leadShipWrapper];
@@ -78,7 +77,9 @@ final class ShipMover implements ShipMoverInterface
             && $fleet !== null
             && $fleet->isFleetFixed();
 
-        $this->initTractoredShips($wrappers);
+        $initialTractoredShips = $this->initTractoredShips($wrappers);
+
+        $hasTravelled = false;
 
         // fly until destination arrived
         while (!$flightRoute->isDestinationArrived()) {
@@ -107,24 +108,33 @@ final class ShipMover implements ShipMoverInterface
                 break;
             }
 
+            $movedTractoredShips = [];
+
             // move every ship by one field
             foreach ($activeWrappers as $wrapper) {
 
-                if ($conditionCheckResult->isNotBlocked($wrapper->get())) {
+                $ship = $wrapper->get();
+
+                if ($conditionCheckResult->isNotBlocked($ship)) {
+
+                    $this->leaveFleetIfNotFleetLeader($ship, $hasToLeaveFleet);
+
                     $flightRoute->enterNextWaypoint(
                         $wrapper,
                         $this->messages
                     );
 
-                    $tractoredShip = $wrapper->getTractoredShipWrapper();
-                    if ($tractoredShip !== null) {
+                    $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+                    if ($tractoredShipWrapper !== null) {
                         $flightRoute->enterNextWaypoint(
-                            $tractoredShip,
+                            $tractoredShipWrapper,
                             $this->messages
                         );
+
+                        $movedTractoredShips[] = [$wrapper->get(), $tractoredShipWrapper->get()];
                     }
 
-                    $this->hasTravelled = true;
+                    $hasTravelled = true;
                 }
             }
 
@@ -139,7 +149,7 @@ final class ShipMover implements ShipMoverInterface
             }
 
             // alert red check for tractored ships
-            foreach ($this->tractoredShips as [$tractoringShip, $tractoredShip]) {
+            foreach ($movedTractoredShips as [$tractoringShip, $tractoredShip]) {
                 if (!$tractoredShip->isDestroyed()) {
                     $alertRedInformations =
                         $this->alertRedHelper->doItAll($tractoredShip, null, $tractoringShip);
@@ -157,7 +167,7 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //skip save and log info if flight did not happen
-        if (!$this->hasTravelled) {
+        if (!$hasTravelled) {
             return $this->messages;
         }
 
@@ -178,7 +188,9 @@ final class ShipMover implements ShipMoverInterface
                 );
             }
         }
-        foreach ($this->getTractoredShips() as $tractoredShip) {
+
+
+        foreach ($initialTractoredShips as $tractoredShip) {
             $this->shipRepository->save($tractoredShip);
         }
 
@@ -208,10 +220,14 @@ final class ShipMover implements ShipMoverInterface
     }
 
     /**
-     * @param ShipWrapperInterface[] $wrappers
+     * @param array<ShipWrapperInterface> $wrappers
+     * 
+     * @return array<ShipInterface>
      */
-    private function initTractoredShips(array $wrappers): void
+    private function initTractoredShips(array $wrappers): array
     {
+        $tractoredShips = [];
+
         foreach ($wrappers as $fleetShipWrapper) {
             $fleetShip = $fleetShipWrapper->get();
 
@@ -219,15 +235,19 @@ final class ShipMover implements ShipMoverInterface
             if (
                 $tractoredShip !== null
             ) {
-                $this->tractoredShips[] = [$fleetShip, $tractoredShip];
+                $tractoredShips[] = $tractoredShip;
             }
         }
+
+        return $tractoredShips;
     }
 
-    /** @return array<ShipInterface> */
-    private function getTractoredShips(): array
+    private function leaveFleetIfNotFleetLeader(ShipInterface $ship, bool $hasToLeaveFleet): void
     {
-        return array_map(fn (array $ships) => $ships[0], $this->tractoredShips);
+        if ($hasToLeaveFleet && $ship->getFleet() !== null) {
+            $this->leaveFleet->leaveFleet($ship);
+            $this->addInformation(sprintf('Die %s hat die Flotte verlassen', $ship->getName()));
+        }
     }
 
     /**
