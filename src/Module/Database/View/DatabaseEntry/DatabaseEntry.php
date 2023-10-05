@@ -126,6 +126,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry_object_id = $entry->getObjectId();
 
         switch ($entry->getTypeObject()->getId()) {
+                //TODO example colony
             case DatabaseEntryTypeEnum::DATABASE_TYPE_POI:
                 $game->setTemplateVar('POI', $this->shipRepository->find($entry_object_id));
                 break;
