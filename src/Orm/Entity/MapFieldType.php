@@ -81,6 +81,12 @@ class MapFieldType implements MapFieldTypeInterface
     private int $x_damage_system = 0;
 
     /**
+     * @Column(type="smallint", nullable=true)
+     *
+     */
+    private ?int $x_damage_type = null;
+
+    /**
      * @Column(type="boolean")
      *
      */
@@ -188,16 +194,9 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
-    public function getSpecialDamageInnerSystem(): int
+    public function getSpecialDamageType(): ?int
     {
-        return $this->x_damage_system;
-    }
-
-    public function setSpecialDamageInnerSystem(int $specialDamageInnerSystem): MapFieldTypeInterface
-    {
-        $this->x_damage_system = $specialDamageInnerSystem;
-
-        return $this;
+        return $this->x_damage_type;
     }
 
     public function getView(): bool
