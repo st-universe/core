@@ -32,9 +32,15 @@ function updateSectionAndLayer(section, layerId) {
 	currentSection = section;
 	currentLayerId = layerId;
 
-	sectionIdElement = $('sectionid');
-	if (sectionIdElement != null) {
-		$('sectionid').innerHTML = section;
+	updateSectionId();
+}
+
+function updateSectionId() {
+
+	element = $('sectionid');
+
+	if (currentSection != 0 && element != null) {
+		element.innerHTML = currentSection;
 	}
 }
 
@@ -43,20 +49,27 @@ var canNavigateRight = true;
 var canNavigateUp = true;
 var canNavigateDown = true;
 
-function updateNavButtonVisibility(left, right, up, down) {
+function updateNavButtons(left, right, up, down) {
 	canNavigateLeft = left;
 	canNavigateRight = right;
 	canNavigateUp = up;
 	canNavigateDown = down;
 
-	setVisibility('navleft', left ? 'block' : 'none');
-	setVisibility('navright', right ? 'block' : 'none');
-	setVisibility('navup', up ? 'block' : 'none');
-	setVisibility('navdown', down ? 'block' : 'none');
+	updateNavButtonsVisibility();
+}
+
+function updateNavButtonsVisibility() {
+	setVisibility('navleft', canNavigateLeft ? 'block' : 'none');
+	setVisibility('navright', canNavigateRight ? 'block' : 'none');
+	setVisibility('navup', canNavigateUp ? 'block' : 'none');
+	setVisibility('navdown', canNavigateDown ? 'block' : 'none');
 }
 
 function setVisibility(id, style) {
-	$(id).style.display = style;
+	element = $(id);
+	if (element != null) {
+		element.style.display = style;
+	}
 }
 
 function refreshMapSection(direction, isRedirect) {
@@ -86,4 +99,9 @@ function refreshMapSection(direction, isRedirect) {
 function getMapUpdateHref(direction) {
 
 	return `${currentModule}?${currentView}=1&section=${currentSection}&layerid=${currentLayerId}&direction=${direction}&macro=${currentMacro}`;
+}
+
+function updateNavigation() {
+	updateSectionId();
+	updateNavButtonsVisibility();
 }
