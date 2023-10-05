@@ -75,10 +75,10 @@ class MapFieldType implements MapFieldTypeInterface
     private int $x_damage = 0;
 
     /**
-     * @Column(type="smallint")
+     * @Column(type="smallint", nullable=true)
      *
      */
-    private int $x_damage_system = 0;
+    private ?int $x_damage_system = 0;
 
     /**
      * @Column(type="smallint", nullable=true)
