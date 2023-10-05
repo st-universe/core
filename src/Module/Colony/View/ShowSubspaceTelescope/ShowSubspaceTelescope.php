@@ -75,6 +75,8 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             'html/colony/telescopeSectionTable.twig'
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
 
+        $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(
             $game,

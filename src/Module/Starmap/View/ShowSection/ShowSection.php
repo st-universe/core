@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowSection;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
@@ -74,5 +75,7 @@ final class ShowSection implements ViewControllerInterface
             RefreshSection::VIEW_IDENTIFIER,
             'html/starmapSectionTable.twig'
         ));
+
+        $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

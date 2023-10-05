@@ -143,7 +143,7 @@ final class MapSectionHelper
         $layerHeight = $layer->getHeight();
 
         $game->addExecuteJS(sprintf(
-            'updateNavButtonVisibility(%b, %b, %b, %b);',
+            'updateNavButtons(%b, %b, %b, %b);',
             $xCoordinate > 1,
             $xCoordinate * MapEnum::FIELDS_PER_SECTION < $layerWidth,
             $yCoordinate > 1,

@@ -56,5 +56,7 @@ final class ShowByPosition implements ViewControllerInterface
             RefreshSection::VIEW_IDENTIFIER,
             'html/starmapSectionTable.twig'
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+
+        $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }
