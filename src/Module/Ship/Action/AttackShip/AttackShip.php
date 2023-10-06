@@ -19,6 +19,7 @@ use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -97,11 +98,6 @@ final class AttackShip implements ActionControllerInterface
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
-        // no attack on self or own fleet
-        if ($this->isAttackOnSelfOrOwnFleet($ship, $target)) {
-            return;
-        }
-
         if ($this->isTargetDestroyed($target)) {
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             $game->addInformation(_('Das Ziel ist bereits zerstört'));
@@ -136,13 +132,9 @@ final class AttackShip implements ActionControllerInterface
 
         $isTargetBase = $target->isBase();
 
-        [$attacker, $defender, $fleet, $isWebSituation] = $this->getAttackerDefender($ship, $target);
+        [$attacker, $defender, $isFleetFight, $isWebSituation] = $this->getAttackerDefender($wrapper, $targetWrapper);
 
-        $messageCollection = $this->shipAttackCycle->cycle(
-            $this->shipWrapperFactory->wrapShips($attacker),
-            $this->shipWrapperFactory->wrapShips($defender),
-            $isWebSituation
-        );
+        $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender, $isWebSituation);
 
         $this->sendPms(
             $userId,
@@ -171,7 +163,7 @@ final class AttackShip implements ActionControllerInterface
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        if ($fleet) {
+        if ($isFleetFight) {
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
@@ -199,22 +191,6 @@ final class AttackShip implements ActionControllerInterface
         }
     }
 
-    private function isAttackOnSelfOrOwnFleet(ShipInterface $ship, ShipInterface $target): bool
-    {
-        if ($target === $ship) {
-            return true;
-        }
-
-        $ownFleet = $ship->getFleet();
-        $targetFleet = $target->getFleet();
-
-        if ($ownFleet === null || $targetFleet === null) {
-            return false;
-        }
-
-        return $targetFleet === $ownFleet;
-    }
-
     private function sendPms(
         int $userId,
         string $sectorString,
@@ -236,87 +212,32 @@ final class AttackShip implements ActionControllerInterface
     }
 
     /**
-     * @return array{0: array<int, ShipInterface>, 1: array<int, ShipInterface>, 2: bool, 3: bool}
+     * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool, 3: bool}
      */
-    private function getAttackerDefender(ShipInterface $ship, ShipInterface $target): array
+    private function getAttackerDefender(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
     {
-        $fleet = false;
+        $ship = $wrapper->get();
 
-        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
-            $attacker = $ship->getFleet()->getShips()->toArray();
-            $fleet = true;
-        } else {
-            $attacker = [$ship->getId() => $ship];
-        }
-        if ($target->getFleet() !== null) {
-            $defender = [];
+        [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackerDefender($wrapper, $targetWrapper);
 
-            // only uncloaked defenders fight
-            /**
-             * @var ShipInterface $defShip
-             */
-            foreach ($target->getFleet()->getShips()->toArray() as $defShip) {
-                if (!$defShip->getCloakState()) {
-                    $defender[$defShip->getId()] = $defShip;
-
-                    if (
-                        $defShip->getDockedTo() !== null
-                        && !$defShip->getDockedTo()->getUser()->isNpc()
-                        && $defShip->getDockedTo()->hasActiveWeapon()
-                    ) {
-                        $defender[$defShip->getDockedTo()->getId()] = $defShip->getDockedTo();
-                    }
-                }
-            }
-
-            // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
-            if ($defender === []) {
-                $defender = $target->getFleet()->getShips()->toArray();
-            }
-
-            $fleet = true;
-        } else {
-            $defender = [$target->getId() => $target];
-
-            if (
-                $target->getDockedTo() !== null
-                && !$target->getDockedTo()->getUser()->isNpc()
-                && $target->getDockedTo()->hasActiveWeapon()
-            ) {
-                $defender[$target->getDockedTo()->getId()] = $target->getDockedTo();
-            }
-        }
-
-        $isWebSituation = false;
+        $isWebSituation = $this->fightLib->isTargetOutsideFinishedTholianWeb($ship, $targetWrapper->get());
 
         //if in tholian web and defenders outside, reflect damage
-        if ($this->isTargetingOutsideTholianWeb($ship, $target)) {
-            $isWebSituation = true;
-            $defender = [];
-
+        if ($isWebSituation) {
             $holdingWeb = $ship->getHoldingWeb();
             if ($holdingWeb === null) {
                 throw new RuntimeException('this should not happen');
             }
 
-            foreach ($holdingWeb->getCapturedShips() as $shipInWeb) {
-                $defender[$shipInWeb->getId()] = $shipInWeb;
-            }
+            $defender = $this->shipWrapperFactory->wrapShips($holdingWeb->getCapturedShips()->toArray());
         }
 
         return [
             $attacker,
             $defender,
-            $fleet,
+            $isFleetFight,
             $isWebSituation
         ];
-    }
-
-    private function isTargetingOutsideTholianWeb(ShipInterface $ship, ShipInterface $target): bool
-    {
-        return $ship->getHoldingWeb() !== null
-            && $ship->getHoldingWeb()->isFinished()
-            && ($target->getHoldingWeb() !== $ship->getHoldingWeb());
     }
 
     public function performSessionCheck(): bool
