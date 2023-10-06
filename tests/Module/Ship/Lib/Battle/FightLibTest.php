@@ -11,9 +11,11 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TholianWebInterface;
 use Stu\StuTestCase;
 
 class FightLibTest extends StuTestCase
@@ -381,23 +383,13 @@ class FightLibTest extends StuTestCase
     public function testCanAttackTargetExpectFalseWhenAttackingSelf(): void
     {
         $ship = $this->mock(ShipInterface::class);
-        $target = $this->mock(ShipInterface::class);
 
         $ship->shouldReceive('hasActiveWeapon')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $ship->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(123);
 
-        $target->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(123);
-
-        $result = $this->subject->canAttackTarget($ship, $target);
+        $result = $this->subject->canAttackTarget($ship, $ship);
 
         $this->assertFalse($result);
     }
@@ -411,15 +403,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $ship->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(123);
 
-        $target->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(456);
         $target->shouldReceive('isTrumfield')
             ->withNoArgs()
             ->once()
@@ -490,6 +474,31 @@ class FightLibTest extends StuTestCase
             ->andReturn(false);
 
         $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertTrue($result);
+    }
+
+    public function testCanAttackTargetExpectTrueWhenAttackingTractoringShipWithoutWeaponCheck(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn($target);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->subject->canAttackTarget($ship, $target, false);
 
         $this->assertTrue($result);
     }
@@ -679,6 +688,561 @@ class FightLibTest extends StuTestCase
             ->andReturn(43);
 
         $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertTrue($result);
+    }
+
+    public function testGetAttackerDefenderExpectSingleVsSingle(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([123 => $wrapper], $attackers);
+        $this->assertEquals([456 => $targetWrapper], $defenders);
+        $this->assertFalse($isFleetFight);
+    }
+
+    public function testGetAttackerDefenderExpectSingleVsSingleWhenDockedToNpc(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $dockedToWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn($dockedToWrapper);
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+
+        $dockedToWrapper->shouldReceive('get->getUser->isNpc')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([123 => $wrapper], $attackers);
+        $this->assertEquals([456 => $targetWrapper], $defenders);
+        $this->assertFalse($isFleetFight);
+    }
+
+    public function testGetAttackerDefenderExpectSingleVsSingleWhenDockedOffline(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $dockedToWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn($dockedToWrapper);
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+
+        $dockedToWrapper->shouldReceive('get->getUser->isNpc')
+            ->withNoArgs()
+            ->andReturn(false);
+        $dockedToWrapper->shouldReceive('get->hasActiveWeapon')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([123 => $wrapper], $attackers);
+        $this->assertEquals([456 => $targetWrapper], $defenders);
+        $this->assertFalse($isFleetFight);
+    }
+
+    public function testGetAttackerDefenderExpectSingleVsSingleAndOnlineDocked(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $dockedToWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn($dockedToWrapper);
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+
+        $dockedToWrapper->shouldReceive('get->getUser->isNpc')
+            ->withNoArgs()
+            ->andReturn(false);
+        $dockedToWrapper->shouldReceive('get->hasActiveWeapon')
+            ->withNoArgs()
+            ->andReturn(true);
+        $dockedToWrapper->shouldReceive('get->getId')
+            ->withNoArgs()
+            ->andReturn(789);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([123 => $wrapper], $attackers);
+        $this->assertEquals([
+            456 => $targetWrapper,
+            789 => $dockedToWrapper
+        ], $defenders);
+        $this->assertTrue($isFleetFight);
+    }
+
+    public function testGetAttackerDefenderExpectFleetVsSingle(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $wrapper2 = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $fleetWrapper = $this->mock(FleetWrapperInterface::class);
+
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn($fleetWrapper);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(true);
+        $fleetWrapper->shouldReceive('getShipWrappers')
+            ->withNoArgs()
+            ->andReturn([
+                12 => $wrapper,
+                34 => $wrapper2
+            ]);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([
+            12 => $wrapper,
+            34 => $wrapper2
+        ], $attackers);
+        $this->assertEquals([456 => $targetWrapper], $defenders);
+        $this->assertTrue($isFleetFight);
+    }
+
+    public function testGetAttackerDefenderExpectSingleVsPartialCloakedFleet(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $targetWrapperCloaked = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $targetCloaked = $this->mock(ShipInterface::class);
+        $targetFleetWrapper = $this->mock(FleetWrapperInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn($targetFleetWrapper);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetFleetWrapper->shouldReceive('getShipWrappers')
+            ->withNoArgs()
+            ->andReturn([
+                45 => $targetWrapper,
+                67 => $targetWrapperCloaked
+            ]);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapperCloaked->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($targetCloaked);
+
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(false);
+        $targetCloaked->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([123 => $wrapper], $attackers);
+        $this->assertEquals([45 => $targetWrapper], $defenders);
+        $this->assertFalse($isFleetFight);
+    }
+
+    public function testGetAttackerDefenderExpectSingleVsFleetAndOnlineDocked(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $targetWrapperCloaked = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $targetCloaked = $this->mock(ShipInterface::class);
+        $targetFleetWrapper = $this->mock(FleetWrapperInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn($targetFleetWrapper);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetFleetWrapper->shouldReceive('getShipWrappers')
+            ->withNoArgs()
+            ->andReturn([
+                45 => $targetWrapper,
+                67 => $targetWrapperCloaked
+            ]);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapperCloaked->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($targetCloaked);
+
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(false);
+        $targetCloaked->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([123 => $wrapper], $attackers);
+        $this->assertEquals([45 => $targetWrapper], $defenders);
+        $this->assertFalse($isFleetFight);
+    }
+
+    public function testGetAttackerDefenderExpectSingleVsCloakedFleet(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $targetWrapper2 = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $target2 = $this->mock(ShipInterface::class);
+        $targetFleetWrapper = $this->mock(FleetWrapperInterface::class);
+
+        $dockedToWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn($targetFleetWrapper);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn($dockedToWrapper);
+        $targetWrapper2->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn($dockedToWrapper);
+        $targetFleetWrapper->shouldReceive('getShipWrappers')
+            ->withNoArgs()
+            ->andReturn([
+                45 => $targetWrapper,
+                67 => $targetWrapper2
+            ]);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper2->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target2);
+
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target2->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $dockedToWrapper->shouldReceive('get->getUser->isNpc')
+            ->withNoArgs()
+            ->andReturn(false);
+        $dockedToWrapper->shouldReceive('get->hasActiveWeapon')
+            ->withNoArgs()
+            ->andReturn(true);
+        $dockedToWrapper->shouldReceive('get->getId')
+            ->withNoArgs()
+            ->andReturn(789);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackerDefender($wrapper, $targetWrapper);
+
+        $this->assertEquals([123 => $wrapper], $attackers);
+        $this->assertEquals([
+            45 => $targetWrapper,
+            67 => $targetWrapper2,
+            789 => $dockedToWrapper
+        ], $defenders);
+        $this->assertTrue($isFleetFight);
+    }
+
+    public function testisTargetOutsideFinishedTholianWebExpectFalseWhenNoWeb(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testisTargetOutsideFinishedTholianWebExpectFalseWhenWebUnfinished(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $web = $this->mock(TholianWebInterface::class);
+
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($web);
+        $web->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testisTargetOutsideFinishedTholianWebExpectFalseWhenTargetInSameFinishedWeb(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $web = $this->mock(TholianWebInterface::class);
+
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($web);
+        $web->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $target->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($web);
+
+        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testisTargetOutsideFinishedTholianWebExpectTrueWhenTargetOutsideFinishedWeb(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $web = $this->mock(TholianWebInterface::class);
+
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($web);
+        $web->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $target->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $result = $this->subject->isTargetOutsideFinishedTholianWeb($ship, $target);
 
         $this->assertTrue($result);
     }

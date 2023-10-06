@@ -97,14 +97,17 @@ final class FightLib implements FightLibInterface
         return $epsSystem !== null && $epsSystem->getEps() !== 0;
     }
 
-    public function canAttackTarget(ShipInterface $ship, ShipInterface|ShipNfsItem $target): bool
-    {
-        if (!$ship->hasActiveWeapon()) {
+    public function canAttackTarget(
+        ShipInterface $ship,
+        ShipInterface|ShipNfsItem $target,
+        bool $checkActiveWeapons = true
+    ): bool {
+        if ($checkActiveWeapons && !$ship->hasActiveWeapon()) {
             return false;
         }
 
         //can't attack itself
-        if ($target->getId() === $ship->getId()) {
+        if ($target === $ship) {
             return false;
         }
 
@@ -132,5 +135,88 @@ final class FightLib implements FightLibInterface
         }
 
         return $ownFleetId !== $targetFleetId;
+    }
+
+    public function getAttackerDefender(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
+    {
+        $attackers = $this->getAttackers($wrapper);
+        $defenders = $this->getDefenders($targetWrapper);
+
+        return [
+            $attackers,
+            $defenders,
+            count($attackers) + count($defenders) > 2
+        ];
+    }
+
+    /** @return array<int, ShipWrapperInterface> */
+    private function getAttackers(ShipWrapperInterface $wrapper): array
+    {
+        $ship = $wrapper->get();
+        $fleet = $wrapper->getFleetWrapper();
+
+        if ($ship->isFleetLeader() && $fleet !== null) {
+            $attackers = $fleet->getShipWrappers();
+        } else {
+            $attackers = [$ship->getId() => $wrapper];
+        }
+
+        return $attackers;
+    }
+
+    /** @return array<int, ShipWrapperInterface> */
+    private function getDefenders(ShipWrapperInterface $targetWrapper): array
+    {
+        $target = $targetWrapper->get();
+        $targetFleet = $targetWrapper->getFleetWrapper();
+
+        if ($targetFleet !== null) {
+            $defenders = [];
+
+            // only uncloaked defenders fight
+            foreach ($targetFleet->getShipWrappers() as $shipId => $defWrapper) {
+
+                $defShip = $defWrapper->get();
+                if (!$defShip->getCloakState()) {
+                    $defenders[$shipId] = $defWrapper;
+
+                    $this->addDockedToAsDefender($targetWrapper, $defenders);
+                }
+            }
+
+            // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
+            if ($defenders === []) {
+                $defenders = $targetFleet->getShipWrappers();
+            }
+        } else {
+            $defenders = [$target->getId() => $targetWrapper];
+
+            $this->addDockedToAsDefender($targetWrapper, $defenders);
+        }
+
+        return $defenders;
+    }
+
+    /** @param array<int, ShipWrapperInterface> $defenders */
+    private function addDockedToAsDefender(ShipWrapperInterface $targetWrapper, array &$defenders): void
+    {
+        $dockedToWrapper = $targetWrapper->getDockedToShipWrapper();
+        if (
+            $dockedToWrapper !== null
+            && !$dockedToWrapper->get()->getUser()->isNpc()
+            && $dockedToWrapper->get()->hasActiveWeapon()
+        ) {
+            $defenders[$dockedToWrapper->get()->getId()] = $dockedToWrapper;
+        }
+    }
+
+    public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool
+    {
+        $web = $ship->getHoldingWeb();
+        if ($web === null) {
+            return false;
+        }
+
+        return $web->isFinished() && ($target->getHoldingWeb() !== $web);
     }
 }

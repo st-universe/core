@@ -11,12 +11,11 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
 
 final class AttackTrackedShip implements ActionControllerInterface
 {
@@ -32,7 +31,7 @@ final class AttackTrackedShip implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    private FightLibInterface $fightLib;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -40,14 +39,14 @@ final class AttackTrackedShip implements ActionControllerInterface
         ShipAttackCycleInterface $shipAttackCycle,
         InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        FightLibInterface $fightLib
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipAttackCycle = $shipAttackCycle;
         $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->fightLib = $fightLib;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -111,12 +110,9 @@ final class AttackTrackedShip implements ActionControllerInterface
         $isShipWarped = $ship->getWarpState();
         $isTargetWarped = $target->getWarpState();
 
-        [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
+        [$attacker, $defender, $fleet] = $this->fightLib->getAttackerDefender($wrapper, $targetWrapper);
 
-        $messageCollection = $this->shipAttackCycle->cycle(
-            $this->shipWrapperFactory->wrapShips($attacker),
-            $this->shipWrapperFactory->wrapShips($defender)
-        );
+        $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender);
 
         $informations = $messageCollection->getInformationDump();
 
@@ -155,65 +151,6 @@ final class AttackTrackedShip implements ActionControllerInterface
             $game->addInformationWrapper($informations);
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
-    }
-
-    /**
-     * @return array{0: array<int, ShipInterface>, 1: array<int, ShipInterface>, 2: bool}
-     */
-    private function getAttackerDefender(ShipInterface $ship, ShipInterface $target): array
-    {
-        $fleet = false;
-
-        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
-            $attacker = $ship->getFleet()->getShips()->toArray();
-            $fleet = true;
-        } else {
-            $attacker = [$ship->getId() => $ship];
-        }
-        if ($target->getFleet() !== null) {
-            $defender = [];
-
-            // only uncloaked defenders fight
-            /**
-             * @var ShipInterface $defShip
-             */
-            foreach ($target->getFleet()->getShips()->toArray() as $defShip) {
-                if (!$defShip->getCloakState()) {
-                    $defender[$defShip->getId()] = $defShip;
-
-                    if (
-                        $defShip->getDockedTo() !== null
-                        && !$defShip->getDockedTo()->getUser()->isNpc()
-                        && $defShip->getDockedTo()->hasActiveWeapon()
-                    ) {
-                        $defender[$defShip->getDockedTo()->getId()] = $defShip->getDockedTo();
-                    }
-                }
-            }
-
-            // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
-            if ($defender === []) {
-                $defender = $target->getFleet()->getShips()->toArray();
-            }
-
-            $fleet = true;
-        } else {
-            $defender = [$target->getId() => $target];
-
-            if (
-                $target->getDockedTo() !== null
-                && !$target->getDockedTo()->getUser()->isNpc()
-                && $target->getDockedTo()->hasActiveWeapon()
-            ) {
-                $defender[$target->getDockedTo()->getId()] = $target->getDockedTo();
-            }
-        }
-
-        return [
-            $attacker,
-            $defender,
-            $fleet
-        ];
     }
 
     public function performSessionCheck(): bool

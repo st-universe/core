@@ -20,5 +20,16 @@ interface FightLibInterface
 
     public function canFire(ShipWrapperInterface $wrapper): bool;
 
-    public function canAttackTarget(ShipInterface $ship, ShipInterface|ShipNfsItem $nfsItem): bool;
+    public function canAttackTarget(
+        ShipInterface $ship,
+        ShipInterface|ShipNfsItem $nfsItem,
+        bool $checkActiveWeapons = true
+    ): bool;
+
+    /**
+     * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool}
+     */
+    public function getAttackerDefender(ShipWrapperInterface $wrapper, ShipWrapperInterface $target): array;
+
+    public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool;
 }
