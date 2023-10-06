@@ -37,4 +37,6 @@ interface FactionInterface
     public function getStartMap(): ?MapInterface;
 
     public function setStartMap(?MapInterface $start_map): FactionInterface;
+
+    public function getCloseCombatScore(): ?int;
 }
