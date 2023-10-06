@@ -76,6 +76,12 @@ class Faction implements FactionInterface
      */
     private ?int $start_map_id = null;
 
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $close_combat_score = null;
+
     //TODO survivor_rate to escape pods
     /**
      *
@@ -187,5 +193,10 @@ class Faction implements FactionInterface
     {
         $this->start_map = $start_map;
         return $this;
+    }
+
+    public function getCloseCombatScore(): ?int
+    {
+        return $this->close_combat_score;
     }
 }
