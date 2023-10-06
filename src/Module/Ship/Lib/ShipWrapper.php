@@ -395,6 +395,16 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->shipWrapperFactory->wrapShip($tractoringShip);
     }
 
+    public function getDockedToShipWrapper(): ?ShipWrapperInterface
+    {
+        $dockedTo = $this->get()->getDockedTo();
+        if ($dockedTo === null) {
+            return null;
+        }
+
+        return $this->shipWrapperFactory->wrapShip($dockedTo);
+    }
+
     public function getStateIconAndTitle(): ?array
     {
         $state = $this->get()->getState();

@@ -67,6 +67,8 @@ interface ShipWrapperInterface
 
     public function getTractoringShipWrapper(): ?ShipWrapperInterface;
 
+    public function getDockedToShipWrapper(): ?ShipWrapperInterface;
+
     /**
      * @return array<string>|null
      */
