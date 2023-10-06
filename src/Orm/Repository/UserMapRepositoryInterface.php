@@ -3,6 +3,9 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserLayerInterface;
 use Stu\Orm\Entity\UserMap;
 
 /**
@@ -14,11 +17,11 @@ interface UserMapRepositoryInterface extends ObjectRepository
 
     public function deleteMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void;
 
-    public function getAmountByUser(int $userId, int $layerId): int;
+    public function getAmountByUser(UserInterface $user, LayerInterface $layer): int;
 
     public function truncateByUser(int $userId): void;
 
-    public function truncateByUserAndLayer(int $userId, int $layerId): void;
+    public function truncateByUserAndLayer(UserLayerInterface $userLayer): void;
 
     public function truncateAllUserMaps(): void;
 }

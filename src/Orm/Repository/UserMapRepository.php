@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserLayerInterface;
 use Stu\Orm\Entity\UserMap;
 
 /**
@@ -54,7 +57,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         ])->execute();
     }
 
-    public function getAmountByUser(int $userId, int $layerId): int
+    public function getAmountByUser(UserInterface $user, LayerInterface $layer): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
@@ -65,8 +68,8 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
                 UserMap::class
             )
         )->setParameters([
-            'userId' => $userId,
-            'layerId' => $layerId
+            'userId' => $user->getId(),
+            'layerId' => $layer->getId()
         ])->getSingleScalarResult();
     }
 
@@ -83,18 +86,18 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         ])->execute();
     }
 
-    public function truncateByUserAndLayer(int $userId, int $layerId): void
+    public function truncateByUserAndLayer(UserLayerInterface $userLayer): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
                 'DELETE FROM %s um
-                WHERE um.user_id = :userId
-                AND um.layer_id = :layerId',
+                WHERE um.user = :user
+                AND um.layer = :layer',
                 UserMap::class
             )
         )->setParameters([
-            'userId' => $userId,
-            'layerId' => $layerId
+            'user' => $userLayer->getUser(),
+            'layer' => $userLayer->getLayer()
         ])->execute();
     }
 

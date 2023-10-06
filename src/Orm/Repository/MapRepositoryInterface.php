@@ -15,7 +15,7 @@ use Stu\Orm\Entity\MapInterface;
  */
 interface MapRepositoryInterface extends ObjectRepository
 {
-    public function getAmountByLayer(int $layerId): int;
+    public function getAmountByLayer(LayerInterface $layer): int;
 
     /**
      * @return array<MapInterface>

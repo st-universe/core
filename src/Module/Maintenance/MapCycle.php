@@ -3,6 +3,7 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Map\MapEnum;
+use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Orm\Entity\UserLayerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
@@ -16,14 +17,18 @@ final class MapCycle implements MaintenanceHandlerInterface
 
     private UserMapRepositoryInterface $userMapRepository;
 
+    private CreateUserAwardInterface $createUserAward;
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
         UserLayerRepositoryInterface $userLayerRepository,
-        UserMapRepositoryInterface $userMapRepository
+        UserMapRepositoryInterface $userMapRepository,
+        CreateUserAwardInterface $createUserAward
     ) {
         $this->mapRepository = $mapRepository;
         $this->userLayerRepository = $userLayerRepository;
         $this->userMapRepository = $userMapRepository;
+        $this->createUserAward = $createUserAward;
     }
 
     public function handle(): void
@@ -32,10 +37,10 @@ final class MapCycle implements MaintenanceHandlerInterface
         foreach ($userLayers as $userLayer) {
             $user = $userLayer->getUser();
             $layer = $userLayer->getLayer();
-            $fieldcount = $this->mapRepository->getAmountByLayer($layer->getId());
+            $fieldcount = $this->mapRepository->getAmountByLayer($layer);
 
             // if user has mapped everything in this layer
-            if ($this->userMapRepository->getAmountByUser($user->getId(), $layer->getId()) >= $fieldcount) {
+            if ($this->userMapRepository->getAmountByUser($user, $layer) >= $fieldcount) {
                 $this->cycle($userLayer);
             }
         }
@@ -46,6 +51,11 @@ final class MapCycle implements MaintenanceHandlerInterface
         $userLayer->setMappingType(MapEnum::MAPTYPE_LAYER_EXPLORED);
         $this->userLayerRepository->save($userLayer);
 
-        $this->userMapRepository->truncateByUserAndLayer($userLayer->getUser()->getId(), $userLayer->getLayer()->getId());
+        $this->userMapRepository->truncateByUserAndLayer($userLayer);
+
+        $award = $userLayer->getLayer()->getAward();
+        if ($award != null) {
+            $this->createUserAward->createAwardForUser($userLayer->getUser(), $award);
+        }
     }
 }
