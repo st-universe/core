@@ -18,6 +18,8 @@ interface LayerInterface
 
     public function isEncoded(): bool;
 
+    public function getAward(): ?AwardInterface;
+
     public function getSectorsHorizontal(): int;
 
     public function getSectorsVertical(): int;

@@ -23,10 +23,10 @@ use Stu\Orm\Entity\MapInterface;
  */
 final class MapRepository extends EntityRepository implements MapRepositoryInterface
 {
-    public function getAmountByLayer(int $layerId): int
+    public function getAmountByLayer(LayerInterface $layer): int
     {
         return $this->count([
-            'layer_id' => $layerId
+            'layer_id' => $layer->getId()
         ]);
     }
 

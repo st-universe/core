@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
@@ -63,6 +65,20 @@ class Layer implements LayerInterface
      */
     private ?bool $is_encoded = null;
 
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     */
+    private ?int $award_id = null;
+
+    /**
+     *
+     * @ManyToOne(targetEntity="Award")
+     * @JoinColumn(name="award_id", referencedColumnName="id")
+     */
+    private ?AwardInterface $award = null;
+
+
     public function getId(): int
     {
         return $this->id;
@@ -104,6 +120,11 @@ class Layer implements LayerInterface
         }
 
         return $this->is_encoded;
+    }
+
+    public function getAward(): ?AwardInterface
+    {
+        return $this->award;
     }
 
     public function getSectorsHorizontal(): int
