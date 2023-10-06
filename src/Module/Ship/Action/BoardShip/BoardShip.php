@@ -2,23 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\AttackShip;
+namespace Stu\Module\Ship\Action\BoardShip;
 
 use request;
-use RuntimeException;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollection;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -28,38 +25,26 @@ final class BoardShip implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipAttackCycleInterface $shipAttackCycle;
-
     private InteractionCheckerInterface $interactionChecker;
-
-    private AlertRedHelperInterface $alertRedHelper;
 
     private NbsUtilityInterface $nbsUtility;
 
     private FightLibInterface $fightLib;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    private DistributedMessageSenderInterface $distributedMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipAttackCycleInterface $shipAttackCycle,
         InteractionCheckerInterface $interactionChecker,
-        AlertRedHelperInterface $alertRedHelper,
         NbsUtilityInterface $nbsUtility,
         FightLibInterface $fightLib,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        DistributedMessageSenderInterface $distributedMessageSender
     ) {
         $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipAttackCycle = $shipAttackCycle;
         $this->interactionChecker = $interactionChecker;
-        $this->alertRedHelper = $alertRedHelper;
         $this->nbsUtility = $nbsUtility;
         $this->fightLib = $fightLib;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->distributedMessageSender = $distributedMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -96,11 +81,6 @@ final class BoardShip implements ActionControllerInterface
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
-        // no attack on self or own fleet
-        if ($this->isSelfOrOwnFleet($ship, $target)) {
-            return;
-        }
-
         if ($this->isTargetDestroyed($target)) {
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             $game->addInformation(_('Das Ziel ist bereits zerstört'));
@@ -129,54 +109,31 @@ final class BoardShip implements ActionControllerInterface
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
-        if ($ship->getDockedTo() !== null) {
-            $ship->setDockedTo(null);
+
+        if ($this->fightLib->isTargetOutsideFinishedTholianWeb($ship, $target)) {
+            $game->addInformation(_('Das Ziel ist nicht mit im Energienetz gefangen'));
+            return;
         }
 
-        $isTargetBase = $target->isBase();
+        // TODO change ship state to none
 
-        [$attacker, $defender, $fleet, $isWebSituation] = $this->getAttackerDefender($ship, $target);
+        $messageCollection = new MessageCollection();
 
-        $fightMessageCollection = $this->shipAttackCycle->cycle(
-            $this->shipWrapperFactory->wrapShips($attacker),
-            $this->shipWrapperFactory->wrapShips($defender),
-            $isWebSituation
-        );
+        // TODO do the boarding stuff
 
         $this->sendPms(
             $userId,
             $ship->getSectorString(),
-            $fightMessageCollection,
-            !$isWebSituation && $isTargetBase
+            $messageCollection,
+            $target->isBase()
         );
 
-        $informations = $fightMessageCollection->getInformationDump();
+        $informations = $messageCollection->getInformationDump();
 
-        if ($this->isActiveTractorShipWarped($ship, $target)) {
-            //Alarm-Rot check for ship
-            if (!$ship->isDestroyed()) {
-                $informations->addInformationWrapper($this->alertRedHelper->doItAll($ship, null));
-            }
-
-            //Alarm-Rot check for traktor ship
-            if (!$this->isTargetDestroyed($target)) {
-                $informations->addInformationWrapper($this->alertRedHelper->doItAll($target, null));
-            }
-        }
-
-        if ($ship->isDestroyed()) {
-            $game->addInformationWrapper($informations);
-            return;
-        }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        if ($fleet) {
-            $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
-        } else {
-            $game->addInformationWrapper($informations);
-            $game->setTemplateVar('FIGHT_RESULTS', null);
-        }
+        $game->addInformationWrapper($informations);
+        $game->setTemplateVar('FIGHT_RESULTS', null);
     }
 
     private function isTargetDestroyed(ShipInterface $ship): bool
@@ -184,49 +141,24 @@ final class BoardShip implements ActionControllerInterface
         return $ship->isDestroyed();
     }
 
-    private function isActiveTractorShipWarped(ShipInterface $ship, ShipInterface $target): bool
-    {
-        $tractoringShip = $ship->getTractoringShip();
-        if ($tractoringShip === null) {
-            return false;
-        }
-
-        if ($tractoringShip !== $target) {
-            return false;
-        } else {
-            return $target->getWarpState();
-        }
-    }
-
     private function sendPms(
         int $userId,
         string $sectorString,
-        FightMessageCollectionInterface $messageCollection,
+        MessageCollectionInterface $messageCollection,
         bool $isTargetBase
     ): void {
-        foreach ($messageCollection->getRecipientIds() as $recipientId) {
-            $messageDump = $messageCollection->getInformationDump($recipientId);
 
-            $pm = sprintf(
-                _("Kampf in Sektor %s\n%s"),
-                $sectorString,
-                $messageDump->getInformationsAsString()
-            );
+        $header = sprintf(
+            _("Enterversuch in Sektor %s"),
+            $sectorString
+        );
 
-            $this->privateMessageSender->send(
-                $userId,
-                $recipientId,
-                $pm,
-                $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-        }
-    }
-
-    private function isTargetingOutsideTholianWeb(ShipInterface $ship, ShipInterface $target): bool
-    {
-        return $ship->getHoldingWeb() !== null
-            && $ship->getHoldingWeb()->isFinished()
-            && ($target->getHoldingWeb() !== $ship->getHoldingWeb());
+        $this->distributedMessageSender->distributeMessageCollection(
+            $messageCollection,
+            $userId,
+            $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $header
+        );
     }
 
     public function performSessionCheck(): bool
