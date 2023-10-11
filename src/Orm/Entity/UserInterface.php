@@ -36,11 +36,11 @@ interface UserInterface
 
     public function setRgbCode(string $rgbCode): UserInterface;
 
-    public function getFactionId(): ?int;
+    public function getFactionId(): int;
 
     public function setFaction(FactionInterface $faction): UserInterface;
 
-    public function getFaction(): ?FactionInterface;
+    public function getFaction(): FactionInterface;
 
     public function getCss(): string;
 

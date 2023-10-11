@@ -85,10 +85,10 @@ class User implements UserInterface
     private ?int $allys_id = null;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
      */
-    private ?int $race = null;
+    private int $race = 9;
 
     /**
      * @Column(type="smallint")
@@ -252,7 +252,7 @@ class User implements UserInterface
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="race", referencedColumnName="id")
      */
-    private ?FactionInterface $faction = null;
+    private FactionInterface $faction;
 
     /**
      * @var ArrayCollection<int, UserAwardInterface>
@@ -390,7 +390,7 @@ class User implements UserInterface
     }
 
 
-    public function getFactionId(): ?int
+    public function getFactionId(): int
     {
         return $this->race;
     }
@@ -401,7 +401,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFaction(): ?FactionInterface
+    public function getFaction(): FactionInterface
     {
         return $this->faction;
     }
