@@ -28,6 +28,7 @@ use Stu\Module\Ship\Action\BeamFrom\BeamFrom;
 use Stu\Module\Ship\Action\BeamFromColony\BeamFromColony;
 use Stu\Module\Ship\Action\BeamTo\BeamTo;
 use Stu\Module\Ship\Action\BeamToColony\BeamToColony;
+use Stu\Module\Ship\Action\BoardShip\BoardShip;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
 use Stu\Module\Ship\Action\ChangeFleetFixation\ChangeFleetFixation;
@@ -237,6 +238,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveDeactivationC
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\EpsConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\FlightDirectionConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\RepairConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TakeoverConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TholianWebConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\TractorConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\WarpdriveConsequence;
@@ -353,6 +355,7 @@ return [
     'flight_consequences' => [
         autowire(RepairConsequence::class),
         autowire(DockConsequence::class),
+        autowire(TakeoverConsequence::class),
         autowire(AstroMappingConsequence::class),
         autowire(TholianWebConsequence::class),
         autowire(TractorConsequence::class),
@@ -379,6 +382,7 @@ return [
         ),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
+        BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
         DeleteFleet::ACTION_IDENTIFIER => autowire(DeleteFleet::class),
         RenameFleet::ACTION_IDENTIFIER => autowire(RenameFleet::class),
