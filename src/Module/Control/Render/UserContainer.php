@@ -9,7 +9,7 @@ final class UserContainer
     private int $id;
     private string $avatar;
     private string $name;
-    private ?int $factionId;
+    private int $factionId;
     private string $css;
     private int $prestige;
     private bool $hasStationsNavigation;
@@ -19,7 +19,7 @@ final class UserContainer
         int $id,
         string $avatar,
         string $name,
-        ?int $factionId,
+        int $factionId,
         string $css,
         int $prestige,
         bool $hasStationsNavigation,
@@ -50,7 +50,7 @@ final class UserContainer
         return $this->name;
     }
 
-    public function getFactionId(): ?int
+    public function getFactionId(): int
     {
         return $this->factionId;
     }

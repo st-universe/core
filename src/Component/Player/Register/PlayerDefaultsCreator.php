@@ -74,11 +74,6 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
     private function createDefaultStartResearch(UserInterface $user): void
     {
         $faction = $user->getFaction();
-
-        if ($faction === null) {
-            throw new RuntimeException('faction has to be set');
-        }
-
         $startResarch = $faction->getStartResearch();
         if ($startResarch === null) {
             return;
