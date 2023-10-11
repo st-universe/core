@@ -64,6 +64,16 @@ final class CrewEnum
         CrewEnum::CREW_TYPE_CREWMAN
     ];
 
+    public const CREW_FIGHT_CAPABILITIES = [
+        CrewEnum::CREW_TYPE_CAPTAIN => 10,
+        CrewEnum::CREW_TYPE_COMMAND => 8,
+        CrewEnum::CREW_TYPE_SECURITY => 20,
+        CrewEnum::CREW_TYPE_SCIENCE => 0,
+        CrewEnum::CREW_TYPE_TECHNICAL => 4,
+        CrewEnum::CREW_TYPE_NAVIGATION => 2,
+        CrewEnum::CREW_TYPE_CREWMAN => 6
+    ];
+
     public static function getDescription(?int $crewType): string
     {
         switch ($crewType) {

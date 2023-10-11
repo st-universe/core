@@ -155,21 +155,7 @@ class Crew implements CrewInterface
 
     public function getTypeDescription(): string
     {
-        switch ($this->getType()) {
-            case CrewEnum::CREW_TYPE_CREWMAN:
-                return "Crewman";
-            case CrewEnum::CREW_TYPE_SECURITY:
-                return "Sicherheit";
-            case CrewEnum::CREW_TYPE_SCIENCE:
-                return "Wissenschaft";
-            case CrewEnum::CREW_TYPE_TECHNICAL:
-                return "Technik";
-            case CrewEnum::CREW_TYPE_NAVIGATION:
-                return "Navigation";
-            case CrewEnum::CREW_TYPE_COMMAND:
-                return "Kommando";
-        }
-        return '';
+        return CrewEnum::getDescription($this->getType());
     }
 
     public function getRace(): CrewRaceInterface
