@@ -244,7 +244,6 @@ final class AttackBuilding implements ActionControllerInterface
             $game->setTemplateVar('FIGHT_RESULTS', $this->informations->getInformations());
         } else {
             $game->addInformationWrapper($this->informations);
-            $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }
 

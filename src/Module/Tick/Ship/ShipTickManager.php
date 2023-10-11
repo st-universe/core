@@ -178,7 +178,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
     {
         $count = 0;
 
-        foreach ($escapePod->getCrewlist() as $crewAssignment) {
+        foreach ($escapePod->getCrewAssignments() as $crewAssignment) {
             if ($crewAssignment->getUser() !== $colony->getUser()) {
                 continue;
             }
@@ -195,7 +195,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             $crewAssignment->setShip(null);
             $crewAssignment->setSlot(null);
             $crewAssignment->setColony($colony);
-            $escapePod->getCrewlist()->removeElement($crewAssignment);
+            $escapePod->getCrewAssignments()->removeElement($crewAssignment);
             $colony->getCrewAssignments()->add($crewAssignment);
             $this->shipCrewRepository->save($crewAssignment);
         }

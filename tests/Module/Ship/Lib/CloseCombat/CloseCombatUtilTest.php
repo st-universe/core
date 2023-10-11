@@ -32,7 +32,7 @@ class CloseCombatUtilTest extends StuTestCase
     {
         $crewList = new ArrayCollection();
 
-        $this->ship->shouldReceive('getCrewlist')
+        $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->once()
             ->andReturn($crewList);
@@ -54,7 +54,7 @@ class CloseCombatUtilTest extends StuTestCase
             ->once()
             ->andReturn($crew1);
 
-        $this->ship->shouldReceive('getCrewlist')
+        $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->once()
             ->andReturn($crewList);
@@ -129,7 +129,7 @@ class CloseCombatUtilTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(CrewEnum::CREW_TYPE_SCIENCE);
 
-        $this->ship->shouldReceive('getCrewlist')
+        $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->once()
             ->andReturn($crewList);

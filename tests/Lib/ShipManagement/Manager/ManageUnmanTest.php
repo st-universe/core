@@ -259,7 +259,7 @@ class ManageUnmanTest extends StuTestCase
             ->with($this->user, $this->ship)
             ->once()
             ->andReturn(10);
-        $this->ship->shouldReceive('getCrewlist')
+        $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->andReturn($shipCrewlist);
         $this->ship->shouldReceive('setAlertStateGreen')

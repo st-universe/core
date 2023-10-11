@@ -66,8 +66,8 @@ class ManageUnman implements ManagerInterface
 
             $this->dumpForeignCrew($ship);
 
-            $managerProvider->addCrewAssignments($ship->getCrewlist());
-            $ship->getCrewlist()->clear();
+            $managerProvider->addCrewAssignments($ship->getCrewAssignments());
+            $ship->getCrewAssignments()->clear();
             $msg[] = sprintf(
                 _('%s: Die Crew wurde runtergebeamt'),
                 $ship->getName()
@@ -89,7 +89,7 @@ class ManageUnman implements ManagerInterface
 
     private function dumpForeignCrew(ShipInterface $ship): void
     {
-        foreach ($ship->getCrewlist() as $shipCrew) {
+        foreach ($ship->getCrewAssignments() as $shipCrew) {
             if ($shipCrew->getCrew()->getUser() !== $ship->getUser()) {
                 $this->shipLeaver->dumpCrewman(
                     $shipCrew,

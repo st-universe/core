@@ -123,7 +123,7 @@ final class CrewCreator implements CrewCreatorInterface
                 $crewAssignment->setUser($ship->getUser());
                 $crewAssignment->setSlot($crewType);
 
-                $ship->getCrewlist()->add($crewAssignment);
+                $ship->getCrewAssignments()->add($crewAssignment);
 
                 $this->shipCrewRepository->save($crewAssignment);
             }
@@ -152,10 +152,10 @@ final class CrewCreator implements CrewCreatorInterface
             return null;
         }
 
-        foreach ($station->getCrewlist() as $crewAssignment) {
+        foreach ($station->getCrewAssignments() as $crewAssignment) {
             $crew = $crewAssignment->getCrew();
             if ($crew->getType() === $crewType) {
-                $station->getCrewlist()->removeElement($crewAssignment);
+                $station->getCrewAssignments()->removeElement($crewAssignment);
 
                 return $crewAssignment;
             }
@@ -182,7 +182,7 @@ final class CrewCreator implements CrewCreatorInterface
         }
 
         if ($station !== null) {
-            $crewList = $station->getCrewlist();
+            $crewList = $station->getCrewAssignments();
             $random = $crewList->get(array_rand($crewList->toArray()));
 
             $crewList->removeElement($random);

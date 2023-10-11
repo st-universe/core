@@ -121,7 +121,7 @@ final class SalvageCrew implements ActionControllerInterface
             }
             $crewAssignment->setTradepost(null);
             $crewAssignment->setShip($ship);
-            $ship->getCrewlist()->add($crewAssignment);
+            $ship->getCrewAssignments()->add($crewAssignment);
             $this->shipCrewRepository->save($crewAssignment);
 
             $crewToTransfer--;

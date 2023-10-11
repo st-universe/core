@@ -10,6 +10,7 @@ use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -95,6 +96,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             $game->setView(ShowShip::VIEW_IDENTIFIER);
+            return;
+        }
+
+        if (!TractorBeamShipSystem::isTractorBeamPossible($target)) {
             return;
         }
 

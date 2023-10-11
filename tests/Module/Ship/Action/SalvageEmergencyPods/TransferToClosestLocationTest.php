@@ -211,7 +211,7 @@ class TransferToClosestLocationTest extends StuTestCase
         $foreignShipCrew = $this->mock(ShipCrewInterface::class);
         $crewlist = new ArrayCollection([$shipCrew, $foreignShipCrew]);
 
-        $this->target->shouldReceive('getCrewlist')
+        $this->target->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->andReturn($crewlist);
 

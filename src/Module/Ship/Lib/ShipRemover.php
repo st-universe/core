@@ -328,7 +328,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         if ($truncateCrew) {
             $crewArray = [];
-            foreach ($ship->getCrewlist() as $shipCrew) {
+            foreach ($ship->getCrewAssignments() as $shipCrew) {
                 $crewArray[] = $shipCrew->getCrew();
             }
 
@@ -338,7 +338,7 @@ final class ShipRemover implements ShipRemoverInterface
                 $this->crewRepository->delete($crew);
             }
 
-            $ship->getCrewlist()->clear();
+            $ship->getCrewAssignments()->clear();
         }
 
         // reset tracker devices

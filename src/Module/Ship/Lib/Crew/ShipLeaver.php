@@ -109,7 +109,7 @@ final class ShipLeaver implements ShipLeaverInterface
 
         //transfer crew into pods
         //TODO not all...! depends on race config
-        $crewList = $ship->getCrewlist();
+        $crewList = $ship->getCrewAssignments();
         foreach ($crewList as $shipCrew) {
             $shipCrew->setShip($pods);
             $shipCrew->setSlot(null);
@@ -138,7 +138,7 @@ final class ShipLeaver implements ShipLeaverInterface
             //transfer crewman into pods
             $shipCrew->setShip($pods);
             $shipCrew->setShipId($pods->getId());
-            $ship->getCrewlist()->removeElement($shipCrew);
+            $ship->getCrewAssignments()->removeElement($shipCrew);
             $this->shipCrewRepository->save($shipCrew);
 
             $survivalMessage = _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
@@ -175,7 +175,7 @@ final class ShipLeaver implements ShipLeaverInterface
     private function letCrewDie(ShipInterface $ship): void
     {
         $crewArray = [];
-        foreach ($ship->getCrewlist() as $shipCrew) {
+        foreach ($ship->getCrewAssignments() as $shipCrew) {
             $crewArray[] = $shipCrew->getCrew();
         }
 

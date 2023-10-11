@@ -18,6 +18,7 @@ use Stu\Component\Station\StationEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -26,7 +27,6 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
@@ -52,7 +52,7 @@ final class BuildConstruction implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
-    private ShipCrewRepositoryInterface $shipCrewRepository;
+    private TroopTransferUtilityInterface $troopTransferUtility;
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
@@ -68,7 +68,7 @@ final class BuildConstruction implements ActionControllerInterface
         ShipCreatorInterface $shipCreator,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipCrewRepositoryInterface $shipCrewRepository,
+        TroopTransferUtilityInterface $troopTransferUtility,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         CommodityRepositoryInterface $commodityRepository,
@@ -79,7 +79,7 @@ final class BuildConstruction implements ActionControllerInterface
         $this->shipCreator = $shipCreator;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->shipStorageManager = $shipStorageManager;
-        $this->shipCrewRepository = $shipCrewRepository;
+        $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->commodityRepository = $commodityRepository;
@@ -276,13 +276,9 @@ final class BuildConstruction implements ActionControllerInterface
 
         $workbee->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
-        $shipCrewArray = $ship->getCrewlist()->getValues();
+        $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
-            $shipCrew = $shipCrewArray[$i];
-            $shipCrew->setShip($workbee);
-            $ship->getCrewlist()->removeElement($shipCrew);
-
-            $this->shipCrewRepository->save($shipCrew);
+            $this->troopTransferUtility->assignCrew($shipCrewArray[$i], $workbee);
         }
 
         $this->shipRepository->save($workbee);
