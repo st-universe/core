@@ -219,4 +219,13 @@ final class FightLib implements FightLibInterface
 
         return $web->isFinished() && ($target->getHoldingWeb() !== $web);
     }
+
+    public static function isBoardingPossible(ShipInterface|ShipNfsItem $ship): bool
+    {
+        return !($ship->isBase()
+            || $ship->isTrumfield()
+            || $ship->getCloakState()
+            || $ship->getShieldState()
+            || $ship->getWarpState());
+    }
 }

@@ -1246,4 +1246,114 @@ class FightLibTest extends StuTestCase
 
         $this->assertTrue($result);
     }
+
+    public function testIsBoardingPossibleExpectFalseWhenBase(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('isBase')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = FightLib::isBoardingPossible($ship);
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsBoardingPossibleExpectFalseWhenTrumfield(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('isBase')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = FightLib::isBoardingPossible($ship);
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsBoardingPossibleExpectFalseWhenCloaked(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('isBase')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = FightLib::isBoardingPossible($ship);
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsBoardingPossibleExpectFalseWhenShieldsOn(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('isBase')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = FightLib::isBoardingPossible($ship);
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsBoardingPossibleExpectFalseWhenWarped(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('isBase')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = FightLib::isBoardingPossible($ship);
+
+        $this->assertTrue($result);
+    }
 }
