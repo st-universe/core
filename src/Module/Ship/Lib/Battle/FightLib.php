@@ -137,7 +137,7 @@ final class FightLib implements FightLibInterface
         return $ownFleetId !== $targetFleetId;
     }
 
-    public function getAttackerDefender(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
+    public function getAttackersAndDefenders(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
     {
         $attackers = $this->getAttackers($wrapper);
         $defenders = $this->getDefenders($targetWrapper);
@@ -150,7 +150,7 @@ final class FightLib implements FightLibInterface
     }
 
     /** @return array<int, ShipWrapperInterface> */
-    private function getAttackers(ShipWrapperInterface $wrapper): array
+    public function getAttackers(ShipWrapperInterface $wrapper): array
     {
         $ship = $wrapper->get();
         $fleet = $wrapper->getFleetWrapper();

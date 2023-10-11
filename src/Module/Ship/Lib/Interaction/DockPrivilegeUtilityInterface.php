@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Interaction;
 
 use Stu\Orm\Entity\UserInterface;
 

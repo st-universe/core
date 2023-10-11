@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\View\ShowBeamTo;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowBeamTo implements ViewControllerInterface

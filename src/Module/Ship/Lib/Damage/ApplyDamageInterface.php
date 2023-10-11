@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib\Damage;
 
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\InformationWrapper;
