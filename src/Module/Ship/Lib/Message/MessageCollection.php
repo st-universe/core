@@ -70,4 +70,9 @@ final class MessageCollection implements MessageCollectionInterface
 
         return $result;
     }
+
+    public function isEmpty(): bool
+    {
+        return $this->getInformationDump()->isEmpty();
+    }
 }
