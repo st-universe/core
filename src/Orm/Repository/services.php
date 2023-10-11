@@ -104,6 +104,7 @@ use Stu\Orm\Entity\ShipRumpRole;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\ShipSystem;
+use Stu\Orm\Entity\ShipTakeover;
 use Stu\Orm\Entity\ShipyardShipQueue;
 use Stu\Orm\Entity\SpacecraftEmergency;
 use Stu\Orm\Entity\StarSystem;
@@ -628,6 +629,11 @@ return [
         ContainerInterface $c
     ): ShipSystemRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipSystem::class);
+    },
+    ShipTakeoverRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipTakeoverRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipTakeover::class);
     },
     ShipyardShipQueueRepositoryInterface::class => function (
         ContainerInterface $c

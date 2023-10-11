@@ -35,6 +35,7 @@ use Stu\Component\Station\StationUtility;
 use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\Battle\FightLib;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -406,6 +407,11 @@ class Ship implements ShipInterface
      * @OrderBy({"id": "DESC"})
      */
     private Collection $logbook;
+
+    /**
+     * @OneToOne(targetEntity="ShipTakeover", mappedBy="target")
+     */
+    private ?ShipTakeoverInterface $takeover = null;
 
     public function __construct()
     {
@@ -989,7 +995,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getCrewlist(): Collection
+    public function getCrewAssignments(): Collection
     {
         return $this->crew;
     }
@@ -1012,7 +1018,7 @@ class Ship implements ShipInterface
 
     public function getCrewCount(): int
     {
-        return $this->getCrewlist()->count();
+        return $this->getCrewAssignments()->count();
     }
 
     public function getExcessCrewCount(): int
@@ -1222,6 +1228,11 @@ class Ship implements ShipInterface
         return $this->logbook;
     }
 
+    public function getTakeover(): ?ShipTakeoverInterface
+    {
+        return $this->takeover;
+    }
+
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -1404,6 +1415,11 @@ class Ship implements ShipInterface
     public function isTractorbeamPossible(): bool
     {
         return TractorBeamShipSystem::isTractorBeamPossible($this);
+    }
+
+    public function isBoardingPossible(): bool
+    {
+        return FightLib::isBoardingPossible($this);
     }
 
     public function isInterceptAble(): bool
@@ -1764,7 +1780,7 @@ class Ship implements ShipInterface
 
     public function hasCrewmanOfUser(int $userId): bool
     {
-        foreach ($this->getCrewlist() as $shipCrew) {
+        foreach ($this->getCrewAssignments() as $shipCrew) {
             if ($shipCrew->getCrew()->getUser()->getId() === $userId) {
                 return true;
             }
