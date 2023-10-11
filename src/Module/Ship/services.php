@@ -156,8 +156,8 @@ use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReaction;
 use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReactionInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelper;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
-use Stu\Module\Ship\Lib\Battle\ApplyDamage;
-use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\Damage\ApplyDamage;
+use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Battle\AttackMatchup;
 use Stu\Module\Ship\Lib\Battle\AttackMatchupInterface;
 use Stu\Module\Ship\Lib\Battle\FightLib;
@@ -176,14 +176,14 @@ use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\Crew\LaunchEscapePods;
 use Stu\Module\Ship\Lib\Crew\LaunchEscapePodsInterface;
-use Stu\Module\Ship\Lib\DockPrivilegeUtility;
-use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
+use Stu\Module\Ship\Lib\Interaction\DockPrivilegeUtility;
+use Stu\Module\Ship\Lib\Interaction\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\Fleet\ChangeFleetLeader;
 use Stu\Module\Ship\Lib\Fleet\ChangeFleetLeaderInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleet as FleetLeaveFleet;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Ship\Lib\InteractionChecker;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
+use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreator;
@@ -216,8 +216,8 @@ use Stu\Module\Ship\Lib\ShipStateChanger;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactory;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\TholianWebUtil;
-use Stu\Module\Ship\Lib\TholianWebUtilInterface;
+use Stu\Module\Ship\Lib\Interaction\TholianWebUtil;
+use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedo;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManager;
@@ -226,6 +226,8 @@ use Stu\Module\Ship\Lib\Crew\TroopTransferUtility;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamage;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamageInterface;
+use Stu\Module\Ship\Lib\Interaction\ThreatReaction;
+use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DockConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveActivationConsequence;
@@ -309,6 +311,7 @@ return [
     CancelColonyBlockOrDefendInterface::class => autowire(CancelColonyBlockOrDefend::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
+    ThreatReactionInterface::class => autowire(ThreatReaction::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
     DeleteFleetRequestInterface::class => autowire(DeleteFleetRequest::class),
     RenameFleetRequestInterface::class => autowire(RenameFleetRequest::class),

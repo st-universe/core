@@ -9,7 +9,7 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\TholianWebUtilInterface;
+use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
 
 class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {

@@ -26,10 +26,13 @@ interface FightLibInterface
         bool $checkActiveWeapons = true
     ): bool;
 
+    /** @return array<int, ShipWrapperInterface> */
+    public function getAttackers(ShipWrapperInterface $wrapper): array;
+
     /**
      * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool}
      */
-    public function getAttackerDefender(ShipWrapperInterface $wrapper, ShipWrapperInterface $target): array;
+    public function getAttackersAndDefenders(ShipWrapperInterface $wrapper, ShipWrapperInterface $target): array;
 
     public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Interaction;
 
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\UserInterface;

@@ -1,7 +1,9 @@
 <?php
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Interaction;
 
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 
 interface TholianWebUtilInterface

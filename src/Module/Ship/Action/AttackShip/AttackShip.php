@@ -16,7 +16,7 @@ use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -132,7 +132,7 @@ final class AttackShip implements ActionControllerInterface
 
         $isTargetBase = $target->isBase();
 
-        [$attacker, $defender, $isFleetFight, $isWebSituation] = $this->getAttackerDefender($wrapper, $targetWrapper);
+        [$attacker, $defender, $isFleetFight, $isWebSituation] = $this->getAttackersAndDefenders($wrapper, $targetWrapper);
 
         $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender, $isWebSituation);
 
@@ -214,11 +214,11 @@ final class AttackShip implements ActionControllerInterface
     /**
      * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool, 3: bool}
      */
-    private function getAttackerDefender(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
+    private function getAttackersAndDefenders(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
     {
         $ship = $wrapper->get();
 
-        [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackerDefender($wrapper, $targetWrapper);
+        [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper);
 
         $isWebSituation = $this->fightLib->isTargetOutsideFinishedTholianWeb($ship, $targetWrapper->get());
 

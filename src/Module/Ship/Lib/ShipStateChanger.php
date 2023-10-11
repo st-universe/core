@@ -8,6 +8,7 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipStateChanger implements ShipStateChangerInterface

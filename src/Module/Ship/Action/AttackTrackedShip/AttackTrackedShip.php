@@ -13,7 +13,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -110,7 +110,7 @@ final class AttackTrackedShip implements ActionControllerInterface
         $isShipWarped = $ship->getWarpState();
         $isTargetWarped = $target->getWarpState();
 
-        [$attacker, $defender, $fleet] = $this->fightLib->getAttackerDefender($wrapper, $targetWrapper);
+        [$attacker, $defender, $fleet] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper);
 
         $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender);
 
