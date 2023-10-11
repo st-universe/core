@@ -235,7 +235,7 @@ class ManagerProviderStationTest extends StuTestCase
             ->with(null)
             ->once();
 
-        $this->station->shouldReceive('getCrewlist->add')
+        $this->station->shouldReceive('getCrewAssignments->add')
             ->with($crewAssignment)
             ->once();
 

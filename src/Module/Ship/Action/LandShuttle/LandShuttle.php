@@ -16,7 +16,6 @@ use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class LandShuttle implements ActionControllerInterface
 {
@@ -25,8 +24,6 @@ final class LandShuttle implements ActionControllerInterface
     private ShipLoaderInterface $shipLoader;
 
     private ShipStorageManagerInterface $shipStorageManager;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
 
     private EntityManagerInterface $entityManager;
 
@@ -39,7 +36,6 @@ final class LandShuttle implements ActionControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipCrewRepositoryInterface $shipCrewRepository,
         EntityManagerInterface $entityManager,
         TroopTransferUtilityInterface $troopTransferUtility,
         ShipRemoverInterface $shipRemover,
@@ -47,7 +43,6 @@ final class LandShuttle implements ActionControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipStorageManager = $shipStorageManager;
-        $this->shipCrewRepository = $shipCrewRepository;
         $this->entityManager = $entityManager;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRemover = $shipRemover;
@@ -143,13 +138,9 @@ final class LandShuttle implements ActionControllerInterface
 
     private function landShuttle(ShipInterface $shuttle, ShipInterface $target): void
     {
-        foreach ($shuttle->getCrewlist() as $crewAssignment) {
-            $crewAssignment->setShip($target);
-            $crewAssignment->setSlot(null);
-            $target->getCrewlist()->add($crewAssignment);
-            $this->shipCrewRepository->save($crewAssignment);
+        foreach ($shuttle->getCrewAssignments() as $crewAssignment) {
+            $this->troopTransferUtility->assignCrew($crewAssignment, $target);
         }
-        $shuttle->getCrewlist()->clear();
         $this->entityManager->flush();
 
         $this->shipRemover->remove($shuttle);

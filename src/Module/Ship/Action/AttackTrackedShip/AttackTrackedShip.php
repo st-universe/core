@@ -149,7 +149,6 @@ final class AttackTrackedShip implements ActionControllerInterface
             $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
             $game->addInformationWrapper($informations);
-            $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }
 

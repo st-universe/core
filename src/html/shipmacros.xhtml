@@ -958,7 +958,7 @@
             <td class="darkbg"><strong>Name</strong></td>
             <td class="darkbg"><strong>Rang</strong></td>
           </tr>
-          <tr tal:repeat="data SHIP/getCrewlist">
+          <tr tal:repeat="data SHIP/getCrewAssignments">
             <td tal:define="crewusername bbcode2txt:data/getCrew/getUser/getName">
               <img
                 src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />

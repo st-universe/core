@@ -12,13 +12,13 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StartShuttle implements ActionControllerInterface
@@ -35,7 +35,7 @@ final class StartShuttle implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
-    private ShipCrewRepositoryInterface $shipCrewRepository;
+    private TroopTransferUtilityInterface $troopTransferUtility;
 
     private ActivatorDeactivatorHelperInterface $helper;
 
@@ -45,7 +45,7 @@ final class StartShuttle implements ActionControllerInterface
         ShipCreatorInterface $shipCreator,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipCrewRepositoryInterface $shipCrewRepository,
+        TroopTransferUtilityInterface $troopTransferUtility,
         ActivatorDeactivatorHelperInterface $helper
     ) {
         $this->shipRepository = $shipRepository;
@@ -53,7 +53,7 @@ final class StartShuttle implements ActionControllerInterface
         $this->shipCreator = $shipCreator;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->shipStorageManager = $shipStorageManager;
-        $this->shipCrewRepository = $shipCrewRepository;
+        $this->troopTransferUtility = $troopTransferUtility;
         $this->helper = $helper;
     }
 
@@ -175,13 +175,9 @@ final class StartShuttle implements ActionControllerInterface
 
         $shuttle->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
-        $shipCrewArray = $ship->getCrewlist()->getValues();
+        $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
-            $shipCrew = $shipCrewArray[$i];
-            $shipCrew->setShip($shuttle);
-            $ship->getCrewlist()->removeElement($shipCrew);
-
-            $this->shipCrewRepository->save($shipCrew);
+            $this->troopTransferUtility->assignCrew($shipCrewArray[$i], $shuttle);
         }
 
         $this->shipRepository->save($shuttle);

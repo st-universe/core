@@ -23,11 +23,11 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
@@ -57,7 +57,7 @@ final class Colonize implements ActionControllerInterface
 
     private ColonizationCheckerInterface $colonizationChecker;
 
-    private ShipCrewRepositoryInterface $shipCrewRepository;
+    private TroopTransferUtilityInterface $troopTransferUtility;
 
     private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
 
@@ -75,7 +75,7 @@ final class Colonize implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         InteractionCheckerInterface $interactionChecker,
         ColonizationCheckerInterface $colonizationChecker,
-        ShipCrewRepositoryInterface $shipCrewRepository,
+        TroopTransferUtilityInterface $troopTransferUtility,
         ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         UserRepositoryInterface $userRepository
     ) {
@@ -90,7 +90,7 @@ final class Colonize implements ActionControllerInterface
         $this->shipRemover = $shipRemover;
         $this->interactionChecker = $interactionChecker;
         $this->colonizationChecker = $colonizationChecker;
-        $this->shipCrewRepository = $shipCrewRepository;
+        $this->troopTransferUtility = $troopTransferUtility;
         $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
         $this->userRepository = $userRepository;
     }
@@ -208,15 +208,9 @@ final class Colonize implements ActionControllerInterface
 
     private function transferCrewToColony(ShipInterface $ship, ColonyInterface $colony): void
     {
-        foreach ($ship->getCrewlist() as $crewAssignment) {
-            $crewAssignment->setColony($colony);
-            $crewAssignment->setShip(null);
-            $crewAssignment->setSlot(null);
-            $colony->getCrewAssignments()->add($crewAssignment);
-            $this->shipCrewRepository->save($crewAssignment);
+        foreach ($ship->getCrewAssignments() as $crewAssignment) {
+            $this->troopTransferUtility->assignCrew($crewAssignment, $colony);
         }
-
-        $ship->getCrewlist()->clear();
     }
 
     private function createUserDepositMinings(ColonyInterface $colony): void

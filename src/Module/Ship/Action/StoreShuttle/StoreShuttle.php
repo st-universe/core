@@ -18,7 +18,6 @@ use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class StoreShuttle implements ActionControllerInterface
 {
@@ -27,8 +26,6 @@ final class StoreShuttle implements ActionControllerInterface
     private ShipLoaderInterface $shipLoader;
 
     private ShipStorageManagerInterface $shipStorageManager;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
 
     private EntityManagerInterface $entityManager;
 
@@ -43,7 +40,6 @@ final class StoreShuttle implements ActionControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipCrewRepositoryInterface $shipCrewRepository,
         EntityManagerInterface $entityManager,
         TroopTransferUtilityInterface $troopTransferUtility,
         ShipRemoverInterface $shipRemover,
@@ -52,7 +48,6 @@ final class StoreShuttle implements ActionControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipStorageManager = $shipStorageManager;
-        $this->shipCrewRepository = $shipCrewRepository;
         $this->entityManager = $entityManager;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRemover = $shipRemover;
@@ -149,12 +144,9 @@ final class StoreShuttle implements ActionControllerInterface
 
     private function storeShuttle(ShipInterface $ship, ShipInterface $shuttle): void
     {
-        foreach ($shuttle->getCrewlist() as $shipCrew) {
-            $shipCrew->setShip($ship);
-            $ship->getCrewlist()->add($shipCrew);
-            $this->shipCrewRepository->save($shipCrew);
+        foreach ($shuttle->getCrewAssignments() as $crewAssignment) {
+            $this->troopTransferUtility->assignCrew($crewAssignment, $ship);
         }
-        $shuttle->getCrewlist()->clear();
         $this->entityManager->flush();
 
         $this->shipRemover->remove($shuttle);

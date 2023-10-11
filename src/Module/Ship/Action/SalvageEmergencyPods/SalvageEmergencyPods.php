@@ -129,7 +129,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     {
         $crewmanPerUser = [];
 
-        foreach ($target->getCrewList() as $shipCrew) {
+        foreach ($target->getCrewAssignments() as $shipCrew) {
             $crewUserId = $shipCrew->getCrew()->getUser()->getId();
 
             if (!array_key_exists($crewUserId, $crewmanPerUser)) {
@@ -170,7 +170,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     ),
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
                 );
-                foreach ($target->getCrewlist() as $crewAssignment) {
+                foreach ($target->getCrewAssignments() as $crewAssignment) {
                     if ($crewAssignment->getCrew()->getUser()->getId() === $ownerId) {
                         $crewAssignment->setShip(null);
                         $crewAssignment->setTradepost($closestTradepost);
@@ -182,10 +182,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $sentGameInfoForForeignCrew = true;
                 }
             } elseif ($this->gotEnoughFreeTroopQuarters($ship, $count)) {
-                foreach ($target->getCrewlist() as $crewAssignment) {
+                foreach ($target->getCrewAssignments() as $crewAssignment) {
                     if ($crewAssignment->getCrew()->getUser() === $game->getUser()) {
                         $crewAssignment->setShip($ship);
-                        $ship->getCrewlist()->add($crewAssignment);
+                        $ship->getCrewAssignments()->add($crewAssignment);
                         $this->shipCrewRepository->save($crewAssignment);
                     }
                 }

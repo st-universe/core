@@ -29,7 +29,7 @@ final class UplinkShipSystem extends AbstractShipSystemType implements ShipSyste
 
     private function hasForeignCrew(ShipInterface $ship): bool
     {
-        foreach ($ship->getCrewlist() as $shipCrew) {
+        foreach ($ship->getCrewAssignments() as $shipCrew) {
             if ($shipCrew->getCrew()->getUser() !== $ship->getUser()) {
                 return true;
             }

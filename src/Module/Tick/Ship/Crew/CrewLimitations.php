@@ -228,10 +228,10 @@ final class CrewLimitations implements CrewLimitationsInterface
         $this->shipRepository->save($randomShip);
 
         $crewArray = [];
-        foreach ($randomShip->getCrewlist() as $shipCrew) {
+        foreach ($randomShip->getCrewAssignments() as $shipCrew) {
             $crewArray[] = $shipCrew->getCrew();
         }
-        $randomShip->getCrewlist()->clear();
+        $randomShip->getCrewAssignments()->clear();
 
         //remove crew
         $this->shipCrewRepository->truncateByShip($randomShipId);

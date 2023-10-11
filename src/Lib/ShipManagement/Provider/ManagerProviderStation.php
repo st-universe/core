@@ -112,7 +112,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         foreach ($crewAssignments as $shipCrew) {
             $shipCrew->setShip($station);
             $shipCrew->setSlot(null);
-            $station->getCrewlist()->add($shipCrew);
+            $station->getCrewAssignments()->add($shipCrew);
             $this->shipCrewRepository->save($shipCrew);
         }
     }

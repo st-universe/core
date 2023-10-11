@@ -29,7 +29,7 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
-        foreach ($wrapper->get()->getCrewlist() as $crewAssignment) {
+        foreach ($wrapper->get()->getCrewAssignments() as $crewAssignment) {
             if ($crewAssignment->getSlot() === null) {
                 $this->crewRepository->delete($crewAssignment->getCrew());
             }
