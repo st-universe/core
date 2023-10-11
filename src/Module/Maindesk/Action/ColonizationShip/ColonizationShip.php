@@ -39,9 +39,6 @@ final class ColonizationShip implements ActionControllerInterface
         }
 
         $faction = $user->getFaction();
-        if ($faction === null) {
-            throw new RuntimeException('user has no faction');
-        }
 
         $wrapper = $this->shipCreator->createBy(
             $user->getId(),

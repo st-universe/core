@@ -78,9 +78,6 @@ final class FirstColony implements ActionControllerInterface
         }
 
         $faction = $user->getFaction();
-        if ($faction === null) {
-            return;
-        }
 
         $startingBuilding =  $this->buildingRepository->find($faction->getStartBuildingId());
         if ($startingBuilding === null) {
