@@ -59,13 +59,7 @@ class InformationWrapper
 
     public function getInformationsAsString(): string
     {
-        $result = '';
-
-        foreach ($this->getInformations() as $value) {
-            $result .= $value . "\n";
-        }
-
-        return $result;
+        return implode(PHP_EOL, $this->getInformations());
     }
 
     public function isEmpty(): bool
