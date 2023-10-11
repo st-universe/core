@@ -60,20 +60,14 @@ class ColonyProduction
         return '';
     }
 
-    /**
-     * @param int $value
-     */
-    public function lowerProduction($value): void
+    public function lowerProduction(int $value): void
     {
-        $this->setProduction($this->getProduction() - $value);
+        $this->setProduction($this->production - $value);
     }
 
-    /**
-     * @param int $value
-     */
-    public function upperProduction($value): void
+    public function upperProduction(int $value): void
     {
-        $this->setProduction($this->getProduction() + $value);
+        $this->setProduction($this->production + $value);
     }
 
     private function setProduction(int $value): void
