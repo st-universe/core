@@ -17,6 +17,9 @@ class ColonyProductionPreviewWrapper
     /** @var array<ColonyProduction> */
     private array $production = [];
 
+    /** @var array<int, array<ColonyProduction>> */
+    private array $preview = [];
+
     /**
      * @param array<ColonyProduction> $production
      */
@@ -37,22 +40,30 @@ class ColonyProductionPreviewWrapper
      */
     public function __get($buildingId): array
     {
-        return $this->getPreview((int) $buildingId);
+        $bid = (int) $buildingId;
+
+        if (!array_key_exists($bid, $this->preview)) {
+            $this->preview[$bid] = $this->loadPreview($bid);
+        }
+
+        return $this->preview[$bid];
     }
 
-    /**
-     * @return array<ColonyProduction>
-     */
-    private function getPreview(int $buildingId): array
+    /** @return array<ColonyProduction> */
+    private function loadPreview(int $buildingId): array
     {
         $bcommodities = $this->buildingCommodityRepository->getByBuilding($buildingId);
+
+        /** @var array<ColonyProduction> */
         $ret = [];
         foreach ($bcommodities as $commodityId => $prod) {
             $commodityId = $prod->getCommodityId();
             if (array_key_exists($commodityId, $this->production)) {
+
                 $ret[$commodityId] = clone $this->production[$commodityId];
                 $ret[$commodityId]->upperProduction($prod->getAmount());
             } else {
+
                 $obj = $this->colonyLibFactory->createColonyProduction(
                     $prod->getCommodity(),
                     $prod->getAmount()
