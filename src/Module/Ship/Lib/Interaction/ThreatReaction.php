@@ -46,7 +46,7 @@ final class ThreatReaction implements ThreatReactionInterface
     ): bool {
 
         $target = $targetWrapper->get();
-        if ($target->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
+        if ($target->getAlertState() === ShipAlertStateEnum::ALERT_GREEN) {
             return false;
         }
 

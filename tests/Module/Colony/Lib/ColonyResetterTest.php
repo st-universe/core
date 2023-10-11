@@ -225,6 +225,18 @@ class ColonyResetterTest extends StuTestCase
             ->with('')
             ->once()
             ->andReturnSelf();
+        $colony->shouldReceive('setTorpedo')
+            ->with(null)
+            ->once()
+            ->andReturnSelf();
+        $colony->shouldReceive('setShieldFrequency')
+            ->with(0)
+            ->once()
+            ->andReturnSelf();
+        $colony->shouldReceive('setShields')
+            ->with(0)
+            ->once()
+            ->andReturnSelf();
 
         $this->colonyRepository->shouldReceive('save')
             ->with($colony)
