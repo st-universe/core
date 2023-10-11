@@ -20,4 +20,6 @@ interface MessageCollectionInterface
     public function getRecipientIds(): array;
 
     public function getInformationDump(?int $userId = null): InformationWrapper;
+
+    public function isEmpty(): bool;
 }

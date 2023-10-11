@@ -160,4 +160,22 @@ class MessageCollectionTest extends StuTestCase
             'message42to5'
         ], $result->getInformations());
     }
+
+    public function testIsEmptyExpectFalseWhenNotEmpty(): void
+    {
+        $this->subject->add(new Message(null, null, ['foo']));
+
+        $result = $this->subject->isEmpty();
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsEmptyExpectTrueWhenEmpty(): void
+    {
+        $this->subject->add(new Message());
+
+        $result = $this->subject->isEmpty();
+
+        $this->assertTrue($result);
+    }
 }
