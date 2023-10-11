@@ -174,6 +174,8 @@ use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
+use Stu\Module\Ship\Lib\CloseCombat\CloseCombatUtil;
+use Stu\Module\Ship\Lib\CloseCombat\CloseCombatUtilInterface;
 use Stu\Module\Ship\Lib\Crew\LaunchEscapePods;
 use Stu\Module\Ship\Lib\Crew\LaunchEscapePodsInterface;
 use Stu\Module\Ship\Lib\Interaction\DockPrivilegeUtility;
@@ -312,6 +314,7 @@ return [
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),
+    CloseCombatUtilInterface::class => autowire(CloseCombatUtil::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
     DeleteFleetRequestInterface::class => autowire(DeleteFleetRequest::class),
     RenameFleetRequestInterface::class => autowire(RenameFleetRequest::class),
