@@ -189,7 +189,7 @@ interface ShipInterface
     /**
      * @return Collection<int, ShipCrewInterface>
      */
-    public function getCrewlist(): Collection;
+    public function getCrewAssignments(): Collection;
 
     public function getPosX(): int;
 
@@ -263,6 +263,8 @@ interface ShipInterface
      */
     public function getLogbook(): Collection;
 
+    public function getTakeover(): ?ShipTakeoverInterface;
+
     public function getStorageSum(): int;
 
     public function getMaxStorage(): int;
@@ -327,6 +329,8 @@ interface ShipInterface
     public function displayNbsActions(): bool;
 
     public function isTractorbeamPossible(): bool;
+
+    public function isBoardingPossible(): bool;
 
     public function isInterceptAble(): bool;
 

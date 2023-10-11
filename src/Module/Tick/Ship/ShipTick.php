@@ -17,9 +17,9 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -48,6 +48,8 @@ final class ShipTick implements ShipTickInterface
 
     private RepairUtilInterface $repairUtil;
 
+    private ShipTakeoverManagerInterface $shipTakeoverManager;
+
     /**
      * @var array<string>
      */
@@ -63,7 +65,8 @@ final class ShipTick implements ShipTickInterface
         DatabaseUserRepositoryInterface $databaseUserRepository,
         CreateDatabaseEntryInterface $createDatabaseEntry,
         StationUtilityInterface $stationUtility,
-        RepairUtilInterface $repairUtil
+        RepairUtilInterface $repairUtil,
+        ShipTakeoverManagerInterface $shipTakeoverManager
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -75,6 +78,7 @@ final class ShipTick implements ShipTickInterface
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->stationUtility = $stationUtility;
         $this->repairUtil = $repairUtil;
+        $this->shipTakeoverManager = $shipTakeoverManager;
     }
 
     public function work(ShipWrapperInterface $wrapper): void
@@ -219,6 +223,7 @@ final class ShipTick implements ShipTickInterface
         //core OR fusion
         $ship->setReactorLoad($ship->getReactorLoad() - $usedEnergy);
 
+        $this->checkForFinishedTakeover($ship);
         $this->checkForFinishedAstroMapping($ship);
 
         //update tracker status
@@ -352,6 +357,13 @@ final class ShipTick implements ShipTickInterface
             );
         }
         $this->shipRepository->save($station);
+    }
+
+    private function checkForFinishedTakeover(ShipInterface $ship): void
+    {
+        if ($this->shipTakeoverManager->isTakeoverReady($ship)) {
+            $this->shipTakeoverManager->finishTakeover($ship);
+        }
     }
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
