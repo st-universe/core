@@ -65,6 +65,9 @@ final class CancelTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log('5');
 
         $web = $emitter->getOwnedTholianWeb();
+        if ($web === null) {
+            throw new SanityCheckException('no own web', self::ACTION_IDENTIFIER);
+        }
 
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
         $this->loggerUtil->log('6');

@@ -179,7 +179,7 @@ final class ApplyDamage implements ApplyDamageInterface
     private function damageRandomShipSystem(
         ShipWrapperInterface $wrapper,
         InformationWrapper $informations,
-        $percent = null
+        int $percent = null
     ): void {
         $healthySystems = $wrapper->get()->getHealthySystems();
         shuffle($healthySystems);

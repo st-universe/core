@@ -62,7 +62,7 @@ final class TorpedoTransfer implements ActionControllerInterface
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
 

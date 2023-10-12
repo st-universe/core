@@ -12,5 +12,10 @@ interface InteractionCheckerInterface
 
     public function checkColonyPosition(ColonyInterface $col, ShipInterface $ship): bool;
 
-    public static function canInteractWith(ShipInterface $ship, $target, GameControllerInterface $game, bool $colony = false, bool $doCloakCheck = false): bool;
+    public static function canInteractWith(
+        ShipInterface $ship,
+        ShipInterface|ColonyInterface $target,
+        GameControllerInterface $game,
+        bool $doCloakCheck = false
+    ): bool;
 }

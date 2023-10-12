@@ -45,7 +45,7 @@ final class ShowBeamFromColony implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
         $target = $this->colonyRepository->find(request::getIntFatal('target'));
-        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, true)) {
+        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game)) {
             return;
         }
 

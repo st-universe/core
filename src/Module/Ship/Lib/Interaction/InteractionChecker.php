@@ -21,8 +21,12 @@ final class InteractionChecker implements InteractionCheckerInterface
     }
 
     //TODO intercept script attacks, e.g. beam from cloaked or warped ship
-    public static function canInteractWith(ShipInterface $ship, $target, GameControllerInterface $game, bool $colony = false, bool $doCloakCheck = false): bool
-    {
+    public static function canInteractWith(
+        ShipInterface $ship,
+        ShipInterface|ColonyInterface $target,
+        GameControllerInterface $game,
+        bool $doCloakCheck = false
+    ): bool {
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
 
@@ -34,7 +38,7 @@ final class InteractionChecker implements InteractionCheckerInterface
         }
 
         $interactionChecker = new InteractionChecker();
-        if ($colony === true) {
+        if ($target instanceof ColonyInterface) {
             return $interactionChecker->checkColonyPosition($target, $ship) && $target->getId() != $ship->getId();
         } elseif (!$interactionChecker->checkPosition($ship, $target)) {
             return false;

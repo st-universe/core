@@ -56,7 +56,7 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
             return;
         }
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
 

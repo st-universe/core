@@ -70,7 +70,7 @@ final class BeamFromColony implements ActionControllerInterface
         $ship = $wrapper->get();
 
         $target = $this->colonyRepository->find(request::postIntFatal('target'));
-        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, true)) {
+        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game)) {
             return;
         }
 

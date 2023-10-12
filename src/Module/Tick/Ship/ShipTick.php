@@ -20,6 +20,7 @@ use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -488,7 +489,7 @@ final class ShipTick implements ShipTickInterface
             case 1:
                 return sprintf(_('Der Ursprung lässt auf %s schließen'), $user->getName());
             case 2:
-                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction() !== null ? $user->getFaction()->getName() : '?');
+                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction()->getName());
             default:
                 return '';
         }

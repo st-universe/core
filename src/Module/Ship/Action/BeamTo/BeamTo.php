@@ -70,7 +70,7 @@ final class BeamTo implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
 
