@@ -1987,11 +1987,6 @@ parameters:
 			path: src/Module/Ship/Lib/Interaction/TholianWebUtil.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Interaction\\\\TholianWebUtil\\:\\:resetWebHelpers\\(\\) has parameter \\$isFinished with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Interaction/TholianWebUtil.php
-
-		-
 			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Interaction/TholianWebUtil.php

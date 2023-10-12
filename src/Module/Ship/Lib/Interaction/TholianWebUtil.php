@@ -144,8 +144,11 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
     }
 
-    public function resetWebHelpers(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory, $isFinished = false): void
-    {
+    public function resetWebHelpers(
+        TholianWebInterface $web,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
+        bool $isFinished = false
+    ): void {
         $this->loggerUtil->log(sprintf('resetWebHelpers, webId: %d', $web->getId()));
 
         $systems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
