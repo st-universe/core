@@ -63,7 +63,7 @@ final class TrackShip implements ActionControllerInterface
             return;
         }
 
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
 

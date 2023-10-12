@@ -47,7 +47,7 @@ final class ShowEpsTransfer implements ViewControllerInterface
         $game->setPageTitle("Energietransfer");
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
 

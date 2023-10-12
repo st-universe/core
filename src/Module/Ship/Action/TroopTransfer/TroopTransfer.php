@@ -112,7 +112,7 @@ final class TroopTransfer implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, $isColony, !$isColony)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, !$isColony)) {
             return;
         }
 

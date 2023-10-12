@@ -117,7 +117,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
 
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
-        if (!InteractionChecker::canInteractWith($ship, $target, $game, $isColony)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
             return;
         }
 
