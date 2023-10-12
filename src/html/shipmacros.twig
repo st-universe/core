@@ -314,6 +314,7 @@
     </div>
     {% endif %}
     {% else %}
+    {% if nbsItem.isBoardingPossible %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_TAKEOVER_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('take_{{ nbsItem.getId }}','buttons/take2')"
@@ -322,6 +323,7 @@
                 title="Übernahme der {{ nameWithoutMarkup }} starten" />
         </a>
     </div>
+    {% endif %}
     {% endif %}
     {% endif %}
     {% if nbsItem.isOwnedByCurrentUser and nbsItem.isShuttle and SHIP.hasFreeShuttleSpace %}
