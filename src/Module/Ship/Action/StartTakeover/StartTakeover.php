@@ -63,11 +63,16 @@ final class StartTakeover implements ActionControllerInterface
         $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
+        if ($ship->getTakeoverActive() !== null) {
+            return;
+        }
+
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
         $target = $targetWrapper->get();
+
 
         if (!$target->isBoardingPossible()) {
             return;
