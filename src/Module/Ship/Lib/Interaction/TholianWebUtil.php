@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Interaction;
 
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -111,6 +112,9 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         $emitter = $wrapper->getWebEmitterSystemData();
         $web = $emitter->getWebUnderConstruction();
+        if ($web === null) {
+            throw new RuntimeException('no web under construction');
+        }
 
         $this->releaseWebHelperIntern($wrapper);
 
