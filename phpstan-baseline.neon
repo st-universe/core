@@ -652,11 +652,6 @@ parameters:
 			path: src/Module/Alliance/View/BoardSettings/BoardSettings.php
 
 		-
-			message: "#^Parameter \\#2 \\$factionId of method Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceActionManagerInterface\\:\\:mayEditFactionMode\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Edit/Edit.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/NewPost/NewPost.php
@@ -1857,34 +1852,9 @@ parameters:
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
 
 		-
-			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TholianWeb/CancelTholianWeb.php
-
-		-
-			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtilInterface\\:\\:releaseAllShips\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TholianWeb/CancelTholianWeb.php
-
-		-
 			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TholianWeb/CreateTholianWeb.php
-
-		-
-			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TholianWeb/RemoveTholianWeb.php
-
-		-
-			message: "#^Cannot call method isFinished\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TholianWeb/RemoveTholianWeb.php
-
-		-
-			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtilInterface\\:\\:releaseAllShips\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TholianWeb/RemoveTholianWeb.php
 
 		-
 			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
@@ -1947,11 +1917,6 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/AlertRedHelper.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageRandomShipSystem\\(\\) has parameter \\$percent with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
-
-		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
@@ -1987,14 +1952,9 @@ parameters:
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\InteractionChecker\\:\\:canInteractWith\\(\\) has parameter \\$target with no type specified\\.$#"
+			message: "#^Call to deprecated method getUserId\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
-			path: src/Module/Ship/Lib/InteractionChecker.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\InteractionCheckerInterface\\:\\:canInteractWith\\(\\) has parameter \\$target with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/InteractionCheckerInterface.php
+			path: src/Module/Ship/Lib/Interaction/InteractionChecker.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
@@ -2025,86 +1985,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between int\\<min, \\-1\\>\\|int\\<1, max\\> and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Cannot access property \\$ownedWebId on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot access property \\$webUnderConstructionId on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot call method getFinishedTime\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot call method getWebUnderConstruction\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot call method isFinished\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot call method setOwnedWebId\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Cannot call method setWebUnderConstructionId\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:resetWebHelpers\\(\\) has parameter \\$isFinished with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Parameter \\#1 \\$unixTimestamp of method Stu\\\\Module\\\\Control\\\\StuTime\\:\\:transformToStuDate\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:releaseAllShips\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:removeWeb\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:resetWebHelpers\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Parameter \\#1 \\$web of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtil\\:\\:updateWebFinishTime\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TholianWebInterface, Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\TholianWebUtilInterface\\:\\:resetWebHelpers\\(\\) has parameter \\$isFinished with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/TholianWebUtilInterface.php
 
 		-
 			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
