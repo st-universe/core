@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\TroopTransfer;
 
 use request;
-use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
@@ -26,15 +25,14 @@ use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-//TODO replace helper calls with wrapper argument
 final class TroopTransfer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TROOP_TRANSFER';
@@ -46,8 +44,6 @@ final class TroopTransfer implements ActionControllerInterface
     private ColonyRepositoryInterface $colonyRepository;
 
     private TroopTransferUtilityInterface $transferUtility;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
 
     private ActivatorDeactivatorHelperInterface $helper;
 
@@ -68,7 +64,6 @@ final class TroopTransfer implements ActionControllerInterface
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
         TroopTransferUtilityInterface $transferUtility,
-        ShipCrewRepositoryInterface $shipCrewRepository,
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
@@ -81,7 +76,6 @@ final class TroopTransfer implements ActionControllerInterface
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
         $this->transferUtility = $transferUtility;
-        $this->shipCrewRepository = $shipCrewRepository;
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
@@ -161,7 +155,7 @@ final class TroopTransfer implements ActionControllerInterface
                 if ($isUnload) {
                     $amount = $this->transferToColony($requestedTransferCount, $ship, $target);
                 } else {
-                    $amount = $this->transferFromColony($requestedTransferCount, $ship, $target, $game);
+                    $amount = $this->transferFromColony($requestedTransferCount, $wrapper, $target, $game);
                 }
             } else {
                 $this->loggerUtil->log('A');
@@ -200,7 +194,7 @@ final class TroopTransfer implements ActionControllerInterface
 
                     $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownCrewOnTarget, $game);
                 } else {
-                    $amount = $this->transferFromShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownCrewOnTarget, $game);
+                    $amount = $this->transferFromShip($requestedTransferCount, $wrapper, $target, $isUplinkSituation, $ownCrewOnTarget, $game);
                 }
             }
         } catch (ShipSystemException $e) {
@@ -220,7 +214,7 @@ final class TroopTransfer implements ActionControllerInterface
         );
 
         if ($ship->getCrewCount() <= $ship->getBuildplan()->getCrew()) {
-            $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
+            $this->helper->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
     }
 
@@ -236,33 +230,31 @@ final class TroopTransfer implements ActionControllerInterface
             $freeAssignmentCount
         );
 
-        $array = $ship->getCrewlist()->getValues();
+        $assignments = $ship->getCrewAssignments()->getValues();
 
         for ($i = 0; $i < $amount; $i++) {
-            $crewAssignment = $array[$i];
-
-            //remove from ship
-            $ship->getCrewlist()->removeElement($crewAssignment);
-
             //assign crew to colony
-            $crewAssignment->setColony($colony);
-            $crewAssignment->setShip(null);
-            $crewAssignment->setSlot(null);
-            $this->shipCrewRepository->save($crewAssignment);
+            $this->transferUtility->assignCrew($assignments[$i], $colony);
         }
 
         return $amount;
     }
 
-    private function transferFromColony(int $requestedTransferCount, ShipInterface $ship, ColonyInterface $colony, GameControllerInterface $game): int
+    private function transferFromColony(int $requestedTransferCount, ShipWrapperInterface $wrapper, ColonyInterface $colony, GameControllerInterface $game): int
     {
+        $ship = $wrapper->get();
+
         $amount = min(
             $requestedTransferCount,
             $colony->getCrewAssignmentAmount(),
             $this->transferUtility->getFreeQuarters($ship)
         );
 
-        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF && !$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
+        if (
+            $amount > 0
+            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+            && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
+        ) {
             throw new SystemNotActivatableException();
         }
 
@@ -271,17 +263,8 @@ final class TroopTransfer implements ActionControllerInterface
         for ($i = 0; $i < $amount; $i++) {
             /** @var ShipCrewInterface $crewAssignment */
             $crewAssignment = $crewAssignments->get(array_rand($crewAssignments->toArray()));
-            $crewAssignment->setShip($ship);
-            $crewAssignment->setColony(null);
-            //TODO set both ship and crew user
-            $crewAssignment->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
 
-            //remove from colony
-            $crewAssignments->removeElement($crewAssignment);
-
-            $ship->getCrewlist()->add($crewAssignment);
-
-            $this->shipCrewRepository->save($crewAssignment);
+            $this->transferUtility->assignCrew($crewAssignment, $ship);
         }
 
         return $amount;
@@ -310,15 +293,10 @@ final class TroopTransfer implements ActionControllerInterface
             $isUplinkSituation ? ($ownCrewOnTarget === 0 ? 1 : 0) : PHP_INT_MAX
         );
 
-        $array = $ship->getCrewlist()->getValues();
+        $assignments = $ship->getCrewAssignments()->getValues();
 
         for ($i = 0; $i < $amount; $i++) {
-            $sc = $array[$i];
-            $sc->setShip($target);
-            $sc->setSlot(null);
-            $this->shipCrewRepository->save($sc);
-
-            $ship->getCrewlist()->removeElement($sc);
+            $this->transferUtility->assignCrew($assignments[$i], $target);
         }
 
         if ($amount > 0) {
@@ -340,36 +318,38 @@ final class TroopTransfer implements ActionControllerInterface
 
     private function transferFromShip(
         int $requestedTransferCount,
-        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
         ShipInterface $target,
         bool $isUplinkSituation,
         int $ownCrewOnTarget,
         GameControllerInterface $game
     ): int {
+        $ship = $wrapper->get();
+
         $amount = min(
             $requestedTransferCount,
             $this->transferUtility->getFreeQuarters($ship),
             $ownCrewOnTarget
         );
 
-        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF && !$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
+        if (
+            $amount > 0
+            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+            && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
+        ) {
             throw new SystemNotActivatableException();
         }
 
-        $array = $target->getCrewlist()->getValues();
+        $array = $target->getCrewAssignments()->getValues();
         $targetCrewCount = $target->getCrewCount();
 
         $i = 0;
-        foreach ($array as $shipCrew) {
-            if ($shipCrew->getCrew()->getUser() !== $ship->getUser()) {
+        foreach ($array as $crewAssignment) {
+            if ($crewAssignment->getCrew()->getUser() !== $ship->getUser()) {
                 continue;
             }
 
-            $shipCrew->setShip($ship);
-            $target->getCrewlist()->removeElement($shipCrew);
-            $this->shipCrewRepository->save($shipCrew);
-
-            $ship->getCrewlist()->add($shipCrew);
+            $this->transferUtility->assignCrew($crewAssignment, $ship);
             $i++;
 
             if ($i === $amount) {
@@ -402,7 +382,8 @@ final class TroopTransfer implements ActionControllerInterface
             && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $target->getCrewCount() <= $target->getBuildplan()->getCrew()
         ) {
-            $this->helper->deactivate($target->getId(), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
+            $targetWrapper = $this->shipWrapperFactory->wrapShip($target);
+            $this->helper->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
 
         return $amount;

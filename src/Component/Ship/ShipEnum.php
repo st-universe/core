@@ -45,6 +45,7 @@ final class ShipEnum
 
     //other
     public const SHIELD_REGENERATION_TIME = 900;
+    public const TURNS_TO_TAKEOVER = 10;
 
     //First Coloship
     public const FED_COL_RUMP = 6501;

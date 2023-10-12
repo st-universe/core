@@ -823,7 +823,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed,
                     s.type as spacecrafttype, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook
+                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook,
+                    (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.ship_id = s.id) as hasCrew
                 FROM stu_ships s
                 LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ship_id
@@ -882,7 +883,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.type as spacecrafttype, s.name as shipname,
                     s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook
+                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook,
+                    (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.ship_id = s.id) as hasCrew
                 FROM stu_ships s
                 LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ship_id
@@ -947,6 +949,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addFieldResult('s', 'rumpname', 'rump_name');
         $rsm->addFieldResult('s', 'rumproleid', 'rump_role_id');
         $rsm->addFieldResult('s', 'haslogbook', 'has_logbook');
+        $rsm->addFieldResult('s', 'hasCrew', 'has_crew');
     }
 
     public function isCloakedShipAtShipLocation(

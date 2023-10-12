@@ -10,6 +10,7 @@ use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Ship\Lib\Battle\FightLib;
 
 final class ShipNfsItem
 {
@@ -65,6 +66,10 @@ final class ShipNfsItem
     public function isTractorbeamPossible(): bool
     {
         return TractorBeamShipSystem::isTractorBeamPossible($this);
+    }
+    public function isBoardingPossible(): bool
+    {
+        return FightLib::isBoardingPossible($this);
     }
     public function isInterceptable(): bool
     {
@@ -148,5 +153,10 @@ final class ShipNfsItem
     public function hasLogBook(): bool
     {
         return $this->item->hasLogBook();
+    }
+
+    public function hasCrew(): bool
+    {
+        return $this->item->hasCrew();
     }
 }

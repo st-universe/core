@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Crew;
 
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
 
 final class TroopTransferUtility implements TroopTransferUtilityInterface
 {
-    private ShipTakeoverRepositoryInterface $shipTakeoverRepository;
+    private ShipTakeoverManagerInterface $shipTakeoverManager;
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
     public function __construct(
-        ShipTakeoverRepositoryInterface $shipTakeoverRepository,
+        ShipTakeoverManagerInterface $shipTakeoverManager,
         ShipCrewCalculatorInterface $shipCrewCalculator
     ) {
-        $this->shipTakeoverRepository = $shipTakeoverRepository;
+        $this->shipTakeoverManager = $shipTakeoverManager;
         $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
@@ -100,10 +100,10 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
                 ->setSlot(null);
 
             // clear any ShipTakeover
-            $takeover = $target->getTakeover();
-            if ($takeover !== null) {
-                $this->shipTakeoverRepository->delete($takeover);
-            }
+            $this->shipTakeoverManager->cancelTakeover(
+                $target->getTakeoverPassive(),
+                ', da das Schiff bemannt wurde'
+            );
         }
     }
 }

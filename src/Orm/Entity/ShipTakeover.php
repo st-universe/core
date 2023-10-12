@@ -52,6 +52,12 @@ class ShipTakeover implements ShipTakeoverInterface
     private int $start_turn = 0;
 
     /**
+     * @Column(type="integer")
+     *
+     */
+    private int $prestige = 0;
+
+    /**
      *
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="source_ship_id", referencedColumnName="id", onDelete="CASCADE")
@@ -77,11 +83,21 @@ class ShipTakeover implements ShipTakeoverInterface
         return $this;
     }
 
+    public function getSourceShip(): ShipInterface
+    {
+        return $this->source;
+    }
+
     public function setTargetShip(ShipInterface $ship): ShipTakeoverInterface
     {
         $this->target = $ship;
 
         return $this;
+    }
+
+    public function getTargetShip(): ShipInterface
+    {
+        return $this->target;
     }
 
     public function getStartTurn(): int
@@ -92,6 +108,17 @@ class ShipTakeover implements ShipTakeoverInterface
     public function setStartTurn(int $turn): ShipTakeoverInterface
     {
         $this->start_turn = $turn;
+        return $this;
+    }
+
+    public function getPrestige(): int
+    {
+        return $this->prestige;
+    }
+
+    public function setPrestige(int $prestige): ShipTakeoverInterface
+    {
+        $this->prestige = $prestige;
         return $this;
     }
 }

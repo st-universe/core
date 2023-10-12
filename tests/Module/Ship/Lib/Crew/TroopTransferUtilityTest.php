@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Crew;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
@@ -18,8 +19,8 @@ use Stu\StuTestCase;
 
 class TroopTransferUtilityTest extends StuTestCase
 {
-    /** @var MockInterface&ShipTakeoverRepositoryInterface */
-    private MockInterface $shipTakeoverRepository;
+    /** @var MockInterface&ShipTakeoverManagerInterface */
+    private MockInterface $shipTakeoverManager;
 
     /** @var MockInterface&ShipCrewCalculatorInterface */
     private MockInterface $shipCrewCalculator;
@@ -31,13 +32,13 @@ class TroopTransferUtilityTest extends StuTestCase
 
     protected function setUp(): void
     {
-        $this->shipTakeoverRepository = $this->mock(ShipTakeoverRepositoryInterface::class);
+        $this->shipTakeoverManager = $this->mock(ShipTakeoverManagerInterface::class);
         $this->shipCrewCalculator = $this->mock(ShipCrewCalculatorInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
 
         $this->subject = new TroopTransferUtility(
-            $this->shipTakeoverRepository,
+            $this->shipTakeoverManager,
             $this->shipCrewCalculator
         );
     }
@@ -226,7 +227,7 @@ class TroopTransferUtilityTest extends StuTestCase
             ->once()
             ->andReturn($crewAssignments);
 
-        $target->shouldReceive('getTakeover')
+        $target->shouldReceive('getTakeoverPassive')
             ->withNoArgs()
             ->once()
             ->andReturn($takeover);
@@ -234,8 +235,11 @@ class TroopTransferUtilityTest extends StuTestCase
             ->with($shipCrew)
             ->once();
 
-        $this->shipTakeoverRepository->shouldReceive('delete')
-            ->with($takeover)
+        $this->shipTakeoverManager->shouldReceive('cancelTakeover')
+            ->with(
+                $takeover,
+                ', da das Schiff bemannt wurde'
+            )
             ->once();
 
         $this->subject->assignCrew($shipCrew, $target);

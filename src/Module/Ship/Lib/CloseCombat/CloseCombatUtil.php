@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\CloseCombat;
 
 use Stu\Component\Crew\CrewEnum;
-use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -16,16 +15,13 @@ final class CloseCombatUtil implements CloseCombatUtilInterface
 
     public function getCombatGroup(ShipInterface $ship): array
     {
-        $crewArray = array_map(
-            fn (ShipCrewInterface $shipCrew) => $shipCrew->getCrew(),
-            $ship->getCrewlist()->toArray()
-        );
+        $crewArray = $ship->getCrewAssignments()->toArray();
 
         usort(
             $crewArray,
-            fn (CrewInterface $a, CrewInterface $b): int
-            => CrewEnum::CREW_FIGHT_CAPABILITIES[$b->getType()]
-                <=> CrewEnum::CREW_FIGHT_CAPABILITIES[$a->getType()]
+            fn (ShipCrewInterface $a, ShipCrewInterface $b): int
+            => CrewEnum::CREW_FIGHT_CAPABILITIES[$b->getCrew()->getType()]
+                <=> CrewEnum::CREW_FIGHT_CAPABILITIES[$a->getCrew()->getType()]
         );
 
         return array_slice($crewArray, 0, self::MAX_CREWMAN_PER_COMBAT);
@@ -37,8 +33,8 @@ final class CloseCombatUtil implements CloseCombatUtilInterface
 
         return array_reduce(
             $combatGroup,
-            fn (int $value, CrewInterface $crew)
-            => $value + CrewEnum::CREW_FIGHT_CAPABILITIES[$crew->getType()] * $factionCombatScore,
+            fn (int $value, ShipCrewInterface $shipCrew)
+            => $value + CrewEnum::CREW_FIGHT_CAPABILITIES[$shipCrew->getCrew()->getType()] * $factionCombatScore,
             0
         );
     }

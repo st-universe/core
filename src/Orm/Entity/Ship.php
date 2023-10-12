@@ -409,9 +409,14 @@ class Ship implements ShipInterface
     private Collection $logbook;
 
     /**
+     * @OneToOne(targetEntity="ShipTakeover", mappedBy="source")
+     */
+    private ?ShipTakeoverInterface $takeoverActive = null;
+
+    /**
      * @OneToOne(targetEntity="ShipTakeover", mappedBy="target")
      */
-    private ?ShipTakeoverInterface $takeover = null;
+    private ?ShipTakeoverInterface $takeoverPassive = null;
 
     public function __construct()
     {
@@ -1228,9 +1233,24 @@ class Ship implements ShipInterface
         return $this->logbook;
     }
 
-    public function getTakeover(): ?ShipTakeoverInterface
+    public function getTakeoverActive(): ?ShipTakeoverInterface
     {
-        return $this->takeover;
+        return $this->takeoverActive;
+    }
+
+    public function getTakeoverPassive(): ?ShipTakeoverInterface
+    {
+        return $this->takeoverPassive;
+    }
+
+    public function unsetTakeover(bool $isActive): void
+    {
+        if ($isActive) {
+            $this->takeoverActive = null;
+        } else {
+
+            $this->takeoverPassive = null;
+        }
     }
 
     public function getStorageSum(): int

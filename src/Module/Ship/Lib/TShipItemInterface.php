@@ -50,4 +50,6 @@ interface TShipItemInterface
     public function getRumpRoleId(): ?int;
 
     public function hasLogbook(): bool;
+
+    public function hasCrew(): bool;
 }

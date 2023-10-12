@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -27,16 +26,14 @@ class TakeoverConsequence extends AbstractFlightConsequence
     ): void {
 
         $ship = $wrapper->get();
-        $takeover = $ship->getTakeover();
 
-        if ($takeover !== null) {
-            $this->shipTakeoverManager->cancelTakeover(
-                $ship,
-                sprintf(
-                    'Die Übernahme der %s wurde abgebrochen, da das Schiff bewegt wurde',
-                    $ship->getName()
-                )
-            );
-        }
+        $this->shipTakeoverManager->cancelTakeover(
+            $ship->getTakeoverActive(),
+            null
+        );
+        $this->shipTakeoverManager->cancelTakeover(
+            $ship->getTakeoverPassive(),
+            ', da das Schiff bewegt wurde'
+        );
     }
 }

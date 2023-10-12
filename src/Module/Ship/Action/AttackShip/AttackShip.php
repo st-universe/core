@@ -112,10 +112,6 @@ final class AttackShip implements ActionControllerInterface
             throw new SanityCheckException('Attacked cloaked ship without active tachyon', self::ACTION_IDENTIFIER);
         }
 
-        if ($target->getRump()->isTrumfield()) {
-            return;
-        }
-
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
             $game->addInformation(_('Keine Energie vorhanden'));
