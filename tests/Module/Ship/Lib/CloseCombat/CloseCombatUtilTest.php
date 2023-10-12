@@ -45,14 +45,8 @@ class CloseCombatUtilTest extends StuTestCase
     public function testGetCombatGroupWithOnlyOneCrewmann(): void
     {
         $shipCrew1 = $this->mock(ShipCrewInterface::class);
-        $crew1 = $this->mock(CrewInterface::class);
 
         $crewList = new ArrayCollection([$shipCrew1]);
-
-        $shipCrew1->shouldReceive('getCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($crew1);
 
         $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
@@ -62,7 +56,7 @@ class CloseCombatUtilTest extends StuTestCase
         $result = $this->subject->getCombatGroup($this->ship);
 
         $this->assertFalse(empty($result));
-        $this->assertTrue($result[0] === $crew1);
+        $this->assertTrue($result[0] === $shipCrew1);
     }
 
     public function testGetCombatGroupExpectRightOrder(): void
@@ -87,27 +81,21 @@ class CloseCombatUtilTest extends StuTestCase
 
         $shipCrew1->shouldReceive('getCrew')
             ->withNoArgs()
-            ->once()
             ->andReturn($crew1);
         $shipCrew2->shouldReceive('getCrew')
             ->withNoArgs()
-            ->once()
             ->andReturn($crew2);
         $shipCrew3->shouldReceive('getCrew')
             ->withNoArgs()
-            ->once()
             ->andReturn($crew3);
         $shipCrew4->shouldReceive('getCrew')
             ->withNoArgs()
-            ->once()
             ->andReturn($crew4);
         $shipCrew5->shouldReceive('getCrew')
             ->withNoArgs()
-            ->once()
             ->andReturn($crew5);
         $shipCrew6->shouldReceive('getCrew')
             ->withNoArgs()
-            ->once()
             ->andReturn($crew6);
 
         $crew1->shouldReceive('getType')
@@ -137,17 +125,25 @@ class CloseCombatUtilTest extends StuTestCase
         $result = $this->subject->getCombatGroup($this->ship);
 
         $this->assertTrue(count($result) === 5);
-        $this->assertTrue($result[0] === $crew2);
-        $this->assertTrue($result[1] === $crew3);
-        $this->assertTrue($result[2] === $crew1);
+        $this->assertTrue($result[0] === $shipCrew2);
+        $this->assertTrue($result[1] === $shipCrew3);
+        $this->assertTrue($result[2] === $shipCrew1);
     }
 
     public function testGetCombatValue(): void
     {
+        $shipCrew1 = $this->mock(ShipCrewInterface::class);
+        $shipCrew2 = $this->mock(ShipCrewInterface::class);
         $crew1 = $this->mock(CrewInterface::class);
         $crew2 = $this->mock(CrewInterface::class);
         $faction = $this->mock(FactionInterface::class);
 
+        $shipCrew1->shouldReceive('getCrew')
+            ->withNoArgs()
+            ->andReturn($crew1);
+        $shipCrew2->shouldReceive('getCrew')
+            ->withNoArgs()
+            ->andReturn($crew2);
         $crew1->shouldReceive('getType')
             ->withNoArgs()
             ->once()
@@ -162,7 +158,7 @@ class CloseCombatUtilTest extends StuTestCase
             ->once()
             ->andReturn(10);
 
-        $result = $this->subject->getCombatValue([$crew1, $crew2], $faction);
+        $result = $this->subject->getCombatValue([$shipCrew1, $shipCrew2], $faction);
 
         $this->assertEquals(120, $result);
     }

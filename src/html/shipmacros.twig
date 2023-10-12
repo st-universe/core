@@ -289,6 +289,41 @@
         </a>
     </div>
     {% endif %}
+    {% if nbsItem.hasCrew %}
+    {% if nbsItem.isBoardingPossible %}
+    <div style="float:left; margin-right:4px;">
+        <a href="?B_BOARD_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('boa_{{ nbsItem.getId }}','buttons/boa2')"
+            onmouseout="cp('boa_{{ nbsItem.getId }}','buttons/boa1')">
+            <img src="assets/buttons/boa1.png" name="boa_{{ nbsItem.getId }}"
+                title="Enterkommando zur {{ nameWithoutMarkup }} entsenden" />
+        </a>
+    </div>
+    {% endif %}
+    {% else %}
+    {% set takeover = SHIP.getTakeoverActive %}
+    {% if takeover %}
+    {% if takeover.getTargetShip.getId == nbsItem.getId %}
+    <div style="float:left; margin-right:4px;">
+        <a href="?B_STOP_TAKEOVER=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('untake_{{ nbsItem.getId }}','buttons/untake1')"
+            onmouseout="cp('untake_{{ nbsItem.getId }}','buttons/untake2')">
+            <img src="assets/buttons/untake2.png" name="untake_{{ nbsItem.getId }}"
+                title="Übernahme der {{ nameWithoutMarkup }} abbrechen" />
+        </a>
+    </div>
+    {% endif %}
+    {% else %}
+    <div style="float:left; margin-right:4px;">
+        <a href="?B_TAKEOVER_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('take_{{ nbsItem.getId }}','buttons/take2')"
+            onmouseout="cp('take_{{ nbsItem.getId }}','buttons/take1')">
+            <img src="assets/buttons/take1.png" name="take_{{ nbsItem.getId }}"
+                title="Übernahme der {{ nameWithoutMarkup }} starten" />
+        </a>
+    </div>
+    {% endif %}
+    {% endif %}
     {% if nbsItem.isOwnedByCurrentUser and nbsItem.isShuttle and SHIP.hasFreeShuttleSpace %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_STORE_SHUTTLE=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"

@@ -79,6 +79,9 @@ class TShipItem implements TShipItemInterface
     /** @Column(type="boolean") * */
     private bool $has_logbook = false;
 
+    /** @Column(type="boolean") * */
+    private bool $has_crew = false;
+
     public function getShipId(): int
     {
         return $this->ship_id;
@@ -187,5 +190,10 @@ class TShipItem implements TShipItemInterface
     public function hasLogbook(): bool
     {
         return $this->has_logbook;
+    }
+
+    public function hasCrew(): bool
+    {
+        return $this->has_crew;
     }
 }

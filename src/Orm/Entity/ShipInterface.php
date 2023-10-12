@@ -263,7 +263,11 @@ interface ShipInterface
      */
     public function getLogbook(): Collection;
 
-    public function getTakeover(): ?ShipTakeoverInterface;
+    public function getTakeoverActive(): ?ShipTakeoverInterface;
+
+    public function getTakeoverPassive(): ?ShipTakeoverInterface;
+
+    public function unsetTakeover(bool $isActive): void;
 
     public function getStorageSum(): int;
 

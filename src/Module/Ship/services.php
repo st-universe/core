@@ -131,8 +131,10 @@ use Stu\Module\Ship\Action\SplitWarpCoreOutput\SplitWarpCoreOutput;
 use Stu\Module\Ship\Action\StartEmergency\StartEmergency;
 use Stu\Module\Ship\Action\StartEmergency\StartEmergencyRequest;
 use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
+use Stu\Module\Ship\Action\StartTakeover\StartTakeover;
 use Stu\Module\Ship\Action\StopEmergency\StopEmergency;
 use Stu\Module\Ship\Action\StopEmergency\StopEmergencyRequest;
+use Stu\Module\Ship\Action\StopTakeover\StopTakeover;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\CreateTholianWeb;
@@ -229,6 +231,8 @@ use Stu\Module\Ship\Lib\Crew\TroopTransferUtility;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamage;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamageInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManager;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\Interaction\ThreatReaction;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
@@ -329,6 +333,7 @@ return [
     ShipWrapperFactoryInterface::class => autowire(ShipWrapperFactory::class),
     TholianWebUtilInterface::class => autowire(TholianWebUtil::class),
     ShipStateChangerInterface::class => autowire(ShipStateChanger::class),
+    ShipTakeoverManagerInterface::class => autowire(ShipTakeoverManager::class),
     LeaveFleetInterface::class => autowire(FleetLeaveFleet::class),
     AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class),
     AttackMatchupInterface::class => autowire(AttackMatchup::class),
@@ -383,6 +388,8 @@ return [
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
+        StartTakeover::ACTION_IDENTIFIER => autowire(StartTakeover::class),
+        StopTakeover::ACTION_IDENTIFIER => autowire(StopTakeover::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
         DeleteFleet::ACTION_IDENTIFIER => autowire(DeleteFleet::class),
         RenameFleet::ACTION_IDENTIFIER => autowire(RenameFleet::class),

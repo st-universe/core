@@ -361,8 +361,13 @@ final class ShipTick implements ShipTickInterface
 
     private function checkForFinishedTakeover(ShipInterface $ship): void
     {
-        if ($this->shipTakeoverManager->isTakeoverReady($ship)) {
-            $this->shipTakeoverManager->finishTakeover($ship);
+        $takeover = $ship->getTakeoverActive();
+        if ($takeover === null) {
+            return;
+        }
+
+        if ($this->shipTakeoverManager->isTakeoverReady($takeover)) {
+            $this->shipTakeoverManager->finishTakeover($takeover);
         }
     }
 

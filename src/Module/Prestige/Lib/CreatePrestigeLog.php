@@ -52,7 +52,7 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
         $this->prestigeLogRepository->save($prestigeLog);
 
         //update user prestige
-        $user->setPrestige($this->prestigeLogRepository->getSumByUser($user) + $prestigeLog->getAmount());
+        $user->setPrestige($user->getPrestige() + $prestigeLog->getAmount());
         $this->userRepository->save($user);
     }
 }

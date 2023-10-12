@@ -61,48 +61,35 @@ class TakeoverConsequenceTest extends StuTestCase
         );
     }
 
-    public function testTriggerExpectNothingWhenNoTakeover(): void
-    {
-        $messages = $this->mock(MessageCollectionInterface::class);
-
-        $this->ship->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $this->ship->shouldReceive('getTakeover')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-
-        $this->subject->trigger(
-            $this->wrapper,
-            $this->flightRoute,
-            $messages
-        );
-    }
-
     public function testTriggerExpectCancelWhenTakeover(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $takeoverActive = $this->mock(ShipTakeoverInterface::class);
+        $takeoverPassive = $this->mock(ShipTakeoverInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getTakeover')
+        $this->ship->shouldReceive('getTakeoverActive')
             ->withNoArgs()
             ->once()
-            ->andReturn($takeover);
-        $this->ship->shouldReceive('getName')
+            ->andReturn($takeoverActive);
+        $this->ship->shouldReceive('getTakeoverPassive')
             ->withNoArgs()
             ->once()
-            ->andReturn('SHIP');
+            ->andReturn($takeoverPassive);
 
         $this->shipTakeoverManager->shouldReceive('cancelTakeover')
             ->with(
-                $this->ship,
-                'Die Übernahme der SHIP wurde abgebrochen, da das Schiff bewegt wurde'
+                $takeoverActive,
+                null
+            )
+            ->once();
+        $this->shipTakeoverManager->shouldReceive('cancelTakeover')
+            ->with(
+                $takeoverPassive,
+                ', da das Schiff bewegt wurde'
             )
             ->once();
 

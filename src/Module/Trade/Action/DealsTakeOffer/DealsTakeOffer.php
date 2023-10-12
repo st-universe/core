@@ -223,7 +223,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
             if ($selectedDeal->getWantPrestige() !== null) {
                 $description = sprintf(
-                    '-%d Prestige: Eingebüßt beim Deal der Großen Nagus',
+                    '-%d Prestige: Eingebüßt beim Deal des Großen Nagus',
                     $amount * $selectedDeal->getWantPrestige()
                 );
                 $this->createPrestigeLog->createLog(- ($amount * $selectedDeal->getWantPrestige()), $description, $game->getUser(), time());

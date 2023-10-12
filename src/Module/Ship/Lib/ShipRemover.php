@@ -16,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -29,7 +30,7 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-//TODO unit tests
+//TODO use handler pattern for ship destruction & unit tests
 final class ShipRemover implements ShipRemoverInterface
 {
     private ShipSystemRepositoryInterface $shipSystemRepository;
@@ -64,6 +65,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private LeaveFleetInterface $leaveFleet;
 
+    private ShipTakeoverManagerInterface $shipTakeoverManager;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -83,6 +86,7 @@ final class ShipRemover implements ShipRemoverInterface
         ShipStateChangerInterface $shipStateChanger,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         LeaveFleetInterface $leaveFleet,
+        ShipTakeoverManagerInterface $shipTakeoverManager,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
@@ -101,6 +105,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipStateChanger = $shipStateChanger;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->leaveFleet = $leaveFleet;
+        $this->shipTakeoverManager = $shipTakeoverManager;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -122,6 +127,8 @@ final class ShipRemover implements ShipRemoverInterface
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
+
+        $this->cancelBothTakeover($ship);
 
         //leave ship if there is crew
         if ($ship->getCrewCount() > 0) {
@@ -207,6 +214,19 @@ final class ShipRemover implements ShipRemoverInterface
         $this->resetTrackerDevices($ship->getId());
 
         return $msg;
+    }
+
+    private function cancelBothTakeover(ShipInterface $ship): void
+    {
+        $this->shipTakeoverManager->cancelTakeover(
+            $ship->getTakeoverActive(),
+            null
+        );
+
+        $this->shipTakeoverManager->cancelTakeover(
+            $ship->getTakeoverPassive(),
+            ', da das Schiff zerstört wurde'
+        );
     }
 
     private function resetTrackerDevices(int $shipId): void
