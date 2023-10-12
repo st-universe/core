@@ -63,6 +63,9 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         $ship = $wrapper->get();
         $web = $ship->getHoldingWeb();
+        if ($web === null) {
+            return;
+        }
 
         $web->getCapturedShips()->removeElement($ship);
 
