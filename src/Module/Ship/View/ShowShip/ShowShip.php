@@ -405,23 +405,20 @@ final class ShowShip implements ViewControllerInterface
 
         $firstOrbitShip = null;
 
-        /**
-         * @var ShipInterface[] $shipList
-         */
-        $shipList = $ship->getDockedShips()->toArray();
-        if ($shipList !== []) {
+        $dockedShips = $ship->getDockedShips();
+        if (!$dockedShips->isEmpty()) {
             // if selected, return the current target
             $target = request::postInt('target');
 
             if ($target !== 0) {
-                foreach ($shipList as $ship) {
+                foreach ($dockedShips as $ship) {
                     if ($ship->getId() === $target) {
                         $firstOrbitShip = $ship;
                     }
                 }
             }
             if ($firstOrbitShip === null) {
-                $firstOrbitShip = current($shipList);
+                $firstOrbitShip = $dockedShips->first();
             }
         }
 

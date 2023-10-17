@@ -14,22 +14,17 @@ use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipStateChangerInterface $shipStateChanger;
 
     private ShipUndockingInterface $shipUndocking;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
         ShipStateChangerInterface $shipStateChanger,
         ShipUndockingInterface $shipUndocking
     ) {
-        $this->shipRepository = $shipRepository;
         $this->shipStateChanger = $shipStateChanger;
         $this->shipUndocking = $shipUndocking;
     }
