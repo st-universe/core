@@ -1238,19 +1238,23 @@ class Ship implements ShipInterface
         return $this->takeoverActive;
     }
 
+    public function setTakeoverActive(?ShipTakeoverInterface $takeover): ShipInterface
+    {
+        $this->takeoverActive = $takeover;
+
+        return $this;
+    }
+
     public function getTakeoverPassive(): ?ShipTakeoverInterface
     {
         return $this->takeoverPassive;
     }
 
-    public function unsetTakeover(bool $isActive): void
+    public function setTakeoverPassive(?ShipTakeoverInterface $takeover): ShipInterface
     {
-        if ($isActive) {
-            $this->takeoverActive = null;
-        } else {
+        $this->takeoverPassive = $takeover;
 
-            $this->takeoverPassive = null;
-        }
+        return $this;
     }
 
     public function getStorageSum(): int

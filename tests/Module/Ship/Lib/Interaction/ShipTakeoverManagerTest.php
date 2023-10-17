@@ -134,6 +134,8 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
+        $this->ship->shouldReceive('setTakeoverActive')
+            ->with($takeover);
 
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
@@ -295,8 +297,8 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->ship->shouldReceive('unsetTakeover')
-            ->with(true);
+        $this->ship->shouldReceive('setTakeoverActive')
+            ->with(null);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(666);
@@ -313,8 +315,8 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
-        $this->target->shouldReceive('unsetTakeover')
-            ->with(false);
+        $this->target->shouldReceive('setTakeoverPassive')
+            ->with(null);
         $targetUser->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(777);
@@ -385,8 +387,8 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->ship->shouldReceive('unsetTakeover')
-            ->with(true);
+        $this->ship->shouldReceive('setTakeoverActive')
+            ->with(null);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(666);
@@ -406,8 +408,8 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('setUser')
             ->with($user)
             ->once();
-        $this->target->shouldReceive('unsetTakeover')
-            ->with(false);
+        $this->target->shouldReceive('setTakeoverPassive')
+            ->with(null);
         $targetUser->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(777);
