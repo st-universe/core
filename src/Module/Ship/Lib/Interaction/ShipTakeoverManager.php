@@ -77,6 +77,8 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
         $this->shipTakeoverRepository->save($takeover);
 
+        $source->setTakeoverActive($takeover);
+
         $this->createPrestigeLog->createLog(
             -$prestige,
             sprintf(
@@ -268,8 +270,8 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     private function removeTakeover(ShipTakeoverInterface $takeover): void
     {
-        $takeover->getSourceShip()->unsetTakeover(true);
-        $takeover->getTargetShip()->unsetTakeover(false);
+        $takeover->getSourceShip()->setTakeoverActive(null);
+        $takeover->getTargetShip()->setTakeoverPassive(null);
         $this->shipTakeoverRepository->delete($takeover);
     }
 }

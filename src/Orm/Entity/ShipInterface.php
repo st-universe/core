@@ -265,9 +265,11 @@ interface ShipInterface
 
     public function getTakeoverActive(): ?ShipTakeoverInterface;
 
+    public function setTakeoverActive(?ShipTakeoverInterface $takeover): ShipInterface;
+
     public function getTakeoverPassive(): ?ShipTakeoverInterface;
 
-    public function unsetTakeover(bool $isActive): void;
+    public function setTakeoverPassive(?ShipTakeoverInterface $takeover): ShipInterface;
 
     public function getStorageSum(): int;
 
