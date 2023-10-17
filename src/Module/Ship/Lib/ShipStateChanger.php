@@ -8,6 +8,7 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -21,16 +22,20 @@ final class ShipStateChanger implements ShipStateChangerInterface
 
     private TholianWebUtilInterface $tholianWebUtil;
 
+    private ShipTakeoverManagerInterface $shipTakeoverManager;
+
     public function __construct(
         CancelRepairInterface $cancelRepair,
         AstroEntryLibInterface $astroEntryLib,
         ShipRepositoryInterface $shipRepository,
-        TholianWebUtilInterface $tholianWebUtil
+        TholianWebUtilInterface $tholianWebUtil,
+        ShipTakeoverManagerInterface $shipTakeoverManager
     ) {
         $this->cancelRepair = $cancelRepair;
         $this->astroEntryLib = $astroEntryLib;
         $this->shipRepository = $shipRepository;
         $this->tholianWebUtil = $tholianWebUtil;
+        $this->shipTakeoverManager = $shipTakeoverManager;
     }
 
     public function changeShipState(ShipWrapperInterface $wrapper, int $newState): void
@@ -52,13 +57,22 @@ final class ShipStateChanger implements ShipStateChangerInterface
         }
 
         //mapping stuff
-        if ($currentState === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        else if ($currentState === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
         //web spinning
         elseif ($currentState === ShipStateEnum::SHIP_STATE_WEB_SPINNING) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
+        }
+
+        //active takeover
+        elseif ($currentState === ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER) {
+            $this->shipTakeoverManager->cancelTakeover(
+                $ship->getTakeoverActive(),
+                null,
+                true
+            );
         }
 
         $ship->setState($newState);

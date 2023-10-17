@@ -142,14 +142,15 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     public function cancelTakeover(
         ?ShipTakeoverInterface $takeover,
-        string $cause = null
+        string $cause = null,
+        bool $force = false
     ): void {
 
         if ($takeover === null) {
             return;
         }
 
-        if ($this->isTargetTractoredBySource($takeover)) {
+        if (!$force && $this->isTargetTractoredBySource($takeover)) {
             return;
         }
 
