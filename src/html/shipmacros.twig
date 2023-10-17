@@ -290,7 +290,7 @@
     </div>
     {% endif %}
     {% if nbsItem.hasCrew %}
-    {% if nbsItem.isBoardingPossible %}
+    {% if nbsItem.isBoardingPossible and not nbsItem.isOwnedByCurrentUser %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_BOARD_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('boa_{{ nbsItem.getId }}','buttons/boa2')"
@@ -314,7 +314,7 @@
     </div>
     {% endif %}
     {% else %}
-    {% if nbsItem.isBoardingPossible %}
+    {% if nbsItem.isBoardingPossible and not nbsItem.isOwnedByCurrentUser %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_TAKEOVER_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('take_{{ nbsItem.getId }}','buttons/take2')"

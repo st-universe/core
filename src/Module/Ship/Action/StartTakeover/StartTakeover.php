@@ -78,6 +78,10 @@ final class StartTakeover implements ActionControllerInterface
             return;
         }
 
+        if ($target->getUser() === $user) {
+            return;
+        }
+
         if ($target->getUser()->isNpc()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler ist NPC!'));
             return;

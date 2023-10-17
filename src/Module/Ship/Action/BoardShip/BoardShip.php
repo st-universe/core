@@ -122,6 +122,10 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
+        if ($target->getUser() === $user) {
+            return;
+        }
+
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
