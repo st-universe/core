@@ -155,6 +155,8 @@ use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AstroEntryLib;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdown;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReaction;
 use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReactionInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelper;
@@ -322,6 +324,7 @@ return [
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     ShipUndockingInterface::class => autowire(ShipUndocking::class),
+    ShipShutdownInterface::class => autowire(ShipShutdown::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),
     CloseCombatUtilInterface::class => autowire(CloseCombatUtil::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
