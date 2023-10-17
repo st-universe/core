@@ -29,6 +29,8 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private LaunchEscapePodsInterface $launchEscapePods;
 
+    private ShipShutdownInterface $shipShutdown;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(

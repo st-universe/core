@@ -12,6 +12,7 @@ use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ShipStateChanger;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -23,22 +24,22 @@ use Stu\StuTestCase;
 class ShipStateChangerTest extends StuTestCase
 {
     /** @var MockInterface|CancelRepairInterface */
-    private CancelRepairInterface $cancelRepair;
+    private MockInterface $cancelRepair;
 
     /** @var MockInterface|AstroEntryLibInterface */
-    private AstroEntryLibInterface $astroEntryLib;
+    private MockInterface $astroEntryLib;
 
     /** @var MockInterface|ShipRepositoryInterface */
-    private ShipRepositoryInterface $shipRepository;
+    private MockInterface $shipRepository;
 
     /** @var MockInterface|TholianWebUtilInterface */
-    private TholianWebUtilInterface $tholianWebUtil;
+    private MockInterface $tholianWebUtil;
 
-    /** @var MockInterface|StuTime */
-    private StuTime $stuTime;
+    /** @var MockInterface|ShipTakeoverManagerInterface */
+    private MockInterface $shipTakeoverManager;
 
     /** @var MockInterface|ShipWrapperInterface */
-    private ShipWrapperInterface $wrapper;
+    private MockInterface $wrapper;
 
     /** @var MockInterface|ShipInterface */
     private ShipInterface $ship;
@@ -52,7 +53,7 @@ class ShipStateChangerTest extends StuTestCase
         $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->tholianWebUtil = $this->mock(TholianWebUtilInterface::class);
-        $this->stuTime = $this->mock(StuTime::class);
+        $this->shipTakeoverManager = $this->mock(ShipTakeoverManagerInterface::class);
 
         //params
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -70,7 +71,7 @@ class ShipStateChangerTest extends StuTestCase
             $this->astroEntryLib,
             $this->shipRepository,
             $this->tholianWebUtil,
-            $this->stuTime
+            $this->shipTakeoverManager
         );
     }
 
