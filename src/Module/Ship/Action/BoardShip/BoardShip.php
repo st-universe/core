@@ -162,6 +162,11 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
+        if ($ship->getShieldState()) {
+            $game->addInformation(_("Die Schilde sind aktiviert"));
+            return;
+        }
+
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForBoardingAttempt($target);
         if ($user->getPrestige() < $neededPrestige) {
             $game->addInformation(sprintf(
