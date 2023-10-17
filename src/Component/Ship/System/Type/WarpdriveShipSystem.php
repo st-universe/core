@@ -64,6 +64,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $ship = $wrapper->get();
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
         $this->shipUndocking->undockAllDocked($ship);
+        $ship->setDockedTo(null);
         $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
 
         $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();

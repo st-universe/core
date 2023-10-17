@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -25,14 +23,11 @@ use Stu\StuTestCase;
 //TODO@hux test handleDamage + handleDestruction
 class WarpdriveShipSystemTest extends StuTestCase
 {
-    /** @var null|MockInterface|ShipRepositoryInterface */
-    private $shipRepositoryMock;
-
     /** @var null|MockInterface|ShipStateChangerInterface */
     private $shipStateChanger;
 
-    /** @var null|MockInterface|ShipTakeoverManagerInterface */
-    private $shipTakeoverManager;
+    /** @var null|MockInterface|ShipRepositoryInterface */
+    private $shipUndocking;
 
     /** @var null|MockInterface|ShipSystemManagerInterface */
     private $managerMock;
@@ -45,9 +40,8 @@ class WarpdriveShipSystemTest extends StuTestCase
 
     public function setUp(): void
     {
-        $this->shipRepositoryMock = $this->mock(ShipRepositoryInterface::class);
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
-        $this->shipTakeoverManager = $this->mock(ShipTakeoverManagerInterface::class);
+        $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
 
         $this->managerMock = $this->mock(ShipSystemManagerInterface::class);
 
@@ -55,9 +49,8 @@ class WarpdriveShipSystemTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
         $this->system = new WarpdriveShipSystem(
-            $this->shipRepositoryMock,
             $this->shipStateChanger,
-            $this->shipTakeoverManager
+            $this->shipUndocking
         );
     }
 
@@ -213,17 +206,11 @@ class WarpdriveShipSystemTest extends StuTestCase
     {
         $system = $this->mock(ShipSystemInterface::class);
         $traktorBeamShipWrapper = $this->mock(ShipWrapperInterface::class);
-        $takeover = $this->mock(ShipTakeoverInterface::class);
 
         //DOCKING STUFF
         $this->ship->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
-
-        $this->ship->shouldReceive('getDockedShips')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(new ArrayCollection([]));
 
         //SYSTEM ACTIVATION
         $this->ship->shouldReceive('getShipSystem')
@@ -252,12 +239,8 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->with($traktorBeamShipWrapper, ShipStateEnum::SHIP_STATE_NONE)
             ->once();
 
-        $this->ship->shouldReceive('getTakeoverActive')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($takeover);
-        $this->shipTakeoverManager->shouldReceive('cancelTakeover')
-            ->with($takeover)
+        $this->shipUndocking->shouldReceive('undockAllDocked')
+            ->with($this->ship)
             ->once();
 
         $this->system->activate($this->wrapper, $this->managerMock);
