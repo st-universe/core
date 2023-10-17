@@ -10,7 +10,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -22,16 +22,16 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     private ShipStateChangerInterface $shipStateChanger;
 
-    private ShipTakeoverManagerInterface $shipTakeoverManager;
+    private ShipUndockingInterface $shipUndocking;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         ShipStateChangerInterface $shipStateChanger,
-        ShipTakeoverManagerInterface $shipTakeoverManager
+        ShipUndockingInterface $shipUndocking
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipStateChanger = $shipStateChanger;
-        $this->shipTakeoverManager = $shipTakeoverManager;
+        $this->shipUndocking = $shipUndocking;
     }
 
     public function getSystemType(): int
@@ -68,27 +68,13 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
     {
         $ship = $wrapper->get();
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
-        $this->undock($ship);
+        $this->shipUndocking->undockAllDocked($ship);
         $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
 
         $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
         if ($tractoredShipWrapper !== null) {
             $this->shipStateChanger->changeShipState($tractoredShipWrapper, ShipStateEnum::SHIP_STATE_NONE);
         }
-
-        $this->shipTakeoverManager->cancelTakeover($ship->getTakeoverActive());
-    }
-
-    private function undock(ShipInterface $ship): void
-    {
-        //TODO undock component with PM to docked ships
-        //search elsewhere
-        $ship->setDockedTo(null);
-        foreach ($ship->getDockedShips() as $dockedShip) {
-            $dockedShip->setDockedTo(null);
-            $this->shipRepository->save($dockedShip);
-        }
-        $ship->getDockedShips()->clear();
     }
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void

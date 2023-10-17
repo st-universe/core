@@ -26,9 +26,12 @@ final class ShipUndocking implements ShipUndockingInterface
 
     public function undockAllDocked(ShipInterface $station): bool
     {
-        $anyDocked = $station->getDockedShipCount() > 0;
+        $dockedShips = $station->getDockedShips();
+        if ($dockedShips->isEmpty()) {
+            return false;
+        }
 
-        foreach ($station->getDockedShips() as $dockedShip) {
+        foreach ($dockedShips as $dockedShip) {
             $dockedShip->setDockedTo(null);
             $dockedShip->setDockedToId(null);
             $this->shipRepository->save($dockedShip);
@@ -48,8 +51,8 @@ final class ShipUndocking implements ShipUndockingInterface
             );
         }
 
-        $station->getDockedShips()->clear();
+        $dockedShips->clear();
 
-        return $anyDocked;
+        return true;
     }
 }
