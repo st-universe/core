@@ -7,7 +7,6 @@ namespace Stu\Lib\ShipManagement\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -15,17 +14,10 @@ use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 class ManageUnmanTest extends StuTestCase
 {
-    /** @var MockInterface&ShipSystemManagerInterface */
-    private MockInterface $shipSystemManager;
-
-    /** @var MockInterface&ShipRepositoryInterface */
-    private MockInterface $shipRepository;
-
     /** @var MockInterface&TroopTransferUtilityInterface */
     private MockInterface $troopTransferUtility;
 
@@ -48,8 +40,6 @@ class ManageUnmanTest extends StuTestCase
 
     protected function setUp(): void
     {
-        $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->shipLeaver = $this->mock(ShipLeaverInterface::class);
 
@@ -59,8 +49,6 @@ class ManageUnmanTest extends StuTestCase
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
         $this->subject = new ManageUnman(
-            $this->shipSystemManager,
-            $this->shipRepository,
             $this->troopTransferUtility,
             $this->shipLeaver
         );
@@ -222,9 +210,6 @@ class ManageUnmanTest extends StuTestCase
         $foreignCrew = $this->mock(ShipCrewInterface::class);
 
         $shipCrewlist = new ArrayCollection([$foreignCrew]);
-        $dockedShips = new ArrayCollection();
-        $dockedShip = $this->mock(ShipInterface::class);
-        $dockedShips->add($dockedShip);
 
         $values = ['unman' => ['555' => '42']];
 
@@ -262,30 +247,11 @@ class ManageUnmanTest extends StuTestCase
         $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->andReturn($shipCrewlist);
-        $this->ship->shouldReceive('setAlertStateGreen')
-            ->withNoArgs()
-            ->once();
-        $this->ship->shouldReceive('getDockedShips')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($dockedShips);
 
         $this->user->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('spieler');
-
-        $dockedShip->shouldReceive('setDockedTo')
-            ->with(null)
-            ->once();
-
-        $this->shipRepository->shouldReceive('save')
-            ->with($dockedShip)
-            ->once();
-
-        $this->shipSystemManager->shouldReceive('deactivateAll')
-            ->with($this->wrapper)
-            ->once();
 
         $foreignCrew->shouldReceive('getCrew->getUser')
             ->withNoArgs()
@@ -303,6 +269,10 @@ class ManageUnmanTest extends StuTestCase
             )
             ->once()
             ->andReturn('Foreigner');
+
+        $this->shipLeaver->shouldReceive('shutdown')
+            ->with($this->wrapper)
+            ->once();
 
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);

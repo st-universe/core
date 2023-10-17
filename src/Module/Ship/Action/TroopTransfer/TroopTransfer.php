@@ -20,6 +20,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Interaction\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -53,11 +54,13 @@ final class TroopTransfer implements ActionControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
+
+    private ShipLeaverInterface $shipLeaver;
+
+    private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -70,6 +73,7 @@ final class TroopTransfer implements ActionControllerInterface
         ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyLibFactoryInterface $colonyLibFactory,
+        ShipLeaverInterface $shipLeaver,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -80,9 +84,10 @@ final class TroopTransfer implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
         $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipLeaver = $shipLeaver;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -367,22 +372,16 @@ final class TroopTransfer implements ActionControllerInterface
             }
         }
 
+        $targetWrapper = $this->shipWrapperFactory->wrapShip($target);
+
         // no crew left
         if ($amount === $targetCrewCount) {
-            $this->shipSystemManager->deactivateAll($this->shipWrapperFactory->wrapShip($target));
-            $target->setAlertStateGreen();
-            foreach ($target->getDockedShips() as $dockedShip) {
-                $dockedShip->setDockedTo(null);
-                $this->shipLoader->save($dockedShip);
-            }
-            $target->getDockedShips()->clear();
-            $this->shipLoader->save($target);
+            $this->shipLeaver->shutdown($targetWrapper);
         } elseif (
             $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $target->getCrewCount() <= $target->getBuildplan()->getCrew()
         ) {
-            $targetWrapper = $this->shipWrapperFactory->wrapShip($target);
             $this->helper->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
 

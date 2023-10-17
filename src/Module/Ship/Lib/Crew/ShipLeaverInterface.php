@@ -9,5 +9,7 @@ interface ShipLeaverInterface
 {
     public function evacuate(ShipWrapperInterface $wrapper): string;
 
+    public function shutdown(ShipWrapperInterface $wrapper): void;
+
     public function dumpCrewman(ShipCrewInterface $shipCrew, string $message): string;
 }

@@ -218,13 +218,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private function cancelBothTakeover(ShipInterface $ship): void
     {
-        $this->shipTakeoverManager->cancelTakeover(
-            $ship->getTakeoverActive(),
-            null
-        );
-
-        $this->shipTakeoverManager->cancelTakeover(
-            $ship->getTakeoverPassive(),
+        $this->shipTakeoverManager->cancelBothTakeover(
+            $ship,
             ', da das Schiff zerstört wurde'
         );
     }
