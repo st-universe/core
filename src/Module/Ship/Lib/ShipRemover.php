@@ -14,8 +14,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
-use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -53,8 +53,6 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipLeaverInterface $shipLeaver;
 
-    private AstroEntryLibInterface $astroEntryLib;
-
     private ClearTorpedoInterface $clearTorpedo;
 
     private TradePostRepositoryInterface $tradePostRepository;
@@ -63,9 +61,9 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private LeaveFleetInterface $leaveFleet;
-
     private ShipTakeoverManagerInterface $shipTakeoverManager;
+
+    private ShipShutdownInterface $shipShutdown;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
@@ -80,13 +78,12 @@ final class ShipRemover implements ShipRemoverInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipSystemManagerInterface $shipSystemManager,
         ShipLeaverInterface $shipLeaver,
-        AstroEntryLibInterface $astroEntryLib,
         ClearTorpedoInterface $clearTorpedo,
         TradePostRepositoryInterface $tradePostRepository,
         ShipStateChangerInterface $shipStateChanger,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        LeaveFleetInterface $leaveFleet,
         ShipTakeoverManagerInterface $shipTakeoverManager,
+        ShipShutdownInterface $shipShutdown,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
@@ -99,13 +96,12 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipLeaver = $shipLeaver;
-        $this->astroEntryLib = $astroEntryLib;
         $this->clearTorpedo = $clearTorpedo;
         $this->tradePostRepository = $tradePostRepository;
         $this->shipStateChanger = $shipStateChanger;
         $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->leaveFleet = $leaveFleet;
         $this->shipTakeoverManager = $shipTakeoverManager;
+        $this->shipShutdown = $shipShutdown;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -119,32 +115,15 @@ final class ShipRemover implements ShipRemoverInterface
         $msg = null;
 
         $ship = $wrapper->get();
-        $this->shipSystemManager->deactivateAll($wrapper);
         $user = $ship->getUser();
 
-        $this->leaveFleet->leaveFleet($ship);
-
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
-        }
-
         $this->cancelBothTakeover($ship);
+        $this->shipShutdown->shutdown($wrapper);
 
         //leave ship if there is crew
         if ($ship->getCrewCount() > 0) {
             $msg = $this->shipLeaver->evacuate($wrapper);
         }
-
-        /**
-         * this is buggy :(
-         * throws ORMInvalidArgumentException
-         *
-         if ($ship->getRump()->isEscapePods())
-         {
-             $this->remove($ship);
-             return $msg;
-            }
-         */
 
         $this->leaveSomeIntactModules($ship);
 
@@ -157,7 +136,6 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setShield(0);
         $ship->setAlertStateGreen();
         $ship->setInfluenceArea(null);
-        $ship->setDockedTo(null);
         $oldName = $ship->getName();
         $ship->setName(_('Trümmer'));
         $ship->setIsDestroyed(true);
@@ -186,14 +164,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         $this->shipRepository->save($ship);
 
-        // undock docked ships
-        foreach ($ship->getDockedShips() as $dockedShip) {
-            $dockedShip->setDockedTo(null);
-            $this->shipRepository->save($dockedShip);
-        }
-
         // clear tractor status
-
         $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
         if ($tractoringShipWrapper !== null) {
             $tractoringShip = $tractoringShipWrapper->get();
@@ -311,13 +282,10 @@ final class ShipRemover implements ShipRemoverInterface
 
     public function remove(ShipInterface $ship, ?bool $truncateCrew = false): void
     {
-        $this->leaveFleet->leaveFleet($ship);
-
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
-        }
-
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
+        $this->shipShutdown->shutdown($wrapper);
+        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
 
         //both sides have to be cleared, foreign key violation
         if ($ship->isTractoring()) {
@@ -331,11 +299,6 @@ final class ShipRemover implements ShipRemoverInterface
 
         foreach ($ship->getStorage() as $item) {
             $this->storageRepository->delete($item);
-        }
-
-        foreach ($ship->getDockedShips() as $dockedShip) {
-            $dockedShip->setDockedTo(null);
-            $this->shipRepository->save($dockedShip);
         }
 
         // delete torpedo storage

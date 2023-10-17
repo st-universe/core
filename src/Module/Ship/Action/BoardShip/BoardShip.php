@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Action\BoardShip;
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,6 +14,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\CloseCombat\CloseCombatUtilInterface;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
@@ -53,7 +53,7 @@ final class BoardShip implements ActionControllerInterface
 
     private ShipStateChangerInterface $shipStateChanger;
 
-    private ShipSystemManagerInterface $shipSystemManager;
+    private ShipShutdownInterface $shipShutdown;
 
     private ShipTakeoverManagerInterface $shipTakeoverManager;
 
@@ -73,7 +73,7 @@ final class BoardShip implements ActionControllerInterface
         ThreatReactionInterface $threatReaction,
         FightLibInterface $fightLib,
         ShipStateChangerInterface $shipStateChanger,
-        ShipSystemManagerInterface $shipSystemManager,
+        ShipShutdownInterface $shipShutdown,
         ShipTakeoverManagerInterface $shipTakeoverManager,
         CreatePrestigeLogInterface $createPrestigeLog,
         DistributedMessageSenderInterface $distributedMessageSender,
@@ -88,7 +88,7 @@ final class BoardShip implements ActionControllerInterface
         $this->threatReaction = $threatReaction;
         $this->fightLib = $fightLib;
         $this->shipStateChanger = $shipStateChanger;
-        $this->shipSystemManager = $shipSystemManager;
+        $this->shipShutdown = $shipShutdown;
         $this->shipTakeoverManager = $shipTakeoverManager;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->distributedMessageSender = $distributedMessageSender;
@@ -310,7 +310,7 @@ final class BoardShip implements ActionControllerInterface
         $this->shipCrewRepository->delete($killedShipCrew);
 
         if ($ship->getCrewAssignments()->isEmpty()) {
-            $this->shipSystemManager->deactivateAll($wrapper);
+            $this->shipShutdown->shutdown($wrapper);
         }
 
         return $killedShipCrew;

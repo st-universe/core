@@ -6,21 +6,16 @@ namespace Stu\Module\Ship\Lib\Crew;
 
 use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Crew\LaunchEscapePodsInterface;
-use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 //TODO unit tests
@@ -28,52 +23,34 @@ final class ShipLeaver implements ShipLeaverInterface
 {
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
 
     private CrewRepositoryInterface $crewRepository;
 
-    private AstroEntryLibInterface $astroEntryLib;
-
-    private LeaveFleetInterface $leaveFleet;
-
     private LaunchEscapePodsInterface $launchEscapePods;
-
-    private ShipTakeoverManagerInterface $shipTakeoverManager;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipRepositoryInterface $shipRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipSystemManagerInterface $shipSystemManager,
         CrewRepositoryInterface $crewRepository,
-        AstroEntryLibInterface $astroEntryLib,
-        LeaveFleetInterface $leaveFleet,
         LaunchEscapePodsInterface $launchEscapePods,
-        ShipTakeoverManagerInterface $shipTakeoverManager,
+        ShipShutdownInterface $shipShutdown,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipRepository = $shipRepository;
         $this->shipRumpRepository = $shipRumpRepository;
-        $this->shipSystemManager = $shipSystemManager;
         $this->crewRepository = $crewRepository;
-        $this->astroEntryLib = $astroEntryLib;
-        $this->leaveFleet = $leaveFleet;
         $this->launchEscapePods = $launchEscapePods;
-        $this->shipTakeoverManager = $shipTakeoverManager;
+        $this->shipShutdown = $shipShutdown;
         $this->privateMessageSender = $privateMessageSender;
     }
 
     public function evacuate(ShipWrapperInterface $wrapper): string
     {
         $ship = $wrapper->get();
-        $this->shutdown($wrapper);
+        $this->shipShutdown->shutdown($wrapper);
 
         if ($ship->getRump()->isEscapePods()) {
             $this->letCrewDie($ship);
@@ -90,32 +67,6 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->escapeIntoPods($ship);
 
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
-    }
-
-    public function shutdown(ShipWrapperInterface $wrapper): void
-    {
-        $this->shipSystemManager->deactivateAll($wrapper);
-
-        $ship = $wrapper->get();
-
-        $this->leaveFleet->leaveFleet($ship);
-
-        if ($ship->getDockedShipCount() > 0) {
-            $this->undockShips($ship);
-        }
-
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
-        }
-
-        // clear any ShipTakeover
-        $this->shipTakeoverManager->cancelTakeover(
-            $ship->getTakeoverActive()
-        );
-
-        $ship->setAlertStateGreen();
-        $ship->setDockedTo(null);
-        $this->shipRepository->save($ship);
     }
 
     private function escapeIntoPods(ShipInterface $ship): void
@@ -199,14 +150,6 @@ final class ShipLeaver implements ShipLeaverInterface
 
         foreach ($crewArray as $crew) {
             $this->crewRepository->delete($crew);
-        }
-    }
-
-    private function undockShips(ShipInterface $ship): void
-    {
-        foreach ($ship->getDockedShips() as $dockedShip) {
-            $dockedShip->setDockedTo(null);
-            $this->shipRepository->save($dockedShip);
         }
     }
 }

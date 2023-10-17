@@ -6,7 +6,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 
 use RuntimeException;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -15,14 +15,14 @@ class ManageUnman implements ManagerInterface
 {
     private TroopTransferUtilityInterface $troopTransferUtility;
 
-    private ShipLeaverInterface $shipLeaver;
+    private ShipShutdownInterface $shipShutdown;
 
     public function __construct(
         TroopTransferUtilityInterface $troopTransferUtility,
-        ShipLeaverInterface $shipLeaver
+        ShipShutdownInterface $shipShutdown
     ) {
         $this->troopTransferUtility = $troopTransferUtility;
-        $this->shipLeaver = $shipLeaver;
+        $this->shipShutdown = $shipShutdown;
     }
 
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
@@ -63,7 +63,7 @@ class ManageUnman implements ManagerInterface
                 $ship->getName()
             );
 
-            $this->shipLeaver->shutdown($wrapper);
+            $this->shipShutdown->shutdown($wrapper);
         }
 
         return $msg;

@@ -20,7 +20,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Interaction\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -58,7 +58,7 @@ final class TroopTransfer implements ActionControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private ShipLeaverInterface $shipLeaver;
+    private ShipShutdownInterface $shipShutdown;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -73,7 +73,7 @@ final class TroopTransfer implements ActionControllerInterface
         ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ShipLeaverInterface $shipLeaver,
+        ShipShutdownInterface $shipShutdown,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -86,7 +86,7 @@ final class TroopTransfer implements ActionControllerInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipLeaver = $shipLeaver;
+        $this->shipShutdown = $shipShutdown;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -376,7 +376,7 @@ final class TroopTransfer implements ActionControllerInterface
 
         // no crew left
         if ($amount === $targetCrewCount) {
-            $this->shipLeaver->shutdown($targetWrapper);
+            $this->shipShutdown->shutdown($targetWrapper);
         } elseif (
             $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
