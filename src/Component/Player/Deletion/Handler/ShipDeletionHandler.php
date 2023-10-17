@@ -7,6 +7,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -23,6 +24,8 @@ final class ShipDeletionHandler implements PlayerDeletionHandlerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private ShipUndockingInterface $shipUndocking;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -30,12 +33,14 @@ final class ShipDeletionHandler implements PlayerDeletionHandlerInterface
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        ShipUndockingInterface $shipUndocking,
         EntityManagerInterface $entityManager
     ) {
         $this->shipRemover = $shipRemover;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->shipUndocking = $shipUndocking;
         $this->entityManager = $entityManager;
     }
 
@@ -53,18 +58,9 @@ final class ShipDeletionHandler implements PlayerDeletionHandlerInterface
 
     private function undockAllDockedShips(ShipInterface $ship): void
     {
-        $docked = false;
+        $anyDocked = $this->shipUndocking->undockAllDocked($ship);
 
-        foreach ($ship->getDockedShips() as $dockedShip) {
-            $docked = true;
-            $dockedShip->setDockedTo(null);
-            $dockedShip->setDockedToId(null);
-            $this->shipRepository->save($dockedShip);
-        }
-
-        $ship->getDockedShips()->clear();
-
-        if ($docked) {
+        if ($anyDocked) {
             $this->entityManager->flush();
         }
     }
