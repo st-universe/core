@@ -233,6 +233,8 @@ use Stu\Module\Ship\Lib\Damage\ApplyFieldDamage;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamageInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManager;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipUndocking;
+use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Ship\Lib\Interaction\ThreatReaction;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
@@ -319,6 +321,7 @@ return [
     CancelColonyBlockOrDefendInterface::class => autowire(CancelColonyBlockOrDefend::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
+    ShipUndockingInterface::class => autowire(ShipUndocking::class),
     ThreatReactionInterface::class => autowire(ThreatReaction::class),
     CloseCombatUtilInterface::class => autowire(CloseCombatUtil::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
