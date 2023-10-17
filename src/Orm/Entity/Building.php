@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Building\BuildingEnum;
-use Doctrine\Common\Collections\Criteria;
 
 
 /**
@@ -132,6 +132,7 @@ class Building implements BuildingInterface
      * @var ArrayCollection<int, BuildingCostInterface>
      *
      * @OneToMany(targetEntity="BuildingCost", mappedBy="building")
+     * @OrderBy({"commodity_id": "ASC"})
      */
     private Collection $costs;
 
@@ -378,10 +379,7 @@ class Building implements BuildingInterface
 
     public function getCosts(): Collection
     {
-        $criteria = Criteria::create()
-            ->orderBy(['commodity_id' => Criteria::ASC]);
-
-        return $this->costs->matching($criteria);
+        return $this->costs;
     }
 
     public function getCommodities(): Collection
