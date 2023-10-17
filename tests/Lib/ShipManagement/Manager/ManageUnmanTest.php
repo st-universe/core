@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
@@ -23,6 +24,9 @@ class ManageUnmanTest extends StuTestCase
 
     /** @var MockInterface&ShipLeaverInterface */
     private MockInterface $shipLeaver;
+
+    /** @var MockInterface&ShipShutdownInterface */
+    private MockInterface $shipShutdown;
 
     /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
@@ -42,6 +46,7 @@ class ManageUnmanTest extends StuTestCase
     {
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->shipLeaver = $this->mock(ShipLeaverInterface::class);
+        $this->shipShutdown = $this->mock(ShipShutdownInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
@@ -50,7 +55,8 @@ class ManageUnmanTest extends StuTestCase
 
         $this->subject = new ManageUnman(
             $this->troopTransferUtility,
-            $this->shipLeaver
+            $this->shipLeaver,
+            $this->shipShutdown
         );
     }
 
@@ -270,7 +276,7 @@ class ManageUnmanTest extends StuTestCase
             ->once()
             ->andReturn('Foreigner');
 
-        $this->shipLeaver->shouldReceive('shutdown')
+        $this->shipShutdown->shouldReceive('shutdown')
             ->with($this->wrapper)
             ->once();
 

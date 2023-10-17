@@ -8,8 +8,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class ShowStationShiplist implements ViewControllerInterface
 {
@@ -44,10 +42,7 @@ final class ShowStationShiplist implements ViewControllerInterface
             return;
         }
 
-        $shipList = array_map(
-            fn(ShipInterface $ship): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($ship),
-            $station->getDockedShips()->toArray()
-        );
+        $shipList = $this->shipWrapperFactory->wrapShips($station->getDockedShips()->toArray());
 
         $game->setPageTitle(_('Angedockte Schiffe'));
         $game->setMacroInAjaxWindow('html/stationmacros.xhtml/shiplist');
