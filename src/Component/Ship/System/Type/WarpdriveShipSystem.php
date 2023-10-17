@@ -10,6 +10,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -21,12 +22,16 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     private ShipStateChangerInterface $shipStateChanger;
 
+    private ShipTakeoverManagerInterface $shipTakeoverManager;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
-        ShipStateChangerInterface $shipStateChanger
+        ShipStateChangerInterface $shipStateChanger,
+        ShipTakeoverManagerInterface $shipTakeoverManager
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipStateChanger = $shipStateChanger;
+        $this->shipTakeoverManager = $shipTakeoverManager;
     }
 
     public function getSystemType(): int
@@ -70,10 +75,14 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         if ($tractoredShipWrapper !== null) {
             $this->shipStateChanger->changeShipState($tractoredShipWrapper, ShipStateEnum::SHIP_STATE_NONE);
         }
+
+        $this->shipTakeoverManager->cancelTakeover($ship->getTakeoverActive());
     }
 
     private function undock(ShipInterface $ship): void
     {
+        //TODO undock component with PM to docked ships
+        //search elsewhere
         $ship->setDockedTo(null);
         foreach ($ship->getDockedShips() as $dockedShip) {
             $dockedShip->setDockedTo(null);
