@@ -15,3 +15,6 @@ src/lang/*/*/*.mo
 .php-cs-fixer.cache
 .githooks
 devdb.sh
+node_modules
+coverage
+stuniverse-ui
