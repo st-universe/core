@@ -17,8 +17,10 @@ interface ShipTakeoverManagerInterface
 
     public function cancelTakeover(
         ?ShipTakeoverInterface $takeover,
-        ?string $cause
+        string $cause = null
     ): void;
+
+    public function cancelBothTakeover(ShipInterface $ship, string $passiveCause = null): void;
 
     public function finishTakeover(ShipTakeoverInterface $takeover): void;
 }

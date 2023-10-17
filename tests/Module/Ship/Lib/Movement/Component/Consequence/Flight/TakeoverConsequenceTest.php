@@ -11,7 +11,6 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterfac
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\StuTestCase;
 
 class TakeoverConsequenceTest extends StuTestCase
@@ -64,31 +63,15 @@ class TakeoverConsequenceTest extends StuTestCase
     public function testTriggerExpectCancelWhenTakeover(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $takeoverActive = $this->mock(ShipTakeoverInterface::class);
-        $takeoverPassive = $this->mock(ShipTakeoverInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getTakeoverActive')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($takeoverActive);
-        $this->ship->shouldReceive('getTakeoverPassive')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($takeoverPassive);
 
-        $this->shipTakeoverManager->shouldReceive('cancelTakeover')
+        $this->shipTakeoverManager->shouldReceive('cancelBothTakeover')
             ->with(
-                $takeoverActive,
-                null
-            )
-            ->once();
-        $this->shipTakeoverManager->shouldReceive('cancelTakeover')
-            ->with(
-                $takeoverPassive,
+                $this->ship,
                 ', da das Schiff bewegt wurde'
             )
             ->once();

@@ -140,7 +140,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     public function cancelTakeover(
         ?ShipTakeoverInterface $takeover,
-        ?string $cause,
+        string $cause = null
     ): void {
 
         if ($takeover === null) {
@@ -176,6 +176,18 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
 
         $this->removeTakeover($takeover);
+    }
+
+    public function cancelBothTakeover(ShipInterface $ship, string $passiveCause = null): void
+    {
+        $this->cancelTakeover(
+            $ship->getTakeoverActive()
+        );
+
+        $this->cancelTakeover(
+            $ship->getTakeoverPassive(),
+            $passiveCause
+        );
     }
 
     private function sendCancelPm(

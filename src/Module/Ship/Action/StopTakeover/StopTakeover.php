@@ -48,7 +48,7 @@ final class StopTakeover implements ActionControllerInterface
             return;
         }
 
-        $this->shipTakeoverManager->cancelTakeover($takeover, null);
+        $this->shipTakeoverManager->cancelTakeover($takeover);
 
         $game->addInformationf(
             'Übernahme der %s wurde abgebrochen',

@@ -5,32 +5,22 @@ declare(strict_types=1);
 namespace Stu\Lib\ShipManagement\Manager;
 
 use RuntimeException;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class ManageUnman implements ManagerInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipRepositoryInterface $shipRepository;
-
     private TroopTransferUtilityInterface $troopTransferUtility;
 
     private ShipLeaverInterface $shipLeaver;
 
     public function __construct(
-        ShipSystemManagerInterface $shipSystemManager,
-        ShipRepositoryInterface $shipRepository,
         TroopTransferUtilityInterface $troopTransferUtility,
         ShipLeaverInterface $shipLeaver
     ) {
-        $this->shipSystemManager = $shipSystemManager;
-        $this->shipRepository = $shipRepository;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipLeaver = $shipLeaver;
     }
@@ -73,15 +63,7 @@ class ManageUnman implements ManagerInterface
                 $ship->getName()
             );
 
-            foreach ($ship->getDockedShips() as $dockedShip) {
-                $dockedShip->setDockedTo(null);
-                $this->shipRepository->save($dockedShip);
-            }
-            $ship->getDockedShips()->clear();
-
-            $this->shipSystemManager->deactivateAll($wrapper);
-
-            $ship->setAlertStateGreen();
+            $this->shipLeaver->shutdown($wrapper);
         }
 
         return $msg;
