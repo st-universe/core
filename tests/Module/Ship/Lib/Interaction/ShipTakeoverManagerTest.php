@@ -261,18 +261,27 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->subject->cancelTakeover(null, null);
     }
 
-    public static function provideCancelTakeoverData()
+    public function testCancelTakeoverExpectNothingWhenTargetIsTractoredBySource(): void
     {
-        return [
-            [null],
-            ['CAUSE'],
-        ];
+        $takeover = $this->mock(ShipTakeoverInterface::class);
+
+        $takeover->shouldReceive('getSourceShip')
+            ->withNoArgs()
+            ->andReturn($this->ship);
+        $takeover->shouldReceive('getTargetShip')
+            ->withNoArgs()
+            ->andReturn($this->target);
+
+        $this->target->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn($this->ship);
+
+        $this->shipTakeoverRepository->shouldNotHaveBeenCalled();
+
+        $this->subject->cancelTakeover(null, null);
     }
 
-    /**
-     * @dataProvider provideCancelTakeoverData
-     */
-    public function testCancelTakeoverExpectCancel(?string $cause): void
+    public function testCancelTakeoverExpectCancelWhenTargetTractoredByOtherShip(): void
     {
         $takeover = $this->mock(ShipTakeoverInterface::class);
         $user = $this->mock(UserInterface::class);
@@ -317,6 +326,99 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->andReturn($targetUser);
         $this->target->shouldReceive('setTakeoverPassive')
             ->with(null);
+        $this->target->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn($this->mock(ShipInterface::class));
+        $targetUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(777);
+        $targetUser->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('TARGETUSER');
+
+        $this->shipTakeoverRepository->shouldReceive('delete')
+            ->with($takeover)
+            ->once();
+
+        $this->createPrestigeLog->shouldReceive('createLog')
+            ->with(
+                1234,
+                '1234 Prestige erhalten für Abbruch der Übernahme der TARGET von Spieler TARGETUSER',
+                $user,
+                Mockery::any()
+            )
+            ->once();
+
+        $this->privateMessageSender->shouldReceive('send')
+            ->with(
+                666,
+                777,
+                'Die Übernahme der TARGET wurde abgebrochen',
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                'ship.php?SHOW_SHIP=1&id=2'
+            )
+            ->once();
+        $this->privateMessageSender->shouldReceive('send')
+            ->with(
+                1,
+                666,
+                'Die Übernahme der TARGET wurde abgebrochen',
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                'ship.php?SHOW_SHIP=1&id=1'
+            )
+            ->once();
+
+        $this->subject->cancelTakeover($takeover);
+    }
+
+    public function testCancelTakeoverExpectCancelWhenTargetNotTractored(): void
+    {
+        $takeover = $this->mock(ShipTakeoverInterface::class);
+        $user = $this->mock(UserInterface::class);
+        $targetUser = $this->mock(UserInterface::class);
+
+        $takeover->shouldReceive('getSourceShip')
+            ->withNoArgs()
+            ->andReturn($this->ship);
+        $takeover->shouldReceive('getTargetShip')
+            ->withNoArgs()
+            ->andReturn($this->target);
+        $takeover->shouldReceive('getPrestige')
+            ->withNoArgs()
+            ->andReturn(1234);
+
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('SHIP');
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user);
+        $this->ship->shouldReceive('setTakeoverActive')
+            ->with(null);
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(666);
+        $user->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('USER');
+
+        $this->target->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('TARGET');
+        $this->target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2);
+        $this->target->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($targetUser);
+        $this->target->shouldReceive('setTakeoverPassive')
+            ->with(null);
+        $this->target->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
         $targetUser->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(777);
@@ -343,7 +445,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 777,
                 sprintf(
                     'Die Übernahme der TARGET wurde abgebrochen%s',
-                    $cause !== null ? $cause : ''
+                    'CAUSE'
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=2'
@@ -355,14 +457,14 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 sprintf(
                     'Die Übernahme der TARGET wurde abgebrochen%s',
-                    $cause !== null ? $cause : ''
+                    'CAUSE'
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=1'
             )
             ->once();
 
-        $this->subject->cancelTakeover($takeover, $cause);
+        $this->subject->cancelTakeover($takeover, 'CAUSE');
     }
 
     public function testFinishTakeover(): void

@@ -149,6 +149,10 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             return;
         }
 
+        if ($this->isTargetTractoredBySource($takeover)) {
+            return;
+        }
+
         // message to owner of target ship
         $this->sendCancelPm(
             $takeover,
@@ -178,6 +182,11 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
 
         $this->removeTakeover($takeover);
+    }
+
+    private function isTargetTractoredBySource(ShipTakeoverInterface $takeover): bool
+    {
+        return $takeover->getSourceShip() === $takeover->getTargetShip()->getTractoringShip();
     }
 
     public function cancelBothTakeover(ShipInterface $ship, string $passiveCause = null): void
