@@ -112,7 +112,7 @@
 				{% set warpcoresystem = WRAPPER.getWarpCoreSystemData %}
 				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
 				{{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpDrive }}
-				<span id="EffektivWarpDrive"></span>
+				<span id="effectiveWarpdrive"></span>
 				{% endif %}
 			<td style="text-align: center;">
 				{% if epssystem %}
@@ -120,7 +120,7 @@
 				{% if SHIP.hasWarpCore %}
 				{% set warpcoresystem = WRAPPER.getWarpCoreSystemData %}
 				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
-				<span id="EffektivEPS"></span>
+				<span id="effectiveEps"></span>
 				{% else %}
 				<span>{{ WRAPPER.getEffectiveEpsProduction|addPlusCharacter }}</span>
 				{% endif %}
