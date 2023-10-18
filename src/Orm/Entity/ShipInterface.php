@@ -219,6 +219,8 @@ interface ShipInterface
 
     public function getReactorOutputCappedByReactorLoad(): int;
 
+    public function getReactorLoadStyle(): string;
+
     public function isWarpcoreHealthy(): bool;
 
     public function isDeflectorHealthy(): bool;
