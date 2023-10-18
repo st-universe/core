@@ -259,17 +259,18 @@ final class ShowShip implements ViewControllerInterface
             $ship = $wrapper->get();
 
             $game->addExecuteJS(sprintf(
-                'updateEPSSplitValue(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);',
-                $warpCoreSystem->getWarpCoreSplit(),
-                $ship->getReactorOutput(),
+                'setReactorSplitConstants(%d,%d,%d,%d,%d,%d,%d);',
+                $ship->getReactorOutputCappedByReactorLoad(),
                 $wrapper->getEpsUsage(),
                 $ship->getRump()->getFlightEcost(),
-                $wrapper->getEffectiveEpsProduction(),
                 $epsSystem->getEps(),
                 $epsSystem->getMaxEps(),
                 $warpDriveSystem->getWarpDrive(),
-                $warpDriveSystem->getMaxWarpDrive(),
-                $ship->getReactorLoad()
+                $warpDriveSystem->getMaxWarpDrive()
+            ), GameEnum::JS_EXECUTION_AFTER_RENDER);
+            $game->addExecuteJS(sprintf(
+                'updateEpsSplitValues(%d);',
+                $warpCoreSystem->getWarpCoreSplit(),
             ), GameEnum::JS_EXECUTION_AFTER_RENDER);
         }
     }

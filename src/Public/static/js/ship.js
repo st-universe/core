@@ -369,78 +369,50 @@ function adjustCellWidth(image) {
 	}
 	else { cell.style.minWidth = cellWidth + 'px'; }
 }
-function updateEPSSplitValue(value, reactoroutput, epsusage, flightcost, effektiveps, eps, maxeps, warpdrive, maxwarpdrive, reactorload) {
-	// Wandle reactoroutput, epsusage, flightcost und effektiveps in Integer um, falls sie keine gültigen Zahlen sind
-	reactoroutput = parseInt(reactoroutput, 10);
-	epsusage = parseInt(epsusage, 10);
-	flightcost = parseInt(flightcost, 10);
-	effektiveps = parseInt(effektiveps, 10);
-	eps = parseInt(eps, 10);
-	maxeps = parseInt(maxeps, 10);
-	warpdrive = parseInt(warpdrive, 10);
-	maxwarpdrive = parseInt(maxwarpdrive, 10);
-	reactorload = parseInt(reactorload, 10);
 
-	if (reactoroutput > reactorload) {
-		reactoroutput = reactorload;
-	}
+var reactorOutput = null;
+var epsUsage = null;
+var flightCost = null;
+var currentEps = null;
+var maxEps = null;
+var currentWarpdrive = null;
+var maxWarpdrive = null;
 
+function setReactorSplitConstants(output, usage, cost, eps, meps, wd, mwd) {
+	reactorOutput = output;
+	epsUsage = usage;
+	flightCost = cost;
+	currentEps = eps;
+	maxEps = meps;
+	currentWarpdrive = wd;
+	maxWarpdrive = mwd;
+}
 
-	// Berechne die effektive EPS-Produktion und runde sie auf einen Integer
+function updateEpsSplitValues(value) {
+
+	// calculate absolute values
 	const warpCoreSplit = parseInt(value);
-	const EpsProduction = Math.round(reactoroutput * warpCoreSplit / 100);
-	const EffektivEpsProduction = Math.round((reactoroutput * warpCoreSplit / 100) - epsusage);
-	const WarpDriveProduction = Math.round((1 - (warpCoreSplit / 100)) * (reactoroutput - epsusage) / flightcost);
+	const warpDriveProduction = Math.round((1 - (warpCoreSplit / 100)) * (reactorOutput - epsUsage) / flightCost);
+	const epsProduction = reactorOutput - (warpDriveProduction * flightCost);
 
-	// EPS ZUWACHS
-	if (EpsProduction > 0) {
-		formattedEps = '+' + EpsProduction;
-	}
-	else { formattedEps = String(EpsProduction); }
+	// set input labels
+	document.getElementById('calculatedEPS').textContent = epsProduction > 0 ? '+' + epsProduction : String(epsProduction);
+	document.getElementById('calculatedWarpDrive').textContent = warpDriveProduction > 0 ? '+' + warpDriveProduction : '0';
 
-	document.getElementById('calculatedEPS').textContent = formattedEps;
+	// calculate effective values
+	const warpdriveCap = Math.round((1 - (warpCoreSplit / 100)) * (reactorOutput - epsUsage) / flightCost);
+	const epsCap = reactorOutput - (warpdriveCap * flightCost);
 
-	// WARP ZUWACHS
-	if (WarpDriveProduction > 0) {
-		formattedWarpDrive = '+' + WarpDriveProduction;
-	}
-	else { formattedWarpDrive = String(0); }
+	const missingEps = maxEps - currentEps;
+	const epsGrowthCap = epsCap - epsUsage
+	const effEpsProduction = Math.min(missingEps, epsGrowthCap);
 
-	document.getElementById('calculatedWarpDrive').textContent = formattedWarpDrive;
+	const missingWarpdrive = maxWarpdrive - currentWarpdrive;
+	const effWarpdriveProduction = Math.min(missingWarpdrive, warpdriveCap);
 
-
-	// EFFEKTIV EPS ZUWACHS
-	// Formatieren der effektiven EPS-Produktion basierend auf ihrem Wert
-	let formattedEpsEffektiv;
-	if (EffektivEpsProduction > 0) {
-		if (EffektivEpsProduction <= (maxeps - eps)) {
-			formattedEpsEffektiv = '+' + EffektivEpsProduction;
-		}
-		if (EffektivEpsProduction > (maxeps - eps)) {
-			formattedEpsEffektiv = '+' + (maxeps - eps);
-		}
-	} else {
-		formattedEpsEffektiv = String(EffektivEpsProduction);
-	}
-
-	// Überprüfen, ob der Wert die effektive EPS-Produktion nicht überschreitet
-	document.getElementById('EffektivEPS').textContent = formattedEpsEffektiv;
-
-	// EFFEKTIV WARP ZUWACHS
-	if ((maxwarpdrive - warpdrive) > 0) {
-		formatedWarpDifferenz = '+' + (maxwarpdrive - warpdrive);
-	}
-	else { formatedWarpDifferenz = String(maxwarpdrive - warpdrive); }
-
-	if (WarpDriveProduction > 0) {
-		formatedWarpDriveProduction = '+' + WarpDriveProduction;
-	}
-	else { formatedWarpDriveProduction = String(0); }
-
-	if ((maxwarpdrive - warpdrive) < WarpDriveProduction) {
-		document.getElementById('EffektivWarpDrive').textContent = formatedWarpDifferenz;
-	}
-	else { document.getElementById('EffektivWarpDrive').textContent = formatedWarpDriveProduction; }
+	// set effective labels
+	document.getElementById('effectiveEps').textContent = effEpsProduction > 0 ? '+' + effEpsProduction : String(effEpsProduction);
+	document.getElementById('effectiveWarpdrive').textContent = effWarpdriveProduction > 0 ? '+' + effWarpdriveProduction : String(effWarpdriveProduction);
 }
 
 var saveTimeout;

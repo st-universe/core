@@ -40,7 +40,7 @@
         <td colspan="2"><img src="assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
             <input type="range" min="0" max="100" value="{{ warpcoresystem.getWarpCoreSplit }}" id="warpCoreSplit"
-                oninput="saveWarpCoreSplit(this.value, {{ shipId }});  updateEPSSplitValue(this.value, {{ ship.getReactorOutput }}, {{ wrapper.getEpsUsage }}, {{ ship.getRump.getFlightEcost }}, {{ wrapper.getEffectiveEpsProduction }}, {{ epssystem.getEps }}, {{ epssystem.getMaxEps }}, {{ warpdrivesystem.getWarpDrive }}, {{ warpdrivesystem.getMaxWarpDrive }}, {{ ship.getReactorLoad }})">
+                oninput="saveWarpCoreSplit(this.value, {{ shipId }});  updateEpsSplitValues(this.value);">
             <img src="assets/buttons/battp2.png" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
         </td>
