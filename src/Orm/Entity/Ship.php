@@ -1129,6 +1129,20 @@ class Ship implements ShipInterface
         return $this->getReactorOutput();
     }
 
+    public function getReactorLoadStyle(): string
+    {
+        $load = $this->getReactorLoad();
+        $output = $this->getReactorOutput();
+
+        if ($load < $output) {
+            return "color: red;";
+        }
+
+        $percentage = $load / $this->getReactorCapacity();
+
+        return $percentage > 30 ? "" :  "color: yellow;";
+    }
+
     public function isWarpcoreHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE);

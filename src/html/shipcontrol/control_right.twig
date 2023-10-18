@@ -16,7 +16,7 @@
     <tr>
         <td style="width:50%;">
             <img src="assets/buttons/warpk.png" title="Warpkern" />
-            {{ ship.getReactorLoad }}/{{ ship.getReactorCapacity }}
+            <span style="{{ ship.getReactorLoadStyle }}">{{ ship.getReactorLoad }}/{{ ship.getReactorCapacity }}</span>
         </td>
         <td>
             <input type="text" size="3" name="reactorload" id="reactorload" value="1"
