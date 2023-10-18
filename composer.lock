@@ -3863,7 +3863,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/planet-generator.git",
-                "reference": "b4a8ba3b45853309155189d421c6ae61520e84b0"
+                "reference": "63964c5688ff767b847c30b422e5911ac4bc7a62"
             },
             "require": {
                 "jetbrains/phpstorm-stubs": "^2022.3",
@@ -3919,7 +3919,7 @@
                 "MIT"
             ],
             "description": "ST-Universe planet surface generator",
-            "time": "2023-10-18T18:15:45+00:00"
+            "time": "2023-10-18T18:21:49+00:00"
         },
         {
             "name": "st-universe/starsystem-generator",
