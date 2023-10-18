@@ -20,9 +20,6 @@ use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
 
 final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 {
-    public const BOARDING_PRESTIGE_PER_TRY = 200;
-    public const BOARDING_PRESTIGE_PER_MODULE_LEVEL = 10;
-
     private ShipTakeoverRepositoryInterface $shipTakeoverRepository;
 
     private ShipRepositoryInterface $shipRepository;
@@ -90,11 +87,38 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             $source->getUser(),
             time()
         );
+
+        $this->sendStartPm($takeover);
+    }
+
+
+    private function sendStartPm(ShipTakeoverInterface $takeover): void
+    {
+        $sourceShip = $takeover->getSourceShip();
+        $sourceUser = $sourceShip->getUser();
+        $target = $takeover->getTargetShip();
+        $targetUser = $target->getUser();
+
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
+
+        $this->privateMessageSender->send(
+            $sourceUser->getId(),
+            $targetUser->getId(),
+            sprintf(
+                'Die %s von Spieler %s hat mit der Übernahme der %s begonnen. Fertigstellung in %d Runden.',
+                $sourceShip->getName(),
+                $sourceUser->getName(),
+                $target->getName(),
+                self::TURNS_TO_TAKEOVER
+            ),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $href
+        );
     }
 
     public function isTakeoverReady(ShipTakeoverInterface $takeover): bool
     {
-        $remainingTurns = $takeover->getStartTurn() + ShipEnum::TURNS_TO_TAKEOVER - $this->game->getCurrentRound()->getTurn();
+        $remainingTurns = $takeover->getStartTurn() + self::TURNS_TO_TAKEOVER - $this->game->getCurrentRound()->getTurn();
         if ($remainingTurns <= 0) {
             return true;
         }

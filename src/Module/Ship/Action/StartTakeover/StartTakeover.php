@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Action\StartTakeover;
 
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -142,7 +141,7 @@ final class StartTakeover implements ActionControllerInterface
         $game->addInformationf(
             'Übernahme der %s wurde gestartet. Fertigstellung in %d Runden.',
             $target->getName(),
-            ShipEnum::TURNS_TO_TAKEOVER
+            ShipTakeoverManagerInterface::TURNS_TO_TAKEOVER
         );
     }
 
