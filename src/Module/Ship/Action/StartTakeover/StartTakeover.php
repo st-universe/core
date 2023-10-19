@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\StartTakeover;
 
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,6 +14,7 @@ use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class StartTakeover implements ActionControllerInterface
@@ -29,18 +31,22 @@ final class StartTakeover implements ActionControllerInterface
 
     private ShipTakeoverManagerInterface $shipTakeoverManager;
 
+    private ShipStateChangerInterface $shipStateChanger;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         InteractionCheckerInterface $interactionChecker,
         NbsUtilityInterface $nbsUtility,
         FightLibInterface $fightLib,
-        ShipTakeoverManagerInterface $shipTakeoverManager
+        ShipTakeoverManagerInterface $shipTakeoverManager,
+        ShipStateChangerInterface $shipStateChanger
     ) {
         $this->shipLoader = $shipLoader;
         $this->interactionChecker = $interactionChecker;
         $this->nbsUtility = $nbsUtility;
         $this->fightLib = $fightLib;
         $this->shipTakeoverManager = $shipTakeoverManager;
+        $this->shipStateChanger = $shipStateChanger;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -136,6 +142,7 @@ final class StartTakeover implements ActionControllerInterface
             return;
         }
 
+        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER);
         $this->shipTakeoverManager->startTakeover($ship, $target, $neededPrestige);
 
         $game->addInformationf(
