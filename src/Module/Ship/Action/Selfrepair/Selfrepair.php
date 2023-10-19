@@ -48,7 +48,9 @@ final class Selfrepair implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(request::postIntFatal('id'), $userId);
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(request::postIntFatal('id'), $userId);
+
+        $ship = $wrapper->get();
 
         if (!$ship->isAlertGreen()) {
             return;
@@ -69,7 +71,7 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
-        $repairOptions = $this->repairUtil->determineRepairOptions($ship);
+        $repairOptions = $this->repairUtil->determineRepairOptions($wrapper);
         if (!array_key_exists($systemType, $repairOptions)) {
             return;
         }

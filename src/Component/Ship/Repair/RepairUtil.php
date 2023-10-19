@@ -16,7 +16,6 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -37,8 +36,6 @@ final class RepairUtil implements RepairUtilInterface
 
     private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -49,7 +46,6 @@ final class RepairUtil implements RepairUtilInterface
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
         ColonyFunctionManagerInterface $colonyFunctionManager,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
@@ -58,16 +54,17 @@ final class RepairUtil implements RepairUtilInterface
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->colonyStorageManager = $colonyStorageManager;
-        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->privateMessageSender = $privateMessageSender;
     }
 
     //REPAIR STUFF
-    public function determineSpareParts(ShipInterface $ship): array
+    public function determineSpareParts(ShipWrapperInterface $wrapper): array
     {
         $neededSpareParts = 0;
         $neededSystemComponents = 0;
+
+        $ship = $wrapper->get();
 
         $hull = $ship->getHull();
         $maxHull = $ship->getMaxHull();
@@ -76,7 +73,7 @@ final class RepairUtil implements RepairUtilInterface
             $neededSpareParts += (int)($ship->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
         }
 
-        $damagedSystems = $this->shipWrapperFactory->wrapShip($ship)->getDamagedSystems();
+        $damagedSystems = $wrapper->getDamagedSystems();
         if (!empty($damagedSystems)) {
             $firstSystem = $damagedSystems[0];
             $firstSystemLvl = $firstSystem->determineSystemLevel();
@@ -218,9 +215,11 @@ final class RepairUtil implements RepairUtilInterface
         return $engineerCount; //$engineerOptions;
     }
 
-    public function determineRepairOptions(ShipInterface $ship): array
+    public function determineRepairOptions(ShipWrapperInterface $wrapper): array
     {
         $repairOptions = [];
+
+        $ship = $wrapper->get();
 
         //check for hull option
         $hullPercentage = (int) ($ship->getHull() * 100 / $ship->getMaxHull());
@@ -233,7 +232,7 @@ final class RepairUtil implements RepairUtilInterface
         }
 
         //check for system options
-        foreach ($this->shipWrapperFactory->wrapShip($ship)->getDamagedSystems() as $system) {
+        foreach ($wrapper->getDamagedSystems() as $system) {
             if ($system->getStatus() < RepairTaskEnum::BOTH_MAX) {
                 $repairOptions[$system->getSystemType()] = $system;
             }

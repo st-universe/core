@@ -202,7 +202,8 @@ final class RepairActions implements RepairActionsInterface
             return false;
         }
 
-        $neededParts = $this->repairUtil->determineSpareParts($ship);
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $neededParts = $this->repairUtil->determineSpareParts($wrapper);
 
         // parts stored?
         if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $entity, $isColony, $ship)) {
@@ -217,7 +218,6 @@ final class RepairActions implements RepairActionsInterface
             $ship->setHuell($ship->getMaxHull());
         }
 
-        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
 
         //repair ship systems
         $damagedSystems = $wrapper->getDamagedSystems();

@@ -120,6 +120,10 @@ interface UserInterface
 
     public function setDeals(bool $deals): UserInterface;
 
+    public function getLastBoarding(): ?int;
+
+    public function setLastBoarding(int $time): UserInterface;
+
     public function isSaveLogin(): bool;
 
     public function setSaveLogin(bool $save_login): UserInterface;

@@ -31,6 +31,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class BoardShip implements ActionControllerInterface
 {
@@ -39,6 +40,8 @@ final class BoardShip implements ActionControllerInterface
     private CrewRepositoryInterface $crewRepository;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
+
+    private UserRepositoryInterface $userRepository;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -67,6 +70,7 @@ final class BoardShip implements ActionControllerInterface
     public function __construct(
         CrewRepositoryInterface $crewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
+        UserRepositoryInterface $userRepository,
         ShipLoaderInterface $shipLoader,
         InteractionCheckerInterface $interactionChecker,
         NbsUtilityInterface $nbsUtility,
@@ -82,6 +86,7 @@ final class BoardShip implements ActionControllerInterface
     ) {
         $this->crewRepository = $crewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->userRepository = $userRepository;
         $this->shipLoader = $shipLoader;
         $this->interactionChecker = $interactionChecker;
         $this->nbsUtility = $nbsUtility;
@@ -129,6 +134,14 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
+        if ($target->getCrewCount() === 0) {
+            return;
+        }
+
+        if ($targetWrapper->get()->getShieldState()) {
+            return;
+        }
+
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
@@ -147,6 +160,18 @@ final class BoardShip implements ActionControllerInterface
 
         if ($target->getCloakState() && !$this->nbsUtility->isTachyonActive($ship)) {
             throw new SanityCheckException('Attacked cloaked ship without active tachyon', self::ACTION_IDENTIFIER);
+        }
+
+        $lastTakeover = $user->getLastBoarding();
+        if (
+            $lastTakeover !== null
+            && time() < $lastTakeover +  ShipTakeoverManagerInterface::BOARDING_COOLDOWN_IN_SECONDS
+        ) {
+            $game->addInformation(sprintf(
+                'Enterkommando kann erst wieder um %s entsendet werden',
+                date('H:i', $lastTakeover +  ShipTakeoverManagerInterface::BOARDING_COOLDOWN_IN_SECONDS)
+            ));
+            return;
         }
 
         $epsSystemData = $wrapper->getEpsSystemData();
@@ -199,6 +224,11 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
+        if ($target->getShieldState()) {
+            $game->addInformationf("Die %s hat die Schilde aktiviert. Enterkommando kann nicht entsendet werden.", $targetName);
+            return;
+        }
+
         $combatGroupAttacker = $this->closeCombatUtil->getCombatGroup($ship);
         $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($target);
 
@@ -211,20 +241,21 @@ final class BoardShip implements ActionControllerInterface
 
         $messages->add($message);
 
-        while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
-            $this->shipStateChanger->changeShipState($targetWrapper, ShipStateEnum::SHIP_STATE_NONE);
-            $this->createPrestigeLog->createLog(
-                -$neededPrestige,
-                sprintf(
-                    '-%d Prestige erhalten für einen Enterversuch auf die %s von Spieler %s',
-                    $neededPrestige,
-                    $target->getName(),
-                    $target->getUser()->getName()
-                ),
-                $user,
-                time()
-            );
+        $this->shipStateChanger->changeShipState($targetWrapper, ShipStateEnum::SHIP_STATE_NONE);
 
+        $this->createPrestigeLog->createLog(
+            -$neededPrestige,
+            sprintf(
+                '-%d Prestige erhalten für einen Enterversuch auf die %s von Spieler %s',
+                $neededPrestige,
+                $target->getName(),
+                $target->getUser()->getName()
+            ),
+            $user,
+            time()
+        );
+
+        while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
             $this->cycleKillRound(
                 $combatGroupAttacker,
                 $combatGroupDefender,
@@ -234,11 +265,14 @@ final class BoardShip implements ActionControllerInterface
             );
         }
 
+        $message = new Message($userId, $targetUserId);
+        $messages->add($message);
+
         if (empty($combatGroupAttacker)) {
             $message->add('Der Enterversuch ist gescheitert');
         } else if ($target->getCrewAssignments()->isEmpty()) {
             $message->add(sprintf(
-                'Die %s wurde geentert. Übernahme kann nun erfolgen.',
+                'Die Crew der %s wurde getötet. Übernahme kann nun erfolgen.',
                 $target->getName()
             ));
         } else {
@@ -248,6 +282,9 @@ final class BoardShip implements ActionControllerInterface
                 $target->getName()
             ));
         }
+
+        $user->setLastBoarding(time());
+        $this->userRepository->save($user);
 
         $this->sendPms(
             $userId,

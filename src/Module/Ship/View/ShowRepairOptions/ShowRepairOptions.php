@@ -48,7 +48,7 @@ final class ShowRepairOptions implements ViewControllerInterface
             return;
         }
 
-        $repairOptions = $this->repairUtil->determineRepairOptions($ship);
+        $repairOptions = $this->repairUtil->determineRepairOptions($wrapper);
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('REPAIR_OPTIONS', $repairOptions);
