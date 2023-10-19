@@ -74,6 +74,8 @@ interface ShipWrapperInterface
      */
     public function getStateIconAndTitle(): ?array;
 
+    public function getTakeoverTicksLeft(): int;
+
     public function canBeScrapped(): bool;
 
     public function getHullSystemData(): HullSystemData;

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use JBBCode\Parser;
 use JsonMapper\JsonMapperInterface;
 use RuntimeException;
-use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -26,9 +27,10 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
-use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 //TODO increase coverage
@@ -40,8 +42,6 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
-
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     private GameControllerInterface $game;
@@ -52,9 +52,11 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private ShipSystemDataFactoryInterface $shipSystemDataFactory;
 
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
     private ShipStateChangerInterface $shipStateChanger;
+
+    private RepairUtilInterface $repairUtil;
+
+    private Parser $bbCodeParser;
 
     /**
      * @var array<int, AbstractSystemData>
@@ -68,29 +70,29 @@ final class ShipWrapper implements ShipWrapperInterface
     private ?int $effectiveWarpDriveProduction = null;
 
     public function __construct(
-        ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipInterface $ship,
         ShipSystemManagerInterface $shipSystemManager,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         GameControllerInterface $game,
         JsonMapperInterface $jsonMapper,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         ShipSystemDataFactoryInterface $shipSystemDataFactory,
-        ShipStateChangerInterface $shipStateChanger
+        ShipStateChangerInterface $shipStateChanger,
+        RepairUtilInterface $repairUtil,
+        Parser $bbCodeParser,
     ) {
         $this->ship = $ship;
         $this->shipSystemManager = $shipSystemManager;
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
         $this->jsonMapper = $jsonMapper;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->shipSystemDataFactory = $shipSystemDataFactory;
-        $this->colonyFunctionManager = $colonyFunctionManager;
         $this->shipStateChanger = $shipStateChanger;
+        $this->repairUtil = $repairUtil;
+        $this->bbCodeParser = $bbCodeParser;
     }
 
     public function get(): ShipInterface
@@ -299,43 +301,12 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getRepairDuration(): int
     {
-        $ship = $this->get();
-
-        $ticks = $this->getRepairTicks($ship);
-
-        //check if repair station is active
-        $colonyRepair = $this->colonyShipRepairRepository->getByShip($ship->getId());
-        if ($colonyRepair !== null) {
-            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colonyRepair->getColony(), BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
-            if ($isRepairStationBonus) {
-                $ticks = (int)ceil($ticks / 2);
-            }
-        }
-
-        return $ticks;
+        return $this->repairUtil->getRepairDuration($this);
     }
 
     public function getRepairDurationPreview(): int
     {
-        $ship = $this->get();
-
-        $ticks = $this->getRepairTicks($ship);
-
-        $colony = $ship->isOverColony();
-        if ($colony !== null) {
-            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
-            if ($isRepairStationBonus) {
-                $ticks = (int)ceil($ticks / 2);
-            }
-        }
-
-        return $ticks;
-    }
-
-    private function getRepairTicks(ShipInterface $ship): int
-    {
-        $ticks = (int) ceil(($ship->getMaxHull() - $ship->getHull()) / $this->get()->getRepairRate());
-        return max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
+        return $this->repairUtil->getRepairDurationPreview($this);
     }
 
     public function getRepairCosts(): array
@@ -407,21 +378,65 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getStateIconAndTitle(): ?array
     {
-        $state = $this->get()->getState();
-        $isBase = $this->get()->isBase();
-        $repairDuration = $this->getRepairDuration();
+        $ship = $this->get();
 
-        if ($state === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            return ['rep2', sprintf('%s wird repariert (noch %s Runden)', $isBase ? 'Station' : 'Schiff', $repairDuration)];
-        }
+        $state = $ship->getState();
+
         if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+            $isBase = $ship->isBase();
             return ['rep2', sprintf('%s repariert die Station', $isBase ? 'Stationscrew' : 'Schiffscrew')];
         }
+
+        if ($state === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+            $isBase = $ship->isBase();
+            $repairDuration = $this->getRepairDuration();
+            return ['rep2', sprintf('%s wird repariert (noch %d Runden)', $isBase ? 'Station' : 'Schiff', $repairDuration)];
+        }
+
+        $currentTurn = $this->game->getCurrentRound()->getTurn();
         if ($state === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            return ['map1', 'Schiff kartographiert'];
+            return ['map1', sprintf(
+                'Schiff kartographiert (noch %d Runden)',
+                $ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH - $currentTurn
+            )];
+        }
+
+        $takeover = $ship->getTakeoverActive();
+        if (
+            $state === ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER
+            && $takeover !== null
+        ) {
+            $targetNamePlainText = $this->bbCodeParser->parse($takeover->getTargetShip()->getName())->getAsText();
+            return ['take2', sprintf(
+                'Schiff übernimmt die "%s" (noch %d Runden)',
+                $targetNamePlainText,
+                $this->getTakeoverTicksLeft($takeover)
+            )];
+        }
+
+        $takeover = $ship->getTakeoverPassive();
+        if ($takeover !== null) {
+            $sourceUserNamePlainText = $this->bbCodeParser->parse($takeover->getSourceShip()->getUser()->getName())->getAsText();
+            return ['untake2', sprintf(
+                'Schiff wird von Spieler "%s" übernommen (noch %d Runden)',
+                $sourceUserNamePlainText,
+                $this->getTakeoverTicksLeft($takeover)
+            )];
         }
 
         return null;
+    }
+
+    public function getTakeoverTicksLeft(ShipTakeoverInterface $takeover = null): int
+    {
+        $takeover = $takeover ?? $this->get()->getTakeoverActive();
+        if ($takeover === null) {
+            throw new RuntimeException('should not call when active takeover is null');
+        }
+
+        $currentTurn = $this->game->getCurrentRound()->getTurn();
+
+        return $takeover->getStartTurn() + ShipTakeoverManagerInterface::TURNS_TO_TAKEOVER - $currentTurn;
     }
 
     public function canBeScrapped(): bool

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use InvalidArgumentException;
+use JBBCode\Parser;
 use JsonMapper\JsonMapperInterface;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -41,6 +42,8 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private Parser $bbCodeParser;
+
     public function __construct(
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipSystemManagerInterface $shipSystemManager,
@@ -51,7 +54,8 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         JsonMapperInterface $jsonMapper,
         ShipSystemDataFactoryInterface $shipSystemDataFactory,
         ShipStateChangerInterface $shipStateChanger,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        Parser $bbCodeParser
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
@@ -63,6 +67,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->shipStateChanger = $shipStateChanger;
         $this->userRepository = $userRepository;
+        $this->bbCodeParser = $bbCodeParser;
     }
 
     public function wrapShip(ShipInterface $ship): ShipWrapperInterface
@@ -78,7 +83,8 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $this->jsonMapper,
             $this,
             $this->shipSystemDataFactory,
-            $this->shipStateChanger
+            $this->shipStateChanger,
+            $this->bbCodeParser
         );
     }
 
