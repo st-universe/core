@@ -12,7 +12,7 @@ interface RepairUtilInterface
     /**
      * @return array<int, int>
      */
-    public function determineSpareParts(ShipInterface $ship): array;
+    public function determineSpareParts(ShipWrapperInterface $wrapper): array;
 
     public function enoughSparePartsOnEntity(array $neededParts, $entity, bool $isColony, ShipInterface $ship): bool;
 
@@ -23,7 +23,7 @@ interface RepairUtilInterface
     /**
      * @return array<int, ShipSystemInterface>
      */
-    public function determineRepairOptions(ShipInterface $ship): array;
+    public function determineRepairOptions(ShipWrapperInterface $wrapper): array;
 
     public function createRepairTask(
         ShipInterface $ship,

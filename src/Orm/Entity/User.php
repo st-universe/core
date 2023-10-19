@@ -241,6 +241,12 @@ class User implements UserInterface
     private bool $deals = false;
 
     /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $last_boarding = null;
+
+    /**
      *
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
@@ -707,6 +713,17 @@ class User implements UserInterface
     public function setDeals(bool $deals): UserInterface
     {
         $this->deals = $deals;
+        return $this;
+    }
+
+    public function getLastBoarding(): ?int
+    {
+        return $this->last_boarding;
+    }
+
+    public function setLastBoarding(int $lastBoarding): UserInterface
+    {
+        $this->last_boarding = $lastBoarding;
         return $this;
     }
 

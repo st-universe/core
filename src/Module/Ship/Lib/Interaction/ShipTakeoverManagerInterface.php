@@ -7,6 +7,7 @@ use Stu\Orm\Entity\ShipTakeoverInterface;
 
 interface ShipTakeoverManagerInterface
 {
+    public const BOARDING_COOLDOWN_IN_SECONDS = 600;
     public const BOARDING_PRESTIGE_PER_TRY = 200;
     public const BOARDING_PRESTIGE_PER_MODULE_LEVEL = 10;
     public const TURNS_TO_TAKEOVER = 10;
