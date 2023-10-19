@@ -1140,7 +1140,7 @@ class Ship implements ShipInterface
 
         $percentage = $load / $this->getReactorCapacity();
 
-        return $percentage > 30 ? "" :  "color: yellow;";
+        return $percentage > 0.3 ? "" :  "color: yellow;";
     }
 
     public function isWarpcoreHealthy(): bool
