@@ -309,7 +309,7 @@
             onmouseover="cp('untake_{{ nbsItem.getId }}','buttons/untake1')"
             onmouseout="cp('untake_{{ nbsItem.getId }}','buttons/untake2')">
             <img src="assets/buttons/untake2.png" name="untake_{{ nbsItem.getId }}"
-                title="Übernahme der {{ nameWithoutMarkup }} abbrechen" />
+                title="Übernahme der {{ nameWithoutMarkup }} abbrechen (noch {{ WRAPPER.getTakeoverTicksLeft }} Runden)" />
         </a>
     </div>
     {% endif %}

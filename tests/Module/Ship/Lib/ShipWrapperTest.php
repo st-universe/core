@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use JBBCode\Parser;
 use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
-use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
-use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
@@ -39,11 +36,6 @@ class ShipWrapperTest extends StuTestCase
      */
     private ShipSystemManagerInterface $shipSystemManager;
 
-    /**
-     * @var MockInterface|ColonyShipRepairRepositoryInterface
-     */
-    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
-
     private ColonyLibFactoryInterface $colonyLibFactory;
 
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
@@ -56,20 +48,21 @@ class ShipWrapperTest extends StuTestCase
 
     private ShipStateChangerInterface $shipStateChanger;
 
-    private JsonMapperInterface $jsonMapper;
+    private RepairUtilInterface $repairUtil;
 
-    private MockInterface $colonyFunctionManager;
+    private JsonMapperInterface $jsonMapper;
 
     private ShipWrapper $shipWrapper;
 
     private ShipSystemInterface $shipSystem;
+
+    private Parser $bbCodeParser;
 
     public function setUp(): void
     {
         //injected
         $this->ship = $this->mock(ShipInterface::class);
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
-        $this->colonyShipRepairRepository = $this->mock(ColonyShipRepairRepositoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
@@ -77,21 +70,22 @@ class ShipWrapperTest extends StuTestCase
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
-        $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->shipSystem = $this->mock(ShipSystemInterface::class);
+        $this->repairUtil = $this->mock(RepairUtilInterface::class);
+        $this->bbCodeParser = $this->mock(Parser::class);
 
         $this->shipWrapper = new ShipWrapper(
-            $this->colonyFunctionManager,
             $this->ship,
             $this->shipSystemManager,
-            $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
             $this->torpedoTypeRepository,
             $this->game,
             $this->jsonMapper,
             $this->shipWrapperFactory,
             $this->shipSystemDataFactory,
-            $this->shipStateChanger
+            $this->shipStateChanger,
+            $this->repairUtil,
+            $this->bbCodeParser
         );
     }
 
@@ -195,289 +189,170 @@ class ShipWrapperTest extends StuTestCase
         $this->assertEquals(true, $eps->reloadBattery());
     }
 
-    public function testGetRepairDurationWithIntactShipExpectZero(): void
+    public static function getStateIconAndTitleForActiveRepairProvider()
     {
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn(new ArrayCollection());
-
-        $this->ship->shouldReceive('getId')
-            ->withNoArgs()->once()->andReturn(42);
-
-        $this->colonyShipRepairRepository->shouldReceive('getByShip')
-            ->with(42)->once()->andReturn(null);
-
-        $duration = $this->shipWrapper->getRepairDuration();
-
-        $this->assertEquals(0, $duration);
+        return [
+            [false, "Schiffscrew repariert die Station"],
+            [true, "Stationscrew repariert die Station"],
+        ];
     }
 
-    public function testGetRepairDurationWithDamagedHull(): void
+    /**
+     * @dataProvider getStateIconAndTitleForActiveRepairProvider
+     */
+    public function testGetStateIconAndTitleForActiveRepair(bool $isBase, string $expectedTitle): void
     {
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(79);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn(new ArrayCollection());
-
-        $this->ship->shouldReceive('getId')
-            ->withNoArgs()->once()->andReturn(42);
-
-        $this->colonyShipRepairRepository->shouldReceive('getByShip')
-            ->with(42)->once()->andReturn(null);
-
-        $duration = $this->shipWrapper->getRepairDuration();
-
-        $this->assertEquals(3, $duration);
-    }
-
-    public function testGetRepairDurationWithDamagedSystems(): void
-    {
-        $damagedSystem1 = $this->mock(ShipSystemInterface::class);
-        $damagedSystem1->shouldReceive('getStatus')
-            ->withNoArgs()->andReturn(1);
-        $damagedSystem1->shouldReceive('getSystemType')
-            ->withNoArgs()->andReturn(1);
-        $shipSystemType1 = $this->mock(ShipSystemTypeInterface::class);
-        $this->shipSystemManager->shouldReceive('lookupSystem')
-            ->with(1)->once()->andReturn($shipSystemType1);
-        $shipSystemType1->shouldReceive('getPriority')
-            ->withNoArgs()->once()->andReturn(1);
-
-        $damagedSystem2 = $this->mock(ShipSystemInterface::class);
-        $damagedSystem2->shouldReceive('getStatus')
-            ->withNoArgs()->andReturn(2);
-        $damagedSystem2->shouldReceive('getSystemType')
-            ->withNoArgs()->andReturn(2);
-        $shipSystemType2 = $this->mock(ShipSystemTypeInterface::class);
-        $this->shipSystemManager->shouldReceive('lookupSystem')
-            ->with(2)->once()->andReturn($shipSystemType2);
-        $shipSystemType2->shouldReceive('getPriority')
-            ->withNoArgs()->once()->andReturn(2);
-
-
-        $systems = new ArrayCollection();
-        $systems->add($damagedSystem1);
-        $systems->add($damagedSystem2);
-
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn($systems);
-
-        $this->ship->shouldReceive('getId')
-            ->withNoArgs()->once()->andReturn(42);
-
-        $this->colonyShipRepairRepository->shouldReceive('getByShip')
-            ->with(42)->once()->andReturn(null);
-
-        $duration = $this->shipWrapper->getRepairDuration();
-
-        $this->assertEquals(1, $duration);
-    }
-
-    public function testGetRepairDurationWithDamagedSystemsAndInactiveRepairStation(): void
-    {
-        $systems = new ArrayCollection();
-
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(60);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn($systems);
-
-        $this->ship->shouldReceive('getId')
-            ->withNoArgs()->once()->andReturn(42);
-
-        $colonyShipRepair = $this->mock(ColonyShipRepairInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-
-        $this->colonyShipRepairRepository->shouldReceive('getByShip')
-            ->with(42)->once()->andReturn($colonyShipRepair);
-
-        $colonyShipRepair->shouldReceive('getColony')
+        $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
-
-        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
-            ->once()
-            ->andReturnFalse();
-
-        $duration = $this->shipWrapper->getRepairDuration();
-
-        $this->assertEquals(4, $duration);
-    }
-
-    public function testGetRepairDurationWithDamagedSystemsAndActiveRepairStation(): void
-    {
-        $damagedSystem1 = $this->mock(ShipSystemInterface::class);
-        $damagedSystem1->shouldReceive('getStatus')
-            ->withNoArgs()->andReturn(1);
-        $damagedSystem1->shouldReceive('getSystemType')
-            ->withNoArgs()->andReturn(1);
-        $shipSystemType1 = $this->mock(ShipSystemTypeInterface::class);
-        $this->shipSystemManager->shouldReceive('lookupSystem')
-            ->with(1)->once()->andReturn($shipSystemType1);
-        $shipSystemType1->shouldReceive('getPriority')
-            ->withNoArgs()->once()->andReturn(1);
-
-        $damagedSystem2 = $this->mock(ShipSystemInterface::class);
-        $damagedSystem2->shouldReceive('getStatus')
-            ->withNoArgs()->andReturn(2);
-        $damagedSystem2->shouldReceive('getSystemType')
-            ->withNoArgs()->andReturn(2);
-        $shipSystemType2 = $this->mock(ShipSystemTypeInterface::class);
-        $this->shipSystemManager->shouldReceive('lookupSystem')
-            ->with(2)->once()->andReturn($shipSystemType2);
-        $shipSystemType2->shouldReceive('getPriority')
-            ->withNoArgs()->once()->andReturn(2);
-
-        $damagedSystem3 = $this->mock(ShipSystemInterface::class);
-        $damagedSystem3->shouldReceive('getStatus')
-            ->withNoArgs()->andReturn(3);
-        $damagedSystem3->shouldReceive('getSystemType')
-            ->withNoArgs()->andReturn(3);
-        $shipSystemType3 = $this->mock(ShipSystemTypeInterface::class);
-        $this->shipSystemManager->shouldReceive('lookupSystem')
-            ->with(3)->once()->andReturn($shipSystemType3);
-        $shipSystemType3->shouldReceive('getPriority')
-            ->withNoArgs()->once()->andReturn(3);
-
-        $damagedSystem4 = $this->mock(ShipSystemInterface::class);
-        $damagedSystem4->shouldReceive('getStatus')
-            ->withNoArgs()->andReturn(4);
-        $damagedSystem4->shouldReceive('getSystemType')
-            ->withNoArgs()->andReturn(4);
-        $shipSystemType4 = $this->mock(ShipSystemTypeInterface::class);
-        $this->shipSystemManager->shouldReceive('lookupSystem')
-            ->with(4)->once()->andReturn($shipSystemType4);
-        $shipSystemType4->shouldReceive('getPriority')
-            ->withNoArgs()->once()->andReturn(4);
-
-
-        $systems = new ArrayCollection();
-        $systems->add($damagedSystem1);
-        $systems->add($damagedSystem2);
-        $systems->add($damagedSystem3);
-        $systems->add($damagedSystem4);
-
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(80);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn($systems);
-
-        $this->ship->shouldReceive('getId')
-            ->withNoArgs()->once()->andReturn(42);
-
-        $colonyShipRepair = $this->mock(ColonyShipRepairInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-
-        $this->colonyShipRepairRepository->shouldReceive('getByShip')
-            ->with(42)->once()->andReturn($colonyShipRepair);
-        $colonyShipRepair->shouldReceive('getColony')
+            ->andReturn(ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE);
+        $this->ship->shouldReceive('isBase')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
+            ->andReturn($isBase);
 
-        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
-            ->once()
-            ->andReturnTrue();
+        [$icon, $title] = $this->shipWrapper->getStateIconAndTitle();
 
-        $duration = $this->shipWrapper->getRepairDuration();
-
-        $this->assertEquals(1, $duration);
+        $this->assertEquals('rep2', $icon);
+        $this->assertEquals($expectedTitle, $title);
     }
 
-    public function testGetRepairDurationPreviewWithDamagedHullAndNotOverColony(): void
+    public static function getStateIconAndTitleForPassiveRepairProvider()
     {
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(60);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn(new ArrayCollection());
-
-        $this->ship->shouldReceive('isOverColony')
-            ->withNoArgs()->once()->andReturn(null);
-
-        $duration = $this->shipWrapper->getRepairDurationPreview();
-
-        $this->assertEquals(4, $duration);
+        return [
+            [false, "Schiff wird repariert (noch 42 Runden)"],
+            [true, "Station wird repariert (noch 42 Runden)"],
+        ];
     }
 
-    public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithInactiveRepairStation(): void
+    /**
+     * @dataProvider getStateIconAndTitleForPassiveRepairProvider
+     */
+    public function testGetStateIconAndTitleForPassiveRepair(bool $isBase, string $expectedTitle): void
     {
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(60);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn(new ArrayCollection());
-
-        $colony = $this->mock(ColonyInterface::class);
-
-        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+        $this->ship->shouldReceive('getState')
+            ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn(ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE);
+        $this->ship->shouldReceive('isBase')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($isBase);
 
-        $this->ship->shouldReceive('isOverColony')
-            ->withNoArgs()->once()->andReturn($colony);
+        $this->repairUtil->shouldReceive('getRepairDuration')
+            ->with($this->shipWrapper)
+            ->once()
+            ->andReturn(42);
 
-        $duration = $this->shipWrapper->getRepairDurationPreview();
+        [$icon, $title] = $this->shipWrapper->getStateIconAndTitle();
 
-        $this->assertEquals(4, $duration);
+        $this->assertEquals('rep2', $icon);
+        $this->assertEquals($expectedTitle, $title);
     }
 
-    public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithActiveRepairStation(): void
+    public function testGetStateIconAndTitleForAstroFinalizing(): void
     {
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()->once()->andReturn(100);
-        $this->ship->shouldReceive('getHull')
-            ->withNoArgs()->once()->andReturn(50);
-        $this->ship->shouldReceive('getRepairRate')
-            ->withNoArgs()->once()->andReturn(10);
-        $this->ship->shouldReceive('getSystems')
-            ->withNoArgs()->once()->andReturn(new ArrayCollection());
-
-        $colony = $this->mock(ColonyInterface::class);
-
-        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
-            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+        $this->ship->shouldReceive('getState')
+            ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
+        $this->ship->shouldReceive('getAstroStartTurn')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
 
-        $this->ship->shouldReceive('isOverColony')
-            ->withNoArgs()->once()->andReturn($colony);
+        $this->game->shouldReceive('getCurrentRound->getTurn')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(6);
 
-        $duration = $this->shipWrapper->getRepairDurationPreview();
+        [$icon, $title] = $this->shipWrapper->getStateIconAndTitle();
 
-        $this->assertEquals(3, $duration);
+        $this->assertEquals('map1', $icon);
+        $this->assertEquals('Schiff kartographiert (noch 2 Runden)', $title);
+    }
+
+    public function testGetStateIconAndTitleForActiveTakeover(): void
+    {
+        $takeover = $this->mock(ShipTakeoverInterface::class);
+
+        $this->ship->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER);
+        $this->ship->shouldReceive('getTakeoverActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($takeover);
+
+        $takeover->shouldReceive('getTargetShip->getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('BBCODENAME');
+        $takeover->shouldReceive('getStartTurn')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
+
+        $this->bbCodeParser->shouldReceive('parse')
+            ->with('BBCODENAME')
+            ->once()
+            ->andReturnSelf();
+        $this->bbCodeParser->shouldReceive('getAsText')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('TARGET');
+        $this->game->shouldReceive('getCurrentRound->getTurn')
+            ->withNoArgs()
+            ->andReturn(6);
+
+        [$icon, $title] = $this->shipWrapper->getStateIconAndTitle();
+
+        $this->assertEquals('take2', $icon);
+        $this->assertEquals('Schiff übernimmt die "TARGET" (noch 9 Runden)', $title);
+    }
+
+    public function testGetStateIconAndTitleForPassiveTakeover(): void
+    {
+        $takeover = $this->mock(ShipTakeoverInterface::class);
+
+        $this->ship->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipStateEnum::SHIP_STATE_NONE);
+        $this->ship->shouldReceive('getTakeoverActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $this->ship->shouldReceive('getTakeoverPassive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($takeover);
+
+        $takeover->shouldReceive('getSourceShip->getUser->getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('BBCODENAME');
+        $takeover->shouldReceive('getStartTurn')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
+
+        $this->bbCodeParser->shouldReceive('parse')
+            ->with('BBCODENAME')
+            ->once()
+            ->andReturnSelf();
+        $this->bbCodeParser->shouldReceive('getAsText')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('USER');
+        $this->game->shouldReceive('getCurrentRound->getTurn')
+            ->withNoArgs()
+            ->andReturn(6);
+
+        [$icon, $title] = $this->shipWrapper->getStateIconAndTitle();
+
+        $this->assertEquals('untake2', $icon);
+        $this->assertEquals('Schiff wird von Spieler "USER" übernommen (noch 9 Runden)', $title);
     }
 }
