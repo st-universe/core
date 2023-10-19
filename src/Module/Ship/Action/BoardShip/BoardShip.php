@@ -26,6 +26,7 @@ use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -97,6 +98,8 @@ final class BoardShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+
         $user = $game->getUser();
         $userId = $user->getId();
 
@@ -178,6 +181,7 @@ final class BoardShip implements ActionControllerInterface
 
         $shipName = $ship->getName();
         $targetName = $target->getName();
+        $targetUserId = $target->getUser()->getId();
 
         $this->threatReaction->reactToThreat(
             $wrapper,
@@ -191,6 +195,7 @@ final class BoardShip implements ActionControllerInterface
         );
 
         if ($ship->isDestroyed()) {
+            $game->setView(Overview::VIEW_IDENTIFIER);
             return;
         }
 
@@ -198,11 +203,13 @@ final class BoardShip implements ActionControllerInterface
         $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($target);
 
         $messages = new MessageCollection();
-        $messages->add(new Message(null, null, [sprintf(
+        $message = new Message($userId, $targetUserId, [sprintf(
             'Die %s entsendet ein Enterkommando auf die %s',
             $ship->getName(),
             $target->getName()
-        )]));
+        )]);
+
+        $messages->add($message);
 
         while (!empty($combatGroupAttacker) && !empty($combatGroupDefender)) {
             $this->shipStateChanger->changeShipState($targetWrapper, ShipStateEnum::SHIP_STATE_NONE);
@@ -228,13 +235,18 @@ final class BoardShip implements ActionControllerInterface
         }
 
         if (empty($combatGroupAttacker)) {
-            $messages->add(new Message(null, null, ['Der Enterversuch ist gescheitert']));
-        } else if (empty($combatGroupDefender)) {
-
-            $messages->add(new Message(null, null, [sprintf(
+            $message->add('Der Enterversuch ist gescheitert');
+        } else if ($target->getCrewAssignments()->isEmpty()) {
+            $message->add(sprintf(
                 'Die %s wurde geentert. Übernahme kann nun erfolgen.',
                 $target->getName()
-            )]));
+            ));
+        } else {
+            $message->add(sprintf(
+                'Es leben noch %d Crewman auf der %s.',
+                $target->getCrewCount(),
+                $target->getName()
+            ));
         }
 
         $this->sendPms(
@@ -245,8 +257,6 @@ final class BoardShip implements ActionControllerInterface
         );
 
         $informations = $messages->getInformationDump();
-
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $game->addInformationWrapper($informations);
     }
