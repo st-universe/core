@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -314,8 +315,14 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     private function removeTakeover(ShipTakeoverInterface $takeover): void
     {
-        $takeover->getSourceShip()->setTakeoverActive(null);
+        $sourceShip = $takeover->getSourceShip();
+        $sourceShip
+            ->setTakeoverActive(null)
+            ->setState(ShipStateEnum::SHIP_STATE_NONE);
+
         $takeover->getTargetShip()->setTakeoverPassive(null);
+
         $this->shipTakeoverRepository->delete($takeover);
+        $this->shipRepository->save($sourceShip);
     }
 }

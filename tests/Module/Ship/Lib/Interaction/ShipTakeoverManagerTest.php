@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Interaction;
 
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -368,7 +369,11 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($user);
         $this->ship->shouldReceive('setTakeoverActive')
-            ->with(null);
+            ->with(null)
+            ->andReturnSelf();
+        $this->ship->shouldReceive('setState')
+            ->with(ShipStateEnum::SHIP_STATE_NONE)
+            ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(666);
@@ -399,6 +404,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
+            ->once();
+        $this->shipRepository->shouldReceive('save')
+            ->with($this->ship)
             ->once();
 
         $this->createPrestigeLog->shouldReceive('createLog')
@@ -458,7 +466,11 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($user);
         $this->ship->shouldReceive('setTakeoverActive')
-            ->with(null);
+            ->with(null)
+            ->andReturnSelf();
+        $this->ship->shouldReceive('setState')
+            ->with(ShipStateEnum::SHIP_STATE_NONE)
+            ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(666);
@@ -489,6 +501,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
+            ->once();
+        $this->shipRepository->shouldReceive('save')
+            ->with($this->ship)
             ->once();
 
         $this->createPrestigeLog->shouldReceive('createLog')
@@ -551,7 +566,11 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($user);
         $this->ship->shouldReceive('setTakeoverActive')
-            ->with(null);
+            ->with(null)
+            ->andReturnSelf();
+        $this->ship->shouldReceive('setState')
+            ->with(ShipStateEnum::SHIP_STATE_NONE)
+            ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(666);
@@ -584,6 +603,9 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->with($takeover)
             ->once();
 
+        $this->shipRepository->shouldReceive('save')
+            ->with($this->ship)
+            ->once();
         $this->shipRepository->shouldReceive('save')
             ->with($this->target)
             ->once();
