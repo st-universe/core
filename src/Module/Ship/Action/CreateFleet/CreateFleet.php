@@ -45,6 +45,12 @@ final class CreateFleet implements ActionControllerInterface
             );
             return;
         }
+        if ($ship->getTakeoverPassive() !== null) {
+            $game->addInformation(
+                _('Aktion nicht möglich, da Schiff im Begriff ist übernommen zu werden.'),
+            );
+            return;
+        }
 
         $fleet = $this->fleetRepository->prototype();
         $fleet->setLeadShip($ship);

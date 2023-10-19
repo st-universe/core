@@ -51,6 +51,11 @@ abstract class AbstractJoinFleet
             return;
         }
 
+        if ($ship->getTakeoverPassive() !== null) {
+            $game->addInformationf(_('%s: Schiffsübernahme verhindert den Beitritt.'), $ship->getName());
+            return;
+        }
+
         if ($this->isTholianWebPreventing($fleet->getLeadShip(), $ship)) {
             $game->addInformationf(_('%s: Ein Energienetz verhindert den Beitritt.'), $ship->getName());
             return;
