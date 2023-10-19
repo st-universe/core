@@ -10,7 +10,6 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
@@ -38,9 +37,6 @@ class RepairUtilTest extends StuTestCase
     /** @var ColonyStorageManagerInterface|MockInterface */
     private $colonyStorageManager;
 
-    /** @var ShipWrapperFactoryInterface|MockInterface */
-    private $shipWrapperFactory;
-
     /** @var ColonyFunctionManagerInterface|MockInterface */
     private $colonyFunctionManager;
 
@@ -62,7 +58,6 @@ class RepairUtilTest extends StuTestCase
         $this->colonyShipRepairRepository = $this->mock(ColonyShipRepairRepositoryInterface::class);
         $this->shipStorageManager = $this->mock(ShipStorageManagerInterface::class);
         $this->colonyStorageManager = $this->mock(ColonyStorageManagerInterface::class);
-        $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
@@ -80,7 +75,6 @@ class RepairUtilTest extends StuTestCase
             $this->colonyShipRepairRepository,
             $this->shipStorageManager,
             $this->colonyStorageManager,
-            $this->shipWrapperFactory,
             $this->colonyFunctionManager,
             $this->privateMessageSender
         );
