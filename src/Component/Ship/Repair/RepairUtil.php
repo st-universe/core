@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\RepairTaskEnum;
@@ -15,17 +17,21 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
+//TODO unit tests
 final class RepairUtil implements RepairUtilInterface
 {
-    //TODO Unit-Tests!
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private RepairTaskRepositoryInterface $repairTaskRepository;
+
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
     private ShipStorageManagerInterface $shipStorageManager;
 
@@ -33,21 +39,27 @@ final class RepairUtil implements RepairUtilInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         RepairTaskRepositoryInterface $repairTaskRepository,
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->repairTaskRepository = $repairTaskRepository;
+        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->colonyFunctionManager = $colonyFunctionManager;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -303,5 +315,46 @@ final class RepairUtil implements RepairUtilInterface
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
         return $result;
+    }
+
+    public function getRepairDuration(ShipWrapperInterface $wrapper): int
+    {
+        $ship = $wrapper->get();
+        $ticks = $this->getRepairTicks($wrapper);
+
+        //check if repair station is active
+        $colonyRepair = $this->colonyShipRepairRepository->getByShip($ship->getId());
+        if ($colonyRepair !== null) {
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colonyRepair->getColony(), BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            if ($isRepairStationBonus) {
+                $ticks = (int)ceil($ticks / 2);
+            }
+        }
+
+        return $ticks;
+    }
+
+    public function getRepairDurationPreview(ShipWrapperInterface $wrapper): int
+    {
+        $ship = $wrapper->get();
+        $ticks = $this->getRepairTicks($wrapper);
+
+        $colony = $ship->isOverColony();
+        if ($colony !== null) {
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            if ($isRepairStationBonus) {
+                $ticks = (int)ceil($ticks / 2);
+            }
+        }
+
+        return $ticks;
+    }
+
+    private function getRepairTicks(ShipWrapperInterface $wrapper): int
+    {
+        $ship = $wrapper->get();
+        $ticks = (int) ceil(($ship->getMaxHull() - $ship->getHull()) / $ship->getRepairRate());
+
+        return max($ticks, (int) ceil(count($wrapper->getDamagedSystems()) / 2));
     }
 }

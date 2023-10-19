@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Ship\Repair;
 
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -43,4 +44,8 @@ interface RepairUtilInterface
         ShipInterface $ship,
         RepairTaskInterface $repairTask
     ): bool;
+
+    public function getRepairDuration(ShipWrapperInterface $wrapper): int;
+
+    public function getRepairDurationPreview(ShipWrapperInterface $wrapper): int;
 }
