@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
-use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -26,6 +26,8 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     private CreatePrestigeLogInterface $createPrestigeLog;
 
+    private LeaveFleetInterface $leaveFleet;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private GameControllerInterface $game;
@@ -34,12 +36,14 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         ShipTakeoverRepositoryInterface $shipTakeoverRepository,
         ShipRepositoryInterface $shipRepository,
         CreatePrestigeLogInterface $createPrestigeLog,
+        LeaveFleetInterface $leaveFleet,
         PrivateMessageSenderInterface $privateMessageSender,
         GameControllerInterface $game
     ) {
         $this->shipTakeoverRepository = $shipTakeoverRepository;
         $this->shipRepository = $shipRepository;
         $this->createPrestigeLog = $createPrestigeLog;
+        $this->leaveFleet = $leaveFleet;
         $this->privateMessageSender = $privateMessageSender;
         $this->game = $game;
     }
@@ -88,11 +92,16 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             time()
         );
 
-        $this->sendStartPm($takeover);
+        $isFleet = $target->getFleet() !== null;
+        if ($isFleet) {
+            $this->leaveFleet->leaveFleet($target);
+        }
+
+        $this->sendStartPm($takeover, $isFleet);
     }
 
 
-    private function sendStartPm(ShipTakeoverInterface $takeover): void
+    private function sendStartPm(ShipTakeoverInterface $takeover, bool $leftFleet): void
     {
         $sourceShip = $takeover->getSourceShip();
         $sourceUser = $sourceShip->getUser();
@@ -105,10 +114,11 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             $sourceUser->getId(),
             $targetUser->getId(),
             sprintf(
-                'Die %s von Spieler %s hat mit der Übernahme der %s begonnen. Fertigstellung in %d Runden.',
+                "Die %s von Spieler %s hat mit der Übernahme der %s begonnen.\n%s\n\nÜbernahme erfolgt in %d Runden.",
                 $sourceShip->getName(),
                 $sourceUser->getName(),
                 $target->getName(),
+                $leftFleet ? 'Die Flotte wurde daher verlassen.' : '',
                 self::TURNS_TO_TAKEOVER
             ),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
