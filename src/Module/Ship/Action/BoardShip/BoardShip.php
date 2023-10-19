@@ -147,9 +147,6 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->hasEnoughCrew($game)) {
-            return;
-        }
         if (!$this->interactionChecker->checkPosition($target, $ship)) {
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
@@ -160,6 +157,11 @@ final class BoardShip implements ActionControllerInterface
 
         if ($target->getCloakState() && !$this->nbsUtility->isTachyonActive($ship)) {
             throw new SanityCheckException('Attacked cloaked ship without active tachyon', self::ACTION_IDENTIFIER);
+        }
+
+        if ($ship->getCrewCount() === 0) {
+            $game->addInformation(_('Aktion nicht möglich, keine Crew vorhanden!'));
+            return;
         }
 
         $lastTakeover = $user->getLastBoarding();
