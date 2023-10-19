@@ -10,7 +10,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Orm\Entity\BuildplanModuleInterface;
+use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
@@ -29,6 +31,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     /** @var MockInterface|CreatePrestigeLogInterface */
     private MockInterface $createPrestigeLog;
+
+    /** @var MockInterface|LeaveFleetInterface */
+    private MockInterface $leaveFleet;
 
     /** @var MockInterface|PrivateMessageSenderInterface */
     private MockInterface $privateMessageSender;
@@ -49,6 +54,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->shipTakeoverRepository = $this->mock(ShipTakeoverRepositoryInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
+        $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
 
@@ -60,6 +66,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             $this->shipTakeoverRepository,
             $this->shipRepository,
             $this->createPrestigeLog,
+            $this->leaveFleet,
             $this->privateMessageSender,
             $this->game
         );
@@ -107,7 +114,18 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->assertEquals(69, $result);
     }
 
-    public function testStartTakeover(): void
+    public static function startTakeoverTestData()
+    {
+        return [
+            [false, "Die SHIP von Spieler USER hat mit der Übernahme der TARGET begonnen.\n\n\nÜbernahme erfolgt in 10 Runden."],
+            [true, "Die SHIP von Spieler USER hat mit der Übernahme der TARGET begonnen.\nDie Flotte wurde daher verlassen.\n\nÜbernahme erfolgt in 10 Runden."],
+        ];
+    }
+
+    /**
+     * @dataProvider startTakeoverTestData
+     */
+    public function testStartTakeover(bool $isTargetInFleet, string $expectedMessage): void
     {
         $takeover = $this->mock(ShipTakeoverInterface::class);
         $user = $this->mock(UserInterface::class);
@@ -119,10 +137,18 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->with($this->ship)
             ->once()
             ->andReturnSelf();
+        $takeover->shouldReceive('getSourceShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
         $takeover->shouldReceive('setTargetShip')
             ->with($this->target)
             ->once()
             ->andReturnSelf();
+        $takeover->shouldReceive('getTargetShip')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->target);
         $takeover->shouldReceive('setPrestige')
             ->with(999)
             ->once()
@@ -136,6 +162,9 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->andReturn($user);
         $this->ship->shouldReceive('setTakeoverActive')
             ->with($takeover);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('SHIP');
 
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
@@ -143,9 +172,25 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('TARGET');
+        $this->target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(77);
+        $this->target->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn($isTargetInFleet ? $this->mock(FleetInterface::class) : null);
         $targetUser->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('TARGETUSER');
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(666);
+        $user->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('USER');
+        $targetUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(777);
 
         $this->shipTakeoverRepository->shouldReceive('prototype')
             ->withNoArgs()
@@ -160,12 +205,28 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->once()
             ->andReturn($currentTurn);
 
+        if ($isTargetInFleet) {
+            $this->leaveFleet->shouldReceive('leaveFleet')
+                ->with($this->target)
+                ->once();
+        }
+
         $this->createPrestigeLog->shouldReceive('createLog')
             ->with(
                 -999,
                 '-999 Prestige erhalten für den Start der Übernahme der TARGET von Spieler TARGETUSER',
                 $user,
                 Mockery::any()
+            )
+            ->once();
+
+        $this->privateMessageSender->shouldReceive('send')
+            ->with(
+                666,
+                777,
+                $expectedMessage,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                'ship.php?SHOW_SHIP=1&id=77'
             )
             ->once();
 
