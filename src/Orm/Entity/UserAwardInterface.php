@@ -12,8 +12,6 @@ interface UserAwardInterface
 
     public function setUser(UserInterface $user): UserAwardInterface;
 
-    public function getAwardId(): int;
-
     public function getAward(): AwardInterface;
 
     public function setAward(AwardInterface $award): UserAwardInterface;
