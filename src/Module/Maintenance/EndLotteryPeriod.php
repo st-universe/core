@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Maintenance;
 
-use Stu\Component\Player\UserAwardEnum;
+use Stu\Component\Player\AwardTypeEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -161,7 +161,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
     private function createAwardAndPrestige(UserInterface $user, int $time): void
     {
-        $award = $this->awardRepository->find(UserAwardEnum::LOTTERY_WINNER);
+        $award = $this->awardRepository->find(AwardTypeEnum::LOTTERY_WINNER->value);
 
         if ($award !== null) {
             $this->createUserAward->createAwardForUser(

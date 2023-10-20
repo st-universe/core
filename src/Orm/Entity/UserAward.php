@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Player\AwardTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserAwardRepository")
@@ -35,10 +36,10 @@ class UserAward implements UserAwardInterface
     private int $user_id = 0;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", enumType=AwardTypeEnum::class)
      *
      */
-    private int $award_id;
+    private AwardTypeEnum $award_id;
 
     /**
      *
@@ -73,11 +74,6 @@ class UserAward implements UserAwardInterface
     {
         $this->user = $user;
         return $this;
-    }
-
-    public function getAwardId(): int
-    {
-        return $this->award_id;
     }
 
     public function getAward(): AwardInterface
