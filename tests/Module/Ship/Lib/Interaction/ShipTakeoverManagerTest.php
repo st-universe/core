@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
@@ -18,9 +19,11 @@ use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipTakeoverManagerTest extends StuTestCase
@@ -30,6 +33,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     /** @var MockInterface|ShipRepositoryInterface */
     private MockInterface $shipRepository;
+
+    /** @var MockInterface|StorageRepositoryInterface */
+    private MockInterface $storageRepository;
 
     /** @var MockInterface|CreatePrestigeLogInterface */
     private MockInterface $createPrestigeLog;
@@ -58,6 +64,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         //injected
         $this->shipTakeoverRepository = $this->mock(ShipTakeoverRepositoryInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);
@@ -71,6 +78,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->subject = new ShipTakeoverManager(
             $this->shipTakeoverRepository,
             $this->shipRepository,
+            $this->storageRepository,
             $this->createPrestigeLog,
             $this->leaveFleet,
             $this->entryCreator,
@@ -554,6 +562,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $takeover = $this->mock(ShipTakeoverInterface::class);
         $user = $this->mock(UserInterface::class);
         $targetUser = $this->mock(UserInterface::class);
+        $storage = $this->mock(StorageInterface::class);
 
         $takeover->shouldReceive('getSourceShip')
             ->withNoArgs()
@@ -593,6 +602,9 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($targetUser);
+        $this->target->shouldReceive('getStorage')
+            ->withNoArgs()
+            ->andReturn(new ArrayCollection([$storage]));
         $this->target->shouldReceive('setUser')
             ->with($user)
             ->once();
@@ -613,6 +625,10 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('TARGETUSER');
 
+        $storage->shouldReceive('setUser')
+            ->with($user)
+            ->once();
+
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
             ->once();
@@ -622,6 +638,10 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->once();
         $this->shipRepository->shouldReceive('save')
             ->with($this->target)
+            ->once();
+
+        $this->storageRepository->shouldReceive('save')
+            ->with($storage)
             ->once();
 
         $this->privateMessageSender->shouldReceive('send')
