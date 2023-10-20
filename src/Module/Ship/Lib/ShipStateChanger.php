@@ -99,13 +99,13 @@ final class ShipStateChanger implements ShipStateChangerInterface
             $alertState == ShipAlertStateEnum::ALERT_YELLOW
             && $currentAlertState == ShipAlertStateEnum::ALERT_GREEN
         ) {
-            $this->consumeEnergyForAlertChange($wrapper, 1);
+            $this->consumeEnergyForAlertChange($wrapper, ShipStateChangerInterface::ALERT_YELLOW_EPS_USAGE);
         }
         if (
             $alertState == ShipAlertStateEnum::ALERT_RED
             && $currentAlertState !== ShipAlertStateEnum::ALERT_RED
         ) {
-            $this->consumeEnergyForAlertChange($wrapper, 2);
+            $this->consumeEnergyForAlertChange($wrapper, ShipStateChangerInterface::ALERT_RED_EPS_USAGE);
         }
 
         // cancel repair if not on alert green
