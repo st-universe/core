@@ -79,7 +79,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(9999);
+            ->andReturn(SHIPSTATEENUM::SHIP_STATE_NONE);
         $this->ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
             ->once()
@@ -112,7 +112,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(9999);
+            ->andReturn(SHIPSTATEENUM::SHIP_STATE_NONE);
         $this->ship->shouldReceive('getHoldingWeb')
             ->withNoArgs()
             ->once()
@@ -150,7 +150,7 @@ class TholianWebConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(9999);
+            ->andReturn(SHIPSTATEENUM::SHIP_STATE_NONE);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()

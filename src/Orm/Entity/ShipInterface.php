@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -172,9 +173,9 @@ interface ShipInterface
 
     public function setShieldRegenerationTimer(int $shieldRegenerationTimer): ShipInterface;
 
-    public function getState(): int;
+    public function getState(): ShipStateEnum;
 
-    public function setState(int $state): ShipInterface;
+    public function setState(ShipStateEnum $state): ShipInterface;
 
     public function isUnderRepair(): bool;
 

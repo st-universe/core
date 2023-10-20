@@ -38,7 +38,7 @@ final class ShipStateChanger implements ShipStateChangerInterface
         $this->shipTakeoverManager = $shipTakeoverManager;
     }
 
-    public function changeShipState(ShipWrapperInterface $wrapper, int $newState): void
+    public function changeShipState(ShipWrapperInterface $wrapper, ShipStateEnum $newState): void
     {
         $ship = $wrapper->get();
         $currentState = $ship->getState();

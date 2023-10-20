@@ -2,11 +2,13 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\ShipStateEnum;
+
 interface ShipStateChangerInterface
 {
     public function changeShipState(
         ShipWrapperInterface $wrapper,
-        int $newState
+        ShipStateEnum $newState
     ): void;
 
     public function changeAlertState(

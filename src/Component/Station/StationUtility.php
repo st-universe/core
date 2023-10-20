@@ -24,6 +24,8 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
+use function DI\value;
+
 //TODO unit tests
 final class StationUtility implements StationUtilityInterface
 {
@@ -160,7 +162,7 @@ final class StationUtility implements StationUtilityInterface
             default:
                 throw new RuntimeException(sprintf(
                     'shipState %d of shipId %d is not supported',
-                    $station->getState(),
+                    $station->getState()->value,
                     $station->getId()
                 ));
         }
