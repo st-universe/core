@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\DockFleet;
 
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -124,7 +125,7 @@ final class DockFleet implements ActionControllerInterface
                 continue;
             }
 
-            if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+            if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $station->getName() . _(": Nicht genügend Energie vorhanden");
                 break;
             }
@@ -150,7 +151,7 @@ final class DockFleet implements ActionControllerInterface
 
             $ship->setDockedTo($station);
 
-            $epsSystem->lowerEps(ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
+            $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK);
 
             $this->shipRepository->save($ship);
 

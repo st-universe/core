@@ -103,7 +103,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
     public function testTrigger(
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
-        int $systemId,
+        ShipSystemTypeEnum $systemId,
         bool $hasShipSystem,
         bool $isSystemActive = null,
     ): void {

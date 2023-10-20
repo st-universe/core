@@ -29,7 +29,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $this->shipUndocking = $shipUndocking;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }

@@ -71,7 +71,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
         return $result;
     }
 
-    private function getEnergyUsageForActivation(ShipInterface $ship, int $systemId): int
+    private function getEnergyUsageForActivation(ShipInterface $ship, ShipSystemTypeEnum $systemId): int
     {
         if (!$ship->hasShipSystem($systemId)) {
             return 0;

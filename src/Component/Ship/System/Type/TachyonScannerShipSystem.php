@@ -14,7 +14,7 @@ final class TachyonScannerShipSystem extends AbstractShipSystemType implements S
 
     public const SCAN_EPS_COST = 10;
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER;
     }

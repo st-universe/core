@@ -13,7 +13,7 @@ final class MatrixScannerShipSystem extends AbstractShipSystemType implements Sh
 {
     public const SCAN_EPS_COST = 10;
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER;
     }

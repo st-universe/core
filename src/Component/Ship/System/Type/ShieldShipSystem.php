@@ -24,7 +24,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         $this->shipStateChanger = $shipStateChanger;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_SHIELDS;
     }

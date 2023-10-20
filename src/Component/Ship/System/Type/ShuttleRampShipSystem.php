@@ -20,7 +20,7 @@ final class ShuttleRampShipSystem extends AbstractShipSystemType implements Ship
         $this->shipStorageManager = $shipStorageManager;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP;
     }

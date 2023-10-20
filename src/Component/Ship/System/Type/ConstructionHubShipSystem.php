@@ -22,7 +22,7 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
         $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB;
     }

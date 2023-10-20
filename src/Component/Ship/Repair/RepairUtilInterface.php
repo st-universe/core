@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Ship\Repair;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -27,7 +28,7 @@ interface RepairUtilInterface
 
     public function createRepairTask(
         ShipInterface $ship,
-        int $systemType,
+        ShipSystemTypeEnum $systemType,
         int $repairType,
         int $finishTime
     ): void;
@@ -35,9 +36,9 @@ interface RepairUtilInterface
     public function determineHealingPercentage(int $repairType): int;
 
     public function instantSelfRepair(
-        $ship,
-        $systemType,
-        $healingPercentage
+        ShipInterface $ship,
+        ShipSystemTypeEnum $type,
+        int $healingPercentage
     ): bool;
 
     public function selfRepair(

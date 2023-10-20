@@ -53,7 +53,7 @@ class ShipSystemManagerTest extends StuTestCase
      */
     private $stuTimeMock;
 
-    private $system_id = 666;
+    private $system_id = ShipSystemTypeEnum::SYSTEM_EPS;
 
     /**
      * @var ShipSystemManager|null
@@ -70,7 +70,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->stuTimeMock = $this->mock(StuTime::class);
 
         $this->manager = new ShipSystemManager([
-            $this->system_id => $this->systemType,
+            $this->system_id->value => $this->systemType,
         ], $this->stuTimeMock);
     }
 
@@ -105,7 +105,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper
         $this->wrapper->shouldReceive('get')
@@ -133,7 +133,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper
         $this->wrapper->shouldReceive('get')
@@ -166,7 +166,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper
         $this->wrapper->shouldReceive('get')
@@ -199,7 +199,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -239,7 +239,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper and eps
         $this->wrapper->shouldReceive('get')
@@ -293,7 +293,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper and eps
         $this->wrapper->shouldReceive('get')
@@ -357,7 +357,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper and eps
         $this->wrapper->shouldReceive('get')
@@ -430,7 +430,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper and eps
         $this->wrapper->shouldReceive('get')
@@ -510,7 +510,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
 
         //wrapper and eps
         $this->wrapper->shouldReceive('get')
@@ -562,7 +562,7 @@ class ShipSystemManagerTest extends StuTestCase
     {
         $this->expectException(InvalidSystemException::class);
 
-        $this->manager->deactivate($this->wrapper, 42);
+        $this->manager->deactivate($this->wrapper, ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR);
     }
 
     public function testDeactivateErrorsOnNotDeactivatable(): void
@@ -572,7 +572,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
         $this->shipSystem->shouldReceive('getMode')
             ->withNoArgs()
             ->once()
@@ -593,7 +593,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
         $this->shipSystem->shouldReceive('getMode')
             ->withNoArgs()
             ->once()
@@ -614,7 +614,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
         $this->shipSystem->shouldReceive('getMode')
             ->withNoArgs()
             ->once()
@@ -642,7 +642,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
         $this->systemType->shouldReceive('checkDeactivationConditions')
             ->with($this->wrapper, Mockery::any())
             ->once()

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Module\Tal\TalStatusBarInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -24,8 +25,8 @@ abstract class AbstractSystemData
      * updates the system metadata for this specific ship system
      */
     protected function updateSystemData(
-        int $systemType,
-        $data,
+        ShipSystemTypeEnum $systemType,
+        AbstractSystemData $data,
         ShipSystemRepositoryInterface $shipSystemRepository
     ): void {
         $system = $this->ship->getShipSystem($systemType);

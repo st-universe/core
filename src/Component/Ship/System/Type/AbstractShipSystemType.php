@@ -6,6 +6,7 @@ namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Ship\System\ShipSystemPriorities;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -24,7 +25,7 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
      * updates the system metadata for this specific ship system
      */
     protected function updateSystemData(
-        int $systemType,
+        ShipSystemTypeEnum $systemType,
         $data,
         ShipSystemRepositoryInterface $shipSystemRepository
     ): void {
@@ -33,7 +34,7 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         $shipSystemRepository->save($system);
     }
 
-    abstract public function getSystemType(): int;
+    abstract public function getSystemType(): ShipSystemTypeEnum;
 
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
@@ -62,11 +63,11 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 
     public function getPriority(): int
     {
-        if (array_key_exists($this->getSystemType(), ShipSystemTypeEnum::SYSTEM_PRIORITIES)) {
-            return ShipSystemTypeEnum::SYSTEM_PRIORITIES[$this->getSystemType()];
+        if (array_key_exists($this->getSystemType()->value, ShipSystemPriorities::PRIORITIES)) {
+            return ShipSystemPriorities::PRIORITIES[$this->getSystemType()->value];
         }
 
-        return ShipSystemTypeEnum::SYSTEM_PRIORITY_STANDARD;
+        return ShipSystemPriorities::PRIORITY_STANDARD;
     }
 
     public function getEnergyConsumption(): int

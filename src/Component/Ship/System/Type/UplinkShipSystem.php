@@ -12,7 +12,7 @@ final class UplinkShipSystem extends AbstractShipSystemType implements ShipSyste
 {
     public const MAX_FOREIGNERS = 3;
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_UPLINK;
     }

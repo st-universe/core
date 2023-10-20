@@ -24,7 +24,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         $this->shipStateChanger = $shipStateChanger;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_CLOAK;
     }

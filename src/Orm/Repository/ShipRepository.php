@@ -180,7 +180,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
             ->setParameters([
                 'mapId' => $starSystemMap === null ? $map->getId() : $starSystemMap->getId(),
-                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
             ])
             ->getResult();
     }
@@ -256,8 +256,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'alertRed' => ShipAlertStateEnum::ALERT_RED,
             'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
             'ignoreId' => $ship->getUser()->getId(),
-            'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
-            'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
+            'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE->value,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
         ])->getResult();
     }
@@ -310,7 +310,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'userId' => $userId,
-            'systemType' => ShipSystemTypeEnum::SYSTEM_UPLINK,
+            'systemType' => ShipSystemTypeEnum::SYSTEM_UPLINK->value,
             'mode' => ShipSystemModeEnum::MODE_ON,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
         ])
@@ -362,7 +362,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 Anomaly::class
             )
         )->setParameters([
-            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS->value,
             'modeOn' => ShipSystemModeEnum::MODE_ON,
             'regenerationThreshold' => $regenerationThreshold,
             'destroyedState' => 0,
@@ -566,7 +566,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $system !== null ? $system->getMaxX() : $map->getSx() + $sensorRange,
             'syStart' => $system !== null ? 1 : $map->getSy() - $sensorRange,
             'syEnd' => $system !== null ? $system->getMaxY() : $map->getSy() + $sensorRange,
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
             'active' => 1,
             'shieldBuilding' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
         ])->getResult();
@@ -665,7 +665,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
             'layerId' => $layerId,
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
         ])->getResult();
     }
 
@@ -857,10 +857,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'fieldId' => $mapId ?? $sysMapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
-            'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
-            'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
-            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK
+            'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
+            'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE->value,
+            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS->value,
+            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK->value
         ])->getResult();
     }
 
@@ -918,10 +918,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'fieldId' => $mapId ?? $sysMapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
             'types' => $types,
-            'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
-            'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
-            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK
+            'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
+            'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE->value,
+            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS->value,
+            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK->value
         ])->getResult();
     }
 
@@ -974,7 +974,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                             AND ss.system_type = %d
                             AND ss.mode > 1) ',
             ShipSystem::class,
-            ShipSystemTypeEnum::SYSTEM_CLOAK
+            ShipSystemTypeEnum::SYSTEM_CLOAK->value
         );
 
         $result = $this->getEntityManager()->createQuery(

@@ -40,13 +40,13 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $this->stuTime = $stuTime;
     }
 
-    public function activate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type, bool $force = false): void
     {
         $time = $this->stuTime->time();
-        $system = $this->lookupSystem($shipSystemId);
+        $system = $this->lookupSystem($type);
 
         if (!$force) {
-            $this->checkActivationConditions($wrapper, $system, $shipSystemId, $time);
+            $this->checkActivationConditions($wrapper, $system, $type, $time);
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
@@ -55,7 +55,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
 
         //cooldown
-        $shipSystem = $wrapper->get()->getSystems()[$shipSystemId] ?? null;
+        $shipSystem = $wrapper->get()->getSystems()[$type->value] ?? null;
         if ($shipSystem !== null && $system->getCooldownSeconds() !== null) {
             $shipSystem->setCooldown($time + $system->getCooldownSeconds());
         }
@@ -63,12 +63,12 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system->activate($wrapper, $this);
     }
 
-    public function deactivate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void
+    public function deactivate(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type, bool $force = false): void
     {
-        $system = $this->lookupSystem($shipSystemId);
+        $system = $this->lookupSystem($type);
 
         if (!$force) {
-            $this->checkDeactivationConditions($wrapper, $system, $shipSystemId);
+            $this->checkDeactivationConditions($wrapper, $system, $type);
         }
 
         $system->deactivate($wrapper);
@@ -85,23 +85,23 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
     }
 
-    public function getEnergyUsageForActivation(int $shipSystemId): int
+    public function getEnergyUsageForActivation(ShipSystemTypeEnum $type): int
     {
-        $system = $this->lookupSystem($shipSystemId);
+        $system = $this->lookupSystem($type);
 
         return $system->getEnergyUsageForActivation();
     }
 
-    public function getEnergyConsumption(int $shipSystemId): int
+    public function getEnergyConsumption(ShipSystemTypeEnum $type): int
     {
-        $system = $this->lookupSystem($shipSystemId);
+        $system = $this->lookupSystem($type);
 
         return $system->getEnergyConsumption();
     }
 
-    public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface
+    public function lookupSystem(ShipSystemTypeEnum $type): ShipSystemTypeInterface
     {
-        $system = $this->systemList[$shipSystemId] ?? null;
+        $system = $this->systemList[$type->value] ?? null;
         if ($system === null) {
             throw new InvalidSystemException();
         }
@@ -112,11 +112,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     private function checkActivationConditions(
         ShipWrapperInterface $wrapper,
         ShipSystemTypeInterface $system,
-        int $shipSystemId,
+        ShipSystemTypeEnum $type,
         int $time
     ): void {
         $ship = $wrapper->get();
-        $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
+        $shipSystem = $ship->getSystems()[$type->value] ?? null;
         if ($shipSystem === null) {
             throw new SystemNotFoundException();
         }
@@ -160,10 +160,10 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     private function checkDeactivationConditions(
         ShipWrapperInterface $wrapper,
         ShipSystemTypeInterface $system,
-        int $shipSystemId
+        ShipSystemTypeEnum $type
     ): void {
         $ship = $wrapper->get();
-        $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
+        $shipSystem = $ship->getSystems()[$type->value] ?? null;
         if ($shipSystem === null) {
             throw new SystemNotFoundException();
         }
@@ -186,16 +186,16 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
     }
 
-    public function handleDestroyedSystem(ShipWrapperInterface $wrapper, int $shipSystemId): void
+    public function handleDestroyedSystem(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type): void
     {
-        $system = $this->lookupSystem($shipSystemId);
+        $system = $this->lookupSystem($type);
 
         $system->handleDestruction($wrapper);
     }
 
-    public function handleDamagedSystem(ShipWrapperInterface $wrapper, int $shipSystemId): void
+    public function handleDamagedSystem(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type): void
     {
-        $system = $this->lookupSystem($shipSystemId);
+        $system = $this->lookupSystem($type);
 
         $system->handleDamage($wrapper);
     }
@@ -208,7 +208,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             if ($system->getMode() > 1) {
                 $activeSystems[] = $system;
                 if ($sort) {
-                    $prioArray[$system->getSystemType()] = $this->lookupSystem($system->getSystemType())->getPriority();
+                    $prioArray[$system->getSystemType()->value] = $this->lookupSystem($system->getSystemType())->getPriority();
                 }
             }
         }
@@ -216,7 +216,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if ($sort) {
             usort(
                 $activeSystems,
-                fn (ShipSystemInterface $a, ShipSystemInterface $b): int => $prioArray[$a->getSystemType()] <=> $prioArray[$b->getSystemType()]
+                fn (ShipSystemInterface $a, ShipSystemInterface $b): int => $prioArray[$a->getSystemType()->value] <=> $prioArray[$b->getSystemType()->value]
             );
         }
 

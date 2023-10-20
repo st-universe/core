@@ -44,10 +44,10 @@ class ShipSystem implements ShipSystemInterface
     private int $ship_id = 0;
 
     /**
-     * @Column(type="smallint")
+     * @Column(type="smallint", enumType=ShipSystemTypeEnum::class)
      *
      */
-    private int $system_type = 0;
+    private ShipSystemTypeEnum $system_type = ShipSystemTypeEnum::SYSTEM_HULL;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -96,14 +96,14 @@ class ShipSystem implements ShipSystemInterface
         return $this->id;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return $this->system_type;
     }
 
-    public function setSystemType(int $systemType): ShipSystemInterface
+    public function setSystemType(ShipSystemTypeEnum $type): ShipSystemInterface
     {
-        $this->system_type = $systemType;
+        $this->system_type = $type;
 
         return $this;
     }

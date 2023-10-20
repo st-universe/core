@@ -30,7 +30,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
     }
 
     public function createSystemData(
-        int $systemType,
+        ShipSystemTypeEnum $systemType,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ): AbstractSystemData {
         switch ($systemType) {
@@ -57,6 +57,6 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                 return  new WarpCoreSystemData($this->shipSystemRepository);
         }
 
-        throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType));
+        throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value));
     }
 }

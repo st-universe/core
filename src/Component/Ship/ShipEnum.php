@@ -14,6 +14,7 @@ final class ShipEnum
     public const DOCK_PRIVILEGE_USER = 1;
     public const DOCK_PRIVILEGE_ALLIANCE = 2;
     public const DOCK_PRIVILEGE_FACTION = 3;
+    public const SYSTEM_ECOST_DOCK = 1;
 
     //damage stuff
     public const DAMAGE_MODE_HULL = 1;

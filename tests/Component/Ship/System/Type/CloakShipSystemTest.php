@@ -180,18 +180,18 @@ class CloakShipSystemTest extends StuTestCase
 
         //SYSTEMS TO SHUTDOWN
         $systemTypes = [
-            ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY => $this->mock(ShipSystemInterface::class),
-            ShipSystemTypeEnum::SYSTEM_SHIELDS => $this->mock(ShipSystemInterface::class),
-            ShipSystemTypeEnum::SYSTEM_PHASER => $this->mock(ShipSystemInterface::class),
-            ShipSystemTypeEnum::SYSTEM_TORPEDO => $this->mock(ShipSystemInterface::class),
+            ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY->value => $this->mock(ShipSystemInterface::class),
+            ShipSystemTypeEnum::SYSTEM_SHIELDS->value => $this->mock(ShipSystemInterface::class),
+            ShipSystemTypeEnum::SYSTEM_PHASER->value => $this->mock(ShipSystemInterface::class),
+            ShipSystemTypeEnum::SYSTEM_TORPEDO->value => $this->mock(ShipSystemInterface::class),
         ];
         foreach ($systemTypes as $systemType => $system) {
             $this->ship->shouldReceive('hasShipSystem')
-                ->with($systemType)
+                ->with(ShipSystemTypeEnum::from($systemType))
                 ->once()
                 ->andReturnTrue();
             $this->ship->shouldReceive('getShipSystem')
-                ->with($systemType)
+                ->with(ShipSystemTypeEnum::from($systemType))
                 ->once()
                 ->andReturn($system);
             $system->shouldReceive('setMode')

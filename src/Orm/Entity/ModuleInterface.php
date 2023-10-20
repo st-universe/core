@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 interface ModuleInterface
 {
@@ -97,5 +98,5 @@ interface ModuleInterface
 
     public function setFactionId(int $factionId): ?ModuleInterface;
 
-    public function getSystemType(): ?int;
+    public function getSystemType(): ?ShipSystemTypeEnum;
 }

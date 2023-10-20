@@ -648,7 +648,7 @@
               <td style="width: 450px;">
                 <div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
                   <img title="${data/getName}" class="${data/getCssClass}"
-                    src="assets/system/${data/getSystemType}.png" />
+                    src="assets/system/${data/getSystemType/value}.png" />
                   ${data/getStatus}%
                 </div>
               </td>
@@ -1016,7 +1016,7 @@
         <div class="divbody">
           <div tal:repeat="data SHIP/getSystems">
             <img style="vertical-align: middle" title="${data/getName}" class="${data/getCssClass}"
-              src="assets/system/${data/getSystemType}.png" />
+              src="assets/system/${data/getSystemType/value}.png" />
             ${data/getName}: ${data/getStatus}%
           </div>
         </div>
@@ -1348,7 +1348,8 @@
               <td>
                 <select name="sid" id="systemSelect" style="width:100%;">
                   <tal:block tal:repeat="data REPAIR_OPTIONS">
-                    <option tal:attributes="value data/getSystemType;"><span tal:replace="data/getName">NAME</span>,
+                    <option tal:attributes="value data/getSystemType/value;"><span
+                        tal:replace="data/getName">NAME</span>,
                       aktuell: <span tal:replace="data/getStatus">STATUS</span>%</option>
                   </tal:block>
                 </select>

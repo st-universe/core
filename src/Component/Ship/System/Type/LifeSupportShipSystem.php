@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class LifeSupportShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT;
     }

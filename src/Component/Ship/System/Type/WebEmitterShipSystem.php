@@ -21,7 +21,7 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
         $this->tholianWebUtil = $tholianWebUtil;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB;
     }

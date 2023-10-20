@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\DockTractoredShip;
 
 use request;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -63,7 +64,7 @@ final class DockTractoredShip implements ActionControllerInterface
 
         //check for energy
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+        if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }

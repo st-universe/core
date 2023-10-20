@@ -2,13 +2,15 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+
 interface ShipSystemInterface
 {
     public function getId(): int;
 
-    public function getSystemType(): int;
+    public function getSystemType(): ShipSystemTypeEnum;
 
-    public function setSystemType(int $systemType): ShipSystemInterface;
+    public function setSystemType(ShipSystemTypeEnum $type): ShipSystemInterface;
 
     public function getModuleId(): int;
 

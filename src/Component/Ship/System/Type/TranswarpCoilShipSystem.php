@@ -10,7 +10,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class TranswarpCoilShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL;
     }

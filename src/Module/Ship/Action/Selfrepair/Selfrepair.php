@@ -57,22 +57,24 @@ final class Selfrepair implements ActionControllerInterface
         }
 
         $repairType = request::postInt('partschoice');
-        $systemType = request::postInt('sid');
+        $sid = request::postInt('sid');
 
         if ($repairType === 0) {
             $game->addInformation(_('Es muss ausgewählt werden, welche Teile verwenden werden sollen.'));
         }
 
-        if ($systemType === 0) {
+        if ($sid === 0) {
             $game->addInformation(_('Es muss ausgewählt werden, welches System repariert werden soll.'));
         }
+
+        $systemType = ShipSystemTypeEnum::from($sid);
 
         if ($repairType < RepairTaskEnum::SPARE_PARTS_ONLY || $repairType > RepairTaskEnum::BOTH) {
             return;
         }
 
         $repairOptions = $this->repairUtil->determineRepairOptions($wrapper);
-        if (!array_key_exists($systemType, $repairOptions)) {
+        if (!array_key_exists($systemType->value, $repairOptions)) {
             return;
         }
 

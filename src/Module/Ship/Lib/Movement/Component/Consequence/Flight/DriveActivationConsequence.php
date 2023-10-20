@@ -61,7 +61,7 @@ class DriveActivationConsequence extends AbstractFlightConsequence
 
     private function activate(
         ShipWrapperInterface $wrapper,
-        int $systemId,
+        ShipSystemTypeEnum $systemId,
         MessageInterface $message
     ): void {
         $ship = $wrapper->get();

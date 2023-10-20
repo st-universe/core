@@ -2,33 +2,34 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 
 interface ActivatorDeactivatorHelperInterface
 {
     public function activate(
         ShipWrapperInterface|int $shipId,
-        int $systemId,
+        ShipSystemTypeEnum $type,
         GameControllerInterface $game,
         bool $allowUplink = false
     ): bool;
 
     public function activateFleet(
         int $shipId,
-        int $systemId,
+        ShipSystemTypeEnum $systemId,
         GameControllerInterface $game
     ): void;
 
     public function deactivate(
         ShipWrapperInterface|int $shipId,
-        int $systemId,
+        shipSystemTypeEnum $type,
         GameControllerInterface $game,
         bool $allowUplink = false
     ): bool;
 
     public function deactivateFleet(
         int $shipId,
-        int $systemId,
+        shipSystemTypeEnum $type,
         GameControllerInterface $game
     ): void;
 
