@@ -141,10 +141,10 @@ final class ShipWrapper implements ShipWrapperInterface
         }
 
         if ($this->get()->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
-            $result += ShipAlertStateEnum::ALERT_YELLOW_EPS_USAGE;
+            $result += ShipStateChangerInterface::ALERT_YELLOW_EPS_USAGE;
         }
         if ($this->get()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-            $result += ShipAlertStateEnum::ALERT_RED_EPS_USAGE;
+            $result += ShipStateChangerInterface::ALERT_RED_EPS_USAGE;
         }
 
         return $result;
