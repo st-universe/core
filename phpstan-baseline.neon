@@ -44,21 +44,6 @@ parameters:
 			path: src/Component/Ship/Repair/RepairUtil.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:instantSelfRepair\\(\\) has parameter \\$healingPercentage with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:instantSelfRepair\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:instantSelfRepair\\(\\) has parameter \\$systemType with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:sendNeededAmountMessage\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtil.php
@@ -82,26 +67,6 @@ parameters:
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:enoughSparePartsOnEntity\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:instantSelfRepair\\(\\) has parameter \\$healingPercentage with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:instantSelfRepair\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:instantSelfRepair\\(\\) has parameter \\$systemType with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\AbstractSystemData\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/AbstractSystemData.php
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\AbstractShipSystemType\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
