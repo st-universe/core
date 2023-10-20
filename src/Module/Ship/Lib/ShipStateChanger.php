@@ -81,7 +81,7 @@ final class ShipStateChanger implements ShipStateChangerInterface
 
     public function changeAlertState(
         ShipWrapperInterface $wrapper,
-        int $alertState
+        ShipAlertStateEnum $alertState
     ): ?string {
         $ship = $wrapper->get();
 

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 
@@ -41,13 +42,13 @@ interface ActivatorDeactivatorHelperInterface
 
     public function setAlertState(
         int $shipId,
-        int $alertState,
+        ShipAlertStateEnum $alertState,
         GameControllerInterface $game
     ): void;
 
     public function setAlertStateFleet(
         int $shipId,
-        int $alertState,
+        ShipAlertStateEnum $alertState,
         GameControllerInterface $game
     ): void;
 

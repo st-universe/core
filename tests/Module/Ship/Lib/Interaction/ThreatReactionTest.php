@@ -109,7 +109,7 @@ class ThreatReactionTest extends StuTestCase
         $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturn(424242);
+            ->andReturn(SHIPALERTSTATEENUM::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
@@ -137,7 +137,7 @@ class ThreatReactionTest extends StuTestCase
         $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturn(424242);
+            ->andReturn(SHIPALERTSTATEENUM::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);
@@ -170,7 +170,7 @@ class ThreatReactionTest extends StuTestCase
         $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturn(424242);
+            ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);
@@ -229,7 +229,7 @@ class ThreatReactionTest extends StuTestCase
         $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturn(424242);
+            ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);

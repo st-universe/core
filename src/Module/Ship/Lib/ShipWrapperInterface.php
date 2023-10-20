@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
@@ -34,7 +35,7 @@ interface ShipWrapperInterface
 
     public function getWarpcoreUsage(): int;
 
-    public function setAlertState(int $alertState): ?string;
+    public function setAlertState(ShipAlertStateEnum $alertState): ?string;
 
     /**
      * highest damage first, then prio

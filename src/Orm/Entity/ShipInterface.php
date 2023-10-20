@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Map\Location;
@@ -56,9 +57,9 @@ interface ShipInterface
 
     public function setLSSMode(int $lssMode): ShipInterface;
 
-    public function getAlertState(): int;
+    public function getAlertState(): ShipAlertStateEnum;
 
-    public function setAlertState(int $alvl): ShipInterface;
+    public function setAlertState(ShipAlertStateEnum $alertState): ShipInterface;
 
     public function setAlertStateGreen(): ShipInterface;
 

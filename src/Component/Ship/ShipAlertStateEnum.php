@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship;
 
-final class ShipAlertStateEnum
+enum ShipAlertStateEnum: int
 {
-    // alert states
-    public const ALERT_GREEN = 1;
-    public const ALERT_YELLOW = 2;
-    public const ALERT_RED = 3;
+    case ALERT_GREEN = 1;
+    case ALERT_YELLOW = 2;
+    case ALERT_RED = 3;
 
-    public static function getDescription(int $alertState): string
+    public static function getDescription(ShipAlertStateEnum $alertState): string
     {
         switch ($alertState) {
             case ShipAlertStateEnum::ALERT_GREEN:
