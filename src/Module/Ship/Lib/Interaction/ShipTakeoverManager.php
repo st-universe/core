@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Interaction;
 
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -29,6 +30,8 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     private LeaveFleetInterface $leaveFleet;
 
+    private EntryCreatorInterface $entryCreator;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private GameControllerInterface $game;
@@ -38,6 +41,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         ShipRepositoryInterface $shipRepository,
         CreatePrestigeLogInterface $createPrestigeLog,
         LeaveFleetInterface $leaveFleet,
+        EntryCreatorInterface $entryCreator,
         PrivateMessageSenderInterface $privateMessageSender,
         GameControllerInterface $game
     ) {
@@ -45,6 +49,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $this->shipRepository = $shipRepository;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->leaveFleet = $leaveFleet;
+        $this->entryCreator = $entryCreator;
         $this->privateMessageSender = $privateMessageSender;
         $this->game = $game;
     }
@@ -262,12 +267,13 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     {
         $sourceUser = $takeover->getSourceShip()->getUser();
         $targetShip = $takeover->getTargetShip();
+        $targetUser = $targetShip->getUser();
 
         // message to previous owner of target ship
         $this->sendFinishedPm(
             $takeover,
             $sourceUser->getId(),
-            $targetShip->getUser(),
+            $targetUser,
             sprintf(
                 'Die %s wurde von Spieler %s übernommen',
                 $targetShip->getName(),
@@ -284,10 +290,19 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             sprintf(
                 'Die %s von Spieler %s wurde übernommen',
                 $targetShip->getName(),
-                $targetShip->getUser()->getName()
+                $targetUser->getName()
             ),
             true
         );
+
+        $this->entryCreator->addShipEntry(sprintf(
+            _('Die %s (%s) von Spieler %s wurde in Sektor %s durch %s übernommen'),
+            $targetShip->getName(),
+            $targetShip->getRump()->getName(),
+            $targetUser->getName(),
+            $targetShip->getSectorString(),
+            $sourceUser->getName()
+        ));
 
         $targetShip->setUser($sourceUser);
         $this->shipRepository->save($targetShip);

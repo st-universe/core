@@ -8,6 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -36,6 +37,9 @@ class ShipTakeoverManagerTest extends StuTestCase
     /** @var MockInterface|LeaveFleetInterface */
     private MockInterface $leaveFleet;
 
+    /** @var MockInterface|EntryCreatorInterface */
+    private MockInterface $entryCreator;
+
     /** @var MockInterface|PrivateMessageSenderInterface */
     private MockInterface $privateMessageSender;
 
@@ -56,6 +60,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
+        $this->entryCreator = $this->mock(EntryCreatorInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
 
@@ -68,6 +73,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             $this->shipRepository,
             $this->createPrestigeLog,
             $this->leaveFleet,
+            $this->entryCreator,
             $this->privateMessageSender,
             $this->game
         );
@@ -592,6 +598,14 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->once();
         $this->target->shouldReceive('setTakeoverPassive')
             ->with(null);
+        $this->target->shouldReceive('getRump->getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('RUMP');
+        $this->target->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR');
         $targetUser->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(777);
@@ -627,6 +641,10 @@ class ShipTakeoverManagerTest extends StuTestCase
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=2'
             )
+            ->once();
+
+        $this->entryCreator->shouldReceive('addShipEntry')
+            ->with('Die TARGET (RUMP) von Spieler TARGETUSER wurde in Sektor SECTOR durch USER übernommen')
             ->once();
 
         $this->subject->finishTakeover($takeover);
