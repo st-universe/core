@@ -64,7 +64,7 @@ class HealthyDriveConditionTest extends StuTestCase
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
         bool $isTranswarpNeeded,
-        int $systemId,
+        ShipSystemTypeEnum $systemId,
         bool $hasShipSystem,
         bool $isSystemHealthy = null
     ): void {

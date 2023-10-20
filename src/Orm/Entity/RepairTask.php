@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\RepairTaskRepository")
@@ -47,10 +48,10 @@ class RepairTask implements RepairTaskInterface
     private int $finish_time = 0;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="integer", enumType=ShipSystemTypeEnum::class)
      *
      */
-    private int $system_type = 0;
+    private ShipSystemTypeEnum $system_type = ShipSystemTypeEnum::SYSTEM_HULL;
 
     /**
      * @Column(type="integer")
@@ -110,14 +111,14 @@ class RepairTask implements RepairTaskInterface
         return $this;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return $this->system_type;
     }
 
-    public function setSystemType(int $systemType): RepairTaskInterface
+    public function setSystemType(ShipSystemTypeEnum $type): RepairTaskInterface
     {
-        $this->system_type = $systemType;
+        $this->system_type = $type;
         return $this;
     }
 

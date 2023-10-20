@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -127,7 +128,7 @@ final class DockShip implements ActionControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+        if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
@@ -185,7 +186,7 @@ final class DockShip implements ActionControllerInterface
             }
 
             $epsSystem = $fleetShipWrapper->getEpsSystemData();
-            if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+            if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
@@ -211,7 +212,7 @@ final class DockShip implements ActionControllerInterface
 
             $fleetShip->setDockedTo($target);
 
-            $epsSystem->lowerEps(ShipSystemTypeEnum::SYSTEM_ECOST_DOCK)->update();
+            $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK)->update();
 
             $this->shipLoader->save($fleetShip);
 

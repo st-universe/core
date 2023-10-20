@@ -22,7 +22,7 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
         $this->crewRepository = $crewRepository;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS;
     }

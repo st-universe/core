@@ -30,6 +30,7 @@ final class ShipModuleTypeEnum
     public const MODULE_OPTIONAL = 0;
     public const MODULE_MANDATORY = 1;
 
+    /** @var array<int, ShipSystemTypeEnum> */
     public const MODULE_TYPE_TO_SYSTEM_TYPE = [
         ShipModuleTypeEnum::MODULE_TYPE_SHIELDS => ShipSystemTypeEnum::SYSTEM_SHIELDS,
         ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,

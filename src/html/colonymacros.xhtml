@@ -1756,7 +1756,7 @@
       </td>
       <td style="text-align: center; vertical-align: middle">
         <img tal:repeat="sys wrapper/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"
-          style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.png" />
+          style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType/value}.png" />
       </td>
       <td>
         <a href="?id=${COLONY/getId}&B_CANCEL_REPAIR=1&shipid=${wrapper/get/getId}&sstr=${THIS/getSessionString}"

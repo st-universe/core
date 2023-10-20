@@ -4,6 +4,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -61,9 +62,9 @@ interface ShipInterface
 
     public function setAlertStateGreen(): ShipInterface;
 
-    public function isSystemHealthy(int $systemId): bool;
+    public function isSystemHealthy(ShipSystemTypeEnum $type): bool;
 
-    public function getSystemState(int $systemId): bool;
+    public function getSystemState(ShipSystemTypeEnum $type): bool;
 
     public function getImpulseState(): bool;
 
@@ -323,12 +324,9 @@ interface ShipInterface
      */
     public function getSystems(): Collection;
 
-    /**
-     * with ShipSystemTypeEnum
-     */
-    public function hasShipSystem(int $systemType): bool;
+    public function hasShipSystem(ShipSystemTypeEnum $type): bool;
 
-    public function getShipSystem(int $systemType): ShipSystemInterface;
+    public function getShipSystem(ShipSystemTypeEnum $type): ShipSystemInterface;
 
     /**
      * @return ShipSystemInterface[]

@@ -12,7 +12,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class BeamBlockerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER;
     }

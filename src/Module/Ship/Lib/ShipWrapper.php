@@ -232,7 +232,7 @@ final class ShipWrapper implements ShipWrapperInterface
         foreach ($this->get()->getSystems() as $system) {
             if ($system->getStatus() < 100) {
                 $damagedSystems[] = $system;
-                $prioArray[$system->getSystemType()] = $this->shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
+                $prioArray[$system->getSystemType()->value] = $this->shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
             }
         }
 
@@ -241,7 +241,7 @@ final class ShipWrapper implements ShipWrapperInterface
             $damagedSystems,
             function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
                 if ($a->getStatus() === $b->getStatus()) {
-                    return $prioArray[$b->getSystemType()] <=> $prioArray[$a->getSystemType()];
+                    return $prioArray[$b->getSystemType()->value] <=> $prioArray[$a->getSystemType()->value];
                 }
                 return ($a->getStatus() < $b->getStatus()) ? -1 : 1;
             }
@@ -514,7 +514,7 @@ final class ShipWrapper implements ShipWrapperInterface
      *
      * @return T|null
      */
-    private function getSpecificShipSystem(int $systemType, string $className)
+    private function getSpecificShipSystem(ShipSystemTypeEnum $systemType, string $className)
     {
         if (
             $systemType !== ShipSystemTypeEnum::SYSTEM_HULL
@@ -524,16 +524,16 @@ final class ShipWrapper implements ShipWrapperInterface
         }
 
         //add system to cache if not already deserialized
-        if (!array_key_exists($systemType, $this->shipSystemDataCache)) {
+        if (!array_key_exists($systemType->value, $this->shipSystemDataCache)) {
             $systemData = $this->shipSystemDataFactory->createSystemData($systemType, $this->shipWrapperFactory);
             $systemData->setShip($this->get());
 
             $data = $systemType === ShipSystemTypeEnum::SYSTEM_HULL ? null : $this->get()->getShipSystem($systemType)->getData();
 
             if ($data === null) {
-                $this->shipSystemDataCache[$systemType] = $systemData;
+                $this->shipSystemDataCache[$systemType->value] = $systemData;
             } else {
-                $this->shipSystemDataCache[$systemType] =
+                $this->shipSystemDataCache[$systemType->value] =
                     $this->jsonMapper->mapObjectFromString(
                         $data,
                         $systemData
@@ -542,7 +542,7 @@ final class ShipWrapper implements ShipWrapperInterface
         }
 
         //load deserialized system from cache
-        $cacheItem = $this->shipSystemDataCache[$systemType];
+        $cacheItem = $this->shipSystemDataCache[$systemType->value];
         if (!$cacheItem instanceof $className) {
             throw new RuntimeException('this should not happen');
         }

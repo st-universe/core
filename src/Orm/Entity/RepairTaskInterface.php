@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+
 interface RepairTaskInterface
 {
     public function getId(): int;
@@ -18,9 +20,9 @@ interface RepairTaskInterface
 
     public function setFinishTime(int $finishTime): RepairTaskInterface;
 
-    public function getSystemType(): int;
+    public function getSystemType(): ShipSystemTypeEnum;
 
-    public function setSystemType(int $systemType): RepairTaskInterface;
+    public function setSystemType(ShipSystemTypeEnum $type): RepairTaskInterface;
 
     public function getHealingPercentage(): int;
 

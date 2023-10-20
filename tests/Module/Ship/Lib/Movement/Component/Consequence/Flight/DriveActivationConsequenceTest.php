@@ -105,7 +105,7 @@ class DriveActivationConsequenceTest extends StuTestCase
         bool $isWarpdriveNeeded,
         bool $isTranswarpNeeded,
         bool $currentSystemState,
-        int $expectedSystemId
+        ShipSystemTypeEnum $expectedSystemId
     ): void {
         $messages = $this->mock(MessageCollectionInterface::class);
 

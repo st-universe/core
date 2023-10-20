@@ -13,7 +13,7 @@ final class TorpedoStorageShipSystem extends AbstractShipSystemType implements S
 {
     public const TORPEDO_CAPACITY = 200;
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE;
     }

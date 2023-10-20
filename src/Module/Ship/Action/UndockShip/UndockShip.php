@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\UndockShip;
 
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -73,7 +74,7 @@ final class UndockShip implements ActionControllerInterface
                 }
 
                 $epsSystem = $wrapper->getEpsSystemData();
-                if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+                if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                     continue;
                 }
@@ -82,7 +83,7 @@ final class UndockShip implements ActionControllerInterface
                     continue;
                 }
                 $ship->setDockedTo(null);
-                $epsSystem->lowerEps(ShipSystemTypeEnum::SYSTEM_ECOST_DOCK)->update();
+                $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK)->update();
 
                 $this->shipRepository->save($ship);
             }

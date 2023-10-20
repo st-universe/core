@@ -10,7 +10,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class SubspaceSensorShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER;
     }

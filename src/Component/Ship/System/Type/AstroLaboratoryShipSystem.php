@@ -24,7 +24,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         $this->astroEntryLib = $astroEntryLib;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
     }

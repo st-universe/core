@@ -575,23 +575,23 @@ class Ship implements ShipInterface
         return $this->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
     }
 
-    public function isSystemHealthy(int $systemId): bool
+    public function isSystemHealthy(ShipSystemTypeEnum $type): bool
     {
-        if (!$this->hasShipSystem($systemId)) {
+        if (!$this->hasShipSystem($type)) {
             return false;
         }
 
-        return $this->getShipSystem($systemId)->getStatus() > 0;
+        return $this->getShipSystem($type)->getStatus() > 0;
     }
 
-    public function getSystemState(int $systemId): bool
+    public function getSystemState(ShipSystemTypeEnum $type): bool
     {
-        if (!$this->hasShipSystem($systemId)) {
+        if (!$this->hasShipSystem($type)) {
             return false;
         }
 
-        return $this->getShipSystem($systemId)->getMode() === ShipSystemModeEnum::MODE_ON
-            || $this->getShipSystem($systemId)->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON;
+        return $this->getShipSystem($type)->getMode() === ShipSystemModeEnum::MODE_ON
+            || $this->getShipSystem($type)->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON;
     }
 
     public function getImpulseState(): bool
@@ -1421,16 +1421,18 @@ class Ship implements ShipInterface
         return $this->systems;
     }
 
-    public function hasShipSystem(int $systemType): bool
+    public function hasShipSystem(ShipSystemTypeEnum $type): bool
     {
-        return $this->getSystems()->containsKey($systemType);
+        return $this->getSystems()->containsKey($type->value);
     }
 
-    // with ShipSystemTypeEnum
-    public function getShipSystem(int $systemType): ShipSystemInterface
+    public function getShipSystem(ShipSystemTypeEnum $type): ShipSystemInterface
     {
-        /** @var ShipSystemInterface $system */
-        $system = $this->getSystems()->get($systemType);
+        $system = $this->getSystems()->get($type->value);
+        if ($system === null) {
+            throw new RuntimeException(sprintf('system type %d does not exist on ship', $type->value));
+        }
+
         return $system;
     }
 

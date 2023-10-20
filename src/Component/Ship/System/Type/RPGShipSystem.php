@@ -9,7 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeInterface;
 
 final class RPGShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_RPG_MODULE;
     }

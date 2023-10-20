@@ -24,7 +24,7 @@ interface ShipSystemManagerInterface
      * @throws SystemNotFoundException
      * @throws SystemCooldownException
      */
-    public function activate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void;
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type, bool $force = false): void;
 
     /**
      * @throws InvalidSystemException
@@ -32,19 +32,19 @@ interface ShipSystemManagerInterface
      * @throws DeactivationConditionsNotMetException
      * @throws AlreadyOffException
      */
-    public function deactivate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void;
+    public function deactivate(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type, bool $force = false): void;
 
     public function deactivateAll(ShipWrapperInterface $wrapper): void;
 
-    public function getEnergyUsageForActivation(int $shipSystemId): int;
+    public function getEnergyUsageForActivation(ShipSystemTypeEnum $type): int;
 
-    public function getEnergyConsumption(int $shipSystemId): int;
+    public function getEnergyConsumption(ShipSystemTypeEnum $type): int;
 
-    public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface;
+    public function lookupSystem(ShipSystemTypeEnum $type): ShipSystemTypeInterface;
 
-    public function handleDestroyedSystem(ShipWrapperInterface $wrapper, int $shipSystemId): void;
+    public function handleDestroyedSystem(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type): void;
 
-    public function handleDamagedSystem(ShipWrapperInterface $wrapper, int $shipSystemId): void;
+    public function handleDamagedSystem(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type): void;
 
     /**
      * @return array<ShipSystemInterface>

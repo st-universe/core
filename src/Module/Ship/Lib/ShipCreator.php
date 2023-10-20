@@ -188,22 +188,22 @@ final class ShipCreator implements ShipCreatorInterface
 
         //default systems, that almost every ship should have
         if ($ship->getRump()->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_SHUTTLE) {
-            $systems[ShipSystemTypeEnum::SYSTEM_DEFLECTOR] = 0;
-            $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_DEFLECTOR->value] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM->value] = 0;
         }
-        $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT] = 0;
+        $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT->value] = 0;
         //TODO transporter
 
         if ($ship->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_STATION) {
-            $systems[ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER->value] = 0;
         }
 
         if ($ship->getRump()->isShipyard()) {
-            $systems[ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB->value] = 0;
         }
 
         if ($ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
-            $systems[ShipSystemTypeEnum::SYSTEM_UPLINK] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_UPLINK->value] = 0;
         }
 
         foreach ($modules as $buildplanmodule) {
@@ -218,12 +218,12 @@ final class ShipCreator implements ShipCreatorInterface
             }
 
             if ($systemType !== null) {
-                $systems[$systemType] = $module;
+                $systems[$systemType->value] = $module;
             }
 
             switch ($module->getType()) {
                 case ShipModuleTypeEnum::MODULE_TYPE_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_NBS] = 0;
+                    $systems[ShipSystemTypeEnum::SYSTEM_NBS->value] = 0;
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
                     $this->addSpecialSystems($module, $systems);
@@ -239,7 +239,7 @@ final class ShipCreator implements ShipCreatorInterface
             $obj = $this->shipSystemRepository->prototype();
             $obj->setShip($ship);
             $ship->getSystems()->set($systemType, $obj);
-            $obj->setSystemType($systemType);
+            $obj->setSystemType(ShipSystemTypeEnum::from($systemType));
             if ($module !== 0) {
                 $obj->setModule($module);
             }
@@ -260,40 +260,40 @@ final class ShipCreator implements ShipCreatorInterface
         foreach ($moduleSpecials as $special) {
             switch ($special->getSpecialId()) {
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK:
-                    $systems[ShipSystemTypeEnum::SYSTEM_CLOAK] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_CLOAK->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TROOP_QUARTERS:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY:
-                    $systems[ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TORPEDO_STORAGE:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP:
-                    $systems[ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TRACKER] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_TRACKER->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB:
-                    $systems[ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB] = $module;
+                    $systems[ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG:
-                    $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE] = 0;
+                    $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value] = 0;
                     break;
             }
         }

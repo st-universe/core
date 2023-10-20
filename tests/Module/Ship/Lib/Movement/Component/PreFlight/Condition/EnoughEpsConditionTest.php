@@ -71,7 +71,7 @@ class EnoughEpsConditionTest extends StuTestCase
         bool $isWarpdriveNeeded,
         bool $isTranswarpNeeded,
         bool $currentSystemState,
-        int $expectedSystemId
+        ShipSystemTypeEnum $expectedSystemId
     ): void {
         $epsSystemData = $this->mock(EpsSystemData::class);
 
@@ -128,7 +128,7 @@ class EnoughEpsConditionTest extends StuTestCase
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
         bool $isTranswarpNeeded,
-        int $expectedSystemId
+        ShipSystemTypeEnum $expectedSystemId
     ): void {
         $this->ship->shouldReceive('hasShipSystem')
             ->with($expectedSystemId)

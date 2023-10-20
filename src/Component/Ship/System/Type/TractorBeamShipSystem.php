@@ -33,7 +33,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         $this->entityManager = $entityManager;
     }
 
-    public function getSystemType(): int
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM;
     }

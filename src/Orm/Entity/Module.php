@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 
 /**
@@ -117,10 +118,10 @@ class Module implements ModuleInterface
     private ?int $faction_id = null;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer", enumType=ShipSystemTypeEnum::class, nullable=true)
      *
      */
-    private ?int $system_type = null;
+    private ?ShipSystemTypeEnum $system_type = null;
 
     /**
      * @var ResearchInterface
@@ -387,7 +388,7 @@ class Module implements ModuleInterface
         return $this;
     }
 
-    public function getSystemType(): ?int
+    public function getSystemType(): ?ShipSystemTypeEnum
     {
         return $this->system_type;
     }

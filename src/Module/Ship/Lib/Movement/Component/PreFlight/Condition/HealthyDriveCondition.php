@@ -44,7 +44,7 @@ class HealthyDriveCondition implements PreFlightConditionInterface
 
     private function checkSystemHealth(
         ShipWrapperInterface $wrapper,
-        int $systemId,
+        ShipSystemTypeEnum $systemId,
         ConditionCheckResult $conditionCheckResult
     ): void {
         $ship = $wrapper->get();

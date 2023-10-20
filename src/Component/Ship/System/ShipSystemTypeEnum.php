@@ -4,63 +4,42 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
-final class ShipSystemTypeEnum
+enum ShipSystemTypeEnum: int
 {
-    // system types
-    public const SYSTEM_HULL = 0;
-    public const SYSTEM_EPS = 1;
-    public const SYSTEM_IMPULSEDRIVE = 2;
-    public const SYSTEM_WARPCORE = 3;
-    public const SYSTEM_COMPUTER = 4;
-    public const SYSTEM_PHASER = 5;
-    public const SYSTEM_TORPEDO = 6;
-    public const SYSTEM_CLOAK = 7;
-    public const SYSTEM_LSS = 8;
-    public const SYSTEM_NBS = 9;
-    public const SYSTEM_WARPDRIVE = 10;
-    public const SYSTEM_SHIELDS = 11;
-    public const SYSTEM_TACHYON_SCANNER = 12;
-    public const SYSTEM_LIFE_SUPPORT = 13;
-    public const SYSTEM_TRACTOR_BEAM = 14;
-    public const SYSTEM_TROOP_QUARTERS = 15;
-    public const SYSTEM_DEFLECTOR = 16;
-    public const SYSTEM_ASTRO_LABORATORY = 17;
-    public const SYSTEM_SUBSPACE_SCANNER = 18;
-    public const SYSTEM_MATRIX_SCANNER = 19;
-    public const SYSTEM_TORPEDO_STORAGE = 20;
-    public const SYSTEM_SHUTTLE_RAMP = 21;
-    public const SYSTEM_BEAM_BLOCKER = 22;
-    public const SYSTEM_CONSTRUCTION_HUB = 23;
-    public const SYSTEM_UPLINK = 24;
-    public const SYSTEM_FUSION_REACTOR = 25;
-    public const SYSTEM_TRANSWARP_COIL = 26;
-    public const SYSTEM_TRACKER = 27;
-    public const SYSTEM_THOLIAN_WEB = 28;
-    public const SYSTEM_RPG_MODULE = 29;
+    case SYSTEM_HULL = 0;
+    case SYSTEM_EPS = 1;
+    case SYSTEM_IMPULSEDRIVE = 2;
+    case SYSTEM_WARPCORE = 3;
+    case SYSTEM_COMPUTER = 4;
+    case SYSTEM_PHASER = 5;
+    case SYSTEM_TORPEDO = 6;
+    case SYSTEM_CLOAK = 7;
+    case SYSTEM_LSS = 8;
+    case SYSTEM_NBS = 9;
+    case SYSTEM_WARPDRIVE = 10;
+    case SYSTEM_SHIELDS = 11;
+    case SYSTEM_TACHYON_SCANNER = 12;
+    case SYSTEM_LIFE_SUPPORT = 13;
+    case SYSTEM_TRACTOR_BEAM = 14;
+    case SYSTEM_TROOP_QUARTERS = 15;
+    case SYSTEM_DEFLECTOR = 16;
+    case SYSTEM_ASTRO_LABORATORY = 17;
+    case SYSTEM_SUBSPACE_SCANNER = 18;
+    case SYSTEM_MATRIX_SCANNER = 19;
+    case SYSTEM_TORPEDO_STORAGE = 20;
+    case SYSTEM_SHUTTLE_RAMP = 21;
+    case SYSTEM_BEAM_BLOCKER = 22;
+    case SYSTEM_CONSTRUCTION_HUB = 23;
+    case SYSTEM_UPLINK = 24;
+    case SYSTEM_FUSION_REACTOR = 25;
+    case SYSTEM_TRANSWARP_COIL = 26;
+    case SYSTEM_TRACKER = 27;
+    case SYSTEM_THOLIAN_WEB = 28;
+    case SYSTEM_RPG_MODULE = 29;
 
-
-    // system priorites
-    public const SYSTEM_PRIORITY_STANDARD = 1;
-    public const SYSTEM_PRIORITIES = [
-        ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT => 10,
-        ShipSystemTypeEnum::SYSTEM_EPS => 6,
-        ShipSystemTypeEnum::SYSTEM_WARPCORE => 5,
-        ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => 5,
-        ShipSystemTypeEnum::SYSTEM_DEFLECTOR => 4,
-        ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => 3,
-        ShipSystemTypeEnum::SYSTEM_WARPDRIVE => 3,
-        ShipSystemTypeEnum::SYSTEM_LSS => 2,
-        ShipSystemTypeEnum::SYSTEM_NBS => 2,
-        ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => 0,
-        ShipSystemTypeEnum::SYSTEM_CLOAK => 0
-    ];
-
-    // other
-    public const SYSTEM_ECOST_DOCK = 1;
-
-    public static function getDescription(int $systemType): string
+    public static function getDescription(ShipSystemTypeEnum $type): string
     {
-        switch ($systemType) {
+        switch ($type) {
             case ShipSystemTypeEnum::SYSTEM_HULL:
                 return _("Hülle");
             case ShipSystemTypeEnum::SYSTEM_CLOAK:

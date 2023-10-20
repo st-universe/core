@@ -49,7 +49,7 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence
 
     private function deactivateSystem(
         ShipWrapperInterface $wrapper,
-        int $systemId,
+        ShipSystemTypeEnum $systemId,
         MessageCollectionInterface $messages
     ): void {
         $ship = $wrapper->get();

@@ -228,20 +228,20 @@ final class RepairUtil implements RepairUtilInterface
             $hullSystem->setSystemType(ShipSystemTypeEnum::SYSTEM_HULL);
             $hullSystem->setStatus($hullPercentage);
 
-            $repairOptions[ShipSystemTypeEnum::SYSTEM_HULL] = $hullSystem;
+            $repairOptions[ShipSystemTypeEnum::SYSTEM_HULL->value] = $hullSystem;
         }
 
         //check for system options
         foreach ($wrapper->getDamagedSystems() as $system) {
             if ($system->getStatus() < RepairTaskEnum::BOTH_MAX) {
-                $repairOptions[$system->getSystemType()] = $system;
+                $repairOptions[$system->getSystemType()->value] = $system;
             }
         }
 
         return $repairOptions;
     }
 
-    public function createRepairTask(ShipInterface $ship, int $systemType, int $repairType, int $finishTime): void
+    public function createRepairTask(ShipInterface $ship, ShipSystemTypeEnum $systemType, int $repairType, int $finishTime): void
     {
         $obj = $this->repairTaskRepository->prototype();
 
@@ -269,7 +269,7 @@ final class RepairUtil implements RepairUtilInterface
         return $percentage;
     }
 
-    public function instantSelfRepair($ship, $systemType, $healingPercentage): bool
+    public function instantSelfRepair(ShipInterface $ship, ShipSystemTypeEnum $systemType, int $healingPercentage): bool
     {
         return $this->internalSelfRepair(
             $ship,
@@ -288,7 +288,7 @@ final class RepairUtil implements RepairUtilInterface
         return $this->internalSelfRepair($ship, $systemType, $percentage);
     }
 
-    private function internalSelfRepair(ShipInterface $ship, int $systemType, int $percentage): bool
+    private function internalSelfRepair(ShipInterface $ship, ShipSystemTypeEnum $systemType, int $percentage): bool
     {
         $result = true;
 
