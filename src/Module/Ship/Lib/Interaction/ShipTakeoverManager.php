@@ -19,12 +19,15 @@ use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 {
     private ShipTakeoverRepositoryInterface $shipTakeoverRepository;
 
     private ShipRepositoryInterface $shipRepository;
+
+    private StorageRepositoryInterface $storageRepository;
 
     private CreatePrestigeLogInterface $createPrestigeLog;
 
@@ -39,6 +42,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     public function __construct(
         ShipTakeoverRepositoryInterface $shipTakeoverRepository,
         ShipRepositoryInterface $shipRepository,
+        StorageRepositoryInterface $storageRepository,
         CreatePrestigeLogInterface $createPrestigeLog,
         LeaveFleetInterface $leaveFleet,
         EntryCreatorInterface $entryCreator,
@@ -47,6 +51,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     ) {
         $this->shipTakeoverRepository = $shipTakeoverRepository;
         $this->shipRepository = $shipRepository;
+        $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->leaveFleet = $leaveFleet;
         $this->entryCreator = $entryCreator;
@@ -304,10 +309,21 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             $sourceUser->getName()
         ));
 
-        $targetShip->setUser($sourceUser);
-        $this->shipRepository->save($targetShip);
+        $this->changeShipOwner($targetShip, $sourceUser);
 
         $this->removeTakeover($takeover);
+    }
+
+    private function changeShipOwner(ShipInterface $ship, UserInterface $user): void
+    {
+        $ship->setUser($user);
+        $this->shipRepository->save($ship);
+
+        // change storage owner
+        foreach ($ship->getStorage() as $storage) {
+            $storage->setUser($user);
+            $this->storageRepository->save($storage);
+        }
     }
 
     private function sendFinishedPm(
