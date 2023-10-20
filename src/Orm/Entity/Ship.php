@@ -119,10 +119,10 @@ class Ship implements ShipInterface
     private string $name = '';
 
     /**
-     * @Column(type="smallint", length=1)
+     * @Column(type="smallint", length=1, enumType=ShipAlertStateEnum::class)
      *
      */
-    private int $alvl = 0;
+    private ShipAlertStateEnum $alvl = ShipAlertStateEnum::ALERT_GREEN;
 
     /**
      * @Column(type="smallint", length=1)
@@ -559,14 +559,14 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getAlertState(): int
+    public function getAlertState(): ShipAlertStateEnum
     {
         return $this->alvl;
     }
 
-    public function setAlertState(int $alvl): ShipInterface
+    public function setAlertState(ShipAlertStateEnum $state): ShipInterface
     {
-        $this->alvl = $alvl;
+        $this->alvl = $state;
         return $this;
     }
 

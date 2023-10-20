@@ -130,7 +130,7 @@ final class ShipTick implements ShipTickInterface
             $availableEps = $eps->getEps();
         } else {
             if ($warpcore != null) {
-                $availableEps = $eps->getEps() +  ($ship->getReactorOutputCappedByReactorLoad() * ($warpcore->getWarpCoreSplit() / 100));
+                $availableEps = (int)($eps->getEps() +  ($ship->getReactorOutputCappedByReactorLoad() * ($warpcore->getWarpCoreSplit() / 100)));
             } else {
                 $availableEps = $eps->getEps() + $ship->getReactorOutputCappedByReactorLoad();
             }
@@ -142,13 +142,13 @@ final class ShipTick implements ShipTickInterface
         //try to save energy by reducing alert state
         if ($wrapper->getEpsUsage() > $availableEps) {
             $malus = $wrapper->getEpsUsage() - $availableEps;
-            $alertUsage = $ship->getAlertState() - 1;
+            $alertUsage = $ship->getAlertState()->value - 1;
 
             if ($alertUsage > 0) {
                 $preState = $ship->getAlertState();
-                $reduce = min($malus, $alertUsage);
+                $reduce = (int)min($malus, $alertUsage);
 
-                $ship->setAlertState($preState - $reduce);
+                $ship->setAlertState(ShipAlertStateEnum::from($preState->value - $reduce));
                 $this->msg[] = sprintf(
                     _('Wechsel von %s auf %s wegen Energiemangel'),
                     ShipAlertStateEnum::getDescription($preState),

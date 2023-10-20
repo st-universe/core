@@ -212,7 +212,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getEffectiveEpsProduction() + $this->getEpsUsage() + $this->getEffectiveWarpDriveProduction();
     }
 
-    public function setAlertState(int $alertState): ?string
+    public function setAlertState(ShipAlertStateEnum $alertState): ?string
     {
         $msg = $this->shipStateChanger->changeAlertState($this, $alertState);
         $this->epsUsage = $this->reloadEpsUsage();

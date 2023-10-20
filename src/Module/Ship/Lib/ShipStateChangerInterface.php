@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 
 interface ShipStateChangerInterface
@@ -17,6 +18,6 @@ interface ShipStateChangerInterface
 
     public function changeAlertState(
         ShipWrapperInterface $wrapper,
-        int $alertState
+        ShipAlertStateEnum $alertState
     ): ?string;
 }

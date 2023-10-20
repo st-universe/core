@@ -265,7 +265,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     public function setAlertState(
         int $shipId,
-        int $alertState,
+        ShipAlertStateEnum $alertState,
         GameControllerInterface $game
     ): void {
         $userId = $game->getUser()->getId();
@@ -290,7 +290,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     public function setAlertStateFleet(
         int $shipId,
-        int $alertState,
+        ShipAlertStateEnum $alertState,
         GameControllerInterface $game
     ): void {
         $userId = $game->getUser()->getId();
@@ -324,7 +324,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
     }
 
-    private function setAlertStateShip(ShipWrapperInterface $wrapper, int $alertState, GameControllerInterface $game): bool
+    private function setAlertStateShip(ShipWrapperInterface $wrapper, ShipAlertStateEnum $alertState, GameControllerInterface $game): bool
     {
         $ship = $wrapper->get();
 
