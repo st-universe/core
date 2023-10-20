@@ -76,7 +76,7 @@ class AstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(9999);
+            ->andReturn(SHIPSTATEENUM::SHIP_STATE_NONE);
 
         $this->subject->trigger(
             $this->wrapper,

@@ -10,7 +10,6 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
-use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ShipStateChanger;
@@ -82,7 +81,7 @@ class ShipStateChangerTest extends StuTestCase
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_DESTROYED);
 
-        $this->subject->changeShipState($this->wrapper, -42);
+        $this->subject->changeShipState($this->wrapper, ShipStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectNothingWhenStateUnchanged(): void
@@ -90,16 +89,16 @@ class ShipStateChangerTest extends StuTestCase
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(-42);
+            ->andReturn(ShipStateEnum::SHIP_STATE_NONE);
 
-        $this->subject->changeShipState($this->wrapper, -42);
+        $this->subject->changeShipState($this->wrapper, ShipStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectRepairCanceling(): void
     {
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
-            ->andReturn(5);
+            ->andReturn(ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING);
         $this->ship->shouldReceive('isUnderRepair')
             ->withNoArgs()
             ->once()
@@ -110,14 +109,14 @@ class ShipStateChangerTest extends StuTestCase
             ->once();
 
         $this->ship->shouldReceive('setState')
-            ->with(-42)
+            ->with(ShipStateEnum::SHIP_STATE_NONE)
             ->once();
 
         $this->shipRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeShipState($this->wrapper, -42);
+        $this->subject->changeShipState($this->wrapper, ShipStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectAstroCanceling(): void
@@ -136,14 +135,14 @@ class ShipStateChangerTest extends StuTestCase
             ->once();
 
         $this->ship->shouldReceive('setState')
-            ->with(-42)
+            ->with(ShipStateEnum::SHIP_STATE_NONE)
             ->once();
 
         $this->shipRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeShipState($this->wrapper, -42);
+        $this->subject->changeShipState($this->wrapper, ShipStateEnum::SHIP_STATE_NONE);
     }
 
     public function testChangeShipStateExpectWebRelease(): void
@@ -162,14 +161,14 @@ class ShipStateChangerTest extends StuTestCase
             ->once();
 
         $this->ship->shouldReceive('setState')
-            ->with(-42)
+            ->with(ShipStateEnum::SHIP_STATE_NONE)
             ->once();
 
         $this->shipRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();
 
-        $this->subject->changeShipState($this->wrapper, -42);
+        $this->subject->changeShipState($this->wrapper, ShipStateEnum::SHIP_STATE_NONE);
     }
 
 

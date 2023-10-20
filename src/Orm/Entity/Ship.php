@@ -245,10 +245,10 @@ class Ship implements ShipInterface
     private int $shield_regeneration_timer = 0;
 
     /**
-     * @Column(type="smallint", length=3)
+     * @Column(type="smallint", enumType=ShipStateEnum::class)
      *
      */
-    private int $state = ShipStateEnum::SHIP_STATE_NONE;
+    private ShipStateEnum $state = ShipStateEnum::SHIP_STATE_NONE;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -950,12 +950,12 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getState(): int
+    public function getState(): ShipStateEnum
     {
         return $this->state;
     }
 
-    public function setState(int $state): ShipInterface
+    public function setState(ShipStateEnum $state): ShipInterface
     {
         $this->state = $state;
         return $this;
