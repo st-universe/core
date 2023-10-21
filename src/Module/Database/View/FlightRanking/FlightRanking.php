@@ -48,5 +48,7 @@ final class FlightRanking implements ViewControllerInterface
                 $this->flightSignatureRepository->getFlightsTop10()
             )
         );
+
+        $game->setTemplateVar('USER_POINTS', $this->flightSignatureRepository->getSignaturesForUser($game->getUser()));
     }
 }
