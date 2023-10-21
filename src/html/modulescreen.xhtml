@@ -144,7 +144,7 @@
                       <div id="module_type_${slot}" tal:define="module PLAN/getModule/${slot}">
                         <metal:macro metal:use-macro="html/modulescreen.xhtml/moduleselector_stats_type_${slot}" />
                         <script tal:condition="module">
-                          crew_type.set(${ slot }, { lvl: ${ module/ getModule / getLevel}, crew: ${ module/ getModule / getCrew}});
+                          crew_type.set(${slot},{lvl: ${module/getModule/getLevel}, crew: ${module/getModule/getCrew}});
                         </script>
                       </div>
                     </tal:block>
