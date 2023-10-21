@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<FlightSignature>
@@ -46,6 +47,8 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
      * @return array<array{user_id: int, sc: int, race: null|int, shipc: int}>
      */
     public function getFlightsTop10(): array;
+
+    public function getSignaturesForUser(UserInterface $user): int;
 
     public function truncateAllSignatures(): void;
 }

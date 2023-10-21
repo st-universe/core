@@ -12,6 +12,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<FlightSignature>
@@ -177,6 +178,27 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 'firstUserId' => UserEnum::USER_FIRST_ID
             ])
             ->getResult();
+    }
+
+    public function getSignaturesForUser(UserInterface $user): int
+    {
+        return (int)$this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(fs.id)
+                    FROM %s fs
+                    WHERE fs.to_direction != 0
+                    AND fs.user_id  = :userId
+                    AND fs.time > :maxAge',
+                    FlightSignature::class
+                )
+            )
+            ->setParameters([
+                'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
+                'userId' => $user->getId()
+            ])
+            ->getSingleScalarResult();
     }
 
     public function truncateAllSignatures(): void
