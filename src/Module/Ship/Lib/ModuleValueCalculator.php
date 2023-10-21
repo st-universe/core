@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 
 final class ModuleValueCalculator implements ModuleValueCalculatorInterface
 {
@@ -18,14 +19,26 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         if (!$value) {
             $value = $rump->$callback();
         }
-        if ($rump->getModuleLevel() > $module->getLevel()) {
-            return (int) round($value - $value / 100 * $module->getDowngradeFactor());
-        }
-        if ($rump->getModuleLevel() < $module->getLevel()) {
-            return (int) round($value + $value / 100 * $module->getUpgradeFactor());
-        }
-        if ($rump->getModuleLevel() === $module->getLevel()) {
-            return (int) round($value + $value / 100 * $module->getDefaultFactor());
+        if ($module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SENSOR) {
+            if ($rump->getModuleLevel() > $module->getLevel()) {
+                return (int) round($value -  $module->getDowngradeFactor());
+            }
+            if ($rump->getModuleLevel() < $module->getLevel()) {
+                return (int) round($value +  $module->getUpgradeFactor());
+            }
+            if ($rump->getModuleLevel() === $module->getLevel()) {
+                return (int) round($value +  $module->getDefaultFactor());
+            }
+        } else {
+            if ($rump->getModuleLevel() > $module->getLevel()) {
+                return (int) round($value - $value / 100 * $module->getDowngradeFactor());
+            }
+            if ($rump->getModuleLevel() < $module->getLevel()) {
+                return (int) round($value + $value / 100 * $module->getUpgradeFactor());
+            }
+            if ($rump->getModuleLevel() === $module->getLevel()) {
+                return (int) round($value + $value / 100 * $module->getDefaultFactor());
+            }
         }
         return (int) $value;
     }
