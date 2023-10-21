@@ -62,6 +62,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
         $rsm->addScalarResult('points', 'points', 'integer');
+
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT dbu.user_id, SUM(dbc.points) as points FROM stu_database_user dbu LEFT JOIN

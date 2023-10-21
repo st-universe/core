@@ -38,4 +38,9 @@ interface ResearchedRepositoryInterface extends ObjectRepository
     public function prototype(): ResearchedInterface;
 
     public function truncateForUser(int $userId): void;
+
+    /**
+     * @return array<array{user_id: int, points: int}>
+     */
+    public function getResearchedPoints(): array;
 }
