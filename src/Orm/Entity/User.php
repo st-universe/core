@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
-use Stu\Component\Player\AwardTypeEnum;
+use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Player\UserRpgEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
@@ -776,7 +776,7 @@ class User implements UserInterface
             return true;
         }
 
-        return $this->hasAward(AwardTypeEnum::RESEARCHED_STATIONS->value);
+        return $this->hasAward(UserAwardEnum::RESEARCHED_STATIONS);
     }
 
     public function isNpc(): bool
