@@ -6,6 +6,7 @@ namespace Stu\Module\Commodity;
 
 final class CommodityTypeEnum
 {
+    // commodity types
     public const COMMODITY_TYPE_STANDARD = 1;
     public const COMMODITY_TYPE_EFFECT = 2;
 
@@ -20,6 +21,13 @@ final class CommodityTypeEnum
     public const COMMODITY_LATINUM = 50;
     public const COMMODITY_SPARE_PART = 10001;
     public const COMMODITY_SYSTEM_COMPONENT = 10002;
+
+    // research commodities
+    public const COMMODITY_RESEARCH_LVL1 = 1701;
+    public const COMMODITY_RESEARCH_LVL2 = 1702;
+    public const COMMODITY_RESEARCH_LVL3 = 1703;
+    public const COMMODITY_RESEARCH_LVL4 = [1711, 1712, 1721, 1731];
+
 
     //effects
     public const COMMODITY_EFFECT_LIFE_STANDARD = 1300;

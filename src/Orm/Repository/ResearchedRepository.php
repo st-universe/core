@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -106,5 +109,42 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             )
             ->setParameter('userId', $userId)
             ->execute();
+    }
+
+    public function getResearchedPoints(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('points', 'points', 'integer');
+
+        return $this
+            ->getEntityManager()
+            ->createNativeQuery(
+                'SELECT u.id as user_id,
+                    (SELECT coalesce(sum(r.points), 0)
+                        FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
+                        WHERE red.user_id = u.id AND r.commodity_id = :lvl1) 
+                    + (SELECT coalesce(sum(r.points), 0)
+                        FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
+                        WHERE red.user_id = u.id AND r.commodity_id = :lvl2) *2
+                    + (SELECT coalesce(sum(r.points), 0)
+                        FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
+                        WHERE red.user_id = u.id AND r.commodity_id = :lvl3) *3
+                    + (SELECT coalesce(sum(r.points), 0)
+                        FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
+                        WHERE red.user_id = u.id AND r.commodity_id IN (:lvl4)) *4 AS points
+                FROM stu_user u
+                WHERE u.id >= :firstUserId
+                ORDER BY points DESC',
+                $rsm
+            )
+            ->setParameters([
+                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'lvl1' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL1,
+                'lvl2' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL2,
+                'lvl3' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL3,
+                'lvl4' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL4
+            ])
+            ->getArrayResult();
     }
 }

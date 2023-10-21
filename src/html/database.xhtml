@@ -38,6 +38,7 @@
 				<div>Siedler</div>
 				<div class="divbody">
 					<a href="?SHOW_TOP_DISCOVER=1">Die 10 besten Entdecker</a><br />
+					<a href="?SHOW_TOP_RESEARCH=1">Die 10 besten Forscher</a><br />
 					<a href="?SHOW_TOP_RPG=1">Die 10 bestbewerteten RPG-Schreiber</a><br />
 				</div>
 				<div>Schiffe (anonym)</div>
@@ -69,7 +70,7 @@
 		</div>
 	</tal:block>
 </tal:block>
-<metal:macro metal:define-macro="top_research_user">
+<metal:macro metal:define-macro="top_discover_user">
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
@@ -105,6 +106,50 @@
 						und danach im <a href="/database.php">Datenbank-Bereich</a> eingesehen werden können.</p>
 					<br />
 					<p>Dein eigener Punktestand: <span tal:replace="USER_COUNT">POINTS</span></p>
+					<br />
+					<p>Diese Liste wird jede Stunde aktualisiert.</p>
+				</div>
+			</div>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="top_research_user">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<div class="statisticsToplist">
+				<div phptal:cache="1h">
+					<ul class="statistics">
+						<li tal:repeat="entry RESEARCH_LIST">
+							<div class="userGrid">
+								<div class="placement">
+									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+								</div>
+								<div class="userprofile">
+									<metal:macro metal:use-macro="macros.xhtml/useravatar"
+										tal:define="USER entry/getUser" />
+								</div>
+								<div class="userName" tal:content="structure bbcode:entry/getUser/getName">USER</div>
+								<div>
+									Punkte: <span tal:content="entry/getPoints">AMOUNT</span>
+								</div>
+								<div>
+									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow"
+										tal:define="id entry/getUser/getId" />
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h1>Entdecker</h1>
+					<p>In dieser Liste werden die 10 Spieler mit dem höchsten Forschungsstand im Spiel aufgeführt.</p>
+					<p>Forschungspunkte (Level 1) bringen einen Punkt.</p>
+					<p>Forschungspunkte (Level 2) bringen zwei Punkte.</p>
+					<p>Forschungspunkte (Level 3) bringen drei Punkte.</p>
+					<p>Alle fortgeschrittenen Forschungspunkte bringen vier Punkte.</p>
+					<br />
+					<p>Dein eigener Punktestand: ${USER_POINTS}</p>
 					<br />
 					<p>Diese Liste wird jede Stunde aktualisiert.</p>
 				</div>
