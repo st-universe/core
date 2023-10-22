@@ -69,7 +69,7 @@ class ColonyEpsProductionPreviewWrapper
 
     public function getDisplay(): string
     {
-        if ($this->getPreview() !== 0) {
+        if ($this->getPreview() > 0) {
             return sprintf('+%d', $this->getPreview());
         }
         return (string) $this->getPreview();
