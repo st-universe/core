@@ -159,7 +159,6 @@ final class ShipCreator implements ShipCreatorInterface
         if ($ship->getName() == '' || $ship->getName() === sprintf('%s in Bau', $ship->getRump()->getName())) {
             $ship->setName($ship->getRump()->getName());
         }
-        $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
 
         $ship->setAlertStateGreen();
 
