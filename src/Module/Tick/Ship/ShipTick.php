@@ -151,8 +151,8 @@ final class ShipTick implements ShipTickInterface
                 $ship->setAlertState(ShipAlertStateEnum::from($preState->value - $reduce));
                 $this->msg[] = sprintf(
                     _('Wechsel von %s auf %s wegen Energiemangel'),
-                    ShipAlertStateEnum::getDescription($preState),
-                    ShipAlertStateEnum::getDescription($ship->getAlertState())
+                    $preState->getDescription(),
+                    $ship->getAlertState()->getDescription()
                 );
             }
         }
