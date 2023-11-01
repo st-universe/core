@@ -57,6 +57,20 @@ function triggerBeamFrom(target) {
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
 }
 
+function triggerBeamCrewFrom(target, targetIsColony) {
+	isUnload = true;
+	colonyParam = targetIsColony ? '&isColony=1' : '';
+	directionParam = isUnload ? '&isUnload=1' : '';
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TROOP_TRANSFER=1&target=' + target + colonyParam + directionParam);
+}
+
+function triggerBeamCrewTo(target, targetIsColony) {
+	isUnload = false;
+	colonyParam = targetIsColony ? '&isColony=1' : '';
+	directionParam = isUnload ? '&isUnload=1' : '';
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TROOP_TRANSFER=1&target=' + target + colonyParam + directionParam);
+}
+
 function showBToColonyWindow(target) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);

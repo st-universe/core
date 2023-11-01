@@ -259,16 +259,6 @@
                 title="Von der {{ nameWithoutMarkup }} hochbeamen" />
         </a>
     </div>
-    {% if (nbsItem.isOwnedByCurrentUser or nbsItem.hasUplink) and SHIP.isTroopQuartersHealthy %}
-    <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showBTroopTransferWindow({{ nbsItem.getId }}, false, true);">
-            <img src="assets/buttons/bt_down1.png" title="Truppen zur {{ nameWithoutMarkup }} beamen" />
-        </a>
-        <a href="javascript:void(0);" onclick="showBTroopTransferWindow({{ nbsItem.getId }}, false, false);">
-            <img src="assets/buttons/bt_up1.png" title="Truppen von der {{ nameWithoutMarkup }} beamen" />
-        </a>
-    </div>
-    {% endif %}
     {% if SHIP.isTorpedoStorageHealthy %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);" onclick="showBTorpTransferWindow({{ nbsItem.getId }}, true);">
