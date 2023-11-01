@@ -73,6 +73,16 @@
     <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
+      <tal:block tal:condition="OWNS_TARGET">
+        <tr>
+          <td colspan="3">
+            <a href="javascript:void(0);" onclick="triggerBeamCrewFrom(${targetShip/getId})"
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
+            </a>
+          </td>
+        </tr>
+      </tal:block>
       <tr>
         <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
@@ -147,6 +157,16 @@
     <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
+      <tal:block tal:condition="OWNS_TARGET">
+        <tr>
+          <td colspan="3">
+            <a href="javascript:void(0);" onclick="triggerBeamCrewTo(${targetShip/getId})"
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
+            </a>
+          </td>
+        </tr>
+      </tal:block>
       <tr>
         <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
@@ -221,6 +241,16 @@
     <input type="hidden" name="target" tal:attributes="value targetColony/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
+      <tal:block tal:condition="OWNS_TARGET">
+        <tr>
+          <td colspan="3">
+            <a href="javascript:void(0);" onclick="triggerBeamCrewFrom(${targetColony/getId}, true)"
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
+            </a>
+          </td>
+        </tr>
+      </tal:block>
       <tr>
         <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
@@ -300,6 +330,16 @@
     <input type="hidden" name="target" tal:attributes="value targetColony/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
+      <tal:block tal:condition="OWNS_TARGET">
+        <tr>
+          <td colspan="3">
+            <a href="javascript:void(0);" onclick="triggerBeamCrewTo(${targetColony/getId}, true)"
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
+            </a>
+          </td>
+        </tr>
+      </tal:block>
       <tr>
         <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
@@ -401,7 +441,6 @@
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="target" tal:attributes="value target/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-
     <tal:block tal:condition="IS_COLONY">
       <input type="hidden" name="isColony" tal:attributes="value IS_COLONY" />
     </tal:block>
@@ -409,6 +448,54 @@
       <input type="hidden" name="isUnload" tal:attributes="value IS_UNLOAD" />
     </tal:block>
     <table class="tcal">
+      <tal:block tal:condition="IS_UNLOAD">
+        <tal:block tal:condition="not:IS_COLONY">
+          <tr>
+            <td>
+              <a href="javascript:void(0);" onclick="triggerBeamTo(${target/getId})"
+                onmouseover="cp('commoditybeamtrigger','buttons/lager_2');"
+                onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
+                <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen" />
+              </a>
+            </td>
+          </tr>
+        </tal:block>
+        <tal:block tal:condition="IS_COLONY">
+          <tr>
+            <td>
+              <a href="javascript:void(0);" onclick="triggerBeamToColony(${target/getId})"
+                onmouseover="cp('commoditybeamtrigger','buttons/lager_2');"
+                onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
+                <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen" />
+              </a>
+            </td>
+          </tr>
+        </tal:block>
+      </tal:block>
+      <tal:block tal:condition="not:IS_UNLOAD">
+        <tal:block tal:condition="not:IS_COLONY">
+          <tr>
+            <td>
+              <a href="javascript:void(0);" onclick="triggerBeamFrom(${target/getId})"
+                onmouseover="cp('commoditybeamtrigger','buttons/lager_2');"
+                onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
+                <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen" />
+              </a>
+            </td>
+          </tr>
+        </tal:block>
+        <tal:block tal:condition="IS_COLONY">
+          <tr>
+            <td>
+              <a href="javascript:void(0);" onclick="triggerBeamFromColony(${target/getId})"
+                onmouseover="cp('commoditybeamtrigger','buttons/lager_2');"
+                onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
+                <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen" />
+              </a>
+            </td>
+          </tr>
+        </tal:block>
+      </tal:block>
       <tr>
         <td>Ziel: <span tal:replace="structure bbcode:target/getName">...</span></td>
       </tr>

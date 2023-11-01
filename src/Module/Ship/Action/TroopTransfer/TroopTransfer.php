@@ -121,9 +121,11 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-            $game->addInformation(_("Die Truppenquartiere sind zerstört"));
-            return;
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+            if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+                $game->addInformation(_("Die Truppenquartiere sind zerstört"));
+                return;
+            }
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
@@ -255,12 +257,14 @@ final class TroopTransfer implements ActionControllerInterface
             $this->transferUtility->getFreeQuarters($ship)
         );
 
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
         if (
             $amount > 0
             && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
             && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
         ) {
             throw new SystemNotActivatableException();
+            }
         }
 
         $crewAssignments = $colony->getCrewAssignments();
@@ -337,12 +341,14 @@ final class TroopTransfer implements ActionControllerInterface
             $ownCrewOnTarget
         );
 
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
         if (
             $amount > 0
             && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
             && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
         ) {
             throw new SystemNotActivatableException();
+            }
         }
 
         $array = $target->getCrewAssignments()->getValues();

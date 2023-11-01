@@ -436,16 +436,6 @@ canColonize) %}
                 </a>
             </div>
             {% endif %}
-            {% if ownsCurrentColony and ship.isTroopQuartersHealthy %}
-            <div style="margin-top: 5px;">
-                <a href="javascript:void(0);" onclick="showBTroopTransferWindow({{ colonyId }}, true, true);">
-                    <img src="assets/buttons/bt_down1.png" title="Truppen zu der Kolonie beamen" />
-                </a>
-                <a href="javascript:void(0);" onclick="showBTroopTransferWindow({{ colonyId }}, true, false);">
-                    <img src="assets/buttons/bt_up1.png" title="Truppen von der Kolonie beamen" />
-                </a>
-            </div>
-            {% endif %}
             {% if ship.isFleetLeader and not currentColony.isFree %}
             <div style="margin-top: 5px;">
                 {% if ship.getFleet.getDefendedColony %}
