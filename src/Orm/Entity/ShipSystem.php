@@ -134,7 +134,7 @@ class ShipSystem implements ShipSystemInterface
 
     public function getName(): string
     {
-        return ShipSystemTypeEnum::getDescription($this->getSystemType());
+        return $this->getSystemType()->getDescription();
     }
 
     public function getCssClass(): string

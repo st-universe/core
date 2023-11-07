@@ -10,15 +10,12 @@ enum ShipAlertStateEnum: int
     case ALERT_YELLOW = 2;
     case ALERT_RED = 3;
 
-    public static function getDescription(ShipAlertStateEnum $alertState): string
+    public function getDescription(): string
     {
-        switch ($alertState) {
-            case ShipAlertStateEnum::ALERT_GREEN:
-                return _("Alarm Grün");
-            case ShipAlertStateEnum::ALERT_YELLOW:
-                return _("Alarm Gelb");
-            case ShipAlertStateEnum::ALERT_RED:
-                return _("Alarm Rot");
-        }
+        return match ($this) {
+            ShipAlertStateEnum::ALERT_GREEN => _("Alarm Grün"),
+            ShipAlertStateEnum::ALERT_YELLOW => _("Alarm Gelb"),
+            ShipAlertStateEnum::ALERT_RED => _("Alarm Rot")
+        };
     }
 }

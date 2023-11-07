@@ -25,7 +25,7 @@ interface RepairTaskRepositoryInterface extends ObjectRepository
     public function truncateByShipId(int $shipId): void;
 
     /**
-     * @return list<RepairTaskInterface>
+     * @return array<RepairTaskInterface>
      */
     public function getFinishedRepairTasks(): array;
 }

@@ -44,31 +44,31 @@ class HealthyDriveCondition implements PreFlightConditionInterface
 
     private function checkSystemHealth(
         ShipWrapperInterface $wrapper,
-        ShipSystemTypeEnum $systemId,
+        ShipSystemTypeEnum $systemType,
         ConditionCheckResult $conditionCheckResult
     ): void {
         $ship = $wrapper->get();
 
-        if (!$ship->hasShipSystem($systemId)) {
+        if (!$ship->hasShipSystem($systemType)) {
             $conditionCheckResult->addBlockedShip(
                 $ship,
                 sprintf(
                     'Die %s verfügt über keine(n) %s',
                     $ship->getName(),
-                    ShipSystemTypeEnum::getDescription($systemId)
+                    $systemType->getDescription()
                 )
             );
 
             return;
         }
 
-        if (!$ship->isSystemHealthy($systemId)) {
+        if (!$ship->isSystemHealthy($systemType)) {
             $conditionCheckResult->addBlockedShip(
                 $ship,
                 sprintf(
                     'Die %s kann das System %s nicht aktivieren',
                     $ship->getName(),
-                    ShipSystemTypeEnum::getDescription($systemId)
+                    $systemType->getDescription()
                 )
             );
         }

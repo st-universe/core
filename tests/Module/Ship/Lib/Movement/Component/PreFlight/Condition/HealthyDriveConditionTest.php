@@ -98,7 +98,7 @@ class HealthyDriveConditionTest extends StuTestCase
                     $this->ship,
                     sprintf(
                         'Die SHIP verfügt über keine(n) %s',
-                        ShipSystemTypeEnum::getDescription($systemId)
+                        $systemId->getDescription()
                     )
                 )
                 ->once();
@@ -110,7 +110,7 @@ class HealthyDriveConditionTest extends StuTestCase
                     $this->ship,
                     sprintf(
                         'Die SHIP kann das System %s nicht aktivieren',
-                        ShipSystemTypeEnum::getDescription($systemId)
+                        $systemId->getDescription()
                     )
                 )
                 ->once();

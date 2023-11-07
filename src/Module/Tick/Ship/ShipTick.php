@@ -151,8 +151,8 @@ final class ShipTick implements ShipTickInterface
                 $ship->setAlertState(ShipAlertStateEnum::from($preState->value - $reduce));
                 $this->msg[] = sprintf(
                     _('Wechsel von %s auf %s wegen Energiemangel'),
-                    ShipAlertStateEnum::getDescription($preState),
-                    ShipAlertStateEnum::getDescription($ship->getAlertState())
+                    $preState->getDescription(),
+                    $ship->getAlertState()->getDescription()
                 );
             }
         }
@@ -174,7 +174,7 @@ final class ShipTick implements ShipTickInterface
                     $this->shipSystemManager->deactivate($wrapper, $system->getSystemType(), true);
 
                     $wrapper->lowerEpsUsage($energyConsumption);
-                    $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
+                    $this->msg[] = $system->getSystemType()->getDescription() . ' deaktiviert wegen Energiemangel';
 
                     if ($ship->getCrewCount() > 0 && $system->getSystemType() == ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
                         $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
@@ -493,11 +493,6 @@ final class ShipTick implements ShipTickInterface
             default:
                 return '';
         }
-    }
-
-    private function getSystemDescription(ShipSystemInterface $shipSystem): string
-    {
-        return ShipSystemTypeEnum::getDescription($shipSystem->getSystemType());
     }
 
     private function sendMessages(ShipInterface $ship): void

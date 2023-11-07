@@ -109,7 +109,11 @@ final class Selfrepair implements ActionControllerInterface
 
             $this->consumeCommodities($ship, $repairType, $neededSparePartCount, $game);
             $this->repairUtil->createRepairTask($ship, $systemType, $repairType, time() + (int) $duration);
-            $game->addInformationf(_('Das Schiffssystem %s wird repariert. Fertigstellung %s'), ShipSystemTypeEnum::getDescription($systemType), date("d.m.Y H:i", (time() + (int) $duration)));
+            $game->addInformationf(
+                _('Das Schiffssystem %s wird repariert. Fertigstellung %s'),
+                $systemType->getDescription(),
+                date("d.m.Y H:i", (time() + (int) $duration))
+            );
         } else {
             if (!$this->checkForSpareParts($ship, 3 * $neededSparePartCount, $repairType, $game)) {
                 return;
@@ -122,13 +126,13 @@ final class Selfrepair implements ActionControllerInterface
             if ($isSuccess) {
                 $game->addInformationf(
                     _('Die Crew hat das System %s auf %d %% reparieren können'),
-                    ShipSystemTypeEnum::getDescription($systemType),
+                    $systemType->getDescription(),
                     $healingPercentage
                 );
             } else {
                 $game->addInformationf(
                     _('Der Reparaturversuch des Systems %s brachte keine Besserung'),
-                    ShipSystemTypeEnum::getDescription($systemType),
+                    $systemType->getDescription(),
                     $ship->getName()
                 );
             }

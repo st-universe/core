@@ -166,7 +166,7 @@ class DriveActivationConsequenceTest extends StuTestCase
                 [sprintf(
                     'Die SHIP aktiviert %s %s',
                     $expectedSystemId === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
-                    ShipSystemTypeEnum::getDescription($expectedSystemId)
+                    $expectedSystemId->getDescription()
                 )],
                 $message->getMessage()
             );

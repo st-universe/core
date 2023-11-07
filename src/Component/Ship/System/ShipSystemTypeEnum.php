@@ -38,71 +38,40 @@ enum ShipSystemTypeEnum: int
     case SYSTEM_RPG_MODULE = 29;
     case SYSTEM_SINGULARITY_REACTOR = 30;
 
-    public static function getDescription(ShipSystemTypeEnum $type): string
+    public function getDescription(): string
     {
-        switch ($type) {
-            case ShipSystemTypeEnum::SYSTEM_HULL:
-                return _("Hülle");
-            case ShipSystemTypeEnum::SYSTEM_CLOAK:
-                return _("Tarnung");
-            case ShipSystemTypeEnum::SYSTEM_NBS:
-                return _("Nahbereichssensoren");
-            case ShipSystemTypeEnum::SYSTEM_LSS:
-                return _("Langstreckensensoren");
-            case ShipSystemTypeEnum::SYSTEM_PHASER:
-                return _("Energiewaffe");
-            case ShipSystemTypeEnum::SYSTEM_TORPEDO:
-                return _("Projektilwaffe");
-            case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
-                return _("Warpantrieb");
-            case ShipSystemTypeEnum::SYSTEM_EPS:
-                return _("Energiesystem");
-            case ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE:
-                return _("Impulsantrieb");
-            case ShipSystemTypeEnum::SYSTEM_COMPUTER:
-                return _('Computer');
-            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
-                return _('Schilde');
-            case ShipSystemTypeEnum::SYSTEM_WARPCORE:
-                return _('Warpkern');
-            case ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER:
-                return _('Tachyonscanner');
-            case ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT:
-                return _('Lebenserhaltungssystem');
-            case ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM:
-                return _('Traktorstrahl');
-            case ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS:
-                return _('Truppenquartiere');
-            case ShipSystemTypeEnum::SYSTEM_DEFLECTOR:
-                return _('Deflektor');
-            case ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY:
-                return _('Astrometrisches Labor');
-            case ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER:
-                return _('Subraumfeldsensoren');
-            case ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER:
-                return _('Matrixsensoren');
-            case ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE:
-                return _('Torpedolager');
-            case ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP:
-                return _('Shuttlerampe');
-            case ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER:
-                return _('Beamblocker');
-            case ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB:
-                return _('Werfthub');
-            case ShipSystemTypeEnum::SYSTEM_UPLINK:
-                return _('Uplink');
-            case ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR:
-                return _('Fusionsreaktor');
-            case ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL:
-                return _('Transwarpspule');
-            case ShipSystemTypeEnum::SYSTEM_TRACKER:
-                return _('Tracker');
-            case ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB:
-                return _('Netzemitter');
-            case ShipSystemTypeEnum::SYSTEM_RPG_MODULE:
-                return _('RPG-Modul');
-            case ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR:
-                return _('Singularitätsreaktor');
-        }
+        return match ($this) {
+            ShipSystemTypeEnum::SYSTEM_HULL => _("Hülle"),
+            ShipSystemTypeEnum::SYSTEM_CLOAK => _("Tarnung"),
+            ShipSystemTypeEnum::SYSTEM_NBS => _("Nahbereichssensoren"),
+            ShipSystemTypeEnum::SYSTEM_LSS => _("Langstreckensensoren"),
+            ShipSystemTypeEnum::SYSTEM_PHASER => _("Energiewaffe"),
+            ShipSystemTypeEnum::SYSTEM_TORPEDO => _("Projektilwaffe"),
+            ShipSystemTypeEnum::SYSTEM_WARPDRIVE => _("Warpantrieb"),
+            ShipSystemTypeEnum::SYSTEM_EPS => _("Energiesystem"),
+            ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE => _("Impulsantrieb"),
+            ShipSystemTypeEnum::SYSTEM_COMPUTER => _('Computer'),
+            ShipSystemTypeEnum::SYSTEM_SHIELDS => _('Schilde'),
+            ShipSystemTypeEnum::SYSTEM_WARPCORE => _('Warpkern'),
+            ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER => _('Tachyonscanner'),
+            ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT => _('Lebenserhaltungssystem'),
+            ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM => _('Traktorstrahl'),
+            ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => _('Truppenquartiere'),
+            ShipSystemTypeEnum::SYSTEM_DEFLECTOR => _('Deflektor'),
+            ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY => _('Astrometrisches Labor'),
+            ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => _('Subraumfeldsensoren'),
+            ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER => _('Matrixsensoren'),
+            ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE => _('Torpedolager'),
+            ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP => _('Shuttlerampe'),
+            ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER => _('Beamblocker'),
+            ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB => _('Werfthub'),
+            ShipSystemTypeEnum::SYSTEM_UPLINK => _('Uplink'),
+            ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => _('Fusionsreaktor'),
+            ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL => _('Transwarpspule'),
+            ShipSystemTypeEnum::SYSTEM_TRACKER => _('Tracker'),
+            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB => _('Netzemitter'),
+            ShipSystemTypeEnum::SYSTEM_RPG_MODULE => _('RPG-Modul'),
+            ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR => _('Singularitätsreaktor')
+        };
     }
 }
