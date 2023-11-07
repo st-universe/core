@@ -20,6 +20,5 @@ enum ShipAlertStateEnum: int
             case ShipAlertStateEnum::ALERT_RED:
                 return _("Alarm Rot");
         }
-        return '';
     }
 }

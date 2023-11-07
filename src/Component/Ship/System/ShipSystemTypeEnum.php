@@ -36,6 +36,7 @@ enum ShipSystemTypeEnum: int
     case SYSTEM_TRACKER = 27;
     case SYSTEM_THOLIAN_WEB = 28;
     case SYSTEM_RPG_MODULE = 29;
+    case SYSTEM_SINGULARITY_REACTOR = 30;
 
     public static function getDescription(ShipSystemTypeEnum $type): string
     {
@@ -100,7 +101,8 @@ enum ShipSystemTypeEnum: int
                 return _('Netzemitter');
             case ShipSystemTypeEnum::SYSTEM_RPG_MODULE:
                 return _('RPG-Modul');
+            case ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR:
+                return _('Singularitätsreaktor');
         }
-        return '';
     }
 }
