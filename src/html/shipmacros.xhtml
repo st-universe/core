@@ -77,7 +77,8 @@
         <tr>
           <td colspan="3">
             <a href="javascript:void(0);" onclick="triggerBeamCrewFrom(${targetShip/getId})"
-              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');"
+              onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
               <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
             </a>
           </td>
@@ -161,7 +162,8 @@
         <tr>
           <td colspan="3">
             <a href="javascript:void(0);" onclick="triggerBeamCrewTo(${targetShip/getId})"
-              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');"
+              onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
               <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
             </a>
           </td>
@@ -245,7 +247,8 @@
         <tr>
           <td colspan="3">
             <a href="javascript:void(0);" onclick="triggerBeamCrewFrom(${targetColony/getId}, true)"
-              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');"
+              onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
               <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
             </a>
           </td>
@@ -334,7 +337,8 @@
         <tr>
           <td colspan="3">
             <a href="javascript:void(0);" onclick="triggerBeamCrewTo(${targetColony/getId}, true)"
-              onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+              onmouseover="cp('crewbeamtrigger','buttons/crew_2');"
+              onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
               <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
             </a>
           </td>
@@ -959,7 +963,7 @@
     $('emergencytext').addEventListener(
       "keyup",
       function () {
-        limit = ${ EMERGENCYTEXTLIMIT };
+        limit = ${EMERGENCYTEXTLIMIT};
 
         var length = this.value.length;
         $('emergencyTextLength').innerHTML = length;
