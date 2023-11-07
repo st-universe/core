@@ -7,7 +7,7 @@
       <tal:block
         tal:define="baseCrew RUMP/getBaseCrew; maxCrew MAX_CREW_COUNT; moduleLvl RUMP/getModuleLevel; specialSlots RUMP/getSpecialSlots">
         <script>
-          setFixValues(${ baseCrew }, ${ maxCrew }, ${ moduleLvl }, ${ specialSlots });
+          setFixValues(${baseCrew}, ${maxCrew}, ${moduleLvl}, ${specialSlots});
         </script>
       </tal:block>
       <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
