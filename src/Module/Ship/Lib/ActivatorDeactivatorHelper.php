@@ -86,7 +86,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         shipSystemTypeEnum $type,
         GameControllerInterface $game
     ): bool {
-        $systemName = ShipSystemTypeEnum::getDescription($type);
+        $systemName = $type->getDescription();
         $ship = $wrapper->get();
 
         try {
@@ -156,8 +156,10 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             return;
         }
 
-        $systemName = ShipSystemTypeEnum::getDescription($type);
-        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s aktiviert'), $systemName));
+        $game->addInformation(sprintf(
+            _('Flottenbefehl ausgeführt: System %s aktiviert'),
+            $type->getDescription()
+        ));
     }
 
     public function deactivate(
@@ -187,7 +189,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         shipSystemTypeEnum $type,
         GameControllerInterface $game
     ): bool {
-        $systemName = ShipSystemTypeEnum::getDescription($type);
+        $systemName = $type->getDescription();
         $ship = $wrapper->get();
 
         try {
@@ -237,8 +239,10 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             return;
         }
 
-        $systemName = ShipSystemTypeEnum::getDescription($type);
-        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s deaktiviert'), $systemName));
+        $game->addInformation(sprintf(
+            _('Flottenbefehl ausgeführt: System %s deaktiviert'),
+            $type->getDescription()
+        ));
     }
 
     public function setLSSMode(

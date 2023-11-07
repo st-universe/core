@@ -61,19 +61,19 @@ class DriveActivationConsequence extends AbstractFlightConsequence
 
     private function activate(
         ShipWrapperInterface $wrapper,
-        ShipSystemTypeEnum $systemId,
+        ShipSystemTypeEnum $systemType,
         MessageInterface $message
     ): void {
         $ship = $wrapper->get();
 
-        if (!$ship->getSystemState($systemId)) {
-            $this->shipSystemManager->activate($wrapper, $systemId);
+        if (!$ship->getSystemState($systemType)) {
+            $this->shipSystemManager->activate($wrapper, $systemType);
 
             $message->add(sprintf(
                 _('Die %s aktiviert %s %s'),
                 $ship->getName(),
-                $systemId === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
-                ShipSystemTypeEnum::getDescription($systemId)
+                $systemType === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
+                $systemType->getDescription()
             ));
         }
     }

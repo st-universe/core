@@ -173,7 +173,7 @@ final class ApplyDamage implements ApplyDamageInterface
         $system->setMode(ShipSystemModeEnum::MODE_OFF);
         $this->shipSystemManager->handleDestroyedSystem($wrapper, $healthySystems[0]->getSystemType());
 
-        return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
+        return $healthySystems[0]->getSystemType()->getDescription();
     }
 
     private function damageRandomShipSystem(
@@ -198,7 +198,7 @@ final class ApplyDamage implements ApplyDamageInterface
         InformationWrapper $informations
     ): bool {
         $status = $system->getStatus();
-        $systemName = ShipSystemTypeEnum::getDescription($system->getSystemType());
+        $systemName = $system->getSystemType()->getDescription();
 
         if ($status > $dmg) {
             $system->setStatus($status - $dmg);

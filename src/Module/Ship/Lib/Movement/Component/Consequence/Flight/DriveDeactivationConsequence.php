@@ -49,28 +49,28 @@ class DriveDeactivationConsequence extends AbstractFlightConsequence
 
     private function deactivateSystem(
         ShipWrapperInterface $wrapper,
-        ShipSystemTypeEnum $systemId,
+        ShipSystemTypeEnum $systemType,
         MessageCollectionInterface $messages
     ): void {
         $ship = $wrapper->get();
 
-        if (!$ship->hasShipSystem($systemId)) {
+        if (!$ship->hasShipSystem($systemType)) {
             return;
         }
 
-        if (!$ship->getSystemState($systemId)) {
+        if (!$ship->getSystemState($systemType)) {
             return;
         }
 
         $message = new Message();
         $messages->add($message);
 
-        $this->shipSystemManager->deactivate($wrapper, $systemId, true);
+        $this->shipSystemManager->deactivate($wrapper, $systemType, true);
         $message->add(sprintf(
             _('Die %s deaktiviert %s %s'),
             $ship->getName(),
-            $systemId === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
-            ShipSystemTypeEnum::getDescription($systemId)
+            $systemType === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
+            $systemType->getDescription()
         ));
     }
 }

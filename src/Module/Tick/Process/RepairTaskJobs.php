@@ -50,7 +50,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                     sprintf(
                         _('Ungenügend Crew auf der %s vorhanden, daher wurde die Reparatur des Systems %s abgebrochen'),
                         $ship->getName(),
-                        ShipSystemTypeEnum::getDescription($repairTask->getSystemType())
+                        $repairTask->getSystemType()->getDescription()
                     ),
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
                     $href
@@ -68,13 +68,13 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                 $msg = sprintf(
                     _('Die Crew der %s hat das System %s auf %d %% reparieren können'),
                     $ship->getName(),
-                    ShipSystemTypeEnum::getDescription($repairTask->getSystemType()),
+                    $repairTask->getSystemType()->getDescription(),
                     $repairTask->getHealingPercentage()
                 );
             } else {
                 $msg = sprintf(
                     _('Der Reparaturversuch des Systems %s an Bord der %s brachte keine Besserung'),
-                    ShipSystemTypeEnum::getDescription($repairTask->getSystemType()),
+                    $repairTask->getSystemType()->getDescription(),
                     $ship->getName()
                 );
             }
