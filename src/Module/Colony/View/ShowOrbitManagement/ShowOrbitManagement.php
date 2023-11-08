@@ -54,7 +54,8 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $groupedList = [];
 
         foreach ($shipList as $ship) {
-            $fleetId = $ship->getFleetId() ?? 0;
+            $fleet = $ship->getFleet();
+            $fleetId = $fleet === null ? 0 : $fleet->getId();
 
             $fleet = $groupedList[$fleetId] ?? null;
             if ($fleet === null) {
