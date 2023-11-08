@@ -8,6 +8,7 @@ use Stu\Component\Ship\Crew\ShipCrewCalculator;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
+use Stu\Component\Ship\Refactor\RefactorWarpdriveSplitRunner;
 use Stu\Component\Ship\Repair\CancelRepair;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Repair\RepairUtil;
@@ -99,4 +100,5 @@ return [
         autowire(StuTime::class)
     ),
     ShipCrewCalculatorInterface::class => autowire(ShipCrewCalculator::class),
+    RefactorWarpdriveSplitRunner::class => autowire(RefactorWarpdriveSplitRunner::class),
 ];

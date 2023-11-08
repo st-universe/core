@@ -251,11 +251,10 @@ final class ShowShip implements ViewControllerInterface
 
     private function addWarpcoreSplitJavascript(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
     {
-        $warpCoreSystem = $wrapper->getWarpCoreSystemData();
         $warpDriveSystem = $wrapper->getWarpDriveSystemData();
         $epsSystem = $wrapper->getEpsSystemData();
 
-        if ($warpCoreSystem !== null && $warpDriveSystem !== null && $epsSystem !== null) {
+        if ($warpDriveSystem !== null && $epsSystem !== null) {
             $ship = $wrapper->get();
 
             $game->addExecuteJS(sprintf(
@@ -270,7 +269,7 @@ final class ShowShip implements ViewControllerInterface
             ), GameEnum::JS_EXECUTION_AFTER_RENDER);
             $game->addExecuteJS(sprintf(
                 'updateEpsSplitValues(%d);',
-                $warpCoreSystem->getWarpCoreSplit(),
+                $warpDriveSystem->getWarpCoreSplit(),
             ), GameEnum::JS_EXECUTION_AFTER_RENDER);
         }
     }

@@ -430,11 +430,11 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             false
         );
 
-        $warpCoreSystemData = $wrapper->getWarpCoreSystemData();
-        if ($warpCoreSystemData === null) {
+        $systemData = $wrapper->getWarpDriveSystemData();
+        if ($systemData === null) {
             throw new RuntimeException('no warpcore in fleet leader');
         }
-        $warpsplit = $warpCoreSystemData->getWarpCoreSplit();
+        $warpsplit = $systemData->getWarpCoreSplit();
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($fleetWrapper === null) {
@@ -443,11 +443,11 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         $success = false;
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            $warpCoreSystemData = $wrapper->getWarpCoreSystemData();
+            $systemData = $wrapper->getWarpDriveSystemData();
 
-            if ($warpCoreSystemData !== null) {
+            if ($systemData !== null) {
                 $success = true;
-                $warpCoreSystemData->setWarpCoreSplit($warpsplit)->update();
+                $systemData->setWarpCoreSplit($warpsplit)->update();
             }
         }
 

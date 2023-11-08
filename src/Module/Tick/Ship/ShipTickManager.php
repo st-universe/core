@@ -269,11 +269,10 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);
             $epsSystem = $wrapper->getEpsSystemData();
             $warpdrive = $wrapper->getWarpDriveSystemData();
-            $warpcore = $wrapper->getWarpCoreSystemData();
 
             if ($epsSystem !== null) {
-                if ($warpdrive !== null && $warpcore !== null) {
-                    $eps = (int) ceil($ship->getReactorOutput() * (($warpcore->getWarpCoreSplit() / 100)) - $wrapper->getEpsUsage());
+                if ($warpdrive !== null) {
+                    $eps = (int) ceil($ship->getReactorOutput() * (($warpdrive->getWarpCoreSplit() / 100)) - $wrapper->getEpsUsage());
                 } else {
                     $eps = (int) ceil($ship->getReactorOutput() - $wrapper->getEpsUsage());
                 }

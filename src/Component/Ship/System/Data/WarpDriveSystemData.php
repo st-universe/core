@@ -13,6 +13,7 @@ class WarpDriveSystemData extends AbstractSystemData
     // warpdrive fields
     public int $wd = 0;
     public int $maxwd = 0;
+    public int $split = 100;
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
@@ -23,6 +24,9 @@ class WarpDriveSystemData extends AbstractSystemData
 
     public function update(): void
     {
+        // Überprüfe und begrenze den Wert zwischen 0 und 100
+        $this->split = max(0, min(100, $this->split));
+
         $this->updateSystemData(
             ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
             $this,
@@ -63,12 +67,19 @@ class WarpDriveSystemData extends AbstractSystemData
      */
     public function getMaxWarpDrive(): int
     {
-        if (!$this->ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)) {
-            return $this->maxwd;
-        }
-
         return (int) (ceil($this->maxwd
             * $this->ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getStatus() / 100));
+    }
+
+    public function getWarpCoreSplit(): int
+    {
+        return $this->split;
+    }
+
+    public function setWarpCoreSplit(int $split): WarpDriveSystemData
+    {
+        $this->split = $split;
+        return $this;
     }
 
     public function getWarpDriveStatusBar(): string

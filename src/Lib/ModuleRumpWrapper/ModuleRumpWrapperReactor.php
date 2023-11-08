@@ -26,11 +26,7 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
 
     public function apply(ShipInterface $ship): void
     {
+        //TODO move to reactorSystemData
         $ship->setReactorOutput($this->getValue());
-
-        $warpCoreSystemData = $this->wrapper->getWarpCoreSystemData();
-        if ($warpCoreSystemData !== null) {
-            $warpCoreSystemData->setWarpCoreSplit(100)->update();
-        }
     }
 }

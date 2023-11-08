@@ -153,11 +153,11 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
-            $warpcore = $this->getWarpCoreSystemData();
-            if ($warpcore === null) {
+            $warpdrive = $this->getWarpDriveSystemData();
+            if ($warpdrive === null) {
                 $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             } else {
-                $prod = round(($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * ($warpcore->getWarpCoreSplit() / 100));
+                $prod = round(($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * ($warpdrive->getWarpCoreSplit() / 100));
             }
             if ($prod <= 0) {
                 return (int) $prod;
@@ -184,11 +184,11 @@ final class ShipWrapper implements ShipWrapperInterface
             $flightcost = $this->ship->getRump()->getFlightEcost();
         }
         if ($this->effectiveWarpDriveProduction === null) {
-            $warpcore = $this->getWarpCoreSystemData();
-            if ($warpcore === null) {
+            $warpdrive = $this->getWarpDriveSystemData();
+            if ($warpdrive === null) {
                 $prod = ($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) / $flightcost;
             } else {
-                $prod = (($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * (1 - ($warpcore->getWarpCoreSplit() / 100))) / $flightcost;
+                $prod = (($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * (1 - ($warpdrive->getWarpCoreSplit() / 100))) / $flightcost;
             }
             if ($prod <= 0) {
                 return (int) $prod;

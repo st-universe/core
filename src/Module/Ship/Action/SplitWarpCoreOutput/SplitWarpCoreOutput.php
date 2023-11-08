@@ -34,8 +34,8 @@ final class SplitWarpCoreOutput implements ActionControllerInterface
             $userId
         );
 
-        $warpcoresystem = $wrapper->getWarpCoreSystemData();
-        if ($warpcoresystem === null) {
+        $systemData = $wrapper->getWarpDriveSystemData();
+        if ($systemData === null) {
             return;
         }
 
@@ -47,7 +47,7 @@ final class SplitWarpCoreOutput implements ActionControllerInterface
             $value = 100;
         }
 
-        $warpcoresystem->setWarpCoreSplit($value)->update();
+        $systemData->setWarpCoreSplit($value)->update();
     }
 
     public function performSessionCheck(): bool

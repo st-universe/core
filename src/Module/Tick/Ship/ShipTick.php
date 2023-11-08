@@ -108,7 +108,6 @@ final class ShipTick implements ShipTickInterface
 
         $eps = $wrapper->getEpsSystemData();
         $warpdrive = $wrapper->getWarpDriveSystemData();
-        $warpcore = $wrapper->getWarpCoreSystemData();
         if ($eps === null) {
             return;
         }
@@ -129,8 +128,8 @@ final class ShipTick implements ShipTickInterface
 
             $availableEps = $eps->getEps();
         } else {
-            if ($warpcore != null) {
-                $availableEps = (int)($eps->getEps() +  ($ship->getReactorOutputCappedByReactorLoad() * ($warpcore->getWarpCoreSplit() / 100)));
+            if ($warpdrive != null) {
+                $availableEps = (int)($eps->getEps() +  ($ship->getReactorOutputCappedByReactorLoad() * ($warpdrive->getWarpCoreSplit() / 100)));
             } else {
                 $availableEps = $eps->getEps() + $ship->getReactorOutputCappedByReactorLoad();
             }
