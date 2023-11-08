@@ -24,6 +24,11 @@ parameters:
 			path: src/Component/Logging/services.php
 
 		-
+			message: "#^Call to deprecated method getWarpCoreSplit\\(\\) of class Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\.$#"
+			count: 1
+			path: src/Component/Ship/Refactor/RefactorWarpdriveSplitRunner.php
+
+		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtil.php

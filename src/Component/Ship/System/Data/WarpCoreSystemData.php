@@ -31,14 +31,9 @@ class WarpCoreSystemData extends AbstractSystemData
         );
     }
 
+    /** @deprecated */
     public function getWarpCoreSplit(): int
     {
         return $this->split;
-    }
-
-    public function setWarpCoreSplit(int $split): WarpCoreSystemData
-    {
-        $this->split = $split;
-        return $this;
     }
 }

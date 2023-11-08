@@ -32,6 +32,10 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
             throw new RuntimeException('this should not happen');
         }
 
-        $systemData->setMaxWarpDrive($this->getValue())->update();
+
+        $systemData
+            ->setMaxWarpDrive($this->getValue())
+            ->setWarpCoreSplit(100)
+            ->update();
     }
 }
