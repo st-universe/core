@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
+use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -131,6 +132,8 @@ class WarpdriveShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfWarpcoreDestroyed(): void
     {
+        $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
+
         $this->ship->shouldReceive('isTractored')
             ->withNoArgs()
             ->once()
@@ -151,10 +154,18 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->ship->shouldReceive('isSystemHealthy')
-            ->with(ShipSystemTypeEnum::SYSTEM_WARPCORE)
+        $this->wrapper->shouldReceive('getReactorWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($reactorWrapper);
+        $reactorWrapper->shouldReceive('isHealthy')
+            ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $reactorWrapper->shouldReceive('get->getSystemType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemTypeEnum::SYSTEM_WARPCORE);
 
         $reason = null;
         $this->assertFalse(
@@ -166,6 +177,8 @@ class WarpdriveShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
     {
+        $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
+
         $this->ship->shouldReceive('isTractored')
             ->withNoArgs()
             ->once()
@@ -186,10 +199,15 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->ship->shouldReceive('isSystemHealthy')
-            ->with(ShipSystemTypeEnum::SYSTEM_WARPCORE)
+        $this->wrapper->shouldReceive('getReactorWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($reactorWrapper);
+        $reactorWrapper->shouldReceive('isHealthy')
+            ->withNoArgs()
             ->once()
             ->andReturn(true);
+
 
         $reason = null;
         $this->assertTrue(
