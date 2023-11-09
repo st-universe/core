@@ -6,7 +6,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 
 use RuntimeException;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -16,10 +16,14 @@ class ManageReactor implements ManagerInterface
 {
     private ReactorUtilInterface $reactorUtil;
 
+    private CommodityCacheInterface $commodityCache;
+
     public function __construct(
-        ReactorUtilInterface $reactorUtil
+        ReactorUtilInterface $reactorUtil,
+        CommodityCacheInterface $commodityCache
     ) {
         $this->reactorUtil = $reactorUtil;
+        $this->commodityCache = $commodityCache;
     }
 
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
@@ -74,7 +78,8 @@ class ManageReactor implements ManagerInterface
         );
 
         foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
-            $msg[] = sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId));
+            $commodity = $this->commodityCache->get($commodityId);
+            $msg[] = sprintf(_('%d %s'), $loadCost, $commodity->getName());
         }
 
         return $msg;

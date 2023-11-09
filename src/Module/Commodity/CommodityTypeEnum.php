@@ -49,6 +49,8 @@ final class CommodityTypeEnum
                 return _("Deuterium");
             case CommodityTypeEnum::COMMODITY_ANTIMATTER:
                 return _("Antimaterie");
+            case CommodityTypeEnum::COMMODITY_PLASMA:
+                return _("Plasma");
             case CommodityTypeEnum::COMMODITY_DILITHIUM:
                 return _("Dilithium");
             case CommodityTypeEnum::COMMODITY_SPARE_PART:

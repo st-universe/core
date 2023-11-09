@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\LoadReactor;
 
 use request;
 use RuntimeException;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
@@ -26,14 +26,18 @@ final class LoadReactor implements ActionControllerInterface
 
     private ReactorUtilInterface $reactorUtil;
 
+    private CommodityCacheInterface $commodityCache;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ReactorUtilInterface $reactorUtil,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        CommodityCacheInterface $commodityCache
     ) {
         $this->shipLoader = $shipLoader;
         $this->reactorUtil = $reactorUtil;
         $this->shipRepository = $shipRepository;
+        $this->commodityCache = $commodityCache;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -96,7 +100,8 @@ final class LoadReactor implements ActionControllerInterface
                     ));
 
                     foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
-                        $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
+                        $commodity = $this->commodityCache->get($commodityId);
+                        $game->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
                     }
                     continue;
                 }
@@ -140,7 +145,8 @@ final class LoadReactor implements ActionControllerInterface
             );
 
             foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
-                $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
+                $commodity = $this->commodityCache->get($commodityId);
+                $game->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
             }
         }
     }
