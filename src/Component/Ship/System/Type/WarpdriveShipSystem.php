@@ -53,12 +53,8 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         }
 
         $reactor = $wrapper->getReactorWrapper();
-        if (
-            $reactor === null
-            || $reactor->get()->getSystemType() === ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR
-        ) {
-            $reason = _('kein leistungsstarker Reaktor installiert ist');
-            return false;
+        if ($reactor === null) {
+            throw new RuntimeException('this should not happen, warpdrive should only be installed with potent reactor');
         }
 
         if (!$reactor->isHealthy()) {
