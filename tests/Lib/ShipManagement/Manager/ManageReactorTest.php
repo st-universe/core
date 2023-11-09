@@ -9,9 +9,12 @@ use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
@@ -20,6 +23,9 @@ class ManageReactorTest extends StuTestCase
 {
     /** @var MockInterface&ReactorUtilInterface */
     private MockInterface $reactorUtil;
+
+    /** @var MockInterface&CommodityCacheInterface */
+    private MockInterface $commodityCache;
 
     /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
@@ -37,13 +43,15 @@ class ManageReactorTest extends StuTestCase
     protected function setUp(): void
     {
         $this->reactorUtil = $this->mock(ReactorUtilInterface::class);
+        $this->commodityCache = $this->mock(CommodityCacheInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
         $this->user = $this->mock(UserInterface::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
         $this->subject = new ManageReactor(
-            $this->reactorUtil
+            $this->reactorUtil,
+            $this->commodityCache
         );
     }
 
@@ -123,6 +131,10 @@ class ManageReactorTest extends StuTestCase
     public function testManageExpectInfoMessageWhenInsufficientCommoditiesOnProvider(): void
     {
         $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
+        $dilithium = $this->mock(CommodityInterface::class);
+        $am = $this->mock(CommodityInterface::class);
+        $deut = $this->mock(CommodityInterface::class);
+
         $storage = $this->mock(Collection::class);
         $values = ['reactor' => ['555' => '42']];
 
@@ -159,6 +171,26 @@ class ManageReactorTest extends StuTestCase
         $this->reactorUtil->shouldReceive('storageContainsNeededCommodities')
             ->with($storage, $reactorWrapper)
             ->andReturn(false);
+
+        $this->commodityCache->shouldReceive('get')
+            ->with(CommodityTypeEnum::COMMODITY_DILITHIUM)
+            ->andReturn($dilithium);
+        $this->commodityCache->shouldReceive('get')
+            ->with(CommodityTypeEnum::COMMODITY_DEUTERIUM)
+            ->andReturn($deut);
+        $this->commodityCache->shouldReceive('get')
+            ->with(CommodityTypeEnum::COMMODITY_ANTIMATTER)
+            ->andReturn($am);
+
+        $dilithium->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("Dilithium");
+        $deut->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("Deuterium");
+        $am->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("Antimaterie");
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
