@@ -52,10 +52,17 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
             return false;
         }
 
-        // TODO abstract reactor
+        $reactor = $wrapper->getReactorWrapper();
+        if (
+            $reactor === null
+            || $reactor->get()->getSystemType() === ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR
+        ) {
+            $reason = _('kein leistungsstarker Reaktor installiert ist');
+            return false;
+        }
 
-        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
-            $reason = _('der Warpkern zerstört ist');
+        if (!$reactor->isHealthy()) {
+            $reason = sprintf(_('der %s zerstört ist'), $reactor->get()->getSystemType()->getDescription());
             return false;
         }
 

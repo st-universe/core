@@ -139,6 +139,11 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this;
     }
 
+    public function isHealthy(): bool
+    {
+        return $this->wrapper->get()->isSystemHealthy($this->get()->getSystemType());
+    }
+
     public function getReactorLoadStyle(): string
     {
         $load = $this->getLoad();
