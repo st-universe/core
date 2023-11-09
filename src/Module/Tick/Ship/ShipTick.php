@@ -199,7 +199,7 @@ final class ShipTick implements ShipTickInterface
             ->setBattery($eps->getBattery() + $batteryReload)
             ->update();
 
-        if ($usedEnergy < 0 && $reactor !== null) {
+        if ($usedEnergy > 0 && $reactor !== null) {
             $reactor->changeLoad(-$usedEnergy);
         }
 
