@@ -41,6 +41,11 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->ship);
+
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
 
         $this->system = new NearFieldScannerShipSystem($this->astroEntryLib);
@@ -69,7 +74,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
 
         $reason = null;
 
-        $result = $this->system->checkActivationConditions($this->ship, $reason);
+        $result = $this->system->checkActivationConditions($this->wrapper, $reason);
 
         $this->assertEquals($expectedResult, $result);
         $this->assertEquals($expectedReason, $reason);
@@ -81,11 +86,6 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_RED);
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $reason = null;
         $this->assertFalse(
@@ -107,11 +107,6 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
         $this->wrapper->shouldReceive('getTrackerSystemData')
             ->withNoArgs()
             ->once()
@@ -130,11 +125,6 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
         $this->wrapper->shouldReceive('getTrackerSystemData')
             ->withNoArgs()
             ->once()
@@ -167,11 +157,6 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->activate($this->wrapper, $managerMock);
     }
@@ -208,11 +193,6 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->deactivate($this->wrapper);
     }
@@ -260,11 +240,6 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $trackerSystemData->shouldReceive('update')
             ->withNoArgs()
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
         $this->wrapper->shouldReceive('getTrackerSystemData')
             ->withNoArgs()
             ->once()

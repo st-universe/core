@@ -55,6 +55,10 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                 return  new WarpDriveSystemData($this->shipSystemRepository);
             case ShipSystemTypeEnum::SYSTEM_WARPCORE:
                 return  new WarpCoreSystemData($this->shipSystemRepository);
+            case ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR:
+                return  new SingularityCoreSystemData($this->shipSystemRepository);
+            case ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR:
+                return  new FusionCoreSystemData($this->shipSystemRepository);
         }
 
         throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value));

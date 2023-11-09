@@ -9,7 +9,6 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -18,8 +17,10 @@ class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemType
         return ShipSystemTypeEnum::SYSTEM_TRACKER;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if (!$ship->getLss()) {
             $reason = _('die Langstreckensensoren nicht aktiv sind');
             return false;

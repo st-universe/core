@@ -37,8 +37,10 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
         return 10;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if (!$ship->hasEnoughCrew()) {
             $reason = _('ungenügend Crew vorhanden ist');
             return false;

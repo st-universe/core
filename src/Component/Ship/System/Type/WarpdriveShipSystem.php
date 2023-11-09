@@ -13,7 +13,6 @@ use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -34,8 +33,10 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if ($ship->isTractored()) {
             $reason = _('es von einem Traktorstrahl gehalten wird');
             return false;
@@ -50,6 +51,8 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
             $reason = _('es sich in einem Wurmloch befindet');
             return false;
         }
+
+        // TODO abstract reactor
 
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
             $reason = _('der Warpkern zerstört ist');

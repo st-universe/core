@@ -20,7 +20,6 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
@@ -251,25 +250,29 @@ final class ShowShip implements ViewControllerInterface
 
     private function addWarpcoreSplitJavascript(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
     {
+        $reactor = $wrapper->getReactorWrapper();
         $warpDriveSystem = $wrapper->getWarpDriveSystemData();
         $epsSystem = $wrapper->getEpsSystemData();
 
-        if ($warpDriveSystem !== null && $epsSystem !== null) {
+        if (
+            $warpDriveSystem !== null
+            && $epsSystem !== null
+            && $reactor !== null
+        ) {
             $ship = $wrapper->get();
 
             $game->addExecuteJS(sprintf(
-                'setReactorSplitConstants(%d,%d,%d,%d,%d,%d,%d);',
-                $ship->getReactorOutputCappedByReactorLoad(),
+                'setReactorSplitConstants(%d,%d,%d,%d,%d,%d);',
+                $reactor->getOutputCappedByLoad(),
                 $wrapper->getEpsUsage(),
                 $ship->getRump()->getFlightEcost(),
-                $epsSystem->getEps(),
-                $epsSystem->getMaxEps(),
+                $epsSystem->getMaxEps() - $epsSystem->getEps(),
                 $warpDriveSystem->getWarpDrive(),
                 $warpDriveSystem->getMaxWarpDrive()
             ), GameEnum::JS_EXECUTION_AFTER_RENDER);
             $game->addExecuteJS(sprintf(
-                'updateEpsSplitValues(%d);',
-                $warpDriveSystem->getWarpCoreSplit(),
+                'updateReactorValues(%d);',
+                $warpDriveSystem->getWarpDriveSplit(),
             ), GameEnum::JS_EXECUTION_AFTER_RENDER);
         }
     }

@@ -38,8 +38,10 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         return ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;

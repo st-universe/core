@@ -55,7 +55,7 @@
 			<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
 				Warpdrive <img src="assets/buttons/info2.png" style="height:16px;" /></th>
 			{% endif %}
-			<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">
+			<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)">
 				Energie <img src="assets/buttons/info2.png" style="height:16px;" /></th>
 			<th style="text-align: center;">Batterie</th>
 			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="assets/buttons/info2.png"
@@ -117,14 +117,8 @@
 			<td style="text-align: center;">
 				{% if epssystem %}
 				{{ epssystem.getEps }}/{{ epssystem.getMaxEps }}
-				{% if SHIP.hasWarpCore %}
-				{% set warpdrivesystem = WRAPPER.getWarpDriveSystemData %}
 				<span id="effectiveEps"></span>
-				{% else %}
-				<span>{{ WRAPPER.getEffectiveEpsProduction|addPlusCharacter }}</span>
-				{% endif %}
-				(<span class="neg">{{ WRAPPER.getEpsUsage }}</span>/<span class="neg">{{ WRAPPER.getWarpcoreUsage
-					}}</span>)
+				(<span class="neg">{{ WRAPPER.getEpsUsage }}</span>/<span class="neg" id="reactorUsage"></span>)
 				{% endif %}
 			</td>
 			<td style="text-align: center;">

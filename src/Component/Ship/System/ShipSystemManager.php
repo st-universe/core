@@ -152,7 +152,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
 
         $reason = null;
-        if (!$system->checkActivationConditions($ship, $reason)) {
+        if (!$system->checkActivationConditions($wrapper, $reason)) {
             throw new ActivationConditionsNotMetException($reason);
         }
     }

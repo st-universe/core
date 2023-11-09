@@ -10,7 +10,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -29,8 +28,10 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiv ist');
             return false;

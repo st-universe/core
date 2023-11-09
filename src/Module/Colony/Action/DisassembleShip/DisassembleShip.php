@@ -6,8 +6,6 @@ namespace Stu\Module\Colony\Action\DisassembleShip;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\ShipEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
@@ -100,7 +98,7 @@ final class DisassembleShip implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         $this->retrieveSomeIntactModules($ship, $colony, $game);
-        $this->retrieveWarpcoreLoad($ship, $colony, $game);
+        $this->retrieveReactorLoad($wrapper, $colony, $game);
         $this->retrieveLoadedTorpedos($wrapper, $colony, $game);
 
         $this->transferCrewToColony($ship, $colony);
@@ -157,22 +155,28 @@ final class DisassembleShip implements ActionControllerInterface
         }
     }
 
-    private function retrieveWarpcoreLoad(ShipInterface $ship, ColonyInterface $colony, GameControllerInterface $game): void
+    private function retrieveReactorLoad(ShipWrapperInterface $wrapper, ColonyInterface $colony, GameControllerInterface $game): void
     {
-        if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
+        $reactorWrapper = $wrapper->getReactorWrapper();
+        if ($reactorWrapper === null) {
             return;
         }
-        $loads = (int) floor($ship->getReactorLoad() / ShipEnum::WARPCORE_LOAD);
 
+        $reactor = $reactorWrapper->get();
+
+        $loads = (int) floor($reactorWrapper->getLoad() / $reactor->getLoadUnits());
         if ($loads < 1) {
             return;
         }
 
         $maxStorage = $colony->getMaxStorage();
 
-        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+        foreach ($reactor->getLoadCost() as $commodityId => $loadCost) {
             if ($colony->getStorageSum() >= $maxStorage) {
-                $game->addInformationf(_('Kein Lagerraum frei um Warpkern-Mix zu sichern!'));
+                $game->addInformationf(
+                    _('Kein Lagerraum frei um %s-Mix zu sichern!'),
+                    $reactor->getSystemType()->getDescription()
+                );
                 break;
             }
 

@@ -16,6 +16,7 @@ final class CommodityTypeEnum
     public const COMMODITY_TRANSPARENT_ALUMINIUM = 4;
     public const COMMODITY_DEUTERIUM = 5;
     public const COMMODITY_ANTIMATTER = 6;
+    public const COMMODITY_PLASMA = 7;
     public const COMMODITY_DILITHIUM = 8;
     public const COMMODITY_DURANIUM = 21;
     public const COMMODITY_LATINUM = 50;

@@ -7,30 +7,30 @@ namespace Stu\Component\Ship\System\Data;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 
-class WarpCoreSystemData extends AbstractReactorSystemData
+class SingularityCoreSystemData extends AbstractReactorSystemData
 {
     function getSystemType(): ShipSystemTypeEnum
     {
-        return ShipSystemTypeEnum::SYSTEM_WARPCORE;
+        return ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR;
     }
 
     public function getIcon(): string
     {
-        return "warpk.png";
+        return "singrkt.png";
     }
 
     public function getLoadUnits(): int
     {
-        return ReactorWrapperInterface::WARPCORE_LOAD;
+        return ReactorWrapperInterface::SINGULARITY_CORE_LOAD;
     }
 
     public function getLoadCost(): array
     {
-        return ReactorWrapperInterface::WARPCORE_LOAD_COST;
+        return ReactorWrapperInterface::SINGULARITY_CORE_LOAD_COST;
     }
 
     public function getCapacity(): int
     {
-        return $this->getTheoreticalReactorOutput() * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
+        return $this->getTheoreticalReactorOutput() * ReactorWrapperInterface::SINGULARITY_CAPACITY_MULTIPLIER;
     }
 }

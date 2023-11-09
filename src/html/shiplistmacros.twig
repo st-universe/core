@@ -10,7 +10,7 @@
     <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img
             src="assets/buttons/info2.png" style="height:16px;" /></th>
     <th style="width: 210px;"
-        title="EPS: aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)&#10;WarpDrive: aktuell/maximal, Zuwachs">
+        title="EPS: aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)&#10;WarpDrive: aktuell/maximal, Zuwachs">
         Energie <img src="assets/buttons/info2.png" style="height:16px;" /></th>
     <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="assets/buttons/info2.png"
             style="height:16px;" /></th>
@@ -76,21 +76,25 @@
     </td>
     <td>
         <table>
+            {% set reactor = wrapper.getReactorWrapper %}
             <tr>
                 <td style="background-color: transparent !important;">
                     {% if epssystem %}
                     {{ epssystem.getEps }}/{{ epssystem.getMaxEps }}
-                    <span>{{ wrapper.getEffectiveEpsProduction|addPlusCharacter }}</span>
-                    (<span class="neg">{{ wrapper.getEpsUsage }}</span>/<span class="neg">{{ wrapper.getWarpcoreUsage
-                        }}</span>)
+                    {% if reactor %}
+                    <span>{{ reactor.getEffectiveEpsProduction|addPlusCharacter }}</span>
+                    {% endif %}
+                    (<span class="neg">{{ wrapper.getEpsUsage }}</span>/
+                    {% if reactor %}
+                    <span class="neg">{{ wrapper.getReactorUsage }}</span>)
+                    {% endif %}
                     {% endif %}
                 </td>
-
                 {% if ship.hasWarpDrive %}
                 <td style="background-color: transparent !important;">
                     {% set warpdrivesystem = wrapper.getWarpDriveSystemData %}
                     {{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpDrive }}
-                    <span>{{ wrapper.getEffectiveWarpDriveProduction|addPlusCharacter }}</span>
+                    <span>{{ reactor.getEffectiveWarpDriveProduction|addPlusCharacter }}</span>
                 </td>
                 {% endif %}
             </tr>
@@ -99,14 +103,13 @@
 
 
     <td>
+        {% set reactor = wrapper.getReactorWrapper %}
+        {% if reactor %}
         <div style="float: left; width: 50%">
-            {% if ship.hasWarpcore %}
-            <img src="assets/buttons/warpk.png" title="Warpkern" /> <span>{{ ship.getReactorLoad }}</span>
-            {% endif %}
-            {% if ship.hasFusionReactor %}
-            <img src="assets/buttons/fusrkt.png" title="Fusionsreaktor" /> <span>{{ ship.getReactorLoad }}</span>
-            {% endif %}
+            <img src="assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" /> <span>{{ reactor.getLoad
+                }}</span>
         </div>
+        {% endif %}
         {% if epssystem %}
         <div style="float: left; width: 50%">
             {% if epssystem.isEBattUseable %}

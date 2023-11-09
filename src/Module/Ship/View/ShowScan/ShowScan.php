@@ -11,6 +11,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -95,7 +96,7 @@ final class ShowScan implements ViewControllerInterface
 
         $game->setTemplateVar('TARGETWRAPPER', $targetWrapper);
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
-        $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($target));
+        $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($targetWrapper));
         $game->setTemplateVar('SHIP', $ship);
 
         $tradePostCrewCount = null;
@@ -114,10 +115,15 @@ final class ShowScan implements ViewControllerInterface
             : (int)ceil($target->getShield() / $target->getMaxShield() * 100);
     }
 
-    private function calculateReactorPercentage(ShipInterface $target): int
+    private function calculateReactorPercentage(ShipWrapperInterface $wrapper): ?int
     {
-        return $target->getReactorCapacity() === 0
+        $reactor = $wrapper->getReactorWrapper();
+        if ($reactor === null) {
+            return null;
+        }
+
+        return $reactor->getCapacity() === 0
             ? 0
-            : (int)ceil($target->getReactorLoad() / $target->getReactorCapacity() * 100);
+            : (int)ceil($reactor->getLoad() / $reactor->getCapacity() * 100);
     }
 }

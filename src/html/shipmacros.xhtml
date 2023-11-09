@@ -717,7 +717,7 @@
               <td>${targetShipEps/getBattery}</td>
             </tr>
           </tal:block>
-          <tr>
+          <tr tal:condition="REACTOR_PERCENTAGE">
             <td>Reaktor</td>
             <td>${REACTOR_PERCENTAGE}%</td>
           </tr>
@@ -1075,12 +1075,14 @@
       </div>
       <div>
         <div class="divhead">Informationen</div>
-        <div class="divbody">
+        <div class="divbody" tal:define="reactor WRAPPER/getReactorWrapper">
           <span>Ersatzbatterie:</span> <span tal:condition="eps">${eps/getMaxBattery}</span><br />
           <span>Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
           <span>Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
           <span>Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
-          <span>Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
+          <tal:block tal:condition="reactor">
+            <span>Reaktorleistung:</span> ${reactor/get/getTheoreticalReactorOutput}<br />
+          </tal:block>
           <span>Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
           <tal:block tal:condition="SHIP/canMove">
             <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />

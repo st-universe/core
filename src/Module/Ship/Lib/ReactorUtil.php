@@ -6,14 +6,12 @@ namespace Stu\Module\Ship\Lib;
 
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 //TODO create unit test
@@ -35,11 +33,9 @@ final class ReactorUtil implements ReactorUtilInterface
         $this->privateMessageSender = $privateMessageSender;
     }
 
-    public function storageContainsNeededCommodities(Collection $storages, bool $isWarpcore = true): bool
+    public function storageContainsNeededCommodities(Collection $storages, ReactorWrapperInterface $reactor): bool
     {
-        $costs = $isWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
-
-        foreach ($costs as $commodityId => $loadCost) {
+        foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
             $storage = $storages->get($commodityId);
 
             if ($storage === null) {
@@ -57,18 +53,18 @@ final class ReactorUtil implements ReactorUtilInterface
         ShipInterface $ship,
         int $additionalLoad,
         ?ManagerProviderInterface $managerProvider,
-        bool $isWarpcore = true
+        ReactorWrapperInterface $reactor
     ): ?string {
-        if ($ship->getReactorLoad() >= $ship->getReactorCapacity()) {
+        if ($reactor->getLoad() >= $reactor->getCapacity()) {
             return null;
         }
 
-        $capaPerLoad = $isWarpcore ? ShipEnum::WARPCORE_LOAD : ShipEnum::REACTOR_LOAD;
+        $capaPerLoad = $reactor->get()->getLoadUnits();
 
         //check for core limitation
         $loadUnits = ceil($additionalLoad /  $capaPerLoad);
-        if ($loadUnits *  $capaPerLoad > $ship->getReactorCapacity() - $ship->getReactorLoad()) {
-            $loadUnits = ceil(($ship->getReactorCapacity() - $ship->getReactorLoad()) /  $capaPerLoad);
+        if ($loadUnits *  $capaPerLoad > $reactor->getCapacity() - $reactor->getLoad()) {
+            $loadUnits = ceil(($reactor->getCapacity() - $reactor->getLoad()) /  $capaPerLoad);
         }
 
         $loadUnits = (int) $loadUnits;
@@ -80,7 +76,7 @@ final class ReactorUtil implements ReactorUtilInterface
         $storage = $managerProvider !== null ? $managerProvider->getStorage() : $ship->getStorage();
 
         // check for ressource limitation
-        $costs = $isWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
+        $costs = $reactor->get()->getLoadCost();
         foreach ($costs as $commodityId => $loadUnitsCost) {
             $storageElement = $storage->get($commodityId);
 
@@ -116,13 +112,15 @@ final class ReactorUtil implements ReactorUtilInterface
         }
 
         //truncate output
-        if ($ship->getReactorLoad() + $loadUnits *  $capaPerLoad > $ship->getReactorCapacity()) {
-            $loadUnits = $ship->getReactorCapacity() - $ship->getReactorLoad();
+        if ($reactor->getLoad() + $loadUnits *  $capaPerLoad > $reactor->getCapacity()) {
+            $loadUnits = $reactor->getCapacity() - $reactor->getLoad();
         } else {
             $loadUnits *= $capaPerLoad;
         }
-        $ship->setReactorLoad($ship->getReactorLoad() + $loadUnits);
+        $reactor->changeLoad($loadUnits);
         $this->shipRepository->save($ship);
+
+        $systemName = $reactor->get()->getSystemType()->getDescription();
 
         if ($managerProvider !== null) {
             $this->privateMessageSender->send(
@@ -132,7 +130,7 @@ final class ReactorUtil implements ReactorUtilInterface
                     _('Die %s hat in Sektor %s den %s der %s um %d Einheiten aufgeladen'),
                     $managerProvider->getName(),
                     $ship->getSectorString(),
-                    $isWarpcore ? 'Warpkern' : 'Fusionsreaktor',
+                    $systemName,
                     $ship->getName(),
                     $loadUnits
                 ),
@@ -144,7 +142,7 @@ final class ReactorUtil implements ReactorUtilInterface
         return sprintf(
             _('%s: Der %s wurde um %d Einheiten aufgeladen'),
             $ship->getName(),
-            $isWarpcore ? 'Warpkern' : 'Fusionsreaktor',
+            $systemName,
             $loadUnits
         );
     }

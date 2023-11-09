@@ -37,6 +37,11 @@ class ShieldShipSystemTest extends StuTestCase
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->ship);
+
         $this->system = new ShieldShipSystem($this->shipStateChanger);
     }
 
@@ -49,7 +54,7 @@ class ShieldShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('die Tarnung aktiviert ist', $reason);
     }
@@ -67,7 +72,7 @@ class ShieldShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('der Traktorstrahl aktiviert ist', $reason);
     }
@@ -89,7 +94,7 @@ class ShieldShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('das Schiff von einem Traktorstrahl gehalten wird', $reason);
     }
@@ -115,7 +120,7 @@ class ShieldShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('die Schildemitter erschöpft sind', $reason);
     }
@@ -152,7 +157,7 @@ class ShieldShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('in diesem Sektor eine Subraumellipse vorhanden ist', $reason);
     }
@@ -189,7 +194,7 @@ class ShieldShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertNull($reason);
     }
@@ -217,11 +222,6 @@ class ShieldShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->shipStateChanger->shouldReceive('changeShipState')
             ->with($this->wrapper, ShipStateEnum::SHIP_STATE_NONE)
@@ -241,11 +241,6 @@ class ShieldShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->deactivate($this->wrapper);
     }

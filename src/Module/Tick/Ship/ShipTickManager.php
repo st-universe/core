@@ -265,28 +265,23 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
     {
         // @todo
         foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
-            //load EPS
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+            $reactor = $wrapper->getReactorWrapper();
+            if ($reactor === null) {
+                continue;
+            }
+
             $epsSystem = $wrapper->getEpsSystemData();
             $warpdrive = $wrapper->getWarpDriveSystemData();
 
+            //load EPS
             if ($epsSystem !== null) {
-                if ($warpdrive !== null) {
-                    $eps = (int) ceil($ship->getReactorOutput() * (($warpdrive->getWarpCoreSplit() / 100)) - $wrapper->getEpsUsage());
-                } else {
-                    $eps = (int) ceil($ship->getReactorOutput() - $wrapper->getEpsUsage());
-                }
-                if ($eps + $epsSystem->getEps() > $epsSystem->getMaxEps()) {
-                    $eps = $epsSystem->getMaxEps() - $epsSystem->getEps();
-                }
-                $epsSystem->setEps($epsSystem->getEps() + $eps)->update();
+                $epsSystem->setEps($epsSystem->getEps() + $reactor->getEffectiveEpsProduction())->update();
             }
+
+            //load warpdrive
             if ($warpdrive !== null) {
-                $availableWarpDrive = $warpdrive->getWarpDrive() + $wrapper->getEffectiveWarpDriveProduction();
-                if ($availableWarpDrive > $warpdrive->getMaxWarpDrive()) {
-                    $availableWarpDrive = $warpdrive->getMaxWarpDrive();
-                }
-                $warpdrive->setWarpDrive($availableWarpDrive)->update();
+                $warpdrive->setWarpDrive($warpdrive->getWarpDrive() + $reactor->getEffectiveWarpDriveProduction())->update();
             }
         }
     }

@@ -319,7 +319,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn($energyCosts);
         $this->systemType->shouldReceive('checkActivationConditions')->with(
-            $this->ship,
+            $this->wrapper,
             Mockery::on(function (&$reason) {
                 $reason = 'reason';
                 return true;
@@ -394,7 +394,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturnNull();
         $this->systemType->shouldReceive('checkActivationConditions')
-            ->with($this->ship, Mockery::any())
+            ->with($this->wrapper, Mockery::any())
             ->once()
             ->andReturnTrue();
         $this->systemType->shouldReceive('activate')
@@ -468,7 +468,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->twice()
             ->andReturn(5);
         $this->systemType->shouldReceive('checkActivationConditions')
-            ->with($this->ship, Mockery::any())
+            ->with($this->wrapper, Mockery::any())
             ->once()
             ->andReturnTrue();
         $this->systemType->shouldReceive('activate')

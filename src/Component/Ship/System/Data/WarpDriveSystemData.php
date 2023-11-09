@@ -71,12 +71,12 @@ class WarpDriveSystemData extends AbstractSystemData
             * $this->ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getStatus() / 100));
     }
 
-    public function getWarpCoreSplit(): int
+    public function getWarpDriveSplit(): int
     {
         return $this->split;
     }
 
-    public function setWarpCoreSplit(int $split): WarpDriveSystemData
+    public function setWarpDriveSplit(int $split): WarpDriveSystemData
     {
         $this->split = $split;
         return $this;

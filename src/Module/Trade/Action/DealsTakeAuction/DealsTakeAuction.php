@@ -204,7 +204,11 @@ final class DealsTakeAuction implements ActionControllerInterface
         $wrapper = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
         $ship = $wrapper->get();
 
-        $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
+        $reactor = $wrapper->getReactorWrapper();
+        if ($reactor !== null) {
+            $reactor->setLoad((int)floor($reactor->getCapacity() / 4));
+        }
+
         $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
 
         $eps = $wrapper->getEpsSystemData();

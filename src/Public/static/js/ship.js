@@ -387,26 +387,25 @@ function adjustCellWidth(image) {
 var reactorOutput = null;
 var epsUsage = null;
 var flightCost = null;
-var currentEps = null;
-var maxEps = null;
+var missingEps = null;
 var currentWarpdrive = null;
 var maxWarpdrive = null;
 
-function setReactorSplitConstants(output, usage, cost, eps, meps, wd, mwd) {
+function setReactorSplitConstants(output, usage, cost, meps, wd, mwd) {
 	reactorOutput = output;
 	epsUsage = usage;
 	flightCost = cost;
-	currentEps = eps;
-	maxEps = meps;
+	missingEps = meps;
 	currentWarpdrive = wd;
 	maxWarpdrive = mwd;
 }
 
-function updateEpsSplitValues(value) {
+function updateReactorValues(value) {
 
 	// calculate absolute values
-	const warpCoreSplit = parseInt(value);
-	const warpDriveProduction = Math.round((1 - (warpCoreSplit / 100)) * (reactorOutput - epsUsage) / flightCost);
+	const warpdriveSplit = parseInt(value);
+	const maxWarpdriveGain = Math.floor((reactorOutput - epsUsage) / flightCost);
+	const warpDriveProduction = Math.round((1 - (warpdriveSplit / 100)) * maxWarpdriveGain);
 	const epsProduction = reactorOutput - (warpDriveProduction * flightCost);
 
 	// set input labels
@@ -414,19 +413,16 @@ function updateEpsSplitValues(value) {
 	document.getElementById('calculatedWarpDrive').textContent = warpDriveProduction > 0 ? '+' + warpDriveProduction : '0';
 
 	// calculate effective values
-	const warpdriveCap = Math.round((1 - (warpCoreSplit / 100)) * (reactorOutput - epsUsage) / flightCost);
-	const epsCap = reactorOutput - (warpdriveCap * flightCost);
-
-	const missingEps = maxEps - currentEps;
-	const epsGrowthCap = epsCap - epsUsage
+	const epsGrowthCap = epsProduction - epsUsage
 	const effEpsProduction = Math.min(missingEps, epsGrowthCap);
 
 	const missingWarpdrive = maxWarpdrive - currentWarpdrive;
-	const effWarpdriveProduction = Math.min(missingWarpdrive, warpdriveCap);
+	const effWarpdriveProduction = Math.min(missingWarpdrive, warpDriveProduction);
 
 	// set effective labels
 	document.getElementById('effectiveEps').textContent = effEpsProduction > 0 ? '+' + effEpsProduction : String(effEpsProduction);
 	document.getElementById('effectiveWarpdrive').textContent = effWarpdriveProduction > 0 ? '+' + effWarpdriveProduction : String(effWarpdriveProduction);
+	document.getElementById('reactorUsage').textContent = epsUsage + effEpsProduction + (effWarpdriveProduction * flightCost);
 }
 
 var saveTimeout;
@@ -437,7 +433,7 @@ function saveWarpCoreSplit(value, shipId, successCallback) {
 	saveTimeout = setTimeout(function () {
 		new Ajax.Request('ship.php', {
 			method: 'post',
-			parameters: 'B_SPLIT_WARP_CORE_OUTPUT=1&id=' + shipId + '&value=' + value,
+			parameters: 'B_SPLIT_REACTOR_OUTPUT=1&id=' + shipId + '&value=' + value,
 			evalScripts: true,
 			onSuccess: function () {
 				successCallback(value);
