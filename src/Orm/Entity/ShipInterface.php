@@ -73,9 +73,8 @@ interface ShipInterface
 
     public function getWebState(): bool;
 
+    /** @deprecated */
     public function getReactorLoad(): int;
-
-    public function setReactorLoad(int $reactorload): ShipInterface;
 
     public function getCloakState(): bool;
 
@@ -155,11 +154,8 @@ interface ShipInterface
 
     public function setEvadeChance(int $evadeChance): ShipInterface;
 
-    public function getReactorOutput(): int;
-
+    /** @deprecated */
     public function getTheoreticalReactorOutput(): int;
-
-    public function setReactorOutput(int $reactorOutput): ShipInterface;
 
     public function getBaseDamage(): int;
 
@@ -217,14 +213,6 @@ interface ShipInterface
     public function getSystem(): ?StarSystemInterface;
 
     public function getModules(): array;
-
-    public function getReactorCapacity(): int;
-
-    public function getReactorOutputCappedByReactorLoad(): int;
-
-    public function getReactorLoadStyle(): string;
-
-    public function isWarpcoreHealthy(): bool;
 
     public function isDeflectorHealthy(): bool;
 
@@ -413,13 +401,9 @@ interface ShipInterface
 
     public function hasAstroLaboratory(): bool;
 
-    public function hasWarpcore(): bool;
-
     public function hasWarpdrive(): bool;
 
     public function hasRPGModule(): bool;
-
-    public function hasFusionReactor(): bool;
 
     public function hasNbsLss(): bool;
 

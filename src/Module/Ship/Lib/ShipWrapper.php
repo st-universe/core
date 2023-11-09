@@ -14,9 +14,11 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AbstractSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Ship\System\Data\FusionCoreSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
+use Stu\Component\Ship\System\Data\SingularityCoreSystemData;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WarpCoreSystemData;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
@@ -63,11 +65,9 @@ final class ShipWrapper implements ShipWrapperInterface
      */
     private array $shipSystemDataCache = [];
 
+    private ?ReactorWrapperInterface $reactorWrapper = null;
+
     private ?int $epsUsage = null;
-
-    private ?int $effectiveEpsProduction = null;
-
-    private ?int $effectiveWarpDriveProduction = null;
 
     public function __construct(
         ShipInterface $ship,
@@ -150,66 +150,50 @@ final class ShipWrapper implements ShipWrapperInterface
         return $result;
     }
 
-    public function getEffectiveEpsProduction(): int
+    public function getReactorUsage(): int
     {
-        if ($this->effectiveEpsProduction === null) {
-            $warpdrive = $this->getWarpDriveSystemData();
-            if ($warpdrive === null) {
-                $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
-            } else {
-                $prod = round(($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * ($warpdrive->getWarpCoreSplit() / 100));
-            }
-            if ($prod <= 0) {
-                return (int) $prod;
-            }
-
-            $eps = $this->getEpsSystemData();
-            if (
-                $eps !== null
-                && $eps->getEps() + $prod > $eps->getMaxEps()
-            ) {
-                return $eps->getMaxEps() - $eps->getEps();
-            }
-            $this->effectiveEpsProduction = (int) $prod;
+        $reactor = $this->reactorWrapper;
+        if ($reactor === null) {
+            throw new RuntimeException('this should not happen');
         }
-        return $this->effectiveEpsProduction;
+
+        return $this->getEpsUsage() + $reactor->getUsage();
     }
 
-    public function getEffectiveWarpDriveProduction(): int
+    public function getReactorWrapper(): ?ReactorWrapperInterface
     {
+        if ($this->reactorWrapper === null) {
+            $ship = $this->get();
+            $reactorSystemData = null;
 
-        if ($this->ship->getRump()->getFlightEcost() === 0 || $this->ship->getRump()->getFlightEcost() === null) {
-            $flightcost = 1;
-        } else {
-            $flightcost = $this->ship->getRump()->getFlightEcost();
+
+            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
+                $reactorSystemData = $this->getSpecificShipSystem(
+                    ShipSystemTypeEnum::SYSTEM_WARPCORE,
+                    WarpCoreSystemData::class
+                );
+            }
+            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR)) {
+                $reactorSystemData = $this->getSpecificShipSystem(
+                    ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR,
+                    SingularityCoreSystemData::class
+                );
+            }
+            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR)) {
+                $reactorSystemData = $this->getSpecificShipSystem(
+                    ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR,
+                    FusionCoreSystemData::class
+                );
+            }
+
+            if ($reactorSystemData === null) {
+                return null;
+            }
+
+            $this->reactorWrapper = new ReactorWrapper($this, $reactorSystemData);
         }
-        if ($this->effectiveWarpDriveProduction === null) {
-            $warpdrive = $this->getWarpDriveSystemData();
-            if ($warpdrive === null) {
-                $prod = ($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) / $flightcost;
-            } else {
-                $prod = (($this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage()) * (1 - ($warpdrive->getWarpCoreSplit() / 100))) / $flightcost;
-            }
-            if ($prod <= 0) {
-                return (int) $prod;
-            }
 
-            $warpdrive = $this->getWarpDriveSystemData();
-            if (
-                $warpdrive !== null
-                && $warpdrive->getWarpDrive() + $prod > $warpdrive->getMaxWarpDrive()
-            ) {
-                return $warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive();
-            }
-            $this->effectiveWarpDriveProduction = (int) round($prod);
-        }
-        return $this->effectiveWarpDriveProduction;
-    }
-
-
-    public function getWarpcoreUsage(): int
-    {
-        return $this->getEffectiveEpsProduction() + $this->getEpsUsage() + $this->getEffectiveWarpDriveProduction();
+        return $this->reactorWrapper;
     }
 
     public function setAlertState(ShipAlertStateEnum $alertState): ?string
@@ -473,14 +457,6 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_EPS,
             EpsSystemData::class
-        );
-    }
-
-    public function getWarpCoreSystemData(): ?WarpCoreSystemData
-    {
-        return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_WARPCORE,
-            WarpCoreSystemData::class
         );
     }
 

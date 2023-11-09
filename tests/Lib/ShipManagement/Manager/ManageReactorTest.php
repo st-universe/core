@@ -7,8 +7,10 @@ namespace Stu\Lib\ShipManagement\Manager;
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use RuntimeException;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
+use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -103,17 +105,15 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getReactorWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->twice()
             ->andReturn($this->shipId);
-        $this->ship->shouldReceive('hasWarpcore')
-            ->withNoArgs()
-            ->andReturn(false);
-        $this->ship->shouldReceive('hasFusionReactor')
-            ->withNoArgs()
-            ->andReturn(false);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -122,6 +122,7 @@ class ManageReactorTest extends StuTestCase
 
     public function testManageExpectInfoMessageWhenInsufficientCommoditiesOnProvider(): void
     {
+        $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
         $storage = $this->mock(Collection::class);
         $values = ['reactor' => ['555' => '42']];
 
@@ -129,17 +130,24 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getReactorWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($reactorWrapper);
+
+        $reactorWrapper->shouldReceive('get->getSystemType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemTypeEnum::SYSTEM_WARPCORE);
+        $reactorWrapper->shouldReceive('get->getLoadCost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ReactorWrapperInterface::WARPCORE_LOAD_COST);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->twice()
             ->andReturn($this->shipId);
-        $this->ship->shouldReceive('hasWarpcore')
-            ->withNoArgs()
-            ->andReturn(true);
-        $this->ship->shouldReceive('hasFusionReactor')
-            ->withNoArgs()
-            ->andReturn(false);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
@@ -149,7 +157,7 @@ class ManageReactorTest extends StuTestCase
             ->andReturn($storage);
 
         $this->reactorUtil->shouldReceive('storageContainsNeededCommodities')
-            ->with($storage, true)
+            ->with($storage, $reactorWrapper)
             ->andReturn(false);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
@@ -164,6 +172,7 @@ class ManageReactorTest extends StuTestCase
 
     public function testManageExpectLoadingWhenValueIsNumeric(): void
     {
+        $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
         $storage = $this->mock(Collection::class);
         $values = ['reactor' => ['555' => '42']];
 
@@ -171,16 +180,14 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getReactorWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($reactorWrapper);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
-        $this->ship->shouldReceive('hasWarpcore')
-            ->withNoArgs()
-            ->andReturn(false);
-        $this->ship->shouldReceive('hasFusionReactor')
-            ->withNoArgs()
-            ->andReturn(true);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
@@ -190,10 +197,10 @@ class ManageReactorTest extends StuTestCase
             ->andReturn($storage);
 
         $this->reactorUtil->shouldReceive('storageContainsNeededCommodities')
-            ->with($storage, false)
+            ->with($storage, $reactorWrapper)
             ->andReturn(true);
         $this->reactorUtil->shouldReceive('loadReactor')
-            ->with($this->ship, 42, $this->managerProvider, false)
+            ->with($this->ship, 42, $this->managerProvider, $reactorWrapper)
             ->andReturn('LOADED');
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
@@ -203,6 +210,7 @@ class ManageReactorTest extends StuTestCase
 
     public function testManageExpectLoadingWhenValueIsLetterM(): void
     {
+        $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
         $storage = $this->mock(Collection::class);
         $values = ['reactor' => ['555' => 'm']];
 
@@ -210,16 +218,14 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getReactorWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($reactorWrapper);
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
-        $this->ship->shouldReceive('hasWarpcore')
-            ->withNoArgs()
-            ->andReturn(false);
-        $this->ship->shouldReceive('hasFusionReactor')
-            ->withNoArgs()
-            ->andReturn(true);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
@@ -229,10 +235,10 @@ class ManageReactorTest extends StuTestCase
             ->andReturn($storage);
 
         $this->reactorUtil->shouldReceive('storageContainsNeededCommodities')
-            ->with($storage, false)
+            ->with($storage, $reactorWrapper)
             ->andReturn(true);
         $this->reactorUtil->shouldReceive('loadReactor')
-            ->with($this->ship, PHP_INT_MAX, $this->managerProvider, false)
+            ->with($this->ship, PHP_INT_MAX, $this->managerProvider, $reactorWrapper)
             ->andReturn('LOADED');
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);

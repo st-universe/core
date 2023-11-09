@@ -8,7 +8,7 @@ use Stu\Component\Ship\Crew\ShipCrewCalculator;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
-use Stu\Component\Ship\Refactor\RefactorWarpdriveSplitRunner;
+use Stu\Component\Ship\Refactor\RefactorReactorRunner;
 use Stu\Component\Ship\Repair\CancelRepair;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Repair\RepairUtil;
@@ -39,6 +39,7 @@ use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
 use Stu\Component\Ship\System\Type\RPGShipSystem;
 use Stu\Component\Ship\System\Type\ShieldShipSystem;
 use Stu\Component\Ship\System\Type\ShuttleRampShipSystem;
+use Stu\Component\Ship\System\Type\SingularityShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
 use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
@@ -95,10 +96,11 @@ return [
             ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL->value => autowire(TranswarpCoilShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TRACKER->value => autowire(TrackerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB->value => autowire(WebEmitterShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value => autowire(RPGShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value => autowire(RPGShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR->value => autowire(SingularityShipSystem::class)
         ],
         autowire(StuTime::class)
     ),
     ShipCrewCalculatorInterface::class => autowire(ShipCrewCalculator::class),
-    RefactorWarpdriveSplitRunner::class => autowire(RefactorWarpdriveSplitRunner::class),
+    RefactorReactorRunner::class => autowire(RefactorReactorRunner::class),
 ];

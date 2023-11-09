@@ -8,7 +8,6 @@ use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Type\WarpdriveShipSystem;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -163,12 +162,19 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
             $eps = $wrapper->getEpsSystemData();
+            if ($eps !== null) {
+                $eps->setEps($eps->getTheoreticalMaxEps())->update();
+            }
+
             $warpdrive = $wrapper->getWarpDriveSystemData();
             if ($warpdrive != null) {
                 $warpdrive->setWarpDrive($warpdrive->getMaxWarpDrive())->update();
             }
-            $eps->setEps($eps->getTheoreticalMaxEps())->update();
-            $ship->setReactorLoad($ship->getReactorCapacity());
+
+            $reactor = $wrapper->getReactorWrapper();
+            if ($reactor !== null) {
+                $reactor->setLoad($reactor->getCapacity());
+            }
             $this->shipRepository->save($ship);
         }
         $colony->lowerEps($hangar->getStartEnergyCosts());

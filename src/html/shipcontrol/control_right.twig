@@ -3,20 +3,21 @@
 
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
+{% set reactor = wrapper.getReactorWrapper %}
 
-{% if ship.isWarpcoreHealthy %}
+{% if reactor %}
 <table class="tcal">
     <tr>
         <th colspan="2">
-            <img src="assets/buttons/warpsys.png" />
-            <span>Warp-System</span>
+            <img src="assets/buttons/{{ reactor.get.getIcon }}" />
+            <span>Reaktor-System</span>
         </th>
     </tr>
-    {% if ship.hasWarpcore %}
     <tr>
         <td style="width:50%;">
-            <img src="assets/buttons/warpk.png" title="Warpkern" />
-            <span style="{{ ship.getReactorLoadStyle }}">{{ ship.getReactorLoad }}/{{ ship.getReactorCapacity }}</span>
+            <img src="assets/buttons/{{ reactor.get.getIcon }}"
+                title="{{ reactor.get.getSystemType.getDescription }}" />
+            <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity }}</span>
         </td>
         <td>
             <input type="text" size="3" name="reactorload" id="reactorload" value="1"
@@ -30,16 +31,15 @@
             {% endif %}
         </td>
     </tr>
-    {% endif %}
     {% if ship.hasWarpDrive %}
     {% set epssystem = wrapper.getEpsSystemData %}
-    {% set warpdrivesystem = wrapper.getWarpDriveSystemData %}
+    {% set warpdriveSplit = wrapper.getWarpDriveSystemData.getWarpdriveSplit %}
 
     <tr>
         <td colspan="2"><img src="assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
-            <input type="range" min="0" max="100" value="{{ warpdrivesystem.getWarpCoreSplit }}" id="warpCoreSplit"
-                oninput="saveWarpCoreSplit(this.value, {{ shipId }});  updateEpsSplitValues(this.value);">
+            <input type="range" min="0" max="100" value="{{ warpdriveSplit }}" id="warpdriveSplit"
+                oninput="saveWarpCoreSplit(this.value, {{ shipId }});  updateReactorValues(this.value);">
             <img src="assets/buttons/battp2.png" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
         </td>
@@ -98,33 +98,6 @@
         </td>
     </tr>
     {% endif %}
-</table>
-{% endif %}
-{% if ship.hasFusionReactor %}
-<table class="tcal">
-    <tr>
-        <th colspan="2">
-            <img src="assets/buttons/warpsys.png" />
-            <span>Reaktor-System</span>
-        </th>
-    </tr>
-    <tr>
-        <td style="width:50%;">
-            <img src="assets/buttons/fusrkt.png" title="Fusionsreaktor" />
-            {{ ship.getReactorLoad }}/{{ ship.getReactorCapacity }}
-        </td>
-        <td>
-            <input type="text" size="3" name="reactorload" id="reactorload" value="1"
-                onkeydown="event.key == 'Enter' && $('loadreactorbutton').click();" />
-            <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton" />
-            <input type="button" class="button" value="max"
-                onClick="$('reactorload').value = 9999; $('loadreactorbutton').click()" />
-            {% if ship.isFleetLeader %}
-            <span><input type="checkbox" name="fleet" />
-                Flotte</span>
-            {% endif %}
-        </td>
-    </tr>
 </table>
 {% endif %}
 {% set eps = wrapper.getEpsSystemData %}

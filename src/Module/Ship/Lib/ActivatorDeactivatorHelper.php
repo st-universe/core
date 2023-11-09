@@ -417,46 +417,4 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             }
         }
     }
-
-    public function setWarpSplitFleet(
-        int $shipId,
-        GameControllerInterface $game
-    ): void {
-        $userId = $game->getUser()->getId();
-
-        $wrapper = $this->getTargetWrapper(
-            $shipId,
-            $userId,
-            false
-        );
-
-        $systemData = $wrapper->getWarpDriveSystemData();
-        if ($systemData === null) {
-            throw new RuntimeException('no warpcore in fleet leader');
-        }
-        $warpsplit = $systemData->getWarpCoreSplit();
-
-        $fleetWrapper = $wrapper->getFleetWrapper();
-        if ($fleetWrapper === null) {
-            throw new RuntimeException('ship not in fleet');
-        }
-
-        $success = false;
-        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            $systemData = $wrapper->getWarpDriveSystemData();
-
-            if ($systemData !== null) {
-                $success = true;
-                $systemData->setWarpCoreSplit($warpsplit)->update();
-            }
-        }
-
-        // only show info if at least one ship was able to change
-        if (!$success) {
-            return;
-        }
-
-
-        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: Reaktorleistung geht zu %d Prozent in den Warpantrieb'), 100 - $warpsplit));
-    }
 }

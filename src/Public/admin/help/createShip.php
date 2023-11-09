@@ -8,7 +8,6 @@ use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -54,7 +53,12 @@ Init::run(function (ContainerInterface $dic): void {
             $ship = $wrapper->get();
 
             $ship->setMap($mapRepo->getByCoordinates($layerId, $cx, $cy));
-            $ship->setReactorLoad($ship->getReactorCapacity());
+
+            $reactor = $wrapper->getReactorWrapper();
+            if ($reactor !== null) {
+                $reactor->setLoad($reactor->getCapacity());
+            }
+
             $ship->setShield($ship->getMaxShield());
 
             $epsSystem = $wrapper->getEpsSystemData();

@@ -51,9 +51,4 @@ interface ActivatorDeactivatorHelperInterface
         ShipAlertStateEnum $alertState,
         GameControllerInterface $game
     ): void;
-
-    public function setWarpSplitFleet(
-        int $shipId,
-        GameControllerInterface $game
-    ): void;
 }

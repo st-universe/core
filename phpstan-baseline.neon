@@ -24,9 +24,14 @@ parameters:
 			path: src/Component/Logging/services.php
 
 		-
-			message: "#^Call to deprecated method getWarpCoreSplit\\(\\) of class Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WarpCoreSystemData\\.$#"
+			message: "#^Call to deprecated method getReactorLoad\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
-			path: src/Component/Ship/Refactor/RefactorWarpdriveSplitRunner.php
+			path: src/Component/Ship/Refactor/RefactorReactorRunner.php
+
+		-
+			message: "#^Call to deprecated method getTheoreticalReactorOutput\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Component/Ship/Refactor/RefactorReactorRunner.php
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
@@ -807,18 +812,8 @@ parameters:
 			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
 
 		-
-			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
-
-		-
 			message: "#^Cannot call method hasSpecialAbility\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
 			count: 2
-			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
 			path: src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php
 
 		-
@@ -1987,11 +1982,6 @@ parameters:
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between int\\<min, \\-1\\>\\|int\\<1, max\\> and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
 			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowColonization/ShowColonization.php
@@ -2622,12 +2612,22 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getReactorLoad\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getSpacecraftType\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getStoredShuttles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getTheoreticalReactorOutput\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 

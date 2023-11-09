@@ -8,7 +8,6 @@ use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WebEmitterSystemData;
-use Stu\Component\Ship\System\Data\WarpCoreSystemData;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -28,12 +27,6 @@ interface ShipWrapperInterface
     public function getEpsUsage(): int;
 
     public function lowerEpsUsage(int $value): void;
-
-    public function getEffectiveEpsProduction(): int;
-
-    public function getEffectiveWarpDriveProduction(): int;
-
-    public function getWarpcoreUsage(): int;
 
     public function setAlertState(ShipAlertStateEnum $alertState): ?string;
 
@@ -85,11 +78,11 @@ interface ShipWrapperInterface
 
     public function getEpsSystemData(): ?EpsSystemData;
 
-    public function getWarpCoreSystemData(): ?WarpCoreSystemData;
-
     public function getWarpDriveSystemData(): ?WarpDriveSystemData;
 
     public function getTrackerSystemData(): ?TrackerSystemData;
 
     public function getWebEmitterSystemData(): ?WebEmitterSystemData;
+
+    public function getReactorWrapper(): ?ReactorWrapperInterface;
 }

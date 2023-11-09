@@ -131,10 +131,10 @@ class Ship implements ShipInterface
     private int $lss_mode = ShipLSSModeEnum::LSS_NORMAL;
 
     /**
-     * @Column(type="integer", length=5)
+     * @Column(type="integer", length=5, nullable=true)
      *
      */
-    private int $warpcore = 0;
+    private ?int $warpcore = 0;
 
     /**
      * @Column(type="integer", length=6)
@@ -221,10 +221,10 @@ class Ship implements ShipInterface
     private int $evade_chance = 0;
 
     /**
-     * @Column(type="smallint", length=4)
+     * @Column(type="smallint", length=4, nullable=true)
      *
      */
-    private int $reactor_output = 0;
+    private ?int $reactor_output = 0;
 
     /**
      * @Column(type="smallint", length=4)
@@ -609,15 +609,14 @@ class Ship implements ShipInterface
         return $this->getHoldingWeb() !== null;
     }
 
+    public function getTheoreticalReactorOutput(): int
+    {
+        return $this->reactor_output;
+    }
+
     public function getReactorLoad(): int
     {
         return $this->warpcore;
-    }
-
-    public function setReactorLoad(int $reactorload): ShipInterface
-    {
-        $this->warpcore = $reactorload;
-        return $this;
     }
 
     public function getCloakState(): bool
@@ -857,38 +856,6 @@ class Ship implements ShipInterface
     }
 
     /**
-     * proportional to reactor system status
-     */
-    public function getReactorOutput(): int
-    {
-        $hasWarpcore = $this->hasWarpcore();
-        $hasReactor = $this->hasFusionReactor();
-
-        if (!$hasWarpcore && !$hasReactor) {
-            return $this->reactor_output;
-        }
-
-        if ($hasReactor) {
-            return (int) (ceil($this->reactor_output
-                * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR)->getStatus() / 100));
-        } else {
-            return (int) (ceil($this->reactor_output
-                * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
-        }
-    }
-
-    public function getTheoreticalReactorOutput(): int
-    {
-        return $this->reactor_output;
-    }
-
-    public function setReactorOutput(int $reactorOutput): ShipInterface
-    {
-        $this->reactor_output = $reactorOutput;
-        return $this;
-    }
-
-    /**
      * proportional to energy weapon system status
      */
     public function getBaseDamage(): int
@@ -1107,45 +1074,6 @@ class Ship implements ShipInterface
         }
 
         return $modules;
-    }
-
-    public function getReactorCapacity(): int
-    {
-        if ($this->hasWarpcore()) {
-            return $this->getTheoreticalReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
-        }
-        if ($this->hasFusionReactor()) {
-            return $this->getTheoreticalReactorOutput() * ShipEnum::REACTOR_CAPACITY_MULTIPLIER;
-        }
-
-        return 0;
-    }
-
-    public function getReactorOutputCappedByReactorLoad(): int
-    {
-        if ($this->getReactorOutput() > $this->getReactorLoad()) {
-            return $this->getReactorLoad();
-        }
-        return $this->getReactorOutput();
-    }
-
-    public function getReactorLoadStyle(): string
-    {
-        $load = $this->getReactorLoad();
-        $output = $this->getReactorOutput();
-
-        if ($load < $output) {
-            return "color: red;";
-        }
-
-        $percentage = $load / $this->getReactorCapacity();
-
-        return $percentage > 0.3 ? "" :  "color: yellow;";
-    }
-
-    public function isWarpcoreHealthy(): bool
-    {
-        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE);
     }
 
     public function isDeflectorHealthy(): bool
@@ -1685,11 +1613,6 @@ class Ship implements ShipInterface
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
     }
 
-    public function hasWarpcore(): bool
-    {
-        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE);
-    }
-
     public function hasWarpdrive(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
@@ -1698,11 +1621,6 @@ class Ship implements ShipInterface
     public function hasRPGModule(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_RPG_MODULE);
-    }
-
-    public function hasFusionReactor(): bool
-    {
-        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR);
     }
 
     public function hasNbsLss(): bool

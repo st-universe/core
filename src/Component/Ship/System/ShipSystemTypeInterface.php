@@ -9,7 +9,7 @@ interface ShipSystemTypeInterface
 {
     public function setShip(ShipInterface $ship): void;
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool;
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool;
 
     public function checkDeactivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool;
 

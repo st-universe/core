@@ -12,7 +12,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class ShieldShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -29,8 +28,10 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         return ShipSystemTypeEnum::SYSTEM_SHIELDS;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;

@@ -36,6 +36,11 @@ class CloakShipSystemTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
 
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->ship);
+
         $this->system = new CloakShipSystem(
             $this->shipStateChanger
         );
@@ -50,7 +55,7 @@ class CloakShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('das Schiff den Traktorstrahl aktiviert hat', $reason);
@@ -69,7 +74,7 @@ class CloakShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('das Schiff von einem Traktorstrahl gehalten wird', $reason);
@@ -92,7 +97,7 @@ class CloakShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('die Subraumfeldsensoren aktiv sind', $reason);
@@ -119,7 +124,7 @@ class CloakShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('die Alarmstufe Rot ist', $reason);
@@ -146,7 +151,7 @@ class CloakShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertNull($reason);
@@ -209,11 +214,6 @@ class CloakShipSystemTest extends StuTestCase
         $managerMock->shouldReceive('deactivate')
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->activate($this->wrapper, $managerMock);
     }
@@ -229,11 +229,6 @@ class CloakShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->deactivate($this->wrapper);
     }

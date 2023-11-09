@@ -48,6 +48,11 @@ class WarpdriveShipSystemTest extends StuTestCase
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->ship);
+
         $this->system = new WarpdriveShipSystem(
             $this->shipStateChanger,
             $this->shipUndocking
@@ -63,7 +68,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('es von einem Traktorstrahl gehalten wird', $reason);
@@ -88,7 +93,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('es in einem Energienetz gefangen ist', $reason);
@@ -118,7 +123,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('es sich in einem Wurmloch befindet', $reason);
@@ -153,7 +158,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertEquals('der Warpkern zerstört ist', $reason);
@@ -188,7 +193,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
         $this->assertNull($reason);
@@ -221,12 +226,6 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
 
-        //wrapper and eps
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
-
         $this->wrapper->shouldReceive('getTractoredShipWrapper')
             ->withNoArgs()
             ->once()
@@ -257,11 +256,6 @@ class WarpdriveShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->deactivate($this->wrapper);
     }

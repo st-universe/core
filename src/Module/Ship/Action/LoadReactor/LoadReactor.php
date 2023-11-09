@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Action\LoadReactor;
 
 use request;
 use RuntimeException;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -43,7 +42,7 @@ final class LoadReactor implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
@@ -54,16 +53,17 @@ final class LoadReactor implements ActionControllerInterface
             $msg = [];
             $msg[] = _('Flottenbefehl ausgeführt: Aufladung des Reaktors');
 
-            $fleet = $ship->getFleet();
-            if ($fleet === null) {
+            $fleetWrapper = $wrapper->getFleetWrapper();
+            if ($fleetWrapper === null) {
                 throw new RuntimeException('this should not happen');
             }
 
-            foreach ($fleet->getShips() as $ship) {
-                $hasWarpcore = $ship->hasWarpcore();
-                $hasFusionReactor = $ship->hasFusionReactor();
+            foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
 
-                if (!$hasWarpcore && !$hasFusionReactor) {
+                $ship = $wrapper->get();
+                $reactor = $wrapper->getReactorWrapper();
+
+                if ($reactor === null) {
                     $game->addInformation(sprintf(
                         _('%s: Kein Reaktor vorhanden'),
                         $ship->getName()
@@ -78,24 +78,24 @@ final class LoadReactor implements ActionControllerInterface
                     ));
                     continue;
                 }
-                if ($ship->getReactorLoad() >= $ship->getReactorCapacity()) {
+                if ($reactor->getLoad() >= $reactor->getCapacity()) {
                     continue;
                 }
 
-                if ($this->reactorUtil->storageContainsNeededCommodities($ship->getStorage(), $hasWarpcore)) {
-                    $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $hasWarpcore);
+                if ($this->reactorUtil->storageContainsNeededCommodities($ship->getStorage(), $reactor)) {
+                    $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $reactor);
 
                     if ($loadMessage !== null) {
                         $game->addInformation($loadMessage);
                     }
                 } else {
                     $game->addInformation(sprintf(
-                        _('%s: Es werden mindestens folgende Waren zum Aufladen des %s benötigt:'),
+                        _('%s: Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
                         $ship->getName(),
-                        $hasWarpcore ? 'Warpkerns' : 'Fusionsreaktors'
+                        $reactor->get()->getSystemType()->getDescription()
                     ));
-                    $costs = $hasWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
-                    foreach ($costs as $commodityId => $loadCost) {
+
+                    foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
                         $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
                     }
                     continue;
@@ -104,37 +104,42 @@ final class LoadReactor implements ActionControllerInterface
             $game->addInformationMerge($msg);
             return;
         }
-        $hasWarpcore = $ship->hasWarpcore();
-        $hasFusionReactor = $ship->hasFusionReactor();
 
-        if (!$hasWarpcore && !$hasFusionReactor) {
+        $reactor = $wrapper->getReactorWrapper();
+
+        if ($reactor === null) {
             $game->addInformation(_('Kein Reaktor vorhanden'));
             return;
         }
+
+        $ship = $wrapper->get();
         if (!$ship->hasEnoughCrew()) {
             $game->addInformation(_('Nicht genügend Crew vorhanden'));
             return;
         }
-        if ($ship->getReactorLoad() >= $ship->getReactorCapacity()) {
+
+        $systemName = $reactor->get()->getSystemType()->getDescription();
+
+        if ($reactor->getLoad() >= $reactor->getCapacity()) {
             $game->addInformationf(
                 _('Der %s ist bereits vollständig geladen'),
-                $hasWarpcore ? 'Warpkern' : 'Fusionsreaktor'
+                $systemName
             );
             return;
         }
-        if ($this->reactorUtil->storageContainsNeededCommodities($ship->getStorage(), $hasWarpcore)) {
-            $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $hasWarpcore);
+        if ($this->reactorUtil->storageContainsNeededCommodities($ship->getStorage(), $reactor)) {
+            $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $reactor);
 
             if ($loadMessage !== null) {
                 $game->addInformation($loadMessage);
             }
         } else {
             $game->addInformationf(
-                _('Es werden mindestens folgende Waren zum Aufladen des %s benötigt:'),
-                $hasWarpcore ? 'Warpkerns' : 'Fusionsreaktors'
+                _('Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
+                $systemName
             );
-            $costs = $hasWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
-            foreach ($costs as $commodityId => $loadCost) {
+
+            foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
                 $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
             }
         }

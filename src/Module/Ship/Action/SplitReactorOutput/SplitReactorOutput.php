@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\SplitWarpCoreOutput;
+namespace Stu\Module\Ship\Action\SplitReactorOutput;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -10,9 +10,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
-final class SplitWarpCoreOutput implements ActionControllerInterface
+final class SplitReactorOutput implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SPLIT_WARP_CORE_OUTPUT';
+    public const ACTION_IDENTIFIER = 'B_SPLIT_REACTOR_OUTPUT';
 
     private ShipLoaderInterface $shipLoader;
 
@@ -47,7 +47,7 @@ final class SplitWarpCoreOutput implements ActionControllerInterface
             $value = 100;
         }
 
-        $systemData->setWarpCoreSplit($value)->update();
+        $systemData->setWarpDriveSplit($value)->update();
     }
 
     public function performSessionCheck(): bool

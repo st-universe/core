@@ -240,7 +240,12 @@ final class DealsTakeOffer implements ActionControllerInterface
         $ship = $wrapper->get();
         $epsSystem = $wrapper->getEpsSystemData();
         $epsSystem->setEps((int)floor($epsSystem->getTheoreticalMaxEps() / 4))->update();
-        $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
+
+        $reactor = $wrapper->getReactorWrapper();
+        if ($reactor !== null) {
+            $reactor->setLoad((int)floor($reactor->getCapacity() / 4));
+        }
+
         $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
         $warpdrive = $wrapper->getWarpDriveSystemData();
         if ($warpdrive !== null) {

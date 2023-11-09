@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Refactor;
 
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class RefactorWarpdriveSplitRunner
+final class RefactorReactorRunner
 {
     private ShipRepositoryInterface $shipRepository;
 
@@ -25,21 +24,16 @@ final class RefactorWarpdriveSplitRunner
     public function refactor(): void
     {
         foreach ($this->shipRepository->findAll() as $ship) {
-            if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
-                continue;
-            }
-
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);
 
-            $warpcore = $wrapper->getWarpCoreSystemData();
-            $warpdrive = $wrapper->getWarpDriveSystemData();
-
-            if ($warpcore === null || $warpdrive === null) {
+            $reactorWrapper = $wrapper->getReactorWrapper();
+            if ($reactorWrapper === null) {
                 continue;
             }
 
-            $warpdrive->setWarpCoreSplit($warpcore->getWarpCoreSplit())
-                ->update();
+            $reactorWrapper
+                ->setOutput($ship->getTheoreticalReactorOutput())
+                ->setLoad($ship->getReactorLoad());
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class UplinkShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
@@ -17,8 +18,10 @@ final class UplinkShipSystem extends AbstractShipSystemType implements ShipSyste
         return ShipSystemTypeEnum::SYSTEM_UPLINK;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if (!$this->hasForeignCrew($ship)) {
             $reason = _('keine fremde Crew an Bord ist');
             return false;

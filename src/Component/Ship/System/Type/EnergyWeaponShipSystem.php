@@ -6,7 +6,7 @@ namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class EnergyWeaponShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -15,8 +15,10 @@ final class EnergyWeaponShipSystem extends AbstractShipSystemType implements Shi
         return ShipSystemTypeEnum::SYSTEM_PHASER;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;

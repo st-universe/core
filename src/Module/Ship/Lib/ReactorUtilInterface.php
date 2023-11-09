@@ -12,12 +12,12 @@ interface ReactorUtilInterface
     /**
      * @param Collection<int, StorageInterface> $storages
      */
-    public function storageContainsNeededCommodities(Collection $storages, bool $isWarpcore = true): bool;
+    public function storageContainsNeededCommodities(Collection $storages, ReactorWrapperInterface $reactor): bool;
 
     public function loadReactor(
         ShipInterface $ship,
         int $additionalLoad,
         ?ManagerProviderInterface $managerProvider,
-        bool $isWarpcore = true
+        ReactorWrapperInterface $reactor
     ): ?string;
 }

@@ -22,7 +22,6 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -107,13 +106,13 @@ final class ShipTick implements ShipTickInterface
         }
 
         $eps = $wrapper->getEpsSystemData();
-        $warpdrive = $wrapper->getWarpDriveSystemData();
+        $reactor = $wrapper->getReactorWrapper();
         if ($eps === null) {
             return;
         }
 
         // not enough crew
-        $availableWarpDrive = null;
+        $availableEps = $eps->getEps();
         if (!$ship->hasEnoughCrew()) {
             $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
 
@@ -123,19 +122,8 @@ final class ShipTick implements ShipTickInterface
                     $this->shipSystemManager->deactivate($wrapper, $system->getSystemType(), true);
                 }
             }
-
-
-
-            $availableEps = $eps->getEps();
-        } else {
-            if ($warpdrive != null) {
-                $availableEps = (int)($eps->getEps() +  ($ship->getReactorOutputCappedByReactorLoad() * ($warpdrive->getWarpCoreSplit() / 100)));
-            } else {
-                $availableEps = $eps->getEps() + $ship->getReactorOutputCappedByReactorLoad();
-            }
-            if ($warpdrive !== null) {
-                $availableWarpDrive = $warpdrive->getWarpDrive() + $wrapper->getEffectiveWarpDriveProduction();
-            }
+        } elseif ($reactor !== null) {
+            $availableEps = $eps->getEps() + $reactor->getEpsProduction();
         }
 
         //try to save energy by reducing alert state
@@ -202,26 +190,18 @@ final class ShipTick implements ShipTickInterface
         if ($newEps > $eps->getMaxEps()) {
             $newEps = $eps->getMaxEps();
         }
-        $usedwarpdrive = 0;
-        if ($warpdrive !== null && $availableWarpDrive !== null) {
-            if ($availableWarpDrive > $warpdrive->getMaxWarpDrive()) {
-                $availableWarpDrive = $warpdrive->getMaxWarpDrive();
-                $usedwarpdrive = ($warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive()) * $ship->getRump()->getFlightECost();
-            } else {
-                $usedwarpdrive = $wrapper->getEffectiveWarpDriveProduction() * $ship->getRump()->getFlightECost();
-            }
-            $warpdrive->setWarpDrive($availableWarpDrive)->update();
-        }
 
-        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + $usedwarpdrive;
+        $reactorUsageForWarpdrive = $this->loadWarpdrive($wrapper);
+        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + $reactorUsageForWarpdrive;
+
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$wrapper->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
         $eps->setEps($newEps)
             ->setBattery($eps->getBattery() + $batteryReload)
             ->update();
 
-
-        //core OR fusion
-        $ship->setReactorLoad($ship->getReactorLoad() - $usedEnergy);
+        if ($usedEnergy < 0 && $reactor !== null) {
+            $reactor->changeLoad(-$usedEnergy);
+        }
 
         $this->checkForFinishedTakeover($ship);
         $this->checkForFinishedAstroMapping($ship);
@@ -232,6 +212,26 @@ final class ShipTick implements ShipTickInterface
         $this->shipRepository->save($ship);
 
         $this->sendMessages($ship);
+    }
+
+    private function loadWarpdrive(ShipWrapperInterface $wrapper): int
+    {
+        $reactor = $wrapper->getReactorWrapper();
+        $warpdrive = $wrapper->getWarpDriveSystemData();
+        if ($warpdrive === null || $reactor === null) {
+            return 0;
+        }
+
+        $effectiveWarpdriveProduction = $reactor->getEffectiveWarpDriveProduction();
+        if ($effectiveWarpdriveProduction === 0) {
+            return 0;
+        }
+
+        $currentLoad = $warpdrive->getWarpDrive();
+
+        $warpdrive->setWarpDrive($currentLoad + $effectiveWarpdriveProduction)->update();
+
+        return $effectiveWarpdriveProduction * $wrapper->get()->getRump()->getFlightECost();
     }
 
     private function doConstructionStuff(ShipInterface $ship): bool
@@ -373,6 +373,7 @@ final class ShipTick implements ShipTickInterface
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
     {
+        /** @var null|DatabaseEntryInterface $databaseEntry */
         [$message, $databaseEntry] = $this->getDatabaseEntryForShipLocation($ship);
 
         if (

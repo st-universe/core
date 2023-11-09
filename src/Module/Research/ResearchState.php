@@ -112,7 +112,10 @@ final class ResearchState implements ResearchStateInterface
         $wrapper = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId(), $colony);
         $ship = $wrapper->get();
 
-        $ship->setReactorLoad($ship->getReactorCapacity());
+        $reactor = $wrapper->getReactorWrapper();
+        if ($reactor !== null) {
+            $reactor->setLoad($reactor->getCapacity());
+        }
 
         $eps = $wrapper->getEpsSystemData();
 

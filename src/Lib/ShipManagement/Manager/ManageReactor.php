@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Lib\ShipManagement\Manager;
 
 use RuntimeException;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
+use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -24,39 +24,37 @@ class ManageReactor implements ManagerInterface
 
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
-        $reactor = $values['reactor'] ?? null;
-        if ($reactor === null) {
+        $values = $values['reactor'] ?? null;
+        if ($values === null) {
             throw new RuntimeException('value array not existent');
         }
 
         $ship = $wrapper->get();
 
-        if (!array_key_exists($ship->getId(), $reactor)) {
+        if (!array_key_exists($ship->getId(), $values)) {
             return [];
         }
 
-        if ($reactor[$ship->getId()] < 1) {
+        if ($values[$ship->getId()] < 1) {
             return [];
         }
 
-        $hasWarpcore = $ship->hasWarpcore();
-        $hasFusionReactor = $ship->hasFusionReactor();
-
-        if (!$hasWarpcore && !$hasFusionReactor) {
+        $reactor = $wrapper->getReactorWrapper();
+        if ($reactor === null) {
             return [];
         }
 
         $storage = $managerProvider->getStorage();
 
-        if ($this->reactorUtil->storageContainsNeededCommodities($storage, $hasWarpcore)) {
-            $load = $reactor[$ship->getId()] == 'm' ? PHP_INT_MAX : (int)$reactor[$ship->getId()];
-            $loadMessage = $this->reactorUtil->loadReactor($ship, $load, $managerProvider, $hasWarpcore);
+        if ($this->reactorUtil->storageContainsNeededCommodities($storage, $reactor)) {
+            $load = $values[$ship->getId()] == 'm' ? PHP_INT_MAX : (int)$values[$ship->getId()];
+            $loadMessage = $this->reactorUtil->loadReactor($ship, $load, $managerProvider, $reactor);
 
             if ($loadMessage !== null) {
                 return [$loadMessage];
             }
         } else {
-            return $this->createMissingCommoditiesMessage($ship, $hasWarpcore);
+            return $this->createMissingCommoditiesMessage($ship, $reactor);
         }
 
         return [];
@@ -65,17 +63,17 @@ class ManageReactor implements ManagerInterface
     /**
      * @return array<string>
      */
-    private function createMissingCommoditiesMessage(ShipInterface $ship, bool $hasWarpcore): array
+    private function createMissingCommoditiesMessage(ShipInterface $ship, ReactorWrapperInterface $reactor): array
     {
         $msg = [];
 
         $msg[] = sprintf(
-            _('%s: Es werden mindestens folgende Waren zum Aufladen des %s benötigt:'),
+            _('%s: Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
             $ship->getName(),
-            $hasWarpcore ? 'Warpkerns' : 'Fusionsreaktors'
+            $reactor->get()->getSystemType()->getDescription()
         );
-        $costs = $hasWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
-        foreach ($costs as $commodityId => $loadCost) {
+
+        foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
             $msg[] = sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId));
         }
 

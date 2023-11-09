@@ -66,20 +66,12 @@
                     <span tal:condition="wrapper/isOwnedByCurrentUser">${eps/getBattery}/${eps/getMaxBattery}</span>
                   </div>
                 </td>
-                <td>
-                  <div tal:condition="ship/hasWarpcore">
-                    <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
-                      src="assets/buttons/warpk.png" title="Warpkernladung" />
+                <td tal:define="reactor wrapper/getReactorWrapper">
+                  <div tal:condition="reactor">
+                    <img class="center" onclick="this.up('div').down('input').value=${reactor/getCapacity}"
+                      src="assets/buttons/${reactor/get/getIcon}" title="Reaktorladung" />
                     <input type="text" size="3" name="reactor[${ship/getId}]" />
-                    <span
-                      tal:condition="wrapper/isOwnedByCurrentUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
-                  </div>
-                  <div tal:condition="ship/hasFusionReactor">
-                    <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
-                      src="assets/buttons/fusrkt.png" title="Reaktorladung" />
-                    <input type="text" size="3" name="reactor[${ship/getId}]" />
-                    <span
-                      tal:condition="wrapper/isOwnedByCurrentUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
+                    <span tal:condition="wrapper/isOwnedByCurrentUser">${reactor/getLoad}/${reactor/getCapacity}</span>
                   </div>
                 </td>
                 <td>

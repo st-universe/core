@@ -127,7 +127,7 @@ use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
-use Stu\Module\Ship\Action\SplitWarpCoreOutput\SplitWarpCoreOutput;
+use Stu\Module\Ship\Action\SplitReactorOutput\SplitReactorOutput;
 use Stu\Module\Ship\Action\StartEmergency\StartEmergency;
 use Stu\Module\Ship\Action\StartEmergency\StartEmergencyRequest;
 use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
@@ -507,7 +507,7 @@ return [
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
-        SplitWarpCoreOutput::ACTION_IDENTIFIER => autowire(SplitWarpCoreOutput::class),
+        SplitReactorOutput::ACTION_IDENTIFIER => autowire(SplitReactorOutput::class),
         Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class),
         ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class),
         SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class),

@@ -12,7 +12,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class CloakShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -29,8 +28,10 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         return ShipSystemTypeEnum::SYSTEM_CLOAK;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if ($ship->isTractoring()) {
             $reason = _('das Schiff den Traktorstrahl aktiviert hat');
             return false;

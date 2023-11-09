@@ -27,6 +27,11 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->ship);
+
         $this->system = new ProjectileWeaponShipSystem();
     }
 
@@ -39,7 +44,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('keine Torpedos vorhanden sind', $reason);
     }
@@ -58,7 +63,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('die Tarnung aktiviert ist', $reason);
     }
@@ -82,7 +87,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertNull($reason);
     }
@@ -106,7 +111,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($this->ship, $reason)
+            $this->system->checkActivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('die Alarmstufe Grün ist', $reason);
     }
@@ -131,11 +136,6 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->activate($this->wrapper, $managerMock);
     }
@@ -151,11 +151,6 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
-        //wrapper
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->ship);
 
         $this->system->deactivate($this->wrapper);
     }

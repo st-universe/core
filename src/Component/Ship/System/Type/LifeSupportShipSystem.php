@@ -9,7 +9,6 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class LifeSupportShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -23,8 +22,10 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
         return 0;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
+        $ship = $wrapper->get();
+
         if ($ship->getCrewCount() === 0) {
             $reason = _('keine Crew vorhanden ist');
             return false;
