@@ -80,14 +80,12 @@
             <tr>
                 <td style="background-color: transparent !important;">
                     {% if epssystem %}
+                    {% set reactorUsage = reactor ? wrapper.getReactorUsage : 0%}
                     {{ epssystem.getEps }}/{{ epssystem.getMaxEps }}
                     {% if reactor %}
                     <span>{{ reactor.getEffectiveEpsProduction|addPlusCharacter }}</span>
                     {% endif %}
-                    (<span class="neg">{{ wrapper.getEpsUsage }}</span>/
-                    {% if reactor %}
-                    <span class="neg">{{ wrapper.getReactorUsage }}</span>)
-                    {% endif %}
+                    (<span class="neg">{{ wrapper.getEpsUsage }}</span>/<span class="neg">{{ reactorUsage }}</span>)
                     {% endif %}
                 </td>
                 {% if ship.hasWarpDrive %}
