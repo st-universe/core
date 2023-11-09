@@ -57,4 +57,6 @@ interface ReactorWrapperInterface
     public function changeLoad(int $amount): ReactorWrapperInterface;
 
     public function getReactorLoadStyle(): string;
+
+    public function isHealthy(): bool;
 }
