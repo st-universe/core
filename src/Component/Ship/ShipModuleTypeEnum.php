@@ -23,9 +23,6 @@ final class ShipModuleTypeEnum
 
     public const STANDARD_MODULE_TYPE_COUNT = 11;
 
-    // specific module ids
-    public const MODULE_ID_FUSIONREACTOR = 11501;
-
     //mandatory types
     public const MODULE_OPTIONAL = 0;
     public const MODULE_MANDATORY = 1;
