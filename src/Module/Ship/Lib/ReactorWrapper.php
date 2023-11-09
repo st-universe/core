@@ -148,6 +148,10 @@ final class ReactorWrapper implements ReactorWrapperInterface
             return "color: red;";
         }
 
+        if ($this->getCapacity() === 0) {
+            return "";
+        }
+
         $percentage = $load / $this->getCapacity();
 
         return $percentage > 0.3 ? "" :  "color: yellow;";
