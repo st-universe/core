@@ -24,16 +24,6 @@ parameters:
 			path: src/Component/Logging/services.php
 
 		-
-			message: "#^Call to deprecated method getReactorLoad\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
-			count: 1
-			path: src/Component/Ship/Refactor/RefactorReactorRunner.php
-
-		-
-			message: "#^Call to deprecated method getTheoreticalReactorOutput\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
-			count: 1
-			path: src/Component/Ship/Refactor/RefactorReactorRunner.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtil.php
@@ -2612,22 +2602,12 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getReactorLoad\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getSpacecraftType\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getStoredShuttles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getTheoreticalReactorOutput\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
