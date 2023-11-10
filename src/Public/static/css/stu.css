@@ -560,6 +560,13 @@ div.fabutton_blue {
   text-align: center;
 }
 
+div.fabutton_yellow {
+  border: 1px solid #d4c112;
+  margin: 3px;
+  color: #d4c112;
+  text-align: center;
+}
+
 a.fabutton {
   padding: 5px;
   display: block;

@@ -65,15 +65,19 @@ final class ResearchState implements ResearchStateInterface
         $this->createUserAward = $createUserAward;
     }
 
-    public function advance(ResearchedInterface $state, int $amount): void
+    public function advance(ResearchedInterface $state, int $amount): int
     {
-        if ($state->getActive() - $amount <= 0) {
+        $active = $state->getActive();
+
+        if ($amount >= $active) {
             $this->finish($state);
         } else {
-            $state->setActive($state->getActive() - $amount);
+            $state->setActive($active - $amount);
         }
 
         $this->researchedRepository->save($state);
+
+        return max(0, $amount - $active);
     }
 
     public function finish(ResearchedInterface $state): void

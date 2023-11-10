@@ -37,10 +37,10 @@ final class ResearchFragment implements RenderFragmentInterface
         TalPageInterface|TwigPageInterface $page
     ): void {
         $researchStatusBar = '';
-        $currentResearchReference = $this->researchedRepository->getCurrentResearch($user);
+        $currentResearch = $this->researchedRepository->getCurrentResearch($user);
 
-        if ($currentResearchReference !== null) {
-            $research = $currentResearchReference->getResearch();
+        if (!empty($currentResearch)) {
+            $research = current($currentResearch)->getResearch();
             $researchPoints = $research->getPoints();
 
             $researchStatusBar = $this
@@ -49,7 +49,7 @@ final class ResearchFragment implements RenderFragmentInterface
                 ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
                 ->setLabel('Forschung')
                 ->setMaxValue($researchPoints)
-                ->setValue($researchPoints - $currentResearchReference->getActive())
+                ->setValue($researchPoints - current($currentResearch)->getActive())
                 ->setSizeModifier(2);
 
             $page->setVar(
@@ -64,7 +64,8 @@ final class ResearchFragment implements RenderFragmentInterface
             );
         }
 
-        $page->setVar('CURRENT_RESEARCH', $currentResearchReference);
+        $page->setVar('CURRENT_RESEARCH', current($currentResearch));
         $page->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
+        $page->setVar('WAITING_RESEARCH', count($currentResearch) === 2 ? $currentResearch[1] : null);
     }
 }

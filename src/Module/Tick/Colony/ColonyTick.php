@@ -427,14 +427,30 @@ final class ColonyTick implements ColonyTickInterface
         if ($doLog) {
             $startTime = microtime(true);
         }
-        $current_research = $this->researchedRepository->getCurrentResearch($colony->getUser());
 
-        if ($current_research && $current_research->getActive() && isset($production[$current_research->getResearch()->getCommodityId()])) {
-            $this->researchStateFactory->createResearchState()->advance(
-                $current_research,
-                $production[$current_research->getResearch()->getCommodityId()]->getProduction()
+        $researches = $this->researchedRepository->getCurrentResearch($colony->getUser());
+        $currentResearch = empty($researches) ? null : current($researches);
+        $waitingResearch = count($researches) > 1 ? $researches[1] : null;
+
+        if (
+            $currentResearch !== null
+            && $currentResearch->getActive()
+            && isset($production[$currentResearch->getResearch()->getCommodityId()])
+        ) {
+            $remaining = $this->researchStateFactory->createResearchState()->advance(
+                $currentResearch,
+                $production[$currentResearch->getResearch()->getCommodityId()]->getProduction()
             );
+
+            if ($remaining > 0 && $waitingResearch !== null) {
+                $this->researchStateFactory->createResearchState()->advance(
+                    $waitingResearch,
+                    $production[$waitingResearch->getResearch()->getCommodityId()]->getProduction()
+                );
+            }
         }
+
+
         if ($doLog) {
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\tresearch, seconds: %F", $endTime - $startTime));

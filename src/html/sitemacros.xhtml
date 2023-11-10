@@ -64,15 +64,21 @@
                 title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
             </div>
             <div class="researchNavletDetails">
-              <div>
-                <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
+              <div style="float: left;">
+                <div>
+                  <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
+                </div>
+                <div style="padding-top: 5px;">
+                  <img style="width: 15px" src="/assets/commodities/${CURRENT_RESEARCH/getResearch/getCommodityId}.png"
+                    tal:attributes="title CURRENT_RESEARCH/getResearch/getCommodity/getName" />
+                  <span tal:content="CURRENT_RESEARCH/getProgress">POINTSLEFT</span> / <span
+                    tal:content="CURRENT_RESEARCH/getResearch/getPoints">POINTS</span> (+<span
+                    tal:content="CURRENT_RESEARCH_PRODUCTION_COMMODITY">ADDITIONAL</span>)
+                </div>
               </div>
-              <div style="padding-top: 5px;">
-                <img style="width: 15px" src="/assets/commodities/${CURRENT_RESEARCH/getResearch/getCommodityId}.png"
-                  tal:attributes="title CURRENT_RESEARCH/getResearch/getCommodity/getName" />
-                <span tal:content="CURRENT_RESEARCH/getProgress">POINTSLEFT</span> / <span
-                  tal:content="CURRENT_RESEARCH/getResearch/getPoints">POINTS</span> (+<span
-                  tal:content="CURRENT_RESEARCH_PRODUCTION_COMMODITY">ADDITIONAL</span>)
+              <div tal:condition="WAITING_RESEARCH" title="wartet: ${WAITING_RESEARCH/getResearch/getName}"
+                style="float: left; padding-left: 15px;">
+                <span class="border_box" id="foobar" style="font-size: 200%; color: #d4c112">+1</span>
               </div>
             </div>
           </div>

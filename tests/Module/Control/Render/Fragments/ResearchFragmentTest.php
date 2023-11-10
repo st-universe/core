@@ -50,13 +50,16 @@ class ResearchFragmentTest extends StuTestCase
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
             ->once()
-            ->andReturnNull();
+            ->andReturn([]);
 
         $talPage->shouldReceive('setVar')
             ->with('CURRENT_RESEARCH', null)
             ->once();
         $talPage->shouldReceive('setVar')
             ->with('CURRENT_RESEARCH_STATUS', '')
+            ->once();
+        $talPage->shouldReceive('setVar')
+            ->with('WAITING_RESEARCH', null)
             ->once();
 
         $this->subject->render($user, $talPage);
@@ -66,7 +69,8 @@ class ResearchFragmentTest extends StuTestCase
     {
         $user = $this->mock(UserInterface::class);
         $talPage = $this->mock(TalPageInterface::class);
-        $researchReference = $this->mock(ResearchedInterface::class);
+        $currentResearch = $this->mock(ResearchedInterface::class);
+        $waitingResearch = $this->mock(ResearchedInterface::class);
         $talStatusBar = $this->mock(TalStatusBarInterface::class);
         $research = $this->mock(ResearchInterface::class);
 
@@ -78,7 +82,7 @@ class ResearchFragmentTest extends StuTestCase
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
             ->once()
-            ->andReturn($researchReference);
+            ->andReturn([$currentResearch, $waitingResearch]);
 
         $research->shouldReceive('getPoints')
             ->withNoArgs()
@@ -94,11 +98,11 @@ class ResearchFragmentTest extends StuTestCase
             ->once()
             ->andReturn($productionValue);
 
-        $researchReference->shouldReceive('getResearch')
+        $currentResearch->shouldReceive('getResearch')
             ->withNoArgs()
             ->once()
             ->andReturn($research);
-        $researchReference->shouldReceive('getActive')
+        $currentResearch->shouldReceive('getActive')
             ->withNoArgs()
             ->once()
             ->andReturn($alreadyResearchedPoints);
@@ -130,10 +134,13 @@ class ResearchFragmentTest extends StuTestCase
             ->andReturnSelf();
 
         $talPage->shouldReceive('setVar')
-            ->with('CURRENT_RESEARCH', $researchReference)
+            ->with('CURRENT_RESEARCH', $currentResearch)
             ->once();
         $talPage->shouldReceive('setVar')
             ->with('CURRENT_RESEARCH_STATUS', $talStatusBar)
+            ->once();
+        $talPage->shouldReceive('setVar')
+            ->with('WAITING_RESEARCH', $waitingResearch)
             ->once();
         $talPage->shouldReceive('setVar')
             ->with(

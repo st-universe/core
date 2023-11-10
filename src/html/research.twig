@@ -1,0 +1,44 @@
+{% if CURRENT_RESEARCH %}
+<div>
+    <div class="header_box header_box_research border_box action"
+        onclick="showResearchDetails({{ CURRENT_RESEARCH.getResearch.getId }}); return false;">
+        <div class="researchNavlet">
+            <div class="researchNavletName">{{ CURRENT_RESEARCH.getResearch.getName }}</div>
+            <div class="researchNavletImage">
+                <img src="/assets/research/{{ CURRENT_RESEARCH.getResearch.getId }}.png"
+                    title="Forschung: {{ CURRENT_RESEARCH.getResearch.getName }}" />
+            </div>
+            <div class="researchNavletDetails">
+                <div style="float: left;">
+                    <div>
+                        {% autoescape false %}
+                        {{ CURRENT_RESEARCH_STATUS }}
+                        {% endautoescape %}
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <img style="width: 15px"
+                            src="/assets/commodities/{{ CURRENT_RESEARCH.getResearch.getCommodityId }}.png"
+                            title="{{ CURRENT_RESEARCH.getResearch.getCommodity.getName }}" />
+                        <span>{{ CURRENT_RESEARCH.getProgress }}</span> / <span>{{
+                            CURRENT_RESEARCH.getResearch.getPoints }}</span> (+<span>{{
+                            CURRENT_RESEARCH_PRODUCTION_COMMODITY }}</span>)
+                    </div>
+                </div>
+                {% if WAITING_RESEARCH %}
+                <div title="wartet: {{ WAITING_RESEARCH.getResearch.getName }}"
+                    style="float: left; padding-left: 15px;"><span class="border_box" id="foobar"
+                        style="font-size: 200%; color: #d4c112">+1</span></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="header_box header_box_research border_box action" onclick="goToUrl('/research.php')"
+    onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')"
+    onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')">
+    <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research"
+        title="Forschung" />
+    <div style="margin-top: 5px">Keine Forschung</div>
+</div>
+{% endif %}
