@@ -58,7 +58,7 @@ class AllianceJob implements AllianceJobInterface
 
     /**
      *
-     * @OneToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private UserInterface $user;
