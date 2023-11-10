@@ -24,7 +24,12 @@ interface ShipSystemManagerInterface
      * @throws SystemNotFoundException
      * @throws SystemCooldownException
      */
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type, bool $force = false): void;
+    public function activate(
+        ShipWrapperInterface $wrapper,
+        ShipSystemTypeEnum $type,
+        bool $force = false,
+        bool $isDryRun = false
+    ): void;
 
     /**
      * @throws InvalidSystemException

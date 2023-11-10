@@ -40,13 +40,21 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $this->stuTime = $stuTime;
     }
 
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type, bool $force = false): void
-    {
+    public function activate(
+        ShipWrapperInterface $wrapper,
+        ShipSystemTypeEnum $type,
+        bool $force = false,
+        bool $isDryRun = false
+    ): void {
         $time = $this->stuTime->time();
         $system = $this->lookupSystem($type);
 
         if (!$force) {
             $this->checkActivationConditions($wrapper, $system, $type, $time);
+        }
+
+        if ($isDryRun) {
+            return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
