@@ -6,11 +6,14 @@ namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight;
 
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 class ConditionCheckResult
 {
     private LeaveFleetInterface $leaveFleet;
+
+    private ShipWrapperInterface $leader;
 
     private bool $isFixedFleetMode;
 
@@ -21,9 +24,13 @@ class ConditionCheckResult
 
     private InformationWrapper $informations;
 
-    public function __construct(LeaveFleetInterface $leaveFleet, bool $isFixedFleetMode)
-    {
+    public function __construct(
+        LeaveFleetInterface $leaveFleet,
+        ShipWrapperInterface $leader,
+        bool $isFixedFleetMode
+    ) {
         $this->leaveFleet = $leaveFleet;
+        $this->leader = $leader;
         $this->isFixedFleetMode = $isFixedFleetMode;
         $this->informations = new InformationWrapper();
     }
@@ -36,7 +43,10 @@ class ConditionCheckResult
 
             if ($ship->isFleetLeader()) {
                 $this->isFleetLeaderBlocked = true;
-            } elseif (!$this->isFixedFleetMode) {
+            } elseif (
+                !$this->isFixedFleetMode
+                && $ship !== $this->leader->get()
+            ) {
                 $this->leaveFleet($ship,);
             }
         }
