@@ -55,11 +55,18 @@ final class ReactorWrapper implements ReactorWrapperInterface
     public function getEpsProduction(): int
     {
         if ($this->epsProduction === null) {
-            $reactorOutput = $this->getOutputCappedByLoad();
-            $warpDriveProduction = $this->getWarpdriveProduction();
-            $flightCost = $this->wrapper->get()->getRump()->getFlightEcost();
+            $warpdrive = $this->wrapper->getWarpDriveSystemData();
+            $warpdriveSplit = $warpdrive === null ? 100 : $warpdrive->getWarpdriveSplit();
 
-            $this->epsProduction = $reactorOutput - ($warpDriveProduction * $flightCost);
+            if ($warpdriveSplit === 0) {
+                $this->epsProduction = $this->wrapper->getEpsUsage();
+            } else {
+                $reactorOutput = $this->getOutputCappedByLoad();
+                $warpDriveProduction = $this->getWarpdriveProduction();
+                $flightCost = $this->wrapper->get()->getRump()->getFlightEcost();
+
+                $this->epsProduction = $reactorOutput - ($warpDriveProduction * $flightCost);
+            }
         }
 
         return $this->epsProduction;
