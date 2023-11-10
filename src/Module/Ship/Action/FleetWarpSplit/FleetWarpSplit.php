@@ -39,7 +39,7 @@ final class FleetWarpSplit implements ActionControllerInterface
         if ($warpdrive === null) {
             throw new RuntimeException('no warpdrive in fleet leader');
         }
-        $warpsplit = $warpdrive->getWarpdriveSplit();
+        $warpsplit = $warpdrive->getWarpDriveSplit();
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($fleetWrapper === null) {
@@ -52,7 +52,7 @@ final class FleetWarpSplit implements ActionControllerInterface
 
             if ($warpdrive !== null) {
                 $success = true;
-                $warpdrive->setWarpdriveSplit($warpsplit)->update();
+                $warpdrive->setWarpDriveSplit($warpsplit)->update();
             }
         }
 
