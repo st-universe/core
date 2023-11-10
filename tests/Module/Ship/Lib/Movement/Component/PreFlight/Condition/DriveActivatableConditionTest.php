@@ -6,18 +6,18 @@ namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
 class DriveActivatableConditionTest extends StuTestCase
 {
-    private PreFlightConditionInterface $subject;
+    /** @var MockInterface&ActivatorDeactivatorHelperInterface */
+    private MockInterface $activatorDeactivatorHelper;
 
-    /** @var MockInterface&ShipInterface */
-    private MockInterface $ship;
+    private PreFlightConditionInterface $subject;
 
     /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
@@ -30,30 +30,21 @@ class DriveActivatableConditionTest extends StuTestCase
 
     protected function setUp(): void
     {
-        $this->ship = $this->mock(ShipInterface::class);
+        $this->activatorDeactivatorHelper = $this->mock(ActivatorDeactivatorHelperInterface::class);
+
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
         $this->conditionCheckResult = $this->mock(ConditionCheckResult::class);
 
-        $this->wrapper->shouldReceive('get')
-            ->zeroOrMoreTimes()
-            ->andReturn($this->ship);
-
-        $this->subject = new DriveActivatableCondition();
+        $this->subject = new DriveActivatableCondition($this->activatorDeactivatorHelper);
     }
 
     public static function provideCheckData()
     {
         return [
-            [true, false, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, false],
-            [true, false, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true, false],
-            [true, false, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true, true],
-            [false, true, false,  ShipSystemTypeEnum::SYSTEM_WARPDRIVE, false],
-            [false, true, false,  ShipSystemTypeEnum::SYSTEM_WARPDRIVE, true, false],
-            [false, true, false,  ShipSystemTypeEnum::SYSTEM_WARPDRIVE, true, true],
-            [false, false, true,  ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL, false],
-            [false, false, true,  ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL, true, false],
-            [false, false, true,  ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL, true, true]
+            [true, false, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
+            [false, true, false,  ShipSystemTypeEnum::SYSTEM_WARPDRIVE],
+            [false, false, true,  ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL]
         ];
     }
 
@@ -64,23 +55,8 @@ class DriveActivatableConditionTest extends StuTestCase
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
         bool $isTranswarpNeeded,
-        ShipSystemTypeEnum $systemId,
-        bool $hasShipSystem,
-        bool $isSystemHealthy = null
+        ShipSystemTypeEnum $systemType
     ): void {
-
-        $this->ship->shouldReceive('hasShipSystem')
-            ->with($systemId)
-            ->andReturn($hasShipSystem);
-        $this->ship->shouldReceive('getName')
-            ->withNoArgs()
-            ->andReturn('SHIP');
-
-        if ($isSystemHealthy !== null) {
-            $this->ship->shouldReceive('isSystemHealthy')
-                ->with($systemId)
-                ->andReturn($isSystemHealthy);
-        }
 
         $this->flightRoute->shouldReceive('isImpulseDriveNeeded')
             ->withNoArgs()
@@ -92,29 +68,15 @@ class DriveActivatableConditionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($isTranswarpNeeded);
 
-        if (!$hasShipSystem) {
-            $this->conditionCheckResult->shouldReceive('addBlockedShip')
-                ->with(
-                    $this->ship,
-                    sprintf(
-                        'Die SHIP verfügt über keine(n) %s',
-                        $systemId->getDescription()
-                    )
-                )
-                ->once();
-        }
-
-        if ($isSystemHealthy === false) {
-            $this->conditionCheckResult->shouldReceive('addBlockedShip')
-                ->with(
-                    $this->ship,
-                    sprintf(
-                        'Die SHIP kann das System %s nicht aktivieren',
-                        $systemId->getDescription()
-                    )
-                )
-                ->once();
-        }
+        $this->activatorDeactivatorHelper->shouldReceive('activate')
+            ->with(
+                $this->wrapper,
+                $systemType,
+                $this->conditionCheckResult,
+                false,
+                true
+            )
+            ->once();
 
         $this->subject->check($this->wrapper, $this->flightRoute, $this->conditionCheckResult);
     }
