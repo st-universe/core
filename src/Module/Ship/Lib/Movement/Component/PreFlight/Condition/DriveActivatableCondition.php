@@ -9,7 +9,7 @@ use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class HealthyDriveCondition implements PreFlightConditionInterface
+class DriveActivatableCondition implements PreFlightConditionInterface
 {
     public function check(
         ShipWrapperInterface $wrapper,
