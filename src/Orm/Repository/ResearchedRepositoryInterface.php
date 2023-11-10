@@ -27,7 +27,10 @@ interface ResearchedRepositoryInterface extends ObjectRepository
      */
     public function getFinishedListByUser(int $userId): array;
 
-    public function getCurrentResearch(UserInterface $user): ?ResearchedInterface;
+    /**
+     * @return array<ResearchedInterface>
+     */
+    public function getCurrentResearch(UserInterface $user): array;
 
     public function getFor(int $researchId, int $userId): ?ResearchedInterface;
 

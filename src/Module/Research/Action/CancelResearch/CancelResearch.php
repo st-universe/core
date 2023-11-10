@@ -28,8 +28,8 @@ final class CancelResearch extends AuthenticatedActionController
     {
         $currentResearch = $this->researchedRepository->getCurrentResearch($game->getUser());
 
-        if ($currentResearch !== null) {
-            $this->researchedRepository->delete($currentResearch);
+        if (!empty($currentResearch)) {
+            $this->researchedRepository->delete(current($currentResearch));
 
             $game->addInformation('Die laufende Forschung wurde abgebrochen');
         }

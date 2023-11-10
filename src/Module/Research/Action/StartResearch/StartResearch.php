@@ -40,12 +40,11 @@ final class StartResearch implements ActionControllerInterface
         if ($research === null) {
             throw new AccessViolation();
         }
-        $current_research = $this->researchedRepository->getCurrentResearch($user);
 
-        if ($current_research !== null) {
-            $this->researchedRepository->delete($current_research);
+        $currentResearch = $this->researchedRepository->getCurrentResearch($user);
 
-            $game->addInformation(_('Die laufende Forschung wurde abgebrochen'));
+        if (count($currentResearch) > 1) {
+            $this->researchedRepository->delete($currentResearch[1]);
         }
 
         $researched = $this->researchedRepository->prototype();
@@ -56,7 +55,12 @@ final class StartResearch implements ActionControllerInterface
 
         $this->researchedRepository->save($researched);
 
-        $game->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
+        if (empty($currentResearch)) {
+            $game->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
+        } else {
+            $game->addInformation(sprintf(_('%s wird als nächstes erforscht'), $research->getName()));
+        }
+
         $game->setView(GameController::DEFAULT_VIEW);
     }
 

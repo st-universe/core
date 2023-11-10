@@ -46,12 +46,13 @@
 		</table>
 		<div tal:condition="not:SELECTED_RESEARCH/getResearchState">
 			<br />
-			<div class="fabutton_blue">
+			<div tal:condition="not:CURRENT_RESEARCH" class="fabutton_blue">
 				<a href="research.php?B_DO_RESEARCH=1&id=${SELECTED_RESEARCH/getId}&sstr=${THIS/getSessionString}"
 					class="fabutton fabutton_blue">Erforschen</a>
 			</div>
-			<div tal:condition="CURRENT_RESEARCH" class="negative" style="text-align: center;">
-				Achtung! Die gerade laufende Forschung wird abgebrochen!
+			<div tal:condition="CURRENT_RESEARCH" class="fabutton_yellow">
+				<a href="research.php?B_DO_RESEARCH=1&id=${SELECTED_RESEARCH/getId}&sstr=${THIS/getSessionString}"
+					class="fabutton fabutton_yellow">In den Warteslot</a>
 			</div>
 		</div>
 		<div tal:condition="SELECTED_RESEARCH/getResearchState">

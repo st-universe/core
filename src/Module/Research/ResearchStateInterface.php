@@ -8,5 +8,6 @@ interface ResearchStateInterface
 {
     public function finish(ResearchedInterface $state): void;
 
-    public function advance(ResearchedInterface $state, int $amount): void;
+    /** returns the remaining amount */
+    public function advance(ResearchedInterface $state, int $amount): int;
 }

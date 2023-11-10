@@ -35,7 +35,7 @@ class CancelResearchTest extends StuTestCase
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
             ->once()
-            ->andReturnNull();
+            ->andReturn([]);
 
         $game->shouldReceive('getUser')
             ->withNoArgs()
@@ -57,7 +57,7 @@ class CancelResearchTest extends StuTestCase
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
             ->once()
-            ->andReturn($researchReference);
+            ->andReturn([$researchReference]);
         $this->researchedRepository->shouldReceive('delete')
             ->with($researchReference)
             ->once();

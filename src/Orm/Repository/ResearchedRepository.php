@@ -56,17 +56,20 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getResult();
     }
 
-    public function getCurrentResearch(UserInterface $user): ?ResearchedInterface
+    public function getCurrentResearch(UserInterface $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT t FROM %s t WHERE t.user = :user AND t.aktiv > 0',
+                    'SELECT r FROM %s r
+                    WHERE r.user = :user
+                    AND r.aktiv > 0
+                    ORDER BY r.id asc',
                     Researched::class
                 )
             )
             ->setParameter('user', $user)
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     public function getFor(int $researchId, int $userId): ?ResearchedInterface
