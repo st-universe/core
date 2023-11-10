@@ -31,9 +31,9 @@ final class RefactorReactorRunner
                 continue;
             }
 
-            $reactorWrapper
-                ->setOutput($ship->getTheoreticalReactorOutput())
-                ->setLoad($ship->getReactorLoad());
+            //$reactorWrapper
+            //    ->setOutput($ship->getTheoreticalReactorOutput())
+            //    ->setLoad($ship->getReactorLoad());
         }
     }
 }

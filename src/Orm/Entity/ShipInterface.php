@@ -73,9 +73,6 @@ interface ShipInterface
 
     public function getWebState(): bool;
 
-    /** @deprecated */
-    public function getReactorLoad(): int;
-
     public function getCloakState(): bool;
 
     public function getTachyonState(): bool;
@@ -153,9 +150,6 @@ interface ShipInterface
     public function getEvadeChance(): int;
 
     public function setEvadeChance(int $evadeChance): ShipInterface;
-
-    /** @deprecated */
-    public function getTheoreticalReactorOutput(): int;
 
     public function getBaseDamage(): int;
 

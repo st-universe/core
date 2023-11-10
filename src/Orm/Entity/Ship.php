@@ -131,12 +131,6 @@ class Ship implements ShipInterface
     private int $lss_mode = ShipLSSModeEnum::LSS_NORMAL;
 
     /**
-     * @Column(type="integer", length=5, nullable=true)
-     *
-     */
-    private ?int $warpcore = 0;
-
-    /**
      * @Column(type="integer", length=6)
      *
      */
@@ -219,12 +213,6 @@ class Ship implements ShipInterface
      *
      */
     private int $evade_chance = 0;
-
-    /**
-     * @Column(type="smallint", length=4, nullable=true)
-     *
-     */
-    private ?int $reactor_output = 0;
 
     /**
      * @Column(type="smallint", length=4)
@@ -607,16 +595,6 @@ class Ship implements ShipInterface
     public function getWebState(): bool
     {
         return $this->getHoldingWeb() !== null;
-    }
-
-    public function getTheoreticalReactorOutput(): int
-    {
-        return $this->reactor_output;
-    }
-
-    public function getReactorLoad(): int
-    {
-        return $this->warpcore;
     }
 
     public function getCloakState(): bool
