@@ -22,7 +22,9 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Tal\TalHelper;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInterface
@@ -46,37 +48,35 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     public function activate(
         ShipWrapperInterface|int $target,
         shipSystemTypeEnum $type,
-        GameControllerInterface $game,
-        bool $allowUplink = false
+        ConditionCheckResult|GameControllerInterface $logger,
+        bool $allowUplink = false,
+        bool $isDryRun = false
     ): bool {
-        $userId = $game->getUser()->getId();
-
         $wrapper = $this->getTargetWrapper(
             $target,
-            $userId,
+            $logger,
             $allowUplink
         );
 
-        if ($this->activateIntern($wrapper, $type, $game)) {
-            $this->shipRepository->save($wrapper->get());
-            return true;
-        } else {
-            return false;
-        }
+        return $this->activateIntern($wrapper, $type, $logger, $isDryRun);
     }
 
     private function getTargetWrapper(
         ShipWrapperInterface|int $target,
-        int $userId,
+        ConditionCheckResult|GameControllerInterface $logger,
         bool $allowUplink
     ): ShipWrapperInterface {
         if ($target instanceof ShipWrapperInterface) {
             return $target;
         }
 
+        if ($logger instanceof ConditionCheckResult) {
+            throw new RuntimeException('game needs to be present when target is shipId only');
+        }
+
         return $this->shipLoader->getWrapperByIdAndUser(
             $target,
-            $userId,
+            $logger->getUser()->getId(),
             $allowUplink
         );
     }
@@ -84,46 +84,61 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     private function activateIntern(
         ShipWrapperInterface $wrapper,
         shipSystemTypeEnum $type,
-        GameControllerInterface $game
+        ConditionCheckResult|GameControllerInterface $logger,
+        bool $isDryRun
     ): bool {
         $systemName = $type->getDescription();
         $ship = $wrapper->get();
 
         try {
-            $this->shipSystemManager->activate($wrapper, $type);
-            $game->addInformation(sprintf(_('%s: System %s aktiviert'), $ship->getName(), $systemName));
+            $this->shipSystemManager->activate($wrapper, $type, false, $isDryRun);
+            $this->shipRepository->save($ship);
+            if ($logger instanceof GameControllerInterface) {
+                $logger->addInformation(sprintf(_('%s: System %s aktiviert'), $ship->getName(), $systemName));
+            }
             return true;
         } catch (AlreadyActiveException $e) {
-            $game->addInformation(sprintf(_('%s: System %s ist bereits aktiviert'), $ship->getName(), $systemName));
+            if ($logger instanceof GameControllerInterface) {
+                $logger->addInformation(sprintf(_('%s: System %s ist bereits aktiviert'), $ship->getName(), $systemName));
+            }
         } catch (SystemNotActivatableException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
+            $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $ship->getName(), $systemName), $logger);
         } catch (InsufficientEnergyException $e) {
-            $game->addInformation(sprintf(
+            $this->logError($ship, sprintf(
                 _('%s: [b][color=#ff2626]System %s kann aufgrund Energiemangels (%d benötigt) nicht aktiviert werden[/color][/b]'),
                 $ship->getName(),
                 $systemName,
                 $e->getNeededEnergy()
-            ));
+            ), $logger);
         } catch (SystemCooldownException $e) {
-            $game->addInformation(sprintf(
+            $this->logError($ship, sprintf(
                 _('%s: [b][color=#ff2626]System %s kann nicht aktiviert werden, Cooldown noch %s[/color][/b]'),
                 $ship->getName(),
                 $systemName,
                 TalHelper::formatSeconds((string) $e->getRemainingSeconds())
-            ));
+            ), $logger);
         } catch (SystemDamagedException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+            $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName), $logger);
         } catch (ActivationConditionsNotMetException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
+            $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()), $logger);
         } catch (SystemNotFoundException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s nicht vorhanden[/color][/b]'), $ship->getName(), $systemName));
+            $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s nicht vorhanden[/color][/b]'), $ship->getName(), $systemName), $logger);
         } catch (InsufficientCrewException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s konnte wegen Mangel an Crew nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+            $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s konnte wegen Mangel an Crew nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName), $logger);
         } catch (ShipSystemException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+            $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName), $logger);
         }
 
         return false;
+    }
+
+    private function logError(ShipInterface $ship, string $message, ConditionCheckResult|GameControllerInterface $logger): void
+    {
+        if ($logger instanceof GameControllerInterface) {
+            $logger->addInformation($message);
+        } else {
+            $logger->addBlockedShip($ship, $message);
+        }
     }
 
     public function activateFleet(
@@ -145,9 +160,8 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         $success = false;
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            if ($this->activateIntern($wrapper, $type, $game)) {
+            if ($this->activateIntern($wrapper, $type, $game, false)) {
                 $success = true;
-                $this->shipRepository->save($wrapper->get());
             }
         }
 
@@ -168,20 +182,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         GameControllerInterface $game,
         bool $allowUplink = false
     ): bool {
-        $userId = $game->getUser()->getId();
-
         $wrapper = $this->getTargetWrapper(
             $target,
-            $userId,
+            $game,
             $allowUplink
         );
 
-        if ($this->deactivateIntern($wrapper, $type, $game)) {
-            $this->shipRepository->save($wrapper->get());
-            return true;
-        } else {
-            return false;
-        }
+        return $this->deactivateIntern($wrapper, $type, $game);
     }
 
     private function deactivateIntern(
@@ -194,6 +201,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         try {
             $this->shipSystemManager->deactivate($wrapper, $type);
+            $this->shipRepository->save($ship);
             $game->addInformation(sprintf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
             return true;
         } catch (AlreadyOffException $e) {
@@ -230,7 +238,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
             if ($this->deactivateIntern($wrapper, $type, $game)) {
                 $success = true;
-                $this->shipRepository->save($wrapper->get());
             }
         }
 
@@ -388,7 +395,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ];
 
         foreach ($alertSystems as $type) {
-            $this->activateIntern($wrapper, $type, $game);
+            $this->activateIntern($wrapper, $type, $game, false);
         }
     }
 
@@ -399,7 +406,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ];
 
         foreach ($alertSystems as $type) {
-            $this->activateIntern($wrapper, $type, $game);
+            $this->activateIntern($wrapper, $type, $game, false);
         }
     }
 
