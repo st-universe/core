@@ -257,9 +257,9 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightDire
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightTractorConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\BlockedCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\CrewCondition;
+use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\DriveActivatableCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughEpsCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughWarpdriveCondition;
-use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\HealthyDriveCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheck;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
@@ -354,7 +354,7 @@ return [
     'pre_flight_conditions' => [
         autowire(BlockedCondition::class),
         autowire(CrewCondition::class),
-        autowire(HealthyDriveCondition::class),
+        autowire(DriveActivatableCondition::class),
         autowire(EnoughEpsCondition::class),
         autowire(EnoughWarpdriveCondition::class)
     ],

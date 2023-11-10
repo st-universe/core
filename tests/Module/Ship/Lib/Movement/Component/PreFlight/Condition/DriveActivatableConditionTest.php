@@ -12,7 +12,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
-class HealthyDriveConditionTest extends StuTestCase
+class DriveActivatableConditionTest extends StuTestCase
 {
     private PreFlightConditionInterface $subject;
 
@@ -39,7 +39,7 @@ class HealthyDriveConditionTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
 
-        $this->subject = new HealthyDriveCondition();
+        $this->subject = new DriveActivatableCondition();
     }
 
     public static function provideCheckData()
