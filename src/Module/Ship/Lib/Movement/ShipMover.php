@@ -99,7 +99,12 @@ final class ShipMover implements ShipMoverInterface
             );
 
             // check all flight pre conditions
-            $conditionCheckResult = $this->preFlightConditionsCheck->checkPreconditions($activeWrappers, $flightRoute, $isFixedFleetMode);
+            $conditionCheckResult = $this->preFlightConditionsCheck->checkPreconditions(
+                $leadShipWrapper,
+                $activeWrappers,
+                $flightRoute,
+                $isFixedFleetMode
+            );
 
             if (!$conditionCheckResult->isFlightPossible()) {
                 $flightRoute->abortFlight();

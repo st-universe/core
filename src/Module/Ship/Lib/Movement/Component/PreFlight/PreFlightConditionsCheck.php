@@ -28,11 +28,16 @@ class PreFlightConditionsCheck implements PreFlightConditionsCheckInterface
     }
 
     public function checkPreconditions(
+        ShipWrapperInterface $leader,
         array $wrappers,
         FlightRouteInterface $flightRoute,
         bool $isFixedFleetMode
     ): ConditionCheckResult {
-        $conditionCheckResult = new ConditionCheckResult($this->leaveFleet, $isFixedFleetMode);
+        $conditionCheckResult = new ConditionCheckResult(
+            $this->leaveFleet,
+            $leader,
+            $isFixedFleetMode
+        );
 
         array_walk(
             $this->conditions,

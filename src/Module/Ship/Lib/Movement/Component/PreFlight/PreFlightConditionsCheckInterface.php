@@ -11,6 +11,7 @@ interface PreFlightConditionsCheckInterface
 {
     /** @param array<ShipWrapperInterface> $wrappers */
     public function checkPreconditions(
+        ShipWrapperInterface $leader,
         array $wrappers,
         FlightRouteInterface $flightRoute,
         bool $isFixedFleetMode

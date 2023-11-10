@@ -73,7 +73,7 @@ class PreFlightConditionsCheckTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $result = $subject->checkPreconditions([$wrapper1, $wrapper2], $flightRoute, $isFixedFleetMode);
+        $result = $subject->checkPreconditions($wrapper1, [$wrapper1, $wrapper2], $flightRoute, $isFixedFleetMode);
 
         $this->assertEquals($conditionCheckResult, $result);
     }
