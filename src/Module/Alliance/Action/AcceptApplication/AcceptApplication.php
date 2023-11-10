@@ -10,6 +10,8 @@ use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -67,6 +69,9 @@ final class AcceptApplication implements ActionControllerInterface
 
         $applicant = $appl->getUser();
         $applicant->setAlliance($alliance);
+        $applicationsOfUser = $this->allianceJobRepository->getByUser($applicant->getId());
+
+        $this->cancelOtherApplications($applicationsOfUser, $appl);
 
         $this->userRepository->save($applicant);
 
@@ -82,6 +87,30 @@ final class AcceptApplication implements ActionControllerInterface
         $this->privateMessageSender->send($userId, $applicant->getId(), $text);
 
         $game->addInformation(_('Die Bewerbung wurde angenommen'));
+    }
+
+    /** @param array<AllianceJobInterface> $applications */
+    private function cancelOtherApplications(array $applications, AllianceJobInterface $currentApplication): void
+    {
+        $text = sprintf(
+            'Der Siedler %s wurde bei einer anderen Allianz aufgenommen',
+            $currentApplication->getUser()->getName()
+        );
+
+        foreach ($applications as $application) {
+            if ($application === $currentApplication) {
+                continue;
+            }
+
+            $alliance = $application->getAlliance();
+
+            $this->privateMessageSender->send(UserEnum::USER_NOONE, $alliance->getFounder()->getUserId(), $text);
+            if ($alliance->getSuccessor() !== null) {
+                $this->privateMessageSender->send(UserEnum::USER_NOONE, $alliance->getSuccessor()->getUserId(), $text);
+            }
+
+            $this->allianceJobRepository->delete($application);
+        }
     }
 
     public function performSessionCheck(): bool
