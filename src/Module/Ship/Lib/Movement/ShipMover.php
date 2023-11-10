@@ -108,6 +108,8 @@ final class ShipMover implements ShipMoverInterface
                 break;
             }
 
+            $this->addInformationMerge($conditionCheckResult->getInformations());
+
             $movedTractoredShips = [];
 
             // move every ship by one field
