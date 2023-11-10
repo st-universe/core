@@ -349,6 +349,65 @@ class ShipSystemManagerTest extends StuTestCase
         $this->manager->activate($this->wrapper, $this->system_id);
     }
 
+    public function testActivateDryRun(): void
+    {
+        $energyCosts = 1;
+        $epsSystem = $this->mock(EpsSystemData::class);
+
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->system_id->value =>  $this->shipSystem]));
+
+        //wrapper and eps
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($epsSystem);
+        $epsSystem->shouldReceive('getEps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
+        $this->ship->shouldReceive('hasEnoughCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->systemType->shouldReceive('getEnergyUsageForActivation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($energyCosts);
+        $this->systemType->shouldReceive('checkActivationConditions')
+            ->with($this->wrapper, Mockery::any())
+            ->once()
+            ->andReturnTrue();
+
+        $this->shipSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+        $this->shipSystem->shouldReceive('getCooldown')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $this->manager->activate($this->wrapper, $this->system_id, false, true);
+    }
+
     public function testActivateActivatesSystemNoCooldown(): void
     {
         $energyCosts = 1;
@@ -500,7 +559,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->manager->activate($this->wrapper, $this->system_id);
     }
 
-    public function testActivateActivatesSystemLastingCooldown(): void
+    public function testActivateExpectCooldownExceptionWhenLastingCooldown(): void
     {
         $this->expectException(SystemCooldownException::class);
         $epsSystem = $this->mock(EpsSystemData::class);
