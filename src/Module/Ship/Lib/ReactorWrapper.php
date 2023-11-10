@@ -32,31 +32,11 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this->reactorSystemData;
     }
 
-    private function getWarpdriveProduction(): int
-    {
-        if ($this->warpdriveProduction === null) {
-            $warpdrive = $this->wrapper->getWarpDriveSystemData();
-
-            if ($warpdrive === null) {
-                $this->warpdriveProduction = 0;
-            } else {
-                $warpdriveSplit = $warpdrive->getWarpdriveSplit();
-                $reactorOutput = $this->getOutputCappedByLoad();
-                $flightCost = $this->wrapper->get()->getRump()->getFlightEcost();
-                $maxWarpdriveGain = (int)floor(($reactorOutput - $this->wrapper->getEpsUsage()) / $flightCost);
-
-                $this->warpdriveProduction = (int)round((1 - ($warpdriveSplit / 100)) * $maxWarpdriveGain);
-            }
-        }
-
-        return $this->warpdriveProduction;
-    }
-
     public function getEpsProduction(): int
     {
         if ($this->epsProduction === null) {
             $warpdrive = $this->wrapper->getWarpDriveSystemData();
-            $warpdriveSplit = $warpdrive === null ? 100 : $warpdrive->getWarpdriveSplit();
+            $warpdriveSplit = $warpdrive === null ? 100 : $warpdrive->getWarpDriveSplit();
 
             if ($warpdriveSplit === 0) {
                 $this->epsProduction = $this->wrapper->getEpsUsage();
@@ -70,6 +50,26 @@ final class ReactorWrapper implements ReactorWrapperInterface
         }
 
         return $this->epsProduction;
+    }
+
+    private function getWarpdriveProduction(): int
+    {
+        if ($this->warpdriveProduction === null) {
+            $warpdrive = $this->wrapper->getWarpDriveSystemData();
+
+            if ($warpdrive === null) {
+                $this->warpdriveProduction = 0;
+            } else {
+                $warpdriveSplit = $warpdrive->getWarpDriveSplit();
+                $reactorOutput = $this->getOutputCappedByLoad();
+                $flightCost = $this->wrapper->get()->getRump()->getFlightEcost();
+                $maxWarpdriveGain = (int)floor(($reactorOutput - $this->wrapper->getEpsUsage()) / $flightCost);
+
+                $this->warpdriveProduction = (int)round((1 - ($warpdriveSplit / 100)) * $maxWarpdriveGain);
+            }
+        }
+
+        return $this->warpdriveProduction;
     }
 
     public function getEffectiveEpsProduction(): int
