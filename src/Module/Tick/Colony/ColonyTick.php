@@ -451,7 +451,7 @@ final class ColonyTick implements ColonyTickInterface
             ) {
                 $this->researchStateFactory->createResearchState()->advance(
                     $waitingResearch,
-                    $production[$commodityId]->getProduction()
+                    $remaining
                 );
             }
         }
