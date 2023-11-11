@@ -437,15 +437,21 @@ final class ColonyTick implements ColonyTickInterface
             && $currentResearch->getActive()
             && isset($production[$currentResearch->getResearch()->getCommodityId()])
         ) {
+            $commodityId = $currentResearch->getResearch()->getCommodityId();
+
             $remaining = $this->researchStateFactory->createResearchState()->advance(
                 $currentResearch,
-                $production[$currentResearch->getResearch()->getCommodityId()]->getProduction()
+                $production[$commodityId]->getProduction()
             );
 
-            if ($remaining > 0 && $waitingResearch !== null) {
+            if (
+                $remaining > 0
+                && $waitingResearch !== null
+                && $waitingResearch->getResearch()->getCommodityId() === $commodityId
+            ) {
                 $this->researchStateFactory->createResearchState()->advance(
                     $waitingResearch,
-                    $production[$waitingResearch->getResearch()->getCommodityId()]->getProduction()
+                    $production[$commodityId]->getProduction()
                 );
             }
         }
