@@ -65,7 +65,7 @@
 						tal:replace="SELECTED_RESEARCH/getPoints">MAXCOUNT</span>
 				</div>
 				<div class="fabutton_red">
-					<a href="research.php?B_CANCEL_CURRENT_RESEARCH=1&sstr=${THIS/getSessionString}"
+					<a href="research.php?B_CANCEL_CURRENT_RESEARCH=1&id=${SELECTED_RESEARCH/getResearchState/getId}&sstr=${THIS/getSessionString}"
 						class="fabutton fabutton_red">Forschung abbrechen</a>
 				</div>
 			</tal:block>
