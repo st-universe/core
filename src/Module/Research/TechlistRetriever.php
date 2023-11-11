@@ -159,17 +159,6 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
     public function getFinishedResearchList(UserInterface $user): array
     {
-        $result = $this->researchedRepository->getListByUser($user->getId());
-        usort(
-            $result,
-            function (ResearchedInterface $a, ResearchedInterface $b): int {
-                if ($a->getActive() !== $b->getActive()) {
-                    return $b->getActive() <=> $a->getActive();
-                }
-                return $b->getFinished() <=> $a->getFinished();
-            }
-        );
-
-        return $result;
+        return $this->researchedRepository->getListByUser($user->getId());
     }
 }

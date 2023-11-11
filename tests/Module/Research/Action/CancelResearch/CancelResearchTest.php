@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Research\Action\CancelResearch;
 
 use Mockery\MockInterface;
+use request;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ResearchedInterface;
@@ -32,6 +33,8 @@ class CancelResearchTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $user = $this->mock(UserInterface::class);
 
+        request::setMockVars(['id' => 42]);
+
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
             ->once()
@@ -54,6 +57,8 @@ class CancelResearchTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $researchReference = $this->mock(ResearchedInterface::class);
 
+        request::setMockVars(['id' => 42]);
+
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
             ->once()
@@ -61,6 +66,11 @@ class CancelResearchTest extends StuTestCase
         $this->researchedRepository->shouldReceive('delete')
             ->with($researchReference)
             ->once();
+
+        $researchReference->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $game->shouldReceive('addInformation')
             ->with('Die laufende Forschung wurde abgebrochen')
