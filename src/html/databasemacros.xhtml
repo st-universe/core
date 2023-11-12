@@ -153,7 +153,19 @@
     </table>
   </div>
 </metal:macro>
-<metal:macro metal:define-macro="planettype">
+<metal:macro metal:define-macro="planettype" tal:define="style string:margin: 1px;; width: 42px;; height: 42px;;">
+  <div tal:attributes="style string:${SURFACE_TILE_STYLE}">
+    <tal:block tal:repeat="fieldType FIELD_ARRAY">
+      <div style="${style}" class="cfu">
+        <div style="width: 40px; height: 40px;">
+          <div>
+            <div><img style="width: 40px; height: 40px;" src="assets/generated/fields/t${fieldType}.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </tal:block>
+  </div>
 </metal:macro>
 <metal:macro metal:define-macro="starsystemtype">
 </metal:macro>

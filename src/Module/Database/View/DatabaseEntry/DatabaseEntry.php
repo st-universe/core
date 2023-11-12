@@ -23,6 +23,7 @@ use Stu\Orm\Repository\MapRegionRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
+use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
@@ -48,6 +49,8 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
+    private PlanetGeneratorInterface $planetGenerator;
+
     public function __construct(
         ColonyScanRepositoryInterface $colonyScanRepository,
         DatabaseEntryRequestInterface $databaseEntryRequest,
@@ -58,7 +61,8 @@ final class DatabaseEntry implements ViewControllerInterface
         StarSystemRepositoryInterface $starSystemRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipCrewCalculatorInterface $shipCrewCalculator,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        PlanetGeneratorInterface $planetGenerator
     ) {
         $this->colonyScanRepository = $colonyScanRepository;
         $this->databaseEntryRequest = $databaseEntryRequest;
@@ -70,6 +74,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipRepository = $shipRepository;
         $this->shipCrewCalculator = $shipCrewCalculator;
+        $this->planetGenerator = $planetGenerator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -126,7 +131,10 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry_object_id = $entry->getObjectId();
 
         switch ($entry->getTypeObject()->getId()) {
-                //TODO example colony
+            case DatabaseEntryTypeEnum::DATABASE_TYPE_PLANET:
+                $game->setTemplateVar('FIELD_ARRAY', $this->getPlanetFieldArray($entry_object_id));
+                $game->setTemplateVar('SURFACE_TILE_STYLE', $this->getSurfaceTileStyle($entry_object_id));
+                break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_POI:
                 $game->setTemplateVar('POI', $this->shipRepository->find($entry_object_id));
                 break;
@@ -162,6 +170,28 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($game->getUser(), $entry_object_id));
                 break;
         }
+    }
+
+    /** @return array<int> */
+    private function getPlanetFieldArray(int $colonyClassId): array
+    {
+        $planetConfig = $this->planetGenerator->generateColony(
+            $colonyClassId,
+            random_int(0, 3)
+        );
+
+        return $planetConfig->getFieldArray();
+    }
+
+    public function getSurfaceTileStyle(int $colonyClassId): string
+    {
+        $width = $this->planetGenerator->loadColonyClassConfig($colonyClassId)['sizew'];
+        $gridArray = [];
+        for ($i = 0; $i < $width; $i++) {
+            $gridArray[] = '43px';
+        }
+
+        return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
     private function createSystemCellData(StarSystemMapInterface $systemMap): SystemCellData
