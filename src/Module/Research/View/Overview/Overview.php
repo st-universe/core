@@ -34,8 +34,8 @@ final class Overview implements ViewControllerInterface
             $this->techlistRetriever->getResearchList($user)
         );
         $game->setTemplateVar(
-            'FINISHED_LIST',
-            $this->techlistRetriever->getFinishedResearchList($user)
+            'RESEARCHED_LIST',
+            $this->techlistRetriever->getResearchedList($user)
         );
     }
 }
