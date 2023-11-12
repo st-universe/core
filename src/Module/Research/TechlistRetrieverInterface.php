@@ -16,5 +16,5 @@ interface TechlistRetrieverInterface
     /**
      * @return ResearchedInterface[]
      */
-    public function getFinishedResearchList(UserInterface $user): array;
+    public function getResearchedList(UserInterface $user): array;
 }

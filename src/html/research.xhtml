@@ -25,11 +25,11 @@
         </div>
       </div>
     </div>
-    <div tal:condition="FINISHED_LIST">
+    <div tal:condition="RESEARCHED_LIST">
       <br />
       <div class="divhead">Aktive/Abgeschlossene Forschungen</div>
       <div class="finishedResearchList">
-        <div class="finishedResearchListItem" tal:repeat="data FINISHED_LIST">
+        <div class="finishedResearchListItem" tal:repeat="data RESEARCHED_LIST">
           <div class="finishedResearchListItemImage">
             <a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearch/getId});">
               <img src="/assets/research/${data/getResearch/getid}.png" style="width: 40px" />
