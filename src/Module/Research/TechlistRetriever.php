@@ -6,6 +6,7 @@ namespace Stu\Module\Research;
 
 use Stu\Component\Research\ResearchEnum;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
@@ -36,9 +37,19 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
     public function getResearchList(UserInterface $user): array
     {
-        $finished_list = array_map(
+        $researchedList = $this->getResearchedList($user);
+
+        $researchedIdsWithUnfinished = array_map(
             fn (ResearchedInterface $researched): int => $researched->getResearch()->getId(),
-            $this->getResearchedList($user)
+            $researchedList
+        );
+
+        $researchedIdsOnlyFinished = array_map(
+            fn (ResearchedInterface $researched): int => $researched->getResearch()->getId(),
+            array_filter(
+                $researchedList,
+                fn (ResearchedInterface $researched): bool => $researched->getFinished() > 0
+            )
         );
 
         $result = $this->researchRepository->getAvailableResearch($user->getId());
@@ -62,7 +73,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
             // excludelogic
             if (isset($excludes[$key])) {
                 foreach ($excludes[$key] as $exclude) {
-                    if (in_array($exclude->getResearchId(), $finished_list)) {
+                    if (in_array($exclude->getResearchId(), $researchedIdsWithUnfinished)) {
                         continue 2;
                     }
                 }
@@ -72,7 +83,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
             if (isset($dependencies[$key])) {
                 // check for AND condition
                 foreach ($dependencies[$key]['AND'] as $and_condition) {
-                    if (!in_array($and_condition, $finished_list)) {
+                    if (!in_array($and_condition, $researchedIdsOnlyFinished)) {
                         continue 2;
                     }
                 }
@@ -81,7 +92,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                 if (!empty($dependencies[$key]['OR'])) {
                     $or_condition_met = false;
                     foreach ($dependencies[$key]['OR'] as $or_condition) {
-                        if (in_array($or_condition, $finished_list)) {
+                        if (in_array($or_condition, $researchedIdsOnlyFinished)) {
                             $or_condition_met = true;
                             break;
                         }
@@ -107,6 +118,11 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         }
 
         return $list_result;
+    }
+
+    public function canResearch(UserInterface $user, int $researchId): ?ResearchInterface
+    {
+        return $this->getResearchList($user)[$researchId] ?? null;
     }
 
     private function loadDependencies(): array
