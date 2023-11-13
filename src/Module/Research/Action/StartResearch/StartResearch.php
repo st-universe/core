@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\StartResearch;
 
-use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -34,17 +33,16 @@ final class StartResearch implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $researchId = $this->startResearchRequest->getResearchId();
 
-        $research = $this->techlistRetriever->getResearchList($user)[$researchId] ?? null;
+        $research = $this->techlistRetriever->canResearch($user, $this->startResearchRequest->getResearchId());
         if ($research === null) {
-            throw new AccessViolation();
+            $game->addInformation('Kann aktuell nicht erforscht werden');
+            return;
         }
 
-        $currentResearch = $this->researchedRepository->getCurrentResearch($user);
-
-        if (count($currentResearch) > 1) {
-            $this->researchedRepository->delete($currentResearch[1]);
+        $researches = $this->researchedRepository->getCurrentResearch($user);
+        if (count($researches) > 1) {
+            $this->researchedRepository->delete($researches[1]);
         }
 
         $researched = $this->researchedRepository->prototype();
@@ -55,7 +53,7 @@ final class StartResearch implements ActionControllerInterface
 
         $this->researchedRepository->save($researched);
 
-        if (empty($currentResearch)) {
+        if (empty($researches)) {
             $game->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
         } else {
             $game->addInformation(sprintf(_('%s wird als nächstes erforscht'), $research->getName()));

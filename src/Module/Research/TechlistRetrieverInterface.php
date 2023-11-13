@@ -13,6 +13,8 @@ interface TechlistRetrieverInterface
      */
     public function getResearchList(UserInterface $user): array;
 
+    public function canResearch(UserInterface $user, int $researchId): ?ResearchInterface;
+
     /**
      * @return ResearchedInterface[]
      */
