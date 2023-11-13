@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Stu\Lib\BeamUtil\BeamUtil;
+use Stu\Lib\BeamUtil\BeamUtilInterface;
 use Stu\Lib\Map\DistanceCalculation;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
@@ -29,6 +31,7 @@ return [
     ModuleSelectorAddonFactoryInterface::class => autowire(ModuleSelectorAddonFactory::class),
     GradientColorInterface::class => autowire(GradientColor::class),
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
+    BeamUtilInterface::class => autowire(BeamUtil::class),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
         [
             autowire(ManageBattery::class),

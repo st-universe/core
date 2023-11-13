@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BeamTo;
 
 use request;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Lib\BeamUtil\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,7 +14,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamTo implements ActionControllerInterface
 {
@@ -23,11 +21,7 @@ final class BeamTo implements ActionControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
+    private BeamUtilInterface $beamUtil;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -35,16 +29,12 @@ final class BeamTo implements ActionControllerInterface
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        ShipStorageManagerInterface $shipStorageManager,
+        BeamUtilInterface $beamUtil,
         ShipLoaderInterface $shipLoader,
         InteractionCheckerInterface $interactionChecker
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->shipStorageManager = $shipStorageManager;
+        $this->beamUtil = $beamUtil;
         $this->shipLoader = $shipLoader;
         $this->interactionChecker = $interactionChecker;
     }
@@ -70,23 +60,23 @@ final class BeamTo implements ActionControllerInterface
             return;
         }
 
-        $target = $wrapper->get();
+        $ship = $wrapper->get();
 
-        if (!$this->interactionChecker->checkColonyPosition($colony, $target)) {
+        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
 
-        if ($target->getUser()->isVacationRequestOldEnough()) {
+        if ($ship->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
-        if ($target->getShieldState() && $target->getUser()->getId() !== $userId) {
-            $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
+        if ($ship->getShieldState() && $ship->getUser()->getId() !== $userId) {
+            $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $ship->getName());
             return;
         }
-        if ($target->getMaxStorage() <= $target->getStorageSum()) {
-            $game->addInformationf(_('Der Lagerraum der %s ist voll'), $target->getName());
+        if ($ship->getMaxStorage() <= $ship->getStorageSum()) {
+            $game->addInformationf(_('Der Lagerraum der %s ist voll'), $ship->getName());
             return;
         }
         $commodities = request::postArray('commodities');
@@ -101,81 +91,46 @@ final class BeamTo implements ActionControllerInterface
             return;
         }
 
-        $isOwnedByCurrentUser = $game->getUser() === $target->getUser();
+        $isOwnedByCurrentUser = $game->getUser() === $ship->getUser();
         if ($isOwnedByCurrentUser) {
-            $link = sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $target->getId());
+            $link = sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $ship->getId());
 
             $game->addInformationfWithLink(
                 _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
                 $link,
                 $colony->getName(),
-                $target->getName()
+                $ship->getName()
             );
         } else {
             $game->addInformationf(
                 _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
                 $colony->getName(),
-                $target->getName()
+                $ship->getName()
             );
         }
 
         foreach ($commodities as $key => $value) {
-            $value = (int) $value;
-            if ($colony->getEps() < 1) {
-                break;
-            }
+            $commodityId = (int) $value;
             if (!array_key_exists($key, $gcount)) {
                 continue;
             }
-            $storage = $storages[$value] ?? null;
-            if ($storage === null) {
-                continue;
-            }
-            $count = $gcount[$key];
-            $count = $count == "max" ? $storage->getAmount() : (int)$count;
-            if ($count < 1) {
-                continue;
-            }
-            if (!$storage->getCommodity()->isBeamable($userId, $target->getUser()->getId())) {
-                $game->addInformationf(_('%s ist nicht beambar'), $storage->getCommodity()->getName());
-                continue;
-            }
-            if ($target->getStorageSum() >= $target->getMaxStorage()) {
-                break;
-            }
-            if ($count > $storage->getAmount()) {
-                $count = $storage->getAmount();
-            }
 
-            $transferAmount = $storage->getCommodity()->getTransferCount() * $colony->getBeamFactor();
-
-            if (ceil($count / $transferAmount) > $colony->getEps()) {
-                $count = $colony->getEps() * $transferAmount;
-            }
-            if ($target->getStorageSum() + $count > $target->getMaxStorage()) {
-                $count = $target->getMaxStorage() - $target->getStorageSum();
-            }
-
-            $eps_usage = ceil($count / $transferAmount);
-            $game->addInformationf(
-                _('%d %s (Energieverbrauch: %d)'),
-                $count,
-                $storage->getCommodity()->getName(),
-                $eps_usage
+            $this->beamUtil->transferCommodity(
+                $commodityId,
+                $gcount[$key],
+                $colony,
+                $colony,
+                $ship,
+                $game
             );
-            $colony->lowerEps((int)ceil($count / $transferAmount));
-
-            $this->shipStorageManager->upperStorage($target, $storage->getCommodity(), $count);
-            $this->colonyStorageManager->lowerStorage($colony, $storage->getCommodity(), $count);
         }
+
         $game->sendInformation(
-            $target->getUser()->getId(),
+            $ship->getUser()->getId(),
             $userId,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId())
+            sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId())
         );
-
-        $this->colonyRepository->save($colony);
     }
 
     public function performSessionCheck(): bool

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BeamFrom;
 
 use request;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\BeamUtil\BeamUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -16,7 +16,6 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BeamFrom implements ActionControllerInterface
 {
@@ -24,21 +23,17 @@ final class BeamFrom implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private ShipRepositoryInterface $shipRepository;
+    private BeamUtilInterface $beamUtil;
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository,
+        BeamUtilInterface $beamUtil,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->shipRepository = $shipRepository;
+        $this->beamUtil = $beamUtil;
         $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
@@ -97,7 +92,6 @@ final class BeamFrom implements ActionControllerInterface
 
     private function beamFromTarget(ShipWrapperInterface $wrapper, ShipInterface $target, GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
         $ship = $wrapper->get();
         $epsSystem = $wrapper->getEpsSystemData();
 
@@ -150,67 +144,27 @@ final class BeamFrom implements ActionControllerInterface
         );
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
-            if (!$isDockTransfer && $epsSystem->getEps() < 1) {
-                break;
-            }
+
             if (!array_key_exists($key, $gcount)) {
                 continue;
             }
-            $storage = $targetStorage[$commodityId] ?? null;
-            if ($storage === null) {
-                continue;
-            }
-            $count = $gcount[$key];
 
-            $commodity = $storage->getCommodity();
-
-            if (!$commodity->isBeamable($userId, $target->getUser()->getId())) {
-                $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
-                continue;
-            }
-            $count = $count == "max" ? $storage->getAmount() : (int) $count;
-            if ($count < 1) {
-                continue;
-            }
-            if ($ship->getStorageSum() >= $ship->getMaxStorage()) {
-                break;
-            }
-            $count = min($count, $storage->getAmount());
-
-            $transferAmount = $commodity->getTransferCount() * $ship->getBeamFactor();
-
-            if (!$isDockTransfer && ceil($count / $transferAmount) > $epsSystem->getEps()) {
-                $count = $epsSystem->getEps() * $transferAmount;
-            }
-            if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
-                $count = $ship->getMaxStorage() - $ship->getStorageSum();
-            }
-            $game->addInformation(sprintf(
-                _('%d %s (Energieverbrauch: %d)'),
-                $count,
-                $commodity->getName(),
-                $isDockTransfer ? 0 : ceil($count / $transferAmount)
-            ));
-
-            $this->shipStorageManager->lowerStorage($target, $commodity, $count);
-            $this->shipStorageManager->upperStorage($ship, $commodity, $count);
-
-            if (!$isDockTransfer) {
-                $epsSystem->lowerEps((int)ceil($count / $transferAmount));
-            }
+            $this->beamUtil->transferCommodity(
+                $commodityId,
+                $gcount[$key],
+                $wrapper,
+                $target,
+                $wrapper->get(),
+                $game
+            );
         }
+
         $game->sendInformation(
             $target->getUser()->getId(),
             $ship->getUser()->getId(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId())
         );
-
-        if ($epsSystem !== null) {
-            $epsSystem->update();
-        }
-
-        $this->shipRepository->save($ship);
     }
 
     public function performSessionCheck(): bool

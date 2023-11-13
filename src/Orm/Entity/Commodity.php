@@ -120,9 +120,9 @@ class Commodity implements CommodityInterface
         return $this->isBeamable() && $this->npc_commodity === false;
     }
 
-    public function isBeamable(?int $userId = null, ?int $targetUserId = null): bool
+    public function isBeamable(UserInterface $user = null, UserInterface $targetUser = null): bool
     {
-        $isBound = $userId !== null && $targetUserId !== null && $this->isBoundToAccount() && $userId !== $targetUserId;
+        $isBound = $user !== null && $targetUser !== null && $this->isBoundToAccount() && $user !== $targetUser;
 
         return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD && $this->getView() === true && !$isBound;
     }
