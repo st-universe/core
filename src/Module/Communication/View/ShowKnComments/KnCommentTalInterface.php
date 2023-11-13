@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
+use Stu\Component\Player\UserRpgBehaviorEnum;
+
 interface KnCommentTalInterface
 {
     public function getId(): int;
@@ -19,4 +21,6 @@ interface KnCommentTalInterface
     public function getUserAvatarPath(): string;
 
     public function isDeleteable(): bool;
+
+    public function getRpgBehavior(): UserRpgBehaviorEnum;
 }

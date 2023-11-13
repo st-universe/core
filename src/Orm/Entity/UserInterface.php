@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Player\UserRpgBehaviorEnum;
 
 interface UserInterface
 {
@@ -161,11 +162,9 @@ interface UserInterface
 
     public function setStartPage(?string $startPage): UserInterface;
 
-    public function getRpgBehavior(): int;
+    public function getRpgBehavior(): UserRpgBehaviorEnum;
 
-    public function setRpgBehavior(int $RPGbehavior): UserInterface;
-
-    public function getRpgBehaviorText(): string;
+    public function setRpgBehavior(UserRpgBehaviorEnum $rpgBehavior): UserInterface;
 
     public function isOnline(): bool;
 

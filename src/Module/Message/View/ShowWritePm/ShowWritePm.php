@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWritePm;
 
-use Stu\Component\Player\UserRpgEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
@@ -47,7 +46,6 @@ final class ShowWritePm implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
         $recipientId = $this->showWritePmRequest->getRecipientId();
-        $rpgtext = '';
 
         $pm = $this->privateMessageRepository->find($this->showWritePmRequest->getReplyPmId());
         if ($pm === null || $pm->getRecipientId() !== $userId) {
@@ -63,12 +61,6 @@ final class ShowWritePm implements ViewControllerInterface
                 10
             );
         }
-
-        if ($reply !== null) {
-            $rpgtext = UserRpgEnum::getRpgBehaviorText($reply->getSender()->getRpgBehavior());
-        }
-
-        $game->setTemplateVar('RPGTEXT', $rpgtext);
 
         $game->setTemplateFile('html/writepm.xhtml');
         $game->setPageTitle('Neue private Nachricht');

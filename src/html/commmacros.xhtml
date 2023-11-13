@@ -258,7 +258,8 @@
     <table class="tcal" id="quickpm_compose">
       <tr>
         <td><span>Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span> <img
-            src="/assets/buttons/rpg${RECIPIENT/getRpgBehavior}.png" title="${RPGTEXT}" /></td>
+            src="/assets/buttons/rpg${RECIPIENT/getRpgBehavior/value}.png"
+            title="${RECIPIENT/getRpgBehavior/getDescription}" /></td>
       </tr>
       <tr>
         <th>Text</th>
@@ -326,6 +327,8 @@
         <th style="text-align: center;">
           <span tal:replace="structure bbcode:data/getDisplayUserName">NAME</span>
           (<span tal:replace="data/getUserId">ID</span>)
+          <img src="/assets/buttons/rpg${data/getRpgBehavior/value}.png"
+            title="${data/getRpgBehavior/getDescription}" />
         </th>
         <th style="width: 120px; text-align: center;" tal:content="datetime:data/getDate">DATE</th>
         <th style="width: 20px">
@@ -378,7 +381,10 @@
           <div tal:condition="post/isUserDeleted">
             <div tal:condition="post/getUser">
               <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span
-                tal:replace="post/getUser/getId">ID</span>) <tal:block tal:condition="post/getUser/isShowOnlineState">
+                tal:replace="post/getUser/getId">ID</span>)
+              <img src="/assets/buttons/rpg${post/getUser/getRpgBehavior/value}.png"
+                title="${post/getUser/getRpgBehavior/getDescription}" />
+              <tal:block tal:condition="post/getUser/isShowOnlineState">
                 <img tal:condition="post/getUser/isOnline" src="/assets/buttons/user_online.png"
                   title="User ist online" />
                 <img tal:condition="not:post/getUser/isOnline" src="/assets/buttons/user_offline.png"

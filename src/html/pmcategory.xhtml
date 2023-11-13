@@ -19,7 +19,10 @@
               <span tal:condition="not:CATEGORY/isPMOutDir">Von:</span>
               <span tal:condition="CATEGORY/isPMOutDir">An:</span>
               <span tal:replace="structure bbcode:sender/getName">USER</span> (<span
-                tal:replace="sender/getId">ID</span>) <tal:block tal:condition="sender/isShowOnlineState">
+                tal:replace="sender/getId">ID</span>)
+              <img src="/assets/buttons/rpg${sender/getRpgBehavior/value}.png"
+                title="${sender/getRpgBehavior/getDescription}" />
+              <tal:block tal:condition="sender/isShowOnlineState">
                 <img tal:condition="sender/isOnline" src="/assets/buttons/user_online.png" title="User ist online" />
                 <img tal:condition="not:sender/isOnline" src="/assets/buttons/user_offline.png"
                   title="User ist offline" />
