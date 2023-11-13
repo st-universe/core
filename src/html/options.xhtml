@@ -202,10 +202,9 @@
                     <tr>
                         <td>
                             <select name="rpgbehavior">
-                                <option value="0">----------------------</option>
                                 <tal:block tal:repeat="value RPG_BEHAVIOR_VALUES">
-                                    <option tal:content="value/title"
-                                        tal:attributes="value value/rpg; selected php:RPGBEHAVIOR==value['rpg']">
+                                    <option tal:content="value/getDescription"
+                                        tal:attributes="value value/value; selected php:RPGBEHAVIOR===value">
                                         RPGBEHAVIOR</option>
                                 </tal:block>
                             </select>

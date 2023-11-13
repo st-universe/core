@@ -73,7 +73,8 @@
             <img src="assets/rassen/${data/getFactionId}s.png" />
             <metal:macro metal:use-macro="html/macros.xhtml/userprofile" />
             <metal:macro metal:use-macro="html/macros.xhtml/pmwindow" />
-            <img src="/assets/buttons/rpg${data/getRpgBehavior}.png" title="${data/getRpgBehaviorText}" />
+            <img src="/assets/buttons/rpg${data/getRpgBehavior/value}.png"
+              title="${data/getRpgBehavior/getDescription}" />
             ID: <tal:block tal:replace="data/getId">ID</tal:block>
           </div>
         </div>

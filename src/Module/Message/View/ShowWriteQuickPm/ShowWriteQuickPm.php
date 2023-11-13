@@ -7,7 +7,6 @@ namespace Stu\Module\Message\View\ShowWriteQuickPm;
 use InvalidArgumentException;
 use JBBCode\Parser;
 use request;
-use Stu\Component\Player\UserRpgEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -71,7 +70,6 @@ final class ShowWriteQuickPm implements ViewControllerInterface
 
         $recipient = $conversationInfo->getRecipient();
 
-        $game->setTemplateVar('RPGTEXT', UserRpgEnum::getRpgBehaviorText($recipient->getRpgBehavior()));
         $game->setTemplateVar('RECIPIENT', $recipient);
         $game->setTemplateVar('TEMPLATETEXT', $conversationInfo->getTemplateText($this->bbCodeParser));
     }

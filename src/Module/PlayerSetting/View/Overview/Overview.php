@@ -9,7 +9,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
 use Stu\Component\Player\UserCssEnum;
-use Stu\Component\Player\UserRpgEnum;
+use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\NewsInterface;
@@ -44,7 +44,7 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateVar(
                 'SYSTEM_NEWS',
                 array_map(
-                    fn(NewsInterface $news): NewsItemInterface => $this->newsFactory->createNewsItem(
+                    fn (NewsInterface $news): NewsItemInterface => $this->newsFactory->createNewsItem(
                         $news
                     ),
                     $this->newsRepository->getRecent(5)
@@ -66,7 +66,7 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('STARTPAGE', $user->getStartPage());
         $game->setTemplateVar('STARTPAGE_VALUES', ModuleViewEnum::MODULE_VIEW_ARRAY);
         $game->setTemplateVar('RPGBEHAVIOR', $user->getRpgBehavior());
-        $game->setTemplateVar('RPG_BEHAVIOR_VALUES', UserRpgEnum::RPG_BEHAVIOR);
+        $game->setTemplateVar('RPG_BEHAVIOR_VALUES', UserRpgBehaviorEnum::cases());
         $game->setTemplateVar('CSSSTYLE', $user->getCss());
         $game->setTemplateVar('CSS_VALUES', UserCssEnum::CSS_CLASS);
     }

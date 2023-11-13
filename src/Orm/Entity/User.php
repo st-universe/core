@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
-use Stu\Component\Player\UserRpgEnum;
+use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 /**
@@ -223,10 +223,10 @@ class User implements UserInterface
     private ?string $start_page = null;
 
     /**
-     * @Column(type="integer", options={"default": 0})
+     * @Column(type="smallint", length=1, enumType=UserRpgBehaviorEnum::class)
      *
      */
-    private int $rpg_behavior = UserRpgEnum::RPG_BEHAVIOR_NOT_SET;
+    private UserRpgBehaviorEnum $rpg_behavior = UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
 
     /**
      * @Column(type="string", length=100)
@@ -689,20 +689,15 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRpgBehavior(): int
+    public function getRpgBehavior(): UserRpgBehaviorEnum
     {
         return $this->rpg_behavior;
     }
 
-    public function setRpgBehavior(int $RPGbehavior): UserInterface
+    public function setRpgBehavior(UserRpgBehaviorEnum $rpgBehavior): UserInterface
     {
-        $this->rpg_behavior = $RPGbehavior;
+        $this->rpg_behavior = $rpgBehavior;
         return $this;
-    }
-
-    public function getRpgBehaviorText(): string
-    {
-        return UserRpgEnum::getRpgBehaviorText($this->getRpgBehavior());
     }
 
     public function getDeals(): bool

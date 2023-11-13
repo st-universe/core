@@ -21,7 +21,6 @@ use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
