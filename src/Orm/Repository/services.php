@@ -33,6 +33,7 @@ use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassDeposit;
 use Stu\Orm\Entity\ColonyClassResearch;
 use Stu\Orm\Entity\ColonyDepositMining;
+use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipRepair;
@@ -244,6 +245,11 @@ return [
         ContainerInterface $c
     ): ColonyRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Colony::class);
+    },
+    ColonySandboxRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ColonySandboxRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonySandbox::class);
     },
     ColonyTerraformingRepositoryInterface::class => function (
         ContainerInterface $c
