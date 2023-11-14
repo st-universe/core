@@ -14,7 +14,6 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
 {
@@ -23,8 +22,6 @@ final class ShowSectorScan implements ViewControllerInterface
     private ShipLoaderInterface $shipLoader;
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private EncodedMapInterface $encodedMap;
 
@@ -36,12 +33,10 @@ final class ShowSectorScan implements ViewControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         EncodedMapInterface $encodedMap
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->encodedMap = $encodedMap;
     }
@@ -74,7 +69,6 @@ final class ShowSectorScan implements ViewControllerInterface
         }
 
         $epsSystem->lowerEps(1)->update();
-        $this->shipRepository->save($ship);
 
         $mapField = $ship->getCurrentMapField();
 
