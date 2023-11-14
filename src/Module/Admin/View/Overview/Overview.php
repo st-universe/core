@@ -12,7 +12,7 @@ final class Overview implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart('/admin/', _('Übersicht'));
-        $game->setTemplateFile('html/admin/overview.xhtml');
+        $game->setTemplateFile('html/admin/overview.twig', true);
         $game->setPageTitle(_('Admin'));
     }
 }
