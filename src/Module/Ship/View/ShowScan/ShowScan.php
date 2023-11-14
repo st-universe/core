@@ -70,6 +70,14 @@ final class ShowScan implements ViewControllerInterface
             return;
         }
 
+        $epsSystem = $wrapper->getEpsSystemData();
+        if ($epsSystem === null || $epsSystem->getEps() < 1) {
+            $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
+            return;
+        }
+
+        $epsSystem->lowerEps(1)->update();
+
         if ($target->getDatabaseId() !== 0) {
             $game->checkDatabaseItem($target->getDatabaseId());
         }
