@@ -129,16 +129,24 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
                 'SELECT u.id as user_id,
                     (SELECT coalesce(sum(r.points), 0)
                         FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
-                        WHERE red.user_id = u.id AND r.commodity_id = :lvl1) 
+                        WHERE red.user_id = u.id
+                        AND red.finished > 0
+                        AND r.commodity_id = :lvl1) 
                     + (SELECT coalesce(sum(r.points), 0)
                         FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
-                        WHERE red.user_id = u.id AND r.commodity_id = :lvl2) *2
+                        WHERE red.user_id = u.id
+                        AND red.finished > 0
+                        AND r.commodity_id = :lvl2) *2
                     + (SELECT coalesce(sum(r.points), 0)
                         FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
-                        WHERE red.user_id = u.id AND r.commodity_id = :lvl3) *3
+                        WHERE red.user_id = u.id
+                        AND red.finished > 0
+                        AND r.commodity_id = :lvl3) *3
                     + (SELECT coalesce(sum(r.points), 0)
                         FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
-                        WHERE red.user_id = u.id AND r.commodity_id IN (:lvl4)) *4 AS points
+                        WHERE red.user_id = u.id
+                        AND red.finished > 0
+                        AND r.commodity_id IN (:lvl4)) *4 AS points
                 FROM stu_user u
                 WHERE u.id >= :firstUserId
                 ORDER BY points DESC',
