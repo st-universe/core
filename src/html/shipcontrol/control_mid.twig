@@ -7,7 +7,7 @@ canColonize) %}
 <table class="tcal">
     <tr>
         {% set header = ship.isBase ? 'Stationskontrolle' : 'Schiffskontrolle' %}
-        <th colspan="2"><img src="assets/buttons/gefecht.png" /> {{ header }}</th>
+        <th colspan="2"><img src="/assets/buttons/gefecht.png" /> {{ header }}</th>
     </tr>
     <tr>
         <td colspan="2">
@@ -18,7 +18,7 @@ canColonize) %}
     <tr>
         {% if ship.isAlertGreen %}
         <td colspan="2">
-            <img src="assets/buttons/act_phaser2.png" name="actphaser" /> bei Alarmstufe
+            <img src="/assets/buttons/act_phaser2.png" name="actphaser" /> bei Alarmstufe
             deaktiviert
         </td>
         {% else %}
@@ -32,7 +32,7 @@ canColonize) %}
     <tr>
         {% if ship.isAlertGreen %}
         <td>
-            <img src="assets/buttons/act_torp2.png" name="acttorp" /> bei Alarmstufe
+            <img src="/assets/buttons/act_torp2.png" name="acttorp" /> bei Alarmstufe
             deaktiviert
         </td>
         {% else %}
@@ -66,7 +66,7 @@ canColonize) %}
         <td title="Webemitter Einstellungen" colspan="2">
             <a href="javascript:void(0);" onclick="showWebEmitterWindow();"
                 onmouseover="cp('webemitter','buttons/net_2')" onmouseout="cp('webemitter','buttons/net_1')">
-                <img style="width: 20px;" src="assets/buttons/net_1.png" name="webemitter" /> Webemitter
+                <img style="width: 20px;" src="/assets/buttons/net_1.png" name="webemitter" /> Webemitter
                 Einstellungen
             </a>
         </td>
@@ -142,7 +142,7 @@ canColonize) %}
 <table class="tcal">
     <tr>
         <th colspan="4">
-            <img src="assets/buttons/fleet.png" title="Flottenkontrolle" />
+            <img src="/assets/buttons/fleet.png" title="Flottenkontrolle" />
             <span>Flottenkontrolle</span>
         </th>
     </tr>
@@ -155,60 +155,60 @@ canColonize) %}
     <tr>
         <td>
             <a href="?B_FLEET_ACTIVATE_NBS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/kss1.png" name="fl_ksson" title="Nahbereichssensoren aktivieren" />
+                <img src="/assets/buttons/kss1.png" name="fl_ksson" title="Nahbereichssensoren aktivieren" />
             </a>
             <a href="?B_FLEET_ACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/shldac1.png" name="fl_shieldon" title="Schilde aktivieren" />
+                <img src="/assets/buttons/shldac1.png" name="fl_shieldon" title="Schilde aktivieren" />
             </a>
             <a href="?B_FLEET_ACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/act_phaser1.png" name="fl_phaseron" title="Strahlenwaffen aktivieren" />
+                <img src="/assets/buttons/act_phaser1.png" name="fl_phaseron" title="Strahlenwaffen aktivieren" />
             </a>
             <a href="?B_FLEET_ACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/act_torp1.png" name="fl_torpon" title="Torpedobänke aktivieren" />
+                <img src="/assets/buttons/act_torp1.png" name="fl_torpon" title="Torpedobänke aktivieren" />
             </a>
             <a href="?B_FLEET_ACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/tarn1.png" name="fl_cloakon" title="Tarnung aktivieren" />
+                <img src="/assets/buttons/tarn1.png" name="fl_cloakon" title="Tarnung aktivieren" />
             </a>
             {% if ship.isWarpPossible %}
             <a href="?B_FLEET_ACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/warp1.png" name="fl_cloakon" title="Warpantrieb aktivieren" />
+                <img src="/assets/buttons/warp1.png" name="fl_cloakon" title="Warpantrieb aktivieren" />
             </a>
             {% endif %}
         </td>
         <td>
             <a href="?B_FLEET_DEACTIVATE_NBS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/kss2.png" name="fl_kssoff" title="Nahbereichssensoren deaktivieren" />
+                <img src="/assets/buttons/kss2.png" name="fl_kssoff" title="Nahbereichssensoren deaktivieren" />
             </a>
             <a href="?B_FLEET_DEACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/shldac2.png" name="fl_shieldoff" title="Schilde deaktivieren" />
+                <img src="/assets/buttons/shldac2.png" name="fl_shieldoff" title="Schilde deaktivieren" />
             </a>
             <a href="?B_FLEET_DEACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/act_phaser2.png" name="fl_phaseroff" title="Strahlenwaffen deaktivieren" />
+                <img src="/assets/buttons/act_phaser2.png" name="fl_phaseroff" title="Strahlenwaffen deaktivieren" />
             </a>
             <a href="?B_FLEET_DEACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/act_torp2.png" name="fl_torpoff" title="Torpedobänke deaktivieren" />
+                <img src="/assets/buttons/act_torp2.png" name="fl_torpoff" title="Torpedobänke deaktivieren" />
             </a>
             <a href="?B_FLEET_DEACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/tarn2.png" name="fl_cloakoff" title="Tarnung deaktivieren" />
+                <img src="/assets/buttons/tarn2.png" name="fl_cloakoff" title="Tarnung deaktivieren" />
             </a>
             <a href="?B_FLEET_DEACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/warp2.png" name="fl_cloakoff" title="Warpantrieb deaktivieren" />
+                <img src="/assets/buttons/warp2.png" name="fl_cloakoff" title="Warpantrieb deaktivieren" />
             </a>
         </td>
         <td>
             <a href="?B_FLEET_ALERT_GREEN=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/alert1_2.png" title="Flotte: Alarmstufe Grün" />
+                <img src="/assets/buttons/alert1_2.png" title="Flotte: Alarmstufe Grün" />
             </a>
             <a href="?B_FLEET_ALERT_YELLOW=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/alert2_2.png" title="Flotte: Alarmstufe Gelb" />
+                <img src="/assets/buttons/alert2_2.png" title="Flotte: Alarmstufe Gelb" />
             </a>
             <a href="?B_FLEET_ALERT_RED=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/alert3_2.png" title="Flotte: Alarmstufe Rot" />
+                <img src="/assets/buttons/alert3_2.png" title="Flotte: Alarmstufe Rot" />
             </a>
         </td>
         <td>
             <a href="?B_FLEET_WARP_SPLIT=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/bar2.png" title="Flotte: Warpkernsplit anwenden" />
+                <img src="/assets/buttons/bar2.png" title="Flotte: Warpkernsplit anwenden" />
             </a>
         </td>
     </tr>
@@ -225,19 +225,19 @@ canColonize) %}
         <td>
             <a href="?B_UNDOCK=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('dock','buttons/dock1')"
                 onmouseout="cp('dock','buttons/dock2')">
-                <img src="assets/buttons/dock2.png" title="Abdocken" name="dock" />
+                <img src="/assets/buttons/dock2.png" title="Abdocken" name="dock" />
             </a>
             {% if ship.getUser.getId == dockedTo.getUser.getId %}
             <a href="?SHOW_SHIP=1&id={{ dockedTo.getId }}" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
                 onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
-                <img src="assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation"
+                <img src="/assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation"
                     style="height: 20px;" />
             </a>
             {% endif %}
             {% if ship.dockedOnTradepost %}
             <a href="javascript:void(0);" onclick="openTradeMenu({{ dockedTo.getTradePost.getId }});"
                 onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
-                <img src="assets/buttons/menu_trade0.png" title="Handel" name="trade" />
+                <img src="/assets/buttons/menu_trade0.png" title="Handel" name="trade" />
                 Handelstransferfenster öffnen
             </a>
             {% endif %}
@@ -335,20 +335,20 @@ canColonize) %}
             <br />
             {% if ship.getStarsystemMap.getRandomWormholeEntry %}
             <a href="ship.php?B_LEAVE_WORMHOLE=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
+                <img src="/assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
             </a>
             {% endif %}
             {% else %}
             {% if starSystemEntryTal.wasDiscovered %}
             <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank"
                 title="Karte des Systems öffnen">
-                <img src="assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
+                <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
                     style="width: 15px; height: 15px;" />
                 <span>{{ starSystem.getName }}
                     ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
             </a>
             {% else %}
-            <img src="assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
+            <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
                 style="width: 15px; height: 15px;" title="{{ starSystem.getSystemType.getDescription }}" />
             <span>{{ starSystem.getName }}
                 ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
@@ -356,21 +356,33 @@ canColonize) %}
             <br />
             {% if ship.hasWarpdrive %}
             <a href="ship.php?B_LEAVE_STARSYSTEM=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
+                <img src="/assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
             </a>
             {% endif %}
             {% endif %}
         </td>
         {% else %}
-        {% if ship.isOverSystem %}
+        {% set overSystem = ship.isOverSystem %}
+        {% if overSystem %}
+        {% set systemType = overSystem.getSystemType %}
+        {% set systemTypeId = systemType.getId %}
         <td>
-            <img src="assets/map/systemtypes/{{ ship.isOverSystem.getMapField.getSystem.getSystemType.getId  }}.png"
-                style="width: 15px; height: 15px;"
-                title="{{ ship.isOverSystem.getMapField.getSystem.getSystemType.getDescription  }}" />
-            {{ ship.isOverSystem.getName }}<br />
+            {% if starSystemEntryTal.wasDiscovered %}
+            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank"
+                title="Karte des Systems öffnen">
+                <img src="/assets/map/systemtypes/{{ systemTypeId }}.png" style="width: 15px; height: 15px;" />
+                <span>{{ overSystem.getName }}
+                    ({{ overSystem.getCx }}|{{ overSystem.getCy }})</span>
+            </a>
+            {% else %}
+            <img src="/assets/map/systemtypes/{{ systemTypeId  }}.png" style="width: 15px; height: 15px;"
+                title="{{ systemType.getDescription  }}" />
+            {{ overSystem.getName }}
+            {% endif %}
+            <br />
             {% if ship.hasWarpdrive %}
             <a href="ship.php?B_ENTER_STARSYSTEM=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/sysenter1.png" name="sysleave" title="Ins System einfliegen" />
+                <img src="/assets/buttons/sysenter1.png" name="sysleave" title="Ins System einfliegen" />
                 einfliegen
             </a>
             {% endif %}
@@ -382,7 +394,7 @@ canColonize) %}
             {{ wormholeEntry.getSystem.getName }}<br />
             {% if not ship.getWarpState and not ship.isBase %}
             <a href="ship.php?B_ENTER_WORMHOLE=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
-                <img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
+                <img src="/assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
                 einfliegen
             </a>
             {% endif %}
@@ -428,11 +440,11 @@ canColonize) %}
             <div style="margin-top: 5px; margin-right: 20px; float: left;">
                 <a href="javascript:void(0);" onclick="showBToColonyWindow({{ colonyId }});"
                     onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
-                    <img src="assets/buttons/b_down1.png" name="beamfrom" title="Zu der Kolonie beamen" />
+                    <img src="/assets/buttons/b_down1.png" name="beamfrom" title="Zu der Kolonie beamen" />
                 </a>
                 <a href="javascript:void(0);" onclick="showBFromColonyWindow({{ colonyId }});"
                     onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
-                    <img src="assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
+                    <img src="/assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
                 </a>
             </div>
             {% endif %}
@@ -462,7 +474,7 @@ canColonize) %}
             </div>
             {% endif %}
             {% if not ownsCurrentColony %}
-            <img src="assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
+            <img src="/assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
             {% if canColonize %}
             <a onclick="showColonization({{ colonyId }});" href="javascript:void(0);">
                 Kolonie gründen
@@ -485,21 +497,21 @@ canColonize) %}
 {% if isActive %}
 <a href="?B_DEACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
     onmouseover="cp('{{ icon }}','buttons/{{ icon }}2');" onmouseout="cp('{{ icon }}','buttons/{{ icon }}1');">
-    <img src="assets/buttons/{{ icon }}1.png" name="{{ icon }}" /> {{ name }} deaktivieren</a>
+    <img src="/assets/buttons/{{ icon }}1.png" name="{{ icon }}" /> {{ name }} deaktivieren</a>
 {% else %}
 <a href="?B_ACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
     onmouseover="cp('{{ icon }}','buttons/{{ icon }}1');" onmouseout="cp('{{ icon }}','buttons/{{ icon }}2');">
-    <img src="assets/buttons/{{ icon }}2.png" name="{{ icon }}" /> {{ name }} aktivieren</a>
+    <img src="/assets/buttons/{{ icon }}2.png" name="{{ icon }}" /> {{ name }} aktivieren</a>
 {% endif %}
 {% endmacro %}
 
 {% macro torpedoDisplay(torpedo, torpedoCount) %}
 <td>
     {% if torpedo %}
-    <img src="assets/commodities/{{ torpedo.getCommodityId }}.png" />
+    <img src="/assets/commodities/{{ torpedo.getCommodityId }}.png" />
     {{ torpedo.getName }}: {{ torpedoCount }}
     {% else %}
-    <img src="assets/buttons/torp.png" /> Torpedos: {{ torpedoCount }}
+    <img src="/assets/buttons/torp.png" /> Torpedos: {{ torpedoCount }}
     {% endif %}
 </td>
 {% endmacro %}
@@ -601,11 +613,11 @@ canColonize) %}
 {% set lable = currentColony.isFree ? currentColony.getColonyClass.getName : currentColony.getName %}
 {% if ownsCurrentColony %}
 <a href="colony.php?SHOW_COLONY=1&id={{ currentColony.getId }}&target={{ shipId }}">
-    <img src="assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
+    <img src="/assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
     {{ lable|bbcode }}
 </a>
 {% else %}
-<img src="assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
+<img src="/assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
 {{ lable|bbcode }}
 {% endif %}
 {% endmacro %}
