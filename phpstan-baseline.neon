@@ -657,11 +657,6 @@ parameters:
 			path: src/Module/Alliance/View/TopicSettings/TopicSettings.php
 
 		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/ActivateBuildings/ActivateBuildings.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Colony/Action/BuildAirfieldRump/BuildAirfieldRump.php
@@ -720,11 +715,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ModuleInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/CancelModuleCreation/CancelModuleCreation.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/DeactivateBuildings/DeactivateBuildings.php
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
@@ -822,53 +812,8 @@ parameters:
 			path: src/Module/Colony/Action/Terraform/Terraform.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TerraformingInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/Terraform/Terraform.php
-
-		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 2
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Cannot call method getBuildingId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Cannot call method getBuildtime\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Cannot call method getFieldType\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Cannot call method isUnderConstruction\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Cannot call method setActive\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Cannot call method setBuilding\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Parameter \\#1 \\$planetField of method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
-
-		-
-			message: "#^Parameter \\#2 \\$field of method Stu\\\\Module\\\\Colony\\\\Lib\\\\BuildingActionInterface\\:\\:remove\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\|null given\\.$#"
-			count: 1
 			path: src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php
 
 		-
@@ -900,11 +845,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyGuiHelper\\:\\:buildShieldBar\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonyGuiHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyGuiHelperInterface\\:\\:register\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonyGuiHelperInterface.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyLibFactory\\:\\:createBuildingFunctionTal\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
@@ -955,11 +895,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetColonization.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagement.php
 
 		-
 			message: "#^Parameter \\#1 \\$databaseEntry of method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTalFactoryInterface\\:\\:createDatabaseCategoryEntryTal\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null given\\.$#"
