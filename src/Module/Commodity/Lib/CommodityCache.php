@@ -30,4 +30,17 @@ final class CommodityCache implements CommodityCacheInterface
 
         return $this->commodityArray[$commodityId];
     }
+
+    public function getAll(int $type = null): array
+    {
+        if ($this->commodityArray === null) {
+            $this->commodityArray = $this->commodityRepository->getAll();
+        }
+
+        if ($type !== null) {
+            return array_filter($this->commodityArray, fn (CommodityInterface $commodity) => $commodity->getType() === $type);
+        }
+
+        return $this->commodityArray;
+    }
 }
