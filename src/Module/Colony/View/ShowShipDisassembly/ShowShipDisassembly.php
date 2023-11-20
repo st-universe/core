@@ -108,7 +108,7 @@ final class ShowShipDisassembly implements ViewControllerInterface
                 _('Schiffsdemontage')
             );
             $game->setPagetitle(_('Schiffsdemontage'));
-            $game->setTemplateFile('html/colony_ship_disassembly.xhtml');
+            $game->setTemplateFile('html/colony/component/shipDisassembly.twig');
 
             $game->setTemplateVar('SHIP_LIST', $repairableShips);
             $game->setTemplateVar('COLONY', $colony);

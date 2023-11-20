@@ -121,7 +121,7 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $game->setPageTitle(sprintf(_('Sensor Scan %d|%d'), $cx, $cy));
-        $game->setTemplateFile('html/station/sensorScan.twig', true);
+        $game->setTemplateFile('html/station/sensorScan.twig');
 
         if ($mapField === null) {
             return;

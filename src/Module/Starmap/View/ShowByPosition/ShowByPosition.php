@@ -41,7 +41,7 @@ final class ShowByPosition implements ViewControllerInterface
             throw new SanityCheckException('ship is in wormhole');
         }
 
-        $game->setMacroInAjaxWindow('html/ship/starmap.twig', true);
+        $game->setMacroInAjaxWindow('html/ship/starmap.twig');
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(

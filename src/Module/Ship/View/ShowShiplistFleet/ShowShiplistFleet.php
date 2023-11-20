@@ -49,7 +49,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
         }
         $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleetId) ? 'display: none' : '');
 
-        $game->showMacro('html/shiplistFleetform.twig', true);
+        $game->showMacro('html/shiplistFleetform.twig');
 
         $game->setTemplateVar('FLEETWRAPPER', $this->shipWrapperFactory->wrapFleet($fleet));
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);

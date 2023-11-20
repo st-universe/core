@@ -117,7 +117,7 @@ final class ShowShipRepair implements ViewControllerInterface
                 _('Schiffreparatur')
             );
             $game->setPagetitle(_('Schiffreparatur'));
-            $game->setTemplateFile('html/colony_shiprepair.xhtml');
+            $game->setTemplateFile('html/colony/component/shipRepair.twig');
 
             $game->setTemplateVar('REPAIRABLE_SHIP_LIST', $repairableShips);
             $game->setTemplateVar('COLONY', $colony);

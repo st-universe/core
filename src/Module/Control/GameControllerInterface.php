@@ -18,13 +18,13 @@ interface GameControllerInterface
 
     public function getGameState(): int;
 
-    public function setTemplateFile(string $tpl, bool $isTwig = false): void;
+    public function setTemplateFile(string $tpl): void;
 
     public function setMacroAndTemplate(string $macro, string $tpl): void;
 
-    public function setMacroInAjaxWindow(string $macro, bool $isTwig = false): void;
+    public function setMacroInAjaxWindow(string $macro): void;
 
-    public function showMacro(string $macro, bool $isTwig = false): void;
+    public function showMacro(string $macro): void;
 
     public function getMacro(): string;
 
