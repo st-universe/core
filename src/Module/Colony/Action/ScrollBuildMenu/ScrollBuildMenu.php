@@ -6,26 +6,25 @@ namespace Stu\Module\Colony\Action\ScrollBuildMenu;
 
 use request;
 use Stu\Component\Colony\ColonyEnum;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 final class ScrollBuildMenu implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SCROLL_BUILDMENU';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private BuildingRepositoryInterface $buildingRepository;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         BuildingRepositoryInterface $buildingRepository
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->buildingRepository = $buildingRepository;
     }
 
@@ -33,10 +32,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
-            $userId
-        );
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
         $menu = request::getIntFatal('menu');
         $offset = request::getInt('offset');
@@ -46,9 +42,8 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($offset % ColonyEnum::BUILDMENU_SCROLLOFFSET != 0) {
             $offset = (int)floor($offset / ColonyEnum::BUILDMENU_SCROLLOFFSET);
         }
-        /** @var BuildingInterface[] $ret */
         $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
-            $colony->getId(),
+            $host,
             $userId,
             $menu,
             $offset
@@ -56,7 +51,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($ret === []) {
             $offset = max(0, $offset - ColonyEnum::BUILDMENU_SCROLLOFFSET);
             $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
-                $colony->getId(),
+                $host,
                 $userId,
                 $menu,
                 $offset

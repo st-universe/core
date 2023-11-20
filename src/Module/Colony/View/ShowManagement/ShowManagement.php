@@ -6,30 +6,25 @@ namespace Stu\Module\Colony\View\ShowManagement;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowManagement implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    private ShowManagementRequestInterface $showManagementRequest;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
 
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
@@ -42,20 +37,16 @@ final class ShowManagement implements ViewControllerInterface
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowManagementRequestInterface $showManagementRequest,
-        ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
         OrbitShipListRetrieverInterface $orbitShipListRetriever,
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->colonyGuiHelper = $colonyGuiHelper;
-        $this->showManagementRequest = $showManagementRequest;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
         $this->orbitShipListRetriever = $orbitShipListRetriever;
@@ -67,20 +58,25 @@ final class ShowManagement implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            $this->showManagementRequest->getColonyId(),
-            $userId,
-            false
-        );
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
-        $this->colonyGuiHelper->register($colony, $game);
+        $this->colonyGuiHelper->registerComponents($host, $game);
+        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_INFO);
+        $game->showMacro(ColonyMenuEnum::MENU_INFO->getTemplate());
 
-        $surface = $this->colonyLibFactory->createColonySurface($colony);
-        $populationGrowth = $surface->getPopulation()->getGrowth();
+        if (!$host instanceof ColonyInterface) {
+            return;
+        }
+
+        $systemDatabaseEntry = $host->getSystem()->getDatabaseEntry();
+        if ($systemDatabaseEntry !== null) {
+            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($systemDatabaseEntry, $game->getUser());
+            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
+        }
 
         $firstOrbitShip = null;
 
-        $shipList = $this->orbitShipListRetriever->retrieve($colony);
+        $shipList = $this->orbitShipListRetriever->retrieve($host);
         if ($shipList !== []) {
             // if selected, return the current target
             $target = request::postInt('target');
@@ -99,37 +95,13 @@ final class ShowManagement implements ViewControllerInterface
             }
         }
 
-        $immigrationSymbol = '-';
-        if ($populationGrowth > 0) {
-            $immigrationSymbol = '+';
-        }
-        if ($populationGrowth == 0) {
-            $immigrationSymbol = '';
-        }
 
-        $game->showMacro('html/colonymacros.xhtml/cm_management');
-
-        $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_INFO));
         $game->setTemplateVar(
             'FIRST_ORBIT_SHIP',
             $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null
         );
-        $game->setTemplateVar('COLONY_SURFACE', $surface);
-        $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
 
-        $systemDatabaseEntry = $colony->getSystem()->getDatabaseEntry();
-        if ($systemDatabaseEntry !== null) {
-            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($systemDatabaseEntry, $game->getUser());
-            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
-        }
-
-        $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $particlePhalanx = $this->colonyFunctionManager->hasFunction($host, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $particlePhalanx ? $this->torpedoTypeRepository->getForUser($userId) : null);
-
-        $game->setTemplateVar(
-            'SHIELDING_MANAGER',
-            $this->colonyLibFactory->createColonyShieldingManager($colony)
-        );
     }
 }

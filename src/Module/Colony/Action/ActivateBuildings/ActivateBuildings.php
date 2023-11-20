@@ -5,53 +5,37 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ActivateBuildings;
 
 use request;
-use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ActivateBuildings implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MULTIPLE_ACTIVATION';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private BuildingActionInterface $buildingAction;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         BuildingActionInterface $buildingAction,
-        CommodityRepositoryInterface $commodityRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingMassActionConfigurationInterface $buildingMassActionConfiguration
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->buildingAction = $buildingAction;
-        $this->commodityRepository = $commodityRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingMassActionConfiguration = $buildingMassActionConfiguration;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
-            $game->getUser()->getId()
-        );
-
-        $colonyId = $colony->getId();
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
         $mode = request::indInt('mode');
         $selection = request::getvars()['selection'] ?? request::postvars()['selection'] ?? null;
@@ -63,27 +47,16 @@ final class ActivateBuildings implements ActionControllerInterface
         }
 
         /** @var PlanetFieldInterface[] $fields */
-        $fields = $config($colony, $selection);
+        $fields = $config($host, $selection);
 
         foreach ($fields as $field) {
             if ($field->isActive()) {
                 continue;
             }
-            $this->buildingAction->activate($colony, $field, $game);
+            $this->buildingAction->activate($field, $game);
         }
 
-        $list = $this->planetFieldRepository->getByColonyWithBuilding($colonyId);
-
-        usort(
-            $list,
-            fn (PlanetFieldInterface $a, PlanetFieldInterface $b): int =>
-                strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName())
-        );
-
-        $game->setTemplateVar('BUILDING_LIST', $list);
-        $game->setTemplateVar('USEABLE_COMMODITY_LIST', $this->commodityRepository->getByBuildingsOnColony($colonyId));
-
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyEnum::MENU_BUILDINGS]);
+        $game->setView($host->getDefaultViewIdentifier(), ['COLONY_MENU' => ColonyMenuEnum::MENU_BUILDINGS]);
     }
 
     public function performSessionCheck(): bool

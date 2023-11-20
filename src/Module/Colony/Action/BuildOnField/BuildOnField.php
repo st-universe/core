@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildOnField;
 
 use request;
+use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,6 +17,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -27,7 +29,7 @@ final class BuildOnField implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository;
 
@@ -45,8 +47,10 @@ final class BuildOnField implements ActionControllerInterface
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
+    private BuildingManagerInterface $buildingManager;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
         ResearchedRepositoryInterface $researchedRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -54,9 +58,10 @@ final class BuildOnField implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         BuildingActionInterface $buildingAction,
-        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever
+        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
+        BuildingManagerInterface $buildingManager
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->researchedRepository = $researchedRepository;
         $this->buildingRepository = $buildingRepository;
@@ -65,28 +70,19 @@ final class BuildOnField implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
+        $this->buildingManager = $buildingManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS('refreshColony();');
+        $game->addExecuteJS('refreshHost();');
 
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
-            $userId
-        );
-
-        $colonyId = $colony->getId();
-
-        $field = $this->planetFieldRepository->getByColonyAndFieldId($colonyId, request::indInt('fid'));
-
-        if ($field === null) {
-            return;
-        }
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $host = $field->getHost();
 
         if ($field->getTerraformingId() > 0) {
             return;
@@ -115,16 +111,8 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         if (
-            $this->planetFieldTypeRetriever->isOrbitField($field)
-            && $colony->isBlocked()
-        ) {
-            $game->addInformation(_('Der Orbit kann nicht bebaut werden während die Kolonie blockiert wird'));
-            return;
-        }
-
-        if (
             $building->hasLimitColony() &&
-            $this->planetFieldRepository->getCountByColonyAndBuilding($colonyId, $buildingId) >= $building->getLimitColony()
+            $this->planetFieldRepository->getCountByHostAndBuilding($host, $buildingId) >= $building->getLimitColony()
         ) {
             $game->addInformationf(
                 _('Dieses Gebäude kann auf dieser Kolonie nur %d mal gebaut werden'),
@@ -149,51 +137,79 @@ final class BuildOnField implements ActionControllerInterface
             $building = $alt_building->getAlternativeBuilding();
         }
 
-        //check for sufficient commodities
-        if ($userId !== UserEnum::USER_NOONE && !$this->checkBuildingCosts($colony, $building, $field, $game)) {
-            return;
-        }
-
-        if ($userId !== UserEnum::USER_NOONE &&  $colony->getEps() < $building->getEpsCost()) {
-            $game->addInformationf(
-                _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
-                $building->getEpsCost(),
-                $colony->getEps()
-            );
-            return;
-        }
-
-        if ($field->hasBuilding()) {
-            if ($colony->getEps() > $colony->getMaxEps() - $field->getBuilding()->getEpsStorage() && $colony->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()) {
-                $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
+        if ($host instanceof ColonyInterface) {
+            if (!$this->doColonyChecksAndConsume($field, $building, $host, $game)) {
                 return;
             }
-            $this->buildingAction->remove($colony, $field, $game);
-        }
-
-        if ($userId !== UserEnum::USER_NOONE) {
-            foreach ($building->getCosts() as $cost) {
-                $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
-            }
-
-            $colony->lowerEps($building->getEpsCost());
-            $field->setActive(time() + $building->getBuildtime());
-        } else {
-            $field->setActive(time() + 5);
         }
 
         $field->setBuilding($building);
         $field->setActivateAfterBuild(true);
 
+        if ($host instanceof ColonySandboxInterface) {
+            $this->buildingManager->finish($field);
+
+            $game->addInformationf(
+                _('%s wurde gebaut'),
+                $building->getName()
+            );
+        } else {
+            $this->planetFieldRepository->save($field);
+
+            $game->addInformationf(
+                _('%s wird gebaut - Fertigstellung: %s'),
+                $building->getName(),
+                date('d.m.Y H:i', $field->getActive())
+            );
+        }
+    }
+
+    private function doColonyChecksAndConsume(
+        PlanetFieldInterface $field,
+        BuildingInterface $building,
+        ColonyInterface $colony,
+        GameControllerInterface $game
+    ): bool {
+        if (
+            $this->planetFieldTypeRetriever->isOrbitField($field)
+            && $colony->isBlocked()
+        ) {
+            $game->addInformation(_('Der Orbit kann nicht bebaut werden während die Kolonie blockiert wird'));
+            return false;
+        }
+
+        //check for sufficient commodities
+        if (!$this->checkBuildingCosts($colony, $building, $field, $game)) {
+            return false;
+        }
+
+        if ($colony->getEps() < $building->getEpsCost()) {
+            $game->addInformationf(
+                _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
+                $building->getEpsCost(),
+                $colony->getEps()
+            );
+            return false;
+        }
+
+        if ($field->hasBuilding()) {
+            if ($colony->getEps() > $colony->getMaxEps() - $field->getBuilding()->getEpsStorage() && $colony->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()) {
+                $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
+                return false;
+            }
+            $this->buildingAction->remove($field, $game);
+        }
+
+        foreach ($building->getCosts() as $cost) {
+            $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
+        }
+
+        $colony->lowerEps($building->getEpsCost());
+        $field->setActive(time() + $building->getBuildtime());
+
         $this->colonyRepository->save($colony);
 
-        $this->planetFieldRepository->save($field);
-
-        $game->addInformationf(
-            _('%s wird gebaut - Fertigstellung: %s'),
-            $building->getName(),
-            date('d.m.Y H:i', $field->getActive())
-        );
+        return true;
     }
 
     private function checkBuildingCosts(
@@ -214,7 +230,7 @@ final class BuildOnField implements ActionControllerInterface
                 $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn (BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if (
                     !$storage->containsKey($commodityId) &&
@@ -241,7 +257,7 @@ final class BuildOnField implements ActionControllerInterface
             if ($field->hasBuilding()) {
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn(BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn (BuildingCostInterface $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if ($result !== []) {
                     $amount += current($result)->getHalfAmount();

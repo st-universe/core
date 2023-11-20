@@ -5,26 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
 use request;
-use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Colony\ColonyEnum;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
-use Stu\Module\Colony\View\ShowAirfield\ShowAirfield;
-use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagement;
-use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenu;
-use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
-use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
-use Stu\Module\Colony\View\ShowMisc\ShowMisc;
-use Stu\Module\Colony\View\ShowModuleFab\ShowModuleFab;
-use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
-use Stu\Module\Colony\View\ShowSocial\ShowSocial;
-use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
-use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
-use Stu\Module\Colony\View\ShowWaste\ShowWaste;
+use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -32,132 +18,55 @@ final class SwitchColonyMenu implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SWITCH_COLONYMENU';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         BuildingFunctionRepositoryInterface $buildingFunctionRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyLibFactoryInterface $colonyLibFactory
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->buildingFunctionRepository = $buildingFunctionRepository;
         $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
-            $userId
-        );
-        $menu = request::getIntFatal('menu');
+        $menu = ColonyMenuEnum::getFor(request::getIntFatal('menu'));
 
-        $colonySurface = $this->colonyLibFactory->createColonySurface($colony);
+        if (!$host->isMenuAllowed($menu)) {
+            $game->addInformation('Dieses Menü ist nicht für die Sandbox geeignet');
+            $game->setView($host->getDefaultViewIdentifier());
+            return;
+        }
 
-        switch ($menu) {
-            case ColonyEnum::MENU_BUILD:
-                $game->setView(ShowBuildMenu::VIEW_IDENTIFIER);
-                return;
-            case ColonyEnum::MENU_OPTION:
-                $game->setView(ShowMisc::VIEW_IDENTIFIER);
-                return;
-            case ColonyEnum::MENU_SOCIAL:
-                $game->setView(ShowSocial::VIEW_IDENTIFIER);
-                return;
-            case ColonyEnum::MENU_BUILDINGS:
-                $game->setView(ShowBuildingManagement::VIEW_IDENTIFIER);
-                return;
-            case ColonyEnum::MENU_SHIPYARD:
-                if ($colonySurface->hasShipyard()) {
-                    $game->setView(ShowShipyard::VIEW_IDENTIFIER);
-                    $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
-                    $game->setTemplateVar('FUNC', $func);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_BUILDPLANS:
-                if ($colonySurface->hasShipyard()) {
-                    $game->setView(ShowBuildPlans::VIEW_IDENTIFIER);
-                    $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
-                    $game->setTemplateVar('FUNC', $func);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_AIRFIELD:
-                if ($colonySurface->hasAirfield()) {
-                    $game->setView(ShowAirfield::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_MODULEFAB:
-                if ($colonySurface->hasModuleFab()) {
-                    $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_FIGHTER_SHIPYARD:
-                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD)) {
-                    $game->setView(ShowFighterShipyard::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_TORPEDOFAB:
-                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_TORPEDO_FAB)) {
-                    $game->setView(ShowTorpedoFab::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_ACADEMY:
-                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
-                    $game->setView(ShowAcademy::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_WASTE:
-                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_WAREHOUSE)) {
-                    $game->setView(ShowWaste::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_FAB_HALL:
-                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL)) {
-                    $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_TECH_CENTER:
-                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_TECH_CENTER)) {
-                    $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_SUBSPACE_TELESCOPE:
-                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
-                    $game->setView(ShowSubspaceTelescope::VIEW_IDENTIFIER);
-                    return;
-                }
-                // no break
-            case ColonyEnum::MENU_INFO:
-            default:
-                $game->setView("SHOW_MANAGEMENT");
+        $game->setView($menu->getViewIdentifier());
+
+        $neededBuildingFunctions = $menu->getNeededBuildingFunction();
+        if (
+            $neededBuildingFunctions !== null
+            && !$this->hasSpecialBuilding($host, $neededBuildingFunctions)
+        ) {
+            return;
+        }
+        if (BuildingFunctionTypeEnum::isBuildingFunctionMandatory($menu)) {
+            $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
+            $game->setTemplateVar('FUNC', $func);
         }
     }
 
-    private function hasSpecialBuilding(ColonyInterface $colony, int $function): bool
+    /** @param array<int> $functions */
+    private function hasSpecialBuilding(PlanetFieldHostInterface $host, array $functions): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $colony->getId(),
-            [$function],
+            $host,
+            $functions,
             [0, 1]
         ) > 0;
     }

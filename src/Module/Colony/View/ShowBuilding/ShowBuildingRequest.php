@@ -10,11 +10,6 @@ final class ShowBuildingRequest implements ShowBuildingRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getColonyId(): int
-    {
-        return $this->queryParameter('id')->int()->required();
-    }
-
     public function getBuildingId(): int
     {
         return $this->queryParameter('bid')->int()->required();
