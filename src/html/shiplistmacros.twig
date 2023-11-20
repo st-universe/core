@@ -3,16 +3,16 @@
     <th style="width: 140px;">Klasse</th>
     <th>Name</th>
     <th style="width: 30px;"></th>
-    <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="assets/buttons/info2.png"
+    <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
             style="height:16px;" /></th>
-    <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="assets/buttons/info2.png" style="height:16px;" />
+    <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="/assets/buttons/info2.png" style="height:16px;" />
     </th>
     <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img
-            src="assets/buttons/info2.png" style="height:16px;" /></th>
+            src="/assets/buttons/info2.png" style="height:16px;" /></th>
     <th style="width: 210px;"
         title="EPS: aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)&#10;WarpDrive: aktuell/maximal, Zuwachs">
-        Energie <img src="assets/buttons/info2.png" style="height:16px;" /></th>
-    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="assets/buttons/info2.png"
+        Energie <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
+    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="/assets/buttons/info2.png"
             style="height:16px;" /></th>
     <th style="width: 90px; text-align: center;">Crew</th>
     <th style="width: 125px; text-align: center;">Systeme</th>
@@ -36,18 +36,18 @@
     <td>
         <a href="ship.php?SHOW_SHIP=1&id={{ shipid }}">
             {% if ship.getDockedTo %}
-            <img src="assets/buttons/dock2.png" title="Schiff ist angedockt" style="height:20px;" />
+            <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height:20px;" />
             {% endif %}
             {% set stateIconAndTitle = wrapper.getStateIconAndTitle %}
             {% if stateIconAndTitle %}
-            <img src="assets/buttons/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
+            <img src="/assets/buttons/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
                 style="height:20px;" />
             {% endif %}
             <span>{{ ship.getName|bbcode }}</span>
         </a>
     </td>
     <td style="text-align: center;">
-        <img src="assets/buttons/alert{{ ship.getAlertState.value }}_1.png" title="Alarmstufe" />
+        <img src="/assets/buttons/alert{{ ship.getAlertState.value }}_1.png" title="Alarmstufe" />
     </td>
     {% if ship.getSystem %}
     <td align="center">
@@ -55,7 +55,7 @@
         {% if not ship.getSystem.isWormhole %}
         ({{ ship.getCx }}|{{ ship.getCy }})
         {% else %}
-        <img src="assets/buttons/wormh2.png" title="befindet sich im Wurmloch '{{ ship.getSystem.getName }}'" />
+        <img src="/assets/buttons/wormh2.png" title="befindet sich im Wurmloch '{{ ship.getSystem.getName }}'" />
         {% endif %}
     </td>
     {% else %}
@@ -104,15 +104,15 @@
         {% set reactor = wrapper.getReactorWrapper %}
         {% if reactor %}
         <div style="float: left; width: 50%">
-            <img src="assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" /> <span>{{ reactor.getLoad
+            <img src="/assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" /> <span>{{ reactor.getLoad
                 }}</span>
         </div>
         {% endif %}
         {% if epssystem %}
         <div style="float: left; width: 50%">
             {% if epssystem.isEBattUseable %}
-            <img src="assets/buttons/batt.png" title="Ersatzbatterie" />
-            {% else %}<img src="assets/buttons/batt2.png" title="Ersatzbatterie (gesperrt)" />
+            <img src="/assets/buttons/batt.png" title="Ersatzbatterie" />
+            {% else %}<img src="/assets/buttons/batt2.png" title="Ersatzbatterie (gesperrt)" />
             {% endif %} {{ epssystem.getBattery }}
         </div>
         {% endif %}
@@ -120,36 +120,36 @@
     <td style="text-align: center;">{{ ship.getCrewCount }}</td>
     <td>
         {% if ship.getNbs %}
-        <img src="assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert" />
+        <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert" />
         {% else %}
-        <img src="assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+        <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
         {% endif %}
         {% if ship.getLss %}
-        <img src="assets/buttons/lss1.png" title="Langstreckensensoren aktiviert" />
+        <img src="/assets/buttons/lss1.png" title="Langstreckensensoren aktiviert" />
         {% else %}
-        <img src="assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
+        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
         {% endif %}
         {% if ship.hasPhaser %}
         {% if ship.getPhaserState %}
-        <img src="assets/buttons/act_phaser1.png" title="Strahlenwaffe aktiviert" />
+        <img src="/assets/buttons/act_phaser1.png" title="Strahlenwaffe aktiviert" />
         {% else %}
-        <img src="assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert" />
+        <img src="/assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert" />
         {% endif %}
         {% endif %}
         {% if ship.hasTorpedo %}
         {% if ship.getTorpedoState %}
-        <img src="assets/buttons/act_torp1.png"
+        <img src="/assets/buttons/act_torp1.png"
             title="Torpedobänke aktiviert ({{ ship.getTorpedoCount }}/{{ ship.getMaxTorpedos }})" />
         {% else %}
-        <img src="assets/buttons/act_torp2.png"
+        <img src="/assets/buttons/act_torp2.png"
             title="Torpedobänke deaktiviert ({{ ship.getTorpedoCount }}/{{ ship.getMaxTorpedos }})" />
         {% endif %}
         {% endif %}
         {% if ship.hasCloak %}
         {% if ship.getCloakState %}
-        <img src="assets/buttons/tarn1.png" title="Tarnung aktiviert" />
+        <img src="/assets/buttons/tarn1.png" title="Tarnung aktiviert" />
         {% else %}
-        <img src="assets/buttons/tarn2.png" title="Tarnung deaktiviert" />
+        <img src="/assets/buttons/tarn2.png" title="Tarnung deaktiviert" />
         {% endif %}
         {% endif %}
     </td>
@@ -159,20 +159,20 @@
         <a href="?B_DELETE_FLEET=1&id={{ shipid }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('fleet_{{ shipid }}','buttons/fl_flag3')"
             onmouseout="cp('fleet_{{ shipid }}','buttons/fl_flag2')">
-            <img src="assets/buttons/fl_flag2.png" name="fleet_{{ shipid }}" title="Flotte auflösen" />
+            <img src="/assets/buttons/fl_flag2.png" name="fleet_{{ shipid }}" title="Flotte auflösen" />
         </a>
         {% else %}
         <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipid }}, '{{ SESSIONSTRING }}');"
             onmouseover="cp('fleet_{{ shipid }}','buttons/fl_raus2')"
             onmouseout="cp('fleet_{{ shipid }}','buttons/fl_raus1')">
-            <img src="assets/buttons/fl_raus1.png" name="fleet_{{ shipid }}" title="Flotte verlassen" />
+            <img src="/assets/buttons/fl_raus1.png" name="fleet_{{ shipid }}" title="Flotte verlassen" />
         </a>
         {% endif %}
         {% else %}
         {% if not ship.isBase %}
         <a href="?B_NEW_FLEET=1&id={{ shipid }}" onmouseover="cp('fleet_{{ shipid }}','buttons/fl_flag2')"
             onmouseout="cp('fleet_{{ shipid }}','buttons/fl_flag1')">
-            <img src="assets/buttons/fl_flag1.png" name="fleet_{{ shipid }}" title="Flotte erstellen" />
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_{{ shipid }}" title="Flotte erstellen" />
         </a>
         {% endif %}
         {% endif %}

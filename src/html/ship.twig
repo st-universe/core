@@ -1,10 +1,8 @@
 {% extends "html/sitedefaults.twig" %}
-{% from 'html/colonymacros.twig' import shipselector, ship_buildprogress %}
 {% from 'html/shipmacros.twig' import nbsblock, shipimagewithoutwarp, shipstorage, initial_js %}
 {% from 'html/shipcontrol/control_nav.twig' import control_nav %}
 {% from 'html/shipcontrol/control_mid.twig' import control_mid %}
 {% from 'html/shipcontrol/control_right.twig' import control_right %}
-{% from 'html/stationmacros.twig' import shipyardoptions, ship_repairprogress %}
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
@@ -44,39 +42,39 @@
 		<tr>
 			<th style="text-align: center;">Typ</th>
 			<th></th>
-			<th style="text-align: center;" title="im System">Koordinaten <img src="assets/buttons/info2.png"
+			<th style="text-align: center;" title="im System">Koordinaten <img src="/assets/buttons/info2.png"
 					style="height:16px;" /></th>
-			<th style="text-align: center;" title="aktuell/maximal">Hülle <img src="assets/buttons/info2.png"
+			<th style="text-align: center;" title="aktuell/maximal">Hülle <img src="/assets/buttons/info2.png"
 					style="height:16px;" /></th>
 			<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
-				<img src="assets/buttons/info2.png" style="height:16px;" />
+				<img src="/assets/buttons/info2.png" style="height:16px;" />
 			</th>
 			{% if SHIP.hasWarpdrive %}
 			<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
-				Warpdrive <img src="assets/buttons/info2.png" style="height:16px;" /></th>
+				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
 			{% endif %}
 			<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)">
-				Energie <img src="assets/buttons/info2.png" style="height:16px;" /></th>
+				Energie <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
 			<th style="text-align: center;">Batterie</th>
-			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="assets/buttons/info2.png"
+			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="/assets/buttons/info2.png"
 					style="height:16px;" /></th>
 			<th style="text-align: center;">Name</th>
 			<td rowspan="3" style="text-align: center;">
 				{% if SHIP.isConstruction %}
 				<a href="javascript:void(0);" onclick="showScrapWindow();" onmouseover="cp('scrap','buttons/scrap2');"
 					onmouseout="cp('scrap','buttons/scrap1');">
-					<img src="assets/buttons/scrap1.png" name="scrap" title="Konstrukt entfernen" />
+					<img src="/assets/buttons/scrap1.png" name="scrap" title="Konstrukt entfernen" />
 				</a>
 				{% else %}
 				<a href="javascript:void(0);" onclick="showSelfdestructWindow({{ shipId }});"
 					onmouseover="cp('selfdestruct','buttons/selfdes2');"
 					onmouseout="cp('selfdestruct','buttons/selfdes1');">
-					<img src="assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
+					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
 				</a>
 				{% if WRAPPER.canBeScrapped %}
 				<a href="javascript:void(0);" onclick="showScrapWindow();" onmouseover="cp('scrap','buttons/scrap2');"
 					onmouseout="cp('scrap','buttons/scrap1');">
-					<img src="assets/buttons/scrap1.png" name="scrap" title="Station demontieren" />
+					<img src="/assets/buttons/scrap1.png" name="scrap" title="Station demontieren" />
 				</a>
 				{% endif %}
 				{% endif %}
@@ -91,7 +89,7 @@
 			</td>
 			<td style="text-align: center;">
 				<a href="javascript:void(0);" onclick="showALvlWindow();"><img
-						src="assets/buttons/alert{{ SHIP.getAlertState.value }}.png" title="Alarmstufe"
+						src="/assets/buttons/alert{{ SHIP.getAlertState.value }}.png" title="Alarmstufe"
 						name="setalvl" /></a>
 			</td>
 			<td style="text-align: center;">
@@ -141,44 +139,44 @@
 			<td colspan="2">
 				<a href="?SHOW_SHIP=1&id={{ SHIP.getId }}" onmouseover="cp('uship','buttons/update1');"
 					onmouseout="cp('uship','buttons/update0');">
-					<img src="assets/buttons/update0.png" title="Aktualisieren" name="uship" />
+					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship" />
 				</a>
 				<a href="javascript:void(0);" onclick="showShipDetails({{ SHIP.getId }});"
 					onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
-					<img src="assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo" />
+					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo" />
 				</a>
 				<a href="javascript:void(0);" onclick="showShipCommunication({{ SHIP.getId }});"
 					onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
-					<img src="assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
+					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
 				</a>
 				{% if SHIP.isLSSModeNormal %}
 				<a href="?B_SET_LSS_BORDER=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
 					onmouseover="cp('actlss','buttons/lss_button1');" onmouseout="cp('actlss','buttons/lss_button3');">
-					<img src="assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren"
+					<img src="/assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren"
 						name="actlss" />
 				</a>
 				{% endif %}
 				{% if SHIP.isLSSModeBorder %}
 				<a href="?B_SET_LSS_NORMAL=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
 					onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
-					<img src="assets/buttons/lss_button1.png" title="Territoriale Grenzansicht deaktivieren"
+					<img src="/assets/buttons/lss_button1.png" title="Territoriale Grenzansicht deaktivieren"
 						name="actlss" />
 				</a>
 				{% endif %}
 				{% if IS_MAP_BUTTON_VISIBLE %}
 				<a href="javascript:void(0);" onclick="openStarMap(this,{{ SHIP.getId }});"
 					onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
-					<img src="assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
+					<img src="/assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
 				</a>
 				{% endif %}
 				<a href="?B_SHUTDOWN=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
 					onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
-					<img src="assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown" />
+					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown" />
 				</a>
 				{% if WRAPPER.canBeRepaired %}
 				<a href="javascript:void(0);" onclick="showRepairOptions({{ SHIP.getId }});"
 					onmouseover="cp('selfrepair','buttons/rep2');" onmouseout="cp('selfrepair','buttons/rep1');">
-					<img src="assets/buttons/rep1.png" style="height: 20px;" title="Reparaturoptionen anzeigen"
+					<img src="/assets/buttons/rep1.png" style="height: 20px;" title="Reparaturoptionen anzeigen"
 						name="selfrepair" />
 				</a>
 				{% endif %}
@@ -186,13 +184,13 @@
 			<td colspan="2">
 				{% if SHIP.getBuildplan %}
 				{% for mod in SHIP.getModules %}<img style="margin-right: 5px;"
-					src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />{% endfor %}
+					src="/assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />{% endfor %}
 				{% endif %}
 			</td>
 			<td colspan="4">
 				{% for sys in SHIP.getSystems %}<img title="{{ sys.getName }}: {{ sys.getStatus }}%"
 					style="margin-right: 5px;" class="{{ sys.getCssClass }}"
-					src="assets/system/{{ sys.getSystemType.value }}.png" />{% endfor %}
+					src="/assets/system/{{ sys.getSystemType.value }}.png" />{% endfor %}
 			</td>
 		</tr>
 	</table>
@@ -214,7 +212,8 @@
 					<div class="box_body">
 						<ul id="shipselector">
 							{% if FIRST_MANAGE_SHIP %}
-							{{ shipselector(SHIP, FIRST_MANAGE_SHIP) }}
+							{% set wrapper = FIRST_MANAGE_SHIP %}
+							{% include 'html/colony/component/shipSelector.twig' %}
 							{% else %}
 							<li style="text-align: center">Keine Schiffe angedockt</li>
 							{% endif %}
@@ -225,11 +224,11 @@
 							<div style="width: 70%; float: left;">
 								<a href="javascript:void(0);" onclick="showBeamFromWindow();"
 									onmouseover="cp('beamfrom','buttons/b_down2')"
-									onmouseout="cp('beamfrom','buttons/b_down1')"><img src="assets/buttons/b_down1.png"
+									onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
 										name="beamfrom" title="Von Schiff beamen" /></a>
 								<a href="javascript:void(0);" onclick="showBeamToWindow();"
 									onmouseover="cp('beamto','buttons/b_up2')"
-									onmouseout="cp('beamto','buttons/b_up1')"><img src="assets/buttons/b_up1.png"
+									onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png"
 										name="beamto" title="Zu Schiff beamen" /></a>
 								<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
 								{% if CAN_MANAGE %}
@@ -260,14 +259,13 @@
 			</td>
 			<td style="vertical-align: top; width: 67%;">
 				{{ control_nav(SHIP, NAV_PANEL, VISUAL_NAV_PANEL) }}
-				{% if SHIP_REPAIR_PROGRESS %}
-				{{ ship_repairprogress(SHIP, SHIP_REPAIR_PROGRESS) }}
-				{% endif %}
+				{% set host = SHIP %}
+				{% include 'html/ship/repairProgress.twig' %}
 				{% if SHIP.getRump.isShipyard and SHIP.getConstructionHubState %}
-				{% if SHIP_BUILD_PROGRESS %}
-				{{ ship_buildprogress(SHIP_BUILD_PROGRESS) }}
-				{% endif %}
-				{{ shipyardoptions(SHIP, AVAILABLE_BUILDPLANS) }}
+				{% include 'html/ship/buildprogress.twig' %}
+				{% set station = SHIP %}
+				{% set availableBuildplans = AVAILABLE_BUILDPLANS %}
+				{% include 'html/station/shipyardOptions.twig' %}
 				{% endif %}
 			</td>
 		</tr>
@@ -297,9 +295,9 @@
 		<th>
 			{% if SHIP.getNbs %}
 			<a href="?B_DEACTIVATE_NBS=1&id={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"><img
-					src="assets/buttons/kss1.png" /> Nahbereichssensoren deaktivieren</a>
+					src="/assets/buttons/kss1.png" /> Nahbereichssensoren deaktivieren</a>
 			{% else %}
-			<a href="?B_ACTIVATE_NBS=1&id={{ SHIP.getId }}"><img src="assets/buttons/kss2.png" /> Nahbereichssensoren
+			<a href="?B_ACTIVATE_NBS=1&id={{ SHIP.getId }}"><img src="/assets/buttons/kss2.png" /> Nahbereichssensoren
 				aktivieren</a>
 			{% endif %}
 		</th>
