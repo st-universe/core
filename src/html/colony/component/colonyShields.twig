@@ -1,0 +1,9 @@
+<div class="box">
+    <div class="box_title">{{ COLONY_SURFACE.getShieldBoxTitleString }}</div>
+    <div class="box_body">
+        <img src="/assets/buttons/shld.png" title="Schildstärke" style="width: 12px; height: 12px;" />
+        {% autoescape false %}
+        {{ SHIELD_STATUS_BAR }}
+        {% endautoescape %}
+    </div>
+</div>

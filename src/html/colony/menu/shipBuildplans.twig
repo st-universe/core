@@ -1,0 +1,71 @@
+{% include 'html/colony/component/shipyardTabs.twig' %}
+{% embed "html/colony/menu/subContainer.twig" %}
+{% block containment %}
+<div>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th></th>
+            <th>Anzahl Schiffe</th>
+            <th>Bauzeit</th>
+            <th></th>
+            <th style="width: 20px;"></th>
+        </tr>
+        {% for item in AVAILABLE_BUILDPLANS %}
+        {% set data = item.plan %}
+        {% set id = data.getId %}
+        {% set elementId = buildplan_ ~ id %}
+        <tr class="row" style="cursor: pointer;" title="Details">
+            <td class="selectable" onclick="toggleTableRowVisible('{{ elementid }}');">
+                {{ data.getName }}</td>
+            <td class="selectable" onclick="toggleTableRowVisible('{{ elementid }}');">
+                {{ data.getShipCount }}</td>
+            <td onclick="toggleTableRowVisible('{{ elementid }}');">
+                {{ data.getBuildtime|formatSeconds }}</td>
+            <td style="text-align: center;">
+                <a class="linkbutton"
+                    href="?id={{ COLONY.getId }}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid={{ id }}">Bauplan
+                    auswählen</a>
+            </td>
+            <td style="text-align: center;">
+                {% if item.deletable %}
+                <a class="linkbutton linkbutton_red"
+                    href="?id={{ COLONY.getId }}&B_DEL_BUILDPLAN=1&planid={{ id }}&sstr={{ SESSIONSTRING }}"
+                    title="Löschen">X</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr title="Details schließen" onclick="toggleTableRowVisible('{{ elementid }}');" id="{{ elementid }}"
+            style="cursor: pointer; display: none;" class="row">
+            <td colspan="4">
+                <table style="width: 100%">
+                    <tr>
+                        <td>Rumpf</td>
+                        <td>
+                            <div style="display: table-cell;">
+                                <img src="/assets/ships/{{ data.getRump.getId }}.png" />
+                            </div>
+                            <span style="display: table-cell; vertical-align: middle;">{{ data.getRump.getName }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Module</td>
+                        <td>
+                            {% for module in data.getModules %}
+                            <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
+                                title="{{ module.getModule.getName }}" />
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Crewbedarf</td>
+                        <td>{{ data.getCrew }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
+{% endembed %}

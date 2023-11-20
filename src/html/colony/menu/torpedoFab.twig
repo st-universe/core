@@ -1,0 +1,63 @@
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<div>
+    <table class="tcal">
+        <tr>
+            <td style="width: 50%;" class="colonymenu">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
+                    &lt;&lt; Zurück zum Koloniemenü
+                </a>
+            </td>
+            <td style="width: 50%;" class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 11) }}">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(11);">
+                    <span>Torpedoherstellung</span>
+                </a>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th colspan="2">Herstellung</th>
+        </tr>
+        {% if BUILDABLE_TORPEDO_TYPES %}
+        <tr>
+            <td class="darkbg">Typ</td>
+            <td class="darkbg">Kosten</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">Es können keine Torpedos gebaut werden</td>
+        </tr>
+        {% endif %}
+        {% for data in BUILDABLE_TORPEDO_TYPES %}
+        <tr class="row">
+            <td>
+                <input type="text" size="3" name="torp[{{ data.getId }}]"
+                    onkeydown="event.key == 'Enter' && $('producebutton').click()" /> x <span>{{
+                    data.getProductionAmount }}</span>
+                <img src="/assets/commodities/{{ data.getCommodityId }}.png" class="center" />
+                {{ data.getName }}
+            </td>
+            <td>
+                <img src="/assets/buttons/e_trans2.png" class="center" title="Energiekosten" />
+                {{ data.getEnergyCost }}
+                {% for cost in data.getProductionCosts %}
+                <img src="/assets/commodities/{{ cost.getCommodityId }}.png" class="center"
+                    title="{{ cost.getCommodity.getName }}" />
+                {{ cost.getAmount }}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% if BUILDABLE_TORPEDO_TYPES %}
+    <div style="width: 100%; text-align: center">
+        <br />
+        <input type="submit" style="cursor: pointer;" name="B_BUILD_TORPEDOS" id="producebutton"
+            value="Torpedos herstellen" />
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% endembed %}

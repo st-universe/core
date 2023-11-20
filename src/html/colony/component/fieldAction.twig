@@ -1,0 +1,391 @@
+{% embed "html/colony/menu/container.twig" %}
+
+{% block containment %}
+<table class="use" style="width: 600px;">
+
+    <input type="hidden" name="fid" value="{{ FIELD.getId }}" />
+
+    {% set fieldId = FIELD.getId %}
+    {% set fieldType = FIELD.getFieldType %}
+    {% set fieldHostId = FIELD.getHost.getId %}
+    {% set fieldHostType = FIELD.getHost.getHostType.value %}
+    {% set dayNightPrefix = FIELD.getDayNightPrefix %}
+    {% set building = FIELD.getBuilding %}
+    <tr>
+        <td>
+            {% if FIELD.isUnderConstruction %}
+
+            <div style="width: 100%;">
+                <div
+                    style="background-image: url(/assets/generated/fields/t{{ fieldType }}.png); width: 40px; height: 40px; display: table-cell;">
+                    <div
+                        style="width: 40px; height: 40px; background-image: url(/assets/generated/buildings/{{ FIELD.getPictureType }}{{ dayNightPrefix }}.png)">
+                        <div style="height: 40px; overflow: hidden; width: {{ FIELD.getOverlayWidth }}px;">
+                            <img style="width: 40px; height: 40px;" title="{{ FIELD|planetFieldTitle }}"
+                                src="/assets/generated/buildings/{{ building.getId }}/{{ building.getBuildingType }}a{{ dayNightPrefix }}.png" />
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
+                    <span style="font-weight: bold;">{{ building.getName }}</span><br />
+                    <div onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
+                        <span>auf</span> {{ fieldType|planetFieldTypeDescription }} <a
+                            href="https://wiki.stuniverse.de/index.php?title=Kartenfelder" target="_blank">
+                            <img src="/assets/buttons/info1.png" name="fieldinfo" width="12" height="12"
+                                title="Wiki-Info über Kartenfelder" />
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: table-cell; padding-top: 5px;">
+                        {% autoescape false %}
+                        {{ FIELD.getConstructionStatusBar }}
+                        {% endautoescape %}
+                    </div>
+                    <div style="display: table-cell; vertical-align: middle; padding-left: 5px;">
+                        Fertigstellung: {{ FIELD.getBuildtime|datetime }}
+                    </div>
+                </div>
+                {% if FIELD.getBuilding.isActivateable %}
+                {% if FIELD.getActivateAfterBuild %}
+                <div class="fabutton">
+                    <input type="submit" class="button" name="B_DEACTIVATE" value="Nach Bau deaktivieren">
+                </div>
+                {% else %}
+                <div class="fabutton">
+                    <input type="submit" class="button" name="B_ACTIVATE" value="Nach Bau aktivieren">
+                </div>
+                {% endif %}
+                <br />
+                {% endif %}
+            </div>
+            {% else %}
+            <div>
+                {% if building %}
+                <div>
+                    <div style="display: table-cell">
+                        <div
+                            style="background-image: url(/assets/generated/fields/t{{ fieldType }}.png); width: 40px; height: 40px;">
+                            <img style="width: 40px; height: 40px;" title="{{ FIELD|planetFieldTitle }}"
+                                src="/assets/generated/buildings/{{ FIELD.getBuildingId }}/{{ building.getBuildingType }}{{ FIELD.getBuildingState }}{{ dayNightPrefix }}.png" />
+                        </div>
+                    </div>
+                    <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
+                        <span style="font-weight: bold;">{{ building.getName }}</span><br />
+                        <div onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
+                            <span>auf</span> {{ fieldType|planetFieldTypeDescription }} <a
+                                href="https://wiki.stuniverse.de/index.php?title=Kartenfelder" target="_blank">
+                                <img src="/assets/buttons/info1.png" name="fieldinfo" width="12" height="12"
+                                    title="Wiki-Info über Kartenfelder" />
+                            </a>
+                        </div><br />
+                        <span>Integrität</span>: {{ FIELD.getIntegrity }}/{{ building.getIntegrity }}
+                    </div>
+                    <br /><br />
+                    {% if COLONY %}
+                    {% if BUILDING_FUNCTION.isShipyard %}
+                    {% if BUILDING_FUNCTION.isFighterShipyard %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(10);cClick();"
+                            class="fabutton">Schiffbau</a>
+                    </div>
+                    {% else %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)"
+                            onclick="switchColonyMenu(8,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }});cClick();"
+                            class="fabutton">Schiffbau</a>
+                    </div>
+                    <div class="fabutton">
+                        <input type="submit" class="fabutton" name="SHOW_SHIP_DISASSEMBLY" value="Schiffsdemontage">
+                    </div>
+                    {% endif %}
+                    <div class="fabutton">
+                        <input type="submit" class="fabutton" name="SHOW_SHIP_REPAIR" value="Schiffsreparatur">
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isAirfield %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(6);cClick();" class="fabutton">Hangar</a>
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isModuleFab %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)"
+                            onclick="switchColonyMenu(7,{{ BUILDING_FUNCTION.getModuleFabBuildingFunctionId }});cClick();"
+                            class="fabutton">Modulherstellung</a>
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isTorpedoFab %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(11);cClick();"
+                            class="fabutton">Torpedoherstellung</a>
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isAcademy %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(12);cClick();"
+                            class="fabutton">Akademie</a>
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isWarehouse %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)" onclick="goToUrl('database.php?SHOW_COMMODITIES_OVERVIEW=1')"
+                            class="fabutton">Warenübersicht</a>
+                    </div>
+                    <div class="fabutton">
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(13);cClick();"
+                            class="fabutton">Müllverbrennung</a>
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isFabHall %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)"
+                            onclick="switchColonyMenu(14, {{ BUILDING_FUNCTION.getFabHallBuildingFunctionId }});cClick();"
+                            class="fabutton">Ersatzteilherstellung</a>
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isTechCenter %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)"
+                            onclick="switchColonyMenu(15, {{ BUILDING_FUNCTION.getTechCenterBuildingFunctionId }});cClick();"
+                            class="fabutton">Systemkomponentenherstellung</a>
+                    </div>
+                    {% endif %}
+                    {% if BUILDING_FUNCTION.isSubspaceTelescope %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0)"
+                            onclick="switchColonyMenu(16, {{ BUILDING_FUNCTION.getSubspaceTelescopeBuildingFunctionId }});cClick();"
+                            class="fabutton">Subraumteleskop</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    <br />
+                </div>
+                {% else %}
+                <div>
+                    <div style="display: table-cell;">
+                        <img src="/assets/generated/fields/t{{ fieldType }}.png" /><br />
+                    </div>
+                    <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;"
+                        onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
+                        {{ fieldType|planetFieldTypeDescription }} <a
+                            href="https://wiki.stuniverse.de/index.php?title=Kartenfelder" target="_blank">
+                            <img src="/assets/buttons/info1.png" name="fieldinfo" width="12" height="12"
+                                title="Wiki-Info über Kartenfelder" />
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+                {% if building and FIELD.isActivateAble and FIELD.hasHighDamage %}
+                Das Gebäude ist stark beschädigt und kann nicht aktiviert werden.
+                {% endif %}
+            </div>
+            {% endif %}
+        </td>
+        {% if building %}
+        <td style="vertical-align: top; width: 100px;">
+            {% include 'html/colony/component/buildingConsequences.twig' %}
+            {% if building.isActivateable %}
+            <div>
+                <br />
+                <strong>Produktion</strong>
+                {% if building.getEpsProduction %}
+                <div>
+                    <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                    {{ building.getEpsProduction|addPlusCharacter }}
+                </div>
+                {% endif %}
+                {% for data in building.getCommodities %}
+                <div>
+                    <img src="/assets/commodities/{{ data.getCommodityId }}.png"
+                        title="{{ data.getCommodity.getName }}" />
+                    {{ data.getAmount|addPlusCharacter }}
+                </div>
+                {% endfor %}
+                <br />
+            </div>
+            {% endif %}
+        </td>
+        {% endif %}
+        {% if HAS_UPGRADE_OR_TERRAFORMING_OPTION %}
+        <td rowspan="2" style="width: 200px; vertical-align: top;">
+            {% if UPGRADE_OPTIONS %}
+            <div>
+                {% for data in UPGRADE_OPTIONS %}
+                <div>
+                    <table class="tcal">
+                        <tr>
+                            <th colspan="4">{{ data.getDescription }}</th>
+                        </tr>
+                        <tr>
+                            <td style="width: 50px; height: 45px; text-align: center; vertical-align: middle">
+                                <img src="/assets/generated/buildings/{{ building.getId }}/0at.png" />
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                                =&gt;
+                            </td>
+                            <td style="width: 50px; height: 45px; text-align: center; vertical-align: middle">
+                                <img src="/assets/generated/buildings/{{ data.getUpgradeToBuildingId }}/0at.png" />
+                            </td>
+                            <td style="vertical-align: top; width: 100px;">
+                                <strong>Kosten</strong><br />
+                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                                {{ data.getBuilding.getEpsCost }}
+                                {% for cost in data.getUpgradeCosts %}
+                                <div>
+                                    <img src="/assets/commodities/{{ cost.getCommodityId }}.png"
+                                        title="{{ cost.getCommodity.getName }}" />
+                                    {{ cost.getAmount }}
+                                </div>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align: center;">
+                                <a href="?B_UPGRADE_BUILDING=1&id={{ fieldHostId }}&hosttype={{ fieldHostType }}&fid={{ fieldId }}&upid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
+                                    class="linkbutton">Durchführen</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if not building %}
+            <div>
+                {% if FIELD.getTerraforming %}
+                <table class="use" style="width: 250px;">
+                    <tr>
+                        <th colspan="3" style="text-align: center;">
+                            {{ FIELD.getTerraforming.getDescription }} läuft
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="width: 45px; text-align: center;">
+                            <img src="/assets/generated/fields/{{ FIELD.getTerraforming.getFromFieldTypeId }}.png" />
+                        </td>
+                        <td style="vertical-align: middle; width: 50px; text-align: center;">
+                            <div style="padding-top: 5px;">
+                                {% autoescape false %}
+                                {{ TERRAFORMING_BAR }}
+                                {% endautoescape %}
+                            </div>
+                        </td>
+                        <td style="width: 45px; text-align: center;">
+                            <img src="/assets/generated/fields/{{ FIELD.getTerraforming.getToFieldTypeId }}.png" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: center;">
+                            Fertigstellung: {{ TERRAFORMING_STATE.getFinishDate|datetime }}
+                        </td>
+                    </tr>
+                </table>
+                {% else %}
+                {% if TERRAFORMING_OPTIONS %}
+                <div>
+                    {% for data in TERRAFORMING_OPTIONS %}
+                    <table class="use" style="width: 250px;">
+                        <tr>
+                            <th colspan="4">{{ data.getDescription }}</th>
+                        </tr>
+                        <tr>
+                            <td style="width: 45px;">
+                                <img src="/assets/generated/fields/t{{ data.getFromFieldTypeId }}.png" />
+                            </td>
+                            <td style="vertical-align: middle; width: 50px; text-align: center;">
+                                =&gt;
+                            </td>
+                            <td style="width: 45px;">
+                                <img src="/assets/generated/fields/t{{ data.getToFieldTypeId }}.png" />
+                            </td>
+                            <td style="vertical-align: top;" rowspan="2">
+                                <strong>Kosten</strong>
+                                <br />
+                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                                {{ data.getEnergyCosts }}
+                                {% for cost in data.getCosts %}
+                                <div>
+                                    <img src="/assets/commodities/{{ cost.getCommodityId }}.png"
+                                        title="{{ cost.getCommodity.getName }}" />
+                                    {{ cost.getAmount }}
+                                </div>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align: center">
+                                <a href="?B_TERRAFORM=1&id={{ fieldHostId }}&hosttype={{ fieldHostType }}&fid={{ fieldId }}&tfid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
+                                    class="linkbutton">Durchführen</a>
+                                <br />
+                                <strong>Dauer</strong><br />
+                                {{ data.getDuration|formatSeconds }}
+                            </td>
+                        </tr>
+                    </table>
+                    {% endfor %}
+                    <br />
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+        </td>
+        {% endif %}
+    </tr>
+    {% if building %}
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    {% if FIELD.isActivateAble %}
+                    <td style="width: 100px;">
+                        {% if not FIELD.hasHighDamage %}
+                        {% if FIELD.isActive %}
+                        <div class="fabutton">
+                            <input type="submit" class="fabutton" name="B_DEACTIVATE" value="Deaktivieren">
+                        </div>
+                        {% else %}
+                        <div class="fabutton">
+                            <input type="submit" class="fabutton" name="B_ACTIVATE" value="Aktivieren">
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                    <td style="width: 100px;">
+                        {% if COLONY and FIELD.isDamaged %}
+                        <div class="fabutton">
+                            <input type="submit" class="fabutton" name="B_REPAIR" value="Reparieren">
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td style="width: 100px;">
+                        {% if building.isRemovable %}
+                        <div class="fabutton_red">
+                            <a href="javascript:void(0);" onclick="toggleVisible('confirm_remove')"
+                                class="fabutton fabutton_red">Demontieren</a>
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td style="width: 100px;">
+                        {% if building.isRemovable %}
+                        <div id="confirm_remove" style="display:none;" class="fabutton_red">
+                            <input type="submit" class="fabutton fabutton_red" name="B_REMOVE_BUILDING"
+                                value="bestätigen">
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            {% if COLONY and BUILDING_FUNCTION.isShipyard %}
+            {% include 'html/ship/buildProgress.twig' %}
+            {% include 'html/ship/repairProgress.twig' %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endif %}
+</table>
+{% endblock %}
+{% endembed %}

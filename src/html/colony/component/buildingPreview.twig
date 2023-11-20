@@ -1,0 +1,87 @@
+<table class="use building_preview_table" style="width: 390px; display: {{ display }};" id="{{ preview_id }}">
+    <tr>
+        <td class="center" style="vertical-align: top; width: 100px;">
+            <br />
+            <img src="/assets/generated/buildings/{{ building.getId }}/0at.png" />
+            <br /><br />
+            {% if BUILDING_COUNT %}
+            <strong>Baubar</strong><br />
+            <strong>Anzahl:</strong> <span id="counter">{{ BUILDING_COUNT }}</span><br />
+            {% endif %}
+            {% for field in USEABLE_FIELD_TYPES %}
+            <img src="/assets/generated/fields/t{{ field.getFieldTypeId }}.png"
+                title="{{ field.getFieldTypeId|planetFieldTypeDescription }}"
+                style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
+            {% endfor %}
+        </td>
+        <td style="vertical-align: top; width: 110px;">
+            <strong>Baukosten</strong><br />
+            <img src="/assets/buttons/e_trans2.png" title="Energie" /> {{ building.getEpsCost }}
+            {% for data in building.getCosts %}
+            <div>
+                <img src="/assets/commodities/{{ data.getCommodityId }}.png" title=" {{ data.getCommodity.getName }}" />
+                {{ data.getAmount }}
+            </div>
+            {% endfor %}
+            <br />
+            <strong>Bauzeit</strong><br />
+            {{ building.getBuildTime|formatSeconds }}
+            <br />
+            {% if building.hasLimit or building.hasLimitColony %}
+            <br />
+            <strong>Limits</strong><br />
+            {% if building.hasLimitColony %}
+            <span>Kolonie: {{ building.getLimitColony }}</span><br />
+            {% endif %}
+            {% if building.hasLimit %}
+            <span>Account: {{ building.getLimit }}</span>
+            {% endif %}
+            {% endif %}
+        </td>
+        <td style="vertical-align: top; width: 110px;">
+            {% if building.isActivateable %}
+            <div>
+                <strong>Produktion</strong>
+                {% if building.getEpsProduction %}
+                <div>
+                    <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                    {{ building.getEpsProduction|addPlusCharacter }}
+                </div>
+                {% endif %}
+                {% for data in building.getCommodities %}
+                <div>
+                    <img src="/assets/commodities/{{ data.getCommodityId }}.png"
+                        title="{{ data.getCommodity.getName }}" />
+                    {{ data.getAmount|addPlusCharacter }}
+                </div>
+                {% endfor %}
+                <br />
+            </div>
+            <br />
+            {% endif %}
+            <strong>Vorschau</strong>
+            {% if building.getEpsProduction %}
+            {% set epsPreview = getEpsProductionPreview(HOST, building) %}
+            <div>
+                <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                <span class="{{ epsPreview.getCSS }}">{{ epsPreview.getDisplay|addPlusCharacter }}</span>
+                (<span class="{{ building.getEpsProductionCss }}">{{ building.getEpsProduction|addPlusCharacter
+                    }}</span>)
+            </div>
+            {% endif %}
+            {% set commodityPreview = getCommodityProductionPreview(HOST, building) %}
+            {% for data in commodityPreview %}
+            <div>
+                <img src="/assets/commodities/{{ data.getCommodityId }}.png" title="{{ data.getCommodity.getName }}" />
+                <span class="{{ data.getCssClass }}">{{ data.getProductionDisplay }}</span>
+                {% if data.getPreviewProduction %}
+                (<span class="{{ data.getPreviewProductionCss }}">{{ data.getPreviewProductionDisplay }}</span>)
+                {% endif %}
+            </div>
+            {% endfor %}
+        </td>
+        <td style="vertical-align: top; width: 110px;">
+            {% include 'html/colony/component/buildingConsequences.twig' %}
+        </td>
+    </tr>
+</table>

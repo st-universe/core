@@ -1,0 +1,87 @@
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<table class="tcal">
+    <tr>
+        <td style="width: 50%;" class="colonymenu">
+            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
+                &lt;&lt; Zurück zum Koloniemenü
+            </a>
+        </td>
+        <td style="width: 50%;" class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 7) }}">
+            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(7,{{ FUNC.getId }});">
+                <span>Modulherstellung</span>
+            </a>
+        </td>
+    </tr>
+</table>
+<br />
+<div>
+    <input type="hidden" name="func" id="func" value="{{ FUNC.getFunction }}" />
+    <br />
+    <table class="tcal">
+        <tr>
+            <th>Verfügbare Module</th>
+            <th>In Bau</th>
+            <th>Lagernd</th>
+            <th>Anzahl</th>
+        </tr>
+        {% for data in MODULE_LIST %}
+        {% set moduleId = data.getModuleId %}
+        <tr class="row">
+            <td>
+                <div style="margin-bottom: 5px;">
+                    <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
+                </div>
+                <div style="display: table-cell;">
+                    <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                    {{ data.getEnergyCost }}
+                </div>
+                {% for cost in data.getConstructionCosts %}
+                <div style="display: table-cell; padding-left: 4px;">
+                    <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png" title"{{ cost.getCommodity.getName
+                        }}" />
+                </div>
+                <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}
+                </div>
+                {% endfor %}
+            </td>
+            <td id="module_{{ moduleId }}_action" style="vertical-align: middle; text-align: center;">
+                {% if data.getAmountQueued %}
+                <div>
+                    <div style="display: table-cell; vertical-align:middle;">
+                        <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
+                            id="module_{{ moduleId }}_count" value="{{ data.getAmountQueued }}" />
+                    </div>
+                    <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                        <a href="Javascript:cancelModuleQueueEntries({{ moduleId }});"
+                            onmouseover="cp('cancelModuleList{{ moduleId }}','buttons/x2')"
+                            onmouseout="cp('cancelModuleList{{ moduleId }}','buttons/x1')">
+                            <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}"
+                                title="Anzahl löschen" />
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div>-</div>
+                {% endif %}
+            </td>
+            <td style="vertical-align: middle; text-align: center;">
+                {{ data.getAmountInStock }}
+            </td>
+            <td style="vertical-align: middle; text-align: center;">
+                <input type="text" size="2" name="module[{{ moduleId }}]"
+                    onkeydown="event.key == 'Enter' && $('producebutton').click()" />
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3"></td>
+            <td>
+                <input type="submit" style="cursor: pointer;" id="producebutton" name="B_CREATE_MODULES"
+                    value="Herstellen" />
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock %}
+{% endembed %}

@@ -1,0 +1,100 @@
+{% include 'html/colony/menu/mainscreen.twig' %}
+
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<div>
+    <div style="float: left; width: 20vw; font-size: 1vw;">
+        <div class="divhead">Gebäudewahl</div>
+        <div class="divbody">
+            <select style="width: 100%; height: 370px;" multiple="multiple" name="selection[]">
+                {% for data in PLANET_FIELD_LIST %}
+                {% if data.isActivateable %}
+                {% if data.isActive %}
+                {% set name = data.getBuilding.getName ~ '(an)' %}
+                {% else %}
+                {% set name = data.getBuilding.getName ~ '(aus)' %}
+                {% endif %}
+                <option style="padding-top: 2px; padding-left: 2px;" value="{{ data.getId }}">
+                    {{ name }}
+                </option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <input type="hidden" name="mode" value="2" />
+            <div style="margin-top: 10px; width: 50%; float: left;">
+                <input type="submit" value="Aktivieren" name="B_MULTIPLE_ACTIVATION" />
+            </div>
+            <div style="margin-top: 10px; text-align: right; width: 50%; float: left;">
+                <input type="submit" value="Deaktivieren" name="B_MULTIPLE_DEACTIVATION" />
+            </div>
+            <br style="clear: both;" />
+        </div>
+    </div>
+    <div style="margin-left: 5px; float: left; width: 14vw;">
+        <div class="divhead">Gebäudegruppen</div>
+        <div class="divbody">
+            <img src="/assets/buttons/e_trans2.png" title="Energie" style="width: 10px; height: 10px;" />
+            <strong>Energie</strong><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=1&sstr={{ SESSIONSTRING }}">Verbraucher
+                aktivieren</a><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=1&sstr={{ SESSIONSTRING }}">Verbraucher
+                deaktivieren</a><br /><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=3&sstr={{ SESSIONSTRING }}">Produzenten
+                aktivieren</a><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=3&sstr={{ SESSIONSTRING }}">Produzenten
+                deaktivieren</a><br /><br />
+            <img src="/assets/buttons/lager.png" title="Warenbezogen" style="width: 10px; height: 10px;" />
+            <strong>Warenbezogen</strong><br />
+            Ware wählen:<br />
+            <select name="commodity" style="height: 17px;" id="commodityselector">
+                {% for data in USEABLE_COMMODITY_LIST %}
+                <option class="commodity_select_option" value="{{ data.getId }}"
+                    style=" background-image: url(/assets/commodities/{{ data.getId }}.png);">{{ data.getName }}
+                </option>
+                {% endfor %}
+            </select><br /><br />
+            <table class="tcal">
+                <tr>
+                    <td style="text-align: center;" class="darkbg">Produzenten</td>
+                    <td style="text-align: center;" class="darkbg">Verbraucher</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <input type="button" value="aktivieren"
+                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_ACTIVATION', 7, '{{ SESSIONSTRING }}')" /><br /><br />
+                        <input type="button" value="deaktivieren"
+                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_DEACTIVATION', 7, '{{ SESSIONSTRING }}')" />
+
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="button" value="aktivieren"
+                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_ACTIVATION', 6, '{{ SESSIONSTRING }}')" /><br /><br />
+                        <input type="button" value="deaktivieren"
+                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_DEACTIVATION', 6, '{{ SESSIONSTRING }}')" />
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <img src="/assets/buttons/lager.png" title="Bevölkerungsbezogen" style="width: 10px; height: 10px;" />
+            <strong>Bevölkerungsbezogen</strong><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=5&sstr={{ SESSIONSTRING }}">Wohngebäude
+                aktivieren</a><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=5&sstr={{ SESSIONSTRING }}">Wohngebäude
+                deaktivieren</a><br /><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=4&sstr={{ SESSIONSTRING }}">Arbeitgeber
+                aktivieren</a><br />
+            <span style="color: rgb(206, 206, 206);">&gt;</span> <a
+                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=4&sstr={{ SESSIONSTRING }}">Arbeitgeber
+                deaktivieren</a><br /><br />
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% endembed %}

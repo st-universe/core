@@ -1,0 +1,97 @@
+{% include 'html/colony/menu/mainscreen.twig' %}
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<div>
+    <table class="tcal" style="width: 40vw;">
+        {% set population = COLONY_SURFACE.getPopulation %}
+        <tr>
+            <th colspan="4">Crewberechnung dieser Kolonie</th>
+        </tr>
+        <tr>
+            <td style="width: 25%" class="darkbg">
+                {{ population.getPositiveEffectPrimaryDescription }}
+            </td>
+            <td style="width: 25%" class="darkbg">
+                {{ population.getPositiveEffectSecondaryDescription }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ population.getPositiveEffectPrimary }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ population.getPositiveEffectSecondary }}
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%" class="darkbg">
+                {{ population.getNegativeEffectDescription }}
+            </td>
+            <td style="width: 25%" class="darkbg">Lebensstandard</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ population.getNegativeEffect }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Prozent" />
+                {{ population.getLifeStandardPercentage }}%
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="width: 25%" class="darkbg">Erzeugte Crew</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ population.getCrewLimit }}
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="tcal" style="width: 40vw;">
+        <tr>
+            <th colspan="5">Globale Crewübersicht</th>
+        </tr>
+        <tr>
+            <td style="width: 20%" class="darkbg">globales Crewlimit</td>
+            <td style="width: 20%" class="darkbg">Crew auf Schiffen</td>
+            <td style="width: 20%" class="darkbg">Verfügbare Crew auf Kolonie</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ GLOBAL_CREW_LIMIT }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ CREW_COUNT_SHIPS }}
+                (<a href="javascript:void(0);" onclick="showPodLocationWindow();"><span title="Verschollene Crew">{{
+                        CREW_COUNT_DEBRIS_AND_TRADE_POSTS }}</span></a>)
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ COLONY.getCrewAssignmentAmount }}
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 20%" class="darkbg">Crew in Ausbildung</td>
+            <td colspan="2" style="width: 20%" class="darkbg">Noch Ausbildbar</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ CREW_COUNT_TRAINING }}
+            </td>
+            <td colspan="2">
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ CREW_COUNT_REMAINING }}
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock %}
+{% endembed %}

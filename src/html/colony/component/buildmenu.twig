@@ -1,0 +1,31 @@
+<input type="hidden" name="buildmenu{{ menutype }}_offset" id="buildmenu{{ menutype }}_offset"
+    value="{{ scrolloffset }}" />
+<div>{{ menu.name }}</div>
+<div class="arrow" onclick="buildMenuScrollUp({{ menutype }},{{ scrolloffset }})" title="Hochblättern">
+    <table style="width:100%; height: 100%;">
+        <tr>
+            <td style="text-align: center;">
+                <img src="/assets/buttons/pup.png" />
+            </td>
+        </tr>
+    </table>
+</div>
+<ul class="menu" style="width: 11.1vw;">
+    {% for building in menu.buildings %}
+    <li>
+        <div onclick="openBuildingInfo({{ building.getId }})">
+            <img src="/assets/generated/buildings/{{ building.getId }}/{{ building.getBuildingType }}at.png" /><br />
+            {{ building.getName }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<div class="arrow" onclick="buildMenuScrollDown({{ menutype }},{{ scrolloffset }})" title="Runterblättern">
+    <table style="width:100%; height: 100%;">
+        <tr>
+            <td style="text-align: center;">
+                <img src="/assets/buttons/pdown.png" />
+            </td>
+        </tr>
+    </table>
+</div>
