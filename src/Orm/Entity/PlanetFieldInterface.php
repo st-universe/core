@@ -6,8 +6,6 @@ interface PlanetFieldInterface
 {
     public function getId(): int;
 
-    public function getColonyId(): int;
-
     public function getFieldId(): int;
 
     public function setFieldId(int $fieldId): PlanetFieldInterface;
@@ -58,9 +56,11 @@ interface PlanetFieldInterface
 
     public function clearBuilding(): void;
 
-    public function getColony(): ColonyInterface;
+    public function getHost(): ColonyInterface|ColonySandboxInterface;
 
     public function setColony(ColonyInterface $colony): PlanetFieldInterface;
+
+    public function setColonySandbox(ColonySandboxInterface $sandbox): PlanetFieldInterface;
 
     public function getTerraforming(): ?TerraformingInterface;
 

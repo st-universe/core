@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use RuntimeException;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 
@@ -21,7 +22,9 @@ use Stu\Module\Tal\TalStatusBar;
  *     name="stu_colonies_fielddata",
  *     indexes={
  *         @Index(name="colony_field_idx", columns={"colonies_id", "field_id"}),
+ *         @Index(name="sandbox_field_idx", columns={"colony_sandbox_id", "field_id"}),
  *         @Index(name="colony_building_active_idx", columns={"colonies_id", "buildings_id", "aktiv"}),
+ *         @Index(name="sandbox_building_active_idx", columns={"colony_sandbox_id", "buildings_id", "aktiv"}),
  *         @Index(name="active_idx", columns={"aktiv"})
  *     }
  * )
@@ -37,10 +40,14 @@ class PlanetField implements PlanetFieldInterface
     private int $id;
 
     /**
-     * @Column(type="integer")
-     *
+     * @Column(type="integer", nullable=true)
      */
-    private int $colonies_id = 0;
+    private ?int $colonies_id = null;
+
+    /**
+     * @Column(type="integer", nullable=true)
+     */
+    private ?int $colony_sandbox_id = null;
 
     /**
      * @Column(type="smallint")
@@ -99,22 +106,22 @@ class PlanetField implements PlanetFieldInterface
     private ?TerraformingInterface $terraforming = null;
 
     /**
-     *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ColonyInterface $colony;
+    private ?ColonyInterface $colony = null;
+
+    /**
+     * @ManyToOne(targetEntity="ColonySandbox")
+     * @JoinColumn(name="colony_sandbox_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private ?ColonySandboxInterface $sandbox = null;
 
     private bool $buildmode = false;
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getColonyId(): int
-    {
-        return $this->colonies_id;
     }
 
     public function getFieldId(): int
@@ -285,14 +292,27 @@ class PlanetField implements PlanetFieldInterface
         $this->setActive(0);
     }
 
-    public function getColony(): ColonyInterface
+    public function getHost(): ColonyInterface|ColonySandboxInterface
     {
-        return $this->colony;
+        $colony = $this->colony;
+        $sandbox = $this->sandbox;
+
+        if ($colony === null && $sandbox === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return $colony === null ? $sandbox : $colony;
     }
 
     public function setColony(ColonyInterface $colony): PlanetFieldInterface
     {
         $this->colony = $colony;
+        return $this;
+    }
+
+    public function setColonySandbox(ColonySandboxInterface $sandbox): PlanetFieldInterface
+    {
+        $this->sandbox = $sandbox;
         return $this;
     }
 
@@ -310,13 +330,13 @@ class PlanetField implements PlanetFieldInterface
 
     public function getDayNightPrefix(): string
     {
-        $twilightZone = $this->getColony()->getTwilightZone();
+        $twilightZone = $this->getHost()->getTwilightZone();
 
         if ($twilightZone >= 0) {
-            return $this->getFieldId() % $this->getColony()->getSurfaceWidth() >= $twilightZone ? 'n' : 't';
+            return $this->getFieldId() % $this->getHost()->getSurfaceWidth() >= $twilightZone ? 'n' : 't';
         }
 
-        return $this->getFieldId() % $this->getColony()->getSurfaceWidth() < -$twilightZone ? 'n' : 't';
+        return $this->getFieldId() % $this->getHost()->getSurfaceWidth() < -$twilightZone ? 'n' : 't';
     }
 
     public function getBuildProgress(): int
@@ -339,7 +359,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function isColonizeAble(): bool
     {
-        return in_array($this->getFieldType(), $this->getColony()->getColonyClass()->getColonizeableFields());
+        return in_array($this->getFieldType(), $this->getHost()->getColonyClass()->getColonizeableFields());
     }
 
     /**
