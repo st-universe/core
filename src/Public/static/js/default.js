@@ -626,7 +626,7 @@ function toggleTranslation(targetId) {
         }
 }
 
-if (userDeals) {
+if (typeof userDeals !== 'undefined') {
         setTimeout(function () {
                 showPopup();
         }, 3000);
