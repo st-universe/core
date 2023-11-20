@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowFighterShipyard;
 
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Colony\ColonyEnum;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,20 +18,16 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
     private ShowFighterShipyardRequestInterface $showFighterShipyardRequest;
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper,
         ShowFighterShipyardRequestInterface $showFighterShipyardRequest,
         ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showFighterShipyardRequest = $showFighterShipyardRequest;
         $this->shipRumpRepository = $shipRumpRepository;
     }
@@ -47,12 +42,10 @@ final class ShowFighterShipyard implements ViewControllerInterface
             false
         );
 
-        $this->colonyGuiHelper->register($colony, $game);
-
-        $game->showMacro('html/colonymacros.xhtml/cm_fighter_shipyard');
+        $game->showMacro(ColonyMenuEnum::MENU_FIGHTER_SHIPYARD->getTemplate());
+        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_FIGHTER_SHIPYARD);
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_FIGHTER_SHIPYARD));
 
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',

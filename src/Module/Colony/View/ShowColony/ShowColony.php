@@ -6,13 +6,11 @@ namespace Stu\Module\Colony\View\ShowColony;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
@@ -29,8 +27,6 @@ final class ShowColony implements ViewControllerInterface
 
     private ShowColonyRequestInterface $showColonyRequest;
 
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
 
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
@@ -45,7 +41,6 @@ final class ShowColony implements ViewControllerInterface
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowColonyRequestInterface $showColonyRequest,
-        ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
         OrbitShipListRetrieverInterface $orbitShipListRetriever,
@@ -56,7 +51,6 @@ final class ShowColony implements ViewControllerInterface
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showColonyRequest = $showColonyRequest;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->orbitShipListRetriever = $orbitShipListRetriever;
@@ -74,9 +68,9 @@ final class ShowColony implements ViewControllerInterface
             false
         );
 
-        $this->colonyGuiHelper->register($colony, $game);
-
-        $menuId = $game->getViewContext()['COLONY_MENU'] ?? ColonyEnum::MENU_INFO;
+        $menu = ColonyMenuEnum::getFor($game->getViewContext()['COLONY_MENU'] ?? null);
+        $this->colonyGuiHelper->registerComponents($colony, $game);
+        $game->setTemplateVar('CURRENT_MENU', $menu);
 
         $firstOrbitShip = null;
 
@@ -99,17 +93,6 @@ final class ShowColony implements ViewControllerInterface
             }
         }
 
-        $surface = $this->colonyLibFactory->createColonySurface($colony);
-        $populationGrowth = $surface->getPopulation()->getGrowth();
-
-        $immigrationSymbol = '-';
-        if ($populationGrowth > 0) {
-            $immigrationSymbol = '+';
-        }
-        if ($populationGrowth == 0) {
-            $immigrationSymbol = '';
-        }
-
         $game->appendNavigationPart(
             'colony.php',
             _('Kolonien')
@@ -118,34 +101,21 @@ final class ShowColony implements ViewControllerInterface
             sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $colony->getId()),
             $colony->getName()
         );
-        $game->setTemplateFile('html/colony.xhtml');
+        $game->setTemplateFile('html/colony/colony.twig');
         $game->setPagetitle(sprintf(_('Kolonie: %s'), $colony->getName()));
 
-        $game->setTemplateVar('COLONY', $colony);
+
+        $game->setTemplateVar('SELECTED_COLONY_MENU_TEMPLATE', $menu->getTemplate());
 
         $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $user);
         $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
 
-        $game->setTemplateVar(
-            'SELECTED_COLONY_MENU',
-            $this->colonyGuiHelper->getColonyMenu($menuId)
-        );
-        $game->setTemplateVar(
-            'COLONY_MENU_SELECTOR',
-            new ColonyMenu($menuId)
-        );
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
-        $game->setTemplateVar('COLONY_SURFACE', $surface);
-        $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
 
         $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($userId) : null
-        );
-        $game->setTemplateVar(
-            'SHIELDING_MANAGER',
-            $this->colonyLibFactory->createColonyShieldingManager($colony)
         );
     }
 }

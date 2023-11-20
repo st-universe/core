@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildPlans;
 
-use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -21,8 +18,6 @@ final class ShowBuildPlans implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_BUILDPLANS';
 
     private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
 
     private ShowBuildPlansRequestInterface $showBuildPlansRequest;
 
@@ -35,13 +30,11 @@ final class ShowBuildPlans implements ViewControllerInterface
     public function __construct(
         BuildPlanDeleterInterface $buildPlanDeleter,
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper,
         ShowBuildPlansRequestInterface $showBuildPlansRequest,
         BuildingFunctionRepositoryInterface $buildingFunctionRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showBuildPlansRequest = $showBuildPlansRequest;
         $this->buildingFunctionRepository = $buildingFunctionRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
@@ -58,17 +51,17 @@ final class ShowBuildPlans implements ViewControllerInterface
             false
         );
 
-        $this->colonyGuiHelper->register($colony, $game);
-
-        /** @var BuildingFunctionInterface $buildingFunction */
         $buildingFunction = $this->buildingFunctionRepository->find(
             $this->showBuildPlansRequest->getBuildingFunctionId()
         );
+        if ($buildingFunction === null) {
+            return;
+        }
 
-        $game->showMacro('html/colonymacros.xhtml/cm_buildplans');
+        $game->showMacro(ColonyMenuEnum::MENU_BUILDPLANS->getTemplate());
+        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_BUILDPLANS);
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_BUILDPLANS));
         $game->setTemplateVar(
             'AVAILABLE_BUILDPLANS',
             array_map(
