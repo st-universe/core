@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\ChangeName;
 
 use JBBCode\Parser;
 use request;
-use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -45,7 +45,7 @@ final class ChangeName implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyEnum::MENU_OPTION]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyMenuEnum::MENU_OPTION]);
 
         $text = $this->changeNameRequest->getName();
 
