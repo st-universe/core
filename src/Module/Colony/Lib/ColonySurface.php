@@ -45,8 +45,6 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private bool $showUnderground;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
@@ -83,7 +81,6 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->entityManager = $entityManager;
         $this->showUnderground = $showUnderground;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
-        $this->loggerUtil = $loggerUtil;
     }
 
     public function getSurface(): array

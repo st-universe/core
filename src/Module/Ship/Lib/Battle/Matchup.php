@@ -11,12 +11,12 @@ class Matchup
     private ShipWrapperInterface $attackingShipWrapper;
 
     /**
-     * @var array<ShipWrapperInterface>
+     * @var array<int, ShipWrapperInterface>
      */
     private array $targetShipWrappers;
 
     /**
-     * @param array<ShipWrapperInterface> $targetShipWrappers
+     * @param array<int, ShipWrapperInterface> $targetShipWrappers
      */
     public function __construct(ShipWrapperInterface $attackingShipWrapper, array $targetShipWrappers)
     {
@@ -30,7 +30,7 @@ class Matchup
     }
 
     /**
-     * @return array<ShipWrapperInterface> $targetShipWrappers
+     * @return array<int, ShipWrapperInterface> $targetShipWrappers
      */
     public function getDefenders(): array
     {

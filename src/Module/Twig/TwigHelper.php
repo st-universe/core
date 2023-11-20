@@ -6,10 +6,16 @@ namespace Stu\Module\Twig;
 
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Tal\TalHelper;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Twig\Environment;
 use Twig\TwigFilter;
@@ -25,16 +31,20 @@ class TwigHelper
 
     private FightLibInterface $fightLib;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         Environment $environment,
         Parser $parser,
         ConfigInterface $config,
-        FightLibInterface $fightLib
+        FightLibInterface $fightLib,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->environment = $environment;
         $this->parser = $parser;
         $this->config = $config;
         $this->fightLib = $fightLib;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function registerGlobalVariables(): void
@@ -91,6 +101,26 @@ class TwigHelper
         });
         $this->environment->addFilter($formatSecondsFilter);
 
+        $planetFieldTitleFilter = new TwigFilter('planetFieldTitle', function ($planetField): string {
+            return TalHelper::getPlanetFieldTitle($planetField);
+        });
+        $this->environment->addFilter($planetFieldTitleFilter);
+
+        $planetFieldTypeDescriptionFilter = new TwigFilter('planetFieldTypeDescription', function ($id): string {
+            return TalHelper::getPlanetFieldTypeDescription($id);
+        });
+        $this->environment->addFilter($planetFieldTypeDescriptionFilter);
+
+        $formatProductionValueFilter = new TwigFilter('formatProductionValue', function ($value): string {
+            return TalHelper::formatProductionValue($value);
+        });
+        $this->environment->addFilter($formatProductionValueFilter);
+
+        $isPositiveFilter = new TwigFilter('isPositive', function (int $value): bool {
+            return $value > 0;
+        });
+        $this->environment->addFilter($isPositiveFilter);
+
         $datetimeFilter = new TwigFilter('datetime', function ($value): string {
             return sprintf(
                 '%s%s %s',
@@ -108,5 +138,20 @@ class TwigHelper
             return $this->fightLib->canAttackTarget($ship, $target);
         });
         $this->environment->addFunction($canAttackTargetFunction);
+
+        $getEpsProductionPreviewFunction = new TwigFunction('getEpsProductionPreview', function (PlanetFieldHostInterface $host, BuildingInterface $building): ColonyEpsProductionPreviewWrapper {
+            return $this->colonyLibFactory->createEpsProductionPreviewWrapper($host, $building);
+        });
+        $this->environment->addFunction($getEpsProductionPreviewFunction);
+
+        $getCommodityProductionPreviewFunction = new TwigFunction('getCommodityProductionPreview', function (PlanetFieldHostInterface $host, BuildingInterface $building): ColonyProductionPreviewWrapper {
+            return $this->colonyLibFactory->createColonyProductionPreviewWrapper($building, $host);
+        });
+        $this->environment->addFunction($getCommodityProductionPreviewFunction);
+
+        $getColonyMenuClassFunction = new TwigFunction('getColonyMenuClass', function (ColonyMenuEnum $currentMenu, int $value): string {
+            return ColonyMenuEnum::getMenuClass($currentMenu, $value);
+        });
+        $this->environment->addFunction($getColonyMenuClassFunction);
     }
 }
