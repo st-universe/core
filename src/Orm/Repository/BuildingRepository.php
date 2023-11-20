@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
-use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Researched;
@@ -24,33 +23,6 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         int $buildMenu,
         int $offset
     ): array {
-        if ($host instanceof ColonySandboxInterface) {
-
-            return $this->getEntityManager()
-                ->createQuery(
-                    sprintf(
-                        'SELECT b FROM %s b WHERE b.bm_col = :buildMenu
-                    AND b.view = :viewState
-                    AND b.id IN (
-                            SELECT fb.buildings_id FROM %s fb WHERE fb.type IN (
-                                SELECT pf.type_id FROM %s pf WHERE pf.colony_sandbox_id = :sandboxId
-                            )
-                        ) ORDER BY b.name',
-                        Building::class,
-                        PlanetFieldTypeBuilding::class,
-                        PlanetField::class
-                    )
-                )
-                ->setMaxResults(ColonyEnum::BUILDMENU_SCROLLOFFSET)
-                ->setFirstResult($offset)
-                ->setParameters([
-                    'viewState' => 1,
-                    'buildMenu' => $buildMenu,
-                    'sandboxId' => $host->getId()
-                ])
-                ->getResult();
-        }
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
