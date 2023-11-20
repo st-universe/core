@@ -88,9 +88,11 @@
 								<th colspan="5">Aktuelle Bauvorgänge</th>
 							</tr>
 							<tr tal:repeat="data BUILDINGJOB_LIST">
-								<td style="width: 45px; text-align: center;vertical-align: middle">
-									<img src="assets/planets/${data/getColony/getColonyClassId}.png" title="runtime"
-										tal:attributes="title bbcode2txt:data/getColony/getName" />
+								<td style="width: 45px; text-align: center;vertical-align: middle"
+									tal:define="colony data/getHost">
+									<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}">
+										<metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" />
+									</a>
 								</td>
 								<td style="width: 45px; text-align:center;">
 									<img src="assets/generated/buildings/${data/getBuildingId}/0at.png" />
@@ -169,10 +171,10 @@
 								<img src="assets/commodities/${mod/getModule/getCommodityId}.png"
 									tal:attributes="title mod/getModule/getCommodity/getName" />
 							</td>
-							<td style="vertical-align: middle;">
-								<a href="colony.php?SHOW_COLONY=1&id=${mod/getColony/getId}">
-									<img src="assets/planets/${mod/getColony/getColonyClassId}.png"
-										tal:attributes="title bbcode2txt:mod/getColony/getName" /></a>
+							<td style="vertical-align: middle;" tal:define="colony mod/getColony">
+								<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}">
+									<metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" />
+								</a>
 							</td>
 							<td style="vertical-align: middle;">
 								<span tal:content="mod/getAmount">.</span>
