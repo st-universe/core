@@ -271,7 +271,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection<int, ColonyInterface>
      *
-     * @OneToMany(targetEntity="Colony", mappedBy="user")
+     * @OneToMany(targetEntity="Colony", mappedBy="user", indexBy="id")
      * @OrderBy({"colonies_classes_id": "ASC", "id": "ASC"})
      */
     private Collection $colonies;
