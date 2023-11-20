@@ -2,27 +2,23 @@
 
 namespace Stu\Orm\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 
-interface ColonySandboxInterface
+interface ColonySandboxInterface extends PlanetFieldHostInterface
 {
-    public function getId(): int;
-
     public function getColony(): ColonyInterface;
+
+    public function setColony(ColonyInterface $colony): ColonySandboxInterface;
 
     public function getName(): string;
 
     public function setName(string $name): ColonySandboxInterface;
-
-    public function getWorkers(): int;
 
     public function setWorkers(int $bev_work): ColonySandboxInterface;
 
     public function getMaxBev(): int;
 
     public function setMaxBev(int $bev_max): ColonySandboxInterface;
-
-    public function getMaxEps(): int;
 
     public function setMaxEps(int $max_eps): ColonySandboxInterface;
 
@@ -34,8 +30,7 @@ interface ColonySandboxInterface
 
     public function setMask(?string $mask): ColonySandboxInterface;
 
-    /**
-     * @return Collection<int, PlanetFieldInterface>
-     */
-    public function getPlanetFields(): Collection;
+    public function getTwilightZone(): int;
+
+    public function getSurfaceWidth(): int;
 }

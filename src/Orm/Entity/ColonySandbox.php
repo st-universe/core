@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
+use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonySandboxRepository")
@@ -24,7 +28,7 @@ use Doctrine\ORM\Mapping\Table;
  *     }
  * )
  **/
-class ColonySandbox implements ColonySandboxInterface
+class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
 {
     /**
      * @Id
@@ -72,7 +76,7 @@ class ColonySandbox implements ColonySandboxInterface
     /**
      * @var ArrayCollection<int, PlanetFieldInterface>
      *
-     * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
+     * @OneToMany(targetEntity="PlanetField", mappedBy="sandbox", indexBy="field_id", fetch="EXTRA_LAZY")
      * @OrderBy({"field_id": "ASC"})
      */
     private Collection $planetFields;
@@ -93,9 +97,21 @@ class ColonySandbox implements ColonySandboxInterface
         return $this->id;
     }
 
+    public function getUser(): UserInterface
+    {
+        return $this->getColony()->getUser();
+    }
+
     public function getColony(): ColonyInterface
     {
         return $this->colony;
+    }
+
+    public function setColony(ColonyInterface $colony): ColonySandboxInterface
+    {
+        $this->colony = $colony;
+
+        return $this;
     }
 
     public function getName(): string
@@ -129,6 +145,11 @@ class ColonySandbox implements ColonySandboxInterface
     {
         $this->bev_max = $bev_max;
         return $this;
+    }
+
+    public function getPopulation(): int
+    {
+        return $this->getMaxBev();
     }
 
     public function getMaxEps(): int
@@ -167,5 +188,55 @@ class ColonySandbox implements ColonySandboxInterface
     public function getPlanetFields(): Collection
     {
         return $this->planetFields;
+    }
+
+    public function getTwilightZone(): int
+    {
+        return $this->getColony()->getTwilightZone();
+    }
+
+    public function getSurfaceWidth(): int
+    {
+        return $this->getColony()->getSurfaceWidth();
+    }
+
+    public function getColonyClass(): ColonyClassInterface
+    {
+        return $this->getColony()->getColonyClass();
+    }
+
+    public function getPlanetFieldHostIdentifier(): string
+    {
+        return 'sandbox';
+    }
+
+    public function getPlanetFieldHostColumnIdentifier(): string
+    {
+        return 'colony_sandbox_id';
+    }
+
+    public function isColony(): bool
+    {
+        return false;
+    }
+
+    public function getHostType(): PlanetFieldHostTypeEnum
+    {
+        return PlanetFieldHostTypeEnum::SANDBOX;
+    }
+
+    public function getDefaultViewIdentifier(): string
+    {
+        return ShowColonySandbox::VIEW_IDENTIFIER;
+    }
+
+    public function isMenuAllowed(ColonyMenuEnum $menu): bool
+    {
+        return in_array($menu, [
+            ColonyMenuEnum::MENU_BUILD,
+            ColonyMenuEnum::MENU_BUILDINGS,
+            ColonyMenuEnum::MENU_INFO,
+            ColonyMenuEnum::MENU_SOCIAL
+        ]);
     }
 }
