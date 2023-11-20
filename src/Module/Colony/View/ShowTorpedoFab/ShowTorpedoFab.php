@@ -43,7 +43,7 @@ final class ShowTorpedoFab implements ViewControllerInterface
         $game->showMacro(ColonyMenuEnum::MENU_TORPEDOFAB->getTemplate());
         $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_TORPEDOFAB);
 
-        $game->setTemplateVar('COLONY', $colony);
+        $game->setTemplateVar('HOST', $colony);
         $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $this->torpedoTypeRepository->getForUser($userId));
     }
 }
