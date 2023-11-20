@@ -1,0 +1,41 @@
+{% from 'html/macros.twig' import useravatar %}
+
+{% if ALLIANCE %}
+<br />
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <a href="alliance.php?SHOW_BOARDS=1">Allianzforum</a>
+        </th>
+    </tr>
+    {% if RECENT_ALLIANCE_BOARD_TOPICS %}
+    {% for data in RECENT_ALLIANCE_BOARD_TOPICS %}
+    {% set recentPost = data.getLatestPost %}
+    <tr>
+        <td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
+            <div class="maindeskNewsItemAvatar">
+                {{ useravatar(recentPost/getUser) }}
+            </div>
+        </td>
+        <td>
+            <span>Thema:</span>
+            <a href="alliance.php?SHOW_TOPIC=1&bid={{ data.getBoardId }}&tid={{ data.getId }}">
+                {{ data.getName|bbcode }}
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            von: {{ recentPost.getUser.getName|bbcode }}" />
+            -
+            {{ recentPost.getDate|datetime }}
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="3">Keine Beiträge vorhanden</td>
+    </tr>
+    {% endif %}
+</table>
+{% endif %}

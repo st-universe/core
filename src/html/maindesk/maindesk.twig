@@ -1,0 +1,33 @@
+{% extends "html/sitedefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<table style="width: 100%;" cellpadding="0" cellspacing="0">
+	<tr>
+		<td style="vertical-align: top;">
+			<div style="width: 100%;">
+				{% include 'html/maindesk/firstColonyDialogue.twig' %}
+				{% include 'html/maindesk/colonizationShipDialogue.twig' %}
+				{% include 'html/maindesk/tutorials.twig' %}
+				{% include 'html/maindesk/newKnPostings.twig' %}
+				{% include 'html/maindesk/alliance.twig' %}
+			</div>
+			<br />
+			{% include 'html/maindesk/emergencies.twig' %}
+			{% include 'html/maindesk/events.twig' %}
+		</td>
+		<td style="vertical-align: top; width: 360px;">
+			<div style="margin-left: 10px; width: 350px;">
+				{% include 'html/maindesk/colonyLimits.twig' %}
+				{% include 'html/maindesk/crewLimit.twig' %}
+				{% include 'html/maindesk/visitors.twig' %}
+				{% include 'html/maindesk/randomOnline.twig' %}
+			</div>
+			<br />
+			<div style="width: 350px; margin-left: 10px">
+				{% include 'html/ship/buildprogress.twig' %}
+			</div>
+		</td>
+	</tr>
+</table>
+{% endblock %}

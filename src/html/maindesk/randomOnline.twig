@@ -1,0 +1,18 @@
+{% from 'html/macros.twig' import useravatar %}
+
+<div class="box">
+    <div class="box_title">Zufällige Spieler (online)</div>
+    <div class="box_body">
+        {% if RANDOM_ONLINE_USER %}
+        <div class="randomOnlineUsers">
+            {% for user in RANDOM_ONLINE_USER %}
+            {{ useravatar(user) }}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="width: 100%; text-align: center;">
+            Kein Spieler online
+        </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,19 @@
+{% from 'html/macros.twig' import useravatar %}
+
+<div class="box">
+    <div class="box_title">Profilbesucher</div>
+    <div class="box_body">
+        {% if RECENT_PROFILE_VISITORS %}
+        <div class="recentProfileVisitors">
+            {% for data in RECENT_PROFILE_VISITORS %}
+            {{ useravatar(data.getUser) }}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="width: 100%; text-align: center;">
+            Keine Besucher
+        </div>
+        {% endif %}
+    </div>
+</div>
+<br />

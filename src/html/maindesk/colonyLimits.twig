@@ -1,0 +1,16 @@
+<div class="box">
+    <div class="box_title">Kolonielimitierung</div>
+    <div class="box_body">
+        <div style="width: 100%; text-align: center">
+            <img src="/assets/planets/201s.png" title="Planeten" />
+            {{ PLANET_COUNT }} / {{ PLANET_LIMIT }}
+            <img src="/assets/planets/401s.png" title="Monde" />
+            {{ MOON_COUNT }} / {{ MOON_LIMIT }}
+            {% if ASTEROID_LIMIT %}
+            <img src="/assets/planets/701s.png" title="Asteroiden" />
+            {{ ASTEROID_COUNT }} / {{ ASTEROID_LIMIT }}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<br />
