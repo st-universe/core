@@ -31,13 +31,14 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                             SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.aktiv = :activeState
                         ) AND b.id IN (
                             SELECT fb.buildings_id FROM %s fb WHERE fb.type IN (
-                                SELECT fd.type_id FROM %s fd WHERE fd.colonies_id = :colonyId
+                                SELECT fd.type_id FROM %s fd WHERE fd.%s = :hostId
                             )
                         )) ORDER BY b.name',
                     Building::class,
                     Researched::class,
                     PlanetFieldTypeBuilding::class,
-                    PlanetField::class
+                    PlanetField::class,
+                    $host->getPlanetFieldHostColumnIdentifier()
                 )
             )
             ->setMaxResults(ColonyEnum::BUILDMENU_SCROLLOFFSET)
@@ -47,7 +48,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 'viewState' => 1,
                 'buildMenu' => $buildMenu,
                 'userId' => $userId,
-                'colonyId' => $host->getId()
+                'hostId' => $host->getId()
             ])
             ->getResult();
     }
