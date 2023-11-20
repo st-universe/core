@@ -1,0 +1,62 @@
+{% set style = 'margin: 1px;; width: 42px;; height: 42px;;' %}
+<div style="{{ COLONY_SURFACE.getSurfaceTileStyle }}">
+    {% for field in COLONY_SURFACE.getSurface %}
+    {% set fieldId = field.getId %}
+    {% set fieldType = field.getFieldType %}
+    {% set fieldCssClass = field.getCssClass %}
+    {% set dayNightPrefix = field.getDayNightPrefix %}
+
+    <div style="{{ style }}" class="{{ fieldCssClass }}">
+        {% if field.hasBuilding %}
+        {% set buildingId = field.getBuildingId %}
+        {% set buildingType = field.getBuilding.getBuildingType %}
+
+        {% if field.isUnderConstruction %}
+        <div style="background-image: url(/assets/generated/fields/{{ dayNightPrefix }}{{ fieldType }}.png); width: 40px; height: 40px;"
+            onclick="fieldMouseClick(this,{{ fieldId }},{{ buildingId }});" id="field{{ fieldId }}">
+            <div onmouseover="fieldMouseOver(this,{{ buildingId }},{{ fieldType }})"
+                onmouseout="fieldMouseOut(this,{{ fieldType }})"
+                style="width: 40px; height: 40px; background-image: url(/assets/generated/buildings/{{ field.getPictureType }}{{ dayNightPrefix }}.png)">
+                <div style="height: 40px; overflow: hidden; width: {{ field.getOverlayWidth }}px;"><img
+                        style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
+                        src="/assets/generated/buildings/{{ buildingId }}/{{ buildingType }}a{{ dayNightPrefix }}.png" />
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div style="background-image: url(/assets/generated/fields/{{ dayNightPrefix }}{{ fieldType }}.png); width: 40px; height: 40px;"
+            onclick="fieldMouseClick(this,{{ fieldId }},{{ buildingId }});" id="field{{ fieldId }}">
+            <div onmouseover="fieldMouseOver(this,{{ buildingId }},{{ fieldType }})"
+                onmouseout="fieldMouseOut(this,{{ fieldType }})">
+                <div><img style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
+                        src="/assets/generated/buildings/{{ buildingId }}/{{ buildingType }}{{ field.getBuildingState }}{{ dayNightPrefix }}.png" />
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        {% if field.getTerraforming %}
+        <div style="background-image: url(/assets/generated/fields/{{ dayNightPrefix }}{{ fieldType }}.png); width: 40px; height: 40px;"
+            onclick="fieldMouseClick(this,{{ fieldId }},0);" id="field{{ fieldId }}">>
+            <div>
+                <div><img class="action" style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
+                        src="/assets/terraform/{{ field.getTerraforming.getId }}/{{ dayNightPrefix }}.png" /></div>
+            </div>
+        </div>
+        {% else %}
+        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,{{ fieldId }},0);"
+            id="field{{ fieldId }}">
+            <div>
+                <div><img onmouseover="fieldMouseOver(this,0,{{ fieldType }})"
+                        onmouseout="fieldMouseOut(this,{{ fieldType }})" style="width: 40px; height: 40px;"
+                        title="{{ field|planetFieldTitle }}"
+                        src="/assets/generated/fields/{{ dayNightPrefix }}{{ fieldType }}.png" />
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    {% endfor %}
+</div>

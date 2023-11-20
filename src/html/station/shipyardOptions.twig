@@ -1,0 +1,50 @@
+{# needs following variables: station, availableBuildplans) #}
+<table class="tcal">
+  <tr>
+    <th></th>
+    <th>Anzahl Schiffe</th>
+    <th>Bauzeit</th>
+    <th></th>
+  </tr>
+  {% for data in availableBuildplans %}
+  <tr class="row" style="cursor: pointer;" title="Details">
+    <td class="selectable" onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');">{{ data.getName }}</td>
+    <td class="selectable" onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');">{{ data.getShipCount }}</td>
+    <td onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');">{{ data.getBuildtime|formatSeconds }}</td>
+    <td style="text-align: center;">
+      <a class="linkbutton"
+        href="station.php?id={{ station.getId }}&B_BUILD_SHIPYARD_SHIP=1&planid={{ data.getId }}">Schiff
+        bauen</a>
+    </td>
+  </tr>
+  <tr title="Details schließen" onclick="toggleTableRowVisible('buildplan_{{ data.getId }}');"
+    id="buildplan_{{ data.getId }}" style="cursor: pointer; display: none;" class="row">
+    <td colspan="4">
+      <table style="width: 100%">
+        <tr>
+          <td>Rumpf</td>
+          <td>
+            <div style="display: table-cell;">
+              <img src="/assets/ships/{{ data.getRump.getId }}.png" />
+            </div>
+            <span style="display: table-cell; vertical-align: middle;">{{ data.getRump.getName }}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Module</td>
+          <td>
+            {% for module in data.getModules %}
+            <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
+              name="{{ module.getModule.getName }}" />
+            {% endfor %}
+          </td>
+        </tr>
+        <tr>
+          <td>Crewbedarf</td>
+          <td>{{ data.getCrew }}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  {% endfor %}
+</table>

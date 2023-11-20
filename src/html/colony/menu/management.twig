@@ -1,0 +1,217 @@
+{% include 'html/colony/menu/mainscreen.twig' %}
+
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<div style="width: 40vw;">
+    <div class="box">
+        <div class="box_title">Schiffe im Orbit</div>
+        <div class="box_body">
+            <ul id="shipselector">
+                {% if FIRST_ORBIT_SHIP %}
+                {% set wrapper = FIRST_ORBIT_SHIP %}
+                {% include 'html/colony/component/shipSelector.twig' %}
+                {% else %}
+                <li style="text-align: center">Keine Schiffe im Orbit</li>
+                {% endif %}
+            </ul>
+            {% if FIRST_ORBIT_SHIP %}
+            <div style="width: 100%;">
+                <br />
+                <a href="javascript:void(0);" onclick="showBFromWindow();"
+                    onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img
+                        src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen" /></a>
+                <a href="javascript:void(0);" onclick="showBToWindow();" onmouseover="cp('beamto','buttons/b_up2')"
+                    onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto"
+                        title="Zu Schiff beamen" /></a>
+                <a href="javascript:void(0);" onclick="getOrbitShipList();">Liste</a> | <a
+                    href="?SHOW_ORBITAL_SHIPS=1&id={{ COLONY.getId }}">Management</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <br />
+    <div class="colonyInfoContainer">
+        <div class="box">
+            <div class="box_title">Planet</div>
+            <div class="box_body">
+                <div>
+                    <img src="/assets/planets/{{ COLONY.getColonyClassId }}.png" style="width: 30px; height: 30px;" />
+                    {{ COLONY.getPlanetName }} ({{ COLONY.getSX }}|{{ COLONY.getSY }})
+                </div>
+                <div>
+                    <img src="/assets/buttons/t_{{ COLONY.getDayTimePrefix }}.png"
+                        title="{{ COLONY.getDayTimeName }}" />
+                    <span>{{ COLONY.getColonyTimeHour }}:{{ COLONY.getColonyTimeMinute }} Uhr</span>
+                    <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
+                    {{ COLONY.getRotationTime|formatSeconds }}
+                </div>
+            </div>
+        </div>
+        {% if STARSYSTEM_ENTRY_TAL %}
+        <div class="box">
+            <div class="box_title">Sternensystem</div>
+            <div class="box_body">
+                {% if STARSYSTEM_ENTRY_TAL.wasDiscovered %}
+                <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ STARSYSTEM_ENTRY_TAL.getId }}"
+                    title="Karte des Systems öffnen">
+                    <img src="/assets/map/systemtypes/{{ COLONY.getSystem.getSystemType.getId }}.png"
+                        title="{{ COLONY.getSystem.getSystemType.getDescription }}" />
+                    <span>{{ COLONY.getSystem.getName }}
+                        ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
+                </a>
+                {% else %}
+                <img src="/assets/map/systemtypes/{{ COLONY.getSystem.getSystemType.getId }}.png"
+                    title="{{ COLONY.getSystem.getSystemType.getDescription }}" />
+                <span>{{ COLONY.getSystem.getName }}
+                    ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
+                {% endif %}
+                <div>
+                    Typ: {{ COLONY.getSystem.getSystemType.getDescription }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% set DEPOSIT_MININGS = COLONY_SURFACE.getUserDepositMinings %}
+    {% if DEPOSIT_MININGS %}
+    <div class="box">
+        <div class="box_title">Geschürfte Ressourcen</div>
+        <div class="box_body">
+            <table class="tcal">
+                <tr>
+                    <th colspan="2">Ressource</th>
+                    <th>verbleibend</th>
+                    <th></th>
+                </tr>
+                {% for deposit_item in DEPOSIT_MININGS %}
+                <tr>
+                    <td><img src="/assets/commodities/{{ deposit_item.deposit.getCommodity.getId }}.png"
+                            title="{{ deposit_item.deposit.getCommodity.getName }}" /></td>
+                    <td>{{ deposit_item.deposit.getCommodity.getName }}</td>
+                    <td>{{ deposit_item.deposit.getAmountLeft }}</td>
+                    <td>{{ deposit_item.currentlyMined }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <br />
+    {% endif %}
+    {% if SHIELDING_MANAGER.hasShielding or BUILDABLE_TORPEDO_TYPES %}
+    <div class="box">
+        <div class="box_title">Schilde + Orbitalverteidigung</div>
+        <div class="box_body">
+            <table class="tcal">
+                {% if SHIELDING_MANAGER.hasShielding %}
+                <tr>
+                    <td>Schildstärke: <input type="text" size="4" name="load" id="loadshield_value"
+                            onkeydown="event.key == 'Enter' &&  $('loadshield_button').click()" />
+                        <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS"
+                            id="loadshield_button" />
+                        <input type="button" class="button" value="max"
+                            onclick="$('loadshield_value').value = '{{ SHIELDING_MANAGER.getMaxShielding }}'; $('loadshield_button').click()" />
+                    </td>
+                    <td>
+                        {% if SHIELDING_MANAGER.isShieldingEnabled %}
+                        <a href="?B_DEACTIVATE_SHIELDS=1&id={{ COLONY.getId }}&sstr={{ SESSIONSTRING }}"
+                            onmouseover="cp('shields','buttons/shldac2')" onmouseout="cp('shields','buttons/shldac1')">
+                            <img src="/assets/buttons/shldac1.png" name="shields" /> Deaktivieren
+                        </a>
+                        {% else %}
+                        <a href="?B_ACTIVATE_SHIELDS=1&id={{ COLONY.getId }}&sstr={{ SESSIONSTRING }}"
+                            onmouseover="cp('shields','buttons/shldac1')" onmouseout="cp('shields','buttons/shldac2')">
+                            <img src="/assets/buttons/shldac2.png" name="shields" /> Aktivieren
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
+                    <td>
+                        <input type="text" size="5" name="frequency" value"{{ COLONY.getShieldFrequency }}"
+                            onkeydown="event.key == 'Enter' &&  $('changeFrequencyButton').click()" />
+                        <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
+                            id="changeFrequencyButton" />
+                    </td>
+                </tr>
+                {% endif %}
+                {% if BUILDABLE_TORPEDO_TYPES %}
+                <tr>
+                    <td>Torpedo-Sorte für Orbitalverteidigung</td>
+                    <td>
+                        <select name="torpid">
+                            <option value="0">----------------------</option>
+                            {% for data in BUILDABLE_TORPEDO_TYPES %}
+                            {% if COLONY.getTorpedo and (COLONY.getTorpedo.getId == data.getId) %}
+                            <option value="{{ data.getId }}" selected="1">{{ data.getName }}</option>
+                            {% else %}
+                            <option value="{{ data.getId }}">{{ data.getName }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="submit" class="button" value="ändern" name="B_CHANGE_TORPS"
+                            id="changetorps_button" />
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <br />
+    {% endif %}
+    <table class="tcal population">
+        <tr>
+            <th colspan="5">Bevölkerung</th>
+        </tr>
+        <tr>
+            <td class="populationValue">
+                <div>Gesamt</div>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ HOST.getPopulation }}
+            </td>
+            <td class="populationValue">
+                <div>Arbeiter</div>
+                <img src="/assets/bev/bev_used_5_{{ USER.getFactionId }}.png" title="Arbeiter" />
+                {{ HOST.getWorkers }}
+            </td>
+            <td class="populationValue">
+                <div>Verfügbar</div>
+                <img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Freie Bevölkerung" />
+                {{ HOST.getWorkless }}
+            </td>
+            <td class="populationValue">
+                <div>Wohnraum</div>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Wohnraum" />
+                {{ HOST.getFreeHousing }} ({{ HOST.getMaxBev }})
+            </td>
+            <td class="populationValue">
+                <div>Entwicklung</div>
+                <img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Wachstum" />
+                {{ COLONY_SURFACE.getPopulation.getGrowth|addPlusCharacter }}
+            </td>
+        </tr>
+    </table>
+    {% if EFFECTS %}
+    <br />
+    <div style="white-space: normal">
+        <div class="box">
+            <div class="box_title">Effekte</div>
+            <div class="box_body">
+                <div class="colonyEffectGrid">
+                    {% for data in EFFECTS %}
+                    <div class="colonyEffectContainer">
+                        <img src="/assets/commodities/{{ data.commodity.getId }}.png"
+                            title="{{ data.commodity.getName }}" />
+                        <span>{{ data.commodity.getName }}</span>
+                    </div>
+                    <div class="colonyEffectProduction {{ data.production.getCssClass }}">
+                        {{ data.production.getProductionDisplay }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% endembed %}

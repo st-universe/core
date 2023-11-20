@@ -1,0 +1,19 @@
+{% include 'html/colony/menu/mainscreen.twig' %}
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<div>
+    <table cellpading="0" cellspacing="0" style="text-align: center;">
+        <tr>
+            {% for menutype, menu in BUILD_MENUS %}
+            <td class="buildmenu">
+                <div id="buildmenu{{ menutype }}">
+                    {% set scrolloffset = '0' %}
+                    {% include 'html/colony/component/buildmenu.twig' %}
+                </div>
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+{% endblock %}
+{% endembed %}

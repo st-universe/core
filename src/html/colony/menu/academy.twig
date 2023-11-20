@@ -1,0 +1,63 @@
+{% embed "html/colony/menu/container.twig" %}
+{% block containment %}
+<div>
+    <table class="tcal">
+        <tr>
+            <td style="width: 50%;" class="colonymenu">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
+                    &lt;&lt; Zurück zum Koloniemenü
+                </a>
+            </td>
+            <td style="width: 50%;" class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 12) }}">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(12);">
+                    <span>Akademie</span>
+                </a>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th colspan="4">Crewausbildung</th>
+        </tr>
+        <tr>
+            <td style="width: 25%" class="darkbg">Freie Bevölkerung</td>
+            <td style="width: 25%" class="darkbg">Gleichzeitig Ausbildbar</td>
+            <td style="width: 25%" class="darkbg">In Ausbildung</td>
+            <td style="width: 25%" class="darkbg">Noch Ausbildbar</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Freie Bevölkerung" />
+                {{ COLONY.getWorkless }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Gleichzeitig Ausbildbar" />
+                {{ CREW_COUNT_TRAINABLE }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="In Ausbildung" />
+                {{ CREW_COUNT_TRAINING }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Noch Ausbildbar" />
+                {{ CREW_COUNT_REMAINING }}
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th>Ausbildung</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" name="crewcount" size="2" /> / {{ TRAINABLE_CREW_COUNT_PER_TICK }}
+                <span>Crew</span>
+                <input type="submit" style="cursor: pointer;" name="B_TRAIN_CREW" value="Ausbilden" />
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock %}
+{% endembed %}

@@ -1,0 +1,39 @@
+{# needs following variables: host, shipRepairProgress) #}
+{% set shipRepairProgress = SHIP_REPAIR_PROGRESS %}
+{% if shipRepairProgress %}
+<table class="tcal">
+    <tr>
+        <th colspan="5">Schiffe in Reparatur</th>
+    </tr>
+    {% for wrapper in shipRepairProgress %}
+    {% set ship = wrapper.get %}
+    {% set shipId = ship.getId %}
+    <tr style="height: 50px" class="row">
+        <td style="text-align: center; vertical-align: middle;">
+            <img src="/assets/ships/{{ ship.getRump.getId }}.png" title="{{ ship.getRump.getName }}" />
+        </td>
+        <td style="text-align: center; vertical-align: middle">
+            {{ ship.getName|bbcode }}
+        </td>
+        <td style="text-align: center; vertical-align: middle">
+            <img src="/assets/buttons/modul_1.png" title="Hülle" style="width: 12px; height: 12px;" />
+            {{ ship.getHull }}/{{ ship.getMaxHull }}
+        </td>
+        <td style="text-align: center; vertical-align: middle">
+            {% for sys in wrapper.getDamagedSystems %}
+            <img title="{{ sys.getName }}: {{ sys.getStatus }}%" style="margin-right: 5px;"
+                class="{{ sys.getCssClass }}" src="/assets/system/{{ sys.getSystemType.value }}.png" />
+            {% endfor %}
+        </td>
+        <td>
+            <a href="?id={{ host.getId }}&B_CANCEL_REPAIR=1&shipid={{ shipId }}&sstr={{ SESSIONSTRING }}"
+                onmouseover="cp('cancel{{ shipId }}','buttons/x2');"
+                onmouseout="cp('cancel{{ shipId }}','buttons/x1');">
+                <span>{{ wrapper.getRepairDuration }}</span> Ticks
+                <img src="/assets/buttons/x1.png" name="cancel{{ shipId }}" title="Reparatur abbrechen" />
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}

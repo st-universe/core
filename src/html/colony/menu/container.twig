@@ -1,5 +1,8 @@
 <div class="colonymenu_container" onkeydown="return event.key != 'Enter';">
-    <form action="colony.php" method="post">
+    <form action="{{ FORM_ACTION }}" method="post">
+        <input type="hidden" name="id" value="{{ HOST.getId }}" />
+        <input type="hidden" name="hosttype" value="{{ HOST.getHostType.value }}" />
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         {% block containment %}
         ...
         {% endblock %}

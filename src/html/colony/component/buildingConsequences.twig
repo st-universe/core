@@ -1,0 +1,31 @@
+<strong>Auswirkungen</strong>
+{% if building.getHousing %}
+<div>
+    <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Wohnraum" />
+    +{{ building.getHousing }}
+</div>
+{% endif %}
+{% if building.getWorkers %}
+<div>
+    <img src="/assets/bev/bev_used_5_{{ USER.getFactionId }}.png" title="Arbeiter" />
+    -{{ building.getWorkers }}
+</div>
+{% endif %}
+{% if building.getStorage %}
+<div>
+    <img src="/assets/buttons/lager.png" title="Lagerraum" />
+    +{{ building.getStorage }}
+</div>
+{% endif %}
+{% if building.getEpsStorage %}
+<div>
+    <img src="/assets/buttons/eps.png" title="Energiespeicher" />
+    +{{ building.getEpsStorage }}
+</div>
+{% endif %}
+{% if building.getShieldCapacity %}
+<div>
+    <img src="/assets/buttons/shldp2.png" title="Schilde" />
+    +{{ building.getShieldCapacity }}
+</div>
+{% endif %}

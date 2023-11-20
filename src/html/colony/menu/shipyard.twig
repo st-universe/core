@@ -1,0 +1,37 @@
+{% include 'html/colony/component/shipyardTabs.twig' %}
+{% embed "html/colony/menu/subContainer.twig" %}
+{% block containment %}
+<div>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th>Verfügbare Schiffsrümpfe</th>
+        </tr>
+        {% if BUILDABLE_SHIPS %}
+        <tr>
+            <td>
+                {% for rump in BUILDABLE_SHIPS %}
+                <div style="width: 196px; height:120px; float: left;">
+                    <a class="std" href="?SHOW_MODULE_SCREEN=1&id={{ COLONY.getId }}&rump={{ rump.getId }}"
+                        style="height: 120px; width: 196px; text-align: center; text-decoration: none; display: block;">
+                        <img src="/assets/ships/{{ rump.getId }}.png" title="{{ rump.getName }}"
+                            style="padding-top: 5px;" /><br />
+                        {{ rump.getName }}<br /><br />
+                        <span>Typ</span>: {{ rump.getCategoryName }}<br />
+                        <span>Im Einsatz</span>: {{ rump.getActiveShipCount }}<br />
+                        <span>Baupläne</span>: {{ rump.getBuildplanCount }}
+                    </a>
+                </div>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
+        {% if not BUILDABLE_RUMPS %}
+        <tr>
+            <td>Keine Rümpfe zum Bau vorhanden</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}
+{% endembed %}

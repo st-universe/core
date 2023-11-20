@@ -1,4 +1,4 @@
-{% macro shipselector(SHIP, wrapper) %}
+{# needs following variables: SHIP, wrapper) #}
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
 <li>
@@ -27,7 +27,7 @@
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
-              <img src="assets/buttons/modul_1.png" />
+              <img src="/assets/buttons/modul_1.png" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
               {% autoescape false %}
@@ -49,7 +49,7 @@
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
-              <img src="assets/buttons/modul_2.png" />
+              <img src="/assets/buttons/modul_2.png" />
             </th>
             <td style="text-align: center; vertical-align: middle;">
               {% autoescape false %}
@@ -69,7 +69,7 @@
         <table class="tcal">
           <tr>
             <th style="text-align: center; width: 20px;">
-              <img src="assets/buttons/modul_8.png" />
+              <img src="/assets/buttons/modul_8.png" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
               {% autoescape false %}
@@ -88,27 +88,3 @@
   </table>
   <input type="hidden" name="selshipid" id="selshipid" value="{{ shipId }}" />
 </li>
-{% endmacro %}
-
-{% macro ship_buildprogress(shipBuildProgress) %}
-<table class="tcal">
-  <tr>
-    <th colspan="3">Schiffe in Bau</th>
-  </tr>
-  {% for data in shipBuildProgress %}
-  <tr style="height: 50px" class="row">
-    <td style="text-align: center; vertical-align: middle;">
-      <img src="assets/ships/{{ data.getRump.getId }}.png" />
-    </td>
-    <td style="text-align: center; vertical-align: middle">{{ data.getRump.getName }}</td>
-    {% if data.getStopDate %}
-    <td colspan="2" style="text-align: center; vertical-align: middle">Angehalten</td>
-    {% else %}
-    <td style="text-align: center; vertical-align: middle">
-      {{ data.getFinishDate|datetime }}
-    </td>
-    {% endif %}
-  </tr>
-  {% endfor %}
-</table>
-{% endmacro %}
