@@ -3,11 +3,10 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 
-interface ColonyInterface
+interface ColonyInterface extends PlanetFieldHostInterface
 {
-    public function getId(): int;
-
     public function getColonyClassId(): int;
 
     public function getUserId(): int;
@@ -28,8 +27,6 @@ interface ColonyInterface
 
     public function setPlanetName(string $planet_name): ColonyInterface;
 
-    public function getWorkers(): int;
-
     public function setWorkers(int $bev_work): ColonyInterface;
 
     public function getWorkless(): int;
@@ -43,8 +40,6 @@ interface ColonyInterface
     public function getEps(): int;
 
     public function setEps(int $eps): ColonyInterface;
-
-    public function getMaxEps(): int;
 
     public function setMaxEps(int $max_eps): ColonyInterface;
 
@@ -102,8 +97,6 @@ interface ColonyInterface
 
     public function setSurfaceWidth(int $surfaceWidth): ColonyInterface;
 
-    public function getColonyClass(): ColonyClassInterface;
-
     public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface;
 
     public function getStorageSum(): int;
@@ -119,11 +112,6 @@ interface ColonyInterface
     public function getSystem(): StarSystemInterface;
 
     public function getBeamFactor(): int;
-
-    /**
-     * @return Collection<int, PlanetFieldInterface>
-     */
-    public function getPlanetFields(): Collection;
 
     /**
      * @return StorageInterface[]
@@ -165,11 +153,7 @@ interface ColonyInterface
 
     public function isFree(): bool;
 
-    public function getUser(): UserInterface;
-
     public function setUser(UserInterface $user): ColonyInterface;
-
-    public function getPopulation(): int;
 
     public function getFreeHousing(): int;
 
