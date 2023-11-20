@@ -9,7 +9,7 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 interface ColonySurfaceInterface
 {
     /**
-     * @return array<PlanetFieldInterface>
+     * @return array<int, PlanetFieldInterface>
      */
     public function getSurface(): array;
 

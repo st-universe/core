@@ -7,11 +7,11 @@ namespace Stu\Module\Colony\Action\Terraform;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\TerraformingInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -22,7 +22,7 @@ final class Terraform implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TERRAFORM';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private TerraformingRepositoryInterface $terraformingRepository;
 
@@ -35,14 +35,14 @@ final class Terraform implements ActionControllerInterface
     private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         TerraformingRepositoryInterface $terraformingRepository,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->terraformingRepository = $terraformingRepository;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
@@ -55,21 +55,11 @@ final class Terraform implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
-            $user->getId()
-        );
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $host = $field->getHost();
 
-        $fieldId = request::indInt('fid');
+        $game->setView($host->getDefaultViewIdentifier());
 
-        $field = $this->planetFieldRepository->getByColonyAndFieldId(
-            $colony->getId(),
-            $fieldId
-        );
-        if ($field === null) {
-            return;
-        }
 
         if ($field->getBuildingId() > 0) {
             return;
@@ -77,14 +67,12 @@ final class Terraform implements ActionControllerInterface
         if ($field->getTerraformingId() > 0) {
             return;
         }
-        /**
-         * @var TerraformingInterface $terraf
-         */
-        $terraf = $this->terraformingRepository->find(request::getIntFatal('tfid'));
-        if ($terraf === null) {
+
+        $terraforming = $this->terraformingRepository->find(request::getIntFatal('tfid'));
+        if ($terraforming === null) {
             return;
         }
-        if ($field->getFieldType() !== $terraf->getFromFieldTypeId()) {
+        if ($field->getFieldType() !== $terraforming->getFromFieldTypeId()) {
             return;
         }
 
@@ -93,72 +81,89 @@ final class Terraform implements ActionControllerInterface
             $field->getFieldType(),
             $userId
         );
-        if (!array_key_exists($terraf->getId(), $terraformingopts)) {
+        if (!array_key_exists($terraforming->getId(), $terraformingopts)) {
             throw new SanityCheckException('user tried to perform unresearched terraforming', self::ACTION_IDENTIFIER);
         }
 
+        if ($host instanceof ColonyInterface) {
+            if (!$this->doColonyCheckAndConsume($terraforming, $field, $host, $game)) {
+                return;
+            }
+        } else {
+            $field->setFieldType($terraforming->getToFieldTypeId());
 
-        if ($userId !== UserEnum::USER_NOONE && $terraf->getEnergyCosts() > $colony->getEps()) {
+            $game->addInformationf(
+                _('%s wurde durchgeführt'),
+                $terraforming->getDescription()
+            );
+        }
+
+        $this->planetFieldRepository->save($field);
+    }
+
+    private function doColonyCheckAndConsume(
+        TerraformingInterface $terraforming,
+        PlanetFieldInterface $field,
+        ColonyInterface $colony,
+        GameControllerInterface $game
+    ): bool {
+
+        if ($terraforming->getEnergyCosts() > $colony->getEps()) {
             $game->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
-                $terraf->getEnergyCosts(),
+                $terraforming->getEnergyCosts(),
                 $colony->getEps()
             );
-            return;
+            return false;
         }
 
         $storage = $colony->getStorage();
 
-        $colonyTerraforming = $this->colonyTerraformingRepository->prototype();
-
-        if ($userId !== UserEnum::USER_NOONE) {
-            foreach ($terraf->getCosts() as $obj) {
-                $commodityId = $obj->getCommodityId();
-                if (!$storage->containsKey($commodityId)) {
-                    $game->addInformationf(
-                        _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
-                        $obj->getAmount(),
-                        $obj->getCommodity()->getName()
-                    );
-                    return;
-                }
-                if ($obj->getAmount() > $storage[$commodityId]->getAmount()) {
-                    $game->addInformationf(
-                        _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
-                        $obj->getAmount(),
-                        $obj->getCommodity()->getName(),
-                        $storage[$commodityId]->getAmount()
-                    );
-                    return;
-                }
+        foreach ($terraforming->getCosts() as $obj) {
+            $commodityId = $obj->getCommodityId();
+            if (!$storage->containsKey($commodityId)) {
+                $game->addInformationf(
+                    _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
+                    $obj->getAmount(),
+                    $obj->getCommodity()->getName()
+                );
+                return false;
             }
-            foreach ($terraf->getCosts() as $obj) {
-                $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
+            if ($obj->getAmount() > $storage[$commodityId]->getAmount()) {
+                $game->addInformationf(
+                    _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
+                    $obj->getAmount(),
+                    $obj->getCommodity()->getName(),
+                    $storage[$commodityId]->getAmount()
+                );
+                return false;
             }
-            $colony->lowerEps($terraf->getEnergyCosts());
-            $time = time() + $terraf->getDuration();
-        } else {
-            $time = time() + 1;
+        }
+        foreach ($terraforming->getCosts() as $obj) {
+            $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
         }
 
+        $colony->lowerEps($terraforming->getEnergyCosts());
+        $this->colonyRepository->save($colony);
+        $time = time() + $terraforming->getDuration();
+
+        $colonyTerraforming = $this->colonyTerraformingRepository->prototype();
         $colonyTerraforming->setColony($colony);
         $colonyTerraforming->setField($field);
-        $colonyTerraforming->setTerraforming($terraf);
+        $colonyTerraforming->setTerraforming($terraforming);
         $colonyTerraforming->setFinishDate($time);
 
         $this->colonyTerraformingRepository->save($colonyTerraforming);
 
-        $field->setTerraforming($terraf);
-
-        $this->planetFieldRepository->save($field);
-
-        $this->colonyRepository->save($colony);
+        $field->setTerraforming($terraforming);
 
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
-            $terraf->getDescription(),
+            $terraforming->getDescription(),
             date('d.m.Y H:i', $time)
         );
+
+        return true;
     }
 
     public function performSessionCheck(): bool

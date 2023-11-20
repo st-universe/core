@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -37,13 +40,13 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private EntityManagerInterface $entityManager;
 
-    private LoggerUtilInterface $loggerUtil;
-
-    private ColonyInterface $colony;
+    private PlanetFieldHostInterface $host;
 
     private ?int $buildingId;
 
     private bool $showUnderground;
+
+    private LoggerUtilInterface $loggerUtil;
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
@@ -64,14 +67,14 @@ final class ColonySurface implements ColonySurfaceInterface
         ResearchedRepositoryInterface $researchedRepository,
         PlanetGeneratorInterface $planetGenerator,
         EntityManagerInterface $entityManager,
-        LoggerUtilInterface $loggerUtil,
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        ColonyInterface $colony,
-        ?int $buildingId = null,
-        bool $showUnderground = true
+        PlanetFieldHostInterface $host,
+        ?int $buildingId,
+        bool $showUnderground,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->colony = $colony;
+        $this->host = $host;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
         $this->buildingId = $buildingId;
@@ -79,20 +82,24 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->researchedRepository = $researchedRepository;
         $this->planetGenerator = $planetGenerator;
         $this->entityManager = $entityManager;
-        $this->loggerUtil = $loggerUtil;
         $this->showUnderground = $showUnderground;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function getSurface(): array
     {
+        $this->loggerUtil->init('CS', LoggerEnum::LEVEL_ERROR);
+
         try {
             $this->updateSurface();
-        } catch (PlanetGeneratorException $planetGeneratorException) {
-            return $this->colony->getPlanetFields()->toArray();
+        } catch (PlanetGeneratorException $e) {
+            return $this->host->getPlanetFields()->toArray();
         }
 
-        $fields = $this->colony->getPlanetFields()->toArray();
+        $fields = $this->host->getPlanetFields()->toArray();
+
+        $this->loggerUtil->log(sprintf('fieldCount: %s', count($fields)));
 
         if (!$this->showUnderground) {
             $fields = array_filter(
@@ -103,13 +110,9 @@ final class ColonySurface implements ColonySurfaceInterface
 
         if ($this->buildingId !== null) {
             $building = $this->buildingRepository->find($this->buildingId);
+            $user = $this->host->getUser();
 
-            if ($building === null) {
-                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-                $this->loggerUtil->log(sprintf('Es kommt gleich bei colonyId %d zu einem Fehler. buildingId: %d', $this->colony->getId(), $this->buildingId));
-            }
-
-            $researchedArray = $this->researchedRepository->getFinishedListByUser($this->colony->getUser()->getId());
+            $researchedArray = $this->researchedRepository->getFinishedListByUser($user->getId());
 
             array_walk(
                 $fields,
@@ -146,7 +149,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurfaceTileStyle(): string
     {
-        $width = $this->planetGenerator->loadColonyClassConfig($this->colony->getColonyClassId())['sizew'];
+        $width = $this->planetGenerator->loadColonyClassConfig($this->host->getColonyClass()->getId())['sizew'];
         $gridArray = [];
         for ($i = 0; $i < $width; $i++) {
             $gridArray[] = '43px';
@@ -155,18 +158,34 @@ final class ColonySurface implements ColonySurfaceInterface
         return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
+    private function getColony(): ColonyInterface
+    {
+        $host = $this->host;
+        if ($host instanceof ColonyInterface) {
+            return $host;
+        }
+
+        throw new RuntimeException('not available for sandbox');
+    }
+
     public function getEpsBoxTitleString(): string
     {
         $energyProduction = $this->getEnergyProduction();
 
-        $forecast = $this->colony->getEps() + $energyProduction;
+        $host = $this->host;
+        if ($host instanceof ColonyInterface) {
+            $forecast = $host->getEps() + $energyProduction;
+            if ($host->getEps() + $energyProduction < 0) {
+                $forecast = 0;
+            }
+            if ($host->getEps() + $energyProduction > $host->getMaxEps()) {
+                $forecast = $host->getMaxEps();
+            }
 
-        if ($this->colony->getEps() + $energyProduction < 0) {
-            $forecast = 0;
-        }
-
-        if ($this->colony->getEps() + $energyProduction > $this->colony->getMaxEps()) {
-            $forecast = $this->colony->getMaxEps();
+            $eps = $host->getEps();
+        } else {
+            $eps = 0;
+            $forecast = $energyProduction;
         }
 
         if ($energyProduction > 0) {
@@ -175,8 +194,8 @@ final class ColonySurface implements ColonySurfaceInterface
 
         return sprintf(
             _('Energie: %d/%d (%s/Runde = %d)'),
-            $this->colony->getEps(),
-            $this->colony->getMaxEps(),
+            $eps,
+            $host->getMaxEps(),
             $energyProduction,
             $forecast
         );
@@ -184,56 +203,68 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getShieldBoxTitleString(): string
     {
+        $host = $this->host;
+
         return sprintf(
             'Schildstärke: %d/%d',
-            $this->colony->getShields(),
-            $this->planetFieldRepository->getMaxShieldsOfColony($this->colony->getId())
+            $host instanceof ColonyInterface ? $host->getShields() : 0,
+            $this->planetFieldRepository->getMaxShieldsOfColony($this->host)
         );
     }
 
     public function getStorageSumPercent(): float
     {
-        $maxStorage = $this->colony->getMaxStorage();
+        if ($this->host instanceof ColonySandboxInterface) {
+            return 0;
+        }
+
+        $colony = $this->getColony();
+
+        $maxStorage = $colony->getMaxStorage();
 
         if ($maxStorage === 0) {
             return 0;
         }
 
-        return round(100 / $maxStorage * $this->colony->getStorageSum(), 2);
+        return round(100 / $maxStorage * $colony->getStorageSum(), 2);
     }
 
     public function updateSurface(): void
     {
-        if (!$this->colony->isFree()) {
+        $host = $this->host;
+        if (!$host instanceof ColonyInterface) {
+            return;
+        }
+        if (!$host->isFree()) {
             return;
         }
 
-        $mask = $this->colony->getMask();
+        $mask = $host->getMask();
 
         if ($mask === null) {
             $planetConfig = $this->planetGenerator->generateColony(
-                $this->colony->getColonyClassId(),
-                $this->colony->getSystem()->getBonusFieldAmount()
+                $host->getColonyClassId(),
+                $host->getSystem()->getBonusFieldAmount()
             );
 
             $mask = base64_encode(serialize($planetConfig->getFieldArray()));
 
-            $this->colony->setMask($mask);
-            $this->colony->setSurfaceWidth($planetConfig->getSurfaceWidth());
+            $host->setMask($mask);
+            $host->setSurfaceWidth($planetConfig->getSurfaceWidth());
 
-            $this->colonyRepository->save($this->colony);
+            $this->colonyRepository->save($host);
         }
 
-        $fields = $this->colony->getPlanetFields()->toArray();
+        $fields = $host->getPlanetFields()->toArray();
 
         $surface = unserialize(base64_decode($mask));
         foreach ($surface as $fieldId => $type) {
             if (!array_key_exists($fieldId, $fields)) {
                 $newField = $this->planetFieldRepository->prototype();
                 $fields[$fieldId] = $newField;
-                $fields[$fieldId]->setColony($this->colony);
+                $fields[$fieldId]->setColony($host);
                 $fields[$fieldId]->setFieldId($fieldId);
-                $this->colony->getPlanetFields()->set($fieldId, $newField);
+                $host->getPlanetFields()->set($fieldId, $newField);
             }
 
             $fields[$fieldId]->setBuilding(null);
@@ -252,9 +283,12 @@ final class ColonySurface implements ColonySurfaceInterface
         $production = $this->getProduction();
 
         $result = [];
+        if (!$this->host instanceof ColonyInterface) {
+            return $result;
+        }
 
-        foreach ($this->colony->getDepositMinings() as $deposit) {
-            if ($deposit->getUser() === $this->colony->getUser()) {
+        foreach ($this->host->getDepositMinings() as $deposit) {
+            if ($deposit->getUser() === $this->host->getUser()) {
                 $prod = $production[$deposit->getCommodity()->getId()] ?? null;
 
                 $result[$deposit->getCommodity()->getId()] = [
@@ -271,7 +305,7 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         if ($this->energyProduction === null) {
             $this->energyProduction = $this->planetFieldRepository->getEnergyProductionByColony(
-                $this->colony->getId()
+                $this->host
             );
         }
 
@@ -281,7 +315,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function hasShipyard(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $this->colony->getId(),
+            $this->host,
             BuildingFunctionTypeEnum::getShipyardOptions(),
             [0, 1]
         ) > 0;
@@ -290,7 +324,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function hasModuleFab(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $this->colony->getId(),
+            $this->host,
             BuildingFunctionTypeEnum::getModuleFabOptions(),
             [0, 1]
         ) > 0;
@@ -299,7 +333,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function hasAirfield(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $this->colony->getId(),
+            $this->host,
             [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
             [0, 1]
         ) > 0;
@@ -309,7 +343,7 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         if ($this->colonyPopulationCalculator === null) {
             $this->colonyPopulationCalculator = $this->colonyLibFactory->createColonyPopulationCalculator(
-                $this->colony,
+                $this->host,
                 $this->getProduction()
             );
         }
@@ -323,7 +357,7 @@ final class ColonySurface implements ColonySurfaceInterface
     private function getProduction(): array
     {
         if ($this->production === null) {
-            $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
+            $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->host)->getProduction();
         }
 
         return $this->production;

@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
 use request;
+use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\BuildingUpgradeCostInterface;
 use Stu\Orm\Entity\BuildingUpgradeInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -23,15 +25,15 @@ final class UpgradeBuilding implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_UPGRADE_BUILDING';
 
-    private ColonyLoaderInterface $colonyLoader;
-
     private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository;
+
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository;
 
     private ResearchedRepositoryInterface $researchedRepository;
 
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private ColonyStorageManagerInterface $colonyStorageManager;
 
@@ -39,40 +41,36 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private BuildingActionInterface $buildingAction;
 
+    private BuildingManagerInterface $buildingManager;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
         BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        BuildingActionInterface $buildingAction
+        BuildingActionInterface $buildingAction,
+        BuildingManagerInterface $buildingManager
     ) {
-        $this->colonyLoader = $colonyLoader;
         $this->buildingUpgradeRepository = $buildingUpgradeRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->researchedRepository = $researchedRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
+        $this->buildingManager = $buildingManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $user = $game->getUser();
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $host = $field->getHost();
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
-            $user->getId()
-        );
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
-
-        $field = $this->planetFieldRepository->getByColonyAndFieldId(
-            $colony->getId(),
-            request::indInt('fid')
-        );
+        $game->setView($host->getDefaultViewIdentifier());
 
         // has to be string because of bigint issue
         $upgradeId = request::getStringFatal('upid');
@@ -97,6 +95,52 @@ final class UpgradeBuilding implements ActionControllerInterface
             $game->addInformation(_('Das Gebäude auf diesem Feld ist noch nicht fertig'));
             return;
         }
+
+        if ($host instanceof ColonyInterface) {
+            if (!$this->doColonyCheckAndConsumeEnergy($upgrade, $host, $game)) {
+                return;
+            }
+        }
+
+        // Check for alternative building
+        $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
+            $upgrade->getBuilding()->getId(),
+            $field->getFieldType()
+        );
+        $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
+
+        $this->buildingAction->remove($field, $game, true);
+
+        if ($host instanceof ColonyInterface) {
+            foreach ($upgrade->getUpgradeCosts() as $obj) {
+                $this->colonyStorageManager->lowerStorage($host, $obj->getCommodity(), $obj->getAmount());
+            }
+        }
+
+        $field->setBuilding($building);
+
+        if ($host instanceof ColonySandboxInterface) {
+            $this->buildingManager->finish($field);
+
+            $game->addInformationf(
+                _('%s wurde gebaut'),
+                $building->getName()
+            );
+        } else {
+            $field->setActive(time() + $building->getBuildtime());
+
+            $game->addInformationf(
+                _('%s wird durchgeführt - Fertigstellung: %s'),
+                $upgrade->getDescription(),
+                date('d.m.Y H:i', $field->getBuildtime())
+            );
+        }
+
+        $this->planetFieldRepository->save($field);
+    }
+
+    private function doColonyCheckAndConsumeEnergy(BuildingUpgradeInterface $upgrade, ColonyInterface $colony, GameControllerInterface $game): bool
+    {
         $storage = $colony->getStorage();
 
         /** @var BuildingUpgradeCostInterface $obj */
@@ -107,7 +151,7 @@ final class UpgradeBuilding implements ActionControllerInterface
                     $obj->getAmount(),
                     $obj->getCommodity()->getName()
                 );
-                return;
+                return false;
             }
             if ($obj->getAmount() > $storage[$obj->getCommodityId()]->getAmount()) {
                 $game->addInformationf(
@@ -116,7 +160,7 @@ final class UpgradeBuilding implements ActionControllerInterface
                     $obj->getCommodity()->getName(),
                     $storage[$obj->getCommodityId()]->getAmount()
                 );
-                return;
+                return false;
             }
         }
 
@@ -126,34 +170,13 @@ final class UpgradeBuilding implements ActionControllerInterface
                 $upgrade->getEnergyCost(),
                 $colony->getEps()
             );
-            return;
+            return false;
         }
 
         $colony->lowerEps($upgrade->getEnergyCost());
-
-        $this->buildingAction->remove($colony, $field, $game, true);
-
-        foreach ($upgrade->getUpgradeCosts() as $obj) {
-            $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
-        }
-        // Check for alternative building
-        $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
-            $upgrade->getBuilding()->getId(),
-            $field->getFieldType()
-        );
-        $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
-
-        $field->setBuilding($building);
-        $field->setActive(time() + $building->getBuildtime());
-
         $this->colonyRepository->save($colony);
-        $this->planetFieldRepository->save($field);
 
-        $game->addInformationf(
-            _('%s wird durchgeführt - Fertigstellung: %s'),
-            $upgrade->getDescription(),
-            date('d.m.Y H:i', $field->getBuildtime())
-        );
+        return true;
     }
 
     public function performSessionCheck(): bool
