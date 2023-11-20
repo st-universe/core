@@ -842,11 +842,6 @@ parameters:
 			path: src/Module/Colony/Lib/BuildingFunctionTal.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyGuiHelper\\:\\:buildShieldBar\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonyGuiHelper.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyLibFactory\\:\\:createBuildingFunctionTal\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonyLibFactory.php
@@ -863,6 +858,11 @@ parameters:
 
 		-
 			message: "#^Cannot call method getResearchId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Lib/ColonySurface.php
+
+		-
+			message: "#^Constructor of class Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonySurface has an unused parameter \\$loggerUtil\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonySurface.php
 
@@ -2657,17 +2657,7 @@ parameters:
 			path: src/Orm/Repository/PlanetFieldRepository.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getWorkerConsumingByColonyAndState\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepository.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getWorkerConsumingByColonyAndState\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getWorkerConsumingByColonyAndState\\(\\) return type has no value type specified in iterable type iterable\\.$#"
 			count: 1
 			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
 
