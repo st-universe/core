@@ -102,7 +102,7 @@ final class ColonyListItem implements ColonyListItemInterface
 
     public function getEnergyProduction(): int
     {
-        return $this->planetFieldRepository->getEnergyProductionByColony($this->colony->getId());
+        return $this->planetFieldRepository->getEnergyProductionByColony($this->colony);
     }
 
     public function getStorageSum(): int

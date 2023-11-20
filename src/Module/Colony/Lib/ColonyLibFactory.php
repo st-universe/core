@@ -14,6 +14,7 @@ use Stu\Component\Colony\Commodity\ColonyProductionSumReducer;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\ModuleSelector;
@@ -21,6 +22,7 @@ use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
@@ -128,7 +130,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     public function createColonySurface(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         ?int $buildingId = null,
         bool $showUnderground = true
     ): ColonySurfaceInterface {
@@ -140,11 +142,11 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->researchedRepository,
             $this->planetGenerator,
             $this->entityManager,
-            $this->loggerUtilFactory->getLoggerUtil(),
             $this->planetFieldTypeRetriever,
-            $colony,
+            $host,
             $buildingId,
-            $showUnderground
+            $showUnderground,
+            $this->loggerUtilFactory->getLoggerUtil()
         );
     }
 
@@ -173,22 +175,24 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     public function createColonyProductionPreviewWrapper(
-        array $production
+        BuildingInterface $building,
+        PlanetFieldHostInterface $host
     ): ColonyProductionPreviewWrapper {
         return new ColonyProductionPreviewWrapper(
             $this,
-            $this->buildingCommodityRepository,
-            $production
+            $building,
+            $this->createColonyCommodityProduction($host)->getProduction()
         );
     }
 
     public function createEpsProductionPreviewWrapper(
-        ColonyInterface $colony
+        PlanetFieldHostInterface $host,
+        BuildingInterface $building
     ): ColonyEpsProductionPreviewWrapper {
         return new ColonyEpsProductionPreviewWrapper(
             $this->planetFieldRepository,
-            $this->buildingRepository,
-            $colony
+            $host,
+            $building
         );
     }
 
@@ -252,21 +256,21 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     public function createColonyShieldingManager(
-        ColonyInterface $colony
+        PlanetFieldHostInterface $host
     ): ColonyShieldingManagerInterface {
         return new ColonyShieldingManager(
             $this->planetFieldRepository,
             $this->colonyFunctionManager,
-            $colony
+            $host
         );
     }
 
     public function createColonyCommodityProduction(
-        ColonyInterface $colony
+        PlanetFieldHostInterface $host
     ): ColonyCommodityProductionInterface {
         return new ColonyCommodityProduction(
             $this->buildingCommodityRepository,
-            $colony,
+            $host,
             $this,
             $this->commodityCache
         );
@@ -278,13 +282,13 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     public function createColonyPopulationCalculator(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         array $production = null
     ): ColonyPopulationCalculatorInterface {
 
         return new ColonyPopulationCalculator(
-            $colony,
-            $production ?? $this->createColonyCommodityProduction($colony)->getProduction()
+            $host,
+            $production ?? $this->createColonyCommodityProduction($host)->getProduction()
         );
     }
 }

@@ -54,7 +54,6 @@ final class ActivateShields implements ActionControllerInterface
         }
 
         $this->buildingAction->activate(
-            $colony,
             current($fields),
             $game
         );

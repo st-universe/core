@@ -68,9 +68,9 @@ final class CancelModuleCreation implements ActionControllerInterface
         $game->setView('SHOW_MODULE_CANCEL', ['MODULE' => $module]);
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $colony->getId(),
+            $colony,
             [$function],
-            [0,1]
+            [0, 1]
         ) === 0) {
             return;
         }

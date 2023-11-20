@@ -65,7 +65,7 @@ final class CreateModules implements ActionControllerInterface
         $func = request::postIntFatal('func');
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $colonyId,
+            $colony,
             [$func],
             [0, 1]
         ) === 0) {
