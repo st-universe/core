@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSocial;
 
-use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -18,30 +16,22 @@ final class ShowSocial implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SOCIAL';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
     private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    private ShowSocialRequestInterface $showSocialRequest;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
 
     private CrewCountRetrieverInterface $crewCountRetriever;
 
     private CrewLimitCalculatorInterface $crewLimitCalculator;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowSocialRequestInterface $showSocialRequest,
-        ColonyLibFactoryInterface $colonyLibFactory,
         CrewLimitCalculatorInterface $crewLimitCalculator,
         CrewCountRetrieverInterface $crewCountRetriever
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
         $this->colonyGuiHelper = $colonyGuiHelper;
-        $this->showSocialRequest = $showSocialRequest;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->crewCountRetriever = $crewCountRetriever;
         $this->crewLimitCalculator = $crewLimitCalculator;
     }
@@ -50,19 +40,13 @@ final class ShowSocial implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            $this->showSocialRequest->getColonyId(),
-            $user->getId(),
-            false
-        );
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
-        $this->colonyGuiHelper->register($colony, $game);
+        $this->colonyGuiHelper->registerComponents($host, $game);
 
-        $game->showMacro('html/colonymacros.xhtml/cm_social');
+        $game->showMacro(ColonyMenuEnum::MENU_SOCIAL->getTemplate());
+        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_SOCIAL);
 
-        $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_SOCIAL));
-        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar(
             'CREW_COUNT_DEBRIS_AND_TRADE_POSTS',
             $this->crewCountRetriever->getDebrisAndTradePostsCount($user)
@@ -78,10 +62,6 @@ final class ShowSocial implements ViewControllerInterface
         $game->setTemplateVar(
             'CREW_COUNT_REMAINING',
             $this->crewCountRetriever->getRemainingCount($user)
-        );
-        $game->setTemplateVar(
-            'SHIELDING_MANAGER',
-            $this->colonyLibFactory->createColonyShieldingManager($colony)
         );
         $game->setTemplateVar(
             'GLOBAL_CREW_LIMIT',

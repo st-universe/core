@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSurface;
 
-use request;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -14,37 +14,24 @@ final class ShowSurface implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_COLONY_SURFACE';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 
-    private ShowSurfaceRequestInterface $showSurfaceRequest;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShowSurfaceRequestInterface $showSurfaceRequest,
-        ColonyLibFactoryInterface $colonyLibFactory
+        PlanetFieldHostProviderInterface $planetFieldHostProvider,
+        ColonyGuiHelperInterface $colonyGuiHelper,
     ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->showSurfaceRequest = $showSurfaceRequest;
-        $this->colonyLibFactory = $colonyLibFactory;
+        $this->planetFieldHostProvider = $planetFieldHostProvider;
+        $this->colonyGuiHelper = $colonyGuiHelper;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
-        $colony = $this->colonyLoader->byIdAndUser(
-            $this->showSurfaceRequest->getColonyId(),
-            $userId,
-            false
-        );
+        $this->colonyGuiHelper->registerComponents($host, $game, [GuiComponentEnum::SURFACE]);
 
-        $game->setTemplateVar('COLONY', $colony);
-        $game->showMacro('html/colonymacros.xhtml/colonysurface');
-        $game->setTemplateVar(
-            'COLONY_SURFACE',
-            $this->colonyLibFactory->createColonySurface($colony, request::getInt('bid') !== 0 ? request::getInt('bid') : null)
-        );
+        $game->showMacro('html/colony/component/colonySurface.twig');
     }
 }
