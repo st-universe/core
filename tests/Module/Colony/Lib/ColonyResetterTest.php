@@ -15,6 +15,7 @@ use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -79,6 +80,11 @@ class ColonyResetterTest extends StuTestCase
     private $shipCrewRepository;
 
     /**
+     * @var null|MockInterface|ColonySandboxRepositoryInterface
+     */
+    private $colonySandboxRepository;
+
+    /**
      * @var null|MockInterface|PrivateMessageSenderInterface
      */
     private $privateMessageSender;
@@ -100,6 +106,7 @@ class ColonyResetterTest extends StuTestCase
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
         $this->crewTrainingRepository = $this->mock(CrewTrainingRepositoryInterface::class);
         $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
+        $this->colonySandboxRepository = $this->mock(ColonySandboxRepositoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->resetter = new ColonyResetter(
@@ -113,6 +120,7 @@ class ColonyResetterTest extends StuTestCase
             $this->crewRepository,
             $this->crewTrainingRepository,
             $this->shipCrewRepository,
+            $this->colonySandboxRepository,
             $this->privateMessageSender
         );
     }
@@ -259,6 +267,10 @@ class ColonyResetterTest extends StuTestCase
             ->once();
 
         $this->planetFieldRepository->shouldReceive('truncateByColony')
+            ->with($colony)
+            ->once();
+
+        $this->colonySandboxRepository->shouldReceive('truncateByColony')
             ->with($colony)
             ->once();
 

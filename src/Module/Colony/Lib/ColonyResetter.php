@@ -10,6 +10,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -42,6 +43,8 @@ final class ColonyResetter implements ColonyResetterInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private ColonySandboxRepositoryInterface $colonySandboxRepository;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -55,6 +58,7 @@ final class ColonyResetter implements ColonyResetterInterface
         CrewRepositoryInterface $crewRepository,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
+        ColonySandboxRepositoryInterface $colonySandboxRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyRepository = $colonyRepository;
@@ -67,6 +71,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->crewRepository = $crewRepository;
         $this->crewTrainingRepository = $crewTrainingRepository;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->colonySandboxRepository = $colonySandboxRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -103,6 +108,7 @@ final class ColonyResetter implements ColonyResetterInterface
 
         $this->colonyShipQueueRepository->truncateByColony($colony);
         $this->planetFieldRepository->truncateByColony($colony);
+        $this->colonySandboxRepository->truncateByColony($colony);
     }
 
     private function resetBlockers(ColonyInterface $colony, bool $sendMessage = true): void
