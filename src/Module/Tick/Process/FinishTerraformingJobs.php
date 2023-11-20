@@ -8,6 +8,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -32,23 +33,28 @@ final class FinishTerraformingJobs implements ProcessTickHandlerInterface
     public function work(): void
     {
         $result = $this->colonyTerraformingRepository->getFinishedJobs();
-        foreach ($result as $field) {
-            $colonyField = $field->getField();
-            $colony = $field->getColony();
+        foreach ($result as $colonyTerraforming) {
+            $colonyField = $colonyTerraforming->getField();
 
-            $colonyField->setFieldType($field->getTerraforming()->getToFieldTypeId());
+            $host = $colonyField->getHost();
+            if ($host instanceof ColonySandboxInterface) {
+                continue;
+            }
+
+            $terraforming = $colonyTerraforming->getTerraforming();
+            $colonyField->setFieldType($terraforming->getToFieldTypeId());
             $colonyField->setTerraforming(null);
 
             $this->planetFieldRepository->save($colonyField);
 
-            $this->colonyTerraformingRepository->delete($field);
-            $txt = "Kolonie " . $colony->getName() . ": " . $field->getTerraforming()->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";
+            $this->colonyTerraformingRepository->delete($colonyTerraforming);
+            $txt = "Kolonie " . $host->getName() . ": " . $terraforming->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";
 
-            $href = sprintf('colony.php?%s=1&id=%d', ShowColony::VIEW_IDENTIFIER, $colony->getId());
+            $href = sprintf('colony.php?%s=1&id=%d', ShowColony::VIEW_IDENTIFIER, $host->getId());
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                $colony->getUserId(),
+                $host->getUserId(),
                 $txt,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
                 $href

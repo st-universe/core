@@ -94,7 +94,7 @@ final class Overview implements ViewControllerInterface
             _('Maindesk')
         );
         $game->setPageTitle(_('/ Maindesk'));
-        $game->setTemplateFile('html/maindesk.xhtml');
+        $game->setTemplateFile('html/maindesk.twig');
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',

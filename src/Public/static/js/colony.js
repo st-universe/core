@@ -13,12 +13,12 @@ function buildMenuScrollDown(menu, offset) {
 }
 
 function buildMenuScroll(menu, offset) {
-	ajax_update('buildmenu' + menu, 'colony.php?id=' + colonyid + '&B_SCROLL_BUILDMENU=1&menu=' + menu + '&offset=' + offset);
+	ajax_update('buildmenu' + menu, createHostUri('B_SCROLL_BUILDMENU', '&menu=' + menu + '&offset=' + offset));
 }
 
 function switchColonyMenu(menu, func) {
 	closeAjaxWindow();
-	url = 'colony.php?id=' + colonyid + '&B_SWITCH_COLONYMENU=1&menu=' + menu;
+	url = createHostUri('B_SWITCH_COLONYMENU', '&menu=' + menu);
 	if (func) {
 		url = url + '&func=' + func;
 	}
@@ -37,14 +37,14 @@ function openBuildingInfo(buildingId) {
 	closeAjaxWindow();
 	elt = 'buildinginfo';
 	openPJsWin(elt);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BUILDING=1&bid=' + buildingId);
-	ajax_update('colsurface', 'colony.php?id=' + colonyid + '&SHOW_COLONY_SURFACE=1&bid=' + buildingId);
+	ajax_update(elt, createHostUri('SHOW_BUILDING', '&bid=' + buildingId));
+	ajax_update('colsurface', createHostUri('SHOW_COLONY_SURFACE', '&bid=' + buildingId));
 	buildmode = 1;
 	selectedbuilding = buildingId;
 }
 
 function closeBuildingInfo() {
-	ajax_update('colsurface', 'colony.php?id=' + colonyid + '&SHOW_COLONY_SURFACE=1');
+	ajax_update('colsurface', createHostUri('SHOW_COLONY_SURFACE'));
 	buildmode = 0;
 	selectedbuilding = 0;
 }
@@ -52,19 +52,7 @@ function closeBuildingInfo() {
 var oldimg = 0;
 var fieldonm = 0;
 
-function showFieldInfo(field) {
-	if (field == 0) {
-		return;
-	}
-	if (field != fieldonm) {
-		fieldonm = 0;
-		return;
-	}
-	elt = 'fieldinfo';
-	openPJsWin(elt);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_FIELD_INFO=1&fid=' + field);
-}
-function fieldMouseOver(obj, field, building, fieldtype) {
+function fieldMouseOver(obj, building, fieldtype) {
 	document.body.style.cursor = 'pointer';
 	if (buildmode == 1 && building == 0) {
 		if (obj.parentNode.parentNode.parentNode.parentNode.className == 'cfb') {
@@ -94,46 +82,53 @@ function fieldMouseOut(obj, fieldtype) {
 	document.body.style.cursor = 'auto';
 }
 
-function fieldMouseClick(obj, field, buildingId) {
+function fieldMouseClick(obj, fieldId, buildingId) {
 	if (buildmode == 1) {
 		if (obj.parentNode.className == 'cfb') {
 			if (buildingId > 0) {
 				if (confirm('Soll das Gebäude auf diesem Feld abgerissen werden?')) {
-					buildOnField(field);
+					buildOnField(fieldId);
 				}
 			} else {
-				buildOnField(field);
+				buildOnField(fieldId);
 			}
 		}
 	} else {
-		fieldAction(field);
+		fieldAction(fieldId);
 	}
 }
 
-function fieldAction(field) {
+function fieldAction(fieldId) {
 	fieldonm = 0;
 	elt = 'fieldaction';
 	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_FIELD=1&fid=' + field);
+	ajax_update(elt, '/colony.php?fid=' + fieldId + '&SHOW_FIELD=1');
 }
-function buildOnField(field) {
-	new Ajax.Updater('result', 'colony.php', {
+function buildOnField(fieldId) {
+	new Ajax.Updater('result', '/colony.php', {
 		method: 'post',
-		parameters: 'id=' + colonyid + '&B_BUILD=1&fid=' + field + '&bid=' + selectedbuilding,
+		parameters: 'fid=' + fieldId + '&B_BUILD=1&bid=' + selectedbuilding,
 		evalScripts: true,
 		onComplete: function (transport) {
 			var counter = document.getElementById("counter");
-			counter.innerHTML = Math.max((counter.innerText - 1), 0);
+			if (counter) {
+				counter.innerHTML = Math.max((counter.innerText - 1), 0);
+			}
+
 			$('result').show();
 		}
 	});
 }
 
-function refreshColony() {
-	ajax_update('colsurface', 'colony.php?id=' + colonyid + '&SHOW_COLONY_SURFACE=1&bid=' + selectedbuilding);
-	ajax_update('colonyeps', 'colony.php?id=' + colonyid + '&SHOW_EPSBAR_AJAX=1');
-	//ajax_update('colonyshields', 'colony.php?id=' + colonyid + '&SHOW_SHIELDBAR_AJAX=1');
-	ajax_update('colonystorage', 'colony.php?id=' + colonyid + '&SHOW_STORAGE_AJAX=1');
+function refreshHost() {
+	ajax_update('colsurface', createHostUri('SHOW_COLONY_SURFACE', '&bid=' + selectedbuilding));
+	ajax_update('colonyeps', createHostUri('SHOW_EPSBAR_AJAX'));
+	ajax_update('colonyshields', createHostUri('SHOW_SHIELDBAR_AJAX'));
+	ajax_update('colonystorage', createHostUri('SHOW_STORAGE_AJAX'));
+}
+
+function createHostUri(IDENTIFIER, extra) {
+	return '?id=' + hostid + '&hosttype=' + hosttype + '&' + IDENTIFIER + '=1' + extra
 }
 
 function getOrbitShipList() {
@@ -344,7 +339,7 @@ function cancelModuleQueueEntries(module_id) {
 		'module_' + module_id + '_action',
 		'colony.php', 'B_CANCEL_MODULECREATION=1&id=' + colonyid + '&module=' + module_id + '&func=' + $('func').value + '&count=' + $('module_' + module_id + '_count').value
 	);
-	setTimeout('refreshColony()', 250);
+	setTimeout('refreshHost()', 250);
 }
 function showGiveUpWindow(target) {
 	elt = 'giveup';

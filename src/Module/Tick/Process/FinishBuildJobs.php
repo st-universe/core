@@ -9,6 +9,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickHandlerInterface
@@ -34,20 +35,23 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
         $result = $this->planetFieldRepository->getByConstructionFinish(time());
         foreach ($result as $field) {
             $this->buildingManager->finish($field, $field->getActivateAfterBuild());
-            $colony = $field->getColony();
+            $host = $field->getHost();
+            if ($host instanceof ColonySandboxInterface) {
+                continue;
+            }
 
             $txt = sprintf(
                 "Kolonie %s: %s auf Feld %s fertiggestellt",
-                $colony->getName(),
+                $host->getName(),
                 $field->getBuilding()->getName(),
                 $field->getFieldId()
             );
 
-            $href = sprintf('colony.php?%s=1&id=%d', ShowColony::VIEW_IDENTIFIER, $colony->getId());
+            $href = sprintf('colony.php?%s=1&id=%d', ShowColony::VIEW_IDENTIFIER, $host->getId());
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
-                $colony->getUserId(),
+                $host->getUserId(),
                 $txt,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
                 $href
