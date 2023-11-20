@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ScrollBuildMenu;
 
 use request;
+use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
@@ -57,7 +58,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
                 $offset
             );
         }
-        $game->setTemplateVar('menu', ['buildings' => $ret]);
+        $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => BuildMenuEnum::getDescription($menu)]);
         $game->setTemplateVar('menutype', $menu);
         $game->setTemplateVar('scrolloffset', $offset);
         $game->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);
