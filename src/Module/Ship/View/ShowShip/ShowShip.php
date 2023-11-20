@@ -151,7 +151,7 @@ final class ShowShip implements ViewControllerInterface
         }
 
         //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann
-        $starSystem = $ship->getSystem();
+        $starSystem = $ship->getSystem() ?? $ship->isOverSystem();
         if ($starSystem !== null && $starSystem->getDatabaseEntry() !== null) {
             $starSystemEntryTal = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($starSystem->getDatabaseEntry(), $user);
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starSystemEntryTal);
@@ -169,7 +169,7 @@ final class ShowShip implements ViewControllerInterface
         );
         $game->setPagetitle($ship->getName());
 
-        $game->setTemplateFile('html/ship.twig', true);
+        $game->setTemplateFile('html/ship.twig');
 
         $game->setTemplateVar('WRAPPER', $wrapper);
 

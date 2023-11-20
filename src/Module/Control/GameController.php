@@ -202,9 +202,9 @@ final class GameController implements GameControllerInterface
         return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
     }
 
-    public function setTemplateFile(string $tpl, bool $isTwig = false): void
+    public function setTemplateFile(string $tpl): void
     {
-        if ($isTwig) {
+        if (str_ends_with($tpl, '.twig')) {
             $this->isTwig = true;
             $this->twigPage->setTemplate($tpl);
         } else {
@@ -218,24 +218,24 @@ final class GameController implements GameControllerInterface
         $this->setTemplateFile($tpl);
     }
 
-    public function setMacroInAjaxWindow(string $macro, bool $isTwig = false): void
+    public function setMacroInAjaxWindow(string $macro): void
     {
         $this->macro = $macro;
 
-        if ($isTwig) {
-            $this->setTemplateFile('html/ajaxwindow.twig', true);
+        if (str_ends_with($macro, '.twig')) {
+            $this->setTemplateFile('html/ajaxwindow.twig');
             $this->setTemplateVar('TEMPLATE', $macro);
         } else {
             $this->setTemplateFile('html/ajaxwindow.xhtml');
         }
     }
 
-    public function showMacro(string $macro, bool $isTwig = false): void
+    public function showMacro(string $macro): void
     {
         $this->macro = $macro;
 
-        if ($isTwig) {
-            $this->setTemplateFile('html/ajaxempty.twig', true);
+        if (str_ends_with($macro, '.twig')) {
+            $this->setTemplateFile('html/ajaxempty.twig');
             $this->setTemplateVar('TEMPLATE', $macro);
         } else {
             $this->setTemplateFile('html/ajaxempty.xhtml');
@@ -650,10 +650,10 @@ final class GameController implements GameControllerInterface
             $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException $e) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
-            $this->setTemplateFile('html/ship.twig', true);
+            $this->setTemplateFile('html/ship.twig');
         } catch (ShipIsDestroyedException $e) {
             $this->addInformation('Dieses Schiff wurde zerstört!');
-            $this->setTemplateFile('html/ship.twig', true);
+            $this->setTemplateFile('html/ship.twig');
         } catch (ItemNotFoundException $e) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
             $this->setTemplateFile('html/notfound.xhtml');
@@ -663,7 +663,7 @@ final class GameController implements GameControllerInterface
             if (request::isAjaxRequest()) {
                 $this->setMacroInAjaxWindow('html/sitemacros.xhtml/systeminformation');
             } else {
-                $this->setTemplateFile('html/ship.twig', true);
+                $this->setTemplateFile('html/ship.twig');
             }
         } catch (Throwable $e) {
             throw $e;

@@ -44,7 +44,7 @@ final class RefreshSection implements ViewControllerInterface
             throw new SanityCheckException('user tried to access unseen layer');
         }
 
-        $game->showMacro(request::getStringFatal('macro'), true);
+        $game->showMacro(request::getStringFatal('macro'));
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(
