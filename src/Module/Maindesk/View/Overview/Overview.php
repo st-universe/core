@@ -94,7 +94,7 @@ final class Overview implements ViewControllerInterface
             _('Maindesk')
         );
         $game->setPageTitle(_('/ Maindesk'));
-        $game->setTemplateFile('html/maindesk.twig');
+        $game->setTemplateFile('html/maindesk/maindesk.twig');
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
@@ -159,12 +159,17 @@ final class Overview implements ViewControllerInterface
             'SHIP_BUILD_PROGRESS',
             [...$this->colonyShipQueueRepository->getByUser($userId), ...$this->shipyardShipQueueRepository->getByUser($userId)]
         );
-        $game->setTemplateVar(
-            'RECENT_ALLIANCE_BOARD_TOPICS',
-            $user->getAlliance() === null ? [] :
-                $this->allianceBoardTopicRepository->getRecentByAlliance($user->getAlliance()->getId())
-        );
-        $game->setTemplateVar('USER', $user);
+
+        $alliance = $user->getAlliance();
+        if ($alliance !== null) {
+            $game->setTemplateVar('ALLIANCE', true);
+
+            $game->setTemplateVar(
+                'RECENT_ALLIANCE_BOARD_TOPICS',
+                $this->allianceBoardTopicRepository->getRecentByAlliance($alliance->getId())
+            );
+        }
+
         $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
 
         //emergencies

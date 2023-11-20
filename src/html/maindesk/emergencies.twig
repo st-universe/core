@@ -1,0 +1,39 @@
+{% if EMERGENCYWRAPPERS %}
+<div class="box">
+    <div class="box_title">Notrufe</div>
+    <div class="box_body">
+        <table class="tcal">
+            <tr>
+                <th>Koordinaten</th>
+                <th>Info</th>
+                <th>Notrufsignal</th>
+                <th>Zeitpunkt</th>
+            </tr>
+            {% for wrapper in EMERGENCYWRAPPERS %}
+            {% set ship = wrapper.get.getShip %}
+            <tr>
+                {% if wrapper.showDetails %}
+                <td>{{ ship.getSectorString }}</td>
+                <td>
+                    {{ ship.getName|bbcode }}
+                    von {{ ship.getUser.getName|bbcode }}
+                </td>
+                <td>{{ wrapper.get.getText }}</td>
+                <td>{{ wrapper.get.getDate|datetime }}</td>
+                {% else %}
+                <td>
+                    {% if ship.getSectorId %}
+                    <span>Sektor {{ ship.getSectorId }}</span>
+                    {% endif %}
+                </td>
+                <td></td>
+                <td>{{ wrapper.get.getText }}</td>
+                <td>{{ wrapper.get.getDate|datetime }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<br />
+{% endif %}
