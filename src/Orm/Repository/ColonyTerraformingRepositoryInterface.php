@@ -30,7 +30,7 @@ interface ColonyTerraformingRepositoryInterface extends ObjectRepository
     public function getByColonyAndField(int $colonyId, int $fieldId): ?ColonyTerraformingInterface;
 
     /**
-     * @return list<ColonyTerraformingInterface>
+     * @return array<ColonyTerraformingInterface>
      */
     public function getFinishedJobs(): array;
 }

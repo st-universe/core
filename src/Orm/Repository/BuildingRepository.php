@@ -6,8 +6,9 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Colony\ColonyEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Researched;
@@ -18,12 +19,12 @@ use Stu\Orm\Entity\Researched;
 final class BuildingRepository extends EntityRepository implements BuildingRepositoryInterface
 {
     public function getByColonyAndUserAndBuildMenu(
-        int $colonyId,
+        PlanetFieldHostInterface $host,
         int $userId,
         int $buildMenu,
         int $offset
-    ): iterable {
-        if ($userId === UserEnum::USER_NOONE) {
+    ): array {
+        if ($host instanceof ColonySandboxInterface) {
 
             return $this->getEntityManager()
                 ->createQuery(
@@ -32,7 +33,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                     AND b.view = :viewState
                     AND b.id IN (
                             SELECT fb.buildings_id FROM %s fb WHERE fb.type IN (
-                                SELECT fd.type_id FROM %s fd WHERE fd.colonies_id = :colonyId
+                                SELECT pf.type_id FROM %s pf WHERE pf.colony_sandbox_id = :sandboxId
                             )
                         ) ORDER BY b.name',
                         Building::class,
@@ -45,7 +46,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 ->setParameters([
                     'viewState' => 1,
                     'buildMenu' => $buildMenu,
-                    'colonyId' => $colonyId
+                    'sandboxId' => $host->getId()
                 ])
                 ->getResult();
         }
@@ -74,7 +75,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 'viewState' => 1,
                 'buildMenu' => $buildMenu,
                 'userId' => $userId,
-                'colonyId' => $colonyId
+                'colonyId' => $host->getId()
             ])
             ->getResult();
     }

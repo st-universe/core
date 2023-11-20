@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingInterface;
 
@@ -14,12 +15,12 @@ use Stu\Orm\Entity\BuildingInterface;
 interface BuildingRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return iterable<array{id: int, name: string}>
+     * @return array<BuildingInterface>
      */
     public function getByColonyAndUserAndBuildMenu(
-        int $colonyId,
+        PlanetFieldHostInterface $host,
         int $userId,
         int $buildMenu,
         int $offset
-    ): iterable;
+    ): array;
 }

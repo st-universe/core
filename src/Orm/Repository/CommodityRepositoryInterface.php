@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\CommodityInterface;
 
@@ -15,22 +16,22 @@ use Stu\Orm\Entity\CommodityInterface;
 interface CommodityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
-    public function getByBuildingsOnColony(int $colonyId): array;
+    public function getByBuildingsOnColony(PlanetFieldHostInterface $host): array;
 
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
     public function getByType(int $typeId): array;
 
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
     public function getViewable(): array;
 
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
     public function getTradeable(): array;
 
