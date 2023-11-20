@@ -252,6 +252,32 @@ input {
   border: 1px solid var(--color-16);
 }
 
+input[type=submit] {
+  cursor: pointer;
+}
+
+input.fabutton {
+  color: var(--color-9);
+  background-color: var(--color-7);
+  text-decoration: none;
+  padding: 5px;
+  border: 0px;
+  width: 100%;
+}
+
+input.fabutton:hover {
+  background-color: var(--color-13);
+}
+
+input.fabutton_red {
+  color: #b10000;
+}
+
+input.fabutton_red:hover {
+  background-color: #b10000;
+  color: #FFFFFF;
+}
+
 .cbutton {
   background-color: #000000;
   color: #ffffff;

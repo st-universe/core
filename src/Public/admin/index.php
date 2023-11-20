@@ -21,8 +21,8 @@ Init::run(function (ContainerInterface $dic): void {
 
     $dic->get(GameControllerInterface::class)->main(
         'admin',
-        $dic->get('ADMIN_ACTIONS'),
-        $dic->get('ADMIN_VIEWS'),
+        array_merge($dic->get('ADMIN_ACTIONS'), $dic->get('COLONY_ACTIONS')),
+        array_merge($dic->get('COLONY_VIEWS'), $dic->get('ADMIN_VIEWS')),
         true,
         true
     );
