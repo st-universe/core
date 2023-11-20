@@ -33,6 +33,7 @@ use Stu\Module\Admin\Action\Map\EditBorder\EditBorderRequestInterface;
 use Stu\Module\Admin\Action\Map\GenerateEmptySystems\GenerateEmptySystems;
 use Stu\Module\Admin\Action\Map\RegenerateSystem\RegenerateSystem;
 use Stu\Module\Admin\Action\ResetCaches;
+use Stu\Module\Admin\Action\Sandbox\CreateSandbox;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTick;
@@ -58,11 +59,12 @@ use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
+use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
+use Stu\Module\Admin\View\Sandbox\ShowNewSandbox;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
 use Stu\Module\Admin\View\ShowUserLock\ShowUserLock;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
-use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\GameController;
 
 use function DI\autowire;
@@ -110,7 +112,8 @@ return [
         ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class),
         CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class),
         GenerateEmptySystems::ACTION_IDENTIFIER => autowire(GenerateEmptySystems::class),
-        RegenerateSystem::ACTION_IDENTIFIER => autowire(RegenerateSystem::class)
+        RegenerateSystem::ACTION_IDENTIFIER => autowire(RegenerateSystem::class),
+        CreateSandbox::ACTION_IDENTIFIER => autowire(CreateSandbox::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -127,6 +130,8 @@ return [
         ShowSignatures::VIEW_IDENTIFIER => autowire(ShowSignatures::class),
         ShowResearchTree::VIEW_IDENTIFIER => autowire(ShowResearchTree::class),
         MassMail::VIEW_IDENTIFIER => autowire(MassMail::class),
-        ShowUserLock::VIEW_IDENTIFIER => autowire(ShowUserLock::class)
+        ShowUserLock::VIEW_IDENTIFIER => autowire(ShowUserLock::class),
+        ShowColonySandbox::VIEW_IDENTIFIER => autowire(ShowColonySandbox::class),
+        ShowNewSandbox::VIEW_IDENTIFIER => autowire(ShowNewSandbox::class)
     ]
 ];
