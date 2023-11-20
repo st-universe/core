@@ -61,7 +61,7 @@ final class ShowBuildPlans implements ViewControllerInterface
         $game->showMacro(ColonyMenuEnum::MENU_BUILDPLANS->getTemplate());
         $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_BUILDPLANS);
 
-        $game->setTemplateVar('COLONY', $colony);
+        $game->setTemplateVar('HOST', $colony);
         $game->setTemplateVar(
             'AVAILABLE_BUILDPLANS',
             array_map(

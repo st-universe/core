@@ -23,14 +23,13 @@
             <td onclick="toggleTableRowVisible('{{ elementid }}');">
                 {{ data.getBuildtime|formatSeconds }}</td>
             <td style="text-align: center;">
-                <a class="linkbutton"
-                    href="?id={{ COLONY.getId }}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid={{ id }}">Bauplan
+                <a class="linkbutton" href="?id={{ HOST.getId }}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid={{ id }}">Bauplan
                     auswählen</a>
             </td>
             <td style="text-align: center;">
                 {% if item.deletable %}
                 <a class="linkbutton linkbutton_red"
-                    href="?id={{ COLONY.getId }}&B_DEL_BUILDPLAN=1&planid={{ id }}&sstr={{ SESSIONSTRING }}"
+                    href="?id={{ HOST.getId }}&B_DEL_BUILDPLAN=1&planid={{ id }}&sstr={{ SESSIONSTRING }}"
                     title="Löschen">X</a>
                 {% endif %}
             </td>
