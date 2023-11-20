@@ -11,7 +11,6 @@ use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
@@ -89,8 +88,6 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurface(): array
     {
-        $this->loggerUtil->init('CS', LoggerEnum::LEVEL_ERROR);
-
         try {
             $this->updateSurface();
         } catch (PlanetGeneratorException $e) {
@@ -98,8 +95,6 @@ final class ColonySurface implements ColonySurfaceInterface
         }
 
         $fields = $this->host->getPlanetFields()->toArray();
-
-        $this->loggerUtil->log(sprintf('fieldCount: %s', count($fields)));
 
         if (!$this->showUnderground) {
             $fields = array_filter(
