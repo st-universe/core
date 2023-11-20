@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipyard;
 
-use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\BuildableRumpListItemInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -58,15 +57,15 @@ final class ShowShipyard implements ViewControllerInterface
             $this->showShipyardRequest->getBuildingFunctionId()
         );
 
-        $game->showMacro('html/colonymacros.xhtml/cm_shipyard');
+        $game->showMacro(ColonyMenuEnum::MENU_SHIPYARD->getTemplate());
 
+        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_SHIPYARD);
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_SHIPYARD));
 
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
             array_map(
-                fn(ShipRumpInterface $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
+                fn (ShipRumpInterface $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
                     $shipRump,
                     $user
                 ),

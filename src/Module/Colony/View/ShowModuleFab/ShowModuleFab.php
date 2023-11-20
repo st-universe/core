@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use request;
-use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
@@ -67,10 +66,10 @@ final class ShowModuleFab implements ViewControllerInterface
             );
         }
 
-        $game->showMacro('html/colonymacros.xhtml/cm_modulefab');
+        $game->showMacro(ColonyMenuEnum::MENU_MODULEFAB->getTemplate());
+        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_MODULEFAB);
 
-        $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_MODULEFAB));
+        $game->setTemplateVar('HOST', $colony);
         $game->setTemplateVar('FUNC', $func);
         $game->setTemplateVar('MODULE_LIST', $list);
     }
