@@ -15,7 +15,7 @@
             <td style="text-align: center; {{ height }} position: relative !important; top: 0px;">
                 <a href="ship.php?B_DEACTIVATE_LSS=1&id={{ ship.getId }}"
                     style="{{ heightAndWidth }} position: absolute !important; top: 0px; left: 0px;"><img
-                        src="assets/buttons/lss1.png" name="lss_panel"
+                        src="/assets/buttons/lss1.png" name="lss_panel"
                         style="{{ heightAndWidth }} position: relative !important; top: 0px;"
                         title="Langstreckensensoren deaktivieren" /></a>
             </td>
@@ -99,7 +99,7 @@
 <table class="tcal">
     {% if ship.hasNbsLss %}
     <tr>
-        <th colspan="3"><a href="?B_ACTIVATE_LSS=1&id={{ ship.getId }}"><img src="assets/buttons/lss2.png"
+        <th colspan="3"><a href="?B_ACTIVATE_LSS=1&id={{ ship.getId }}"><img src="/assets/buttons/lss2.png"
                     title="Langstreckensensoren aktivieren" /></a>
             {% if ship.isBase %}
             <a href="?B_ACTIVATE_LSS=1&id={{ ship.getId }}">Langstreckensensoren
@@ -166,21 +166,21 @@
 
 {% macro lssCellLayers(cellData, fontSize, heightAndWidth, subspaceState) %}
 {% if cellData.getSystemBackgroundId %}
-<img src="assets/map/starmap/{{ cellData.getSystemBackgroundId }}.png"
+<img src="/assets/map/starmap/{{ cellData.getSystemBackgroundId }}.png"
     style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
 {% if cellData.getSystemFieldId %}
-<img src="assets/map/{{ cellData.getSystemFieldId }}.png" class="lssSubspaceOverShield"
+<img src="/assets/map/{{ cellData.getSystemFieldId }}.png" class="lssSubspaceOverShield"
     style="z-index: 2; {{ heightAndWidth }} opacity:2;" />
 {% endif %}
 {% else %}
-<img src="assets/map/{{ cellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
+<img src="/assets/map/{{ cellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
 {% endif %}
 {% if cellData.getColonyShieldState %}
-<img src="assets/planets/s1.png" class="lssColoShield" style="z-index: 3; {{ heightAndWidth }}" />
+<img src="/assets/planets/s1.png" class="lssColoShield" style="z-index: 3; {{ heightAndWidth }}" />
 {% endif %}
 {% set subspaceCode = cellData.getSubspaceCode %}
 {% if subspaceState and subspaceCode %}
-<img src="assets/subspace/generated/{{ subspaceCode }}.png" class="lssSubspaceOverShield"
+<img src="/assets/subspace/generated/{{ subspaceCode }}.png" class="lssSubspaceOverShield"
     style="z-index: 4; {{ heightAndWidth }}" />
 {% endif %}
 {% if cellData.getDisplayCount %}

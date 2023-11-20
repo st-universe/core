@@ -9,13 +9,13 @@
 <table class="tcal">
     <tr>
         <th colspan="2">
-            <img src="assets/buttons/{{ reactor.get.getIcon }}" />
+            <img src="/assets/buttons/{{ reactor.get.getIcon }}" />
             <span>Reaktor-System</span>
         </th>
     </tr>
     <tr>
         <td style="width:50%;">
-            <img src="assets/buttons/{{ reactor.get.getIcon }}"
+            <img src="/assets/buttons/{{ reactor.get.getIcon }}"
                 title="{{ reactor.get.getSystemType.getDescription }}" />
             <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity }}</span>
         </td>
@@ -36,11 +36,11 @@
     {% set warpdriveSplit = wrapper.getWarpDriveSystemData.getWarpDriveSplit %}
 
     <tr>
-        <td colspan="2"><img src="assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
+        <td colspan="2"><img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
             <input type="range" min="0" max="100" value="{{ warpdriveSplit }}" id="warpdriveSplit"
                 oninput="saveWarpCoreSplit(this.value, {{ shipId }});  updateReactorValues(this.value);">
-            <img src="assets/buttons/battp2.png" title="Zuwachs zum EPS" />
+            <img src="/assets/buttons/battp2.png" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
         </td>
     </tr>
@@ -50,9 +50,9 @@
     <tr>
         <td style="width:50%;">
             {% if ship.getWarpState %}
-            <img src="assets/buttons/warp1.png" title="Warpantrieb aktiviert" />
+            <img src="/assets/buttons/warp1.png" title="Warpantrieb aktiviert" />
             {% else %}
-            <img src="assets/buttons/warp2.png" title="Warpantrieb deaktiviert" />
+            <img src="/assets/buttons/warp2.png" title="Warpantrieb deaktiviert" />
             {% endif %}
             Warpantrieb
         </td>
@@ -70,7 +70,7 @@
     <tr>
         {% set cooldown = ship.getTranswarpCooldown %}
         <td style="width:50%;">
-            <img src="assets/buttons/transw.png" title="Transwarpantrieb" />
+            <img src="/assets/buttons/transw.png" title="Transwarpantrieb" />
             Transwarpantrieb
             {% if cooldown %}
             <span><br />
@@ -105,7 +105,7 @@
 <table class="tcal">
     <tr>
         <th colspan="2">
-            <img src="assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
+            <img src="/assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
             {{ eps.getBattery }} / {{ eps.getMaxBattery }}
         </th>
     </tr>
@@ -137,7 +137,7 @@
             <input type="checkbox"
                 onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}'" />
             {% endif %}
-            reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="assets/buttons/info2.png"
+            reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="/assets/buttons/info2.png"
                 style="height:16px;" />
             {% endif %}
         </td>
@@ -148,9 +148,9 @@
 <table class="tcal">
     <tr>
         {% if constructionProgressWrapper.isUnderConstruction %}
-        <th colspan="2"><img src="assets/buttons/rep2.png" style="height:20px;" /> Baufortschritt</th>
+        <th colspan="2"><img src="/assets/buttons/rep2.png" style="height:20px;" /> Baufortschritt</th>
         {% elseif constructionProgressWrapper.isScrapped %}
-        <th colspan="2"><img src="assets/buttons/rep2.png" style="height:20px;" /> Demontagefortschritt</th>
+        <th colspan="2"><img src="/assets/buttons/rep2.png" style="height:20px;" /> Demontagefortschritt</th>
         {% endif %}
     </tr>
     <tr>
@@ -167,7 +167,7 @@
 {% elseif ship.isConstruction %}
 <table class="tcal">
     <tr>
-        <th colspan="4"><img src="assets/buttons/rep2.png" style="height:20px;" />&nbsp;Erforschte Stationstypen
+        <th colspan="4"><img src="/assets/buttons/rep2.png" style="height:20px;" />&nbsp;Erforschte Stationstypen
         </th>
     </tr>
     {% if possibleStations %}
@@ -226,7 +226,7 @@
 {% if ship.isTractoring or ship.isTractored %}
 <table class="tcal">
     <tr>
-        <th colspan="2"><img src="assets/buttons/trak.png" title="Traktorstrahl" />
+        <th colspan="2"><img src="/assets/buttons/trak.png" title="Traktorstrahl" />
             Traktorstrahl</th>
     </tr>
     <tr>
@@ -246,12 +246,12 @@
             {% if ship.isBase and not ship.getTractoredShip.isDestroyed %}
             <a href="?B_DOCK_TRACTORED=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('docktractored','buttons/dock2')" onmouseout="cp('docktractored','buttons/dock1')">
-                <img src="assets/buttons/dock1.png" name="docktractored" title="Gezogenes Schiff andocken" />
+                <img src="/assets/buttons/dock1.png" name="docktractored" title="Gezogenes Schiff andocken" />
             </a>
             {% endif %}
-            <img src="assets/ships/{{ ship.getTractoredShip.getRump.getId }}.png" />
+            <img src="/assets/ships/{{ ship.getTractoredShip.getRump.getId }}.png" />
             {% else %}
-            <img src="assets/ships/{{ ship.getTractoringShip.getRump.getId }}.png" />
+            <img src="/assets/ships/{{ ship.getTractoringShip.getRump.getId }}.png" />
             {% endif %}
         </td>
         <td>
@@ -267,7 +267,7 @@
 {% if wrapper.getTrackerSystemData and wrapper.getTrackerSystemData.getTargetWrapper %}
 <table class="tcal">
     <tr>
-        <th colspan="3"><img src="assets/buttons/mark.png" title="Tracker-Device" />
+        <th colspan="3"><img src="/assets/buttons/mark.png" title="Tracker-Device" />
             Tracker-Device</th>
     </tr>
     {% set targetWrapper = wrapper.getTrackerSystemData.getTargetWrapper %}
@@ -283,7 +283,7 @@
             <a href="?B_ATTACK_TRACKED=1&id={{ shipId }}&target={{ targetShip.getId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('attacktracked','buttons/phaser2')" onmouseout="cp('attacktracked','buttons/phaser1')"
                 title="Getarntes Ziel angreifen">
-                <img src="assets/buttons/phaser1.png" name="attacktracked" />
+                <img src="/assets/buttons/phaser1.png" name="attacktracked" />
             </a>
             {% endif %}
             {{ shipimagewithoutwarp(targetShip) }}
@@ -302,7 +302,7 @@
                     <table class="tcal">
                         <tr>
                             <th style="width: 20px; text-align: center;">
-                                <img src="assets/buttons/modul_1.png" />
+                                <img src="/assets/buttons/modul_1.png" />
                             </th>
                             <td style="vertical-align: middle; text-align: center;">
                                 {% autoescape false %}
@@ -321,7 +321,7 @@
                     <table class="tcal">
                         <tr>
                             <th style="width: 20px; text-align: center;">
-                                <img src="assets/buttons/modul_2.png" />
+                                <img src="/assets/buttons/modul_2.png" />
                             </th>
                             <td style="text-align: center; vertical-align: middle;">
                                 {% autoescape false %}
@@ -341,7 +341,7 @@
                     <table class="tcal">
                         <tr>
                             <th style="text-align: center; width: 20px;">
-                                <img src="assets/buttons/modul_8.png" />
+                                <img src="/assets/buttons/modul_8.png" />
                             </th>
                             <td style="vertical-align: middle; text-align: center;">
                                 {% autoescape false %}
@@ -378,7 +378,7 @@
         <th>
             <div style="display: inline-block;width: 80%;">
                 <a href="?SHOW_SHIP=1&id={{ fleet.getLeadShip.getId }}">
-                    <img src="assets/buttons/fleet.png" title="zum Führungsschiff wechseln" />
+                    <img src="/assets/buttons/fleet.png" title="zum Führungsschiff wechseln" />
                     <span>zum Führungsschiff wechseln</span></a>
             </div>
         </th>
@@ -390,7 +390,7 @@
         <th colspan="3">
             <div>
                 <div style="display: inline-block;width: 80%;">
-                    <img src="assets/buttons/fleet.png" title="Flottenstatus" />
+                    <img src="/assets/buttons/fleet.png" title="Flottenstatus" />
                     <span>Flottenstatus</span>
                 </div>
                 <div style="display: inline-block;" title="Schiffe gehen nicht verloren">
@@ -405,7 +405,7 @@
                             onchange="$('changefixationbutton').click();" />
                         {% endif %}
                         fixiert
-                        <img src="assets/buttons/info2.png" style="height:16px;" /></span>
+                        <img src="/assets/buttons/info2.png" style="height:16px;" /></span>
                 </div>
             </div>
         </th>
@@ -426,7 +426,7 @@
                     <table class="tcal">
                         <tr>
                             <th style="width: 20px; text-align: center;">
-                                <img src="assets/buttons/modul_1.png" />
+                                <img src="/assets/buttons/modul_1.png" />
                             </th>
                             <td style="vertical-align: middle; text-align: center;">
                                 {% autoescape false %}
@@ -445,7 +445,7 @@
                     <table class="tcal">
                         <tr>
                             <th style="width: 20px; text-align: center;">
-                                <img src="assets/buttons/modul_2.png" />
+                                <img src="/assets/buttons/modul_2.png" />
                             </th>
                             <td style="text-align: center; vertical-align: middle;">
                                 {% autoescape false %}
@@ -465,7 +465,7 @@
                     <table class="tcal">
                         <tr>
                             <th style="text-align: center; width: 20px;">
-                                <img src="assets/buttons/modul_8.png" />
+                                <img src="/assets/buttons/modul_8.png" />
                             </th>
                             <td style="vertical-align: middle; text-align: center;">
                                 {% autoescape false %}
@@ -485,7 +485,7 @@
                     <table class="tcal">
                         <tr>
                             <th style="text-align: center; width: 20px;">
-                                <img src="assets/buttons/modul_11.png" />
+                                <img src="/assets/buttons/modul_11.png" />
                             </th>
                             <td style="vertical-align: middle; text-align: center;">
                                 {% autoescape false %}
@@ -505,7 +505,7 @@
             <a href="?B_FLEET_LEADER=1&id={{ ship.getId }}&target={{ fleetShip.getId }}"
                 onmouseover="cp('fleet_{{ fleetShip.getId }}','buttons/fl_flag2')"
                 onmouseout="cp('fleet_{{ fleetShip.getId }}','buttons/fl_flag1')">
-                <img src="assets/buttons/fl_flag1.png" name="fleet_{{ fleetShip.getId }}"
+                <img src="/assets/buttons/fl_flag1.png" name="fleet_{{ fleetShip.getId }}"
                     title="Flottenführung wechseln" />
             </a>
         </td>

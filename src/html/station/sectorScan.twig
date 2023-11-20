@@ -10,7 +10,7 @@
   {% endif %}
   <tr>
     <td rowspan="2" style="width: 30px; vertical-align: top;">
-      <img src="assets/map/{{ MAPFIELD.getFieldId }}.png" />
+      <img src="/assets/map/{{ MAPFIELD.getFieldId }}.png" />
     </td>
     <th>{{ MAPFIELD.getFieldType.getName }}</th>
   </tr>
@@ -36,7 +36,7 @@
   <tr>
     <td>
       {% if sig.getRump %}
-      <img src="assets/ships/{{ sig.getRump.getId }}.png" title="{{ sig.getRump.getName }}" />
+      <img src="/assets/ships/{{ sig.getRump.getId }}.png" title="{{ sig.getRump.getName }}" />
       {% else %}
       <span>?</span>
       {% endif %}

@@ -11,7 +11,7 @@
 
 {% macro shipimage(ship) %}
 {% if ship.isTrumfield %}
-<img src="assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ rumpname }}"
+<img src="/assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ rumpname }}"
     onload="adjustCellHeight(this); adjustCellWidth(this);" />
 {% else %}
 {% set rumpid = ship.getRumpId %}
@@ -25,19 +25,19 @@
 {% set imagestyle = 'z-index: 5;' %}
 {% endif %}
 
-<img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
 <img src="{{ imagesrc }}" class="indexedGraphicsShips" style="{{ imagestyle }}" title="{{ rumpname }}"
     onload="adjustCellHeight(this); adjustCellWidth(this);" />
 {% if ship.getWarpState %}
-<img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
-<img src="assets/buttons/warp_3.png" class="indexedGraphics" style="z-index: 3;" />
-<img src="assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 6;" />
+<img src="/assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
+<img src="/assets/buttons/warp_3.png" class="indexedGraphics" style="z-index: 3;" />
+<img src="/assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 6;" />
 {% endif %}
 {% if ship.getImpulseState %}
-<img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
+<img src="/assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
 {% endif %}
 {% if ship.getWebState %}
-<img src="assets/buttons/{{ ship.getHoldingWebImageStyle
+<img src="/assets/buttons/{{ ship.getHoldingWebImageStyle
 }}" class="indexedGraphics" style="z-index: 4;" />
 {% endif %}
 
@@ -46,21 +46,21 @@
 
 {% macro shipimagewithoutwarp(ship) %}
 {% if ship.isTrumfield %}
-<img src="assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ ship.getRumpName }}" />
+<img src="/assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ ship.getRumpName }}" />
 {% else %}
 {% if ship.getCloakState %}
-<img src="assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getRumpName }}" />
+<img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getRumpName }}" />
 {% else %}
-<img src="assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getRumpName }}" />
+<img src="/assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getRumpName }}" />
 {% endif %}
 {% endif %}
 {% endmacro %}
 
 {% macro shipimagenameastitle(ship) %}
 {% if ship.getCloakState %}
-<img src="assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getName|bbcode2txt }}" />
+<img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getName|bbcode2txt }}" />
 {% else %}
-<img src="assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getName|bbcode2txt }}" />
+<img src="/assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getName|bbcode2txt }}" />
 {% endif %}
 {% endmacro %}
 
@@ -205,7 +205,7 @@
     <div style="cursor: pointer;" onClick="$('nbsf_{{ nbsItem.getId }}').submit();"
         onmouseover="cp('att_{{ nbsItem.getId }}','buttons/phaser2')"
         onmouseout="cp('att_{{ nbsItem.getId }}','buttons/phaser1')">
-        <img src="assets/buttons/phaser1.png" name="att_{{ nbsItem.getId }}"
+        <img src="/assets/buttons/phaser1.png" name="att_{{ nbsItem.getId }}"
             title="{{ nameWithoutMarkup }} angreifen" />
     </div>
     {% endif %}
@@ -216,7 +216,7 @@
         <a href="javascript:void(0);" onclick="showScanWindow({{ SHIP.getId }},{{ nbsItem.getId }})"
             onmouseover="cp('scn_{{ nbsItem.getId }}','buttons/lupe2')"
             onmouseout="cp('scn_{{ nbsItem.getId }}','buttons/lupe1')">
-            <img src="assets/buttons/lupe1.png" name="scn_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/lupe1.png" name="scn_{{ nbsItem.getId }}"
                 title="{{ nameWithoutMarkup }} scannen" />
         </a>
     </div>
@@ -226,7 +226,7 @@
         <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('int_{{ nbsItem.getId }}','buttons/inc2')"
             onmouseout="cp('int_{{ nbsItem.getId }}','buttons/inc1')">
-            <img src="assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"
                 title="{{ nameWithoutMarkup }} abfangen" />
         </a>
     </div>
@@ -240,7 +240,7 @@
         <a href="javascript:void(0);" onclick="showETransferWindow({{ nbsItem.getId }})"
             onmouseover="cp('etr_{{ nbsItem.getId }}','buttons/e_trans2')"
             onmouseout="cp('etr_{{ nbsItem.getId }}','buttons/e_trans1')">
-            <img src="assets/buttons/e_trans1.png" name="etr_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/e_trans1.png" name="etr_{{ nbsItem.getId }}"
                 title="Energie zur {{ nameWithoutMarkup }} transferieren" />
         </a>
     </div>
@@ -249,23 +249,23 @@
         <a href="javascript:void(0);" onclick="showBToWindow({{ nbsItem.getId }})"
             onmouseover="cp('bto_{{ nbsItem.getId }}','buttons/b_down2')"
             onmouseout="cp('bto_{{ nbsItem.getId }}','buttons/b_down1')">
-            <img src="assets/buttons/b_down1.png" name="bto_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/b_down1.png" name="bto_{{ nbsItem.getId }}"
                 title="Zur {{ nameWithoutMarkup }} runterbeamen" />
         </a>
         <a href="javascript:void(0);" onclick="showBFromWindow({{ nbsItem.getId }})"
             onmouseover="cp('bfr_{{ nbsItem.getId }}','buttons/b_up2')"
             onmouseout="cp('bfr_{{ nbsItem.getId }}','buttons/b_up1')">
-            <img src="assets/buttons/b_up1.png" name="bfr_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/b_up1.png" name="bfr_{{ nbsItem.getId }}"
                 title="Von der {{ nameWithoutMarkup }} hochbeamen" />
         </a>
     </div>
     {% if SHIP.isTorpedoStorageHealthy %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);" onclick="showBTorpTransferWindow({{ nbsItem.getId }}, true);">
-            <img src="assets/buttons/btorp_down1.png" title="Torpedos zur {{ nameWithoutMarkup }} beamen" />
+            <img src="/assets/buttons/btorp_down1.png" title="Torpedos zur {{ nameWithoutMarkup }} beamen" />
         </a>
         <a href="javascript:void(0);" onclick="showBTorpTransferWindow({{ nbsItem.getId }}, false);">
-            <img src="assets/buttons/btorp_up1.png" title="Torpedos von der {{ nameWithoutMarkup }} beamen" />
+            <img src="/assets/buttons/btorp_up1.png" title="Torpedos von der {{ nameWithoutMarkup }} beamen" />
         </a>
     </div>
     {% endif %}
@@ -274,7 +274,7 @@
         <a href="?B_ACTIVATE_TRACTOR=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('tra_{{ nbsItem.getId }}','buttons/trak2')"
             onmouseout="cp('tra_{{ nbsItem.getId }}','buttons/trak1')">
-            <img src="assets/buttons/trak1.png" name="tra_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/trak1.png" name="tra_{{ nbsItem.getId }}"
                 title="Traktorstrahl auf die {{ nameWithoutMarkup }} richten" />
         </a>
     </div>
@@ -285,7 +285,7 @@
         <a href="?B_BOARD_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('boa_{{ nbsItem.getId }}','buttons/boa2')"
             onmouseout="cp('boa_{{ nbsItem.getId }}','buttons/boa1')">
-            <img src="assets/buttons/boa1.png" name="boa_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/boa1.png" name="boa_{{ nbsItem.getId }}"
                 title="Enterkommando zur {{ nameWithoutMarkup }} entsenden" />
         </a>
     </div>
@@ -298,7 +298,7 @@
         <a href="?B_STOP_TAKEOVER=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('untake_{{ nbsItem.getId }}','buttons/untake1')"
             onmouseout="cp('untake_{{ nbsItem.getId }}','buttons/untake2')">
-            <img src="assets/buttons/untake2.png" name="untake_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/untake2.png" name="untake_{{ nbsItem.getId }}"
                 title="Übernahme der {{ nameWithoutMarkup }} abbrechen (noch {{ WRAPPER.getTakeoverTicksLeft }} Runden)" />
         </a>
     </div>
@@ -309,7 +309,7 @@
         <a href="?B_TAKEOVER_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('take_{{ nbsItem.getId }}','buttons/take2')"
             onmouseout="cp('take_{{ nbsItem.getId }}','buttons/take1')">
-            <img src="assets/buttons/take1.png" name="take_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/take1.png" name="take_{{ nbsItem.getId }}"
                 title="Übernahme der {{ nameWithoutMarkup }} starten" />
         </a>
     </div>
@@ -321,7 +321,7 @@
         <a href="?B_STORE_SHUTTLE=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('store_{{ nbsItem.getId }}','buttons/landshuttle2', 'png')"
             onmouseout="cp('store_{{ nbsItem.getId }}','buttons/landshuttle1', 'png')">
-            <img src="assets/buttons/landshuttle1.png" name="store_{{ nbsItem.getId }}" title="Shuttle aufsammeln" />
+            <img src="/assets/buttons/landshuttle1.png" name="store_{{ nbsItem.getId }}" title="Shuttle aufsammeln" />
         </a>
     </div>
     {% endif %}
@@ -330,7 +330,7 @@
         <a href="?B_LAND_SHUTTLE=1&id={{ nbsItem.getId }}&shuttle={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('land_{{ nbsItem.getId }}','buttons/landshuttle2', 'png')"
             onmouseout="cp('land_{{ nbsItem.getId }}','buttons/landshuttle1', 'png')">
-            <img src="assets/buttons/landshuttle1.png" name="land_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/landshuttle1.png" name="land_{{ nbsItem.getId }}"
                 title="In Shuttle-Rampe landen" />
         </a>
     </div>
@@ -340,7 +340,7 @@
         <a href="?B_TRACK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('track_{{ nbsItem.getId }}','buttons/mark_1', 'png')"
             onmouseout="cp('track_{{ nbsItem.getId }}','buttons/mark', 'png')">
-            <img src="assets/buttons/mark.png" name="track_{{ nbsItem.getId }}" title="Ziel markieren" />
+            <img src="/assets/buttons/mark.png" name="track_{{ nbsItem.getId }}" title="Ziel markieren" />
         </a>
     </div>
     {% endif %}
@@ -350,7 +350,7 @@
         <a href="?B_DOCK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('dock_{{ nbsItem.getId }}','buttons/dock2')"
             onmouseout="cp('dock_{{ nbsItem.getId }}','buttons/dock1')">
-            <img src="assets/buttons/dock1.png" name="dock_{{ nbsItem.getId }}"
+            <img src="/assets/buttons/dock1.png" name="dock_{{ nbsItem.getId }}"
                 title="An die {{ nameWithoutMarkup }} andocken" />
         </a>
     </div>
@@ -364,7 +364,7 @@
     <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
         onmouseover="cp('int_{{ nbsItem.getId }}','buttons/inc2')"
         onmouseout="cp('int_{{ nbsItem.getId }}','buttons/inc1')">
-        <img src="assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"
+        <img src="/assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"
             title="{{ nbsItem.getName|bbcode2txt }} abfangen" />
     </a>
     {% endif %}
@@ -372,7 +372,7 @@
     <a href="javascript:void(0);" onclick="showScanWindow({{ SHIP.getId }},{{ nbsItem.getId }})"
         onmouseover="cp('scn_{{ nbsItem.getId }}','buttons/lupe2')"
         onmouseout="cp('scn_{{ nbsItem.getId }}','buttons/lupe1')">
-        <img src="assets/buttons/lupe1.png" name="scn_{{ nbsItem.getId }}"
+        <img src="/assets/buttons/lupe1.png" name="scn_{{ nbsItem.getId }}"
             title="{{ nbsItem.getName|bbcode2txt }} scannen" />
     </a>
     {% endif %}
@@ -394,7 +394,7 @@
 </td>
 <td>
     {% if nbsItem.hasLogBook %}
-    <img src="assets/buttons/log.png" title="Logbuch verfügbar" />
+    <img src="/assets/buttons/log.png" title="Logbuch verfügbar" />
     {% endif %}
 </td>
 <td>
@@ -433,7 +433,7 @@
 {% macro shipstorage(ship) %}
 <table class="use" style="width: 200px;">
     <tr>
-        <th><img onClick="window.scrollTo(0,0);" src="assets/buttons/lager.png" title="Lagerraum" /> Lagerraum
+        <th><img onClick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum" /> Lagerraum
             {{ ship.getStorageSum }}/{{ ship.getMaxStorage }}</th>
     <tr>
         <td>
@@ -442,12 +442,12 @@
             {% set commodity = storage.getCommodity %}
             {% if loop.index0 % 2 == 0 %}
             <div style="float: left; width: 50%;">
-                <img src="assets/commodities/{{ commodity.getId }}.png" title="{{ commodity.getName }}" />
+                <img src="/assets/commodities/{{ commodity.getId }}.png" title="{{ commodity.getName }}" />
                 {{ storage.getAmount }}
             </div>
             {% else %}
             <div style="float: right; width: 50%;">
-                <img src="assets/commodities/{{ commodity.getId }}.png" title="{{ commodity.getName }}" />
+                <img src="/assets/commodities/{{ commodity.getId }}.png" title="{{ commodity.getName }}" />
                 {{ storage.getAmount }}
             </div>
             {% if loop.last %}
