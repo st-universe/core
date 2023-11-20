@@ -45,7 +45,15 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->findOneBy([
             'colonies_id' => $colonyId,
-            'field_id' => $fieldId
+            'id' => $fieldId
+        ]);
+    }
+
+    public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetFieldInterface
+    {
+        return $this->findOneBy([
+            'colonies_id' => $colonyId,
+            'field_id' => $fieldIndex
         ]);
     }
 
