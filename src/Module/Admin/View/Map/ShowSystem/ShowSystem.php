@@ -42,7 +42,7 @@ final class ShowSystem implements ViewControllerInterface
             $fields[] = $this->starmapUiFactory->createYRow($system->getLayer(), $value, 1, $system->getMaxX(), $system);
         }
 
-        $game->setTemplateFile('html/admin/mapeditor_system.twig', true);
+        $game->setTemplateFile('html/admin/mapeditor_system.twig');
         $game->appendNavigationPart(sprintf(
             '/admin/?SHOW_MAP_EDITOR=1&layerid=%d',
             $system->getLayer()->getId()

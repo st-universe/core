@@ -29,7 +29,7 @@ final class ShowMapEditor implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/admin/mapeditor_overview.twig', true);
+        $game->setTemplateFile('html/admin/mapeditor_overview.twig');
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->setPageTitle(_('Karteneditor'));
 
