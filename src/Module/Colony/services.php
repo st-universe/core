@@ -97,14 +97,8 @@ use Stu\Module\Colony\View\ShowBuilding\ShowBuilding;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequest;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequestInterface;
 use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagement;
-use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagementRequest;
-use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagementRequestInterface;
 use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenu;
-use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenuRequest;
-use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenuRequestInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
-use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPartRequest;
-use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPartRequestInterface;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlansRequest;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlansRequestInterface;
@@ -112,19 +106,13 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowColony\ShowColonyRequest;
 use Stu\Module\Colony\View\ShowColony\ShowColonyRequestInterface;
 use Stu\Module\Colony\View\ShowEpsBar\ShowEpsBar;
-use Stu\Module\Colony\View\ShowEpsBar\ShowEpsBarRequest;
-use Stu\Module\Colony\View\ShowEpsBar\ShowEpsBarRequestInterface;
 use Stu\Module\Colony\View\ShowField\ShowField;
-use Stu\Module\Colony\View\ShowField\ShowFieldRequest;
-use Stu\Module\Colony\View\ShowField\ShowFieldRequestInterface;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequestInterface;
 use Stu\Module\Colony\View\ShowGiveUp\ShowGiveUp;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Colony\View\ShowManagement\ShowManagement;
-use Stu\Module\Colony\View\ShowManagement\ShowManagementRequest;
-use Stu\Module\Colony\View\ShowManagement\ShowManagementRequestInterface;
 use Stu\Module\Colony\View\ShowMisc\ShowMisc;
 use Stu\Module\Colony\View\ShowMisc\ShowMiscRequest;
 use Stu\Module\Colony\View\ShowMisc\ShowMiscRequestInterface;
@@ -146,6 +134,7 @@ use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequest;
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequestInterface;
 use Stu\Module\Colony\View\ShowPodsLocations\ShowPodsLocations;
 use Stu\Module\Colony\View\ShowSectorScan\ShowSectorScan;
+use Stu\Module\Colony\View\ShowShields\ShowShields;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequest;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterface;
@@ -159,16 +148,10 @@ use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagement;
 use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequest;
 use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequestInterface;
 use Stu\Module\Colony\View\ShowSocial\ShowSocial;
-use Stu\Module\Colony\View\ShowSocial\ShowSocialRequest;
-use Stu\Module\Colony\View\ShowSocial\ShowSocialRequestInterface;
 use Stu\Module\Colony\View\ShowStorage\ShowStorage;
-use Stu\Module\Colony\View\ShowStorage\ShowStorageRequest;
-use Stu\Module\Colony\View\ShowStorage\ShowStorageRequestInterface;
 use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
 use Stu\Module\Colony\View\ShowSubspaceTelescopeScan\ShowSubspaceTelescopeScan;
 use Stu\Module\Colony\View\ShowSurface\ShowSurface;
-use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequest;
-use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequestInterface;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
@@ -201,15 +184,9 @@ return [
     ShowBeamFromRequestInterface::class => autowire(ShowBeamFromRequest::class),
     ShowBeamToRequestInterface::class => autowire(ShowBeamToRequest::class),
     ShowBuildingRequestInterface::class => autowire(ShowBuildingRequest::class),
-    ShowBuildingManagementRequestInterface::class => autowire(ShowBuildingManagementRequest::class),
-    ShowBuildMenuRequestInterface::class => autowire(ShowBuildMenuRequest::class),
-    ShowBuildMenuPartRequestInterface::class => autowire(ShowBuildMenuPartRequest::class),
     ShowBuildPlansRequestInterface::class => autowire(ShowBuildPlansRequest::class),
     ShowColonyRequestInterface::class => autowire(ShowColonyRequest::class),
-    ShowEpsBarRequestInterface::class => autowire(ShowEpsBarRequest::class),
-    ShowFieldRequestInterface::class => autowire(ShowFieldRequest::class),
     ShowFighterShipyardRequestInterface::class => autowire(ShowFighterShipyardRequest::class),
-    ShowManagementRequestInterface::class => autowire(ShowManagementRequest::class),
     ShowMiscRequestInterface::class => autowire(ShowMiscRequest::class),
     ShowModuleCancelRequestInterface::class => autowire(ShowModuleCancelRequest::class),
     ShowModuleFabRequestInterface::class => autowire(ShowModuleFabRequest::class),
@@ -220,9 +197,6 @@ return [
     ShowShipRepairRequestInterface::class => autowire(ShowShipRepairRequest::class),
     ShowShipyardRequestInterface::class => autowire(ShowShipyardRequest::class),
     ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
-    ShowSocialRequestInterface::class => autowire(ShowSocialRequest::class),
-    ShowStorageRequestInterface::class => autowire(ShowStorageRequest::class),
-    ShowSurfaceRequestInterface::class => autowire(ShowSurfaceRequest::class),
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
     ColonyCorrectorInterface::class => autowire(ColonyCorrector::class),
     RenameBuildplanRequestInterface::class => autowire(RenameBuildplanRequest::class),
@@ -293,6 +267,7 @@ return [
         ShowBeamTo::VIEW_IDENTIFIER => autowire(ShowBeamTo::class),
         ShowBeamFrom::VIEW_IDENTIFIER => autowire(ShowBeamFrom::class),
         ShowEpsBar::VIEW_IDENTIFIER => autowire(ShowEpsBar::class),
+        ShowShields::VIEW_IDENTIFIER => autowire(ShowShields::class),
         ShowStorage::VIEW_IDENTIFIER => autowire(ShowStorage::class),
         ShowOrbitManagement::VIEW_IDENTIFIER => autowire(ShowOrbitManagement::class),
         ShowModuleScreen::VIEW_IDENTIFIER => autowire(ShowModuleScreen::class),
