@@ -6,6 +6,7 @@ namespace Stu\Module\Building\Action;
 
 use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 
 final class ModuleFab implements BuildingActionHandlerInterface
 {
@@ -22,12 +23,14 @@ final class ModuleFab implements BuildingActionHandlerInterface
         //nothing to do here
     }
 
-    public function deactivate(int $buildingFunctionId, ColonyInterface $colony): void
+    public function deactivate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
-        $this->moduleQueueLib->cancelModuleQueues($colony, $buildingFunctionId);
+        if ($host instanceof ColonyInterface) {
+            $this->moduleQueueLib->cancelModuleQueues($host, $buildingFunctionId);
+        }
     }
 
-    public function activate(int $buildingFunctionId, ColonyInterface $colony): void
+    public function activate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
         //nothing to do here
     }

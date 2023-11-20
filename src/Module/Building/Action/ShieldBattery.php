@@ -6,6 +6,7 @@ namespace Stu\Module\Building\Action;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 
 final class ShieldBattery implements BuildingActionHandlerInterface
 {
@@ -22,13 +23,15 @@ final class ShieldBattery implements BuildingActionHandlerInterface
         //nothing to do here
     }
 
-    public function deactivate(int $buildingFunctionId, ColonyInterface $colony): void
+    public function deactivate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
-        $this->colonyLibFactory->createColonyShieldingManager($colony)->updateActualShields();
+        if ($host instanceof ColonyInterface) {
+            $this->colonyLibFactory->createColonyShieldingManager($host)->updateActualShields();
+        }
     }
 
-    public function activate(int $buildingFunctionId, ColonyInterface $colony): void
+    public function activate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
-        $this->colonyLibFactory->createColonyShieldingManager($colony)->updateActualShields();
+        $this->colonyLibFactory->createColonyShieldingManager($host)->updateActualShields();
     }
 }
