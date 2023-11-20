@@ -6,6 +6,7 @@ namespace Stu\Component\Colony\Shields;
 
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -18,24 +19,28 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
-    private ColonyInterface $colony;
+    private PlanetFieldHostInterface $host;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyFunctionManagerInterface $colonyFunctionManager,
-        ColonyInterface $colony
+        PlanetFieldHostInterface $host
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->colony = $colony;
+        $this->host = $host;
     }
 
     public function updateActualShields(): void
     {
+        if (!$this->host instanceof ColonyInterface) {
+            return;
+        }
+
         $shieldState = false;
         $shields = 0;
 
-        foreach ($this->colony->getPlanetFields() as $field) {
+        foreach ($this->host->getPlanetFields() as $field) {
             $building = $field->getBuilding();
 
             if ($building === null || !$field->isActive()) {
@@ -55,26 +60,26 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
         }
 
         if ($shieldState) {
-            $this->colony->setShields(min($this->colony->getShields(), $shields));
+            $this->host->setShields(min($this->host->getShields(), $shields));
         }
     }
 
     public function hasShielding(): bool
     {
         return $this->colonyFunctionManager->hasFunction(
-            $this->colony,
+            $this->host,
             BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
         );
     }
 
     public function getMaxShielding(): int
     {
-        return $this->planetFieldRepository->getMaxShieldsOfColony($this->colony->getId());
+        return $this->planetFieldRepository->getMaxShieldsOfColony($this->host);
     }
 
     public function isShieldingEnabled(): bool
     {
-        return $this->colonyFunctionManager->hasActiveFunction($this->colony, BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)
-            && $this->colony->getShields() > 0;
+        return $this->colonyFunctionManager->hasActiveFunction($this->host, BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)
+            && ($this->host instanceof ColonyInterface ? $this->host->getShields() > 0 : true);
     }
 }

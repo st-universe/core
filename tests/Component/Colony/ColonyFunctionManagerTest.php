@@ -30,15 +30,9 @@ class ColonyFunctionManagerTest extends StuTestCase
         $colony = $this->mock(ColonyInterface::class);
 
         $functionId = 666;
-        $colonyId = 21;
-
-        $colony->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($colonyId);
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colonyId, [$functionId], [ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$functionId], [ColonyFunctionManager::STATE_ENABLED])
             ->once()
             ->andReturn(42);
 
@@ -56,11 +50,11 @@ class ColonyFunctionManagerTest extends StuTestCase
 
         $colony->shouldReceive('getId')
             ->withNoArgs()
-            ->times(3)
+            ->times(2)
             ->andReturn($colonyId);
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colonyId, [$functionId], [ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$functionId], [ColonyFunctionManager::STATE_ENABLED])
             ->once()
             ->andReturn(0);
 
@@ -77,15 +71,9 @@ class ColonyFunctionManagerTest extends StuTestCase
         $colony = $this->mock(ColonyInterface::class);
 
         $functionId = 666;
-        $colonyId = 21;
-
-        $colony->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($colonyId);
 
         $this->planetFieldRepository->shouldReceive('getCountByColonyAndBuildingFunctionAndState')
-            ->with($colonyId, [$functionId], [ColonyFunctionManager::STATE_DISABLED, ColonyFunctionManager::STATE_ENABLED])
+            ->with($colony, [$functionId], [ColonyFunctionManager::STATE_DISABLED, ColonyFunctionManager::STATE_ENABLED])
             ->once()
             ->andReturn(42);
 

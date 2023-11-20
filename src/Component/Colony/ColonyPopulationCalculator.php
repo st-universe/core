@@ -6,13 +6,14 @@ namespace Stu\Component\Colony;
 
 use RuntimeException;
 use Stu\Component\Faction\FactionEnum;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 
 final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInterface
 {
-    private ColonyInterface $colony;
+    private PlanetFieldHostInterface $host;
 
     private ?int $positive_effect_secondary = null;
 
@@ -25,16 +26,20 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
      * @param array<int, ColonyProduction> $production
      */
     public function __construct(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         array $production
     ) {
-        $this->colony = $colony;
+        $this->host = $host;
         $this->production = $production;
     }
 
     public function getFreeAssignmentCount(): int
     {
-        return max(0, $this->getCrewLimit() - $this->colony->getCrewAssignmentAmount());
+        if (!$this->host instanceof ColonyInterface) {
+            return 0;
+        }
+
+        return max(0, $this->getCrewLimit() - $this->host->getCrewAssignmentAmount());
     }
 
     public function getCrewLimit(): int
@@ -49,7 +54,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
                         ))),
                         0
                     ),
-                    $this->colony->getWorkers()
+                    $this->host->getWorkers()
                 ) / 5 * $this->getLifeStandardPercentage() / 100
         );
     }
@@ -63,23 +68,23 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
             return 0;
         }
 
-        if ($production > $this->colony->getPopulation()) {
+        if ($production > $this->host->getPopulation()) {
             return 100;
         }
 
-        return (int)floor($production * 100 / $this->colony->getPopulation());
+        return (int)floor($production * 100 / $this->host->getPopulation());
     }
 
     public function getNegativeEffect(): int
     {
-        return (int) ceil($this->colony->getPopulation() / 70);
+        return (int) ceil($this->host->getPopulation() / 70);
     }
 
     public function getPositiveEffectPrimary(): int
     {
         if ($this->positive_effect_primary === null) {
             // TODO we should use a faction-factory...
-            switch ($this->colony->getUser()->getFactionId()) {
+            switch ($this->host->getUser()->getFactionId()) {
                 case FactionEnum::FACTION_FEDERATION:
                     $key = ColonyEnum::COMMODITY_SATISFACTION_FED_PRIMARY;
                     break;
@@ -112,7 +117,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         if ($this->positive_effect_secondary === null) {
             $this->positive_effect_secondary = 0;
             // XXX we should use a faction-factory...
-            switch ($this->colony->getUser()->getFactionId()) {
+            switch ($this->host->getUser()->getFactionId()) {
                 case FactionEnum::FACTION_FEDERATION:
                     $key = ColonyEnum::COMMODITY_SATISFACTION_FED_SECONDARY;
                     break;
@@ -141,16 +146,22 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
 
     public function getGrowth(): int
     {
-        if ($this->colony->getImmigrationState() === false) {
+        $host = $this->host;
+        if (!$host instanceof ColonyInterface) {
             return 0;
         }
-        // TBD: depends on social things. return dummy for now
-        $im = ceil((($this->colony->getMaxBev() - $this->colony->getPopulation()) / 3)/ 100 * $this->colony->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50);
-        if ($this->colony->getPopulation() + $im > $this->colony->getMaxBev()) {
-            $im = $this->colony->getMaxBev() - $this->colony->getPopulation();
+
+        if ($host->getImmigrationState() === false) {
+            return 0;
         }
-        if ($this->colony->getPopulationLimit() > 0 && $this->colony->getPopulation() + $im > $this->colony->getPopulationLimit()) {
-            $im = $this->colony->getPopulationLimit() - $this->colony->getPopulation();
+
+        // TBD: depends on social things. return dummy for now
+        $im = ceil((($host->getMaxBev() - $host->getPopulation()) / 3) / 100 * $host->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50);
+        if ($host->getPopulation() + $im > $host->getMaxBev()) {
+            $im = $host->getMaxBev() - $host->getPopulation();
+        }
+        if ($host->getPopulationLimit() > 0 && $host->getPopulation() + $im > $host->getPopulationLimit()) {
+            $im = $host->getPopulationLimit() - $host->getPopulation();
         }
         if ($im < 0) {
             return 0;
@@ -160,7 +171,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
 
     public function getPositiveEffectPrimaryDescription(): string
     {
-        switch ($this->colony->getUser()->getFactionId()) {
+        switch ($this->host->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
                 return _('Zufriedenheit');
             case FactionEnum::FACTION_ROMULAN:
@@ -177,7 +188,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
 
     public function getPositiveEffectSecondaryDescription(): string
     {
-        switch ($this->colony->getUser()->getFactionId()) {
+        switch ($this->host->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
                 return _('Bildung');
             case FactionEnum::FACTION_ROMULAN:
@@ -194,7 +205,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
 
     public function getNegativeEffectDescription(): string
     {
-        switch ($this->colony->getUser()->getFactionId()) {
+        switch ($this->host->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
             case FactionEnum::FACTION_ROMULAN:
             case FactionEnum::FACTION_KLINGON:

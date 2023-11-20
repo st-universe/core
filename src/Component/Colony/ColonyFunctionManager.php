@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Stu\Component\Building\BuildingEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 /**
@@ -30,42 +29,42 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
     }
 
     public function hasActiveFunction(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         int $functionId,
         bool $useCache = true
     ): bool {
         if ($useCache === false) {
-            return $this->hasBuildingWithFunction($colony, $functionId, [self::STATE_ENABLED]);
+            return $this->hasBuildingWithFunction($host, $functionId, [self::STATE_ENABLED]);
         }
-        return $this->hasActiveBuildingWithFunction($colony, $functionId);
+        return $this->hasActiveBuildingWithFunction($host, $functionId);
     }
 
     public function hasFunction(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         int $functionId
     ): bool {
-        return $this->hasBuildingWithFunction($colony, $functionId, [self::STATE_DISABLED, self::STATE_ENABLED]);
+        return $this->hasBuildingWithFunction($host, $functionId, [self::STATE_DISABLED, self::STATE_ENABLED]);
     }
 
     public function getBuildingWithFunctionCount(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         int $functionId,
         array $states
     ): int {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $colony->getId(),
+            $host,
             [$functionId],
             $states
         );
     }
 
     /**
-     * @param list<int> $states
+     * @param array<int> $states
      */
-    private function hasBuildingWithFunction(ColonyInterface $colony, int $functionId, array $states): bool
+    private function hasBuildingWithFunction(PlanetFieldHostInterface $host, int $functionId, array $states): bool
     {
         return $this->getBuildingWithFunctionCount(
-            $colony,
+            $host,
             $functionId,
             $states
         ) > 0;
@@ -74,16 +73,16 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
     /**
      * Uses a very simple cache to avoid querying the same information over and over again
      */
-    private function hasActiveBuildingWithFunction(ColonyInterface $colony, int $functionId): bool
+    private function hasActiveBuildingWithFunction(PlanetFieldHostInterface $host, int $functionId): bool
     {
-        $colonyId = $colony->getId();
+        $hostId = $host->getId();
 
-        if (!isset($this->hasActiveBuildingByColonyAndFunction[$colonyId])) {
-            $this->hasActiveBuildingByColonyAndFunction[$colonyId] = [];
+        if (!isset($this->hasActiveBuildingByColonyAndFunction[$hostId])) {
+            $this->hasActiveBuildingByColonyAndFunction[$hostId] = [];
         }
-        if (!isset($this->hasActiveBuildingByColonyAndFunction[$colonyId][$functionId])) {
-            $this->hasActiveBuildingByColonyAndFunction[$colonyId][$functionId] = $this->hasBuildingWithFunction($colony, $functionId, [self::STATE_ENABLED]);
+        if (!isset($this->hasActiveBuildingByColonyAndFunction[$hostId][$functionId])) {
+            $this->hasActiveBuildingByColonyAndFunction[$hostId][$functionId] = $this->hasBuildingWithFunction($host, $functionId, [self::STATE_ENABLED]);
         }
-        return $this->hasActiveBuildingByColonyAndFunction[$colonyId][$functionId];
+        return $this->hasActiveBuildingByColonyAndFunction[$hostId][$functionId];
     }
 }

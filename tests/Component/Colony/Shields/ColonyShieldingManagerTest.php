@@ -54,16 +54,10 @@ class ColonyShieldingManagerTest extends StuTestCase
 
     public function testGetMaxShieldingReturnsValue(): void
     {
-        $colonyId = 666;
         $value = 42;
 
-        $this->colony->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($colonyId);
-
         $this->planetFieldRepository->shouldReceive('getMaxShieldsOfColony')
-            ->with($colonyId)
+            ->with($this->colony)
             ->once()
             ->andReturn($value);
 
@@ -73,7 +67,7 @@ class ColonyShieldingManagerTest extends StuTestCase
         );
     }
 
-    public function testIsShieldingEnabledReturnsFalseIfNotActiveShieldGeneratorExists(): void
+    public function testIsShieldingEnabledReturnsFalseIfNoActiveShieldGeneratorExists(): void
     {
         $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
             ->with(
