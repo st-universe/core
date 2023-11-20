@@ -6,6 +6,8 @@ namespace Stu\Lib;
 
 use Stu\Lib\BeamUtil\BeamUtil;
 use Stu\Lib\BeamUtil\BeamUtilInterface;
+use Stu\Lib\Colony\PlanetFieldHostProvider;
+use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Map\DistanceCalculation;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
@@ -32,6 +34,7 @@ return [
     GradientColorInterface::class => autowire(GradientColor::class),
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
     BeamUtilInterface::class => autowire(BeamUtil::class),
+    PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
         [
             autowire(ManageBattery::class),
