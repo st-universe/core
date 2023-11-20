@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Building\Action;
 
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class Academy implements BuildingActionHandlerInterface
@@ -22,11 +23,11 @@ final class Academy implements BuildingActionHandlerInterface
         $this->crewTrainingRepository->truncateByColony($colony);
     }
 
-    public function deactivate(int $buildingFunctionId, ColonyInterface $colony): void
+    public function deactivate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
     }
 
-    public function activate(int $buildingFunctionId, ColonyInterface $colony): void
+    public function activate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
     }
 }
