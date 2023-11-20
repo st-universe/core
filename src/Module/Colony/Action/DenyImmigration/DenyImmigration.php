@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\DenyImmigration;
 
 use request;
-use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -35,7 +35,7 @@ final class DenyImmigration implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyEnum::MENU_OPTION]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyMenuEnum::MENU_OPTION]);
 
         $colony->setImmigrationState(false);
 
