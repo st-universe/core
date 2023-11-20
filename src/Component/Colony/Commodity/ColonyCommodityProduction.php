@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Commodity;
 
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 final class ColonyCommodityProduction implements ColonyCommodityProductionInterface
 {
     private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
 
-    private ColonyInterface $colony;
+    private PlanetFieldHostInterface $host;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -21,12 +21,12 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
 
     public function __construct(
         BuildingCommodityRepositoryInterface $buildingCommodityRepository,
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         ColonyLibFactoryInterface $colonyLibFactory,
         CommodityCacheInterface $commodityCache
     ) {
         $this->buildingCommodityRepository = $buildingCommodityRepository;
-        $this->colony = $colony;
+        $this->host = $host;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->commodityCache = $commodityCache;
     }
@@ -34,8 +34,8 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
     public function getProduction(): array
     {
         $result = $this->buildingCommodityRepository->getProductionByColony(
-            $this->colony->getId(),
-            $this->colony->getColonyClass()->getId()
+            $this->host,
+            $this->host->getColonyClass()
         );
 
         $production = [];

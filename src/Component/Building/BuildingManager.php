@@ -7,8 +7,10 @@ namespace Stu\Component\Building;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 /**
@@ -20,6 +22,8 @@ final class BuildingManager implements BuildingManagerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ColonySandboxRepositoryInterface $colonySandboxRepository;
+
     private BuildingPostActionInterface $buildingPostAction;
 
     private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper;
@@ -27,11 +31,13 @@ final class BuildingManager implements BuildingManagerInterface
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyRepositoryInterface $colonyRepository,
+        ColonySandboxRepositoryInterface $colonySandboxRepository,
         BuildingFunctionActionMapperInterface $buildingFunctionActionMapper,
         BuildingPostActionInterface $buildingPostAction
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->colonySandboxRepository = $colonySandboxRepository;
         $this->buildingFunctionActionMapper = $buildingFunctionActionMapper;
         $this->buildingPostAction = $buildingPostAction;
     }
@@ -56,26 +62,29 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        $colony = $field->getColony();
+        $host = $field->getHost();
 
         $workerAmount = $building->getWorkers();
-        $worklessAmount = $colony->getWorkless();
 
-        if ($worklessAmount < $workerAmount) {
-            return;
+        if ($host instanceof ColonyInterface) {
+            $worklessAmount = $host->getWorkless();
+            if ($worklessAmount < $workerAmount) {
+                return;
+            }
+
+            $host->setWorkless($worklessAmount - $workerAmount);
         }
 
-        $colony
-            ->setWorkless($worklessAmount - $workerAmount)
-            ->setWorkers($colony->getWorkers() + $workerAmount)
-            ->setMaxBev($colony->getMaxBev() + $building->getHousing());
+        $host
+            ->setWorkers($host->getWorkers() + $workerAmount)
+            ->setMaxBev($host->getMaxBev() + $building->getHousing());
         $field->setActive(1);
 
         $this->planetFieldRepository->save($field);
 
-        $this->buildingPostAction->handleActivation($building, $colony);
+        $this->buildingPostAction->handleActivation($building, $host);
 
-        $this->colonyRepository->save($colony);
+        $this->saveHost($host);
     }
 
     public function deactivate(PlanetFieldInterface $field): void
@@ -94,25 +103,36 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        $colony = $field->getColony();
+        $host = $field->getHost();
 
-        $this->updateWorkerAndMaxBev($building, $colony);
+        $this->updateWorkerAndMaxBev($building, $host);
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
 
-        $this->buildingPostAction->handleDeactivation($building, $colony);
+        $this->buildingPostAction->handleDeactivation($building, $host);
 
-        $this->colonyRepository->save($colony);
+        $this->saveHost($host);
     }
 
-    private function updateWorkerAndMaxBev(BuildingInterface $building, ColonyInterface $colony): void
+    private function saveHost(ColonyInterface|ColonySandboxInterface $host): void
+    {
+        if ($host instanceof ColonyInterface) {
+            $this->colonyRepository->save($host);
+        } else {
+            $this->colonySandboxRepository->save($host);
+        }
+    }
+
+    private function updateWorkerAndMaxBev(BuildingInterface $building, ColonyInterface|ColonySandboxInterface $host): void
     {
         $workerAmount = $building->getWorkers();
-        $colony->setWorkless($colony->getWorkless() + $workerAmount);
-        $colony->setWorkers($colony->getWorkers() - $workerAmount);
 
-        $colony->setMaxBev($colony->getMaxBev() - $building->getHousing());
+        if ($host instanceof ColonyInterface) {
+            $host->setWorkless($host->getWorkless() + $workerAmount);
+        }
+        $host->setWorkers($host->getWorkers() - $workerAmount);
+        $host->setMaxBev($host->getMaxBev() - $building->getHousing());
     }
 
     public function remove(
@@ -128,28 +148,28 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        $colony = $field->getColony();
+        $host = $field->getHost();
 
         if (!$field->isUnderConstruction()) {
             $this->deactivate($field);
-            $colony
-                ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())
-                ->setMaxEps($colony->getMaxEps() - $building->getEpsStorage());
+            $host
+                ->setMaxStorage($host->getMaxStorage() - $building->getStorage())
+                ->setMaxEps($host->getMaxEps() - $building->getEpsStorage());
         }
 
         foreach ($building->getFunctions() as $function) {
             $buildingFunctionId = $function->getFunction();
 
             $handler = $this->buildingFunctionActionMapper->map($buildingFunctionId);
-            if ($handler !== null) {
-                $handler->destruct($buildingFunctionId, $colony);
+            if ($handler !== null && $host instanceof ColonyInterface) {
+                $handler->destruct($buildingFunctionId, $host);
             }
         }
 
         $field->clearBuilding();
 
         $this->planetFieldRepository->save($field);
-        $this->colonyRepository->save($colony);
+        $this->saveHost($host);
     }
 
     public function finish(PlanetFieldInterface $field, bool $activate = true): void
@@ -159,7 +179,7 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        $colony = $field->getColony();
+        $host = $field->getHost();
 
         $field
             ->setActive(0)
@@ -169,11 +189,11 @@ final class BuildingManager implements BuildingManagerInterface
             $this->activate($field);
         }
 
-        $colony
-            ->setMaxStorage($colony->getMaxStorage() + $building->getStorage())
-            ->setMaxEps($colony->getMaxEps() + $building->getEpsStorage());
+        $host
+            ->setMaxStorage($host->getMaxStorage() + $building->getStorage())
+            ->setMaxEps($host->getMaxEps() + $building->getEpsStorage());
 
-        $this->colonyRepository->save($colony);
+        $this->saveHost($host);
         $this->planetFieldRepository->save($field);
     }
 }

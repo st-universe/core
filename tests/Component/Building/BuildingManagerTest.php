@@ -13,6 +13,7 @@ use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -22,7 +23,10 @@ class BuildingManagerTest extends StuTestCase
     private MockInterface $planetFieldRepository;
 
     /** @var MockInterface&ColonyRepositoryInterface */
-    private MockInterface $colonyRepository;
+    private MockInterface $hostRepository;
+
+    /** @var MockInterface&ColonySandboxRepositoryInterface */
+    private MockInterface $hostSandboxRepository;
 
     /** @var MockInterface&BuildingPostActionInterface */
     private MockInterface $buildingPostAction;
@@ -36,12 +40,14 @@ class BuildingManagerTest extends StuTestCase
     {
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
+        $this->colonySandboxRepository = $this->mock(ColonySandboxRepositoryInterface::class);
         $this->buildingPostAction = $this->mock(BuildingPostActionInterface::class);
         $this->buildingFunctionActionMapper = $this->mock(BuildingFunctionActionMapperInterface::class);
 
         $this->buildingManager = new BuildingManager(
             $this->planetFieldRepository,
             $this->colonyRepository,
+            $this->colonySandboxRepository,
             $this->buildingFunctionActionMapper,
             $this->buildingPostAction
         );
@@ -122,6 +128,7 @@ class BuildingManagerTest extends StuTestCase
     public function testActivateFailsOnLackOfWorklessPeople(): void
     {
         $field = $this->mock(PlanetFieldInterface::class);
+        $colony = $this->mock(ColonyInterface::class);
 
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
@@ -139,7 +146,12 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(666);
-        $field->shouldReceive('getColony->getWorkless')
+        $field->shouldReceive('getHost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colony);
+
+        $colony->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn(555);
@@ -150,7 +162,7 @@ class BuildingManagerTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $field = $this->mock(PlanetFieldInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $host = $this->mock(ColonyInterface::class);
         $building = $this->mock(BuildingInterface::class);
 
         $worker = 6;
@@ -175,35 +187,35 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($building);
-        $field->shouldReceive('getColony')
+        $field->shouldReceive('getHost')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
+            ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(1)
             ->once();
 
-        $colony->shouldReceive('getWorkless')
+        $host->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn($workless);
-        $colony->shouldReceive('getMaxBev')
+        $host->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn($currentHousing);
-        $colony->shouldReceive('getWorkers')
+        $host->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
-        $colony->shouldReceive('setWorkless')
+        $host->shouldReceive('setWorkless')
             ->with($workless - $worker)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setWorkers')
+        $host->shouldReceive('setWorkers')
             ->with($currentWorker + $worker)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setMaxBev')
+        $host->shouldReceive('setMaxBev')
             ->with($currentHousing + $housing)
             ->once();
 
@@ -217,14 +229,14 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($housing);
 
         $this->buildingPostAction->shouldReceive('handleActivation')
-            ->with($building, $colony)
+            ->with($building, $host)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)
             ->once();
         $this->colonyRepository->shouldReceive('save')
-            ->with($colony)
+            ->with($host)
             ->once();
 
         $this->buildingManager->activate($field);
@@ -281,7 +293,7 @@ class BuildingManagerTest extends StuTestCase
     public function testDeactivateDeactivatesForProduction(): void
     {
         $field = $this->mock(PlanetFieldInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $host = $this->mock(ColonyInterface::class);
         $building = $this->mock(BuildingInterface::class);
 
         $currentWorker = 33;
@@ -303,41 +315,41 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($building);
-        $field->shouldReceive('getColony')
+        $field->shouldReceive('getHost')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
+            ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(0)
             ->once();
 
-        $colony->shouldReceive('getMaxBev')
+        $host->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn($currentHousing);
-        $colony->shouldReceive('getWorkers')
+        $host->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
 
         $newWorkless = $currentWorkless + $worker;
-        $colony->shouldReceive('setWorkless')
+        $host->shouldReceive('setWorkless')
             ->with($newWorkless)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('getWorkless')
+        $host->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorkless);
 
         $newWorkers = $currentWorker - $worker;
-        $colony->shouldReceive('setWorkers')
+        $host->shouldReceive('setWorkers')
             ->with($newWorkers)
             ->once()
             ->andReturnSelf();
 
         $newHousing = $currentHousing - $housing;
-        $colony->shouldReceive('setMaxBev')
+        $host->shouldReceive('setMaxBev')
             ->with($newHousing)
             ->once();
 
@@ -351,14 +363,14 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($housing);
 
         $this->buildingPostAction->shouldReceive('handleDeactivation')
-            ->with($building, $colony)
+            ->with($building, $host)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)
             ->once();
         $this->colonyRepository->shouldReceive('save')
-            ->with($colony)
+            ->with($host)
             ->once();
 
         $this->buildingManager->deactivate($field);
@@ -367,7 +379,7 @@ class BuildingManagerTest extends StuTestCase
     public function testDeactivateDeactivatesForHousing(): void
     {
         $field = $this->mock(PlanetFieldInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $host = $this->mock(ColonyInterface::class);
         $building = $this->mock(BuildingInterface::class);
 
         $currentWorker = 33;
@@ -389,38 +401,38 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($building);
-        $field->shouldReceive('getColony')
+        $field->shouldReceive('getHost')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
+            ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(0)
             ->once();
 
-        $colony->shouldReceive('getWorkless')
+        $host->shouldReceive('getWorkless')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorkless);
-        $colony->shouldReceive('getWorkers')
+        $host->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
 
         $newWorkers = $currentWorker - $worker;
-        $colony->shouldReceive('setWorkers')
+        $host->shouldReceive('setWorkers')
             ->with($newWorkers)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setWorkless')
+        $host->shouldReceive('setWorkless')
             ->with($currentWorkless)
             ->once()
             ->andReturnSelf();
 
         $newHousing = $currentHousing - $housing;
-        $colony->shouldReceive('setMaxBev')
+        $host->shouldReceive('setMaxBev')
             ->with($newHousing)
             ->once();
-        $colony->shouldReceive('getMaxBev')
+        $host->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
             ->andReturn($currentHousing, $newHousing, $newHousing);
@@ -435,14 +447,14 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($housing);
 
         $this->buildingPostAction->shouldReceive('handleDeactivation')
-            ->with($building, $colony)
+            ->with($building, $host)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)
             ->once();
         $this->colonyRepository->shouldReceive('save')
-            ->with($colony)
+            ->with($host)
             ->once();
 
         $this->buildingManager->deactivate($field);
@@ -483,7 +495,7 @@ class BuildingManagerTest extends StuTestCase
     {
         $field = $this->mock(PlanetFieldInterface::class);
         $building = $this->mock(BuildingInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $host = $this->mock(ColonyInterface::class);
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
 
@@ -497,10 +509,10 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($building);
-        $field->shouldReceive('getColony')
+        $field->shouldReceive('getHost')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
+            ->andReturn($host);
         $field->shouldReceive('clearBuilding')
             ->withNoArgs()
             ->once();
@@ -541,22 +553,22 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($buildingAction);
 
         $buildingAction->shouldReceive('destruct')
-            ->with($functionId, $colony)
+            ->with($functionId, $host)
             ->once();
 
-        $colony->shouldReceive('getMaxStorage')
+        $host->shouldReceive('getMaxStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($currentStorage);
-        $colony->shouldReceive('getMaxEps')
+        $host->shouldReceive('getMaxEps')
             ->withNoArgs()
             ->once()
             ->andReturn($currentEps);
-        $colony->shouldReceive('setMaxStorage')
+        $host->shouldReceive('setMaxStorage')
             ->with($currentStorage - $storage)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setMaxEps')
+        $host->shouldReceive('setMaxEps')
             ->with($currentEps - $eps)
             ->once();
 
@@ -564,7 +576,7 @@ class BuildingManagerTest extends StuTestCase
             ->with($field)
             ->once();
         $this->colonyRepository->shouldReceive('save')
-            ->with($colony)
+            ->with($host)
             ->once();
 
         $this->buildingManager->remove($field);
@@ -586,7 +598,7 @@ class BuildingManagerTest extends StuTestCase
     {
         $field = $this->mock(PlanetFieldInterface::class);
         $building = $this->mock(BuildingInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $host = $this->mock(ColonyInterface::class);
 
         $currentStorage = 555;
         $storage = 44;
@@ -598,10 +610,10 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($building);
-        $field->shouldReceive('getColony')
+        $field->shouldReceive('getHost')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
+            ->andReturn($host);
         $field->shouldReceive('setActive')
             ->with(0)
             ->once()
@@ -631,19 +643,19 @@ class BuildingManagerTest extends StuTestCase
             ->once()
             ->andReturn($integrity);
 
-        $colony->shouldReceive('getMaxStorage')
+        $host->shouldReceive('getMaxStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($currentStorage);
-        $colony->shouldReceive('getMaxEps')
+        $host->shouldReceive('getMaxEps')
             ->withNoArgs()
             ->once()
             ->andReturn($currentEps);
-        $colony->shouldReceive('setMaxStorage')
+        $host->shouldReceive('setMaxStorage')
             ->with($currentStorage + $storage)
             ->once()
             ->andReturnSelf();
-        $colony->shouldReceive('setMaxEps')
+        $host->shouldReceive('setMaxEps')
             ->with($currentEps + $eps)
             ->once();
 
@@ -651,7 +663,7 @@ class BuildingManagerTest extends StuTestCase
             ->with($field)
             ->once();
         $this->colonyRepository->shouldReceive('save')
-            ->with($colony)
+            ->with($host)
             ->once();
 
         $this->buildingManager->finish($field);
