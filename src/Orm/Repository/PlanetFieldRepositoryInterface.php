@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -31,60 +32,62 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      * @param array<int> $state
      * @param array<int> $excludedFields
      *
-     * @return iterable<PlanetFieldInterface>
+     * @return array<PlanetFieldInterface>
      */
-    public function getEnergyConsumingByColony(
-        int $colonyId,
+    public function getEnergyConsumingByHost(
+        PlanetFieldHostInterface $host,
         array $state = [0, 1],
         ?int $limit = null,
         array $excludedFields = []
-    ): iterable;
+    ): array;
 
     /**
-     * @return iterable<PlanetFieldInterface>
+     * @return array<PlanetFieldInterface>
      */
-    public function getEnergyProducingByColony(int $colonyId): iterable;
+    public function getEnergyProducingByHost(PlanetFieldHostInterface $host): array;
 
     /**
      * @param array<int> $state
      * @param array<int> $excludedFields
      *
-     * @return iterable<PlanetFieldInterface>
+     * @return array<PlanetFieldInterface>
      */
-    public function getCommodityConsumingByColonyAndCommodity(
-        int $colonyId,
+    public function getCommodityConsumingByHostAndCommodity(
+        PlanetFieldHostInterface $host,
         int $commodityId,
         array $state = [0, 1],
         ?int $limit = null,
         array $excludedFields = []
-    ): iterable;
+    ): array;
 
     /**
-     * @return iterable<PlanetFieldInterface>
+     * @return array<PlanetFieldInterface>
      */
-    public function getCommodityProducingByColonyAndCommodity(int $colonyId, int $commodityId): iterable;
+    public function getCommodityProducingByHostAndCommodity(PlanetFieldHostInterface $host, int $commodityId): array;
 
     /**
-     * @return iterable<PlanetFieldInterface>
+     * @return array<PlanetFieldInterface>
      */
-    public function getHousingProvidingByColony(int $colonyId): iterable;
+    public function getHousingProvidingByHost(PlanetFieldHostInterface $host): array;
 
     /**
-     * @return iterable<PlanetFieldInterface>
+     * @return array<PlanetFieldInterface>
      */
-    public function getWorkerConsumingByColony(int $colonyId): iterable;
+    public function getWorkerConsumingByHost(PlanetFieldHostInterface $host): array;
 
     /**
      * @param array<int> $excludedFields
+     * 
+     * @return array<PlanetFieldInterface>
      */
     public function getWorkerConsumingByColonyAndState(
         int $colonyId,
         array $state = [0, 1],
         ?int $limit = null,
         array $excludedFields = []
-    ): iterable;
+    ): array;
 
-    public function getCountByColonyAndBuilding(int $colonyId, int $buildingId): int;
+    public function getCountByHostAndBuilding(PlanetFieldHostInterface $host, int $buildingId): int;
 
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int;
 
@@ -93,7 +96,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      * @param array<int> $state
      */
     public function getCountByColonyAndBuildingFunctionAndState(
-        int $colonyId,
+        PlanetFieldHostInterface $host,
         array $buildingFunctionIds,
         array $state
     ): int;
@@ -108,27 +111,27 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
         array $buildingFunctionIds
     ): array;
 
-    public function getMaxShieldsOfColony(int $colonyId): int;
-
-    /**
-     * @return iterable<PlanetFieldInterface>
-     */
-    public function getInConstructionByUser(int $userId): iterable;
-
-    /**
-     * @return iterable<PlanetFieldInterface>
-     */
-    public function getByConstructionFinish(int $finishTime): iterable;
+    public function getMaxShieldsOfColony(PlanetFieldHostInterface $host): int;
 
     /**
      * @return array<PlanetFieldInterface>
      */
-    public function getByColonyWithBuilding(int $colonyId): array;
+    public function getInConstructionByUser(int $userId): array;
+
+    /**
+     * @return array<PlanetFieldInterface>
+     */
+    public function getByConstructionFinish(int $finishTime): array;
+
+    /**
+     * @return array<PlanetFieldInterface>
+     */
+    public function getByColonyWithBuilding(PlanetFieldHostInterface $host): array;
 
     /**
      * @param array<int> $excludedFields
      */
-    public function getEnergyProductionByColony(int $colonyId, array $excludedFields = [-1]): int;
+    public function getEnergyProductionByColony(PlanetFieldHostInterface $host, array $excludedFields = [-1]): int;
 
     public function truncateByColony(ColonyInterface $colony): void;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\Commodity;
@@ -15,7 +16,7 @@ use Stu\Orm\Entity\PlanetField;
  */
 final class CommodityRepository extends EntityRepository implements CommodityRepositoryInterface
 {
-    public function getByBuildingsOnColony(int $colonyId): array
+    public function getByBuildingsOnColony(PlanetFieldHostInterface $host): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -25,17 +26,18 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
                         SELECT bg.commodity_id
                         FROM %s bg
                         WHERE bg.buildings_id IN (
-                            SELECT cfd.buildings_id
-                            FROM %s cfd
-                            WHERE cfd.colonies_id = :colonyId
+                            SELECT pf.buildings_id
+                            FROM %s pf
+                            WHERE pf.%s = :hostId
                         )
                     ) ORDER BY c.name ASC',
                     Commodity::class,
                     BuildingCommodity::class,
-                    PlanetField::class
+                    PlanetField::class,
+                    $host->getPlanetFieldHostColumnIdentifier()
                 )
             )
-            ->setParameter('colonyId', $colonyId)
+            ->setParameter('hostId', $host->getId())
             ->getResult();
     }
 
@@ -68,7 +70,8 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
             ->createQuery(
                 sprintf(
                     'SELECT c FROM %s c
-                    INDEX BY c.id',
+                    INDEX BY c.id
+                    ORDER BY c.sort ASC',
                     Commodity::class
                 )
             )
