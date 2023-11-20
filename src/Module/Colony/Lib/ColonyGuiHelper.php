@@ -4,122 +4,96 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Component\Colony\ColonyEnum;
+use request;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
-    private CommodityRepositoryInterface $commodityRepository;
-
     private PlanetFieldRepositoryInterface $planetFieldRepository;
+
+    private CommodityRepositoryInterface $commodityRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private CommodityCacheInterface $commodityCache;
+
+    /** @var array<int, ColonyProduction> */
+    private ?array $production = null;
+
+    private ?ColonyShieldingManagerInterface $shieldingManager = null;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
+        CommodityRepositoryInterface $commodityRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityCacheInterface $commodityCache
     ) {
-        $this->commodityRepository = $commodityRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->commodityRepository = $commodityRepository;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->commodityCache = $commodityCache;
     }
 
-    public function getColonyMenu(int $menuId): string
-    {
-        switch ($menuId) {
-            case ColonyEnum::MENU_OPTION:
-                return 'cm_misc';
-            case ColonyEnum::MENU_BUILD:
-                return 'cm_buildmenu';
-            case ColonyEnum::MENU_SOCIAL:
-                return 'cm_social';
-            case ColonyEnum::MENU_BUILDINGS:
-                return 'cm_building_mgmt';
-            case ColonyEnum::MENU_AIRFIELD:
-                return 'cm_airfield';
-            case ColonyEnum::MENU_MODULEFAB:
-                return 'cm_modulefab';
-            default:
-                return 'cm_management';
+    public function registerComponents(
+        PlanetFieldHostInterface $host,
+        GameControllerInterface $game,
+        array $whitelist = null
+    ): void {
+
+        $components = $whitelist ?? GuiComponentEnum::cases();
+        foreach ($components as $component) {
+            $method = $component->value;
+
+            $this->$method($host, $game);
+        }
+
+        $game->setTemplateVar('HOST', $host);
+
+        if ($host instanceof ColonyInterface) {
+            $game->setTemplateVar('COLONY', $host);
+            $game->setTemplateVar('FORM_ACTION', 'colony.php');
+        }
+        if ($host instanceof ColonySandboxInterface) {
+            $game->setTemplateVar('COLONY', $host->getColony());
+            $game->setTemplateVar('FORM_ACTION', '/admin/index.php');
         }
     }
 
-    public function register(ColonyInterface $colony, GameControllerInterface $game): void
+    /** @return array<int, ColonyProduction> */
+    private function getProduction(PlanetFieldHostInterface $host): array
     {
-        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
-        $width = 360;
-        $bars = [];
-        $epsBar = [];
-        if ($energyProduction < 0) {
-            $prod = abs($energyProduction);
-            if ($colony->getEps() - $prod < 0) {
-                $bars[StatusBarColorEnum::STATUSBAR_RED] = $colony->getEps();
-                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
-            } else {
-                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps() - $prod;
-                $bars[StatusBarColorEnum::STATUSBAR_RED] = $prod;
-                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
-            }
-        }
-        if ($energyProduction > 0) {
-            if ($colony->getEps() + $energyProduction > $colony->getMaxEps()) {
-                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps();
-                if ($colony->getEps() < $colony->getMaxEps()) {
-                    $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $colony->getMaxEps() - $colony->getEps();
-                }
-            } else {
-                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps();
-                $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $energyProduction;
-                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps() - $energyProduction;
-            }
-        }
-        if ($energyProduction == 0) {
-            $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps();
-            $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
-        }
-        foreach ($bars as $color => $value) {
-            if ($colony->getMaxEps() < $value) {
-                $value = $colony->getMaxEps();
-            }
-            if ($value <= 0) {
-                continue;
-            }
-            $epsBar[] = sprintf(
-                '<img src="assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
-                $color,
-                round($width / 100 * (100 / $colony->getMaxEps() * $value)),
-                'Energieproduktion'
-            );
+        if ($this->production === null) {
+            $this->production = $this->colonyLibFactory->createColonyCommodityProduction($host)->getProduction();
         }
 
-        $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_STANDARD);
-        $stor = $colony->getStorage();
-        $prod = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
+        return $this->production;
+    }
 
-        $storage = [];
-        foreach ($commodities as $value) {
-            $commodityId = $value->getId();
-            if (array_key_exists($commodityId, $prod)) {
-                $storage[$commodityId]['commodity'] = $value;
-                $storage[$commodityId]['production'] = $prod[$commodityId];
-                $storage[$commodityId]['storage'] = $stor->containsKey($commodityId) ? $stor[$commodityId] : false;
-            } elseif ($stor->containsKey($commodityId)) {
-                $storage[$commodityId]['commodity'] = $value;
-                $storage[$commodityId]['storage'] = $stor[$commodityId];
-                $storage[$commodityId]['production'] = false;
-            }
-        }
+    private function registerSurface(PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    {
+        $game->setTemplateVar(
+            'COLONY_SURFACE',
+            $this->colonyLibFactory->createColonySurface($host, request::getInt('bid') !== 0 ? request::getInt('bid') : null)
+        );
+    }
 
-        $depositMinings = $colony->getUserDepositMinings();
+    private function registerEffects(PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    {
+        $commodities = $this->commodityCache->getAll(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
+        $depositMinings = $host instanceof ColonyInterface ? $host->getUserDepositMinings() : [];
+        $prod = $this->getProduction($host);
 
-        $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
         $effects = [];
         foreach ($commodities as $value) {
             $commodityId = $value->getId();
@@ -136,44 +110,148 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             $effects[$commodityId]['production'] = $prod[$commodityId];
         }
 
+        $game->setTemplateVar('EFFECTS', $effects);
+    }
+
+    private function registerStorage(PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    {
+        $commodities = $this->commodityCache->getAll(CommodityTypeEnum::COMMODITY_TYPE_STANDARD);
+
+        $prod = $this->getProduction($host);
+        $game->setTemplateVar(
+            'PRODUCTION_SUM',
+            $this->colonyLibFactory->createColonyProductionSumReducer()->reduce($prod)
+        );
+
+        if (!$host instanceof ColonyInterface) {
+            return;
+        }
+
+        $stor = $host->getStorage();
+        $storage = [];
+        foreach ($commodities as $value) {
+            $commodityId = $value->getId();
+            if (array_key_exists($commodityId, $prod)) {
+                $storage[$commodityId]['commodity'] = $value;
+                $storage[$commodityId]['production'] = $prod[$commodityId];
+                $storage[$commodityId]['storage'] = $stor->containsKey($commodityId) ? $stor[$commodityId] : false;
+            } elseif ($stor->containsKey($commodityId)) {
+                $storage[$commodityId]['commodity'] = $value;
+                $storage[$commodityId]['storage'] = $stor[$commodityId];
+                $storage[$commodityId]['production'] = false;
+            }
+        }
+
+        $game->setTemplateVar('STORAGE', $storage);
+    }
+
+    private function registerShieldingManager(PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    {
+        $game->setTemplateVar('SHIELDING_MANAGER', $this->getShieldingManager($host));
+    }
+
+    private function registerShieldBar(PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    {
+        $shieldingManager = $this->getShieldingManager($host);
+
+        if ($shieldingManager->hasShielding()) {
+            $game->setTemplateVar(
+                'SHIELD_STATUS_BAR',
+                $this->buildShieldBar($shieldingManager, $host)
+            );
+        }
+    }
+
+    private function registerBuildingManagement(PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    {
+        $list = $this->planetFieldRepository->getByColonyWithBuilding($host);
+
+        $game->setTemplateVar('PLANET_FIELD_LIST', $list);
+        $game->setTemplateVar('USEABLE_COMMODITY_LIST', $this->commodityRepository->getByBuildingsOnColony($host));
+    }
+
+    private function getShieldingManager(PlanetFieldHostInterface $host): ColonyShieldingManagerInterface
+    {
+        if ($this->shieldingManager === null) {
+            $this->shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($host);
+        }
+
+        return $this->shieldingManager;
+    }
+
+    private function registerEpsBar(PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    {
+        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($host);
+
+        $currentEps = $host instanceof ColonyInterface ? $host->getEps() : 0;
+        $width = 360;
+        $bars = [];
+        $epsBar = '';
+        if ($energyProduction < 0) {
+            $prod = abs($energyProduction);
+            if ($currentEps - $prod < 0) {
+                $bars[StatusBarColorEnum::STATUSBAR_RED] = $currentEps;
+                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps;
+            } else {
+                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps - $prod;
+                $bars[StatusBarColorEnum::STATUSBAR_RED] = $prod;
+                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps;
+            }
+        }
+        if ($energyProduction > 0) {
+            if ($currentEps + $energyProduction > $host->getMaxEps()) {
+                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps;
+                if ($currentEps < $host->getMaxEps()) {
+                    $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $host->getMaxEps() - $currentEps;
+                }
+            } else {
+                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps;
+                $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $energyProduction;
+                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps - $energyProduction;
+            }
+        }
+        if ($energyProduction == 0) {
+            $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps;
+            $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps;
+        }
+        foreach ($bars as $color => $value) {
+            if ($host->getMaxEps() < $value) {
+                $value = $host->getMaxEps();
+            }
+            if ($value <= 0) {
+                continue;
+            }
+            $epsBar .= sprintf(
+                '<img src="/assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
+                $color,
+                round($width / 100 * (100 / $host->getMaxEps() * $value)),
+                'Energieproduktion'
+            );
+        }
 
         $game->setTemplateVar(
             'EPS_STATUS_BAR',
             $epsBar
         );
-
-        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($colony);
-
-        if ($shieldingManager->hasShielding()) {
-            $game->setTemplateVar(
-                'SHIELD_STATUS_BAR',
-                $this->buildShieldBar($shieldingManager, $colony)
-            );
-        }
-        $game->setTemplateVar('STORAGE', $storage);
-        $game->setTemplateVar('EFFECTS', $effects);
-        $game->setTemplateVar(
-            'PRODUCTION_SUM',
-            $this->colonyLibFactory->createColonyProductionSumReducer()->reduce($prod)
-        );
     }
 
     private function buildShieldBar(
         ColonyShieldingManagerInterface $colonyShieldingManager,
-        ColonyInterface $colony
-    ): array {
-        $shieldBar = [];
+        PlanetFieldHostInterface $host
+    ): string {
+        $shieldBar = '';
         $bars = [];
         $width = 360;
 
+        $currentShields = $host instanceof ColonyInterface ? $host->getShields() : 0;
         $maxShields = $colonyShieldingManager->getMaxShielding();
 
         if ($colonyShieldingManager->isShieldingEnabled()) {
-            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_ON] = $colony->getShields();
+            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_ON] = $currentShields;
         } else {
-            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_OFF] = $colony->getShields();
+            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_OFF] = $currentShields;
         }
-        $bars[StatusBarColorEnum::STATUSBAR_GREY] = $maxShields - $colony->getShields();
+        $bars[StatusBarColorEnum::STATUSBAR_GREY] = $maxShields - $currentShields;
 
         foreach ($bars as $color => $value) {
             if ($maxShields < $value) {
@@ -182,8 +260,8 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             if ($value <= 0) {
                 continue;
             }
-            $shieldBar[] = sprintf(
-                '<img src="assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
+            $shieldBar .= sprintf(
+                '<img src="/assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
                 $color,
                 round($width / 100 * (100 / $maxShields * $value)),
                 'Schildstärke'
