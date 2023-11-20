@@ -37,11 +37,11 @@ final class ReactorWrapper implements ReactorWrapperInterface
         if ($this->epsProduction === null) {
             $warpdrive = $this->wrapper->getWarpDriveSystemData();
             $warpdriveSplit = $warpdrive === null ? 100 : $warpdrive->getWarpDriveSplit();
+            $reactorOutput = $this->getOutputCappedByLoad();
 
             if ($warpdriveSplit === 0) {
-                $this->epsProduction = $this->wrapper->getEpsUsage();
+                $this->epsProduction = min($reactorOutput, $this->wrapper->getEpsUsage());
             } else {
-                $reactorOutput = $this->getOutputCappedByLoad();
                 $warpDriveProduction = $this->getWarpdriveProduction();
                 $flightCost = $this->wrapper->get()->getRump()->getFlightEcost();
 
@@ -63,7 +63,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
                 $warpdriveSplit = $warpdrive->getWarpDriveSplit();
                 $reactorOutput = $this->getOutputCappedByLoad();
                 $flightCost = $this->wrapper->get()->getRump()->getFlightEcost();
-                $maxWarpdriveGain = (int)floor(($reactorOutput - $this->wrapper->getEpsUsage()) / $flightCost);
+                $maxWarpdriveGain = max(0, (int)floor(($reactorOutput - $this->wrapper->getEpsUsage()) / $flightCost));
 
                 $this->warpdriveProduction = (int)round((1 - ($warpdriveSplit / 100)) * $maxWarpdriveGain);
             }
@@ -77,8 +77,8 @@ final class ReactorWrapper implements ReactorWrapperInterface
         if ($this->effectiveEpsProduction === null) {
             $epsSystem = $this->wrapper->getEpsSystemData();
             $missingEps = $epsSystem === null ? 0 : $epsSystem->getMaxEps() - $epsSystem->getEps();
-            $epsGrowthCap = $this->getEpsProduction() - $this->wrapper->getEpsUsage();
-            $this->effectiveEpsProduction = min($missingEps, $epsGrowthCap);
+            $epsChange = $this->getEpsProduction() - $this->wrapper->getEpsUsage();
+            $this->effectiveEpsProduction = min($missingEps, $epsChange);
         }
         return $this->effectiveEpsProduction;
     }

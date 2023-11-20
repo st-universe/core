@@ -49,6 +49,14 @@ class ReactorWrapperTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
+        $this->reactorSystemData->shouldReceive('getOutput')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+        $this->reactorSystemData->shouldReceive('getLoad')
+            ->withNoArgs()
+            ->andReturn(90);
+
         $warpdrive->shouldReceive('getWarpDriveSplit')
             ->withNoArgs()
             ->once()
@@ -58,6 +66,38 @@ class ReactorWrapperTest extends StuTestCase
         $result = $this->subject->getEpsProduction();
 
         $this->assertEquals(42, $result);
+    }
+
+    public function testGetEpsProductionExpectCappedByReactorLoading(): void
+    {
+        $warpdrive = $this->mock(WarpDriveSystemData::class);
+
+        $this->wrapper->shouldReceive('getWarpDriveSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($warpdrive);
+        $this->wrapper->shouldReceive('getEpsUsage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $this->reactorSystemData->shouldReceive('getOutput')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+        $this->reactorSystemData->shouldReceive('getLoad')
+            ->withNoArgs()
+            ->andReturn(21);
+
+        $warpdrive->shouldReceive('getWarpDriveSplit')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(0);
+
+        $result = $this->subject->getEpsProduction();
+        $result = $this->subject->getEpsProduction();
+
+        $this->assertEquals(21, $result);
     }
 
     public function testGetEpsProductionWhenNoWarpdriveInstalled(): void
@@ -166,6 +206,54 @@ class ReactorWrapperTest extends StuTestCase
         $result = $this->subject->getEffectiveEpsProduction();
 
         $this->assertEquals(27, $result);
+    }
+
+    public function testGetEffectiveEpsProductionExpectNegativeWhenReactorNotFullEnough(): void
+    {
+        $warpdrive = $this->mock(WarpDriveSystemData::class);
+        $eps = $this->mock(EpsSystemData::class);
+
+        $this->wrapper->shouldReceive('getWarpDriveSystemData')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($warpdrive);
+        $this->wrapper->shouldReceive('getEpsSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($eps);
+        $this->wrapper->shouldReceive('get->getRump->getFlightEcost')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(5);
+        $this->wrapper->shouldReceive('getEpsUsage')
+            ->withNoArgs()
+            ->andReturn(10);
+
+        $warpdrive->shouldReceive('getWarpDriveSplit')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(50);
+
+        $eps->shouldReceive('getEps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(50);
+        $eps->shouldReceive('getMaxEps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(77);
+
+        $this->reactorSystemData->shouldReceive('getOutput')
+            ->withNoArgs()
+            ->andReturn(110);
+        $this->reactorSystemData->shouldReceive('getLoad')
+            ->withNoArgs()
+            ->andReturn(1);
+
+        $result = $this->subject->getEffectiveEpsProduction();
+        $result = $this->subject->getEffectiveEpsProduction();
+
+        $this->assertEquals(-9, $result);
     }
 
     public function testGetEffectiveWarpDriveProduction(): void

@@ -404,17 +404,17 @@ function updateReactorValues(value) {
 
 	// calculate absolute values
 	const warpdriveSplit = parseInt(value);
-	const maxWarpdriveGain = Math.floor((reactorOutput - epsUsage) / flightCost);
+	const maxWarpdriveGain = Math.max(0, Math.floor((reactorOutput - epsUsage) / flightCost));
 	const warpDriveProduction = Math.round((1 - (warpdriveSplit / 100)) * maxWarpdriveGain);
-	const epsProduction = warpdriveSplit === 0 ? epsUsage : reactorOutput - (warpDriveProduction * flightCost);
+	const epsProduction = warpdriveSplit === 0 ? Math.min(reactorOutput, epsUsage) : reactorOutput - (warpDriveProduction * flightCost);
 
 	// set input labels
 	document.getElementById('calculatedEPS').textContent = epsProduction > 0 ? '+' + epsProduction : String(epsProduction);
 	document.getElementById('calculatedWarpDrive').textContent = warpDriveProduction > 0 ? '+' + warpDriveProduction : '0';
 
 	// calculate effective values
-	const epsGrowthCap = Math.max(0, epsProduction - epsUsage);
-	const effEpsProduction = Math.min(missingEps, epsGrowthCap);
+	const epsChange = epsProduction - epsUsage;
+	const effEpsProduction = Math.min(missingEps, epsChange);
 
 	const missingWarpdrive = maxWarpdrive - currentWarpdrive;
 	const effWarpdriveProduction = Math.min(missingWarpdrive, warpDriveProduction);
