@@ -37,7 +37,7 @@
         {% else %}
         {% if field.getTerraforming %}
         <div style="background-image: url(/assets/generated/fields/{{ dayNightPrefix }}{{ fieldType }}.png); width: 40px; height: 40px;"
-            onclick="fieldMouseClick(this,{{ fieldId }},0);" id="field{{ fieldId }}">>
+            onclick="fieldMouseClick(this,{{ fieldId }},0);" id="field{{ fieldId }}">
             <div>
                 <div><img class="action" style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
                         src="/assets/terraform/{{ field.getTerraforming.getId }}/{{ dayNightPrefix }}.png" /></div>
