@@ -31,21 +31,23 @@
         </div>
     </div>
     <div style="margin-left: 5px; float: left; width: 14vw;">
+        {% set hostId = HOST.getId %}
+        {% set hostType = HOST.getHostType.value %}
         <div class="divhead">Gebäudegruppen</div>
         <div class="divbody">
             <img src="/assets/buttons/e_trans2.png" title="Energie" style="width: 10px; height: 10px;" />
             <strong>Energie</strong><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=1&sstr={{ SESSIONSTRING }}">Verbraucher
+                href="?id={{ hostId }}&hosttype={{ hostType }}&B_MULTIPLE_ACTIVATION=1&mode=1&sstr={{ SESSIONSTRING }}">Verbraucher
                 aktivieren</a><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=1&sstr={{ SESSIONSTRING }}">Verbraucher
+                href="?id={{ hostId }}&hosttype={{ hostType }}&B_MULTIPLE_DEACTIVATION=1&mode=1&sstr={{ SESSIONSTRING }}">Verbraucher
                 deaktivieren</a><br /><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=3&sstr={{ SESSIONSTRING }}">Produzenten
+                href="?id={{ hostId }}&hosttype={{ hostType }}&B_MULTIPLE_ACTIVATION=1&mode=3&sstr={{ SESSIONSTRING }}">Produzenten
                 aktivieren</a><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=3&sstr={{ SESSIONSTRING }}">Produzenten
+                href="?id={{ hostId }}&hosttype={{ hostType }}&B_MULTIPLE_DEACTIVATION=1&mode=3&sstr={{ SESSIONSTRING }}">Produzenten
                 deaktivieren</a><br /><br />
             <img src="/assets/buttons/lager.png" title="Warenbezogen" style="width: 10px; height: 10px;" />
             <strong>Warenbezogen</strong><br />
@@ -65,16 +67,16 @@
                 <tr>
                     <td style="text-align: center;">
                         <input type="button" value="aktivieren"
-                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_ACTIVATION', 7, '{{ SESSIONSTRING }}')" /><br /><br />
+                            onclick="snafu({{ hostId }},{{ hostType }},'B_MULTIPLE_ACTIVATION', 7, '{{ SESSIONSTRING }}')" /><br /><br />
                         <input type="button" value="deaktivieren"
-                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_DEACTIVATION', 7, '{{ SESSIONSTRING }}')" />
+                            onclick="snafu({{ hostId }},{{ hostType }},'B_MULTIPLE_DEACTIVATION', 7, '{{ SESSIONSTRING }}')" />
 
                     </td>
                     <td style="text-align: center;">
                         <input type="button" value="aktivieren"
-                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_ACTIVATION', 6, '{{ SESSIONSTRING }}')" /><br /><br />
+                            onclick="snafu({{ hostId }},{{ hostType }},'B_MULTIPLE_ACTIVATION', 6, '{{ SESSIONSTRING }}')" /><br /><br />
                         <input type="button" value="deaktivieren"
-                            onclick="snafu({{ HOST.getId }},'B_MULTIPLE_DEACTIVATION', 6, '{{ SESSIONSTRING }}')" />
+                            onclick="snafu({{ hostId }},{{ hostType }},'B_MULTIPLE_DEACTIVATION', 6, '{{ SESSIONSTRING }}')" />
                     </td>
                 </tr>
             </table>
@@ -82,16 +84,16 @@
             <img src="/assets/buttons/lager.png" title="Bevölkerungsbezogen" style="width: 10px; height: 10px;" />
             <strong>Bevölkerungsbezogen</strong><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=5&sstr={{ SESSIONSTRING }}">Wohngebäude
+                href="?id={{ hostId }}&B_MULTIPLE_ACTIVATION=1&mode=5&sstr={{ SESSIONSTRING }}">Wohngebäude
                 aktivieren</a><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=5&sstr={{ SESSIONSTRING }}">Wohngebäude
+                href="?id={{ hostId }}&B_MULTIPLE_DEACTIVATION=1&mode=5&sstr={{ SESSIONSTRING }}">Wohngebäude
                 deaktivieren</a><br /><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_ACTIVATION=1&mode=4&sstr={{ SESSIONSTRING }}">Arbeitgeber
+                href="?id={{ hostId }}&B_MULTIPLE_ACTIVATION=1&mode=4&sstr={{ SESSIONSTRING }}">Arbeitgeber
                 aktivieren</a><br />
             <span style="color: rgb(206, 206, 206);">&gt;</span> <a
-                href="?id={{ HOST.getId }}&B_MULTIPLE_DEACTIVATION=1&mode=4&sstr={{ SESSIONSTRING }}">Arbeitgeber
+                href="?id={{ hostId }}&B_MULTIPLE_DEACTIVATION=1&mode=4&sstr={{ SESSIONSTRING }}">Arbeitgeber
                 deaktivieren</a><br /><br />
         </div>
     </div>

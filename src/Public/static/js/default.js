@@ -532,9 +532,9 @@ function nodelistToString(list) {
                 })
                 .join(',');
 }
-function snafu(colonyId, action, mode, sstr) {
+function snafu(hostId, hostType, action, mode, sstr) {
         commodityId = $('commodityselector').getValue();
-        goToUrl('/colony.php?id=' + colonyId + '&' + action + '=1&mode=' + mode + '&selection=' + commodityId + '&sstr=' + sstr);
+        goToUrl('/colony.php?id=' + hostId + '&hosttype=' + hostType + '&' + action + '=1&mode=' + mode + '&selection=' + commodityId + '&sstr=' + sstr);
 }
 function togglePanel(panelId) {
         var panel = document.getElementById(panelId);
