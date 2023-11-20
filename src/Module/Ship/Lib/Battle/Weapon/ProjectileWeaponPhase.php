@@ -11,7 +11,6 @@ use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TorpedoHullInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 
 //TODO unit tests
@@ -168,7 +167,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
                         $building->getName(),
-                        $target->getColony()->getName(),
+                        $target->getHost()->getName(),
                         $attacker->getName()
                     )
                 );

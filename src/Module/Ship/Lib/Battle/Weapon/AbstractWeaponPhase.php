@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -36,11 +37,14 @@ abstract class AbstractWeaponPhase
 
     protected BuildingManagerInterface $buildingManager;
 
+    protected StuRandom $stuRandom;
+
     protected LoggerUtilInterface $loggerUtil;
 
-    private ?CreatePrestigeLogInterface $createPrestigeLog = null;
+    private CreatePrestigeLogInterface $createPrestigeLog;
 
     private PrivateMessageSenderInterface $privateMessageSender;
+
 
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
@@ -52,6 +56,7 @@ abstract class AbstractWeaponPhase
         BuildingManagerInterface $buildingManager,
         CreatePrestigeLogInterface $createPrestigeLog,
         PrivateMessageSenderInterface $privateMessageSender,
+        StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipSystemManager = $shipSystemManager;
@@ -63,6 +68,7 @@ abstract class AbstractWeaponPhase
         $this->buildingManager = $buildingManager;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->privateMessageSender = $privateMessageSender;
+        $this->stuRandom = $stuRandom;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -89,9 +95,8 @@ abstract class AbstractWeaponPhase
             $rump->getName()
         );
 
-        if ($this->createPrestigeLog !== null) {
-            $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
-        }
+        $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
+
         // system pm only for negative prestige
         if ($amount < 0) {
             $this->sendSystemMessage($description, $destroyer->getId());
