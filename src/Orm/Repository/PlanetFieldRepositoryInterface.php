@@ -23,6 +23,8 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
 
     public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetFieldInterface;
 
+    public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetFieldInterface;
+
     /**
      * @return array<PlanetFieldInterface>
      */

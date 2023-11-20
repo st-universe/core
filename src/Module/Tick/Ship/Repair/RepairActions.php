@@ -140,7 +140,7 @@ final class RepairActions implements RepairActionsInterface
                 continue;
             }
 
-            $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $field = $this->planetFieldRepository->getByColonyAndFieldIndex(
                 $obj->getColonyId(),
                 $obj->getFieldId()
             );
