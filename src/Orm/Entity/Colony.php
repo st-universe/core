@@ -17,7 +17,10 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\TimeConstants;
+use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 /**
@@ -740,5 +743,35 @@ class Colony implements ColonyInterface
     public function getDepositMinings(): Collection
     {
         return $this->depositMinings;
+    }
+
+    public function getPlanetFieldHostIdentifier(): string
+    {
+        return 'colony';
+    }
+
+    public function getPlanetFieldHostColumnIdentifier(): string
+    {
+        return 'colonies_id';
+    }
+
+    public function isColony(): bool
+    {
+        return true;
+    }
+
+    public function getHostType(): PlanetFieldHostTypeEnum
+    {
+        return PlanetFieldHostTypeEnum::COLONY;
+    }
+
+    public function getDefaultViewIdentifier(): string
+    {
+        return ShowColony::VIEW_IDENTIFIER;
+    }
+
+    public function isMenuAllowed(ColonyMenuEnum $menu): bool
+    {
+        return true;
     }
 }
