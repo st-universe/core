@@ -5,56 +5,35 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
+use Stu\Orm\Entity\BuildingInterface;
 
 class ColonyProductionPreviewWrapper
 {
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
-
+    private BuildingInterface $building;
 
     /** @var array<ColonyProduction> */
     private array $production = [];
-
-    /** @var array<int, array<ColonyProduction>> */
-    private array $preview = [];
 
     /**
      * @param array<ColonyProduction> $production
      */
     public function __construct(
         ColonyLibFactoryInterface $colonyLibFactory,
-        BuildingCommodityRepositoryInterface $buildingCommodityRepository,
+        BuildingInterface $building,
         array $production
     ) {
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->buildingCommodityRepository = $buildingCommodityRepository;
+        $this->building = $building;
         $this->production = $production;
     }
 
-    /**
-     * @param int|string $buildingId
-     *
-     * @return array<ColonyProduction>
-     */
-    public function __get($buildingId): array
-    {
-        $bid = (int) $buildingId;
-
-        if (!array_key_exists($bid, $this->preview)) {
-            $this->preview[$bid] = $this->loadPreview($bid);
-        }
-
-        return $this->preview[$bid];
-    }
-
     /** @return array<ColonyProduction> */
-    private function loadPreview(int $buildingId): array
+    public function getPreview(): array
     {
-        $bcommodities = $this->buildingCommodityRepository->getByBuilding($buildingId);
+        $bcommodities = $this->building->getCommodities();
 
-        /** @var array<ColonyProduction> */
         $ret = [];
         foreach ($bcommodities as $commodityId => $prod) {
             $commodityId = $prod->getCommodityId();

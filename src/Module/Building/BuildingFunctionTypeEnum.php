@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Building;
 
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 
 final class BuildingFunctionTypeEnum
 {
@@ -38,5 +39,16 @@ final class BuildingFunctionTypeEnum
             BuildingEnum::BUILDING_FUNCTION_CRUISER_SHIPYARD,
             BuildingEnum::BUILDING_FUNCTION_DESTROYER_SHIPYARD
         ];
+    }
+
+    public static function isBuildingFunctionMandatory(ColonyMenuEnum $menu): bool
+    {
+        switch ($menu) {
+            case ColonyMenuEnum::MENU_SHIPYARD:
+            case ColonyMenuEnum::MENU_BUILDPLANS:
+                return true;
+            default:
+                return false;
+        }
     }
 }
