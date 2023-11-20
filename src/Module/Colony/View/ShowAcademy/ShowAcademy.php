@@ -72,7 +72,7 @@ final class ShowAcademy implements ViewControllerInterface
         $game->showMacro(ColonyMenuEnum::MENU_ACADEMY->getTemplate());
         $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_ACADEMY);
 
-        $game->setTemplateVar('COLONY', $colony);
+        $game->setTemplateVar('HOST', $colony);
         $game->setTemplateVar('TRAINABLE_CREW_COUNT_PER_TICK', $trainableCrew);
         $game->setTemplateVar(
             'CREW_COUNT_TRAINING',
