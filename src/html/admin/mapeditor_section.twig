@@ -35,7 +35,7 @@
 		</tr>
 		<tr>
 			{% set colspan = FIELDS_PER_SECTION + 1 %}
-			<td colspan="runtime" colspan="{{ colspan }}" style="height: 30px;"></td>
+			<td colspan="{{ colspan }}" style="height: 30px;"></td>
 		</tr>
 		<tr>
 			<td>
@@ -70,7 +70,7 @@
 						<th>{{ yrow.getRow }}</th>
 						{% for mapItem in yrow.getFields %}
 						{% set map = mapItem.getMap %}
-						<td class="starmap" style="runtime" data-passable="{{ map.getFieldType.getPassableAsInt }}"
+						<td class="starmap" data-passable="{{ map.getFieldType.getPassableAsInt }}"
 							data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
 							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCX }}_{{ map.getCY }}">
 							<div class="lssobj" style="cursor: pointer ! important;"
@@ -109,7 +109,7 @@
 		</tr>
 		<tr>
 			{% set colspan = FIELDS_PER_SECTION + 1 %}
-			<td colspan="runtime" colspan="{{ colspan }}" style="height: 30px;"></td>
+			<td colspan="{{ colspan }}" style="height: 30px;"></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
@@ -173,54 +173,48 @@
 						<td style="vertical-align: top;">
 							{% for data in POSSIBLE_FIELD_TYPES.row_0 %}
 							<div>
-								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
-									style="cursor: pointer;" title="{{ data.getName }}"
-									onclick="selectMapFieldType('{{ data.getType }}')" />
+								<img data-src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;"
+									title="{{ data.getName }}" onclick="selectMapFieldType('{{ data.getType }}')" />
 							</div>
 							{% endfor %}
 						</td>
 						<td style="vertical-align: top;">
 							{% for data in POSSIBLE_FIELD_TYPES.row_1 %}
 							<div>
-								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
-									style="cursor: pointer;" title="{{ data.getName }}"
-									onclick="selectMapFieldType('{{ data.getType }}')" />
+								<img data-src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;"
+									title="{{ data.getName }}" onclick="selectMapFieldType('{{ data.getType }}')" />
 							</div>
 							{% endfor %}
 						</td>
 						<td style="vertical-align: top;">
 							{% for data in POSSIBLE_FIELD_TYPES.row_2 %}
 							<div>
-								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
-									style="cursor: pointer;" title="{{ data.getName }}"
-									onclick="selectMapFieldType('{{ data.getType }}')" />
+								<img data-src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;"
+									title="{{ data.getName }}" onclick="selectMapFieldType('{{ data.getType }}')" />
 							</div>
 							{% endfor %}
 						</td>
 						<td style="vertical-align: top;">
 							{% for data in POSSIBLE_FIELD_TYPES.row_3 %}
 							<div>
-								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
-									style="cursor: pointer;" title="{{ data.getName }}"
-									onclick="selectMapFieldType('{{ data.getType }}')" />
+								<img data-src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;"
+									title="{{ data.getName }}" onclick="selectMapFieldType('{{ data.getType }}')" />
 							</div>
 							{% endfor %}
 						</td>
 						<td style="vertical-align: top;">
 							{% for data in POSSIBLE_FIELD_TYPES.row_4 %}
 							<div>
-								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
-									style="cursor: pointer;" title="{{ data.getName }}"
-									onclick="selectMapFieldType('{{ data.getType }}')" />
+								<img data-src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;"
+									title="{{ data.getName }}" onclick="selectMapFieldType('{{ data.getType }}')" />
 							</div>
 							{% endfor %}
 						</td>
 						<td style="vertical-align: top;">
 							{% for data in POSSIBLE_FIELD_TYPES.row_5 %}
 							<div>
-								<img data-src="/assets/map/{{ data.getType }}.png" title="runtime"
-									style="cursor: pointer;" title="{{ data.getName }}"
-									onclick="selectMapFieldType('{{ data.getType }}')" />
+								<img data-src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;"
+									title="{{ data.getName }}" onclick="selectMapFieldType('{{ data.getType }}')" />
 							</div>
 							{% endfor %}
 						</td>
@@ -247,7 +241,7 @@
 							<td style="vertical-align: top;">
 								{% for data in POSSIBLE_FIELD_TYPES.row_0 %}
 								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
 										style="cursor: pointer;" title="{{ data.getDescription }}"
 										onclick="selectSystemType('{{ data.getId }}')" />
 								</div>
@@ -256,7 +250,7 @@
 							<td style="vertical-align: top;">
 								{% for data in POSSIBLE_FIELD_TYPES.row_1 %}
 								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
 										style="cursor: pointer;" title="{{ data.getDescription }}"
 										onclick="selectSystemType('{{ data.getId }}')" />
 								</div>
@@ -265,7 +259,7 @@
 							<td style="vertical-align: top;">
 								{% for data in POSSIBLE_FIELD_TYPES.row_2 %}
 								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
 										style="cursor: pointer;" title="{{ data.getDescription }}"
 										onclick="selectSystemType('{{ data.getId }}')" />
 								</div>
@@ -274,7 +268,7 @@
 							<td style="vertical-align: top;">
 								{% for data in POSSIBLE_FIELD_TYPES.row_3 %}
 								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
 										style="cursor: pointer; ;" title="{{ data.getDescription }}"
 										onclick="selectSystemType('{{ data.getId }}')" />
 								</div>
@@ -283,7 +277,7 @@
 							<td style="vertical-align: top;">
 								{% for data in POSSIBLE_FIELD_TYPES.row_4 %}
 								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
 										style="cursor: pointer; " title="{{ data.getDescription }}"
 										onclick="selectSystemType('{{ data.getId }}')" />
 								</div>
@@ -292,7 +286,7 @@
 							<td style="vertical-align: top;">
 								{% for data in POSSIBLE_FIELD_TYPES.row_5 %}
 								<div>
-									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png" title="runtime"
+									<img data-src="/assets/map/systemtypes/{{ data.getId }}.png"
 										style="cursor: pointer;" title="{{ data.getDescription }}"
 										onclick="selectSystemType('{{ data.getId }}')" />
 								</div>
@@ -318,7 +312,7 @@
 								<td style="vertical-align: top;">
 									{% for data in POSSIBLE_REGION.row_0 %}
 									<div>
-										<span title="runtime" style="cursor: pointer;" title="{{ data.getDescription }}"
+										<span style="cursor: pointer;" title="{{ data.getDescription }}"
 											onclick="selectRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
 											data.getDescription}}</span>
 									</div>
@@ -346,8 +340,7 @@
 									<td style="vertical-align: top;">
 										{% for data in POSSIBLE_ADMIN_REGION.row_0 %}
 										<div>
-											<span title="runtime" style="cursor: pointer;"
-												title="{{ data.getDescription }}"
+											<span style="cursor: pointer;" title="{{ data.getDescription }}"
 												onclick="selectAdminRegion('{{ data.getId }}','{{ data.getDescription}}')">{{
 												data.getDescription}}</span>
 										</div>
@@ -403,8 +396,7 @@
 											<td style="vertical-align: top;">
 												{% for data in POSSIBLE_BORDER.row_0 %}
 												<div>
-													<span title="runtime" style="cursor: pointer;"
-														title="{{ data.getDescription }}"
+													<span style="cursor: pointer;" title="{{ data.getDescription }}"
 														onclick="selectBorder('{{ data.getId }}','{{ data.getDescription}}','{{ data.getColor}}')">{{
 														data.getDescription}}</span>
 												</div>
