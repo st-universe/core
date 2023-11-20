@@ -6,9 +6,11 @@ use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
+use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
@@ -23,7 +25,7 @@ interface ColonyLibFactoryInterface
     ): BuildingFunctionTalInterface;
 
     public function createColonySurface(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         ?int $buildingId = null,
         bool $showUnderground = true
     ): ColonySurfaceInterface;
@@ -37,15 +39,14 @@ interface ColonyLibFactoryInterface
         UserInterface $currentUser
     ): BuildableRumpListItemInterface;
 
-    /**
-     * @param array<ColonyProduction> $production
-     */
     public function createColonyProductionPreviewWrapper(
-        array $production
+        BuildingInterface $building,
+        PlanetFieldHostInterface $host
     ): ColonyProductionPreviewWrapper;
 
     public function createEpsProductionPreviewWrapper(
-        ColonyInterface $colony
+        PlanetFieldHostInterface $host,
+        BuildingInterface $building
     ): ColonyEpsProductionPreviewWrapper;
 
     public function createModuleSelector(
@@ -74,11 +75,11 @@ interface ColonyLibFactoryInterface
 
 
     public function createColonyShieldingManager(
-        ColonyInterface $colony
+        PlanetFieldHostInterface $host
     ): ColonyShieldingManagerInterface;
 
     public function createColonyCommodityProduction(
-        ColonyInterface $colony
+        PlanetFieldHostInterface $host
     ): ColonyCommodityProductionInterface;
 
     public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface;
@@ -87,7 +88,7 @@ interface ColonyLibFactoryInterface
      * @param ColonyProduction[]|null $production if null, use production of colony itself
      */
     public function createColonyPopulationCalculator(
-        ColonyInterface $colony,
+        PlanetFieldHostInterface $host,
         array $production = null
     ): ColonyPopulationCalculatorInterface;
 }

@@ -53,7 +53,6 @@ final class DeactivateShields implements ActionControllerInterface
         }
 
         $this->buildingAction->deactivate(
-            $colony,
             current($fields),
             $game
         );

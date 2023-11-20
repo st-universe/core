@@ -54,12 +54,10 @@ final class RemoveWaste implements ActionControllerInterface
             $userId
         );
 
-        $colonyId = $colony->getId();
-
         $commodities = request::postArrayFatal('commodity');
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $colonyId,
+            $colony,
             [BuildingEnum::BUILDING_FUNCTION_WAREHOUSE],
             [0, 1]
         ) === 0) {

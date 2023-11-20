@@ -8,6 +8,7 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManager;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
 final class BuildingAction implements BuildingActionInterface
@@ -24,7 +25,7 @@ final class BuildingAction implements BuildingActionInterface
         $this->buildingManager = $buildingManager;
     }
 
-    public function activate(ColonyInterface $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
+    public function activate(PlanetFieldInterface $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -42,7 +43,12 @@ final class BuildingAction implements BuildingActionInterface
             );
             return;
         }
-        if ($colony->getWorkless() < $field->getBuilding()->getWorkers()) {
+
+        $host = $field->getHost();
+        if (
+            $host instanceof ColonyInterface
+            && $host->getWorkless() < $field->getBuilding()->getWorkers()
+        ) {
             $game->addInformationf(
                 _('Zum Aktivieren des Gebäudes (%s) werden %s Arbeiter benötigt'),
                 $field->getBuilding()->getName(),
@@ -60,7 +66,7 @@ final class BuildingAction implements BuildingActionInterface
         );
     }
 
-    public function deactivate(ColonyInterface $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
+    public function deactivate(PlanetFieldInterface $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -82,7 +88,6 @@ final class BuildingAction implements BuildingActionInterface
     }
 
     public function remove(
-        ColonyInterface $colony,
         PlanetFieldInterface $field,
         GameControllerInterface $game,
         bool $upgrade = false
@@ -105,12 +110,18 @@ final class BuildingAction implements BuildingActionInterface
             $field->getFieldId()
         );
 
+
+        $host = $field->getHost();
+        if ($host instanceof ColonySandboxInterface) {
+            return;
+        }
+
         $game->addInformation(_('Es konnten folgende Waren recycled werden'));
 
         foreach ($building->getCosts() as $value) {
             $halfAmount = $value->getHalfAmount();
-            if ($colony->getStorageSum() + $halfAmount > $colony->getMaxStorage()) {
-                $amount = $colony->getMaxStorage() - $colony->getStorageSum();
+            if ($host->getStorageSum() + $halfAmount > $host->getMaxStorage()) {
+                $amount = $host->getMaxStorage() - $host->getStorageSum();
             } else {
                 $amount = $halfAmount;
             }
@@ -118,7 +129,7 @@ final class BuildingAction implements BuildingActionInterface
                 $game->addInformation(_('[b][color=#ff2626]Keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
                 break;
             }
-            $this->colonyStorageManager->upperStorage($colony, $value->getCommodity(), $amount);
+            $this->colonyStorageManager->upperStorage($host, $value->getCommodity(), $amount);
 
             $game->addInformationf('%d %s', $amount, $value->getCommodity()->getName());
         }
