@@ -9,7 +9,6 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
@@ -94,7 +93,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
             _('Orbitalmanagement')
         );
         $game->setPagetitle(sprintf('%s Orbit', $colony->getName()));
-        $game->setTemplateFile('html/orbitalmanagement.xhtml');
+        $game->setTemplateFile('html/colony/menu/orbitalmanagement.twig');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('FLEETWRAPPERS', $list);
