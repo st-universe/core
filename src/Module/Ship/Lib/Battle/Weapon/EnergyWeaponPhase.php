@@ -12,7 +12,6 @@ use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
-use Stu\Orm\Entity\WeaponShieldInterface;
 
 //TODO unit tests
 final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeaponPhaseInterface
@@ -29,8 +28,9 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
         $targetWrapper = $targetPool[array_rand($targetPool)];
 
-        for ($i = 1; $i <= $attacker->getPhaserVolleys(); $i++) {
-            if ($targetPool === []) {
+        $phaserVolleys = $attacker->getPhaserVolleys();
+        for ($i = 1; $i <= $phaserVolleys; $i++) {
+            if (empty($targetPool)) {
                 break;
             }
             if (!$attacker->getPhaserState() || !$attacker->hasSufficientEnergy($this->getEnergyWeaponEnergyCosts())) {
@@ -57,7 +57,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             ));
 
             if (
-                $attacker->getHitChance() * (100 - $target->getEvadeChance()) < random_int(1, 10000)
+                $attacker->getHitChance() * (100 - $target->getEvadeChance()) < $this->stuRandom->rand(1, 10000)
             ) {
                 $message->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
@@ -171,7 +171,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
                         $building->getName(),
-                        $target->getColony()->getName(),
+                        $target->getHost()->getName(),
                         $attacker->getName()
                     )
                 );
@@ -191,7 +191,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     private function isCritical(WeaponInterface $weapon, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $weapon->getCriticalChance() * 2 : $weapon->getCriticalChance();
-        return random_int(1, 100) <= $critChance;
+        return $this->stuRandom->rand(1, 100) <= $critChance;
     }
 
     private function setWeaponShieldModificator(

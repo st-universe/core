@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Damage;
 
+use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -12,6 +13,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
@@ -110,7 +112,11 @@ final class ApplyDamage implements ApplyDamageInterface
     ): InformationWrapper {
         $informations = new InformationWrapper();
 
-        $colony = $target->getColony();
+        $colony = $target->getHost();
+        if (!$colony instanceof ColonyInterface) {
+            throw new RuntimeException('this should not happen');
+        }
+
         if (!$isOrbitField && $this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
             $damage = (int) $damageWrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage > $colony->getShields()) {
