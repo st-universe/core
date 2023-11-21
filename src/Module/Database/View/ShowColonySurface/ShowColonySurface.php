@@ -10,7 +10,7 @@ use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 
 final class ShowColonySurface implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONY_SURFACE';
+    public const VIEW_IDENTIFIER = 'SHOW_SURFACE';
 
     private ColonyScanRepositoryInterface $colonyScanRepository;
     private ShowColonySurfaceRequestInterface $showColonySurfaceRequest;
@@ -31,7 +31,7 @@ final class ShowColonySurface implements ViewControllerInterface
 
         $id = $this->showColonySurfaceRequest->getId();
 
-        $game->setTemplateVar('COLONY_SURFACE', unserialize($this->colonyScanRepository->getSurfaceArray($id)));
+        $game->setTemplateVar('SURFACE', unserialize($this->colonyScanRepository->getSurfaceArray($id)));
         $game->setTemplateVar('CSSCLASS', 'cfu');
         $game->setTemplateVar('SURFACETILESTYLE', $this->getSurfaceTileStyle());
     }

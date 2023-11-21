@@ -14,9 +14,4 @@ final class ShowShipDisassemblyRequest implements ShowShipDisassemblyRequestInte
     {
         return $this->queryParameter('id')->int()->required();
     }
-
-    public function getFieldId(): int
-    {
-        return $this->queryParameter('fid')->int()->required();
-    }
 }

@@ -113,7 +113,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
         array $buildingFunctionIds
     ): array;
 
-    public function getMaxShieldsOfColony(PlanetFieldHostInterface $host): int;
+    public function getMaxShieldsOfHost(PlanetFieldHostInterface $host): int;
 
     /**
      * @return array<PlanetFieldInterface>
@@ -133,7 +133,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $excludedFields
      */
-    public function getEnergyProductionByColony(PlanetFieldHostInterface $host, array $excludedFields = [-1]): int;
+    public function getEnergyProductionByHost(PlanetFieldHostInterface $host, array $excludedFields = [-1]): int;
 
     public function truncateByColony(ColonyInterface $colony): void;
 }

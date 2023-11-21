@@ -22,8 +22,6 @@ interface ColonySandboxInterface extends PlanetFieldHostInterface
 
     public function setMaxEps(int $max_eps): ColonySandboxInterface;
 
-    public function getMaxStorage(): int;
-
     public function setMaxStorage(int $max_storage): ColonySandboxInterface;
 
     public function getMask(): ?string;

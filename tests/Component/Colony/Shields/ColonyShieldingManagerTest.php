@@ -56,7 +56,7 @@ class ColonyShieldingManagerTest extends StuTestCase
     {
         $value = 42;
 
-        $this->planetFieldRepository->shouldReceive('getMaxShieldsOfColony')
+        $this->planetFieldRepository->shouldReceive('getMaxShieldsOfHost')
             ->with($this->colony)
             ->once()
             ->andReturn($value);

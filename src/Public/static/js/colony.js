@@ -16,13 +16,26 @@ function buildMenuScroll(menu, offset) {
 	ajax_update('buildmenu' + menu, createHostUri('B_SCROLL_BUILDMENU', '&menu=' + menu + '&offset=' + offset));
 }
 
-function switchColonyMenu(menu, func) {
+function switchColonyMenu(menu, func, fid) {
+	switchMenu(menu, 'colonymenu', func, fid);
+}
+
+function switchColonySubmenu(menu, func) {
+	switchMenu(menu, 'submenu', func);
+}
+
+function switchMenu(menu, id, func, fid) {
+	$('result').hide();
 	closeAjaxWindow();
 	url = createHostUri('B_SWITCH_COLONYMENU', '&menu=' + menu);
 	if (func) {
-		url = url + '&func=' + func;
+		url += '&func=' + func;
 	}
-	new Ajax.Updater('colonymenu', url, {
+	if (fid) {
+		url += '&fid=' + fid;
+	}
+
+	new Ajax.Updater(id, url, {
 		onComplete: function (transport) {
 			initBuildmenuMouseEvent();
 		},
@@ -38,13 +51,13 @@ function openBuildingInfo(buildingId) {
 	elt = 'buildinginfo';
 	openPJsWin(elt);
 	ajax_update(elt, createHostUri('SHOW_BUILDING', '&bid=' + buildingId));
-	ajax_update('colsurface', createHostUri('SHOW_COLONY_SURFACE', '&bid=' + buildingId));
+	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&bid=' + buildingId));
 	buildmode = 1;
 	selectedbuilding = buildingId;
 }
 
 function closeBuildingInfo() {
-	ajax_update('colsurface', createHostUri('SHOW_COLONY_SURFACE'));
+	ajax_update('colsurface', createHostUri('SHOW_SURFACE'));
 	buildmode = 0;
 	selectedbuilding = 0;
 }
@@ -121,7 +134,7 @@ function buildOnField(fieldId) {
 }
 
 function refreshHost() {
-	ajax_update('colsurface', createHostUri('SHOW_COLONY_SURFACE', '&bid=' + selectedbuilding));
+	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&bid=' + selectedbuilding));
 	ajax_update('colonyeps', createHostUri('SHOW_EPSBAR_AJAX'));
 	ajax_update('colonyshields', createHostUri('SHOW_SHIELDBAR_AJAX'));
 	ajax_update('colonystorage', createHostUri('SHOW_STORAGE_AJAX'));

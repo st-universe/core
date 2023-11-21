@@ -1,6 +1,6 @@
 {% set style = 'margin: 1px;; width: 42px;; height: 42px;;' %}
-<div style="{{ COLONY_SURFACE.getSurfaceTileStyle }}">
-    {% for field in COLONY_SURFACE.getSurface %}
+<div style="{{ SURFACE.getSurfaceTileStyle }}">
+    {% for field in SURFACE.getSurface %}
     {% set fieldId = field.getId %}
     {% set fieldType = field.getFieldType %}
     {% set fieldCssClass = field.getCssClass %}

@@ -6,5 +6,5 @@ function getCommodityLocations(commodityId) {
 function showColonySurface(id) {
 	elt = 'colonysurface';
 	openPJsWin(elt, 1);
-	ajax_update(elt, 'database.php?SHOW_COLONY_SURFACE=1&id=' + id);
+	ajax_update(elt, 'database.php?SHOW_SURFACE=1&id=' + id);
 }

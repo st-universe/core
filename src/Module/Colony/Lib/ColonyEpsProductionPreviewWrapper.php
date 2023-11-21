@@ -39,7 +39,7 @@ class ColonyEpsProductionPreviewWrapper
     private function getPreview(): int
     {
         if ($this->preview === null) {
-            $this->preview = $this->planetFieldRepository->getEnergyProductionByColony($this->host) + $this->building->getEpsProduction();
+            $this->preview = $this->planetFieldRepository->getEnergyProductionByHost($this->host) + $this->building->getEpsProduction();
         }
 
         return $this->preview;

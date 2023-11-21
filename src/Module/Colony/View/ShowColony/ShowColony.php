@@ -9,7 +9,7 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -69,8 +69,8 @@ final class ShowColony implements ViewControllerInterface
         );
 
         $menu = ColonyMenuEnum::getFor($game->getViewContext()['COLONY_MENU'] ?? null);
-        $this->colonyGuiHelper->registerComponents($colony, $game);
-        $game->setTemplateVar('CURRENT_MENU', $menu);
+
+        $this->colonyGuiHelper->registerMenuComponents($menu, $colony, $game);
 
         $firstOrbitShip = null;
 

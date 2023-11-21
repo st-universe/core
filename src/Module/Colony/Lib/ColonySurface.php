@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -13,7 +12,6 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -48,8 +46,6 @@ final class ColonySurface implements ColonySurfaceInterface
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ?int $energyProduction = null;
 
     private ?ColonyPopulationCalculatorInterface $colonyPopulationCalculator = null;
 
@@ -150,77 +146,6 @@ final class ColonySurface implements ColonySurfaceInterface
         return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
-    private function getColony(): ColonyInterface
-    {
-        $host = $this->host;
-        if ($host instanceof ColonyInterface) {
-            return $host;
-        }
-
-        throw new RuntimeException('not available for sandbox');
-    }
-
-    public function getEpsBoxTitleString(): string
-    {
-        $energyProduction = $this->getEnergyProduction();
-
-        $host = $this->host;
-        if ($host instanceof ColonyInterface) {
-            $forecast = $host->getEps() + $energyProduction;
-            if ($host->getEps() + $energyProduction < 0) {
-                $forecast = 0;
-            }
-            if ($host->getEps() + $energyProduction > $host->getMaxEps()) {
-                $forecast = $host->getMaxEps();
-            }
-
-            $eps = $host->getEps();
-        } else {
-            $eps = 0;
-            $forecast = $energyProduction;
-        }
-
-        if ($energyProduction > 0) {
-            $energyProduction = sprintf('+%d', $energyProduction);
-        }
-
-        return sprintf(
-            _('Energie: %d/%d (%s/Runde = %d)'),
-            $eps,
-            $host->getMaxEps(),
-            $energyProduction,
-            $forecast
-        );
-    }
-
-    public function getShieldBoxTitleString(): string
-    {
-        $host = $this->host;
-
-        return sprintf(
-            'Schildstärke: %d/%d',
-            $host instanceof ColonyInterface ? $host->getShields() : 0,
-            $this->planetFieldRepository->getMaxShieldsOfColony($this->host)
-        );
-    }
-
-    public function getStorageSumPercent(): float
-    {
-        if ($this->host instanceof ColonySandboxInterface) {
-            return 0;
-        }
-
-        $colony = $this->getColony();
-
-        $maxStorage = $colony->getMaxStorage();
-
-        if ($maxStorage === 0) {
-            return 0;
-        }
-
-        return round(100 / $maxStorage * $colony->getStorageSum(), 2);
-    }
-
     public function updateSurface(): void
     {
         $host = $this->host;
@@ -270,54 +195,11 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->entityManager->flush();
     }
 
-    public function getUserDepositMinings(): array
-    {
-        $production = $this->getProduction();
-
-        $result = [];
-        if (!$this->host instanceof ColonyInterface) {
-            return $result;
-        }
-
-        foreach ($this->host->getDepositMinings() as $deposit) {
-            if ($deposit->getUser() === $this->host->getUser()) {
-                $prod = $production[$deposit->getCommodity()->getId()] ?? null;
-
-                $result[$deposit->getCommodity()->getId()] = [
-                    'deposit' => $deposit,
-                    'currentlyMined' => $prod === null ? 0 : $prod->getProduction()
-                ];
-            }
-        }
-
-        return $result;
-    }
-
-    public function getEnergyProduction(): int
-    {
-        if ($this->energyProduction === null) {
-            $this->energyProduction = $this->planetFieldRepository->getEnergyProductionByColony(
-                $this->host
-            );
-        }
-
-        return $this->energyProduction;
-    }
-
     public function hasShipyard(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $this->host,
             BuildingFunctionTypeEnum::getShipyardOptions(),
-            [0, 1]
-        ) > 0;
-    }
-
-    public function hasModuleFab(): bool
-    {
-        return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-            $this->host,
-            BuildingFunctionTypeEnum::getModuleFabOptions(),
             [0, 1]
         ) > 0;
     }

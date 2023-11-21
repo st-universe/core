@@ -1,25 +1,28 @@
-{% embed "html/colony/menu/container.twig" %}
-{% block containment %}
-<div>
-    <table class="tcal">
-        <tr>
-            <td style="width: 33%;" class="colonymenu">
-                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
-                    &lt;&lt; Zurück zum Koloniemenü
-                </a>
-            </td>
-            <td style="width: 33%;" class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 8) }}">
-                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(8,{{ FUNC.getId }});">
-                    <span>Neuer Bauplan</span>
-                </a>
-            </td>
-            <td style="width: 33%;" class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 9) }}">
-                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(9,{{ FUNC.getId }});">
-                    <span>Gespeicherte Baupläne</span>
-                </a>
-            </td>
-        </tr>
-    </table>
-</div>
-{% endblock %}
-{% endembed %}
+<table class="tcal" style="width: auto;">
+    {% set fieldId = FIELD.getId %}
+    <tr>
+        <td class="colonymenu">
+            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(0);">
+                &lt;&lt; Zurück zum Koloniemenü
+            </a>
+        </td>
+        <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 9) }}">
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonyMenu(9, {{ FUNC.getId }}, {{ fieldId }});">
+                <span>Schiffbau</span>
+            </a>
+        </td>
+        <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 18) }}">
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonyMenu(18, {{ FUNC.getId }}, {{ fieldId }});">
+                <span>Schiffsreparatur</span>
+            </a>
+        </td>
+        <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 17) }}">
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonyMenu(17, {{ FUNC.getId }}, {{ fieldId }});">
+                <span>Schiffsdemontage</span>
+            </a>
+        </td>
+    </tr>
+</table>

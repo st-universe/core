@@ -1,9 +1,8 @@
-{% include 'html/colony/menu/mainscreen.twig' %}
 {% embed "html/colony/menu/container.twig" %}
 {% block containment %}
 <div>
     <table class="tcal" style="width: 40vw;">
-        {% set population = COLONY_SURFACE.getPopulation %}
+        {% set population = SURFACE.getPopulation %}
         <tr>
             <th colspan="4">Crewberechnung dieser Kolonie</th>
         </tr>

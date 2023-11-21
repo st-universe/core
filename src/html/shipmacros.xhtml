@@ -1488,8 +1488,8 @@
 </metal:macro>
 
 <metal:macro metal:define-macro="colonization">
-  <div tal:attributes="style string:${COLONY_SURFACE/getSurfaceTileStyle}" tal:define="sstr THIS/getSessionString">
-    <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
+  <div tal:attributes="style string:${SURFACE/getSurfaceTileStyle}" tal:define="sstr THIS/getSessionString">
+    <tal:block tal:repeat="field SURFACE/getSurface">
       <div style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass">
         <div>
           <div>
@@ -1534,8 +1534,8 @@
         </tr>
       </table>
     </div>
-    <div tal:attributes="style string:${COLONY_SURFACE/getSurfaceTileStyle}" tal:define="sstr THIS/getSessionString">
-      <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
+    <div tal:attributes="style string:${SURFACE/getSurfaceTileStyle}" tal:define="sstr THIS/getSessionString">
+      <tal:block tal:repeat="field SURFACE/getSurface">
         <tal:block tal:condition="not:field/hasBuilding">
           <div tal:condition="not:field/getTerraforming" style="${style}" tal:attributes="class field/getCssClass">
             <div style="width: 40px; height: 40px;" id="field${field/getFieldId}">

@@ -14,9 +14,4 @@ final class ShowBuildPlansRequest implements ShowBuildPlansRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
-    public function getBuildingFunctionId(): int
-    {
-        return $this->queryParameter('func')->int()->required();
-    }
 }

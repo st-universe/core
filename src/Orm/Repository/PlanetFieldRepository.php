@@ -285,7 +285,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             ->getResult();
     }
 
-    public function getMaxShieldsOfColony(PlanetFieldHostInterface $host): int
+    public function getMaxShieldsOfHost(PlanetFieldHostInterface $host): int
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('capacity', 'capacity');
@@ -360,7 +360,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    public function getEnergyProductionByColony(
+    public function getEnergyProductionByHost(
         PlanetFieldHostInterface $host,
         array $excludedFields = [-1]
     ): int {
