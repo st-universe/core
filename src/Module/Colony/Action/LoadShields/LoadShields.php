@@ -51,7 +51,7 @@ final class LoadShields implements ActionControllerInterface
             $load = $colony->getEps() * ColonyEnum::SHIELDS_PER_EPS;
         }
 
-        $maxShields = $this->planetFieldRepository->getMaxShieldsOfColony($colony);
+        $maxShields = $this->planetFieldRepository->getMaxShieldsOfHost($colony);
 
         if ($load > $maxShields - $colony->getShields()) {
             $load = $maxShields - $colony->getShields();

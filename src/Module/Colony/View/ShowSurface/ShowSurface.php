@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowSurface;
 
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowSurface implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONY_SURFACE';
+    public const VIEW_IDENTIFIER = 'SHOW_SURFACE';
 
     private PlanetFieldHostProviderInterface $planetFieldHostProvider;
 

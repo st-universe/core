@@ -12,6 +12,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
@@ -23,16 +24,20 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
+    private ColonyGuiHelperInterface $colonyGuiHelper;
+
     private StarmapUiFactoryInterface $starmapUiFactory;
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
+        ColonyGuiHelperInterface $colonyGuiHelper,
         StarmapUiFactoryInterface $starmapUiFactory,
         ColonyFunctionManagerInterface $colonyFunctionManager
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->colonyGuiHelper = $colonyGuiHelper;
         $this->starmapUiFactory = $starmapUiFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
     }
@@ -51,10 +56,9 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             return;
         }
 
-        $template = ColonyMenuEnum::MENU_SUBSPACE_TELESCOPE->getTemplate();
-        $game->showMacro($template);
+        $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_WASTE, $colony, $game);
 
-        $game->setTemplateVar('COLONY', $colony);
+        $game->showMacro(ColonyMenuEnum::MENU_WASTE->getTemplate());
 
         $mapX =  (int) ceil($colony->getSystem()->getCx() / MapEnum::FIELDS_PER_SECTION);
         $mapY =  (int) ceil($colony->getSystem()->getCy() / MapEnum::FIELDS_PER_SECTION);

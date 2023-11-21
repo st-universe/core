@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowEpsBar;
 
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -30,7 +30,7 @@ final class ShowEpsBar implements ViewControllerInterface
     {
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
-        $this->colonyGuiHelper->registerComponents($host, $game, [GuiComponentEnum::EPS_BAR, GuiComponentEnum::SURFACE]);
+        $this->colonyGuiHelper->registerComponents($host, $game, [GuiComponentEnum::EPS_BAR]);
 
         $game->showMacro('html/colony/component/colonyEps.twig');
     }

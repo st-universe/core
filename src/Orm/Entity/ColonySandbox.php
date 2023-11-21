@@ -233,6 +233,7 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return in_array($menu, [
+            ColonyMenuEnum::MENU_MAINSCREEN,
             ColonyMenuEnum::MENU_BUILD,
             ColonyMenuEnum::MENU_BUILDINGS,
             ColonyMenuEnum::MENU_INFO,

@@ -6,9 +6,9 @@ namespace Stu\Module\Colony\View\ShowTorpedoFab;
 
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowTorpedoFab implements ViewControllerInterface
 {
@@ -16,18 +16,18 @@ final class ShowTorpedoFab implements ViewControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
-    private ShowTorpedoFabRequestInterface $showTorpedoFabRequest;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
+    private ShowTorpedoFabRequestInterface $showTorpedoFabRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowTorpedoFabRequestInterface $showTorpedoFabRequest,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowTorpedoFabRequestInterface $showTorpedoFabRequest
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showTorpedoFabRequest = $showTorpedoFabRequest;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,9 +41,7 @@ final class ShowTorpedoFab implements ViewControllerInterface
         );
 
         $game->showMacro(ColonyMenuEnum::MENU_TORPEDOFAB->getTemplate());
-        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_TORPEDOFAB);
 
-        $game->setTemplateVar('HOST', $colony);
-        $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $this->torpedoTypeRepository->getForUser($userId));
+        $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_TORPEDOFAB, $colony, $game);
     }
 }

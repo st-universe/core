@@ -23,19 +23,14 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         $this->guiComponentProviders = $guiComponentProviders;
     }
 
-    public function registerComponents(
+    public function registerMenuComponents(
         ColonyMenuEnum $menu,
         PlanetFieldHostInterface $host,
         GameControllerInterface $game
     ): void {
 
-        foreach ($menu->getNecessaryGuiComponents() as $guiComponent) {
-            if (!array_key_exists($guiComponent->value, $this->guiComponentProviders)) {
-                throw new RuntimeException(sprintf('guiComponentProvider with follwing id does not exist: %d', $guiComponent->value));
-            }
-
-            $componentProvider = $this->guiComponentProviders[$guiComponent->value];
-            $componentProvider->setTemplateVariables($host, $game);
+        foreach ($menu->getNecessaryGuiComponents() as $component) {
+            $this->processComponent($component, $host, $game);
         }
 
         $game->setTemplateVar('HOST', $host);
@@ -49,5 +44,28 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             $game->setTemplateVar('COLONY', $host->getColony());
             $game->setTemplateVar('FORM_ACTION', '/admin/index.php');
         }
+    }
+
+    public function registerComponents(
+        PlanetFieldHostInterface $host,
+        GameControllerInterface $game,
+        array $guiComponents
+    ): void {
+        foreach ($guiComponents as $component) {
+            $this->processComponent($component, $host, $game);
+        }
+    }
+
+    private function processComponent(
+        GuiComponentEnum $guiComponent,
+        PlanetFieldHostInterface $host,
+        GameControllerInterface $game,
+    ): void {
+        if (!array_key_exists($guiComponent->value, $this->guiComponentProviders)) {
+            throw new RuntimeException(sprintf('guiComponentProvider with follwing id does not exist: %d', $guiComponent->value));
+        }
+
+        $componentProvider = $this->guiComponentProviders[$guiComponent->value];
+        $componentProvider->setTemplateVariables($host, $game);
     }
 }

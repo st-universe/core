@@ -45,6 +45,8 @@ final class BuildingFunctionTypeEnum
     {
         switch ($menu) {
             case ColonyMenuEnum::MENU_SHIPYARD:
+            case ColonyMenuEnum::MENU_SHIP_REPAIR:
+            case ColonyMenuEnum::MENU_SHIP_DISASSEMBLY:
             case ColonyMenuEnum::MENU_BUILDPLANS:
                 return true;
             default:

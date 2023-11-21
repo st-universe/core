@@ -25,6 +25,8 @@ interface PlanetFieldHostInterface
 
     public function getMaxEps(): int;
 
+    public function getMaxStorage(): int;
+
     public function getPlanetFieldHostIdentifier(): string;
 
     public function getPlanetFieldHostColumnIdentifier(): string;

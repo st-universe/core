@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowFighterShipyard;
 
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\ColonyMenu;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowFighterShipyard implements ViewControllerInterface
 {
@@ -18,18 +16,18 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
-    private ShowFighterShipyardRequestInterface $showFighterShipyardRequest;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private ShipRumpRepositoryInterface $shipRumpRepository;
+    private ShowFighterShipyardRequestInterface $showFighterShipyardRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowFighterShipyardRequestInterface $showFighterShipyardRequest,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowFighterShipyardRequestInterface $showFighterShipyardRequest
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showFighterShipyardRequest = $showFighterShipyardRequest;
-        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,16 +41,7 @@ final class ShowFighterShipyard implements ViewControllerInterface
         );
 
         $game->showMacro(ColonyMenuEnum::MENU_FIGHTER_SHIPYARD->getTemplate());
-        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_FIGHTER_SHIPYARD);
 
-        $game->setTemplateVar('COLONY', $colony);
-
-        $game->setTemplateVar(
-            'BUILDABLE_SHIPS',
-            $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
-                $userId,
-                BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD
-            )
-        );
+        $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_FIGHTER_SHIPYARD, $colony, $game);
     }
 }

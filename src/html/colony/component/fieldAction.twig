@@ -96,11 +96,15 @@
                             class="fabutton">Schiffbau</a>
                     </div>
                     <div class="fabutton">
-                        <input type="submit" class="fabutton" name="SHOW_SHIP_DISASSEMBLY" value="Schiffsdemontage">
+                        <a href="javascript:void(0)"
+                            onclick="switchColonyMenu(17,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }}, {{ fieldId }});cClick();"
+                            class="fabutton">Schiffsdemontage</a>
                     </div>
                     {% endif %}
                     <div class="fabutton">
-                        <input type="submit" class="fabutton" name="SHOW_SHIP_REPAIR" value="Schiffsreparatur">
+                        <a href="javascript:void(0)"
+                            onclick="switchColonyMenu(18,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }},{{ fieldId }});cClick();"
+                            class="fabutton">Schiffsreparatur</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isAirfield %}

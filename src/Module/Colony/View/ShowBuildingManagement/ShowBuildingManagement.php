@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\ShowBuildingManagement;
 
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -30,8 +30,7 @@ final class ShowBuildingManagement implements ViewControllerInterface
     {
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
 
-        $this->colonyGuiHelper->registerComponents($host, $game);
-        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_BUILDINGS);
+        $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_BUILDINGS, $host, $game);
 
         $game->showMacro(ColonyMenuEnum::MENU_BUILDINGS->getTemplate());
     }

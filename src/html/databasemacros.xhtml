@@ -251,7 +251,7 @@
 <metal:macro metal:define-macro="colonysurface">
   <tal:block tal:define="style string:margin: 1px;; width: 42px;; height: 42px;;">
     <div tal:attributes="style string:${SURFACETILESTYLE}">
-      <tal:block tal:repeat="field COLONY_SURFACE">
+      <tal:block tal:repeat="field SURFACE">
         <div style="${style}" tal:attributes="CSSCLASS">
           <div style="background-image: url(assets/generated/fields/t${field/type_id}.png); width: 40px; height: 40px;">
             <div>

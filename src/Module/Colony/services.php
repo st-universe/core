@@ -63,8 +63,8 @@ use Stu\Module\Colony\Lib\BuildPlanDeleter;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Colony\Lib\ColonyCorrector;
 use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelper;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelper;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoader;
@@ -73,6 +73,25 @@ use Stu\Module\Colony\Lib\ColonyResetter;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Colony\Lib\CommodityConsumption;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
+use Stu\Module\Colony\Lib\Gui\Component\AcademyProvider;
+use Stu\Module\Colony\Lib\Gui\Component\AirfieldProvider;
+use Stu\Module\Colony\Lib\Gui\Component\BuildingManagementProvider;
+use Stu\Module\Colony\Lib\Gui\Component\BuildmenuProvider;
+use Stu\Module\Colony\Lib\Gui\Component\EffectsProvider;
+use Stu\Module\Colony\Lib\Gui\Component\EpsBarProvider;
+use Stu\Module\Colony\Lib\Gui\Component\FighterShipyardProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ManagementProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ModuleFabProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ShieldingProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ShipBuildplansProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ShipDisassemblyProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ShipRepairProvider;
+use Stu\Module\Colony\Lib\Gui\Component\ShipyardProvider;
+use Stu\Module\Colony\Lib\Gui\Component\SocialProvider;
+use Stu\Module\Colony\Lib\Gui\Component\StorageProvider;
+use Stu\Module\Colony\Lib\Gui\Component\SurfaceProvider;
+use Stu\Module\Colony\Lib\Gui\Component\TorpedoFabProvider;
+use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Colony\Lib\ModuleQueueLib;
 use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
 use Stu\Module\Colony\Lib\PlanetColonization;
@@ -112,6 +131,7 @@ use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequestInterface;
 use Stu\Module\Colony\View\ShowGiveUp\ShowGiveUp;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
+use Stu\Module\Colony\View\ShowMainscreen\ShowMainscreen;
 use Stu\Module\Colony\View\ShowManagement\ShowManagement;
 use Stu\Module\Colony\View\ShowMisc\ShowMisc;
 use Stu\Module\Colony\View\ShowMisc\ShowMiscRequest;
@@ -169,7 +189,29 @@ return [
     CancelShipRepairRequestInterface::class => autowire(CancelShipRepairRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ChangeTorpedoTypeRequestInterface::class => autowire(ChangeTorpedoTypeRequest::class),
-    ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
+    ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class)->constructorParameter(
+        'guiComponentProviders',
+        [
+            GuiComponentEnum::SURFACE->value => autowire(SurfaceProvider::class),
+            GuiComponentEnum::EFFECTS->value => autowire(EffectsProvider::class),
+            GuiComponentEnum::STORAGE->value => autowire(StorageProvider::class),
+            GuiComponentEnum::SHIELDING->value => autowire(ShieldingProvider::class),
+            GuiComponentEnum::BUILDING_MANAGEMENT->value => autowire(BuildingManagementProvider::class),
+            GuiComponentEnum::EPS_BAR->value => autowire(EpsBarProvider::class),
+            GuiComponentEnum::ACADEMY->value => autowire(AcademyProvider::class),
+            GuiComponentEnum::BUILD_MENUES->value => autowire(BuildmenuProvider::class),
+            GuiComponentEnum::MANAGEMENT->value => autowire(ManagementProvider::class),
+            GuiComponentEnum::SOCIAL->value => autowire(SocialProvider::class),
+            GuiComponentEnum::AIRFIELD->value => autowire(AirfieldProvider::class),
+            GuiComponentEnum::MODULE_FAB->value => autowire(ModuleFabProvider::class),
+            GuiComponentEnum::TORPEDO_FAB->value => autowire(TorpedoFabProvider::class),
+            GuiComponentEnum::SHIPYARD->value => autowire(ShipyardProvider::class),
+            GuiComponentEnum::FIGHTER_SHIPYARD->value => autowire(FighterShipyardProvider::class),
+            GuiComponentEnum::SHIP_BUILDPLANS->value => autowire(ShipBuildplansProvider::class),
+            GuiComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
+            GuiComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class),
+        ]
+    ),
     ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
     ColonyLoaderInterface::class => autowire(ColonyLoader::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
@@ -247,6 +289,7 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowColony::VIEW_IDENTIFIER => autowire(ShowColony::class),
+        ShowMainscreen::VIEW_IDENTIFIER => autowire(ShowMainscreen::class),
         ShowBuildMenu::VIEW_IDENTIFIER => autowire(ShowBuildMenu::class),
         ShowManagement::VIEW_IDENTIFIER => autowire(ShowManagement::class),
         ShowMisc::VIEW_IDENTIFIER => autowire(ShowMisc::class),

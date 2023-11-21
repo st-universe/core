@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
@@ -57,12 +57,9 @@ final class ShowColonySandbox implements ViewControllerInterface
                 $sandbox->getName()
             );
 
-            $this->colonyGuiHelper->registerComponents($sandbox, $game);
-
-            $game->setTemplateVar('HOST', $sandbox);
-            $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_INFO);
-
             $menu = ColonyMenuEnum::getFor($game->getViewContext()['COLONY_MENU'] ?? null);
+
+            $this->colonyGuiHelper->registerMenuComponents($menu, $sandbox, $game);
 
             $game->setTemplateVar('SELECTED_COLONY_MENU_TEMPLATE', $menu->getTemplate());
         }

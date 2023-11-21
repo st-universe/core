@@ -43,8 +43,6 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function setMaxEps(int $max_eps): ColonyInterface;
 
-    public function getMaxStorage(): int;
-
     public function setMaxStorage(int $max_storage): ColonyInterface;
 
     public function getMask(): ?string;

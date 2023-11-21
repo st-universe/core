@@ -74,7 +74,7 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
 
     public function getMaxShielding(): int
     {
-        return $this->planetFieldRepository->getMaxShieldsOfColony($this->host);
+        return $this->planetFieldRepository->getMaxShieldsOfHost($this->host);
     }
 
     public function isShieldingEnabled(): bool

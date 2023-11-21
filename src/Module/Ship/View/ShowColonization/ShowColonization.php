@@ -68,6 +68,6 @@ final class ShowColonization implements ViewControllerInterface
 
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);
-        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar('SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }

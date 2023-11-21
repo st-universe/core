@@ -145,7 +145,7 @@ final class ColonyTick implements ColonyTickInterface
         $colony->setEps(
             min(
                 $colony->getMaxEps(),
-                $colony->getEps() + $this->planetFieldRepository->getEnergyProductionByColony($colony, $deactivatedFields)
+                $colony->getEps() + $this->planetFieldRepository->getEnergyProductionByHost($colony, $deactivatedFields)
             )
         );
 
@@ -229,7 +229,7 @@ final class ColonyTick implements ColonyTickInterface
         array &$production,
         array &$deactivatedFields
     ): bool {
-        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony, $deactivatedFields);
+        $energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($colony, $deactivatedFields);
 
         if ($energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
             $field = $this->getBuildingToDeactivateByEpsUsage($colony, $deactivatedFields);

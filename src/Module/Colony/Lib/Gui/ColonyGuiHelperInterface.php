@@ -8,9 +8,16 @@ use Stu\Module\Control\GameControllerInterface;
 
 interface ColonyGuiHelperInterface
 {
-    public function registerComponents(
+    public function registerMenuComponents(
         ColonyMenuEnum $menu,
         PlanetFieldHostInterface $host,
         GameControllerInterface $game
+    ): void;
+
+    /** @param array<GuiComponentEnum> $guiComponents */
+    public function registerComponents(
+        PlanetFieldHostInterface $host,
+        GameControllerInterface $game,
+        array $guiComponents
     ): void;
 }

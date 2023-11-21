@@ -932,21 +932,6 @@ parameters:
 			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
 
 		-
-			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassembly.php
-
-		-
-			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipRepair/ShowShipRepair.php
-
-		-
-			message: "#^Cannot call method getFunction\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipyard/ShowShipyard.php
-
-		-
 			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowSubspaceTelescope/ShowSubspaceTelescope.php
