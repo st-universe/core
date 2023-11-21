@@ -1,17 +1,16 @@
 <?php
 
-namespace Stu\Module\Colony\Lib;
+namespace Stu\Module\Colony\Lib\Gui;
 
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 
 interface ColonyGuiHelperInterface
 {
-    /** @param array<GuiComponentEnum> $whitelist */
     public function registerComponents(
+        ColonyMenuEnum $menu,
         PlanetFieldHostInterface $host,
-        GameControllerInterface $game,
-        array $whitelist = null
+        GameControllerInterface $game
     ): void;
 }
