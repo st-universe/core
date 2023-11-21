@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
@@ -40,6 +41,15 @@ class ConditionCheckResultTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(FleetInterface::class));
+
+        $this->leader->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(ShipInterface::class));
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, true);
 
@@ -61,6 +71,10 @@ class ConditionCheckResultTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(FleetInterface::class));
         $ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
@@ -76,7 +90,6 @@ class ConditionCheckResultTest extends StuTestCase
 
         $this->leader->shouldReceive('get')
             ->withNoArgs()
-            ->once()
             ->andReturn($this->mock(ShipInterface::class));
 
         $this->leaveFleet->shouldReceive('leaveFleet')
@@ -106,6 +119,10 @@ class ConditionCheckResultTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(FleetInterface::class));
 
         $this->leader->shouldReceive('get')
             ->withNoArgs()
@@ -120,7 +137,7 @@ class ConditionCheckResultTest extends StuTestCase
         $subject->addBlockedShip($ship, 'REASON');
 
         $this->assertFalse($subject->isNotBlocked($ship));
-        $this->assertTrue($subject->isFlightPossible());
+        $this->assertFalse($subject->isFlightPossible());
         $this->assertEquals(['REASON'], $subject->getInformations());
     }
 
@@ -135,6 +152,69 @@ class ConditionCheckResultTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
+
+        $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
+
+        $this->assertTrue($subject->isNotBlocked($ship));
+
+        $subject->addBlockedShip($ship, 'REASON');
+
+        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isFlightPossible());
+        $this->assertEquals(['REASON'], $subject->getInformations());
+    }
+
+    public function testAddBlockedShipExpectBlockWhenSingleShip(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $this->leader->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
+
+        $this->assertTrue($subject->isNotBlocked($ship));
+
+        $subject->addBlockedShip($ship, 'REASON');
+
+        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isFlightPossible());
+        $this->assertEquals(['REASON'], $subject->getInformations());
+    }
+
+    public function testAddBlockedShipExpectBlockWhenSingleShipIsNotFleetLeader(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $fleet = $this->mock(FleetInterface::class);
+
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($fleet);
+
+        $this->leader->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
 
         $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
 
