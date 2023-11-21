@@ -20,7 +20,7 @@ class ConditionCheckResult
     /** @var array<int> */
     private array $blockedShipIds = [];
 
-    private bool $isFleetLeaderBlocked = false;
+    private bool $isLeaderBlocked = false;
 
     private InformationWrapper $informations;
 
@@ -41,8 +41,8 @@ class ConditionCheckResult
             $this->blockedShipIds[] = $ship->getId();
             $this->informations->addInformation($reason);
 
-            if ($ship->isFleetLeader()) {
-                $this->isFleetLeaderBlocked = true;
+            if ($this->isLeaderBlocked($ship)) {
+                $this->isLeaderBlocked = true;
             } elseif (
                 !$this->isFixedFleetMode
                 && $ship !== $this->leader->get()
@@ -52,9 +52,16 @@ class ConditionCheckResult
         }
     }
 
+    private function isLeaderBlocked(ShipInterface $ship): bool
+    {
+        return $ship->isFleetLeader()
+            || $ship->getFleet() === null
+            || $ship === $this->leader->get();
+    }
+
     public function isFlightPossible(): bool
     {
-        if ($this->isFleetLeaderBlocked) {
+        if ($this->isLeaderBlocked) {
             return false;
         }
 

@@ -65,17 +65,16 @@ final class ShipMover implements ShipMoverInterface
 
         $leadShip = $leadShipWrapper->get();
         $leadShipName = $leadShip->getName();
-        $fleet = $leadShip->getFleet();
+        $fleetWrapper = $leadShipWrapper->getFleetWrapper();
 
         $isFleetMode = $leadShip->isFleetLeader();
-        $hasToLeaveFleet = $fleet !== null && !$isFleetMode;
-        $fleetWrapper = $leadShipWrapper->getFleetWrapper();
+        $hasToLeaveFleet = $fleetWrapper !== null && !$isFleetMode;
 
         $wrappers = $isFleetMode && $fleetWrapper !== null ? $fleetWrapper->getShipWrappers() : [$leadShipWrapper];
 
         $isFixedFleetMode = $isFleetMode
-            && $fleet !== null
-            && $fleet->isFleetFixed();
+            && $fleetWrapper !== null
+            && $fleetWrapper->get()->isFleetFixed();
 
         $initialTractoredShips = $this->initTractoredShips($wrappers);
 
@@ -86,8 +85,7 @@ final class ShipMover implements ShipMoverInterface
             $nextWaypoint = $flightRoute->getNextWaypoint();
 
             // nächstes Feld nicht passierbar
-            $nextFieldType = $nextWaypoint->getFieldType();
-            if (!$nextFieldType->getPassable()) {
+            if (!$nextWaypoint->getFieldType()->getPassable()) {
                 $flightRoute->abortFlight();
                 $this->addInformation(_('Das nächste Feld kann nicht passiert werden'));
                 break;
