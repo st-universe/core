@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Noodlehaus\ConfigInterface;
-use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -80,8 +79,8 @@ final class KnCommentTal implements KnCommentTalInterface
         return $this->comment->getUser() === $this->currentUser;
     }
 
-    public function getRpgBehavior(): UserRpgBehaviorEnum
+    public function getUser(): UserInterface
     {
-        return $this->comment->getUser()->getRpgBehavior();
+        return $this->comment->getUser();
     }
 }

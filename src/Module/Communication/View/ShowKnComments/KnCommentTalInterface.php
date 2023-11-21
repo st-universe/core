@@ -3,6 +3,7 @@
 namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Stu\Component\Player\UserRpgBehaviorEnum;
+use Stu\Orm\Entity\UserInterface;
 
 interface KnCommentTalInterface
 {
@@ -22,5 +23,5 @@ interface KnCommentTalInterface
 
     public function isDeleteable(): bool;
 
-    public function getRpgBehavior(): UserRpgBehaviorEnum;
+    public function getUser(): UserInterface;
 }

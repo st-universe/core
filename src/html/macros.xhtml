@@ -24,6 +24,14 @@
     <input type="button" class="button" value="+ Kontakt" onclick="addUserContact('${div}',${userid})" />
   </span>
 </tal:block>
+<metal:block metal:define-macro="userinfo">
+  <span tal:replace="structure bbcode:user/getName">USER</span> (<span tal:replace="user/getId">ID</span>)
+  <img src="/assets/buttons/rpg${user/getRpgBehavior/value}.png" title="${user/getRpgBehavior/getDescription}" />
+  <tal:block tal:condition="user/isShowOnlineState">
+    <img tal:condition="user/isOnline" src="/assets/buttons/user_online.png" title="User ist online" />
+    <img tal:condition="not:user/isOnline" src="/assets/buttons/user_offline.png" title="User ist offline" />
+  </tal:block>
+</metal:block>
 <metal:block metal:define-macro="userbox">
   <div class="divbody userbox">
     <div style="float: left; width: 50px;">

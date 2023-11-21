@@ -18,15 +18,7 @@
               style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
               <span tal:condition="not:CATEGORY/isPMOutDir">Von:</span>
               <span tal:condition="CATEGORY/isPMOutDir">An:</span>
-              <span tal:replace="structure bbcode:sender/getName">USER</span> (<span
-                tal:replace="sender/getId">ID</span>)
-              <img src="/assets/buttons/rpg${sender/getRpgBehavior/value}.png"
-                title="${sender/getRpgBehavior/getDescription}" />
-              <tal:block tal:condition="sender/isShowOnlineState">
-                <img tal:condition="sender/isOnline" src="/assets/buttons/user_online.png" title="User ist online" />
-                <img tal:condition="not:sender/isOnline" src="/assets/buttons/user_offline.png"
-                  title="User ist offline" />
-              </tal:block>
+              <metal:macro metal:use-macro="html/macros.xhtml/userinfo" tal:define="user sender" />
             </div>
             <div class="box_body" style="margin: 0; padding: 0;">
               <div class="pmGrid">

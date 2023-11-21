@@ -62,7 +62,9 @@
         </div>
         <div>
           <div class="userListItemName">
-            <a href="userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
+            <a href="userprofile.php?uid=${data/getId}">
+              <metal:macro metal:use-macro="html/macros.xhtml/userinfo" tal:define="user data" />
+            </a>
           </div>
           <div class="userListItemAllianceName">
             <a tal:condition="data/getAlliance" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAlliance/getId}"
@@ -73,9 +75,6 @@
             <img src="assets/rassen/${data/getFactionId}s.png" />
             <metal:macro metal:use-macro="html/macros.xhtml/userprofile" />
             <metal:macro metal:use-macro="html/macros.xhtml/pmwindow" />
-            <img src="/assets/buttons/rpg${data/getRpgBehavior/value}.png"
-              title="${data/getRpgBehavior/getDescription}" />
-            ID: <tal:block tal:replace="data/getId">ID</tal:block>
           </div>
         </div>
       </div>
