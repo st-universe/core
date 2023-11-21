@@ -23,7 +23,7 @@
     {% for data in STARTABLE_SHIPS %}
     <tr>
       <td>
-        <input type="radio" name="startrump" value="" value=" {{ data.getId }}" />
+        <input type="radio" name="startrump" value=" {{ data.getId }}" />
         <img src="/assets/ships/{{ data.getId }}.png" />
       </td>
       <td style="vertical-align: middle;">{{ data.getName }}</td>
@@ -63,7 +63,7 @@
     {% for data in BUILDABLE_SHIPS %}
     <tr class="row">
       <td>
-        <input type="radio" name="buildrump" value="" value="{{ data.getId }}" />
+        <input type="radio" name="buildrump" value="{{ data.getId }}" />
         <img src="/assets/ships/{{ data.getId }}.png" />
       </td>
       <td style="vertical-align: middle;">{{ data.getName }}</td>
