@@ -25,10 +25,8 @@
 						<td tal:condition="REPLY">
 							<input type="hidden" name="recipient" value="runtime"
 								tal:attributes="value REPLY/getSender/getId" />
-							<span tal:replace="structure bbcode:REPLY/getSender/getName">NAME</span> (<span
-								tal:replace="REPLY/getSender/getId">ID</span>) <img
-								src="/assets/buttons/rpg${REPLY/getSender/getRpgBehavior/value}.png"
-								title="${REPLY/getSender/getRpgBehavior/getDescription}" />
+							<metal:macro metal:use-macro="html/macros.xhtml/userinfo"
+								tal:define="user REPLY/getSender" />
 						</td>
 					</tr>
 					<tr>
