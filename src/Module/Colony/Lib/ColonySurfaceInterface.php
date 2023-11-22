@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
 interface ColonySurfaceInterface
@@ -19,6 +18,4 @@ interface ColonySurfaceInterface
     public function hasShipyard(): bool;
 
     public function hasAirfield(): bool;
-
-    public function getPopulation(): ColonyPopulationCalculatorInterface;
 }

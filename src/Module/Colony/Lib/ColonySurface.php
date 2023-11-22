@@ -6,9 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -45,15 +43,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ?ColonyPopulationCalculatorInterface $colonyPopulationCalculator = null;
-
-    /** @var array<ColonyProduction>|null */
-    private ?array $production = null;
-
     public function __construct(
-        ColonyLibFactoryInterface $colonyLibFactory,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
@@ -66,7 +56,6 @@ final class ColonySurface implements ColonySurfaceInterface
         bool $showUnderground,
         LoggerUtilInterface $loggerUtil
     ) {
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->host = $host;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
@@ -211,29 +200,5 @@ final class ColonySurface implements ColonySurfaceInterface
             [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
             [0, 1]
         ) > 0;
-    }
-
-    public function getPopulation(): ColonyPopulationCalculatorInterface
-    {
-        if ($this->colonyPopulationCalculator === null) {
-            $this->colonyPopulationCalculator = $this->colonyLibFactory->createColonyPopulationCalculator(
-                $this->host,
-                $this->getProduction()
-            );
-        }
-
-        return $this->colonyPopulationCalculator;
-    }
-
-    /**
-     * @return array<ColonyProduction>
-     */
-    private function getProduction(): array
-    {
-        if ($this->production === null) {
-            $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->host)->getProduction();
-        }
-
-        return $this->production;
     }
 }

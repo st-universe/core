@@ -135,7 +135,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         bool $showUnderground = true
     ): ColonySurfaceInterface {
         return new ColonySurface(
-            $this,
             $this->planetFieldRepository,
             $this->buildingRepository,
             $this->colonyRepository,
