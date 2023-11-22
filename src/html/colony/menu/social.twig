@@ -2,42 +2,41 @@
 {% block containment %}
 <div>
     <table class="tcal" style="width: 40vw;">
-        {% set population = SURFACE.getPopulation %}
         <tr>
             <th colspan="4">Crewberechnung dieser Kolonie</th>
         </tr>
         <tr>
             <td style="width: 25%" class="darkbg">
-                {{ population.getPositiveEffectPrimaryDescription }}
+                {{ POPULATION_CALCULATOR.getPositiveEffectPrimaryDescription }}
             </td>
             <td style="width: 25%" class="darkbg">
-                {{ population.getPositiveEffectSecondaryDescription }}
+                {{ POPULATION_CALCULATOR.getPositiveEffectSecondaryDescription }}
             </td>
         </tr>
         <tr>
             <td>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
-                {{ population.getPositiveEffectPrimary }}
+                {{ POPULATION_CALCULATOR.getPositiveEffectPrimary }}
             </td>
             <td>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
-                {{ population.getPositiveEffectSecondary }}
+                {{ POPULATION_CALCULATOR.getPositiveEffectSecondary }}
             </td>
         </tr>
         <tr>
             <td style="width: 25%" class="darkbg">
-                {{ population.getNegativeEffectDescription }}
+                {{ POPULATION_CALCULATOR.getNegativeEffectDescription }}
             </td>
             <td style="width: 25%" class="darkbg">Lebensstandard</td>
         </tr>
         <tr>
             <td>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
-                {{ population.getNegativeEffect }}
+                {{ POPULATION_CALCULATOR.getNegativeEffect }}
             </td>
             <td>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Prozent" />
-                {{ population.getLifeStandardPercentage }}%
+                {{ POPULATION_CALCULATOR.getLifeStandardPercentage }}%
             </td>
         </tr>
         <tr>
@@ -46,7 +45,7 @@
         <tr>
             <td colspan="2">
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
-                {{ population.getCrewLimit }}
+                {{ POPULATION_CALCULATOR.getCrewLimit }}
             </td>
         </tr>
     </table>

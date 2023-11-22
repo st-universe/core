@@ -5,6 +5,7 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 
 final class SocialProvider implements GuiComponentProviderInterface
@@ -13,12 +14,16 @@ final class SocialProvider implements GuiComponentProviderInterface
 
     private CrewLimitCalculatorInterface $crewLimitCalculator;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         CrewLimitCalculatorInterface $crewLimitCalculator,
-        CrewCountRetrieverInterface $crewCountRetriever
+        CrewCountRetrieverInterface $crewCountRetriever,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->crewCountRetriever = $crewCountRetriever;
         $this->crewLimitCalculator = $crewLimitCalculator;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function setTemplateVariables(
@@ -26,6 +31,11 @@ final class SocialProvider implements GuiComponentProviderInterface
         GameControllerInterface $game
     ): void {
         $user = $game->getUser();
+
+        $game->setTemplateVar(
+            'POPULATION_CALCULATOR',
+            $this->colonyLibFactory->createColonyPopulationCalculator($host)
+        );
 
         $game->setTemplateVar(
             'CREW_COUNT_DEBRIS_AND_TRADE_POSTS',

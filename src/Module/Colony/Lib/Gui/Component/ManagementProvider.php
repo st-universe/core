@@ -82,10 +82,9 @@ final class ManagementProvider implements GuiComponentProviderInterface
         }
 
         $game->setTemplateVar(
-            'SURFACE',
-            $this->colonyLibFactory->createColonySurface($host)
+            'POPULATION_CALCULATOR',
+            $this->colonyLibFactory->createColonyPopulationCalculator($host)
         );
-
 
         $game->setTemplateVar(
             'FIRST_ORBIT_SHIP',
