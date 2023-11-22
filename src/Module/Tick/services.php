@@ -15,6 +15,7 @@ use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
+use Stu\Module\Tick\Colony\Component\AdvanceResearch;
 use Stu\Module\Tick\Lock\LockManager;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
@@ -36,7 +37,11 @@ use function DI\create;
 use function DI\get;
 
 return [
-    ColonyTickInterface::class => autowire(ColonyTick::class),
+    ColonyTickInterface::class => autowire(ColonyTick::class)
+        ->constructorParameter(
+            'components',
+            [autowire(AdvanceResearch::class)]
+        ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
     ShipTickInterface::class => autowire(ShipTick::class),
     RepairActionsInterface::class => autowire(RepairActions::class),

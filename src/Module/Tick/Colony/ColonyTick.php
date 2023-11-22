@@ -18,7 +18,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Research\ResearchStateFactoryInterface;
+use Stu\Module\Tick\Colony\Component\ColonyTickComponentInterface;
 use Stu\Orm\Entity\BuildingCommodityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -27,12 +27,9 @@ use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
-    private ResearchedRepositoryInterface $researchedRepository;
-
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
@@ -51,19 +48,20 @@ final class ColonyTick implements ColonyTickInterface
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
-    private ResearchStateFactoryInterface $researchStateFactory;
-
     private CommodityCacheInterface $commodityCache;
 
     private LoggerUtilInterface $loggerUtil;
+
+    /** @var array<ColonyTickComponentInterface> */
+    private array $components;
 
     /**
      * @var array<string>
      */
     private array $msg = [];
 
+    /** @param array<ColonyTickComponentInterface> $components */
     public function __construct(
-        ResearchedRepositoryInterface $researchedRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         PrivateMessageSenderInterface $privateMessageSender,
@@ -73,11 +71,10 @@ final class ColonyTick implements ColonyTickInterface
         ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyFunctionManagerInterface $colonyFunctionManager,
-        ResearchStateFactoryInterface $researchStateFactory,
         CommodityCacheInterface $commodityCache,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        array $components
     ) {
-        $this->researchedRepository = $researchedRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->privateMessageSender = $privateMessageSender;
@@ -87,8 +84,8 @@ final class ColonyTick implements ColonyTickInterface
         $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->researchStateFactory = $researchStateFactory;
         $this->commodityCache = $commodityCache;
+        $this->components = $components;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -152,6 +149,10 @@ final class ColonyTick implements ColonyTickInterface
         if ($doLog) {
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\tmainLoop, seconds: %F", $endTime - $startTime));
+        }
+
+        foreach ($this->components as $component) {
+            $component->work($colony, $production);
         }
 
         $this->proceedStorage($colony, $production);
@@ -427,35 +428,6 @@ final class ColonyTick implements ColonyTickInterface
         if ($doLog) {
             $startTime = microtime(true);
         }
-
-        $researches = $this->researchedRepository->getCurrentResearch($colony->getUser());
-        $currentResearch = empty($researches) ? null : current($researches);
-        $waitingResearch = count($researches) > 1 ? $researches[1] : null;
-
-        if (
-            $currentResearch !== null
-            && $currentResearch->getActive()
-            && isset($production[$currentResearch->getResearch()->getCommodityId()])
-        ) {
-            $commodityId = $currentResearch->getResearch()->getCommodityId();
-
-            $remaining = $this->researchStateFactory->createResearchState()->advance(
-                $currentResearch,
-                $production[$commodityId]->getProduction()
-            );
-
-            if (
-                $remaining > 0
-                && $waitingResearch !== null
-                && $waitingResearch->getResearch()->getCommodityId() === $commodityId
-            ) {
-                $this->researchStateFactory->createResearchState()->advance(
-                    $waitingResearch,
-                    $remaining
-                );
-            }
-        }
-
 
         if ($doLog) {
             $endTime = microtime(true);
