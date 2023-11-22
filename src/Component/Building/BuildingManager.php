@@ -42,24 +42,24 @@ final class BuildingManager implements BuildingManagerInterface
         $this->buildingPostAction = $buildingPostAction;
     }
 
-    public function activate(PlanetFieldInterface $field): void
+    public function activate(PlanetFieldInterface $field): bool
     {
         $building = $field->getBuilding();
 
         if ($building === null) {
-            return;
+            return false;
         }
 
         if (!$field->isActivateable()) {
-            return;
+            return false;
         }
 
         if ($field->isActive()) {
-            return;
+            return true;
         }
 
         if ($field->hasHighDamage()) {
-            return;
+            return false;
         }
 
         $host = $field->getHost();
@@ -69,7 +69,7 @@ final class BuildingManager implements BuildingManagerInterface
         if ($host instanceof ColonyInterface) {
             $worklessAmount = $host->getWorkless();
             if ($worklessAmount < $workerAmount) {
-                return;
+                return false;
             }
 
             $host->setWorkless($worklessAmount - $workerAmount);
@@ -85,6 +85,8 @@ final class BuildingManager implements BuildingManagerInterface
         $this->buildingPostAction->handleActivation($building, $host);
 
         $this->saveHost($host);
+
+        return true;
     }
 
     public function deactivate(PlanetFieldInterface $field): void
@@ -172,21 +174,29 @@ final class BuildingManager implements BuildingManagerInterface
         $this->saveHost($host);
     }
 
-    public function finish(PlanetFieldInterface $field, bool $activate = true): void
+    public function finish(PlanetFieldInterface $field, bool $activate = true): ?string
     {
         $building = $field->getBuilding();
         if ($building === null) {
-            return;
+            return null;
         }
 
         $host = $field->getHost();
+
 
         $field
             ->setActive(0)
             ->setIntegrity($building->getIntegrity());
 
-        if ($building->isActivateAble() && $activate === true) {
-            $this->activate($field);
+        $activationDetails = null;
+        if ($building->isActivateAble()) {
+            if ($activate) {
+                $activationDetails = $this->activate($field)
+                    ? '[color=green]Und konnte wunschgemäß aktiviert werden[/color]'
+                    : '[color=red]Konnte allerdings nicht wie gewünscht aktiviert werden[/color]';
+            } else {
+                $activationDetails = 'Und wurde wunschgemäß nicht aktiviert';
+            }
         }
 
         $host
@@ -195,5 +205,7 @@ final class BuildingManager implements BuildingManagerInterface
 
         $this->saveHost($host);
         $this->planetFieldRepository->save($field);
+
+        return $activationDetails;
     }
 }
