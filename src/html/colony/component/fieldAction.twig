@@ -248,6 +248,9 @@
                             <td colspan="4" style="text-align: center;">
                                 <a href="?B_UPGRADE_BUILDING=1&id={{ fieldHostId }}&hosttype={{ fieldHostType }}&fid={{ fieldId }}&upid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
                                     class="linkbutton">Durchführen</a>
+                                <br />
+                                <strong>Dauer</strong><br />
+                                {{ data.getBuilding.getBuildtime|formatSeconds }}
                             </td>
                         </tr>
                     </table>
