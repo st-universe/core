@@ -78,7 +78,7 @@
 			Status: {{ TAL_RESEARCH.getDonePoints }}/{{ research.getPoints }}
 		</div>
 		<div class="fabutton_red">
-			<a href="research.php?B_CANCEL_CURRENT_TAL_RESEARCH=1&id={{ TAL_RESEARCH.getResearchState.getId }}&sstr={{ SESSIONSTRING }}"
+			<a href="research.php?B_CANCEL_CURRENT_RESEARCH=1&id={{ TAL_RESEARCH.getResearchState.getId }}&sstr={{ SESSIONSTRING }}"
 				class="fabutton fabutton_red">Forschung abbrechen</a>
 		</div>
 		{% endif %}
@@ -88,12 +88,12 @@
 		<br />
 		{% if CURRENT_TAL_RESEARCH %}
 		<div class="fabutton_yellow">
-			<a href="research.php?B_DO_TAL_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
+			<a href="research.php?B_DO_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
 				class="fabutton fabutton_yellow">In den Warteslot</a>
 		</div>
 		{% else %}
 		<div class="fabutton_blue">
-			<a href="research.php?B_DO_TAL_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
+			<a href="research.php?B_DO_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
 				class="fabutton fabutton_blue">Erforschen</a>
 		</div>
 		{% endif %}
