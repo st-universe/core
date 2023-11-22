@@ -2,28 +2,13 @@
 
 namespace Stu\Module\Research;
 
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\ResearchInterface;
 
 interface TalSelectedTechInterface
 {
-    public function getId(): int;
-
-    public function getName(): string;
-
-    public function getDescription(): string;
-
-    public function getPoints(): int;
-
-    public function getCommodityId(): int;
-
-    public function getUpperPlanetLimit(): int;
-
-    public function getUpperMoonLimit(): int;
-
-    public function getUpperAsteroidLimit(): int;
-
-    public function getCommodity(): CommodityInterface;
+    public function getResearch(): ResearchInterface;
 
     public function getResearchState(): ?ResearchedInterface;
 
@@ -44,4 +29,6 @@ interface TalSelectedTechInterface
     public function getStatusBar(): string;
 
     public function getWikiLink(): string;
+
+    public function getBuilding(): ?BuildingInterface;
 }
