@@ -1,0 +1,148 @@
+<div style="width: 610px;">
+	<table class="tcal">
+		{% set research = TAL_RESEARCH.getResearch %}
+		{% set researchId = research.getId %}
+		{% set building = TAL_RESEARCH.getBuilding %}
+		<tr>
+			<td rowspan="2" style="width: 110px; height: 110px">
+				<img src="assets/research/{{ researchId }}.png" />
+			</td>
+			<td>
+				{% autoescape false %}
+				{{ research.getDescription|nl2br }}
+				{% endautoescape %}
+				<br />
+				<br />
+				{% if research.getUpperPlanetLimit %}
+				<div>
+					Anzahl Kolonien auf Planeten: +{{ research.getUpperPlanetLimit }}
+				</div>
+				{% endif %}
+				{% if research.getUpperMoonLimit %}
+				<div>
+					Anzahl Kolonien auf Monden: +{{ research.getUpperMoonLimit }}
+				</div>
+				{% endif %}
+				{% if research.getUpperAsteroidLimit %}
+				<div>
+					Anzahl Kolonien auf Asteroiden: +{{ research.getUpperAsteroidLimit }}
+				</div>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table class="tcal">
+					<tr>
+						<td class="darkbg">Punkte</td>
+						{% if research.getCommodityId %}
+						<td class="darkbg">
+							Benötigte Ware / Effekt
+						</td>
+						{% endif %}
+					</tr>
+					<tr>
+						<td>{{ research.getPoints }}</td>
+						{% if research.getCommodityId %}
+						<td>
+							<img src="assets/commodities/{{ research.getCommodityId }}.png" />
+							{{ research.getCommodity.getName }}
+						</td>
+						{% endif %}
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3" style="text-align: center;"><a style="color: aqua;"
+					href="{{ TAL_RESEARCH.getWikiLink }}">Wiki-Seite</a>
+			</td>
+		</tr>
+		{% if building %}
+		<tr>
+			<td colspan="3">
+				{% include 'html/colony/component/buildingPreview.twig' %}
+			</td>
+		</tr>
+		{% endif %}
+	</table>
+	{% if TAL_RESEARCH.getResearchState %}
+	<div>
+		{% if not TAL_RESEARCH.isResearchFinished %}
+		<br />
+		<div style="width: 100%; text-align: center">
+			<img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.png" title="Forschung" />
+			{% autoescape false %}
+			{{ TAL_RESEARCH.getStatusBar }}
+			{% endautoescape %}
+			Status: {{ TAL_RESEARCH.getDonePoints }}/{{ research.getPoints }}
+		</div>
+		<div class="fabutton_red">
+			<a href="research.php?B_CANCEL_CURRENT_TAL_RESEARCH=1&id={{ TAL_RESEARCH.getResearchState.getId }}&sstr={{ SESSIONSTRING }}"
+				class="fabutton fabutton_red">Forschung abbrechen</a>
+		</div>
+		{% endif %}
+	</div>
+	{% else %}
+	<div>
+		<br />
+		{% if CURRENT_TAL_RESEARCH %}
+		<div class="fabutton_yellow">
+			<a href="research.php?B_DO_TAL_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
+				class="fabutton fabutton_yellow">In den Warteslot</a>
+		</div>
+		{% else %}
+		<div class="fabutton_blue">
+			<a href="research.php?B_DO_TAL_RESEARCH=1&id={{ researchId }}&sstr={{ SESSIONSTRING }}"
+				class="fabutton fabutton_blue">Erforschen</a>
+		</div>
+		{% endif %}
+	</div>
+	{% endif %}
+	{% if TAL_RESEARCH.hasExcludes %}
+	<div>
+		<br />
+		<table class="tcal">
+			<tr>
+				<th>Folgende Forschungen sind nach dieser Forschung nicht mehr möglich</th>
+			</tr>
+			<tr>
+				<td>
+					{% for data in TAL_RESEARCH.getDistinctExcludeNames %}
+					<div style="float: left; width: 200px;">
+						<div class="divbody" style="text-align: center;">
+							<span style="font-weight: bold;">{{ data.getName }}</span> <img
+								src="assets/commodities/{{ data.getCommodity.getId }}.png"
+								title="{{ data.getCommodity.getName }}" />
+						</div>
+					</div>
+					{% endfor %}
+				</td>
+			</tr>
+		</table>
+	</div>
+	{% endif %}
+	{% if TAL_RESEARCH.hasPositiveDependencies %}
+	<div>
+		<br />
+		<table class="tcal">
+			<tr>
+				<th>Folgende Forschungen werden durch diese Forschung ermöglicht</th>
+			</tr>
+			<tr>
+				<td>
+					{% for data in TAL_RESEARCH.getDistinctPositiveDependencyNames %}
+					<div style="float: left; width: 200px;">
+						<div class="divbody" style="text-align: center;">
+							<span style="font-weight: bold;">{{ data.getName }}</span> <img
+								src="assets/commodities/{{ data.getCommodity.getId }}.png"
+								title="{{ data.getCommodity.getName }}" />
+						</div>
+					</div>
+					{% endfor %}
+				</td>
+			</tr>
+		</table>
+	</div>
+	{% endif %}
+</div>

@@ -130,6 +130,11 @@ class TwigHelper
             );
         });
         $this->environment->addFilter($datetimeFilter);
+
+        $nl2brFilter = new TwigFilter('nl2br', function (string $value): string {
+            return nl2br($value);
+        });
+        $this->environment->addFilter($nl2brFilter);
     }
 
     private function registerFunctions(): void

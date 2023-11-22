@@ -11,6 +11,7 @@ use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\ResearchInterface;
 
 /**
  * @extends EntityRepository<Building>
@@ -51,5 +52,12 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 'hostId' => $host->getId()
             ])
             ->getResult();
+    }
+
+    public function getByResearch(ResearchInterface $research): array
+    {
+        return $this->findBy([
+            'research_id' => $research->getId()
+        ]);
     }
 }

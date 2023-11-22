@@ -9,10 +9,11 @@ use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ResearchDependencyInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
@@ -29,6 +30,8 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     private ResearchDependencyRepositoryInterface $researchDependencyRepository;
 
+    private BuildingRepositoryInterface $buildingRepository;
+
     private ConfigInterface $config;
 
     private ?ResearchedInterface $state = null;
@@ -43,61 +46,23 @@ final class TalSelectedTech implements TalSelectedTechInterface
         ResearchRepositoryInterface $researchRepository,
         ResearchedRepositoryInterface $researchedRepository,
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
+        BuildingRepositoryInterface $buildingRepository,
         ResearchInterface $research,
         UserInterface $currentUser,
         ConfigInterface $config
     ) {
-        $this->research = $research;
-        $this->currentUser = $currentUser;
         $this->researchRepository = $researchRepository;
         $this->researchedRepository = $researchedRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
+        $this->buildingRepository = $buildingRepository;
+        $this->research = $research;
+        $this->currentUser = $currentUser;
         $this->config = $config;
     }
 
-    public function getId(): int
+    public function getResearch(): ResearchInterface
     {
-        return $this->research->getId();
-    }
-
-    public function getName(): string
-    {
-        return $this->research->getName();
-    }
-
-    public function getDescription(): string
-    {
-        return $this->research->getDescription();
-    }
-
-    public function getPoints(): int
-    {
-        return $this->research->getPoints();
-    }
-
-    public function getCommodityId(): int
-    {
-        return $this->research->getCommodityId();
-    }
-
-    public function getUpperPlanetLimit(): int
-    {
-        return $this->research->getUpperPlanetLimit();
-    }
-
-    public function getUpperMoonLimit(): int
-    {
-        return $this->research->getUpperMoonLimit();
-    }
-
-    public function getUpperAsteroidLimit(): int
-    {
-        return $this->research->getUpperAsteroidLimit();
-    }
-
-    public function getCommodity(): CommodityInterface
-    {
-        return $this->research->getCommodity();
+        return $this->research;
     }
 
     public function getResearchState(): ?ResearchedInterface
@@ -178,6 +143,11 @@ final class TalSelectedTech implements TalSelectedTechInterface
             : $this->getPoints() - $researchState->getActive();
     }
 
+    private function getPoints(): int
+    {
+        return $this->research->getPoints();
+    }
+
     public function isResearchFinished(): bool
     {
         $researchState = $this->getResearchState();
@@ -185,6 +155,17 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $researchState === null
             ? false
             : $researchState->getFinished() > 0;
+    }
+
+    public function getBuilding(): ?BuildingInterface
+    {
+        $buildings = $this->buildingRepository->getByResearch($this->getResearch());
+
+        if (empty($buildings)) {
+            return null;
+        }
+
+        return current($buildings);
     }
 
     public function getStatusBar(): string

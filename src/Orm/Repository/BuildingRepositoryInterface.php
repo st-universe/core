@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ResearchInterface;
 
 /**
  * @extends ObjectRepository<Building>
@@ -23,4 +24,7 @@ interface BuildingRepositoryInterface extends ObjectRepository
         int $buildMenu,
         int $offset
     ): array;
+
+    /** @return array<BuildingInterface> */
+    public function getByResearch(ResearchInterface $research): array;
 }

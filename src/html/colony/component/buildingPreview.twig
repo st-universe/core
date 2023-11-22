@@ -59,6 +59,7 @@
             </div>
             <br />
             {% endif %}
+            {% if HOST %}
             <strong>Vorschau</strong>
             {% if building.getEpsProduction %}
             {% set epsPreview = getEpsProductionPreview(HOST, building) %}
@@ -79,6 +80,7 @@
                 {% endif %}
             </div>
             {% endfor %}
+            {% endif %}
         </td>
         <td style="vertical-align: top; width: 110px;">
             {% include 'html/colony/component/buildingConsequences.twig' %}
