@@ -9,7 +9,7 @@ interface BuildingManagerInterface
     /**
      * Activates the building on the given field
      */
-    public function activate(PlanetFieldInterface $field): void;
+    public function activate(PlanetFieldInterface $field): bool;
 
     /**
      * deactivates the building on the given field
@@ -27,5 +27,5 @@ interface BuildingManagerInterface
     /**
      * Finishes the buildprocess for the building on the given field
      */
-    public function finish(PlanetFieldInterface $field, bool $activate = true): void;
+    public function finish(PlanetFieldInterface $field, bool $activate = true): ?string;
 }

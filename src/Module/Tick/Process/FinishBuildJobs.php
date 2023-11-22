@@ -34,17 +34,18 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
     {
         $result = $this->planetFieldRepository->getByConstructionFinish(time());
         foreach ($result as $field) {
-            $this->buildingManager->finish($field, $field->getActivateAfterBuild());
+            $activationDetails = $this->buildingManager->finish($field, $field->getActivateAfterBuild());
             $host = $field->getHost();
             if ($host instanceof ColonySandboxInterface) {
                 continue;
             }
 
             $txt = sprintf(
-                "Kolonie %s: %s auf Feld %s fertiggestellt",
+                "Kolonie %s: %s auf Feld %s fertiggestellt\n%s",
                 $host->getName(),
                 $field->getBuilding()->getName(),
-                $field->getFieldId()
+                $field->getFieldId(),
+                $activationDetails ?? ''
             );
 
             $href = sprintf('colony.php?%s=1&id=%d', ShowColony::VIEW_IDENTIFIER, $host->getId());
