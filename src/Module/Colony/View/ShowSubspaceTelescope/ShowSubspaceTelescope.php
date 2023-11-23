@@ -66,7 +66,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
         $game->addExecuteJS(sprintf(
             "registerNavKeys('%s.php', '%s', '%s', false);",
-            ModuleViewEnum::MODULE_VIEW_COLONY,
+            ModuleViewEnum::COLONY->value,
             RefreshSection::VIEW_IDENTIFIER,
             'html/colony/telescopeSectionTable.twig'
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);

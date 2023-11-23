@@ -57,7 +57,7 @@ class request
     {
         if (!@array_key_exists($var, $method)) {
             if ($fatal === true) {
-                throw new InvalidParamException($var);
+                throw new InvalidParamException(sprintf('request parameter "%s" does not exist', $var));
             }
             return false;
         }

@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 
 interface UserInterface
@@ -158,7 +159,7 @@ interface UserInterface
 
     public function setPrestige(int $prestige): UserInterface;
 
-    public function getStartPage(): ?string;
+    public function getDefaultView(): ModuleViewEnum;
 
     public function setStartPage(?string $startPage): UserInterface;
 

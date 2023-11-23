@@ -1,7 +1,3 @@
-{% extends "html/sitedefaults.twig" %}
-
-{% block body %}
-{% include 'html/breadcrumb.twig' %}
 {% if not SHIPS_AVAILABLE %}
 <table class="tcal">
 	<tr>
@@ -24,4 +20,3 @@
 <table class="tcal" id="shiplist_singles_table" style="display: none;"></table>
 {% endif %}
 {% endif %}
-{% endblock %}

@@ -188,9 +188,9 @@
                         <td>
                             <select name="startpage">
                                 <option value="0">----------------------</option>
-                                <tal:block tal:repeat="value STARTPAGE_VALUES">
-                                    <option tal:content="value/title"
-                                        tal:attributes="value value/view; selected php:STARTPAGE==value['view']">
+                                <tal:block tal:repeat="value VIEWS">
+                                    <option tal:content="value/getTitle"
+                                        tal:attributes="value value/value; selected php:DEFAULT_VIEW==value.value">
                                         STARTPAGE</option>
                                 </tal:block>
                             </select>

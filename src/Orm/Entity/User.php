@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
@@ -678,9 +679,13 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getStartPage(): ?string
+    public function getDefaultView(): ModuleViewEnum
     {
-        return $this->start_page;
+        if ($this->start_page === null) {
+            return ModuleViewEnum::MAINDESK;
+        }
+
+        return ModuleViewEnum::from($this->start_page);
     }
 
     public function setStartPage(?string $startPage): UserInterface

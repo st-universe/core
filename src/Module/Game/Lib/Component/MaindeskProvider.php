@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Maindesk\View\Overview;
+namespace Stu\Module\Game\Lib\Component;
 
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\EmergencyWrapper;
 use Stu\Orm\Entity\KnPostInterface;
@@ -26,7 +26,7 @@ use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class Overview implements ViewControllerInterface
+final class MaindeskProvider implements ViewComponentProviderInterface
 {
     private HistoryRepositoryInterface $historyRepository;
 
@@ -84,17 +84,18 @@ final class Overview implements ViewControllerInterface
         $this->crewLimitCalculator = $crewLimitCalculator;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
 
         $game->appendNavigationPart(
-            'maindesk.php',
+            sprintf(
+                'game.php?view=%s',
+                ModuleViewEnum::MAINDESK->value
+            ),
             _('Maindesk')
         );
-        $game->setPageTitle(_('/ Maindesk'));
-        $game->setTemplateFile('html/maindesk/maindesk.twig');
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
