@@ -265,7 +265,6 @@ use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInt
 use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
-use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
 use Stu\Module\Ship\View\ShowAvailableShips\ShowAvailableShips;
@@ -532,8 +531,6 @@ return [
             )
     ],
     'SHIP_VIEWS' => [
-        GameController::DEFAULT_VIEW => autowire(Overview::class),
-        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),

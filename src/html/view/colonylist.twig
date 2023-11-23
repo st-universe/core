@@ -1,0 +1,214 @@
+{% if COLONY_LIST %}
+<table class="tcal">
+	<tr>
+		<th style="width: 120px;"></th>
+		<th>Name</th>
+		<th>Signaturen</th>
+		<th title="aktuell/maximal (in Ausbildung)">Crewman
+			<img src="assets/buttons/info2.png" style="height:16px;" />
+		</th>
+		<th title="aktuell/maximal (Zuwanderung)">Bevölkerung
+			<img src="assets/buttons/info2.png" style="height:16px;" />
+		</th>
+		<th>Energie</th>
+		<th>Lager</th>
+	</tr>
+	{% for colony in COLONY_LIST %}
+	{% set colonyId = colony.getId %}
+	<tr class="row">
+		<td style="text-align: center;">
+			<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}">
+				{% include 'html/colony/component/colonyImageBase.twig' %}
+			</a>
+		</td>
+		<td style="vertical-align: middle;">
+			{% set system = colony.getSystem %}
+			<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}" style="font-size: 120%">
+				{% if colony.isBlocked %}
+				<img src="assets/buttons/block2.png" title="Kolonie wird blockiert" style="height:20px;" /><span>
+				</span>
+				{% endif %}
+				{% if colony.isDefended %}
+				<img src="assets/buttons/defend1.png" title="Kolonie wird verteidigt" style="height:20px;" /><span>
+				</span>
+				{% endif %}
+				{{ colony.getName|bbcode }}
+			</a>
+			<div>
+				<img src="assets/map/systemtypes/{{ system.getSystemType.getId }}.png"
+					title="{{ system.getSystemType.getDescription }}" style="width: 15px; height: 15px;" />
+				{{ colony.getSX }}|{{ colony.getSY }}
+				({{ system.getName }}-System {{ system.getCX }}|{{ system.getCY }})
+			</div>
+		</td>
+		<td style="vertical-align: middle;">
+			{% if colony.getSignatureCount != 0 %}
+			<a href="javascript:void(0);" onclick="showSectorScanWindow({{ colonyId }});">
+				{{ colony.getSignatureCount }}
+			</a>
+			{% else %}
+			<span>0</span>
+			{% endif %}
+		</td>
+		<td style="vertical-align: middle;">{{ colony.getCrewAssignmentAmount }}/<span
+				style="{{ colony.getCrewLimitStyle }}">{{ colony.getCrewLimit }}</span>
+			({{ colony.getCrewTrainingAmount }})</td>
+		<td style="vertical-align: middle;">
+			<img src="assets/bev/bev_used_5_{{ USER.getFactionId }}.png" />
+			{{ colony.getPopulation }}/{{ colony.getHousing }} ({{ colony.getImmigration }})
+		</td>
+		<td style="vertical-align: middle;">
+			{% autoescape false %}
+			{{ colony.getEpsStatusBar }}
+			{% endautoescape %}
+			{{ colony.getEps }}/{{ colony.getMaxEps }} ({{ colony.getEnergyProduction|addPlusCharacter }})
+		</td>
+		<td style="vertical-align: middle;">
+			{% autoescape false %}
+			{{ colony.getStorageStatusBar }}
+			{% endautoescape %}
+			{{ colony.getStorageSum }}/{{ colony.getMaxStorage }}
+			({{ colony.getProductionSum|addPlusCharacter }})<br />
+			{% for stor in colony.getCommodityUseView %}
+			<div>
+				<img src="assets/commodities/{{ stor.commodity.getId }}.png" title="{{ stor.commodity.getName }}" />
+				<span style="color: #FF0000;">{{ stor.production }}</span> ({{ stor.turnsleft }} Runden)
+			</div>
+			{% endfor %}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+<br />
+<div style="float: left; width: 49%;">
+	<div style="float: left; margin-bottom: 10px; width: 100%;">
+		{% if BUILDINGJOB_LIST %}
+		<div>
+			<table class="tcal">
+				<tr>
+					<th colspan="5">Aktuelle Bauvorgänge</th>
+				</tr>
+				{% for data in BUILDINGJOB_LIST %}
+				{% set colony = data.getHost %}
+				<tr>
+					<td style="width: 45px; text-align: center;vertical-align: middle">
+						<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}">
+							{% include 'html/colony/component/colonyImageBase.twig' %}
+						</a>
+					</td>
+					<td style="width: 45px; text-align:center;">
+						<img src="assets/generated/buildings/{{ data.getBuildingId }}/0at.png" />
+					</td>
+					<td style="vertical-align: middle">
+						{{ data.getBuilding.getName }} - Fertigstellung:
+						{{ data.getBuildtime|datetime }}
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% endif %}
+	</div>
+	<div style="float: top; width: 100%;">
+		{% if TERRAFORMING_LIST %}
+		<div>
+			<table class="tcal">
+				<tr>
+					<th colspan="5">Aktuelle Terraformingvorgänge</th>
+				</tr>
+				{% for data in TERRAFORMING_LIST %}
+				{% set terraforming = data.getTerraforming %}
+				<tr>
+					<td style="width: 45px; text-align: center;vertical-align: middle">
+						<img src="assets/planets/{{ data.getColony.getColonyClassId }}.png"
+							title="{{ data.getColony.getName|bbcode2txt }}" />
+					</td>
+					<td style="width: 45px; text-align:center;">
+						<img src="assets/generated/fields/{{ terraforming.getFromFieldTypeId }}.png" />
+					</td>
+					<td style="vertical-align: middle; width: 40px; text-align: center;">=&gt;</td>
+					<td style="width: 45px; text-align:center;">
+						<img src="assets/generated/fields/{{ terraforming.getToFieldTypeId }}.png" />
+					</td>
+					<td style="vertical-align: middle">
+						{{ terraforming.getDescription }} -
+						Fertigstellung: {{ data.getFinishDate|datetime }}
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% endif %}
+	</div>
+</div>
+<div style="float: right; margin-left: 10px; width: 30%;">
+	{% if PRODUCTION_LIST %}
+	<div>
+		<table class="tcal">
+			<tr>
+				<th>Ware</th>
+				<th>Gesamtproduktion</th>
+			</tr>
+			{% for prod in PRODUCTION_LIST %}
+			<tr class="row">
+				<td style="vertical-align: middle;">
+					<div style="display: table-cell; width: 55px;">
+						<img src="assets/commodities/{{ prod.commodity_id }}.png" title="{{ prod.commodity_name }}" />
+					</div>
+					<div style="display: table-cell; vertical-align: middle">{{ prod.commodity_name }}
+					</div>
+				</td>
+				<td style="vertical-align: middle; text-align: center;">
+					{% autoescape false %}
+					{{ prod.amount|formatProductionValue }}
+					{% endautoescape %}
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+</div>
+<div style="float: right; width: 20%;">
+	{% if MODULE_LIST %}
+	<div>
+		<table class="tcal" style="text-align: center;">
+			<tr>
+				<th colspan="3">Modulproduktion</th>
+			</tr>
+			<tr>
+				<th>Modul</th>
+				<th>Ort</th>
+				<th>Menge</th>
+			</tr>
+			{% for mod in MODULE_LIST %}
+			<tr class="row">
+				<td style="vertical-align: middle;">
+					<img src="assets/commodities/{{ mod.getModule.getCommodityId }}.png"
+						title="{{ mod.getModule.getCommodity.getName }}" />
+				</td>
+				<td style="vertical-align: middle;">
+					{% set colony = mod.getColony %}
+					<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}">
+						{% include 'html/colony/component/colonyImageBase.twig' %}
+					</a>
+				</td>
+				<td style="vertical-align: middle;">
+					{{ mod.getAmount }}
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+</div>
+{% else %}
+<table>
+	<tr>
+		<th>Meldung</th>
+	</tr>
+	<tr>
+		<td>Du besitzt derzeit keine Kolonien</td>
+	</tr>
+</table>
+{% endif %}
