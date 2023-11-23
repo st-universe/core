@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RepairShip;
 
 use request;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -68,7 +69,7 @@ final class RepairShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShipRepair::VIEW_IDENTIFIER);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyMenuEnum::MENU_SHIP_REPAIR]);
 
         $userId = $game->getUser()->getId();
 
