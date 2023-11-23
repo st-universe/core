@@ -26,7 +26,7 @@
             {% endfor %}
         </td>
         <td>
-            <a href="?id={{ host.getId }}&B_CANCEL_REPAIR=1&shipid={{ shipId }}&sstr={{ SESSIONSTRING }}"
+            <a href="?id={{ COLONY.getId }}&B_CANCEL_REPAIR=1&shipid={{ shipId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('cancel{{ shipId }}','buttons/x2');"
                 onmouseout="cp('cancel{{ shipId }}','buttons/x1');">
                 <span>{{ wrapper.getRepairDuration }}</span> Ticks
