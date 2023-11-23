@@ -661,3 +661,13 @@ function closeNagusPopup() {
         var popup = document.getElementById('nagus');
         popup.style.display = 'none';
 }
+
+function switchInnerContent(view) {
+        closeAjaxWindow();
+        url = '/game.php?B_SWITCH_CONTENT=1&view=' + view;
+
+        new Ajax.Updater('innerContent', url, {
+                method: 'get'
+        }
+        );
+}

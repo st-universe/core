@@ -63,8 +63,8 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar('USER', $user);
         $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));
-        $game->setTemplateVar('STARTPAGE', $user->getStartPage());
-        $game->setTemplateVar('STARTPAGE_VALUES', ModuleViewEnum::MODULE_VIEW_ARRAY);
+        $game->setTemplateVar('DEFAULT_VIEW', $user->getDefaultView());
+        $game->setTemplateVar('VIEWS', ModuleViewEnum::cases());
         $game->setTemplateVar('RPGBEHAVIOR', $user->getRpgBehavior());
         $game->setTemplateVar('RPG_BEHAVIOR_VALUES', UserRpgBehaviorEnum::cases());
         $game->setTemplateVar('CSSSTYLE', $user->getCss());

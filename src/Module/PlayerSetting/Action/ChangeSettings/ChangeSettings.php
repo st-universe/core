@@ -66,8 +66,9 @@ final class ChangeSettings implements ActionControllerInterface
             function (UserInterface $user): void {
                 $value = $this->changeSettingsRequest->getStartpage();
 
-                if (array_key_exists($value, ModuleViewEnum::MODULE_VIEW_ARRAY)) {
-                    $user->setStartPage($value);
+                $view = ModuleViewEnum::tryFrom($value);
+                if ($view !== null) {
+                    $user->setStartPage($view->value);
                 }
             },
             function (UserInterface $user): void {
