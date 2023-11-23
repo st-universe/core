@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Cache;
+namespace Stu\Component\Cache;
 
 use Cache\Adapter\Redis\RedisCachePool;
 use Exception;
