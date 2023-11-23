@@ -1,0 +1,9 @@
+{% set colonyClass = colony.getColonyClass %}
+{% set colonyClassId = colonyClass.getId %}
+{% if colonyClass.hasRing %}
+<div class="planet_ring" style="background-image: url(/assets/planets/{{ colonyClassId }}.png)">
+    <img src="/assets/planets/{{ colonyClassId }}r.png" />
+</div>
+{% else %}
+<img src="/assets/planets/{{ colonyClassId }}.png" />
+{% endif %}

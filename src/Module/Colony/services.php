@@ -286,8 +286,6 @@ return [
         RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class)
     ],
     'COLONY_VIEWS' => [
-        GameController::DEFAULT_VIEW => autowire(Overview::class),
-        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowColony::VIEW_IDENTIFIER => autowire(ShowColony::class),
         ShowMainscreen::VIEW_IDENTIFIER => autowire(ShowMainscreen::class),
         ShowBuildMenu::VIEW_IDENTIFIER => autowire(ShowBuildMenu::class),

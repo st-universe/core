@@ -2,22 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Colony\View\Overview;
+namespace  Stu\Module\Game\Lib\Component;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
-final class Overview implements ViewControllerInterface
+final class ColonyListProvider implements ViewComponentProviderInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONY_LIST';
-
     private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
@@ -43,18 +41,19 @@ final class Overview implements ViewControllerInterface
         $this->buildingCommodityRepository = $buildingCommodityRepository;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
         $colonyList = $game->getUser()->getColonies()->toArray();
 
         $game->appendNavigationPart(
-            'colony.php',
-            'Kolonien'
+            sprintf(
+                'game.php?view=%s',
+                ModuleViewEnum::COLONY->value
+            ),
+            _('Kolonien')
         );
-        $game->setPageTitle('/ Kolonien');
-        $game->setTemplateFile('html/colonylist.xhtml');
 
         $game->setTemplateVar(
             'COLONY_LIST',

@@ -7,7 +7,9 @@ namespace Stu\Module\Game;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\Action\SwitchInnerContent\SwitchInnerContent;
+use Stu\Module\Game\Lib\Component\ColonyListProvider;
 use Stu\Module\Game\Lib\Component\MaindeskProvider;
+use Stu\Module\Game\Lib\Component\ShipListProvider;
 use Stu\Module\Game\Lib\ViewComponentLoader;
 use Stu\Module\Game\Lib\ViewComponentLoaderInterface;
 use Stu\Module\Game\View\Overview\Overview;
@@ -20,6 +22,8 @@ return [
         'viewComponentProviders',
         [
             ModuleViewEnum::MAINDESK->value => autowire(MaindeskProvider::class),
+            ModuleViewEnum::COLONY->value => autowire(ColonyListProvider::class),
+            ModuleViewEnum::SHIP->value => autowire(ShipListProvider::class),
         ]
     ),
     'GAME_ACTIONS' => [
