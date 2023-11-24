@@ -32,7 +32,7 @@
         <div class="header_box header_box_user border_box action" onclick="goToUrl('maindesk.php'); return false;">
           <div style="margin: 5px">
             <div class="user_box_grid">
-              <div class="user_box_avatar">
+              <div class="user_box_avatar" onclick="event.stopPropagation();">
                 <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER THIS/getUser" />
               </div>
               <div class="user_box_details">
@@ -44,8 +44,8 @@
                   onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
                   <img src="/assets/buttons/notiz1.png" name="headerNotiz" />
                 </a>
-                <a href="/pm.php?WRITE_PM=1" onmouseover="cp('writePm','buttons/msg2')"
-                  onmouseout="cp('writePm','buttons/msg1')">
+                <a href="/pm.php?WRITE_PM=1" onclick="event.stopPropagation();"
+                  onmouseover="cp('writePm','buttons/msg2')" onmouseout="cp('writePm','buttons/msg1')">
                   <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben" />
                 </a>
               </div>

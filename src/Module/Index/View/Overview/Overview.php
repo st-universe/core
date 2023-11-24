@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\View\Overview;
 
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -32,13 +33,13 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setPageTitle(_('Star Trek Universe'));
-        $game->setTemplateFile('html/index.xhtml');
+        $game->setPageTitle(ModuleViewEnum::INDEX->getTitle());
+        $game->setTemplateFile(ModuleViewEnum::INDEX->getTemplate());
 
         $game->setTemplateVar(
             'SYSTEM_NEWS',
             array_map(
-                fn(NewsInterface $news): NewsItemInterface => $this->newsFactory->createNewsItem(
+                fn (NewsInterface $news): NewsItemInterface => $this->newsFactory->createNewsItem(
                     $news
                 ),
                 $this->newsRepository->getRecent(5)
