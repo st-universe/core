@@ -29,14 +29,14 @@ final class ShowPmCategoryList implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->showMacro('html/commmacros.xhtml/pmcategorylist_ajax');
+        $game->showMacro('html/communication/pmCategoryListAjax.twig');
 
         $game->setTemplateVar('markcat', true);
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
                 fn (PrivateMessageFolderInterface $privateMessageFolder): PrivateMessageFolderItem =>
-                    $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
+                $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
                 $this->privateMessageFolderRepository->getOrderedByUser($game->getUser()->getId())
             )
         );

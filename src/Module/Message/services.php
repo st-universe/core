@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Message\Action\AddContact\AddContact;
 use Stu\Module\Message\Action\AddContact\AddContactRequest;
 use Stu\Module\Message\Action\AddContact\AddContactRequestInterface;
@@ -56,9 +57,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageUiFactory;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Message\View\Noop\Noop;
-use Stu\Module\Message\View\Overview\Overview;
-use Stu\Module\Message\View\Overview\OverviewRequest;
-use Stu\Module\Message\View\Overview\OverviewRequestInterface;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Module\Message\View\ShowContactMode\ShowContactMode;
 use Stu\Module\Message\View\ShowContactModeSwitch\ShowContactModeSwitchRequest;
@@ -82,7 +80,6 @@ use function DI\autowire;
 return [
     DistributedMessageSenderInterface::class => autowire(DistributedMessageSender::class),
     PrivateMessageSenderInterface::class => autowire(PrivateMessageSender::class),
-    OverviewRequestInterface::class => autowire(OverviewRequest::class),
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
     ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),

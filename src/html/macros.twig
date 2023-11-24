@@ -114,3 +114,16 @@
         name="{{ handle }}" title="Nachricht senden" /></a>
 {% endif %}
 {% endmacro %}
+
+{% macro contactModeSwitcher(contact, div) %}
+{% if contact %}
+{% set mode = contact.getMode %}
+{% set description = contact.getMode|clmodeDescription %}
+{% if div %}
+<span class="cltype{{ mode }}" id="contact{{ contact.getId }}"
+    onclick="showContactModeSwitcher('${div}',{{ contact.getId }});">{{ description }}</span>
+{% else %}
+<span class="cltype{{ mode }}" style="cursor: auto;">{{ description }}</span>
+{% endif %}
+{% endif %}
+{% endmacro %}

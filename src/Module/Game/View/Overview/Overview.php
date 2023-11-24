@@ -24,8 +24,8 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setPageTitle(_('Star Trek Universe'));
-        $game->setTemplateFile('html/game/game.twig');
+        $game->setPageTitle(ModuleViewEnum::GAME->getTitle());
+        $game->setTemplateFile(ModuleViewEnum::GAME->getTemplate());
 
         $view = null;
         if (request::has('view')) {

@@ -136,6 +136,11 @@ class TwigHelper
             return nl2br($value);
         });
         $this->environment->addFilter($nl2brFilter);
+
+        $clmodeDescriptionFilter = new TwigFilter('clmodeDescription', function (int $mode): string {
+            return TalHelper::getContactListModeDescription($mode);
+        });
+        $this->environment->addFilter($clmodeDescriptionFilter);
     }
 
     private function registerFunctions(): void

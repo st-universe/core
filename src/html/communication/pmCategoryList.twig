@@ -1,0 +1,21 @@
+{% for cat in PM_CATEGORIES %}
+{% set catId = cat.getId %}
+<li id="item_{{ catId }}" style="width: 100%; display: block;">
+    <div class="iblock" style="width: 90%">
+        <span style="color: #cecece; cursor: move;">&gt;</span>
+        {% if markcat and catId == CATEGORY.getId %}
+        <a href="?pmcat={{ catId }}" style="color: #c2b942;">{{ cat.getDescription }}</a>
+        {% else %}
+        <a href="?pmcat={{ catId }}">{{ cat.getDescription }}</a>
+        {% endif %}
+        ({{ cat.getCategoryCountNew }}/{{ cat.getCategoryCount }})
+    </div>
+    <div class="iblock right" style="width: 8%">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow({{ catId }});"
+            onmouseover="cp('catedit{{ catId }}','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit{{ catId }}','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit{{ catId }}" />
+        </a>
+    </div>
+</li>
+{% endfor %}
