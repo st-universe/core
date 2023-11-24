@@ -1,4 +1,4 @@
-{% from 'html/macros.twig' import useravatar, userinfo, pmwindow, userprofile %}
+{% from 'html/macros.twig' import userAvatar, userInfo, pmWindow, userProfile %}
 {% if not KN_POSTINGS %}
 <div class="divhead">Meldung</div>
 <div class="divbody">Keine Beiträge vorhanden</div>
@@ -15,7 +15,7 @@
             {{ post.getUserName|bbcode }}
             {% else %}
             {% if postUser %}
-            {{ userinfo(postUser) }}
+            {{ userInfo(postUser) }}
             {% endif %}
             {% endif %}
         </div>
@@ -60,7 +60,7 @@
                         <div>NPC</div>
                         {% endif %}
                         <div class="knUserAvatar">
-                            {{ useravatar(postUser) }}
+                            {{ userAvatar(postUser) }}
                         </div>
                         <span title="Beitrag-ID">{{ post.getId }}</span>
                         <br />
@@ -68,8 +68,8 @@
                     {% if post.displayContactLinks %}
                     <div class="segment">
                         <img src="/assets/rassen/{{ postUser.getFactionId }}s.png" />
-                        {{ pmwindow(postUser.getId) }}
-                        {{ userprofile(postUser.getId) }}
+                        {{ pmWindow(USER, postUser.getId) }}
+                        {{ userProfile(postUser.getId) }}
                     </div>
                     {% endif %}
                     {% if KN_OFFSET %}

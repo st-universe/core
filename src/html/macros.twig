@@ -1,4 +1,4 @@
-{% macro useravatar(user) %}
+{% macro userAvatar(user) %}
 <div class="userAvatar">
     <a href="/userprofile.php?uid={{ user.getId }}">
         {% if user.getAvatar %}
@@ -10,14 +10,14 @@
 </div>
 {% endmacro %}
 
-{% macro userprofile(id) %}
+{% macro userProfile(id) %}
 {% set handle = getUniqId() %}
 <a href="/userprofile.php?uid={{ id }}" onmouseover="cp('{{ handle }}','buttons/info2', 'png');"
     onmouseout="cp('{{ handle }}','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="{{ handle }}"
         title="Siedlerprofil ansehen" /></a>
 {% endmacro %}
 
-{% macro userinfo(user) %}
+{% macro userInfo(user) %}
 {{ user.getName|bbcode }} ({{ user.getId }})
 <img src="/assets/buttons/rpg{{ user.getRpgBehavior.value }}.png" title="{{ user.getRpgBehavior.getDescription }}" />
 {% if user.isShowOnlineState %}
@@ -105,7 +105,7 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro pmwindow(id) %}
+{% macro pmWindow(USER, id) %}
 {% set handle = getUniqId() %}
 {% if USER.getId != id %}
 <a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/msg2', 'png');"

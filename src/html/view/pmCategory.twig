@@ -1,4 +1,4 @@
-{% from 'html/macros.twig' import useravatar, userinfo, contactModeSwitcher, translationSwitcher %}
+{% from 'html/macros.twig' import userAvatar, userInfo, contactModeSwitcher, translationSwitcher %}
 
 <script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
 <form action="pm.php" method="post" name="pmlist" id="pmlist">
@@ -21,7 +21,7 @@
           {% else %}
           Von:
           {% endif %}
-          {{ userinfo(sender) }}
+          {{ userInfo(sender) }}
         </div>
         <div class="box_body" style="margin: 0; padding: 0;">
           <div class="pmGrid">
@@ -63,7 +63,7 @@
                 {% endif %}
                 <div class="pmUserAvatar">
                   <a href="/userprofile.php?uid={{ sender.getId }}">
-                    {{ useravatar(sender) }}
+                    {{ userAvatar(sender) }}
                   </a>
                 </div>
               </div>

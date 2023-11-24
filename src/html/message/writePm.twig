@@ -1,5 +1,5 @@
 {% extends "html/sitedefaults.twig" %}
-{% from 'html/macros.twig' import userinfo, translationSwitcher %}
+{% from 'html/macros.twig' import userInfo, translationSwitcher %}
 
 {% block body %}
 <script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
@@ -16,7 +16,7 @@
 				{% if REPLY %}
 				<td>
 					<input type="hidden" name="recipient" value="{{ REPLY.getSender.getId }}" />
-					{{ userinfo(REPLY.getSender) }}
+					{{ userInfo(REPLY.getSender) }}
 				</td>
 				{% else %}
 				<td>

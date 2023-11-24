@@ -14,6 +14,7 @@ use Stu\Module\Game\Lib\Component\MessageProvider;
 use Stu\Module\Game\Lib\Component\ResearchProvider;
 use Stu\Module\Game\Lib\Component\ShipListProvider;
 use Stu\Module\Game\Lib\Component\StationProvider;
+use Stu\Module\Game\Lib\Component\TradeProvider;
 use Stu\Module\Game\Lib\ViewComponentLoader;
 use Stu\Module\Game\Lib\ViewComponentLoaderInterface;
 use Stu\Module\Game\View\Overview\Overview;
@@ -32,6 +33,7 @@ return [
             ModuleViewEnum::COMMUNICATION->value => autowire(CommunicationProvider::class),
             ModuleViewEnum::PM->value => autowire(MessageProvider::class),
             ModuleViewEnum::RESEARCH->value => autowire(ResearchProvider::class),
+            ModuleViewEnum::TRADE->value => autowire(TradeProvider::class),
         ]
     ),
     'GAME_ACTIONS' => [
