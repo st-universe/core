@@ -33,7 +33,7 @@ enum ModuleViewEnum: string
     public function getTitle(): string
     {
         return match ($this) {
-            self::INDEX => 'Login-Page',
+            self::INDEX => 'Star Trek Universe - Login',
             self::GAME => 'Star Trek Universe',
             self::MAINDESK => 'Maindesk',
             self::COLONY => 'Kolonien',
@@ -57,7 +57,7 @@ enum ModuleViewEnum: string
     public function getTemplate(): string
     {
         return match ($this) {
-            self::INDEX => 'Login-Page',
+            self::INDEX => 'html/index.xhtml',
             self::GAME => 'html/game/game.twig',
             self::MAINDESK => 'html/view/maindesk.twig',
             self::COLONY => 'html/view/colonyList.twig',
