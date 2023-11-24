@@ -67,7 +67,7 @@ enum ModuleViewEnum: string
             self::PM => 'html/view/pmCategory.twig',
             self::RESEARCH => 'html/view/research.twig',
             self::TRADE => 'html/view/trade.twig',
-            self::ALLIANCE => 'todo',
+            self::ALLIANCE => 'html/view/alliance.twig',
             self::DATABASE => 'todo',
             self::HISTORY => 'todo',
             self::MAP => 'todo',

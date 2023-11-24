@@ -38,8 +38,7 @@
 					<input type="hidden" name="SHOW_RELATIONS" value="1" />
 					<input type="hidden" name="oid" value="runtime" tal:attributes="value opponent/getId" />
 					<td>
-						<a href="?SHOW_ALLIANCE=1&id=${opponent/getId}"
-							tal:content="structure bbcode:opponent/getName">NAME</a>
+						<a href="?id=${opponent/getId}" tal:content="structure bbcode:opponent/getName">NAME</a>
 					</td>
 					<td>
 						<span tal:content="relation/getTypeDescription">TYPE</span>

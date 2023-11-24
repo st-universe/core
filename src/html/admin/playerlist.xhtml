@@ -13,7 +13,7 @@
               <a href="/userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
             </div>
             <div class="userListItemAllianceName">
-              <a tal:condition="data/getAlliance" href="/alliance.php?SHOW_ALLIANCE=1&id=${data/getAlliance/getId}"
+              <a tal:condition="data/getAlliance" href="/alliance.php?id=${data/getAlliance/getId}"
                 tal:content="structure bbcode:data/getAlliance/getName">ALLIANCE</a>
               <span tal:condition="not:data/getAlliance">-</span>
             </div>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Leave;
 
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -66,7 +67,7 @@ final class Leave implements ActionControllerInterface
             $this->privateMessageSender->send($userId, $alliance->getSuccessor()->getUserId(), $text);
         }
 
-        $game->setView('SHOW_LIST');
+        $game->setView(ModuleViewEnum::ALLIANCE);
 
         $game->addInformation(_('Du hast die Allianz verlassen'));
     }

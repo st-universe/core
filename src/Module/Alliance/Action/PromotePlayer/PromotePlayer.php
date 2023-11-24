@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
-use Stu\Module\Alliance\View\Overview\Overview;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -109,7 +109,7 @@ final class PromotePlayer implements ActionControllerInterface
                     _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
                     $alliance->getName()
                 );
-                $view = Overview::class;
+                $view = ModuleViewEnum::ALLIANCE;
                 break;
             case AllianceEnum::ALLIANCE_JOBS_SUCCESSOR:
                 if ($userId === $playerId) {

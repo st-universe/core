@@ -24,7 +24,7 @@ final class Create implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Allianz gründen'));
-        $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
+        $game->appendNavigationPart('alliance.php?showlist=1', _('Allianzliste'));
         $game->appendNavigationPart('alliance.php?CREATE_ALLIANCE=1', _('Allianz gründen'));
         $game->setTemplateFile('html/alliancecreate.xhtml');
     }

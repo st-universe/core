@@ -70,7 +70,7 @@
               <div class="segment">
                 {% set id = sender.getId %}
                 {% if post.displayUserLinks %}
-                {{ translationSwitcher(post.hasTranslation, 'message' ~ postId) }}
+                {{ translationSwitcher(post.hasTranslation, 'message' ~ postId, 'Nachricht übersetzen') }}
                 <a href="?WRITE_PM=1&reply={{ postId }}" onmouseover="cp('reply{{ postId }}','buttons/msg2', 'png');"
                   onmouseout="cp('reply{{ postId }}','buttons/msg1', 'png');">
                   <img src="/assets/buttons/msg1.png" name="reply{{ postId }}" title="Antwort verfassen" />

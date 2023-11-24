@@ -2,28 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Alliance\View\AllianceDetails;
+namespace Stu\Module\Game\Lib\Component;
 
+use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
-final class AllianceDetails implements ViewControllerInterface
+final class AllianceProvider implements ViewComponentProviderInterface
 {
-    /**
-     * @var string
-     */
-    public const VIEW_IDENTIFIER = 'SHOW_ALLIANCE';
-
-    private AllianceDetailsRequestInterface $allianceDetailsRequest;
-
     private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
     private AllianceActionManagerInterface $allianceActionManager;
@@ -37,7 +34,6 @@ final class AllianceDetails implements ViewControllerInterface
     private AllianceUiFactoryInterface $allianceUiFactory;
 
     public function __construct(
-        AllianceDetailsRequestInterface $allianceDetailsRequest,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceActionManagerInterface $allianceActionManager,
         AllianceRepositoryInterface $allianceRepository,
@@ -45,7 +41,6 @@ final class AllianceDetails implements ViewControllerInterface
         AllianceDescriptionRendererInterface $allianceDescriptionRenderer,
         AllianceUiFactoryInterface $allianceUiFactory
     ) {
-        $this->allianceDetailsRequest = $allianceDetailsRequest;
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceRepository = $allianceRepository;
@@ -54,32 +49,51 @@ final class AllianceDetails implements ViewControllerInterface
         $this->allianceUiFactory = $allianceUiFactory;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
-        $alliance = $this->allianceRepository->find($this->allianceDetailsRequest->getAllianceId());
-        if ($alliance === null) {
-            return;
-        }
-
         $user = $game->getUser();
 
+        $alliance = null;
+        if (request::has('id')) {
+            $alliance = $this->allianceRepository->find(request::indInt('id'));
+        }
+
+        if ($alliance === null) {
+            $alliance = $user->getAlliance();
+        }
+
+        $game->setTemplateVar('ALLIANCE', $alliance);
+
+        if ($alliance === null || request::has('showlist')) {
+            $this->setTemplateVariablesForAllianceList($game);
+        } else {
+            $this->setTemplateVariablesForAlliance($alliance, $game);
+        }
+    }
+
+    private function setTemplateVariablesForAlliance(AllianceInterface $alliance, GameControllerInterface $game): void
+    {
+        $user = $game->getUser();
         $allianceId = $alliance->getId();
-        $userId = $user->getId();
 
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
-        $userIsFounder = $alliance->getFounder()->getUserId() === $userId;
+        $userIsFounder = $alliance->getFounder()->getUser() === $user;
+        $isInAlliance = $alliance === $game->getUser()->getAlliance();
+
+
+        $game->appendNavigationPart(sprintf(
+            '%s?id=%d',
+            ModuleViewEnum::ALLIANCE->getPhpPage(),
+            $alliance->getId()
+        ), _('Allianz anzeigen'));
 
         $relations = [];
         foreach ($result as $key => $relation) {
             $relations[$key] = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
         }
 
-        $isInAlliance = $alliance === $game->getUser()->getAlliance();
+        $game->setTemplateVar('SHOW_ALLIANCE', $alliance);
 
-        $game->setPageTitle(_('Allianz anzeigen'));
-        $game->setTemplateFile('html/alliancedetails.xhtml');
-
-        $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar(
             'ALLIANCE_RELATIONS',
             $relations !== []
@@ -104,24 +118,36 @@ final class AllianceDetails implements ViewControllerInterface
             'CAN_SIGNUP',
             $this->allianceUserApplicationChecker->mayApply($user, $alliance)
         );
+
         $game->setTemplateVar(
             'MEMBERS',
             $alliance->getMembers()->map(
-                fn (UserInterface $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance),
+                fn (UserInterface $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
             )
         );
+    }
 
-        if ($game->getUser()->getAlliance() !== null) {
-            $game->appendNavigationPart(
-                'alliance.php',
-                'Allianz'
-            );
-        }
+    private function setTemplateVariablesForAllianceList(GameControllerInterface $game): void
+    {
+        $game->appendNavigationPart(sprintf(
+            '%s?showlist=1',
+            ModuleViewEnum::ALLIANCE->getPhpPage()
+        ), _('Allianzliste'));
 
-        $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
-        $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_ALLIANCE=1&id=%d', $alliance->getId()),
-            'Allianz anzeigen'
+        $game->setTemplateVar('SHOW_ALLIANCE_LIST', true);
+        $game->setTemplateVar(
+            'ALLIANCE_LIST_OPEN',
+            array_map(
+                fn (AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                $this->allianceRepository->findByApplicationState(true)
+            )
+        );
+        $game->setTemplateVar(
+            'ALLIANCE_LIST_CLOSED',
+            array_map(
+                fn (AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                $this->allianceRepository->findByApplicationState(false)
+            )
         );
     }
 }

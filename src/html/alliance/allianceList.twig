@@ -1,0 +1,71 @@
+{% from 'html/macros.twig' import userAvatar %}
+{% from 'html/alliancemacros.twig' import alliance_avatar %}
+
+{% if SHOW_ALLIANCE_LIST %}
+<div style="width: 250px;">
+    <div class="divhead">Informationen</div>
+    <div class="divbody" style="padding: 10px;">
+        <a href="?SHOW_DIPLOMATIC_RELATIONS=1" class="linkbutton">Diplomatische Beziehungen</a>
+        {% if not ALLIANCE %}
+        <br />
+        <br />
+        <a href="?CREATE_ALLIANCE=1" class="linkbutton">Allianz gründen</a>
+        {% endif %}
+    </div>
+    <br />
+</div>
+{% if ALLIANCE_LIST_OPEN %}
+<div class="divhead">Offene Allianzen</div>
+{% endif %}
+<div class="allianceList">
+    {% for data in ALLIANCE_LIST_OPEN %}
+    <div class="allianceListItem">
+        <div class="allianceListItemName">
+            {% if data.getFactionId %}
+            <img src="assets/rassen/{{ data.getFactionId }}s.png" />
+            {% endif %}
+            <a href="alliance.php?id={{ data.getId }}">{{ data.getName|bbcode }}</a>
+        </div>
+        <div class="allianceListItemMembers">
+            {% for user in data.getMembers %}
+            {{ userAvatar(user) }}
+            {% endfor %}
+        </div>
+        <div class="allianceListItemBanner">
+            {% if data.hasAvatar %}
+            <a href="alliance.php?id={{ data.getId }}" title="Zur Allianz">
+                {{ alliance_avatar(data) }}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if ALLIANCE_LIST_CLOSED %}
+<div class="divhead">Geschlossene Allianzen</div>
+{% endif %}
+<div class="allianceList">
+    {% for data in ALLIANCE_LIST_CLOSED %}
+    <div class="allianceListItem">
+        <div class="allianceListItemName">
+            {% if data.getFactionId %}
+            <img src="assets/rassen/{{ data.getFactionId }}s.png" />
+            {% endif %}
+            <a href="alliance.php?id={{ data.getId }}">{{ data.getName|bbcode }}</a>
+        </div>
+        <div class="allianceListItemMembers">
+            {% for user in data.getMembers %}
+            {{ userAvatar(user) }}
+            {% endfor %}
+        </div>
+        <div class="allianceListItemBanner">
+            {% if data.hasAvatar %}
+            <a href="alliance.php?id={{ data.getId }}" title="Zur Allianz">
+                {{ alliance_avatar(data) }}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

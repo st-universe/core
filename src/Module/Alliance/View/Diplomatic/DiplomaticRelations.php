@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Diplomatic;
 
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
-use Stu\Module\Alliance\View\AllianceList\AllianceList;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -47,7 +46,7 @@ final class DiplomaticRelations implements ViewControllerInterface
                 'title' => 'Allianz',
             ],
             [
-                'url' => sprintf('alliance.php?%s=1', AllianceList::VIEW_IDENTIFIER),
+                'url' => 'alliance.php?showlist=1',
                 'title' => 'Allianzliste',
             ],
             [

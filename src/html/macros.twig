@@ -128,11 +128,11 @@
 {% endif %}
 {% endmacro %}
 
-{% macro translationSwitcher(hasTranslation, id) %}
+{% macro translationSwitcher(hasTranslation, id, title) %}
 {% if hasTranslation %}
 <a onmouseover="cp('translate{{ id }}','buttons/translate1', 'png')"
     onmouseout="cp('translate{{ id }}','buttons/translate0', 'png')">
-    <img src="assets/buttons/translate0.png" alt="Übersetzen" style="cursor:pointer; margin-left: 5px;"
+    <img src="assets/buttons/translate0.png" title="{{ title }}" style="cursor:pointer; margin-left: 5px;"
         onclick="toggleTranslation('{{ postId }}')" name="translate{{ id }}" />
 </a>
 {% endif %}
