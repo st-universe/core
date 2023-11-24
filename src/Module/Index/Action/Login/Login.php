@@ -36,7 +36,8 @@ final class Login implements ActionControllerInterface
         );
 
         if ($success) {
-            $game->redirectTo('/game.php');
+            $view = $game->getUser()->getDefaultView();
+            $game->redirectTo(sprintf('/%s', $view->getPhpPage()));
         }
     }
 

@@ -48,10 +48,7 @@ final class ColonyListProvider implements ViewComponentProviderInterface
         $colonyList = $game->getUser()->getColonies()->toArray();
 
         $game->appendNavigationPart(
-            sprintf(
-                'game.php?view=%s',
-                ModuleViewEnum::COLONY->value
-            ),
+            ModuleViewEnum::COLONY->getPhpPage(),
             _('Kolonien')
         );
 

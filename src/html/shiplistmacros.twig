@@ -27,14 +27,14 @@
 {% set epssystem = wrapper.getEpsSystemData %}
 <tr>
     <td style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="ship.php?SHOW_SHIP=1&id={{ shipid }}" class="imgOverlayText"
-            onmouseover="openStorageInit(this, {{ shipid }});" onmouseout="closeStorage();">
+        <a href="?SHOW_SHIP=1&id={{ shipid }}" class="imgOverlayText" onmouseover="openStorageInit(this, {{ shipid }});"
+            onmouseout="closeStorage();">
             {% from 'html/shipmacros.twig' import shipimage %}
             {{ shipimage(ship) }}
         </a>
     </td>
     <td>
-        <a href="ship.php?SHOW_SHIP=1&id={{ shipid }}">
+        <a href="?SHOW_SHIP=1&id={{ shipid }}">
             {% if ship.getDockedTo %}
             <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height:20px;" />
             {% endif %}

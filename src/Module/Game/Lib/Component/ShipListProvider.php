@@ -48,10 +48,7 @@ final class ShipListProvider implements ViewComponentProviderInterface
         }
 
         $game->appendNavigationPart(
-            sprintf(
-                'game.php?view=%s',
-                ModuleViewEnum::SHIP->value
-            ),
+            ModuleViewEnum::SHIP->getPhpPage(),
             _('Schiffe')
         );
 

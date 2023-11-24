@@ -662,12 +662,21 @@ function closeNagusPopup() {
         popup.style.display = 'none';
 }
 
-function switchInnerContent(view) {
+function switchInnerContent(view, title, url) {
         closeAjaxWindow();
-        url = '/game.php?B_SWITCH_CONTENT=1&view=' + view;
 
-        new Ajax.Updater('innerContent', url, {
+        new Ajax.Updater('innerContent', '/game.php?B_SWITCH_CONTENT=1&view=' + view, {
+                onComplete: function (transport) {
+                        document.title = title;
+                        window.history.pushState('page2', title, url);
+                },
                 method: 'get'
         }
         );
+}
+
+function maximizeCommodityAmounts() {
+        document.querySelectorAll('.commodityAmount').forEach(function (elem) {
+                elem.value = 'max';
+        });
 }

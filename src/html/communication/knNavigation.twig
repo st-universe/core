@@ -1,0 +1,13 @@
+{% if KN_NAVIGATION %}
+<table>
+    <tr>
+        {% for item in KN_NAVIGATION %}
+        <td>
+            <a href="?SHOW_KN=1&mark={{ item.mark }}" class="{{ item.cssclass }}">
+                {{ item.page}}
+            </a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+{% endif %}

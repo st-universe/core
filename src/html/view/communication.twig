@@ -1,0 +1,74 @@
+<script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
+<div style="width: 75%; float: left; margin-right: 1%">
+  {% set navigationMacro = 'knNavigation' %}
+  {% include 'html/communication/kn.twig' %}
+</div>
+<div style="width: 24%; float: left">
+  {% if KN_START %}
+  <div class="box">
+    <div class="box_title">Kommunikations-Netzwerk</div>
+    <div class="box_body">
+      <a href="?WRITE_KN=1" onmouseover="cp('writekn','buttons/knedit2', 'png')"
+        onmouseout="cp('writekn','buttons/knedit1', 'png')">
+        <img src="/assets/buttons/knedit1.png" title="+ Beitrag" name="writekn" />
+        Beitrag schreiben
+      </a>
+      <br /><br />
+      <strong>Übersicht</strong><br />
+      <ul>
+        {% if HAS_NEW_KN_POSTINGS %}
+        <li>
+          <span style="color: #cecece">&gt;</span> <a href="?view={{ CURRENT_VIEW.value }}&user_mark=1">Neue Beiträge ab
+            Lesezeichen:</a> {{ NEW_KN_POSTING_COUNT }}
+        </li>
+        {% endif %}
+        <li>
+          <span style="color: #cecece">&gt;</span> <a href="?view={{ CURRENT_VIEW.value }}">Alle Beiträge</a> (<a
+            href="view={{ CURRENT_VIEW.value }}&mark={{ KN_START }}">aufsteigend</a>)
+        </li>
+      </ul>
+      <div class="seperator"> </div>
+      <ul>
+        <li>
+          <strong>RPG Plots</strong>
+        </li>
+        <li>
+          <span style="color: #cecece">&gt;</span> <a href="?SHOW_MYPLOTS=1">Liste meiner
+            Plots</a>
+        </li>
+        <li>
+          <span style="color: #cecece">&gt;</span> <a href="?SHOW_PLOTLIST=1">Liste aller
+            Plots</a>
+        </li>
+        <li>
+          <span style="color: #cecece">&gt;</span> <a href="?SHOW_CREATE_PLOT=1">Neuen
+            Plot erstellen</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+  <br />
+  <div class="box">
+    <div class="box_title">Suche</div>
+    <div class="box_body">
+      <form method="post" action="comm.php">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <ul>
+          <li>
+            <input type="text" name="search" style="width: 150px;" onkeypress="return event.keyCode != 13;" />
+          </li>
+          <li>
+            <input type="submit" class="button" value="nach Spieler-ID suchen" name="SHOW_USER_SEARCH" />
+          </li>
+          <li>
+            <input type="submit" class="button" value="nach Beitrag-ID suchen" name="SHOW_POSTID_SEARCH" />
+          </li>
+          <li>
+            <input type="submit" class="button" value="nach Text suchen" name="SHOW_POST_SEARCH" />
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</div>

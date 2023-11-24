@@ -21,7 +21,11 @@ function switchColonyMenu(menu, func, fid) {
 }
 
 function switchColonySubmenu(menu, func) {
+	document.querySelectorAll('.colmenubutton').forEach(function (elem) {
+		Element.removeClassName(elem, 'selected');
+	});
 	switchMenu(menu, 'submenu', func);
+	$('colmenubutton_' + menu).addClassName('selected');
 }
 
 function switchMenu(menu, id, func, fid) {
@@ -37,7 +41,9 @@ function switchMenu(menu, id, func, fid) {
 
 	new Ajax.Updater(id, url, {
 		onComplete: function (transport) {
-			initBuildmenuMouseEvent();
+			if (menu == 1) {
+				initBuildmenuMouseEvent();
+			}
 		},
 		method: 'get'
 	}
@@ -63,7 +69,6 @@ function closeBuildingInfo() {
 }
 
 var oldimg = 0;
-var fieldonm = 0;
 
 function fieldMouseOver(obj, building, fieldtype) {
 	document.body.style.cursor = 'pointer';
@@ -112,9 +117,8 @@ function fieldMouseClick(obj, fieldId, buildingId) {
 }
 
 function fieldAction(fieldId) {
-	fieldonm = 0;
 	elt = 'fieldaction';
-	openPJsWin(elt, 1);
+	openPJsWin(elt);
 	ajax_update(elt, '/colony.php?fid=' + fieldId + '&SHOW_FIELD=1');
 }
 function buildOnField(fieldId) {
@@ -206,6 +210,7 @@ function toggleMaxEmpty(elem, max) {
 }
 
 function initBuildmenuMouseEvent() {
+	var elem = $('buildmenu1');
 	onmousewheel($('buildmenu1'), function (delta) {
 		scrollBuildmenuByMouse(1, delta);
 	});
@@ -214,6 +219,9 @@ function initBuildmenuMouseEvent() {
 	});
 	onmousewheel($('buildmenu3'), function (delta) {
 		scrollBuildmenuByMouse(3, delta);
+	});
+	onmousewheel($('buildmenu4'), function (delta) {
+		scrollBuildmenuByMouse(4, delta);
 	});
 }
 function scrollBuildmenuByMouse(menu, delta) {
@@ -365,13 +373,7 @@ function getCommodityLocations(commodityId) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'database.php?commodityId=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1');
 }
-function maximizeCommodityAmounts() {
-	var list = document.getElementsByClassName('commodityAmount');
-	var n;
-	for (n = 0; n < list.length; ++n) {
-		list[n].value = 'max';
-	}
-}
+
 function calculateScanCost(cx, cy) {
 	var difX = Math.abs(cx - colonyMapX);
 	var difY = Math.abs(cy - colonyMapY);

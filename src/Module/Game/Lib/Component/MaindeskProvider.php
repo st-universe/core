@@ -90,10 +90,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         $userId = $user->getId();
 
         $game->appendNavigationPart(
-            sprintf(
-                'game.php?view=%s',
-                ModuleViewEnum::MAINDESK->value
-            ),
+            ModuleViewEnum::MAINDESK->getPhpPage(),
             _('Maindesk')
         );
 
