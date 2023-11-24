@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\WritePm;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Message\View\Overview\Overview;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -79,7 +79,7 @@ final class WritePm implements ActionControllerInterface
 
         $game->addInformation(_('Die Nachricht wurde abgeschickt'));
 
-        $game->setView(Overview::VIEW_IDENTIFIER);
+        $game->setView(ModuleViewEnum::PM);
     }
 
     public function performSessionCheck(): bool

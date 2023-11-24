@@ -1512,21 +1512,6 @@ parameters:
 			path: src/Module/Message/Lib/PrivateMessageListItem.php
 
 		-
-			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Message/View/Overview/Overview.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Message/View/Overview/Overview.php
-
-		-
-			message: "#^Parameter \\#1 \\$privateMessageFolder of method Stu\\\\Orm\\\\Repository\\\\PrivateMessageRepositoryInterface\\:\\:getAmountByFolder\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface, Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Message/View/Overview/Overview.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\NoteInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Notes/Action/DeleteNotes/DeleteNotes.php

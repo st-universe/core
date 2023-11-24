@@ -1,4 +1,4 @@
-{% from 'html/macros.twig' import useravatar, userinfo, contactModeSwitcher %}
+{% from 'html/macros.twig' import useravatar, userinfo, contactModeSwitcher, translationSwitcher %}
 
 <script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
 <form action="pm.php" method="post" name="pmlist" id="pmlist">
@@ -70,13 +70,7 @@
               <div class="segment">
                 {% set id = sender.getId %}
                 {% if post.displayUserLinks %}
-                {% if post.hasTranslation %}
-                <a onmouseover="cp('translate{{ postId }}','buttons/translate1', 'png')"
-                  onmouseout="cp('translate{{ postId }}','buttons/translate0', 'png')">
-                  <img src="assets/buttons/translate0.png" alt="Übersetzen" style="cursor:pointer; margin-left: 5px;"
-                    onclick="toggleTranslation('message{{ postId }}')" name="translate{{ postId }}" />
-                </a>
-                {% endif %}
+                {{ translationSwitcher(post.hasTranslation, 'message' ~ postId) }}
                 <a href="?WRITE_PM=1&reply={{ postId }}" onmouseover="cp('reply{{ postId }}','buttons/msg2', 'png');"
                   onmouseout="cp('reply{{ postId }}','buttons/msg1', 'png');">
                   <img src="/assets/buttons/msg1.png" name="reply{{ postId }}" title="Antwort verfassen" />

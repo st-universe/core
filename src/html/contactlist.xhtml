@@ -1,7 +1,7 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+		<script src="${THIS/getJavascriptPath}/js/comm.js"></script>
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="pm.php" method="post" name="contactlist" id="contactlist">
 			<input type="hidden" name="SHOW_CONTACTLIST" value="1" />
