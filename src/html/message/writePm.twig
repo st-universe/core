@@ -58,7 +58,7 @@
 							<span>Von:</span>
 							{{ sender.getName|bbcode }} ({{ sender.getId }})
 						</td>
-						{{ translationSwitcher(post.hasTranslation, 'message' ~ postId) }}
+						{{ translationSwitcher(post.hasTranslation, 'message' ~ postId, 'Nachricht übersetzen') }}
 						<td style="width: 120px; text-align: center;">
 							{{ post.getDate|stuDateTime }}
 						</td>

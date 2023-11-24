@@ -1,0 +1,110 @@
+{% if SHOW_ALLIANCE %}
+{% from 'html/macros.twig' import translationSwitcher, userAvatar, pmWindow %}
+<div class="allianceDetail">
+  <div>
+    <h1>{{ ALLIANCE.getName|bbcode }}</h1>
+    <div class="allianceActions">
+      <div>
+        <a href="alliance.php?showlist=1" class="linkbutton">Allianzliste</a>
+        {% if IS_IN_ALLIANCE %}
+        <a href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
+        {% endif %}
+        {% if CAN_MANAGE_FOREIGN_RELATIONS %}
+        <a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
+        {% endif %}
+        {% if CAN_EDIT %}
+        <a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
+        <a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
+        <a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
+        {% endif %}
+        {{ translationSwitcher(ALLIANCE.hasTranslation, 'allianceDescription', 'Allianzbeschreibung übersetzen') }}
+      </div>
+      <div class="allianceActionsJoinLeave">
+        {% if CAN_LEAVE_ALLIANCE %}
+        <a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr={{ SESSIONSTRING }}" class="linkbutton negative">Allianz
+          verlassen</a>
+        {% endif %}
+        {% if CAN_SIGNUP %}
+        <a href="alliance.php?B_SIGNUP_ALLIANCE=1&id={{ ALLIANCE.getId }}&sstr={{ SESSIONSTRING }}"
+          class="linkbutton positive">Bewerben</a>
+        {% endif %}
+      </div>
+    </div>
+    {% if DESCRIPTION %}
+    <div class="allianceDescription translatable-content" id="allianceDescription" tal:content="structure ">
+      {% autoescape false %}
+      {{ DESCRIPTION|nl2br }}
+      {% endautoescape %}</div>
+    {% else %}
+    <div class="allianceDescriptionMissing">Keine Allianz-Beschreibung hinterlegt
+    </div>
+    {% endif %}
+  </div>
+  <div>
+    <div class="allianceHeader">Leitung</div>
+    <div class="allianceLead">
+      {% set founderUser = ALLIANCE.getFounder.getUser %}
+      {% set successor = ALLIANCE.getSuccessor %}
+      {% set diplomatic = ALLIANCE.getDiplomatic %}
+      <div class="allianceMinister alliancePresident">
+        {{ userAvatar(founderUser) }}
+        <div class="namePresident">{{ founderUser.getName|bbcode }}</div>
+        <div class="jobDescription">Präsident</div>
+      </div>
+      {% if successor %}
+      <div class="allianceMinister">
+        {{ userAvatar(successor.getUser) }}
+        <div class="name">{{ successor.getUser.getName|bbcode }}</div>
+        <div class="jobDescription">Vize-Präsident</div>
+      </div>
+      {% endif %}
+      {% if diplomatic %}
+      <div class="allianceMinister">
+        {{ userAvatar(diplomatic.getUser) }}
+        <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data" />
+        <div class="name">{{ diplomatic.getUser.getName|bbcode }}</div>
+        <div class="jobDescription">Außenminister</div>
+      </div>
+      {% endif %}
+    </div>
+    <div class="allianceHeader">Mitglieder</div>
+    <div class="allianceMemberList">
+      {% for data in MEMBERS %}
+      <div class="allianceMember">
+        {{ userAvatar(data.getUser) }}
+        <div class="allianceMemberName">{{ data.getUser.getName|bbcode }}</div>
+        <div class="allianceMemberButtons" id="{{ data.getUserId }}">
+          {{ pmWindow(USER, data.getUser.getId) }}
+          <img src="assets/rassen/{{ data.getUser.getFactionId }}s.png" />
+        </div>
+        {% if IS_IN_ALLIANCE %}
+        <div tal:attributes="class data/getOnlineStateCssClass"> </div>
+        {% else %}
+        <div> </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% if ALLIANCE_RELATIONS %}
+    <div class="allianceRelationList">
+      <div class="allianceHeader">Diplomatische Beziehungen</div>
+      {% for wrapper in ALLIANCE_RELATIONS %}
+      <div class="allianceRelation">
+        <div class="allianceRelationImage"><img src="/assets/alliance/relation_types/{{ wrapper.getImage }}.png" />
+        </div>
+        <div class="allianceRelationOpponentName">{{ wrapper.getDescription|bbcode }}</div>
+        <div class="allianceRelationDate">
+          seit {{ wrapper.getDate|stuDate }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="allianceHeader">Info</div>
+    <div>
+      Gegründet: {{ ALLIANCE.getDate|stuDate }}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% include 'html/alliance/allianceList.twig' %}

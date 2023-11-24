@@ -41,7 +41,7 @@ final class ShowEditPost implements ViewControllerInterface
         }
 
         $game->setTemplateFile('html/editallypost.xhtml');
-        $game->appendNavigationPart(sprintf('alliance.php?SHOW_ALLIANCE=1&id=%d', $alliance->getId()), _('Allianz'));
+        $game->appendNavigationPart(sprintf('alliance.php?id=%d', $alliance->getId()), _('Allianz'));
         $game->appendNavigationPart('alliance.php?SHOW_BOARDS=1', _('Forum'));
         $game->appendNavigationPart(sprintf('alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d', $board->getId(), $topic->getId()), _('Allianz'));
         $game->appendNavigationPart(

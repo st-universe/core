@@ -59,7 +59,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         AllianceInterface $alliance
     ): string {
         return sprintf(
-            '%s/alliance.php?SHOW_ALLIANCE=1&id=%d',
+            '%s/alliance.php?id=%d',
             $this->config->get('game.base_url'),
             $alliance->getId()
         );

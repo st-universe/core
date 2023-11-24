@@ -136,7 +136,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
         static::assertSame(
             sprintf(
-                '%s/alliance.php?SHOW_ALLIANCE=1&id=%d',
+                '%s/alliance.php?id=%d',
                 $base_url,
                 $allianceId
             ),

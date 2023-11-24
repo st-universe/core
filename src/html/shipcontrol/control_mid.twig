@@ -584,7 +584,7 @@ canColonize) %}
 {% from 'html/alliancemacros.twig' import alliance_avatar %}
 {% set alliance = user.getAlliance %}
 {% if alliance %}
-<a href="alliance.php?SHOW_ALLIANCE=1&id={{ alliance.getId }}">
+<a href="alliance.php?id={{ alliance.getId }}">
     <div class="shipTerritoryView">
         {{ alliance_avatar(alliance) }}
     </div>

@@ -6,7 +6,6 @@ namespace Stu\Module\Alliance\View\Diplomatic;
 
 use Mockery\MockInterface;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
-use Stu\Module\Alliance\View\AllianceList\AllianceList;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\AllianceRelationInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -51,7 +50,7 @@ class DiplomaticRelationsTest extends StuTestCase
                     'title' => 'Allianz',
                 ],
                 [
-                    'url' => sprintf('alliance.php?%s=1', AllianceList::VIEW_IDENTIFIER),
+                    'url' => 'alliance.php?showlist=1',
                     'title' => 'Allianzliste',
                 ],
                 [

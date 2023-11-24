@@ -80,10 +80,6 @@ use Stu\Module\Alliance\Lib\AllianceActionManager;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactory;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
-use Stu\Module\Alliance\View\AllianceDetails\AllianceDetails;
-use Stu\Module\Alliance\View\AllianceDetails\AllianceDetailsRequest;
-use Stu\Module\Alliance\View\AllianceDetails\AllianceDetailsRequestInterface;
-use Stu\Module\Alliance\View\AllianceList\AllianceList;
 use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Board\BoardRequest;
@@ -102,7 +98,6 @@ use Stu\Module\Alliance\View\NewPost\NewPostRequestInterface;
 use Stu\Module\Alliance\View\NewTopic\NewTopic;
 use Stu\Module\Alliance\View\NewTopic\NewTopicRequest;
 use Stu\Module\Alliance\View\NewTopic\NewTopicRequestInterface;
-use Stu\Module\Alliance\View\Overview\Overview;
 use Stu\Module\Alliance\View\Relations\Relations;
 use Stu\Module\Alliance\View\ShowEditPost\ShowEditPost;
 use Stu\Module\Alliance\View\ShowMemberRumpInfo\ShowMemberRumpInfo;
@@ -113,6 +108,7 @@ use Stu\Module\Alliance\View\TopicSettings\TopicSettings;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequest;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequestInterface;
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 
 use function DI\autowire;
 
@@ -133,7 +129,6 @@ return [
     DeleteBoardRequestInterface::class => autowire(DeleteBoardRequest::class),
     SetTopicStickyRequestInterface::class => autowire(SetTopicStickyRequest::class),
     UnsetTopicStickyRequestInterface::class => autowire(UnsetTopicStickyRequest::class),
-    AllianceDetailsRequestInterface::class => autowire(AllianceDetailsRequest::class),
     SignupRequestInterface::class => autowire(SignupRequest::class),
     DeclineApplicationRequestInterface::class => autowire(DeclineApplicationRequest::class),
     AcceptApplicationRequestInterface::class => autowire(AcceptApplicationRequest::class),
@@ -184,7 +179,6 @@ return [
     ],
     'ALLIANCE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
-        AllianceList::VIEW_IDENTIFIER => autowire(AllianceList::class),
         Boards::VIEW_IDENTIFIER => autowire(Boards::class),
         NewTopic::VIEW_IDENTIFIER => autowire(NewTopic::class),
         Board::VIEW_IDENTIFIER => autowire(Board::class),
@@ -193,7 +187,6 @@ return [
         ShowEditPost::VIEW_IDENTIFIER => autowire(ShowEditPost::class),
         TopicSettings::VIEW_IDENTIFIER => autowire(TopicSettings::class),
         BoardSettings::VIEW_IDENTIFIER => autowire(BoardSettings::class),
-        AllianceDetails::VIEW_IDENTIFIER => autowire(AllianceDetails::class),
         Applications::VIEW_IDENTIFIER => autowire(Applications::class),
         Management::VIEW_IDENTIFIER => autowire(Management::class),
         Create::VIEW_IDENTIFIER => autowire(Create::class),

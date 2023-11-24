@@ -7,6 +7,7 @@ namespace Stu\Module\Game;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\Action\SwitchInnerContent\SwitchInnerContent;
+use Stu\Module\Game\Lib\Component\AllianceProvider;
 use Stu\Module\Game\Lib\Component\ColonyListProvider;
 use Stu\Module\Game\Lib\Component\CommunicationProvider;
 use Stu\Module\Game\Lib\Component\MaindeskProvider;
@@ -34,6 +35,7 @@ return [
             ModuleViewEnum::PM->value => autowire(MessageProvider::class),
             ModuleViewEnum::RESEARCH->value => autowire(ResearchProvider::class),
             ModuleViewEnum::TRADE->value => autowire(TradeProvider::class),
+            ModuleViewEnum::ALLIANCE->value => autowire(AllianceProvider::class),
         ]
     ),
     'GAME_ACTIONS' => [

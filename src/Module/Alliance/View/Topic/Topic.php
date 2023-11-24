@@ -71,7 +71,7 @@ final class Topic implements ViewControllerInterface
         $game->setPageTitle(_('Allianzforum'));
 
         $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_ALLIANCE=1&id=%d', $allianceId),
+            sprintf('alliance.php?id=%d', $allianceId),
             _('Allianz')
         );
         $game->appendNavigationPart(
