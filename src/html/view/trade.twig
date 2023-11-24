@@ -1,0 +1,157 @@
+{% from 'html/macros.twig' import userProfile, pmWindow %}
+
+<script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
+<div style="width: 200px; float: left;">
+	<table class="tcal">
+		<tr>
+			<th>Aktionen</th>
+		</tr>
+		<tr>
+			<td>
+				<a href="?SHOW_ACCOUNTS=1">Warenkonten</a> ({{ TRADE_LICENSE_COUNT }})
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="?SHOW_BASIC_TRADE=1">Basishandel</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="?SHOW_DEALS=1"><img src="assets/buttons/nagus.png" /> Deals des Großen Nagus</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="?SHOW_LOTTERY=1"><img src="assets/buttons/nagus.png" /> Nagus Lotterie</a>
+			</td>
+		</tr>
+	</table>
+</div>
+<div style="width: 300px; margin-left: 5px; float: left;">
+	<form action="trade.php" method="post" name="tradesearchform" id="tradesearchform">
+		<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+		<table class="tcal">
+			<tr>
+				<th colspan="2">Suche</th>
+			</tr>
+			<tr>
+				<td>Handelsposten:</td>
+				<td>
+					<select name="pid" id="tradepostSelect" style="width:100%;">
+						<option value="0">----------------------</option>
+						{% for data in TRADE_LICENSES %}
+						{% if POST_ID == data.getTradePost.getId %}
+						<option value="{{ data.getTradePost.getId }}" selected="1">
+							{{ data.getTradePost.getName|bbcode2txt }}
+						</option>
+						{% else %}
+						<option value="{{ data.getTradePost.getId }}">
+							{{ data.getTradePost.getName|bbcode2txt }}
+						</option>
+						{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Ware:</td>
+				<td>
+					<select name="cid" id="commoditySelect" style="width:100%;">
+						<option value="0">----------------------</option>
+						{% for data in SELECTABLE_COMMODITIES %}
+						{% if COMMODITY_ID == data.getId %}
+						<option value="{{ data.getId }}" selected="1">
+							{{ data.getName }}
+						</option>
+						{% else %}
+						<option value="{{ data.getId }}">
+							{{ data.getName }}
+						</option>
+						{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div style="float:left;">
+						<input type="submit" class="button" name="B_TRADE_SEARCH_OFFER" value="in Angeboten" />
+						<input type="submit" class="button" name="B_TRADE_SEARCH_BOTH" value="beides" />
+						<input type="submit" class="button" name="B_TRADE_SEARCH_DEMAND" value="in Nachfragen" />
+					</div>
+					<div style="float:right;">
+						<a href="trade.php" onmouseover="cp('tradeSearchReset','buttons/x2');"
+							onmouseout="cp('tradeSearchReset','buttons/x1');">
+							<img src="/assets/buttons/x1.png" title="Auswahl zurücksetzen" name="tradeSearchReset" />
+						</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<br style="clear: both;" />
+<br />
+<table class="tcal">
+	<tr>
+		<th></th>
+		<th>Angebot</th>
+		<th>Nachfrage</th>
+		<th>Verfügbar</th>
+		<th>Handelsposten</th>
+		<th>Siedler</th>
+	</tr>
+	{% if not OFFER_LIST %}
+	<tr <td colspan="6">Keine Angebote vorhanden</td>
+	</tr>
+	{% endif %}
+	{% for offer in OFFER_LIST %}
+	{% set data = offer.getOffer %}
+	{% set offerId = data.getId %}
+	{% set offeredCommodity = data.getOfferedCommodity %}
+	{% set wantedCommodity = data.getWantedCommodity %}
+	{% set handle = getUniqId() %}
+	<tr class="row">
+		<td>
+			{% if offer.isOwnOffer %}
+			<a href="?B_CANCEL_OFFER=1&offerid={{ offerId }}&sstr={{ SESSIONSTRING }}"
+				onmouseover="cp('{{ handle }}','buttons/x2');" onmouseout="cp('{{ handle }}','buttons/x1');">
+				<img src="assets/buttons/x1.png" name="{{ handle }}" title="Angebot löschen" />
+			</a>
+			{% else %}
+			<a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/menu_trade1');"
+				onmouseout="cp('{{ handle }}','buttons/menu_trade0');" onclick="takeTradeOffer({{ offerId }});">
+				<img src="assets/buttons/menu_trade0.png" name="{{ handle }}" title="Angebot annehmen" />
+			</a>
+			{% endif %}
+		</td>
+		<td>
+			<a href="javascript:void(0);" onclick="changeSearchCommodity({{ offeredCommodity.getId }});">
+				<img src="assets/commodities/{{ offeredCommodity.getId }}.png" title="{{ offeredCommodity.getName }}" />
+				{{ data.getOfferedCommodityCount }}
+			</a>
+		</td>
+		<td>
+			<a href="javascript:void(0);" onclick="changeSearchCommodity({{ wantedCommodity.getId }});">
+				<img src="assets/commodities/{{ wantedCommodity.getId }}.png" title="{{ wantedCommodity.getName }}" />
+				{{ data.getWantedCommodityCount }}
+			</a>
+		</td>
+		<td>{{ data.getOfferCount }}</td>
+		<td>
+			{% set handle = 'hdlo' ~ offerId %}
+			{% set id = data.getTradepostId %}
+			{% include 'html/trade/tradepostInfoLink.twig' %}
+			<a href="javascript:void(0);" onclick="changeSearchTradepost({{ data.getTradepostId }});">
+				{{ data.getTradePost.getName|bbcode }}
+			</a>
+		</td>
+		<td>
+			{{ userProfile(data.getUserId) }}
+			{{ pmWindow(USER, data.getUserId) }}
+			{{ data.getUser.getName|bbcode }}
+		</td>
+	</tr>
+	{% endfor %}
+</table>

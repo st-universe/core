@@ -1,4 +1,4 @@
-{% from 'html/macros.twig' import useravatar %}
+{% from 'html/macros.twig' import userAvatar %}
 
 <div class="box">
     <div class="box_title">Profilbesucher</div>
@@ -6,7 +6,7 @@
         {% if RECENT_PROFILE_VISITORS %}
         <div class="recentProfileVisitors">
             {% for data in RECENT_PROFILE_VISITORS %}
-            {{ useravatar(data.getUser) }}
+            {{ userAvatar(data.getUser) }}
             {% endfor %}
         </div>
         {% else %}

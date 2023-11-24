@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntry;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequest;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequestInterface;
@@ -33,6 +34,9 @@ use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOffer;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequest;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequestInterface;
 use Stu\Module\Trade\Action\RenewTradeLicense\RenewTradeLicense;
+use Stu\Module\Trade\Action\SearchOffers\SearchBoth;
+use Stu\Module\Trade\Action\SearchOffers\SearchDemand;
+use Stu\Module\Trade\Action\SearchOffers\SearchOffer;
 use Stu\Module\Trade\Action\TakeOffer\TakeOffer;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequest;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequestInterface;
@@ -43,7 +47,6 @@ use Stu\Module\Trade\Lib\LotteryFacade;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Module\Trade\Lib\TradeLibFactory;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
@@ -66,9 +69,6 @@ use Stu\Module\Trade\View\ShowOfferMenu\ShowOfferMenuRequestInterface;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOffer;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequest;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequestInterface;
-use Stu\Module\Trade\View\ShowSearch\ShowSearchBoth;
-use Stu\Module\Trade\View\ShowSearch\ShowSearchDemand;
-use Stu\Module\Trade\View\ShowSearch\ShowSearchOffer;
 use Stu\Module\Trade\View\ShowShiplist\ShowShiplist;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBox;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBoxRequest;
@@ -126,11 +126,13 @@ return [
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
         TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class),
         BuyLotteryTickets::ACTION_IDENTIFIER => autowire(BuyLotteryTickets::class),
-        RenewTradeLicense::ACTION_IDENTIFIER => autowire(RenewTradeLicense::class)
+        RenewTradeLicense::ACTION_IDENTIFIER => autowire(RenewTradeLicense::class),
+        SearchDemand::ACTION_IDENTIFIER => autowire(SearchDemand::class),
+        SearchOffer::ACTION_IDENTIFIER => autowire(SearchOffer::class),
+        SearchBoth::ACTION_IDENTIFIER => autowire(SearchBoth::class),
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
-        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowAccounts::VIEW_IDENTIFIER => autowire(ShowAccounts::class),
         ShowLicenseInfo::VIEW_IDENTIFIER => autowire(ShowLicenseInfo::class),
         ShowLicenseList::VIEW_IDENTIFIER => autowire(ShowLicenseList::class),
@@ -143,9 +145,6 @@ return [
         ShowOfferCommodity::VIEW_IDENTIFIER => autowire(ShowOfferCommodity::class),
         ShowShoutBox::VIEW_IDENTIFIER => autowire(ShowShoutBox::class),
         ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),
-        ShowSearchDemand::VIEW_IDENTIFIER => autowire(ShowSearchDemand::class),
-        ShowSearchOffer::VIEW_IDENTIFIER => autowire(ShowSearchOffer::class),
-        ShowSearchBoth::VIEW_IDENTIFIER => autowire(ShowSearchBoth::class),
         ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class),
         ShowDeals::VIEW_IDENTIFIER => autowire(ShowDeals::class),
         ShowShiplist::VIEW_IDENTIFIER => autowire(ShowShiplist::class),

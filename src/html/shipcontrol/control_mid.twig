@@ -580,7 +580,7 @@ canColonize) %}
 
 
 {% macro influenceArea(user) %}
-{% from 'html/macros.twig' import useravatar %}
+{% from 'html/macros.twig' import userAvatar %}
 {% from 'html/alliancemacros.twig' import alliance_avatar %}
 {% set alliance = user.getAlliance %}
 {% if alliance %}
@@ -596,7 +596,7 @@ canColonize) %}
 </a>
 {% else %}
 <div class="userTerritory">
-    {{ useravatar(user) }}
+    {{ userAvatar(user) }}
     <a href="userprofile.php?uid={{ user.getId }}">
         {% if ship.getCurrentMapField.getAdministratedRegion %}
         <span>Territorium des Siedlers {{ user.getName|bbcode }}</span>

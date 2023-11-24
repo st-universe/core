@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TakeOffer;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -11,7 +12,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
@@ -168,7 +168,7 @@ final class TakeOffer implements ActionControllerInterface
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 
-        $game->setView(Overview::VIEW_IDENTIFIER, ['FILTER_ACTIVE' => true]);
+        $game->setView(ModuleViewEnum::TRADE, ['FILTER_ACTIVE' => true]);
 
         $this->privateMessageSender->send(
             $userId,

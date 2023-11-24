@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CancelOffer;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
@@ -39,7 +39,7 @@ final class CancelOffer implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $viewIdentifier = $this->cancelOfferRequest->getView() ?? Overview::VIEW_IDENTIFIER;
+        $viewIdentifier = $this->cancelOfferRequest->getView() ?? ModuleViewEnum::TRADE;
         $game->setView($viewIdentifier, ['FILTER_ACTIVE' => true]);
 
         $userId = $game->getUser()->getId();

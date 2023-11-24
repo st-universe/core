@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\ShowSearch;
+namespace Stu\Module\Trade\Action\SearchOffers;
 
 use request;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
 use Stu\Orm\Entity\TradeOfferInterface;
@@ -18,9 +19,9 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
-final class ShowSearchBoth implements ViewControllerInterface
+final class SearchDemand implements ActionControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'B_TRADE_SEARCH_BOTH';
+    public const ACTION_IDENTIFIER = 'B_TRADE_SEARCH_DEMAND';
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
@@ -50,15 +51,11 @@ final class ShowSearchBoth implements ViewControllerInterface
         $commodityId = request::postIntFatal('cid');
         $postId = request::postIntFatal('pid') > 0 ? request::postIntFatal('pid') : null;
 
-        $game->appendNavigationPart(
-            'trade.php',
-            _('Handel')
-        );
-        $game->setPageTitle(_('/ Handel'));
-        $game->setTemplateFile('html/trade.xhtml');
+        $game->setView(ModuleViewEnum::TRADE, ['FILTER_ACTIVE' => true]);
 
         $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
         $game->setTemplateVar('COMMODITY_ID', $commodityId);
+
 
         $this->session->deleteSessionData('trade_filter_cid');
         $this->session->deleteSessionData('trade_filter_pid');
@@ -66,7 +63,7 @@ final class ShowSearchBoth implements ViewControllerInterface
 
         $this->session->storeSessionData('trade_filter_cid', $commodityId, true);
         $this->session->storeSessionData('trade_filter_pid', $postId, true);
-        $this->session->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_BOTH, true);
+        $this->session->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_DEMAND, true);
 
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
@@ -79,9 +76,14 @@ final class ShowSearchBoth implements ViewControllerInterface
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(
-                fn(TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
-                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, TradeEnum::FILTER_COMMODITY_IN_BOTH)
+                fn (TradeOfferInterface $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
+                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, TradeEnum::FILTER_COMMODITY_IN_DEMAND)
             )
         );
+    }
+
+    public function performSessionCheck(): bool
+    {
+        return true;
     }
 }
