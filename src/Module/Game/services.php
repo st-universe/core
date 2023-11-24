@@ -10,6 +10,7 @@ use Stu\Module\Game\Action\SwitchInnerContent\SwitchInnerContent;
 use Stu\Module\Game\Lib\Component\ColonyListProvider;
 use Stu\Module\Game\Lib\Component\CommunicationProvider;
 use Stu\Module\Game\Lib\Component\MaindeskProvider;
+use Stu\Module\Game\Lib\Component\MessageProvider;
 use Stu\Module\Game\Lib\Component\ShipListProvider;
 use Stu\Module\Game\Lib\ViewComponentLoader;
 use Stu\Module\Game\Lib\ViewComponentLoaderInterface;
@@ -26,6 +27,7 @@ return [
             ModuleViewEnum::COLONY->value => autowire(ColonyListProvider::class),
             ModuleViewEnum::SHIP->value => autowire(ShipListProvider::class),
             ModuleViewEnum::COMMUNICATION->value => autowire(CommunicationProvider::class),
+            ModuleViewEnum::PM->value => autowire(MessageProvider::class),
         ]
     ),
     'GAME_ACTIONS' => [

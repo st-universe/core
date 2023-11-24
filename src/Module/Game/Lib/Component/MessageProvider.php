@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Message\View\Overview;
+namespace Stu\Module\Game\Lib\Component;
 
 use request;
-use Stu\Module\Control\GameController;
+use RuntimeException;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
@@ -19,13 +19,9 @@ use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
-final class Overview implements ViewControllerInterface
+final class MessageProvider implements ViewComponentProviderInterface
 {
-    public const VIEW_IDENTIFIER = GameController::DEFAULT_VIEW;
-
     private const PMLIMITER = 6;
-
-    private OverviewRequestInterface $showPmCategoryRequest;
 
     private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
@@ -38,14 +34,12 @@ final class Overview implements ViewControllerInterface
     private PrivateMessageUiFactoryInterface $privateMessageUiFactory;
 
     public function __construct(
-        OverviewRequestInterface $showPmCategoryRequest,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         IgnoreListRepositoryInterface $ignoreListRepository,
         PrivateMessageUiFactoryInterface $privateMessageUiFactory,
         ContactRepositoryInterface $contactRepository
     ) {
-        $this->showPmCategoryRequest = $showPmCategoryRequest;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->ignoreListRepository = $ignoreListRepository;
@@ -53,12 +47,12 @@ final class Overview implements ViewControllerInterface
         $this->privateMessageUiFactory = $privateMessageUiFactory;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
         $categoryId = request::indInt('pmcat');
 
-        $mark = $this->showPmCategoryRequest->getListOffset();
+        $mark = request::indInt('mark');
 
         if ($categoryId === 0) {
             $category = $this->privateMessageFolderRepository->getByUserAndSpecial(
@@ -73,6 +67,10 @@ final class Overview implements ViewControllerInterface
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
                 );
             }
+        }
+
+        if ($category === null) {
+            throw new RuntimeException('this should not happen');
         }
 
         if ($mark % static::PMLIMITER != 0 || $mark < 0) {
@@ -101,18 +99,16 @@ final class Overview implements ViewControllerInterface
             $pmNavigation[] = ["page" => ">>", "mark" => $maxpage * static::PMLIMITER - static::PMLIMITER, "cssclass" => "pages"];
         }
 
-        $game->setTemplateFile('html/pmcategory.xhtml');
         $game->appendNavigationPart(
-            sprintf('pm.php?%s=1&pmcat=%d', static::VIEW_IDENTIFIER, $category->getId()),
+            sprintf('%s?pmcat=%d', ModuleViewEnum::PM->getPhpPage(), $category->getId()),
             sprintf(_('Ordner: %s'), $category->getDescription())
         );
-        $game->setPageTitle(sprintf(_('Ordner: %s'), $category->getDescription()));
 
         $game->setTemplateVar('CATEGORY', $category);
         $game->setTemplateVar(
             'PM_LIST',
             array_map(
-                fn(PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
+                fn (PrivateMessageInterface $message): PrivateMessageListItem => new PrivateMessageListItem(
                     $this->privateMessageRepository,
                     $this->contactRepository,
                     $this->ignoreListRepository,
@@ -132,7 +128,7 @@ final class Overview implements ViewControllerInterface
             'PM_CATEGORIES',
             array_map(
                 fn (PrivateMessageFolderInterface $folder): PrivateMessageFolderItem =>
-                    $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
+                $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
                 $this->privateMessageFolderRepository->getOrderedByUser($userId)
             )
         );

@@ -1,0 +1,10 @@
+<select name="movecat_{{ post.getId }}">
+    {% for cat in PM_CATEGORIES %}
+    {% if cat.isDropable %}
+    <option value="{{ cat.getId }}">
+        {{ cat.getDescription }}
+    </option>
+    {% endif %}
+    {% endfor %}
+</select>
+<input type="button" class="button" onclick="movePm({{ post.getId }});" value="=>" title="Verschieben" />

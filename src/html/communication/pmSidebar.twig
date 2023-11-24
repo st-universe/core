@@ -1,0 +1,71 @@
+<table class="tcal">
+    <tr>
+        <th>Aktionen</th>
+    </tr>
+    <tr>
+        <td>
+            <span style="color: #cecece">&gt;</span> <a href="?WRITE_PM=1">Nachricht verfassen</a>
+            {% if markcat %}
+            <div>
+                <br />
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="markAllPMs();">Alle
+                    selektieren</a><br />
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="unMarkAllPMs();">Alle
+                    deselektieren</a>
+                <br /><br />
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                    onclick="deleteAllMarkedPMs();">Alle
+                    selektierten löschen</a>
+                <br /><br />
+                <span style="color: #cecece">&gt;</span> <a
+                    href="?B_DELETE_ALL_PMS=1&pmcat={{ CATEGORY.getId }}&sstr={{ SESSIONSTRING }}">Ordner leeren</a>
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+<br />
+<div class="box">
+    <div class="box_title">Kontakte</div>
+    <div class="box_body">
+        <ul>
+            <li>
+                <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1">Alle Kontakte</a>
+            </li>
+            <li>
+                <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1">Ignorierte Siedler</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<br />
+<div class="box">
+    <div class="box_title">Notizen</div>
+    <div class="box_body">
+        <ul>
+            <li>
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel öffnen"
+                    onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
+                    <img src="/assets/buttons/notiz1.png" name="headerNotiz" />
+                    Notizzettel öffnen</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<br />
+<table class="tcal">
+    <tr>
+        <th>Ordner</th>
+    </tr>
+    <tr>
+        <td>
+            <ul id="catlist" class="pm_categories">
+                {% include 'html/communication/pmCategoryList.twig' %}
+            </ul>
+            {% include 'html/communication/pmCategorySortingJs.twig' %}
+            <br style="clear: both;" /><br />
+            <span style="color: #cecece;">&gt;</span> <a href="javascript:void(0);" onclick="openNewCatWindow();">
+                Neuer Ordner</a>
+        </td>
+    </tr>
+</table>

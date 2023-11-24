@@ -1,0 +1,11 @@
+<table>
+    <tr>
+        {% for item in PM_NAVIGATION %}
+        <td>
+            <a href="?pmcat={{ CATEGORY.getId }}&mark={{ item.mark }}" class="{{ item.cssclass }}">
+                {{ item.page }}
+            </a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
