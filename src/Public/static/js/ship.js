@@ -361,13 +361,6 @@ function renameCrew(crew_id) {
 	}
 	ajax_update('rn_crew_' + crew_id, 'ship.php?B_RENAME_CREW=1&id=' + shipid + '&crewid=' + crew_id + '&' + Form.Element.serialize('rn_crew_' + crew_id + '_value'));
 }
-function maximizeCommodityAmounts() {
-	var list = document.getElementsByClassName('commodityAmount');
-	var n;
-	for (n = 0; n < list.length; ++n) {
-		list[n].value = 'max';
-	}
-}
 function adjustCellHeight(image) {
 	var cell = image.parentNode.parentNode;
 	var height = image.offsetHeight;

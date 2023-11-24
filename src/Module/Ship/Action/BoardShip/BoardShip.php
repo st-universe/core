@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BoardShip;
 
 use request;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
@@ -26,7 +27,6 @@ use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -146,7 +146,7 @@ final class BoardShip implements ActionControllerInterface
             $game->addInformation(_('Aktion nicht möglich, der Spieler ist NPC!'));
             return;
         }
-        
+
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
@@ -227,7 +227,7 @@ final class BoardShip implements ActionControllerInterface
         );
 
         if ($ship->isDestroyed()) {
-            $game->setView(Overview::VIEW_IDENTIFIER);
+            $game->setView(ModuleViewEnum::SHIP);
             return;
         }
 

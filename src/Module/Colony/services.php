@@ -98,7 +98,6 @@ use Stu\Module\Colony\Lib\PlanetColonization;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetriever;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
-use Stu\Module\Colony\View\Overview\Overview;
 use Stu\Module\Colony\View\RefreshColonyEps\RefreshColonyEps;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequest;
@@ -177,7 +176,7 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Module\Control\GameController;
-
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\PlanetGenerator\PlanetGenerator;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
@@ -286,6 +285,7 @@ return [
         RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class)
     ],
     'COLONY_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowColony::VIEW_IDENTIFIER => autowire(ShowColony::class),
         ShowMainscreen::VIEW_IDENTIFIER => autowire(ShowMainscreen::class),
         ShowBuildMenu::VIEW_IDENTIFIER => autowire(ShowBuildMenu::class),

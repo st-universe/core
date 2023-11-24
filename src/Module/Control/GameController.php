@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
@@ -182,11 +183,15 @@ final class GameController implements GameControllerInterface
     /**
      * @param array<string, mixed> $viewContext
      */
-    public function setView(string $view, array $viewContext = []): void
+    public function setView(ModuleViewEnum|string $view, array $viewContext = []): void
     {
-        request::setVar($view, 1);
+        if ($view instanceof ModuleViewEnum) {
+            $this->viewContext = ['VIEW' => $view];
+        } else {
+            request::setVar($view, 1);
+        }
 
-        $this->viewContext = $viewContext;
+        $this->viewContext = array_merge($this->viewContext, $viewContext);
     }
 
     /**
@@ -436,8 +441,6 @@ final class GameController implements GameControllerInterface
 
     public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void
     {
-        // $this->loggerUtil->init('JS', LoggerEnum::LEVEL_ERROR);
-
         switch ($when) {
             case GameEnum::JS_EXECUTION_BEFORE_RENDER:
                 $this->execjs[$when][] = $value;
@@ -555,14 +558,16 @@ final class GameController implements GameControllerInterface
     }
 
     public function main(
-        string $module,
+        ModuleViewEnum $view,
         array $actions,
         array $views,
         bool $session_check = true,
         bool $admin_check = false
     ): void {
+        $this->viewContext = ['VIEW' => $view];
+
         $gameRequest = $this->getGameRequest();
-        $gameRequest->setModule($module);
+        $gameRequest->setModule($view->value);
 
         try {
             $this->session->createSession($session_check);

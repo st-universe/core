@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 
@@ -22,7 +23,7 @@ Init::run(function (ContainerInterface $dic): void {
      * @todo Remove merging of ship and station actions
      */
     $dic->get(GameControllerInterface::class)->main(
-        'game',
+        ModuleViewEnum::GAME,
         $dic->get('GAME_ACTIONS'),
         $dic->get('GAME_VIEWS')
     );

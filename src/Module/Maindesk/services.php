@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk;
 
+use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Maindesk\Action\ColonizationShip\ColonizationShip;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColony;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequest;
@@ -25,6 +27,7 @@ return [
         SmsVerification::ACTION_IDENTIFIER => autowire(SmsVerification::class)
     ],
     'MAINDESK_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowColonyList::VIEW_IDENTIFIER => autowire(ShowColonyList::class)
     ],
 ];

@@ -12,6 +12,8 @@ use Stu\Module\Game\Lib\ViewComponentLoaderInterface;
 
 final class Overview implements ViewControllerInterface
 {
+    public const VIEW_IDENTIFIER = 'OVERVIEW';
+
     private ViewComponentLoaderInterface $viewComponentLoader;
 
     public function __construct(

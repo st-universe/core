@@ -10,11 +10,34 @@
 </div>
 {% endmacro %}
 
-{% macro navigation_item(title, view, iconUrl) %}
+{% macro userprofile(id) %}
+{% set handle = getUniqId() %}
+<a href="/userprofile.php?uid={{ id }}" onmouseover="cp('{{ handle }}','buttons/info2', 'png');"
+    onmouseout="cp('{{ handle }}','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="{{ handle }}"
+        title="Siedlerprofil ansehen" /></a>
+{% endmacro %}
+
+{% macro userinfo(user) %}
+{{ user.getName|bbcode }} ({{ user.getId }})
+<img src="/assets/buttons/rpg{{ user.getRpgBehavior.value }}.png" title="{{ user.getRpgBehavior.getDescription }}" />
+{% if user.isShowOnlineState %}
+{% if user.isOnline %}
+<img src="/assets/buttons/user_online.png" title="User ist online" />
+{% else %}
+<img src="/assets/buttons/user_offline.png" title="User ist offline" />
+{% endif %}
+{% endif %}
+{% endmacro %}
+
+{% macro navigation_item(title, viewValue, iconUrl) %}
 {% set linkid = 'nav_item_' ~ iconUrl %}
+{% set view = getView(viewValue) %}
+{% set viewTitle = view.getTitle %}
+{% set viewUrl = view.getPhpPage %}
 <div class="navigation_item border_box" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
     onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
-    <a class="navitem_link" href="javascript:void(0)" onclick="switchInnerContent('{{ view }}');cClick();">
+    <a class="navitem_link" href="javascript:void(0)"
+        onclick="switchInnerContent('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}');cClick();">
         <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
             title="{{ title }}" />
         <div class="navitem_title">{{ title }}</div>
@@ -80,4 +103,14 @@
 </a>
 {% endif %}
 {% endfor %}
+{% endmacro %}
+
+{% macro pmwindow(id) %}
+{% set handle = getUniqId() %}
+{% if USER.getId != id %}
+<a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/msg2', 'png');"
+    onmouseout="cp('{{ handle }}','buttons/msg1', 'png');"
+    onclick="closePopup();openPmWindow({{ USER.getId }}, {{ id }}, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="{{ handle }}" title="Nachricht senden" /></a>
+{% endif %}
 {% endmacro %}

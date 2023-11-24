@@ -17,13 +17,13 @@
 	{% set colonyId = colony.getId %}
 	<tr class="row">
 		<td style="text-align: center;">
-			<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}">
+			<a href="?SHOW_COLONY=1&id={{ colonyId }}">
 				{% include 'html/colony/component/colonyImageBase.twig' %}
 			</a>
 		</td>
 		<td style="vertical-align: middle;">
 			{% set system = colony.getSystem %}
-			<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}" style="font-size: 120%">
+			<a href="?SHOW_COLONY=1&id={{ colonyId }}" style="font-size: 120%">
 				{% if colony.isBlocked %}
 				<img src="assets/buttons/block2.png" title="Kolonie wird blockiert" style="height:20px;" /><span>
 				</span>
@@ -92,7 +92,7 @@
 				{% set colony = data.getHost %}
 				<tr>
 					<td style="width: 45px; text-align: center;vertical-align: middle">
-						<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}">
+						<a href="?SHOW_COLONY=1&id={{ colonyId }}">
 							{% include 'html/colony/component/colonyImageBase.twig' %}
 						</a>
 					</td>
@@ -189,7 +189,7 @@
 				</td>
 				<td style="vertical-align: middle;">
 					{% set colony = mod.getColony %}
-					<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}">
+					<a href="?SHOW_COLONY=1&id={{ colonyId }}">
 						{% include 'html/colony/component/colonyImageBase.twig' %}
 					</a>
 				</td>

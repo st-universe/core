@@ -2,36 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Communication\View\Overview;
+namespace Stu\Module\Game\Lib\Component;
 
 use request;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
-final class Overview implements ViewControllerInterface
+final class CommunicationProvider implements ViewComponentProviderInterface
 {
-    private OverviewRequestInterface $overviewRequest;
-
     private KnPostRepositoryInterface $knPostRepository;
 
     private KnFactoryInterface $knFactory;
 
     public function __construct(
-        OverviewRequestInterface $overviewRequest,
         KnPostRepositoryInterface $knPostRepository,
         KnFactoryInterface $knFactory
     ) {
-        $this->overviewRequest = $overviewRequest;
         $this->knPostRepository = $knPostRepository;
         $this->knFactory = $knFactory;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userKnMark = $user->getKNMark();
@@ -43,12 +40,12 @@ final class Overview implements ViewControllerInterface
         $lim = floor($mark / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
         $knStart = $mark % GameEnum::KN_PER_SITE == 0 ? $lim - GameEnum::KN_PER_SITE : $lim;
 
-        $mark = $this->overviewRequest->getKnOffset();
+        $mark = request::getInt('mark');
         if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
             $mark = 0;
         }
 
-        if ($this->overviewRequest->startAtUserMark() === true) {
+        if (request::getInt('user_mark')) {
             $mark = (int) floor($newKnPostCount / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
         }
 
@@ -74,9 +71,10 @@ final class Overview implements ViewControllerInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
 
-        $game->setPageTitle(_('Kommunikationsnetzwerk'));
-        $game->setTemplateFile('html/comm.xhtml');
-        $game->appendNavigationPart('comm.php', _('KommNet'));
+        $game->appendNavigationPart(
+            ModuleViewEnum::COMMUNICATION->getPhpPage(),
+            _('KommNet')
+        );
 
         $markedPostId = request::getInt('markedPost');
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\MoveShip;
 
 use Mockery\MockInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -15,7 +16,6 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
@@ -607,7 +607,7 @@ class DirectedMovementTest extends StuTestCase
             ->with(ShowShip::VIEW_IDENTIFIER)
             ->once();
         $game->shouldReceive('setView')
-            ->with(Overview::VIEW_IDENTIFIER)
+            ->with(ModuleViewEnum::SHIP)
             ->once();
 
         $subject->handle($game);

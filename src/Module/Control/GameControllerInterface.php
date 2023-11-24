@@ -3,6 +3,7 @@
 namespace Stu\Module\Control;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -12,7 +13,7 @@ use Stu\Orm\Entity\UserInterface;
 
 interface GameControllerInterface
 {
-    public function setView(string $view, array $viewContext = []): void;
+    public function setView(ModuleViewEnum|string $view, array $viewContext = []): void;
 
     public function getViewContext(): array;
 
@@ -110,7 +111,7 @@ interface GameControllerInterface
      * @param array<string, ViewControllerInterface> $views
      */
     public function main(
-        string $module,
+        ModuleViewEnum $view,
         array $actions,
         array $views,
         bool $session_check = true,

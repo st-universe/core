@@ -45,9 +45,6 @@ use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
 use Stu\Module\Communication\Lib\NewKnPostNotificator;
-use Stu\Module\Communication\View\Overview\Overview;
-use Stu\Module\Communication\View\Overview\OverviewRequest;
-use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
 use Stu\Module\Communication\View\ShowCreatePlot\ShowCreatePlot;
 use Stu\Module\Communication\View\ShowEditKn\ShowEditKn;
 use Stu\Module\Communication\View\ShowEditKn\ShowEditKnRequest;
@@ -74,13 +71,13 @@ use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequestInterface;
 use Stu\Module\Communication\View\ShowUserPlotList\ShowUserPlotList;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 
 use function DI\autowire;
 use function DI\get;
 
 return [
     RateKnPostRequestInterface::class => autowire(RateKnPostRequest::class),
-    OverviewRequestInterface::class => autowire(OverviewRequest::class),
     SetKnMarkRequestInterface::class => autowire(SetKnMarkRequest::class),
     ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
     ShowKnPlotRequestInterface::class => autowire(ShowKnPlotRequest::class),

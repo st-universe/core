@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Ship\Action\ActivateAstroLaboratory\ActivateAstroLaboratory;
 use Stu\Module\Ship\Action\ActivateCloak\ActivateCloak;
 use Stu\Module\Ship\Action\ActivateLss\ActivateLss;
@@ -531,6 +532,7 @@ return [
             )
     ],
     'SHIP_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),

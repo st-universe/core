@@ -1,0 +1,141 @@
+{% from 'html/macros.twig' import useravatar, userinfo, pmwindow, userprofile %}
+{% if not KN_POSTINGS %}
+<div class="divhead">Meldung</div>
+<div class="divbody">Keine Beiträge vorhanden</div>
+{% else %}
+{% include 'html/communication/'~ navigationMacro ~'.twig' %}
+<br />
+{% for post in KN_POSTINGS %}
+{% set postUser = post.getUser %}
+{% set postId = post.getId %}
+<div style="overflow: hidden; text-overflow: ellipsis">
+    <div id="kn_post_{{ postId }}" class="{{ post.getDivClass }}">
+        <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
+            {% if post.isUserDeleted %}
+            {{ post.getUserName|bbcode }}
+            {% else %}
+            {% if postUser %}
+            {{ userinfo(postUser) }}
+            {% endif %}
+            {% endif %}
+        </div>
+        <div class="box_body" style="margin: 0; padding: 0;">
+            <div class="knGrid">
+                <div class="knGridText">
+                    <div style="padding: 10px;">
+                        {% if post.getPlot %}
+                        <span class="knh1">{{ post.getPlot.getTitle }}</span>
+                        <span>(<a href="?SHOW_PLOT=1&plotid={{ post.getPlot.getId }}" target="_blank">
+                                Zum Plot</a>)</span>
+                        {% if post.getTitle %}
+                        <br />
+                        {% endif %}
+                        {% endif %}
+                        {% if post.getTitle %}
+                        <span class="knh2">{{ post.getTitle }}</span>
+                        {% endif %}
+                        <br />
+                        <br />
+                        <span class="translatable-content">
+                            {% autoescape false %}
+                            {{ post.getText|nl2br }}
+                            {% endautoescape %}
+                        </span>
+                    </div>
+                </div>
+                <div class="knGridUser">
+                    <div class="segment">
+                        {% if post.isNewerThanMark %}
+                        <div class="negative">
+                            {{ post.getDate|datetime }}
+                        </div>
+                        {% else %}
+                        <div style="text-align: center; width: 100%">
+                            {{ post.getDate|datetime }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="segment">
+                        {% if postUser.isNpc %}
+                        <div>NPC</div>
+                        {% endif %}
+                        <div class="knUserAvatar">
+                            {{ useravatar(postUser) }}
+                        </div>
+                        <span title="Beitrag-ID">{{ post.getId }}</span>
+                        <br />
+                    </div>
+                    {% if post.displayContactLinks %}
+                    <div class="segment">
+                        <img src="/assets/rassen/{{ postUser.getFactionId }}s.png" />
+                        {{ pmwindow(postUser.getId) }}
+                        {{ userprofile(postUser.getId) }}
+                    </div>
+                    {% endif %}
+                    {% if KN_OFFSET %}
+                    <div class="segment">
+                        {% if post.hasTranslation %}
+                        <a onmouseover="cp('translate{{ postId }}','buttons/translate1', 'png')"
+                            onmouseout="cp('translate{{ postId }}','buttons/translate0', 'png')">
+                            <img src="/assets/buttons/translate0.png" alt="Toggle Translations"
+                                onclick="toggleAll(this.closest('.box_body'))" style="cursor: pointer;"
+                                title="Alles übersetzen" name="translate{{ postId }}" /></a>
+                        {% endif %}
+                        <a href="?mark={{ KN_OFFSET }}&markid={{ postId }}&B_SET_KNMARK=1"
+                            onmouseover="cp('mark{{ postId }}','buttons/lese2', 'png')"
+                            onmouseout="cp('mark{{ postId }}','buttons/lese1', 'png')">
+                            <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark{{ postId }}" />
+                        </a>
+                        {% if post.isEditAble %}
+                        <a href="?EDIT_KN=1&knid={{ postId }}"
+                            onmouseover="cp('edit{{ postId }}','buttons/knedit2', 'png')"
+                            onmouseout="cp('edit{{ postId }}','buttons/knedit1', 'png')">
+                            <img src="/assets/buttons/knedit1.png" title="Beitrag editieren" name="edit{{ postId }}" />
+                        </a>
+                        <a href="?B_DEL_KN=1&knid={{ postId }}&sstr={{ SESSIONSTRING }}"
+                            onmouseover="cp('x{{ postId }}','buttons/x2', 'png')"
+                            onmouseout="cp('x{{ postId }}','buttons/x1', 'png')">
+                            <img src="/assets/buttons/x1.png" title="Beitrag löschen" name="x{{ postId }}" />
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="knGridRating">
+                    {% if post.getEditDate %}
+                    <div class="segment">
+                        <span class="knedit">Bearbeitet: {{ post.getEditDate|datetime }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="segment" id="kn_rating_{{ postId }}">
+                        {% set userCanRate = post.userCanRate %}
+                        {% if userCanRate %}
+                        <div class="knRatingNegative" onclick="rateKnPost({{ postId }},-1)">
+                            -</div>
+                        {% endif %}
+                        {% if post.getRatingBar %}
+                        <div style="display: inline-block">
+                            {% autoescape false %}
+                            {{ post.getRatingBar }}
+                            {% endautoescape %}
+                        </div>
+                        {% endif %}
+                        {% if userCanRate %}
+                        <div class="knRatingPositive" onclick="rateKnPost({{ postId }},1)">
+                            +</div>
+                        {% endif %}
+                    </div>
+                    <div class="segment">
+                        <a href="javascript:void(0);" onclick="showKnComments({{ postId }});">{{ post.getCommentCount }}
+                            <span>Kommentare</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+{% endfor %}
+<br />
+{% include 'html/communication/'~ navigationMacro ~'.twig' %}
+{% endif %}

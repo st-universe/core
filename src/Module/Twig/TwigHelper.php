@@ -7,6 +7,7 @@ namespace Stu\Module\Twig;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -158,5 +159,15 @@ class TwigHelper
             return ColonyMenuEnum::getMenuClass($currentMenu, $value);
         });
         $this->environment->addFunction($getColonyMenuClassFunction);
+
+        $getViewFunction = new TwigFunction('getView', function (string $value): ModuleViewEnum {
+            return ModuleViewEnum::from($value);
+        });
+        $this->environment->addFunction($getViewFunction);
+
+        $getUniqIdFunction = new TwigFunction('getUniqId', function (): string {
+            return uniqid();
+        });
+        $this->environment->addFunction($getUniqIdFunction);
     }
 }
