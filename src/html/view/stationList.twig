@@ -1,8 +1,4 @@
-{% extends "html/sitedefaults.twig" %}
-
-{% block body %}
 {% from 'html/shiplistmacros.twig' import shiplist_header, shiplist_body %}
-{% include 'html/breadcrumb.twig' %}
 {% if BASES %}
 <script src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
 <table class="tcal">
@@ -24,4 +20,3 @@
     </tr>
 </table>
 {% endif %}
-{% endblock %}

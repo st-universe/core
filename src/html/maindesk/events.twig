@@ -7,7 +7,7 @@
             <div style="width: 80%" class="iblock">
                 {{ item.getText|bbcode }}
             </div>
-            <div style="width: 19%" class="iblock">{{ item.getDate|datetime }}</div>
+            <div style="width: 19%" class="iblock">{{ item.getDate|stuDateTime }}</div>
         </div>
         {% endfor %}
         {% else %}

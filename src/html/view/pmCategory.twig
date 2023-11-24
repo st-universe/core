@@ -46,10 +46,10 @@
             <div class="knGridUser">
               <div class="segment">
                 {% if not post.getNew %}
-                {{ post.getDate|datetime }}
+                {{ post.getDate|stuDateTime }}
                 {% endif %}
                 {% if post.isMarkableAsNew %}
-                <span class="negative">{{ post.getDate|datetime }}</span>
+                <span class="negative">{{ post.getDate|stuDateTime }}</span>
                 {% endif %}
               </div>
               {% if post.isMarkableAsReceipt %}

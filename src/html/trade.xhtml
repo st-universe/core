@@ -1,7 +1,7 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+		<script src="${THIS/getJavascriptPath}/js/trade.js"></script>
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<div style="width: 200px; float: left;">
 			<table class="tcal">

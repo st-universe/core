@@ -47,6 +47,10 @@ class ViewComponentLoaderTest extends StuTestCase
             ->with('CURRENT_VIEW', ModuleViewEnum::MAINDESK)
             ->once();
 
+        $this->game->shouldReceive('appendNavigationPart')
+            ->with(ModuleViewEnum::MAINDESK->getPhpPage(), ModuleViewEnum::MAINDESK->getTitle())
+            ->once();
+
         $this->subject->registerViewComponents(ModuleViewEnum::MAINDESK, $this->game);
     }
 }

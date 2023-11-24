@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Research\View\Overview;
+namespace Stu\Module\Game\Lib\Component;
 
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 
-final class Overview implements ViewControllerInterface
+final class ResearchProvider implements ViewComponentProviderInterface
 {
     private TechlistRetrieverInterface $techlistRetriever;
 
@@ -18,16 +18,9 @@ final class Overview implements ViewControllerInterface
         $this->techlistRetriever = $techlistRetriever;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-
-        $game->appendNavigationPart(
-            'research.php',
-            _('Forschung')
-        );
-        $game->setPageTitle(_('/ Forschung'));
-        $game->setTemplateFile('html/research.xhtml');
 
         $game->setTemplateVar(
             'RESEARCH_LIST',

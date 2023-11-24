@@ -19,7 +19,7 @@
                     von {{ ship.getUser.getName|bbcode }}
                 </td>
                 <td>{{ wrapper.get.getText }}</td>
-                <td>{{ wrapper.get.getDate|datetime }}</td>
+                <td>{{ wrapper.get.getDate|stuDateTime }}</td>
                 {% else %}
                 <td>
                     {% if ship.getSectorId %}
@@ -28,7 +28,7 @@
                 </td>
                 <td></td>
                 <td>{{ wrapper.get.getText }}</td>
-                <td>{{ wrapper.get.getDate|datetime }}</td>
+                <td>{{ wrapper.get.getDate|stuDateTime }}</td>
                 {% endif %}
             </tr>
             {% endfor %}

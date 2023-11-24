@@ -122,7 +122,7 @@ class TwigHelper
         });
         $this->environment->addFilter($isPositiveFilter);
 
-        $datetimeFilter = new TwigFilter('datetime', function ($value): string {
+        $stuDateTimeFilter = new TwigFilter('stuDateTime', function ($value): string {
             return sprintf(
                 '%s%s %s',
                 date('d.m.', $value),
@@ -130,7 +130,16 @@ class TwigHelper
                 date("H:i", $value)
             );
         });
-        $this->environment->addFilter($datetimeFilter);
+        $this->environment->addFilter($stuDateTimeFilter);
+
+        $stuDateFilter = new TwigFilter('stuDate', function ($value): string {
+            return sprintf(
+                '%s%s',
+                date('d.m.', $value),
+                (int)date("Y", $value) + StuTime::STU_YEARS_IN_FUTURE_OFFSET
+            );
+        });
+        $this->environment->addFilter($stuDateFilter);
 
         $nl2brFilter = new TwigFilter('nl2br', function (string $value): string {
             return nl2br($value);

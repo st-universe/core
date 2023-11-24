@@ -43,7 +43,7 @@
                         {% endautoescape %}
                     </div>
                     <div style="display: table-cell; vertical-align: middle; padding-left: 5px;">
-                        Fertigstellung: {{ FIELD.getBuildtime|datetime }}
+                        Fertigstellung: {{ FIELD.getBuildtime|stuDateTime }}
                     </div>
                 </div>
                 {% if FIELD.getBuilding.isActivateable %}
@@ -285,7 +285,7 @@
                     </tr>
                     <tr>
                         <td colspan="3" style="text-align: center;">
-                            Fertigstellung: {{ TERRAFORMING_STATE.getFinishDate|datetime }}
+                            Fertigstellung: {{ TERRAFORMING_STATE.getFinishDate|stuDateTime }}
                         </td>
                     </tr>
                 </table>

@@ -1,0 +1,55 @@
+<script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
+<div class="divhead">Verfügbare Forschungen</div>
+<div class="researchList">
+  {% for data in RESEARCH_LIST %}
+  {% set researchId = data.getId %}
+  <div class="researchListItem">
+    <div class="researchListItemImage">
+      <a href="javascript:void(0);" onclick="showResearchDetails({{ researchId }});">
+        <img src="/assets/research/{{ researchId }}.png" />
+      </a>
+    </div>
+    <div>
+      <div class="researchListItemName">
+        <a href="javascript:void(0);" onclick="showResearchDetails({{ researchId }});">{{ data.getName }}</a>
+      </div>
+      <div class="researchListItemDescription">{{ data.getDescription }}</div>
+      <div class="researchListItemNeeds">
+        <img src="/assets/commodities/{{ data.getCommodityId }}.png" title="{{ data.getCommodity.getName }}" />
+        {{ data.getPoints }} {{ data.getCommodity.getName }}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% if RESEARCHED_LIST %}
+<div>
+  <br />
+  <div class="divhead">Aktive/Abgeschlossene Forschungen</div>
+  <div class="finishedResearchList">
+    {% for data in RESEARCHED_LIST %}
+    {% set research = data.getResearch %}
+    {% set researchId = research.getId %}
+    <div class="finishedResearchListItem">
+      <div class="finishedResearchListItemImage">
+        <a href="javascript:void(0);" onclick="showResearchDetails({{ researchId }});">
+          <img src="/assets/research/{{ researchId }}.png" style="width: 40px" />
+        </a>
+      </div>
+      <div>
+        <div class="finishedResearchListItemName">
+          <a href="javascript:void(0);" onclick="showResearchDetails({{ researchId }});">{{ research.getName }}</a>
+        </div>
+        <div>
+          {% if RESEARCH.hasExcludes %}
+          <span style="width: 180px;">Erforscht am {{ data.getFinished|stuDate }}</span>
+          {% else %}
+          <span style="width: 180px;">Wird erforscht</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

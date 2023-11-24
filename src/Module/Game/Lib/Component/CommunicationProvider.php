@@ -8,7 +8,6 @@ use request;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -70,11 +69,6 @@ final class CommunicationProvider implements ViewComponentProviderInterface
             $knNavigation[] = ["page" => ">", "mark" => ($mark + GameEnum::KN_PER_SITE), "cssclass" => "pages"];
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
-
-        $game->appendNavigationPart(
-            ModuleViewEnum::COMMUNICATION->getPhpPage(),
-            _('KommNet')
-        );
 
         $markedPostId = request::getInt('markedPost');
 

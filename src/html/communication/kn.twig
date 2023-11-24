@@ -47,11 +47,11 @@
                     <div class="segment">
                         {% if post.isNewerThanMark %}
                         <div class="negative">
-                            {{ post.getDate|datetime }}
+                            {{ post.getDate|stuDateTime }}
                         </div>
                         {% else %}
                         <div style="text-align: center; width: 100%">
-                            {{ post.getDate|datetime }}
+                            {{ post.getDate|stuDateTime }}
                         </div>
                         {% endif %}
                     </div>
@@ -104,7 +104,7 @@
                 <div class="knGridRating">
                     {% if post.getEditDate %}
                     <div class="segment">
-                        <span class="knedit">Bearbeitet: {{ post.getEditDate|datetime }}</span>
+                        <span class="knedit">Bearbeitet: {{ post.getEditDate|stuDateTime }}</span>
                     </div>
                     {% endif %}
                     <div class="segment" id="kn_rating_{{ postId }}">

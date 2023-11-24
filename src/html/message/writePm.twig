@@ -60,7 +60,7 @@
 						</td>
 						{{ translationSwitcher(post.hasTranslation, 'message' ~ postId) }}
 						<td style="width: 120px; text-align: center;">
-							{{ post.getDate|datetime }}
+							{{ post.getDate|stuDateTime }}
 						</td>
 					</tr>
 				</table>
