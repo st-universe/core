@@ -1,7 +1,7 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+		<script src="${THIS/getJavascriptPath}/js/comm.js"></script>
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="comm.php" method="post">
 			<input type="hidden" name="SHOW_EDIT_PLOT" value="1" />
@@ -11,14 +11,16 @@
 					<th>Titel</th>
 				</tr>
 				<tr>
-					<td><input type="text" name="title" style="width: 100%;" tal:attributes="value structure PLOT/getTitle" /></td>
+					<td><input type="text" name="title" style="width: 100%;"
+							tal:attributes="value structure PLOT/getTitle" /></td>
 				</tr>
 				<tr>
 					<th>Beschreibung</th>
 				</tr>
 				<tr>
 					<td>
-						<textarea name="description" style="width: 100%; height: 300px;" tal:content="structure PLOT/getDescription"></textarea>
+						<textarea name="description" style="width: 100%; height: 300px;"
+							tal:content="structure PLOT/getDescription"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -30,4 +32,5 @@
 		</form>
 	</metal:macro>
 </metal:macro>
+
 </html>

@@ -1,0 +1,89 @@
+{% extends "html/sitedefaults.twig" %}
+{% from 'html/macros.twig' import userinfo, translationSwitcher %}
+
+{% block body %}
+<script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
+{% include 'html/breadcrumb.twig' %}
+<form action="pm.php" method="post" name="newpm">
+	<input type="hidden" name="WRITE_PM" value="1" />
+	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+	<div style="float: left; width: 75%;">
+		<table class="tcal">
+			<tr>
+				<th>Empfänger</th>
+			</tr>
+			<tr>
+				{% if REPLY %}
+				<td>
+					<input type="hidden" name="recipient" value="{{ REPLY.getSender.getId }}" />
+					{{ userinfo(REPLY.getSender) }}
+				</td>
+				{% else %}
+				<td>
+					Siedler-ID <input type="text" name="recipient" style="width: 50px;" value="{{ RECIPIENT_ID }}" />
+					<select name="recid" onchange="updateRecipient();">
+						<option value="0">------------------</option>
+						{% for contact in CONTACT_LIST %}
+						<option value="{{ contact.getRecipient.getId }}">{{ contact.getRecipient.getName|bbcode2txt }}
+						</option>
+						{% endfor %}
+					</select>
+				</td>
+				{% endif %}
+			</tr>
+			<tr>
+				<th>Text</th>
+			</tr>
+			<tr>
+				<td><textarea name="text" style="width: 100%; height: 300px;"></textarea></td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" name="B_WRITE_PM" value="Absenden" />
+				</td>
+			</tr>
+		</table>
+		{% if CORRESPONDENCE %}
+		<div>
+			<br />
+			<div class="divhead">Korrespondenz</div>
+			{% for post in CORRESPONDENCE %}
+			{% set postId = post.getId %}
+			{% set sender = post.getSender %}
+			<div>
+				<table class="tcal">
+					<tr>
+						<td>
+							<img src="assets/rassen/{{ sender.getFactionId }}s.png" />
+							<span>Von:</span>
+							{{ sender.getName|bbcode }} ({{ sender.getId }})
+						</td>
+						{{ translationSwitcher(post.hasTranslation, 'message' ~ postId) }}
+						<td style="width: 120px; text-align: center;">
+							{{ post.getDate|datetime }}
+						</td>
+					</tr>
+				</table>
+				<table class="tcal">
+					<tr>
+						<td colspan="2" style="vertical-align: top;">
+							<span id="message{{ postId }}" class="translatable-content">
+								{% autoescape false %}
+								{{ post.getText|bbcode|nl2br }}
+								{% endautoescape %}
+							</span>
+						</td>
+					</tr>
+				</table>
+				<br />
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+	<div style="float: left; width: 24%; margin-left: 1%">
+		{% set markcat = false %}
+		{% include 'html/communication/pmSidebar.twig' %}
+	</div>
+</form>
+{% endblock %}

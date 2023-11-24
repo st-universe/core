@@ -1,7 +1,7 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+		<script src="${THIS/getJavascriptPath}/js/comm.js"></script>
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="pm.php" method="post" name="contactlist" id="contactlist">
 			<input type="hidden" name="SHOW_IGNORELIST" value="1" />
@@ -14,10 +14,12 @@
 					</tr>
 					<tr tal:repeat="contact IGNORE_LIST">
 						<td style="width: 20px; text-align: center;">
-							<input type="checkbox" name="deleted[]" value="runtime" tal:attributes="value contact/getId" />
+							<input type="checkbox" name="deleted[]" value="runtime"
+								tal:attributes="value contact/getId" />
 						</td>
 						<td>
-							<span tal:replace="structure bbcode:contact/getRecipient/getName">USER</span> (<span tal:replace="contact/getRecipient/getId">ID</span>)
+							<span tal:replace="structure bbcode:contact/getRecipient/getName">USER</span> (<span
+								tal:replace="contact/getRecipient/getId">ID</span>)
 						</td>
 					</tr>
 				</table>
@@ -29,7 +31,8 @@
 						</tr>
 						<tr tal:repeat="contact REMOTE_IGNORES">
 							<td>
-								<span tal:replace="structure bbcode:contact/getUser/getName">USER</span> (<span tal:replace="contact/getUser/getId">ID</span>)
+								<span tal:replace="structure bbcode:contact/getUser/getName">USER</span> (<span
+									tal:replace="contact/getUser/getId">ID</span>)
 							</td>
 						</tr>
 					</table>
@@ -54,13 +57,18 @@
 					</tr>
 					<tr>
 						<td>
-							<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="markAllContacts();">Alle selektieren</a>
+							<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+								onclick="markAllContacts();">Alle selektieren</a>
 							<br />
-							<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="unMarkAllContacts();">Alle deselektieren</a>
+							<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+								onclick="unMarkAllContacts();">Alle deselektieren</a>
 							<br /><br />
-							<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="deleteMarkedIgnores();">Alle selektierten löschen</a>
+							<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+								onclick="deleteMarkedIgnores();">Alle selektierten löschen</a>
 							<br /><br />
-							<span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1&B_DELETE_ALL_IGNORES=1&sstr=${THIS/getSessionString}">Alle löschen</a>
+							<span style="color: #cecece">&gt;</span> <a
+								href="?SHOW_IGNORELIST=1&B_DELETE_ALL_IGNORES=1&sstr=${THIS/getSessionString}">Alle
+								löschen</a>
 						</td>
 					</tr>
 				</table>
@@ -68,4 +76,5 @@
 		</form>
 	</metal:macro>
 </metal:macro>
+
 </html>

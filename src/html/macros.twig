@@ -127,3 +127,13 @@
 {% endif %}
 {% endif %}
 {% endmacro %}
+
+{% macro translationSwitcher(hasTranslation, id) %}
+{% if hasTranslation %}
+<a onmouseover="cp('translate{{ id }}','buttons/translate1', 'png')"
+    onmouseout="cp('translate{{ id }}','buttons/translate0', 'png')">
+    <img src="assets/buttons/translate0.png" alt="Übersetzen" style="cursor:pointer; margin-left: 5px;"
+        onclick="toggleTranslation('{{ postId }}')" name="translate{{ id }}" />
+</a>
+{% endif %}
+{% endmacro %}
