@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\Scrapping;
 
 use request;
 use RuntimeException;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,7 +14,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Module\Station\View\Overview\Overview;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
@@ -87,7 +87,7 @@ final class Scrapping implements ActionControllerInterface
         }
 
         if ($station->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION) {
-            $game->setView(Overview::VIEW_IDENTIFIER);
+            $game->setView(ModuleViewEnum::STATION);
             $this->shipRemover->remove($station);
             $game->addInformation(_('Konstrukt wurde entfernt'));
             return;

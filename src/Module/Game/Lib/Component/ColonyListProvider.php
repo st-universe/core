@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace  Stu\Module\Game\Lib\Component;
 
-use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -46,11 +45,6 @@ final class ColonyListProvider implements ViewComponentProviderInterface
         $userId = $game->getUser()->getId();
 
         $colonyList = $game->getUser()->getColonies()->toArray();
-
-        $game->appendNavigationPart(
-            ModuleViewEnum::COLONY->getPhpPage(),
-            _('Kolonien')
-        );
 
         $game->setTemplateVar(
             'COLONY_LIST',

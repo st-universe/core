@@ -1,7 +1,7 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/singlewindow">
 	<metal:macro metal:fill-slot="content">
-		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+		<script src="${THIS/getJavascriptPath}/js/trade.js"></script>
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="notes.php" method="post" id="note_form">
 			<input type="hidden" name="delnotes" id="delnotes" value="" />
@@ -49,7 +49,7 @@
 </metal:macro>
 <metal:macro metal:define-macro="note" metal:use-macro="html/sitemacros.xhtml/singlewindow">
 	<metal:macro metal:fill-slot="content">
-		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+		<script src="${THIS/getJavascriptPath}/js/trade.js"></script>
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="notes.php" method="post">
 			<input type="hidden" name="SHOW_NOTE" value="1" />

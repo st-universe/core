@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Lib\Component;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -46,11 +45,6 @@ final class ShipListProvider implements ViewComponentProviderInterface
         foreach ($fleets as $fleet) {
             $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleet->getId()) ? 'display: none' : '');
         }
-
-        $game->appendNavigationPart(
-            ModuleViewEnum::SHIP->getPhpPage(),
-            _('Schiffe')
-        );
 
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
         $game->setTemplateVar('SHIPS_AVAILABLE', $fleets !== [] || $ships !== []);

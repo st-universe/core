@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Station\Action\ActivateConstructionHub\ActivateConstructionHub;
 use Stu\Module\Station\Action\AddDockPrivilege\AddDockPrivilege;
@@ -24,7 +25,6 @@ use Stu\Module\Station\Action\ToggleBatteryReload\ToggleBatteryReload;
 use Stu\Module\Station\Action\UndockStationShip\UndockStationShip;
 use Stu\Module\Station\Lib\StationUiFactory;
 use Stu\Module\Station\Lib\StationUiFactoryInterface;
-use Stu\Module\Station\View\Overview\Overview;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Station\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
 use Stu\Module\Station\View\ShowScrapping\ShowScrapping;
@@ -69,7 +69,6 @@ return [
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
-        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
         ShowStationCosts::VIEW_IDENTIFIER => autowire(ShowStationCosts::class),
         ShowSensorScan::VIEW_IDENTIFIER => autowire(ShowSensorScan::class),

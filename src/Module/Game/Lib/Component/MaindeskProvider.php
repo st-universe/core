@@ -9,7 +9,6 @@ use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
@@ -88,11 +87,6 @@ final class MaindeskProvider implements ViewComponentProviderInterface
     {
         $user = $game->getUser();
         $userId = $user->getId();
-
-        $game->appendNavigationPart(
-            ModuleViewEnum::MAINDESK->getPhpPage(),
-            _('Maindesk')
-        );
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',

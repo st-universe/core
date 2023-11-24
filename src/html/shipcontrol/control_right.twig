@@ -74,7 +74,7 @@
             Transwarpantrieb
             {% if cooldown %}
             <span><br />
-                Gesperrt bis {{ cooldown|datetime }}</span>
+                Gesperrt bis {{ cooldown|stuDateTime }}</span>
             {% endif %}
         </td>
         <td>
@@ -125,7 +125,7 @@
         </td>
         {% else %}
         <td style="width: 70%;">
-            Gesperrt bis {{ eps.getBatteryCooldown|datetime }}
+            Gesperrt bis {{ eps.getBatteryCooldown|stuDateTime }}
         </td>
         {% endif %}
         <td style="text-align: right; width: 30%;">

@@ -1,7 +1,7 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
     <metal:macro metal:fill-slot="body">
-        <metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+        <script src="${THIS/getJavascriptPath}/js/trade.js"></script>
         <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
         <div tal:condition="not:HAS_LICENSE" class="divbody" style="width: 70%; border-style: none!important">
             <img style="float:right" src="assets/buttons/rom.png" />

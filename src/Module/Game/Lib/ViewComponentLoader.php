@@ -30,6 +30,11 @@ final class ViewComponentLoader implements ViewComponentLoaderInterface
             throw new RuntimeException(sprintf('viewComponentProvider with follwing id does not exist: %s', $view->value));
         }
 
+        $game->appendNavigationPart(
+            $view->getPhpPage(),
+            $view->getTitle(),
+        );
+
         $componentProvider = $this->viewComponentProviders[$view->value];
         $componentProvider->setTemplateVariables($game);
 

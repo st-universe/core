@@ -101,7 +101,7 @@
 					</td>
 					<td style="vertical-align: middle">
 						{{ data.getBuilding.getName }} - Fertigstellung:
-						{{ data.getBuildtime|datetime }}
+						{{ data.getBuildtime|stuDateTime }}
 					</td>
 				</tr>
 				{% endfor %}
@@ -132,7 +132,7 @@
 					</td>
 					<td style="vertical-align: middle">
 						{{ terraforming.getDescription }} -
-						Fertigstellung: {{ data.getFinishDate|datetime }}
+						Fertigstellung: {{ data.getFinishDate|stuDateTime }}
 					</td>
 				</tr>
 				{% endfor %}

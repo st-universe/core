@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Research\Action\CancelResearch\CancelResearch;
 use Stu\Module\Research\Action\StartResearch\StartResearch;
 use Stu\Module\Research\Action\StartResearch\StartResearchRequest;
 use Stu\Module\Research\Action\StartResearch\StartResearchRequestInterface;
-use Stu\Module\Research\View\Overview\Overview;
 use Stu\Module\Research\View\ShowResearch\ShowResearch;
 use Stu\Module\Research\View\ShowResearch\ShowResearchRequest;
 use Stu\Module\Research\View\ShowResearch\ShowResearchRequestInterface;
