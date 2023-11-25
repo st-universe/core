@@ -1,8 +1,11 @@
-{% embed "html/colony/menu/container.twig" %}
+{% embed "html/colony/menu/formContainer.twig" %}
 
 {% block containment %}
 <table class="use" style="width: 600px;">
 
+    <input type="hidden" name="id" value="{{ HOST.getId }}" />
+    <input type="hidden" name="hosttype" value="{{ HOST.getHostType.value }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <input type="hidden" name="fid" value="{{ FIELD.getId }}" />
 
     {% set fieldId = FIELD.getId %}
