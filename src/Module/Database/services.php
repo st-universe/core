@@ -24,7 +24,6 @@ use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\LatinumRanking\LatinumRanking;
-use Stu\Module\Database\View\Overview\Overview;
 use Stu\Module\Database\View\ResearchRanking\ResearchRanking;
 use Stu\Module\Database\View\RpgRanking\RpgRanking;
 use Stu\Module\Database\View\SatisfiedWorkerRanking\SatisfiedWorkerRanking;
@@ -40,6 +39,7 @@ use Stu\Module\Database\View\TradePostActivity\TradePostActivity;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\UserList\UserListRequest;
 use Stu\Module\Database\View\UserList\UserListRequestInterface;
+use Stu\Module\Game\View\Overview\Overview;
 
 use function DI\autowire;
 
