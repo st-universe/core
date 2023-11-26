@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\History\HistoryTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\HistoryRepository")
@@ -43,10 +44,10 @@ class History implements HistoryInterface
     private int $date = 0;
 
     /**
-     * @Column(type="smallint")
+     * @Column(type="smallint", length=1, enumType=HistoryTypeEnum::class)
      *
      */
-    private int $type = 0;
+    private HistoryTypeEnum $type = HistoryTypeEnum::OTHER;
 
     /**
      * @Column(type="integer")
@@ -83,12 +84,12 @@ class History implements HistoryInterface
         return $this;
     }
 
-    public function getType(): int
+    public function getType(): HistoryTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(int $type): HistoryInterface
+    public function setType(HistoryTypeEnum $type): HistoryInterface
     {
         $this->type = $type;
 

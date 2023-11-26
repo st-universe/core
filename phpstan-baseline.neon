@@ -1392,21 +1392,6 @@ parameters:
 			path: src/Module/Database/View/UserList/UserList.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\Overview\\:\\:\\$possibleTypes type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/History/View/Overview/Overview.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequest\\:\\:getTypeId\\(\\) has parameter \\$possibleTypeIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/History/View/Overview/OverviewRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequestInterface\\:\\:getTypeId\\(\\) has parameter \\$possibleTypeIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/History/View/Overview/OverviewRequestInterface.php
-
-		-
 			message: "#^Parameter \\#1 \\$data of method Stu\\\\Module\\\\Control\\\\StuHashInterface\\:\\:hash\\(\\) expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Module/Maindesk/Action/SmsVerification/SmsVerification.php

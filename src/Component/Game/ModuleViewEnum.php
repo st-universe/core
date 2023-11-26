@@ -69,7 +69,7 @@ enum ModuleViewEnum: string
             self::TRADE => 'html/view/trade.twig',
             self::ALLIANCE => 'html/view/alliance.twig',
             self::DATABASE => 'todo',
-            self::HISTORY => 'todo',
+            self::HISTORY => 'html/view/history.twig',
             self::MAP => 'todo',
             self::NOTES => 'todo',
             self::OPTIONS => 'todo',

@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\HistoryInterface;
 
@@ -24,7 +25,7 @@ interface HistoryRepositoryInterface extends ObjectRepository
      *
      * @return array<HistoryInterface>
      */
-    public function getByTypeAndSearch(int $typeId, int $limit, $search): array;
+    public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array;
 
     public function getAmountByType(int $typeId): int;
 

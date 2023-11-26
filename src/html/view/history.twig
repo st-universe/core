@@ -1,0 +1,49 @@
+<form method="post" action="history.php">
+	<input type="hidden" name="htype" value="{{ HISTORY_TYPE.value }}" />
+	<table class="use">
+		<tr>
+			<th colspan="{{HISTORY_TYPE_COUNT }}">Typ</th>
+			<th>Anzahl</th>
+			<th>Suchbegriff</th>
+			<th></th>
+		</tr>
+		<tr>
+			{% for data in HISTORY_TYPES %}
+			{% set type = data.type %}
+			<td style="width: 150px; vertical-align: middle; text-align: center;" class="{{ data.class }}">
+				<a href="?htype={{ type.value }}&hcount={{ HISTORY_COUNT }}" class="historybutton">
+					{{ type.getName }} ({{ data.count }})
+				</a>
+			</td>
+			{% endfor %}
+			<td>
+				<input type="text" size="3" name="hcount" value="{{ HISTORY_COUNT }}" />
+			</td>
+			<td>
+				<input type="text" size="10" name="hsearch" value="{{ HISTORY_SEARCH }}" />
+			</td>
+			<td>
+				<input type="submit" class="button" value="Aktualisieren" />
+			</td>
+		</tr>
+	</table>
+	<br />
+	<table class="tcal">
+		<tr>
+			<th>Eintrag</th>
+			<th>Datum</th>
+		</tr>
+		{% if HISTORY %}
+		{% for entry in HISTORY %}
+		<tr class="row">
+			<td>{{ entry.getText|bbcode }}/td>
+			<td>{{ entry.getDate|stuDateTime }}</td>
+		</tr>
+		{% endfor %}
+		{% else %}
+		<tr>
+			<td colspan="2">Keine Einträge vorhanden</td>
+		</tr>
+		{% endif %}
+	</table>
+</form>

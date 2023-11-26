@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\History\HistoryTypeEnum;
+
 interface HistoryInterface
 {
     public function getId(): int;
@@ -14,9 +16,9 @@ interface HistoryInterface
 
     public function setDate(int $date): HistoryInterface;
 
-    public function getType(): int;
+    public function getType(): HistoryTypeEnum;
 
-    public function setType(int $type): HistoryInterface;
+    public function setType(HistoryTypeEnum $type): HistoryInterface;
 
     public function getUserId(): int;
 
