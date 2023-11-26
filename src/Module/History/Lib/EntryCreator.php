@@ -22,39 +22,39 @@ final class EntryCreator implements EntryCreatorInterface
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_SHIP, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::SHIP, $text, $userId);
     }
 
     public function addStationEntry(
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_STATION, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::STATION, $text, $userId);
     }
 
     public function addColonyEntry(
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_COLONY, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::COLONY, $text, $userId);
     }
 
     public function addAllianceEntry(
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_ALLIANCE, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::ALLIANCE, $text, $userId);
     }
 
     public function addOtherEntry(
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_OTHER, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::OTHER, $text, $userId);
     }
 
     private function addEntry(
-        int $typeId,
+        HistoryTypeEnum $type,
         string $text,
         int $userId
     ): void {
@@ -62,7 +62,7 @@ final class EntryCreator implements EntryCreatorInterface
         $entry->setText($text);
         $entry->setUserId($userId);
         $entry->setDate(time());
-        $entry->setType($typeId);
+        $entry->setType($type);
 
         $this->historyRepository->save($entry);
     }

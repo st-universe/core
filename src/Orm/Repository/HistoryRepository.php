@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\HistoryInterface;
 
@@ -22,7 +23,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         );
     }
 
-    public function getByTypeAndSearch(int $typeId, int $limit, $search): array
+    public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -40,9 +41,9 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
                 )
             )->setParameters(
                 $search ? [
-                    'typeId' => $typeId,
+                    'typeId' => $type->value,
                     'search' => sprintf('%%%s%%', $search)
-                ] : ['typeId' => $typeId]
+                ] : ['typeId' => $type->value]
             )
             ->setMaxResults($limit)
             ->getResult();
