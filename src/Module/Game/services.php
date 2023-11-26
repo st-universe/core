@@ -10,6 +10,7 @@ use Stu\Module\Game\Action\SwitchInnerContent\SwitchInnerContent;
 use Stu\Module\Game\Lib\Component\AllianceProvider;
 use Stu\Module\Game\Lib\Component\ColonyListProvider;
 use Stu\Module\Game\Lib\Component\CommunicationProvider;
+use Stu\Module\Game\Lib\Component\DatabaseProvider;
 use Stu\Module\Game\Lib\Component\HistoryProvider;
 use Stu\Module\Game\Lib\Component\MaindeskProvider;
 use Stu\Module\Game\Lib\Component\MessageProvider;
@@ -37,6 +38,7 @@ return [
             ModuleViewEnum::RESEARCH->value => autowire(ResearchProvider::class),
             ModuleViewEnum::TRADE->value => autowire(TradeProvider::class),
             ModuleViewEnum::ALLIANCE->value => autowire(AllianceProvider::class),
+            ModuleViewEnum::DATABASE->value => autowire(DatabaseProvider::class),
             ModuleViewEnum::HISTORY->value => autowire(HistoryProvider::class),
         ]
     ),

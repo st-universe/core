@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\View\Overview;
+namespace Stu\Module\Game\Lib\Component;
 
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
-final class Overview implements ViewControllerInterface
+final class DatabaseProvider implements ViewComponentProviderInterface
 {
     private DatabaseCategoryRepositoryInterface $databaseCategoryRepository;
 
@@ -19,15 +18,8 @@ final class Overview implements ViewControllerInterface
         $this->databaseCategoryRepository = $databaseCategoryRepository;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
-        $game->appendNavigationPart(
-            'database.php',
-            _('Datenbank')
-        );
-        $game->setPageTitle(_('/ Datenbank'));
-        $game->setTemplateFile('html/database.xhtml');
-
         $game->setTemplateVar(
             'RUMP_LIST',
             $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP)

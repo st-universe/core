@@ -1,0 +1,7 @@
+{% macro categoryEntries(list) %}
+{% for data in list %}
+<div>
+    <a href="?SHOW_CATEGORY=1&cat={{ data.getId }}">{{ data.getDescription }}</a>
+</div>
+{% endfor %}
+{% endmacro %}
