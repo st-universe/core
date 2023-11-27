@@ -737,7 +737,12 @@ class Colony implements ColonyInterface
 
     public function getSectorString(): string
     {
-        return $this->getStarsystemMap()->getSectorString();
+        $systemMap = $this->getStarsystemMap();
+        if ($systemMap === null) {
+            return '';
+        }
+
+        return $systemMap->getSectorString();
     }
 
     public function getDepositMinings(): Collection

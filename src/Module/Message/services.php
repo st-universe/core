@@ -67,7 +67,6 @@ use Stu\Module\Message\View\ShowEditPmCategory\ShowEditCategoryRequestInterface;
 use Stu\Module\Message\View\ShowEditPmCategory\ShowEditPmCategory;
 use Stu\Module\Message\View\ShowIgnore\ShowIgnore;
 use Stu\Module\Message\View\ShowIgnoreList\ShowIgnoreList;
-use Stu\Module\Message\View\ShowNewPm\ShowNewPm;
 use Stu\Module\Message\View\ShowNewPmCategory\ShowNewPmCategory;
 use Stu\Module\Message\View\ShowPmCategoryList\ShowPmCategoryList;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePm;
@@ -117,7 +116,6 @@ return [
     ],
     'MESSAGE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
-        ShowNewPm::VIEW_IDENTIFIER => autowire(ShowNewPm::class),
         ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
         ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),
         ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),

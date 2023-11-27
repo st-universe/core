@@ -7,6 +7,7 @@ namespace Stu\Module\Control;
 use Stu\Module\Control\Render\Fragments\ColonyFragment;
 use Stu\Module\Control\Render\Fragments\MessageFolderFragment;
 use Stu\Module\Control\Render\Fragments\ResearchFragment;
+use Stu\Module\Control\Render\Fragments\UserFragment;
 use Stu\Module\Control\Render\GameTalRenderer;
 use Stu\Module\Control\Render\GameTalRendererInterface;
 use Stu\Module\Control\Render\GameTwigRenderer;
@@ -24,11 +25,9 @@ return [
         autowire(ResearchFragment::class),
         autowire(MessageFolderFragment::class),
         autowire(ColonyFragment::class),
+        autowire(UserFragment::class),
     ],
-    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class)->constructorParameter(
-        'renderFragments',
-        get('renderFragments')
-    ),
+    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
     GameTalRendererInterface::class => autowire(GameTalRenderer::class)
         ->constructorParameter(
             'renderFragments',

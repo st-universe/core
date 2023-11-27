@@ -7,7 +7,7 @@ namespace Stu\Module\Control\Render;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
+use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -20,18 +20,14 @@ final class GameTwigRenderer implements GameTwigRendererInterface
 {
     private ConfigInterface $config;
 
-    /** @var array<RenderFragmentInterface> */
-    private array $renderFragments;
+    private ComponentLoaderInterface $componentLoader;
 
-    /**
-     * @param array<RenderFragmentInterface> $renderFragments
-     */
     public function __construct(
         ConfigInterface $config,
-        array $renderFragments
+        ComponentLoaderInterface $componentLoader
     ) {
         $this->config = $config;
-        $this->renderFragments = $renderFragments;
+        $this->componentLoader = $componentLoader;
     }
 
     public function render(
@@ -40,6 +36,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         TwigPageInterface $twigPage
     ): string {
 
+        $this->componentLoader->loadComponentUpdates($game);
+        $this->componentLoader->loadRegisteredComponents($twigPage, $game);
         $this->setGameVariables($twigPage, $game);
         $this->setUserVariables($user, $twigPage);
 
@@ -47,13 +45,6 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));
         $twigPage->setVar('FORUM', $this->config->get('board.base_url'));
         $twigPage->setVar('CHAT', $this->config->get('discord.url'));
-
-        // render fragments are user related, so render them only if a user is available
-        if ($user !== null) {
-            foreach ($this->renderFragments as $renderFragment) {
-                $renderFragment->render($user, $twigPage);
-            }
-        }
 
         return $twigPage->render();
     }
@@ -81,11 +72,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         } else {
             $twigPage->setVar('USER', new UserContainer(
                 $user->getId(),
-                $user->getAvatar(),
-                $user->getName(),
-                $user->getFactionId(),
                 $user->getCss(),
-                $user->getPrestige(),
                 $user->hasStationsNavigation(),
                 $user->getDeals()
             ));
