@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Prestige\Lib;
 
+use Stu\Module\Game\Lib\Component\ComponentEnum;
+use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
@@ -15,12 +17,16 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private ComponentLoaderInterface $componentLoader;
+
     public function __construct(
         PrestigeLogRepositoryInterface $prestigeLogRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ComponentLoaderInterface $componentLoader
     ) {
         $this->prestigeLogRepository = $prestigeLogRepository;
         $this->userRepository = $userRepository;
+        $this->componentLoader = $componentLoader;
     }
 
     public function createLog(int $amount, string $description, UserInterface $user, int $date): void
@@ -54,5 +60,7 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
         //update user prestige
         $user->setPrestige($user->getPrestige() + $prestigeLog->getAmount());
         $this->userRepository->save($user);
+
+        $this->componentLoader->addComponentUpdate(ComponentEnum::USER_NAVLET);
     }
 }

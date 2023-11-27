@@ -1547,11 +1547,6 @@ parameters:
 			path: src/Module/Notes/View/ShowNote/ShowNote.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\UserInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/View/Overview/Overview.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Research\\\\TechlistRetriever\\:\\:loadDependencies\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Research/TechlistRetriever.php
@@ -2305,11 +2300,6 @@ parameters:
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:getDefaultTorpedoTypeId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
 
 		-
 			message: "#^Cannot call method getSx\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"

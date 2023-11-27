@@ -5,25 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render\Fragments;
 
 use Doctrine\Common\Collections\Collection;
-use Mockery\MockInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuTestCase;
 
 class ColonyFragmentTest extends StuTestCase
 {
-    /** @var ResearColonyRepositoryInterfacechedRepositoryInterface&MockInterface  */
-    private MockInterface $colonyRepository;
-
     private ColonyFragment $subject;
 
     protected function setUp(): void
     {
-        $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
 
-        $this->subject = new ColonyFragment($this->colonyRepository);
+        $this->subject = new ColonyFragment();
     }
 
     public function testRenderRendersSystemUserWithoutColonies(): void
@@ -53,13 +47,13 @@ class ColonyFragmentTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(666);
-        $this->colonyRepository->shouldReceive('getColonyListForRenderFragment')
-            ->with($user)
+        $user->shouldReceive('getColonies')
+            ->withNoArgs()
             ->once()
-            ->andReturn([42]);
+            ->andReturn($colonies);
 
         $talPage->shouldReceive('setVar')
-            ->with('COLONIES', [42])
+            ->with('COLONIES', $colonies)
             ->once();
 
         $this->subject->render($user, $talPage);
