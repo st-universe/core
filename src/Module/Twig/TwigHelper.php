@@ -150,6 +150,11 @@ class TwigHelper
             return TalHelper::getContactListModeDescription($mode);
         });
         $this->environment->addFilter($clmodeDescriptionFilter);
+
+        $htmlSafeFilter = new TwigFilter('htmlSafe', function (string $text): string {
+            return htmlspecialchars($text);
+        });
+        $this->environment->addFilter($htmlSafeFilter);
     }
 
     private function registerFunctions(): void
