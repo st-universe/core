@@ -1,5 +1,5 @@
-{% if CURRENT_RESEARCH %}
-<div>
+<div id="navlet_research">
+    {% if CURRENT_RESEARCH %}
     <div class="header_box header_box_research border_box action"
         onclick="showResearchDetails({{ CURRENT_RESEARCH.getResearch.getId }}); return false;">
         <div class="researchNavlet">
@@ -26,19 +26,20 @@
                 </div>
                 {% if WAITING_RESEARCH %}
                 <div title="wartet: {{ WAITING_RESEARCH.getResearch.getName }}"
-                    style="float: left; padding-left: 15px;"><span class="border_box" id="foobar"
-                        style="font-size: 200%; color: #d4c112">+1</span></div>
+                    style="float: left; padding-left: 15px;">
+                    <span class="border_box" style="font-size: 200%; color: #d4c112">+1</span>
+                </div>
                 {% endif %}
             </div>
         </div>
     </div>
+    {% else %}
+    <div class="header_box header_box_research border_box action" onclick="goToUrl('/research.php')"
+        onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')"
+        onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')">
+        <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research"
+            title="Forschung" />
+        <div style="margin-top: 5px">Keine Forschung</div>
+    </div>
+    {% endif %}
 </div>
-{% else %}
-<div class="header_box header_box_research border_box action" onclick="goToUrl('/research.php')"
-    onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')"
-    onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')">
-    <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research"
-        title="Forschung" />
-    <div style="margin-top: 5px">Keine Forschung</div>
-</div>
-{% endif %}

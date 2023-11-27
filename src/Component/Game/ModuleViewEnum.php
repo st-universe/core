@@ -72,7 +72,7 @@ enum ModuleViewEnum: string
             self::HISTORY => 'html/view/history.twig',
             self::MAP => 'todo',
             self::NOTES => 'todo',
-            self::OPTIONS => 'todo',
+            self::OPTIONS => 'html/view/options.twig',
             self::PROFILE => 'todo',
             self::ADMIN => 'todo'
         };

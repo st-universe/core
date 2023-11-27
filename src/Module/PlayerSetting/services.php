@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\PlayerSetting\Action\ActivateVacation\ActivateVacation;
 use Stu\Module\PlayerSetting\Action\ChangeAvatar\ChangeAvatar;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescription;
@@ -24,7 +25,6 @@ use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
-use Stu\Module\PlayerSetting\View\Overview\Overview;
 
 use function DI\autowire;
 
