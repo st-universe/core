@@ -40,7 +40,7 @@ function switchMenu(menu, id, func, fid) {
 	}
 
 	new Ajax.Updater(id, url, {
-		onComplete: function (transport) {
+		onSuccess: function (transport) {
 			if (menu == 1) {
 				initBuildmenuMouseEvent();
 			}
@@ -126,7 +126,7 @@ function buildOnField(fieldId) {
 		method: 'post',
 		parameters: 'fid=' + fieldId + '&B_BUILD=1&bid=' + selectedbuilding,
 		evalScripts: true,
-		onComplete: function (transport) {
+		onSuccess: function (transport) {
 			var counter = document.getElementById("counter");
 			if (counter) {
 				counter.innerHTML = Math.max((counter.innerText - 1), 0);

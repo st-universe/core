@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Game\Action\SwitchInnerContent;
+namespace Stu\Module\Game\Action\SwitchView;
 
 use Mockery\MockInterface;
 use request;
@@ -14,7 +14,7 @@ use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 use Stu\StuTestCase;
 use ValueError;
 
-class SwitchInnerContentTest extends StuTestCase
+class SwitchViewTest extends StuTestCase
 {
     /** @var MockInterface&GameControllerInterface  */
     private MockInterface $game;
@@ -25,7 +25,7 @@ class SwitchInnerContentTest extends StuTestCase
     {
         $this->game = $this->mock(GameControllerInterface::class);
 
-        $this->subject = new SwitchInnerContent();
+        $this->subject = new SwitchView();
     }
 
     public function testHandleExpectExceptionWhenNoViewRequestparam(): void

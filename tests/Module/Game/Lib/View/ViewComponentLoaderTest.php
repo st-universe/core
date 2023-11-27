@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Game\Lib;
+namespace Stu\Module\Game\Lib\View;
 
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
+use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\StuTestCase;
 
 class ViewComponentLoaderTest extends StuTestCase

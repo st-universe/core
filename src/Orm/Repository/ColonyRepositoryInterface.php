@@ -50,11 +50,6 @@ interface ColonyRepositoryInterface extends ObjectRepository
     public function getColonized(): iterable;
 
     /**
-     * @return array<array{colonyid: int, classid: int, nameandsector: string}>
-     */
-    public function getColonyListForRenderFragment(UserInterface $user): array;
-
-    /**
      * @return array<array{user_id: int, commodity_id: int, sum: int}>
      */
     public function getColoniesNetWorth(): array;
