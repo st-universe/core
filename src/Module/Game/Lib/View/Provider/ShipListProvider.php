@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Game\Lib\Component;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
+use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

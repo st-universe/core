@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Game\Lib\Component;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
+use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 
 final class ResearchProvider implements ViewComponentProviderInterface

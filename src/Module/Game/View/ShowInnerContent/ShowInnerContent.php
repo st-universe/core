@@ -6,7 +6,7 @@ namespace Stu\Module\Game\View\ShowInnerContent;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Game\Lib\ViewComponentLoaderInterface;
+use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 
 final class ShowInnerContent implements ViewControllerInterface
 {

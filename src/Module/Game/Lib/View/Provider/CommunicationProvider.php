@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Game\Lib\Component;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use request;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\Component\ViewComponentProviderInterface;
+use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
