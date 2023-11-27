@@ -72,6 +72,9 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         } else {
             $twigPage->setVar('USER', new UserContainer(
                 $user->getId(),
+                $user->getAvatar(),
+                $user->getName(),
+                $user->getFactionId(),
                 $user->getCss(),
                 $user->hasStationsNavigation(),
                 $user->getDeals()
