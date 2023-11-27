@@ -26,6 +26,7 @@ use Stu\Module\Game\Lib\View\Provider\ResearchProvider;
 use Stu\Module\Game\Lib\View\Provider\ShipListProvider;
 use Stu\Module\Game\Lib\View\Provider\StationProvider;
 use Stu\Module\Game\Lib\View\Provider\TradeProvider;
+use Stu\Module\Game\Lib\View\Provider\UserProfileProvider;
 use Stu\Module\Game\Lib\View\ViewComponentLoader;
 use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 use Stu\Module\Game\View\Overview\Overview;
@@ -50,6 +51,7 @@ return [
             ModuleViewEnum::DATABASE->value => autowire(DatabaseProvider::class),
             ModuleViewEnum::HISTORY->value => autowire(HistoryProvider::class),
             ModuleViewEnum::OPTIONS->value => autowire(PlayerSettingsProvider::class),
+            ModuleViewEnum::PROFILE->value => autowire(UserProfileProvider::class),
         ]
     ),
     ComponentLoaderInterface::class => autowire(ComponentLoader::class)->constructorParameter(

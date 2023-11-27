@@ -20,7 +20,7 @@ final class ColonyFragment implements RenderFragmentInterface
     ): void {
         $page->setVar(
             'COLONIES',
-            $user->getId() === UserEnum::USER_NOONE ? [] : $user->getColonies()
+            $user->getId() === UserEnum::USER_NOONE ? [] : $user->getColonies()->toArray()
         );
     }
 }

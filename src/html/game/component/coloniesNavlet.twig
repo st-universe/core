@@ -1,21 +1,24 @@
 <div id="navlet_colonies" class="header_box header_box_col border_box">
-    {% for item in colonies %}
-    {% set href = '/colony.php?SHOW_COLONY=1&id=' ~ item.colonyid %}
+    {% for item in COLONIES %}
+    {% set colonyClass = item.getColonyClass %}
+    {% set colonyClassId = colonyClass.getId %}
+    {% set title = item.nameandsector|bbcode2txt %}
+    {% set href = '/colony.php?SHOW_COLONY=1&id=' ~ item.getId %}
 
-    {% if item['type'] == 1 %}
+    {% if colonyClass.isPlanet %}
     <a href="{{ href }}" style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
-        <img src="/assets/planets/{{ item.classid }}.png" title="{{ item.nameandsector|bbcode2txt }}" />
+        <img src="/assets/planets/{{ colonyClassId }}.png" title="{{ title }}" />
     </a>
-    {% elseif item['type'] == 2 %}
+    {% elseif colonyClass.isMoon %}
     <a href="{{ href }}" style="height: 50px; width: 30px; margin: 7px 5px 7px 5px; text-align: center; float: left"
         class="action">
-        <img src="/assets/planets/{{ item.classid }}.png" title="{{ item.nameandsector|bbcode2txt }}"
+        <img src="/assets/planets/{{ colonyClassId }}.png" title="{{ title }}"
             style="position:relative; margin-top: 10px;" />
     </a>
     {% else %}
     <a href="{{ href }}" style="height: 50px; width: 40px; margin: 7px 5px 7px 5px; text-align: center; float: left"
         class="action">
-        <img src="/assets/planets/{{ item.classid }}.png" title="{{ item.nameandsector|bbcode2txt }}"
+        <img src="/assets/planets/{{ colonyClassId }}.png" title="{{ title }}"
             style="position:relative; margin-top: 10px;" />
     </a>
     {% endif %}

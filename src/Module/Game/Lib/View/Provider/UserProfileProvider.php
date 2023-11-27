@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\PlayerProfile\View\Overview;
+namespace Stu\Module\Game\Lib\View\Provider;
 
+use request;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-/**
- * Renders the profile of a player
- */
-final class Overview implements ViewControllerInterface
+final class UserProfileProvider implements ViewComponentProviderInterface
 {
     private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
@@ -26,8 +24,6 @@ final class Overview implements ViewControllerInterface
 
     private ParserWithImageInterface $parserWithImage;
 
-    private OverviewRequestInterface $overviewRequest;
-
     private ProfileVisitorRegistrationInterface $profileVisitorRegistration;
 
     public function __construct(
@@ -35,20 +31,18 @@ final class Overview implements ViewControllerInterface
         ContactRepositoryInterface $contactRepository,
         UserRepositoryInterface $userRepository,
         ParserWithImageInterface $parserWithImage,
-        OverviewRequestInterface $overviewRequest,
         ProfileVisitorRegistrationInterface $profileVisitorRegistration
     ) {
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->contactRepository = $contactRepository;
         $this->userRepository = $userRepository;
         $this->parserWithImage = $parserWithImage;
-        $this->overviewRequest = $overviewRequest;
         $this->profileVisitorRegistration = $profileVisitorRegistration;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
-        $playerId = $this->overviewRequest->getPlayerId();
+        $playerId = request::getIntFatal('uid');
 
         $player = $this->userRepository->find($playerId);
         if ($player === null) {
@@ -60,13 +54,6 @@ final class Overview implements ViewControllerInterface
 
         $this->profileVisitorRegistration->register($player, $user);
 
-        $game->appendNavigationPart(
-            sprintf('userprofile.php?uid=%d', $playerId),
-            'Spielerprofil'
-        );
-
-        $game->setPageTitle('Spielerprofil');
-        $game->setTemplateFile('html/userprofile.xhtml');
         $game->setTemplateVar('PROFILE', $player);
         $game->setTemplateVar(
             'DESCRIPTION',

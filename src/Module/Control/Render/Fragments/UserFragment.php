@@ -17,6 +17,6 @@ final class UserFragment implements RenderFragmentInterface
         UserInterface $user,
         TalPageInterface|TwigPageInterface $page
     ): void {
-        $page->setVar('REAL_USER', $user);
+        $page->setVar('PRESTIGE', $user->getPrestige());
     }
 }
