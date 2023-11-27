@@ -69,7 +69,7 @@ final class AttackShip implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $shipId = request::indInt('id');
-        $targetId = request::postIntFatal('target');
+        $targetId = request::getIntFatal('target');
 
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
