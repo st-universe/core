@@ -67,13 +67,6 @@ function closeAjaxWindow() {
         }
 }
 
-function ajaxcall(div, url) {
-        new Ajax.Updater(div, url,
-                {
-                        evalScripts: true
-                });
-}
-
 function ajaxrequest(url) {
         new Ajax.Request(url);
 }
@@ -466,23 +459,16 @@ function openPJsWin(elt, exclusive, width, offsety) {
 function cp(obj, file, ending = 'png') {
         document.images[obj].src = gfx_path + "/" + file + "." + ending;
 }
-function updatePMNavlet() {
-        new Ajax.Request(
-                '/pm.php',
-                {
-                        method: 'post',
-                        parameters: 'SHOW_NEW_PM=1',
-                        onFailure: function (e) {
-                        },
-                        onSuccess: function (request) {
-                                div = 'navlet_newpm';
-                                $(div).innerHTML = request.responseText;
-                                $(div).innerHTML.evalScripts();
-                        }
-                }
-        );
-        setTimeout('updatePMNavlet()', 60000);
+
+function updateComponent(id, url, refreshInterval) {
+        if (refreshInterval) {
+                setTimeout(`ajax_update('${id}', '${url}')`, refreshInterval);
+                setTimeout(`updateComponent('${id}', '${url}', ${refreshInterval})`, refreshInterval);
+        } else {
+                ajax_update(id, url);
+        }
 }
+
 function toggleVisible(id) {
         if ($(id).style.display == 'block') {
                 $(id).style.display = 'none';
@@ -662,17 +648,41 @@ function closeNagusPopup() {
         popup.style.display = 'none';
 }
 
-function switchInnerContent(view, title, url) {
+function switchView(view, title, url) {
         closeAjaxWindow();
 
-        new Ajax.Updater('innerContent', '/game.php?B_SWITCH_CONTENT=1&view=' + view, {
-                onComplete: function (transport) {
+        new Ajax.Updater('innerContent', '/game.php?B_SWITCH_VIEW=1&view=' + view, {
+                onSuccess: function (transport) {
                         document.title = title;
                         window.history.pushState('page2', title, url);
                 },
                 method: 'get'
         }
         );
+}
+
+function switchInnerContent(view, title, params) {
+        closeAjaxWindow();
+
+        url = `?${view}=1`;
+        if (params) {
+                url += `&${params}`;
+        }
+
+        new Ajax.Updater('innerContent', url, {
+                onSuccess: function (transport) {
+                        let doc = new DOMParser().parseFromString(title, 'text/html');
+                        document.title = doc.body.textContent || "";
+                        window.history.pushState('page2', title, url);
+                },
+                method: 'get'
+        }
+        );
+}
+
+function actionToInnerContent(action, params) {
+        closeAjaxWindow();
+        ajax_update('innerContent', `?${action}=1&${params}`);
 }
 
 function maximizeCommodityAmounts() {

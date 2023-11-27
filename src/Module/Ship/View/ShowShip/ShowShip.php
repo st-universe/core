@@ -167,9 +167,8 @@ final class ShowShip implements ViewControllerInterface
             sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $ship->getId()),
             $ship->getName()
         );
-        $game->setPagetitle($ship->getName());
 
-        $game->setTemplateFile('html/ship.twig');
+        $game->setInnerContent('html/ship/ship.twig');
 
         $game->setTemplateVar('WRAPPER', $wrapper);
 

@@ -1,11 +1,8 @@
-{% extends "html/sitedefaults.twig" %}
 {% from 'html/shipmacros.twig' import nbsblock, shipimagewithoutwarp, shipstorage, initial_js %}
 {% from 'html/shipcontrol/control_nav.twig' import control_nav %}
 {% from 'html/shipcontrol/control_mid.twig' import control_mid %}
 {% from 'html/shipcontrol/control_right.twig' import control_right %}
 
-{% block body %}
-{% include 'html/breadcrumb.twig' %}
 {% if FIGHT_RESULTS %}
 <div style="width: 150px;">
 	<div class="divhead">Kampflog</div>
@@ -187,7 +184,7 @@
 					src="/assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />{% endfor %}
 				{% endif %}
 			</td>
-			<td colspan="4">
+			<td colspan="5">
 				{% for sys in SHIP.getSystems %}<img title="{{ sys.getName }}: {{ sys.getStatus }}%"
 					style="margin-right: 5px;" class="{{ sys.getCssClass }}"
 					src="/assets/system/{{ sys.getSystemType.value }}.png" />{% endfor %}
@@ -310,4 +307,3 @@
 <br />
 {{ shipstorage(SHIP) }}
 {% endif %}
-{% endblock %}

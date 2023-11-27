@@ -320,7 +320,7 @@ function joinFleetInShiplist(fleetid) {
 			'chosen[]': chosenShipIdArray
 		},
 		evalScripts: true,
-		onComplete: function (transport) {
+		onSuccess: function (transport) {
 			$('result').show();
 		}
 	});
@@ -332,7 +332,7 @@ function leaveFleetInShiplist(shipid, sessionstring) {
 		method: 'get',
 		parameters: 'B_LEAVE_FLEET=1&id=' + shipid + '&sstr=' + sessionstring,
 		evalScripts: true,
-		onComplete: function (transport) {
+		onSuccess: function (transport) {
 			$('result').show();
 		}
 	});
