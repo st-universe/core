@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="header_box header_box_pm border_box" id="navlet_newpm">
+        <div class="header_box header_box_pm border_box" id="navlet_pm">
           <metal:macro metal:use-macro="html/commmacros.xhtml/newpmnavlet" />
         </div>
         <div class="header_box header_box_research border_box action" tal:condition="CURRENT_RESEARCH"
@@ -78,7 +78,7 @@
               </div>
               <div tal:condition="WAITING_RESEARCH" title="wartet: ${WAITING_RESEARCH/getResearch/getName}"
                 style="float: left; padding-left: 15px;">
-                <span class="border_box" id="foobar" style="font-size: 200%; color: #d4c112">+1</span>
+                <span class="border_box" style="font-size: 200%; color: #d4c112">+1</span>
               </div>
             </div>
           </div>
@@ -150,7 +150,7 @@
             ...
           </tal:block>
           <script>
-            setTimeout('updatePMNavlet()', 60000);
+            setTimeout('updatePmNavlet()', 60000);
           </script>
         </div>
         <div class="footer" tal:define="benchmark THIS/getBenchmarkResult">
@@ -213,7 +213,7 @@
             </div>
           </div>
         </div>
-        <div class="header_box header_box_pm border_box" id="navlet_newpm">
+        <div class="header_box header_box_pm border_box" id="navlet_pm">
           <metal:macro metal:use-macro="html/commmacros.xhtml/newpmnavlet" />
         </div>
         <div class="header_box header_box_research border_box action" tal:condition="CURRENT_RESEARCH"
@@ -265,7 +265,7 @@
             ...
           </tal:block>
           <script>
-            setTimeout('updatePMNavlet()', 60000);
+            setTimeout('updatePmNavlet()', 60000);
           </script>
         </div>
       </div>

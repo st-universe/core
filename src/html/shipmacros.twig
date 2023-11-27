@@ -90,7 +90,7 @@
     </tr>
     {% for station in stationNbs %}
     <tr class="row">
-        {{ _self.attackShipForm(WRAPPER, station) }}
+        {{ _self.nbslist_body(WRAPPER, station) }}
     </tr>
     {% endfor %}
     {% endif %}
@@ -155,7 +155,7 @@
     {% for nbsItem in data.getVisibleShips %}
     {% set style = data.isHidden ? 'display: none;' : '' %}
     <tr class="row fleet{{ data.getId }}" style="{{ style }}">
-        {{ _self.attackShipForm(WRAPPER, nbsItem) }}
+        {{ _self.nbslist_body(WRAPPER, nbsItem) }}
     </tr>
     {% endfor %}
     {% endfor %}
@@ -167,22 +167,12 @@
     </tr>
     {% for nbsItem in shipNbs %}
     <tr class="row">
-        {{ _self.attackShipForm(WRAPPER, nbsItem) }}
+        {{ _self.nbslist_body(WRAPPER, nbsItem) }}
     </tr>
     {% endfor %}
     {% endif %}
 </table>
 {% endif %}
-{% endmacro %}
-
-{% macro attackShipForm(wrapper, nbsItem) %}
-<form id="nbsf_{{ nbsItem.getId }}" method="post" action="ship.php">
-    <input type="hidden" name="id" value="{{ wrapper.get.getId }}" />
-    <input type="hidden" name="target" value="{{ nbsItem.getId }}" />
-    <input type="hidden" name="B_ATTACK_SHIP" value="1" />
-    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-    {{ _self.nbslist_body(wrapper, nbsItem) }}
-</form>
 {% endmacro %}
 
 {% macro nbslist_header() %}
@@ -198,36 +188,35 @@
 
 {% macro nbslist_body(WRAPPER, nbsItem) %}
 {% set SHIP = WRAPPER.get %}
+{% set shipId = SHIP.getId %}
+{% set targetId = nbsItem.getId %}
 {% if SHIP.displayNbsActions %}
 {% set nameWithoutMarkup = nbsItem.getName|bbcode2txt %}
 <td style="width: 30px; text-align: center;">
     {% if canAttackTarget(SHIP, nbsItem) %}
-    <div style="cursor: pointer;" onClick="$('nbsf_{{ nbsItem.getId }}').submit();"
-        onmouseover="cp('att_{{ nbsItem.getId }}','buttons/phaser2')"
-        onmouseout="cp('att_{{ nbsItem.getId }}','buttons/phaser1')">
-        <img src="/assets/buttons/phaser1.png" name="att_{{ nbsItem.getId }}"
-            title="{{ nameWithoutMarkup }} angreifen" />
+    <div style="cursor: pointer;"
+        onClick="actionToInnerContent('B_ATTACK_SHIP', 'id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"
+        onmouseover="cp('att_{{ targetId }}','buttons/phaser2')"
+        onmouseout="cp('att_{{ targetId }}','buttons/phaser1')">
+        <img src="/assets/buttons/phaser1.png" name="att_{{ targetId }}" title="{{ nameWithoutMarkup }} angreifen" />
     </div>
     {% endif %}
 </td>
 <td style="width: 120px;">
     {% if not nbsItem.getCloakState %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showScanWindow({{ SHIP.getId }},{{ nbsItem.getId }})"
-            onmouseover="cp('scn_{{ nbsItem.getId }}','buttons/lupe2')"
-            onmouseout="cp('scn_{{ nbsItem.getId }}','buttons/lupe1')">
-            <img src="/assets/buttons/lupe1.png" name="scn_{{ nbsItem.getId }}"
-                title="{{ nameWithoutMarkup }} scannen" />
+        <a href="javascript:void(0);" onclick="showScanWindow({{ shipId }},{{ targetId }})"
+            onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')"
+            onmouseout="cp('scn_{{ targetId }}','buttons/lupe1')">
+            <img src="/assets/buttons/lupe1.png" name="scn_{{ targetId }}" title="{{ nameWithoutMarkup }} scannen" />
         </a>
     </div>
     {% endif %}
     {% if SHIP.canIntercept and nbsItem.isInterceptable and SHIP.hasWarpdrive %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('int_{{ nbsItem.getId }}','buttons/inc2')"
-            onmouseout="cp('int_{{ nbsItem.getId }}','buttons/inc1')">
-            <img src="/assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"
-                title="{{ nameWithoutMarkup }} abfangen" />
+        <a href="?B_INTERCEPT=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('int_{{ targetId }}','buttons/inc2')" onmouseout="cp('int_{{ targetId }}','buttons/inc1')">
+            <img src="/assets/buttons/inc1.png" name="int_{{ targetId }}" title="{{ nameWithoutMarkup }} abfangen" />
         </a>
     </div>
     {% endif %}
@@ -237,44 +226,44 @@
     {% if not nbsItem.getCloakState %}
     {% if not nbsItem.isDestroyed %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showETransferWindow({{ nbsItem.getId }})"
-            onmouseover="cp('etr_{{ nbsItem.getId }}','buttons/e_trans2')"
-            onmouseout="cp('etr_{{ nbsItem.getId }}','buttons/e_trans1')">
-            <img src="/assets/buttons/e_trans1.png" name="etr_{{ nbsItem.getId }}"
+        <a href="javascript:void(0);" onclick="showETransferWindow({{ targetId }})"
+            onmouseover="cp('etr_{{ targetId }}','buttons/e_trans2')"
+            onmouseout="cp('etr_{{ targetId }}','buttons/e_trans1')">
+            <img src="/assets/buttons/e_trans1.png" name="etr_{{ targetId }}"
                 title="Energie zur {{ nameWithoutMarkup }} transferieren" />
         </a>
     </div>
     {% endif %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showBToWindow({{ nbsItem.getId }})"
-            onmouseover="cp('bto_{{ nbsItem.getId }}','buttons/b_down2')"
-            onmouseout="cp('bto_{{ nbsItem.getId }}','buttons/b_down1')">
-            <img src="/assets/buttons/b_down1.png" name="bto_{{ nbsItem.getId }}"
+        <a href="javascript:void(0);" onclick="showBToWindow({{ targetId }})"
+            onmouseover="cp('bto_{{ targetId }}','buttons/b_down2')"
+            onmouseout="cp('bto_{{ targetId }}','buttons/b_down1')">
+            <img src="/assets/buttons/b_down1.png" name="bto_{{ targetId }}"
                 title="Zur {{ nameWithoutMarkup }} runterbeamen" />
         </a>
-        <a href="javascript:void(0);" onclick="showBFromWindow({{ nbsItem.getId }})"
-            onmouseover="cp('bfr_{{ nbsItem.getId }}','buttons/b_up2')"
-            onmouseout="cp('bfr_{{ nbsItem.getId }}','buttons/b_up1')">
-            <img src="/assets/buttons/b_up1.png" name="bfr_{{ nbsItem.getId }}"
+        <a href="javascript:void(0);" onclick="showBFromWindow({{ targetId }})"
+            onmouseover="cp('bfr_{{ targetId }}','buttons/b_up2')"
+            onmouseout="cp('bfr_{{ targetId }}','buttons/b_up1')">
+            <img src="/assets/buttons/b_up1.png" name="bfr_{{ targetId }}"
                 title="Von der {{ nameWithoutMarkup }} hochbeamen" />
         </a>
     </div>
     {% if SHIP.isTorpedoStorageHealthy %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showBTorpTransferWindow({{ nbsItem.getId }}, true);">
+        <a href="javascript:void(0);" onclick="showBTorpTransferWindow({{ targetId }}, true);">
             <img src="/assets/buttons/btorp_down1.png" title="Torpedos zur {{ nameWithoutMarkup }} beamen" />
         </a>
-        <a href="javascript:void(0);" onclick="showBTorpTransferWindow({{ nbsItem.getId }}, false);">
+        <a href="javascript:void(0);" onclick="showBTorpTransferWindow({{ targetId }}, false);">
             <img src="/assets/buttons/btorp_up1.png" title="Torpedos von der {{ nameWithoutMarkup }} beamen" />
         </a>
     </div>
     {% endif %}
     {% if nbsItem.isTractorbeamPossible and not SHIP.isTractoring %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_ACTIVATE_TRACTOR=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('tra_{{ nbsItem.getId }}','buttons/trak2')"
-            onmouseout="cp('tra_{{ nbsItem.getId }}','buttons/trak1')">
-            <img src="/assets/buttons/trak1.png" name="tra_{{ nbsItem.getId }}"
+        <a href="?B_ACTIVATE_TRACTOR=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('tra_{{ targetId }}','buttons/trak2')"
+            onmouseout="cp('tra_{{ targetId }}','buttons/trak1')">
+            <img src="/assets/buttons/trak1.png" name="tra_{{ targetId }}"
                 title="Traktorstrahl auf die {{ nameWithoutMarkup }} richten" />
         </a>
     </div>
@@ -282,10 +271,9 @@
     {% if nbsItem.hasCrew %}
     {% if nbsItem.isBoardingPossible and not nbsItem.isOwnedByCurrentUser %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_BOARD_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('boa_{{ nbsItem.getId }}','buttons/boa2')"
-            onmouseout="cp('boa_{{ nbsItem.getId }}','buttons/boa1')">
-            <img src="/assets/buttons/boa1.png" name="boa_{{ nbsItem.getId }}"
+        <a href="?B_BOARD_SHIP=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('boa_{{ targetId }}','buttons/boa2')" onmouseout="cp('boa_{{ targetId }}','buttons/boa1')">
+            <img src="/assets/buttons/boa1.png" name="boa_{{ targetId }}"
                 title="Enterkommando zur {{ nameWithoutMarkup }} entsenden" />
         </a>
     </div>
@@ -293,12 +281,12 @@
     {% else %}
     {% set takeover = SHIP.getTakeoverActive %}
     {% if takeover %}
-    {% if takeover.getTargetShip.getId == nbsItem.getId %}
+    {% if takeover.getTargetShip.getId == targetId %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_STOP_TAKEOVER=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('untake_{{ nbsItem.getId }}','buttons/untake1')"
-            onmouseout="cp('untake_{{ nbsItem.getId }}','buttons/untake2')">
-            <img src="/assets/buttons/untake2.png" name="untake_{{ nbsItem.getId }}"
+        <a href="?B_STOP_TAKEOVER=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('untake_{{ targetId }}','buttons/untake1')"
+            onmouseout="cp('untake_{{ targetId }}','buttons/untake2')">
+            <img src="/assets/buttons/untake2.png" name="untake_{{ targetId }}"
                 title="Übernahme der {{ nameWithoutMarkup }} abbrechen (noch {{ WRAPPER.getTakeoverTicksLeft }} Runden)" />
         </a>
     </div>
@@ -306,10 +294,10 @@
     {% else %}
     {% if nbsItem.isBoardingPossible and not nbsItem.isOwnedByCurrentUser %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_TAKEOVER_SHIP=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('take_{{ nbsItem.getId }}','buttons/take2')"
-            onmouseout="cp('take_{{ nbsItem.getId }}','buttons/take1')">
-            <img src="/assets/buttons/take1.png" name="take_{{ nbsItem.getId }}"
+        <a href="?B_TAKEOVER_SHIP=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('take_{{ targetId }}','buttons/take2')"
+            onmouseout="cp('take_{{ targetId }}','buttons/take1')">
+            <img src="/assets/buttons/take1.png" name="take_{{ targetId }}"
                 title="Übernahme der {{ nameWithoutMarkup }} starten" />
         </a>
     </div>
@@ -318,39 +306,38 @@
     {% endif %}
     {% if nbsItem.isOwnedByCurrentUser and nbsItem.isShuttle and SHIP.hasFreeShuttleSpace %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_STORE_SHUTTLE=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('store_{{ nbsItem.getId }}','buttons/landshuttle2', 'png')"
-            onmouseout="cp('store_{{ nbsItem.getId }}','buttons/landshuttle1', 'png')">
-            <img src="/assets/buttons/landshuttle1.png" name="store_{{ nbsItem.getId }}" title="Shuttle aufsammeln" />
+        <a href="?B_STORE_SHUTTLE=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('store_{{ targetId }}','buttons/landshuttle2', 'png')"
+            onmouseout="cp('store_{{ targetId }}','buttons/landshuttle1', 'png')">
+            <img src="/assets/buttons/landshuttle1.png" name="store_{{ targetId }}" title="Shuttle aufsammeln" />
         </a>
     </div>
     {% endif %}
     {% if SHIP.isShuttle and nbsItem.isOwnedByCurrentUser %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_LAND_SHUTTLE=1&id={{ nbsItem.getId }}&shuttle={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('land_{{ nbsItem.getId }}','buttons/landshuttle2', 'png')"
-            onmouseout="cp('land_{{ nbsItem.getId }}','buttons/landshuttle1', 'png')">
-            <img src="/assets/buttons/landshuttle1.png" name="land_{{ nbsItem.getId }}"
-                title="In Shuttle-Rampe landen" />
+        <a href="?B_LAND_SHUTTLE=1&id={{ targetId }}&shuttle={{ shipId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('land_{{ targetId }}','buttons/landshuttle2', 'png')"
+            onmouseout="cp('land_{{ targetId }}','buttons/landshuttle1', 'png')">
+            <img src="/assets/buttons/landshuttle1.png" name="land_{{ targetId }}" title="In Shuttle-Rampe landen" />
         </a>
     </div>
     {% endif %}
     {% if wrapper.getTrackerSystemData and wrapper.getTrackerSystemData.isUseable and not nbsItem.isDestroyed %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_TRACK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('track_{{ nbsItem.getId }}','buttons/mark_1', 'png')"
-            onmouseout="cp('track_{{ nbsItem.getId }}','buttons/mark', 'png')">
-            <img src="/assets/buttons/mark.png" name="track_{{ nbsItem.getId }}" title="Ziel markieren" />
+        <a href="?B_TRACK=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('track_{{ targetId }}','buttons/mark_1', 'png')"
+            onmouseout="cp('track_{{ targetId }}','buttons/mark', 'png')">
+            <img src="/assets/buttons/mark.png" name="track_{{ targetId }}" title="Ziel markieren" />
         </a>
     </div>
     {% endif %}
     {% endif %}
     {% if nbsItem.isBase and not nbsItem.isDestroyed and not SHIP.getDockedTo %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_DOCK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-            onmouseover="cp('dock_{{ nbsItem.getId }}','buttons/dock2')"
-            onmouseout="cp('dock_{{ nbsItem.getId }}','buttons/dock1')">
-            <img src="/assets/buttons/dock1.png" name="dock_{{ nbsItem.getId }}"
+        <a href="?B_DOCK=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('dock_{{ targetId }}','buttons/dock2')"
+            onmouseout="cp('dock_{{ targetId }}','buttons/dock1')">
+            <img src="/assets/buttons/dock1.png" name="dock_{{ targetId }}"
                 title="An die {{ nameWithoutMarkup }} andocken" />
         </a>
     </div>
@@ -361,18 +348,16 @@
 <td colspan="2" style="text-align: center;">
     {% if SHIP.getWarpState %}
     {% if SHIP.canIntercept and nbsItem.isInterceptable and SHIP.hasWarpdrive %}
-    <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
-        onmouseover="cp('int_{{ nbsItem.getId }}','buttons/inc2')"
-        onmouseout="cp('int_{{ nbsItem.getId }}','buttons/inc1')">
-        <img src="/assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"
+    <a href="?B_INTERCEPT=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+        onmouseover="cp('int_{{ targetId }}','buttons/inc2')" onmouseout="cp('int_{{ targetId }}','buttons/inc1')">
+        <img src="/assets/buttons/inc1.png" name="int_{{ targetId }}"
             title="{{ nbsItem.getName|bbcode2txt }} abfangen" />
     </a>
     {% endif %}
     {% if not nbsItem.getCloakState %}
-    <a href="javascript:void(0);" onclick="showScanWindow({{ SHIP.getId }},{{ nbsItem.getId }})"
-        onmouseover="cp('scn_{{ nbsItem.getId }}','buttons/lupe2')"
-        onmouseout="cp('scn_{{ nbsItem.getId }}','buttons/lupe1')">
-        <img src="/assets/buttons/lupe1.png" name="scn_{{ nbsItem.getId }}"
+    <a href="javascript:void(0);" onclick="showScanWindow({{ shipId }},{{ targetId }})"
+        onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')" onmouseout="cp('scn_{{ targetId }}','buttons/lupe1')">
+        <img src="/assets/buttons/lupe1.png" name="scn_{{ targetId }}"
             title="{{ nbsItem.getName|bbcode2txt }} scannen" />
     </a>
     {% endif %}
@@ -385,7 +370,7 @@
 {% endif %}
 <td style="{{ nbsItem.getHoldingWebBackgroundStyle }}" class="nbsshipimage">
     {% if nbsItem.isOwnedByCurrentUser %}
-    <a href="ship.php?SHOW_SHIP=1&id={{ nbsItem.getId }}">
+    <a href="ship.php?SHOW_SHIP=1&id={{ targetId }}">
         {{ _self.shipimagewithoutwarp(nbsItem) }}
     </a>
     {% else %}
@@ -399,7 +384,7 @@
 </td>
 <td>
     {% if nbsItem.isOwnedByCurrentUser %}
-    <a href="ship.php?SHOW_SHIP=1&id={{ nbsItem.getId }}"><span>{{ nbsItem.getName|bbcode }}</span></a>
+    <a href="ship.php?SHOW_SHIP=1&id={{ targetId }}"><span>{{ nbsItem.getName|bbcode }}</span></a>
     {% else %}
     {{ nbsItem.getName|bbcode }}
     {% endif %}
@@ -418,12 +403,10 @@
     {% if nbsItem.isContactable %}
     {% set fromType = SHIP.isBase ? 4 : 2 %}
     {% set toType = nbsItem.isBase ? 4 : 2 %}
-    <a href="javascript:void(0);"
-        onclick="openPmWindow({{ SHIP.getId }},{{ nbsItem.getId }},{{ fromType }},{{ toType }})"
+    <a href="javascript:void(0);" onclick="openPmWindow({{ shipId }},{{ targetId }},{{ fromType }},{{ toType }})"
         title="Nachricht an {{ nbsItem.getUserName|bbcode2txt }} verfassen"
-        onmouseover="cp('nbsPm{{ nbsItem.getId }}','buttons/msg2')"
-        onmouseout="cp('nbsPm{{ nbsItem.getId }}','buttons/msg1')">
-        <img src="/assets/buttons/msg1.png" name="nbsPm{{ nbsItem.getId }}" /></a>
+        onmouseover="cp('nbsPm{{ targetId }}','buttons/msg2')" onmouseout="cp('nbsPm{{ targetId }}','buttons/msg1')">
+        <img src="/assets/buttons/msg1.png" name="nbsPm{{ targetId }}" /></a>
     {% endif %}
     {{ nbsItem.getUserName|bbcode }} ({{ nbsItem.getUserId }})
 </td>

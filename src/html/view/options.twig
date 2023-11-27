@@ -1,0 +1,318 @@
+{% from 'html/macros.twig' import userAvatar %}
+
+<div class="optionsView">
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Siedlername</th>
+            </tr>
+            <tr>
+                <td style="width: 50%;">
+                    <input type="text" style="width: 75%;" name="uname" value="{{ REAL_USER.getName }}" value="runtime"
+                        class="text" maxlength="255" />
+                    <input type="submit" name="B_CHANGE_NAME" value="ändern" class="button" />
+                </td>
+                <td style="width: 50%;">Vorschau: {{ REAL_USER.getName|bbcode }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Dein Spielername ist im Spiel an allen Ecken zu finden. Beachte
+                    deshalb bei der Wahl des Namens bitte die <a href="{{ WIKI }}/index.php?title=Spielregeln"
+                        target="_blank">Regeln</a><br />
+                    Du kannst BB-Code ([b][/b], [i][/i], [color][/color]) verwenden um
+                    Deinen Namen zu designen.</td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Passwort</th>
+            </tr>
+            <tr>
+                <td style="width: 200px;">Aktuelles Passwort eingeben</td>
+                <td><input type="password" style="width: 150px;" name="oldpass" class="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Neues Passwort eingeben</td>
+                <td><input type="password" style="width: 150px;" name="pass" class="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Neues Passwort wiederholen</td>
+                <td><input type="password" style="width: 150px;" name="pass2" class="text" />
+                    <input type="submit" name="B_CHANGE_PASSWORD" value="ändern" class="button" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Das Passwort muss aus mindestens 6 Zeichen bestehen. Bitte gib
+                    Dein Passwort niemals an andere Personen weiter.</td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th>E-Mailadresse</th>
+            </tr>
+            <tr>
+                <td><input type="text" style="width: 250px;" name="email" class="text"
+                        value="{{ REAL_USER.getEmail }}" /> <input type="submit" name="B_CHANGE_EMAIL" value="ändern"
+                        class="button" /></td>
+            </tr>
+            <tr>
+                <td>Beachte bitte, dass diese Adresse gültig ist und benutze keine Wegwerf
+                    E-Mailadressen. Nachrichten und Löschbestätigungen können Dir sonst
+                    unter Umständen nicht zugestellt werden.</td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post" enctype="multipart/form-data">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Avatar</th>
+            </tr>
+            <tr>
+                <td rowspan="3" style="vertical-align: top; width: 160px;">
+                    {{ userAvatar(REAL_USER) }}
+                </td>
+                <td><input type="file" class="button" name="avatar" /> <input type="submit" name="B_CHANGE_AVATAR"
+                        value="Hochladen" class="button" /></td>
+            </tr>
+            <tr>
+                <td style="height: 125px; vertical-align: top;">Hier kannst Du einen Avatar
+                    hochladen der in Deinem Profil angezeigt wird. Dieses Bild sollte
+                    150x150 Pixel groß sein und im PNG-Format vorliegen.</td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th>Territorialfarbe</th>
+            </tr>
+            <tr>
+                <td><input type="text" style="width: 250px;" name="rgb" class="text"
+                        value="{{ REAL_USER.getRgbCode }}" /> <input type="submit" name="B_CHANGE_USER_RGB"
+                        value="ändern" class="button" /></td>
+            </tr>
+            <tr>
+                <td>Dieser RGB-Farbcode kennzeichnet Kartenfelder, die dem Spieler zugeordnet
+                    werden können. Beispiel: #9ab5ef</td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th>Siedlerbeschreibung</th>
+            </tr>
+            <tr>
+                <td><textarea name="description" style="width: 100%; height: 200px;">
+                        {% autoescape false %}
+                        {{ REAL_USER.getDescription }}
+                        {% endautoescape %}
+                    </textarea></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="ändern" name="B_CHANGE_DESCRIPTION" class="button" /></td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <th colspan="2">Accounteinstellungen</th>
+            <tr>
+                <td>
+                    {% if REAL_USER.isEmailNotification %}
+                    <input type="checkbox" name="email_not" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="email_not" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Emailbenachrichtigung bei privaten Nachrichten
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% if REAL_USER.isSaveLogin %}
+                    <input type="checkbox" name="save_login" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="save_login" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Login nicht speichern (Ideal an fremden Computern)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% if REAL_USER.isStorageNotification %}
+                    <input type="checkbox" name="storage_not" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="storage_not" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Nachricht bei vollen Lagern zum Tick
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% if REAL_USER.isShowOnlineState %}
+                    <input type="checkbox" name="storage_not" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="storage_not" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Online Status öffentlich
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% if REAL_USER.isShowPmReadReceipt %}
+                    <input type="checkbox" name="pm_read_receipt" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="pm_read_receipt" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Lesebestätigungen bei PMs anzeigen (nur wenn sowohl Sender als auch
+                    Empfänger den Haken gesetzt haben)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% if REAL_USER.getFleetFixedDefault %}
+                    <input type="checkbox" name="fleets_fixed" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="fleets_fixed" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Flotten standardmäßig fixieren, sodass keine Schiffe beim Flug verloren
+                    gehen können.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% set defaultView = REAL_USER.getDefaultView %}
+                    <select name="startpage">
+                        <option value="0">----------------------</option>
+                        {% for value in VIEWS %}
+                        {% if defaultView == value %}
+                        <option value="{{ value.value }}" selected="1">
+                            {{ value.getTitle }}
+                        </option>
+                        {% else %}
+                        <option value="{{ value.value }}">
+                            {{ value.getTitle }}
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    Auswahl der Startseite, welche nach dem Login angezeigt werden soll.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% set rpgBehavior = REAL_USER.getRpgBehavior %}
+                    <select name="rpgbehavior">
+                        {% for value in RPG_BEHAVIOR_VALUES %}
+                        {% if rpgBehavior == value %}
+                        <option value="{{ value.value }}" selected="1">
+                            {{ value.getDescription }}
+                        </option>
+                        {% else %}
+                        <option value="{{ value.value }}">
+                            {{ value.getDescription }}
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    Information für andere Spieler ob man selbst gern Rollenspiel betreibt.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="css">
+                        {% for value in CSS_VALUES %}
+                        {% if CSSSTYLE == value['css'] %}
+                        <option value="{{ value.css }}" selected="1">
+                            {{ value.title }}
+                        </option>
+                        {% else %}
+                        <option value="{{ value.css }}">
+                            {{ value.title }}
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    Auswahl der Interface-Farben.
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type="submit" class="button" value="Einstellungen ändern" name="B_CHANGE_SETTINGS" />
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post">
+        <input type="hidden" name="B_ACTIVATE_VACATION" value="1" />
+        <table class="tcal">
+            <th colspan="4">Urlaubsmodus</th>
+            <tr>
+                <td>Der Urlaubsmodus friert den Account ein. Andere Spieler können nicht mehr
+                    mit Schiffen oder Kolonien von dir interagieren.</td>
+            </tr>
+            <tr>
+                <td>Die Aktivierung findet erst nach 48 Stunden ohne Login statt!</td>
+            </tr>
+            <tr>
+                <td>Die Aktivierung hängt überall eine Info an den Usernamen an.</td>
+            </tr>
+            <tr>
+                <td>Diese Aktion ist danach für eine Woche nicht ausführbar.</td>
+            </tr>
+            <tr>
+                <td>Der Klick auf den Button führt den Logout durch.</td>
+            </tr>
+            <tr>
+                <td>Ein erneuter Login deaktiviert den Urlaubsmodus wieder.</td>
+            </tr>
+            <tr>
+                <td style="width: 100px;"><input type="submit" class="button" value="Urlaubsmodus aktivieren" />
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br />
+    <form action="options.php" method="post">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <input type="hidden" name="B_DELETE_ACCOUNT" value="1" />
+        <table class="tcal">
+            <tr>
+                <td style="width: 100px;"><input type="submit" class="button" value="Accountlöschung" /></td>
+                <td>Um eine Löschung durchzuführen muss diese bestätigt werden. Dies geschieht
+                    via eines Links in einer Email</td>
+            </tr>
+        </table>
+    </form>
+</div>
