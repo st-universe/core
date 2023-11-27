@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Game\Lib\ViewComponentLoaderInterface;
+use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 
 final class Overview implements ViewControllerInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  Stu\Module\Game\Lib\Component;
+namespace  Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;

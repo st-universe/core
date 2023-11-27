@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Game\Lib\Component;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Module\Control\GameControllerInterface;
 

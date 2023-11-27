@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Game\Lib\Component;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use request;
 use RuntimeException;

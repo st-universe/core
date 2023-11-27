@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Game\Lib;
+namespace Stu\Module\Game\Lib\View;
 
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
