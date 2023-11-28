@@ -70,11 +70,11 @@ enum ModuleViewEnum: string
             self::ALLIANCE => 'html/view/alliance.twig',
             self::DATABASE => 'html/view/database.twig',
             self::HISTORY => 'html/view/history.twig',
-            self::MAP => 'todo',
-            self::NOTES => 'todo',
+            self::MAP => 'html/view/map.twig',
+            self::NOTES => 'not needed',
             self::OPTIONS => 'html/view/options.twig',
             self::PROFILE => 'html/view/userProfile.twig',
-            self::ADMIN => 'todo'
+            self::ADMIN => 'not needed'
         };
     }
 }

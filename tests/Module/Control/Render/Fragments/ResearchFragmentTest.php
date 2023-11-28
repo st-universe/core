@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render\Fragments;
 
 use Mockery\MockInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalComponentFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
@@ -62,7 +63,7 @@ class ResearchFragmentTest extends StuTestCase
             ->with('WAITING_RESEARCH', null)
             ->once();
 
-        $this->subject->render($user, $talPage);
+        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
     }
 
     public function testRenderRendersWithResearch(): void
@@ -149,6 +150,6 @@ class ResearchFragmentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->render($user, $talPage);
+        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
     }
 }

@@ -80,25 +80,6 @@
   </form>
 </metal:macro>
 
-<tal:block metal:define-macro="clmodeselector">
-  <select name="runtime" tal:attributes="name divname;id divname">
-    <option tal:repeat="item THIS/getContactlistModes" tal:attributes="value item/mode" tal:content="item/name">NAME
-    </option>
-  </select>
-</tal:block>
-
-<tal:block metal:define-macro="clmodeswitch">
-  <table class="tcal">
-    <tr tal:repeat="contactoption THIS/getContactlistModes">
-      <td>
-        <div tal:condition="not:php:contact.getMode() EQ repeat.contactoption.key"
-          tal:attributes="class string:cltype${contactoption/mode}" tal:content="contactoption/name"
-          onclick="switchContactMode(${contact/getId},${contactoption/mode});">MODE</div>
-      </td>
-    </tr>
-  </table>
-</tal:block>
-
 <tal:block metal:define-macro="clmodeview">
   <tal:block tal:condition="contact">
     <span tal:condition="div" class="cltype${contact/getMode}" id="contact${contact/getId}"

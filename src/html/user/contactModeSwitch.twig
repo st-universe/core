@@ -1,0 +1,14 @@
+<table class="tcal">
+    {% for contactOption in CONTACT_LIST_MODES %}
+    <tr>
+        <td>
+            {% if not contact.getMode == contactOption %}
+            <div class="cltype{{ contactOption.value }}"
+                onclick="switchContactMode({{ contact.getId }}, {{ contactOption.value }});">
+                {{ contactOption.getTitle }}
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
@@ -31,7 +32,8 @@ final class MessageFolderFragment implements RenderFragmentInterface
 
     public function render(
         UserInterface $user,
-        TalPageInterface|TwigPageInterface $page
+        TalPageInterface|TwigPageInterface $page,
+        GameControllerInterface $game
     ): void {
         $userId = $user->getId();
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Twig\TwigPageInterface;
@@ -16,11 +17,12 @@ final class ColonyFragment implements RenderFragmentInterface
 {
     public function render(
         UserInterface $user,
-        TalPageInterface|TwigPageInterface $page
+        TalPageInterface|TwigPageInterface $page,
+        GameControllerInterface $game
     ): void {
         $page->setVar(
-            'COLONIES',
-            $user->getId() === UserEnum::USER_NOONE ? [] : $user->getColonies()->toArray()
+            'USER_COLONIES',
+            ($user->getId() === UserEnum::USER_NOONE) ? [] : $user->getColonies()
         );
     }
 }

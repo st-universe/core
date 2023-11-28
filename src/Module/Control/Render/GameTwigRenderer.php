@@ -41,7 +41,6 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->setGameVariables($twigPage, $game);
         $this->setUserVariables($user, $twigPage);
 
-        $twigPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         $twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));
         $twigPage->setVar('FORUM', $this->config->get('board.base_url'));
         $twigPage->setVar('CHAT', $this->config->get('discord.url'));
@@ -51,6 +50,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
 
     private function setGameVariables(TwigPageInterface $twigPage, GameControllerInterface $game): void
     {
+        $twigPage->setVar('MACRO', $game->getMacro());
         $twigPage->setVar('NAVIGATION', $game->getNavigation());
         $twigPage->setVar('PAGETITLE', $game->getPageTitle());
         $twigPage->setVar('INFORMATION', $game->getInformation());
@@ -61,7 +61,6 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
         $twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
         $twigPage->setVar('ISADMIN', $game->isAdmin());
-        $twigPage->setVar('GAMETURN', $game->getCurrentRound()->getTurn());
         $twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
     }
 

@@ -19,9 +19,9 @@ interface GameControllerInterface
 
     public function getGameState(): int;
 
-    public function setTemplateFile(string $tpl): void;
+    public function setViewTemplate(string $viewTemplate): void;
 
-    public function setInnerContent(string $tpl): void;
+    public function setTemplateFile(string $tpl): void;
 
     public function setMacroAndTemplate(string $macro, string $tpl): void;
 
@@ -135,6 +135,4 @@ interface GameControllerInterface
     public function getLoginError(): string;
 
     public function getBenchmarkResult(): array;
-
-    public function getContactlistModes(): array;
 }

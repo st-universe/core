@@ -48,7 +48,7 @@ class GameTalRendererTest extends StuTestCase
         $configValueAllianceAvatarPath = 'some-avatar-path';
 
         $this->renderFragment->shouldReceive('render')
-            ->with($user, $talPage)
+            ->with($user, $talPage, $game)
             ->once();
 
         $game->shouldReceive('getExecuteJS')

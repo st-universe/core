@@ -19,7 +19,7 @@
 	{% set ship = wrapper.get %}
 	<tr class="row">
 		<td>
-			<input type="hidden" name="ships[]" value"{{ ship.getId }}" />
+			<input type="hidden" name="ships[]" value="{{ ship.getId }}" />
 			{{ shipimagewithoutwarp(ship) }}
 		</td>
 		<td>{{ ship.getName|bbcode }}</td>

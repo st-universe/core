@@ -62,7 +62,7 @@ final class UserList implements ViewControllerInterface
             _('Siedlerliste')
         );
         $game->setPageTitle(_('/ Siedlerliste'));
-        $game->setTemplateFile('html/userlist.xhtml');
+        $game->setViewTemplate('html/database/userList.twig');
 
         $search = request::indString('search');
 

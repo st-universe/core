@@ -46,10 +46,10 @@ class Contact implements ContactInterface
     private int $recipient = 0;
 
     /**
-     * @Column(type="smallint")
+     * @Column(type="smallint", enumType=ContactListModeEnum::class)
      *
      */
-    private int $mode = 0;
+    private ContactListModeEnum $mode = ContactListModeEnum::FRIEND;
 
     /**
      * @Column(type="string", length=50)
@@ -92,12 +92,12 @@ class Contact implements ContactInterface
         return $this->recipient;
     }
 
-    public function getMode(): int
+    public function getMode(): ContactListModeEnum
     {
         return $this->mode;
     }
 
-    public function setMode(int $mode): ContactInterface
+    public function setMode(ContactListModeEnum $mode): ContactInterface
     {
         $this->mode = $mode;
         return $this;
@@ -149,11 +149,11 @@ class Contact implements ContactInterface
 
     public function isFriendly(): bool
     {
-        return $this->getMode() === ContactListModeEnum::CONTACT_FRIEND;
+        return $this->getMode() === ContactListModeEnum::FRIEND;
     }
 
     public function isEnemy(): bool
     {
-        return $this->getMode() === ContactListModeEnum::CONTACT_ENEMY;
+        return $this->getMode() === ContactListModeEnum::ENEMY;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Module\Message\Lib\ContactListModeEnum;
+
 interface ContactInterface
 {
     public function getId(): int;
@@ -10,9 +12,9 @@ interface ContactInterface
 
     public function getRecipientId(): int;
 
-    public function getMode(): int;
+    public function getMode(): ContactListModeEnum;
 
-    public function setMode(int $mode): ContactInterface;
+    public function setMode(ContactListModeEnum $mode): ContactInterface;
 
     public function getComment(): string;
 

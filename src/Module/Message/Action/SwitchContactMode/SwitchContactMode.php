@@ -36,16 +36,16 @@ final class SwitchContactMode implements ActionControllerInterface
         $game->setTemplateVar('div', $this->switchContactModeRequest->getContactDiv());
 
         $contact = $this->contactRepository->find($this->switchContactModeRequest->getContactId());
-        $mode = $this->switchContactModeRequest->getModeId();
+        $mode = ContactListModeEnum::tryFrom($this->switchContactModeRequest->getModeId());
         $userId = $game->getUser()->getId();
 
         if ($contact === null || $contact->getUserId() !== $userId) {
             return;
         }
-        if (!in_array($mode, ContactListModeEnum::AVAILABLE_MODES)) {
+        if ($mode === null) {
             return;
         }
-        if ($mode !== $contact->getMode() && $mode == ContactListModeEnum::CONTACT_ENEMY) {
+        if ($mode !== $contact->getMode() && $mode == ContactListModeEnum::ENEMY) {
             $this->privateMessageSender->send(
                 $userId,
                 $contact->getRecipientId(),
@@ -57,7 +57,7 @@ final class SwitchContactMode implements ActionControllerInterface
             );
             if ($obj !== null) {
                 if (!$obj->isEnemy()) {
-                    $obj->setMode(ContactListModeEnum::CONTACT_ENEMY);
+                    $obj->setMode(ContactListModeEnum::ENEMY);
 
                     $this->contactRepository->save($obj);
                 }
@@ -65,7 +65,7 @@ final class SwitchContactMode implements ActionControllerInterface
                 $obj = $this->contactRepository->prototype();
                 $obj->setUser($contact->getRecipient());
                 $obj->setRecipient($game->getUser());
-                $obj->setMode(ContactListModeEnum::CONTACT_ENEMY);
+                $obj->setMode(ContactListModeEnum::ENEMY);
                 $obj->setDate(time());
 
                 $this->contactRepository->save($obj);

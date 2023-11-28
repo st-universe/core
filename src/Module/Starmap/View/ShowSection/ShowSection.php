@@ -10,7 +10,6 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
-use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
@@ -50,31 +49,35 @@ final class ShowSection implements ViewControllerInterface
             throw new SanityCheckException('User tried to access an unseen layer');
         }
 
-        $game->setTemplateFile('html/starmapSection.twig');
+        $game->setTemplateVar('TABLE_MACRO', 'html/starmapSectionTable.twig');
+        $game->setViewTemplate('html/starmapSection.twig');
         $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
-        $game->appendNavigationPart(
-            sprintf(
-                'starmap.php?SHOW_SECTION=1&section=%d&layerid=%d',
-                $section,
-                $layer->getId()
-            ),
-            sprintf(_('Sektion %d anzeigen'), $section)
-        );
         $game->setPageTitle(_('Sektion anzeigen'));
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
-        $helper->setTemplateVars(
+        $newSection = $helper->setTemplateVars(
             $game,
             $layer,
             $section,
+            false,
+            $this->showSectionRequest->getDirection()
+        );
+
+        $game->appendNavigationPart(
+            sprintf(
+                'starmap.php?SHOW_SECTION=1&section=%d&layerid=%d',
+                $newSection,
+                $layer->getId()
+            ),
+            sprintf(_('Sektion %d anzeigen'), $newSection)
         );
 
         $game->addExecuteJS(sprintf(
             "registerNavKeys('%s.php', '%s', '%s', false);",
             ModuleViewEnum::MAP->value,
-            RefreshSection::VIEW_IDENTIFIER,
+            self::VIEW_IDENTIFIER,
             'html/starmapSectionTable.twig'
-        ));
+        ), GameEnum::JS_EXECUTION_AFTER_RENDER);
 
         $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }

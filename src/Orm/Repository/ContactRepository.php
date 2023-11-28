@@ -55,7 +55,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         return $this->findBy(
             [
                 'recipient' => $userId,
-                'mode' => [ContactListModeEnum::CONTACT_FRIEND, ContactListModeEnum::CONTACT_ENEMY],
+                'mode' => [ContactListModeEnum::FRIEND->value, ContactListModeEnum::ENEMY->value],
             ],
             [
                 'mode' => 'asc',

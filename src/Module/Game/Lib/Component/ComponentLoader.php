@@ -75,7 +75,7 @@ final class ComponentLoader implements ComponentLoaderInterface
             }
 
             $componentProvider = $this->componentProviders[$component->value];
-            $componentProvider->render($game->getUser(), $twigPage);
+            $componentProvider->render($game->getUser(), $twigPage, $game);
         }
     }
 }

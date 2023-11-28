@@ -1067,11 +1067,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getContactlistModes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getCurrentRound\\(\\) should return Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but returns Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -1148,11 +1143,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getBenchmarkResult\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getContactlistModes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 
@@ -1940,16 +1930,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$mapBorderType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapBorderTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapBorderType\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Starmap/View/RefreshSection/RefreshSection.php
-
-		-
-			message: "#^Parameter \\#2 \\$layer of method Stu\\\\Module\\\\Starmap\\\\Lib\\\\MapSectionHelper\\:\\:setTemplateVars\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Starmap/View/RefreshSection/RefreshSection.php
 
 		-
 			message: "#^Cannot call method getShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\DockingPrivilegeInterface\\|null\\.$#"

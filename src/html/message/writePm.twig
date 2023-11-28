@@ -1,9 +1,5 @@
-{% extends "html/sitedefaults.twig" %}
 {% from 'html/macros.twig' import userInfo, translationSwitcher %}
 
-{% block body %}
-<script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
-{% include 'html/breadcrumb.twig' %}
 <form action="pm.php" method="post" name="newpm">
 	<input type="hidden" name="WRITE_PM" value="1" />
 	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
@@ -86,4 +82,3 @@
 		{% include 'html/communication/pmSidebar.twig' %}
 	</div>
 </form>
-{% endblock %}

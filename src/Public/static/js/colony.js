@@ -1,3 +1,10 @@
+var colonyid = null;
+var sstr = null;
+function setColonyIdAndSstr(id, sessionString) {
+	colonyid = id;
+	sstr = sessionString;
+}
+
 function buildMenuScrollUp(menu, offset) {
 	if (offset - scrollOffset < 0) {
 		var newOffset = 0;
@@ -148,27 +155,27 @@ function createHostUri(IDENTIFIER, extra) {
 	return '?id=' + hostid + '&hosttype=' + hosttype + '&' + IDENTIFIER + '=1' + extra
 }
 
-function getOrbitShipList() {
+function getOrbitShipList(colonyId) {
 	elt = 'shiplist';
 	openPJsWin(elt);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_ORBIT_SHIPLIST=1');
+	ajax_update(elt, 'colony.php?id=' + colonyId + '&SHOW_ORBIT_SHIPLIST=1');
 }
 
-function showBToWindow() {
+function showBToSWindow() {
 	var shipid = $('selshipid').value;
 	elt = 'beam'
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
 }
 
-function showBFromWindow() {
+function showBFromSWindow() {
 	var shipid = $('selshipid').value;
 	elt = 'beam'
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
 }
 
-function showSectorScanWindow(id) {
+function showColonySectorScanWindow(id) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'colony.php?id=' + id + '&SHOW_SECTOR_SCAN=1');

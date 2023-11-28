@@ -8,8 +8,7 @@ use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Game\Lib\Component\ComponentEnum;
-use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 
 final class Overview implements ViewControllerInterface
@@ -18,20 +17,18 @@ final class Overview implements ViewControllerInterface
 
     private ViewComponentLoaderInterface $viewComponentLoader;
 
-    private ComponentLoaderInterface $componentLoader;
+    private GameSetupInterface $gameSetup;
 
     public function __construct(
         ViewComponentLoaderInterface $viewComponentLoader,
-        ComponentLoaderInterface $componentLoader
+        GameSetupInterface $gameSetup
     ) {
         $this->viewComponentLoader = $viewComponentLoader;
-        $this->componentLoader = $componentLoader;
+        $this->gameSetup = $gameSetup;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile(ModuleViewEnum::GAME->getTemplate());
-
         $view = null;
         if (request::has('view')) {
             $view = ModuleViewEnum::tryFrom(request::getStringFatal('view'));
@@ -44,19 +41,6 @@ final class Overview implements ViewControllerInterface
 
         /** @var ModuleViewEnum $view */
         $this->viewComponentLoader->registerViewComponents($view, $game);
-        $game->setTemplateVar('TEMPLATE', $view->getTemplate());
-
-        $this->registerComponents();
-    }
-
-    private function registerComponents(): void
-    {
-        foreach (ComponentEnum::cases() as $component) {
-            $this->componentLoader->registerComponent($component);
-
-            if ($component->getRefreshIntervalInSeconds() !== null) {
-                $this->componentLoader->addComponentUpdate($component);
-            }
-        }
+        $this->gameSetup->setTemplateAndComponents($view->getTemplate(), $game);
     }
 }

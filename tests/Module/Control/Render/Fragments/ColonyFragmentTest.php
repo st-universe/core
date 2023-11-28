@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render\Fragments;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -31,10 +32,10 @@ class ColonyFragmentTest extends StuTestCase
             ->andReturn(UserEnum::USER_NOONE);
 
         $talPage->shouldReceive('setVar')
-            ->with('COLONIES', [])
+            ->with('USER_COLONIES', [])
             ->once();
 
-        $this->subject->render($user, $talPage);
+        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
     }
 
     public function testRenderRendersNormalUserWithColonies(): void
@@ -53,9 +54,9 @@ class ColonyFragmentTest extends StuTestCase
             ->andReturn($colonies);
 
         $talPage->shouldReceive('setVar')
-            ->with('COLONIES', $colonies)
+            ->with('USER_COLONIES', $colonies)
             ->once();
 
-        $this->subject->render($user, $talPage);
+        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
     }
 }

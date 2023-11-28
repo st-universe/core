@@ -10,6 +10,8 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Game\Lib\Component\ComponentEnum;
+use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -26,16 +28,20 @@ final class GiveUp implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private ComponentLoaderInterface $componentLoader;
+
     public function __construct(
         GiveUpRequestInterface $giveupRequest,
         ColonyRepositoryInterface $colonyRepository,
         ColonyResetterInterface $colonyResetter,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ComponentLoaderInterface $componentLoader
     ) {
         $this->giveupRequest = $giveupRequest;
         $this->colonyRepository = $colonyRepository;
         $this->colonyResetter = $colonyResetter;
         $this->userRepository = $userRepository;
+        $this->componentLoader = $componentLoader;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -69,6 +75,8 @@ final class GiveUp implements ActionControllerInterface
 
             $this->userRepository->save($user);
         }
+
+        $this->componentLoader->addComponentUpdate(ComponentEnum::COLONIES_NAVLET);
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
     }

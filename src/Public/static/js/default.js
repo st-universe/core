@@ -652,37 +652,60 @@ function switchView(view, title, url) {
         closeAjaxWindow();
 
         new Ajax.Updater('innerContent', '/game.php?B_SWITCH_VIEW=1&view=' + view, {
-                onSuccess: function (transport) {
+                onSuccess: function () {
                         document.title = title;
-                        window.history.pushState('page2', title, url);
+                        window.history.pushState(null, title, url);
                 },
-                method: 'get'
+                method: 'get',
+                evalScripts: true
         }
         );
 }
 
-function switchInnerContent(view, title, params) {
+function switchInnerContent(view, title, params, page) {
         closeAjaxWindow();
 
-        url = `?${view}=1`;
+        url = `?${view}=1&switch=1`;
+        if (page) {
+                url = page + url;
+        }
+
         if (params) {
                 url += `&${params}`;
         }
 
         new Ajax.Updater('innerContent', url, {
-                onSuccess: function (transport) {
+                onSuccess: function () {
                         let doc = new DOMParser().parseFromString(title, 'text/html');
                         document.title = doc.body.textContent || "";
-                        window.history.pushState('page2', title, url);
+                        window.history.pushState(null, title, url);
                 },
-                method: 'get'
+                method: 'get',
+                evalScripts: true
         }
         );
 }
 
-function actionToInnerContent(action, params) {
+function actionToInnerContent(action, params, title, page) {
         closeAjaxWindow();
-        ajax_update('innerContent', `?${action}=1&${params}`);
+
+        url = `?${action}=1&switch=1&${params}`;
+        if (page) {
+                url = page + url;
+        }
+
+        new Ajax.Updater('innerContent', url, {
+                onSuccess: function () {
+                        if (title) {
+                                let doc = new DOMParser().parseFromString(title, 'text/html');
+                                document.title = doc.body.textContent || "";
+                        }
+                        window.history.pushState(null, title, url);
+                },
+                method: 'get',
+                evalScripts: true
+        }
+        );
 }
 
 function maximizeCommodityAmounts() {

@@ -93,7 +93,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
             _('Orbitalmanagement')
         );
         $game->setPagetitle(sprintf('%s Orbit', $colony->getName()));
-        $game->setTemplateFile('html/colony/menu/orbitalmanagement.twig');
+        $game->setViewTemplate('html/colony/menu/orbitalmanagement.twig');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('FLEETWRAPPERS', $list);

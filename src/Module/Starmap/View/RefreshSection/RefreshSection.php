@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\View\RefreshSection;
 
 use request;
+use RuntimeException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -36,6 +37,9 @@ final class RefreshSection implements ViewControllerInterface
     {
         $layerId = $this->request->getLayerId();
         $layer = $this->layerRepository->find($layerId);
+        if ($layer === null) {
+            throw new RuntimeException(sprintf('layer with following id does not exist: %d', $layerId));
+        }
 
         $section = $this->request->getSection();
 

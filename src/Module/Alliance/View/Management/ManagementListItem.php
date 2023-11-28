@@ -108,11 +108,11 @@ final class ManagementListItem
     }
 
     /**
-     * @return iterable<ColonyInterface>
+     * @return array<ColonyInterface>
      */
-    public function getColonies(): iterable
+    public function getColonies(): array
     {
-        return $this->user->getColonies();
+        return $this->user->getColonies()->toArray();
     }
 
     /**

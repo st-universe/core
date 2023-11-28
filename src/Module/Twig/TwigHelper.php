@@ -146,11 +146,6 @@ class TwigHelper
         });
         $this->environment->addFilter($nl2brFilter);
 
-        $clmodeDescriptionFilter = new TwigFilter('clmodeDescription', function (int $mode): string {
-            return TalHelper::getContactListModeDescription($mode);
-        });
-        $this->environment->addFilter($clmodeDescriptionFilter);
-
         $htmlSafeFilter = new TwigFilter('htmlSafe', function (string $text): string {
             return htmlspecialchars($text);
         });

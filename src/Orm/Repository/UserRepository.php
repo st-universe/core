@@ -172,7 +172,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 Contact::class
             )
         )->setParameters([
-            'mode' => ContactListModeEnum::CONTACT_FRIEND,
+            'mode' => ContactListModeEnum::FRIEND->value,
             'userId' => $user->getId(),
             'allianceId' => $allianceId
         ])->getResult();
@@ -194,7 +194,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'ignoreUserId' => $ignoreUserId,
-            'contactListModeFriend' => (string) ContactListModeEnum::CONTACT_FRIEND,
+            'contactListModeFriend' => ContactListModeEnum::FRIEND->value,
             'lastActionThreshold' => $lastActionThreshold,
             'allowStart' => 1,
             'firstUserId' => UserEnum::USER_FIRST_ID

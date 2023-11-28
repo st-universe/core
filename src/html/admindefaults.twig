@@ -26,10 +26,18 @@
     <div id="overDiv">...</div>
     <div class="container">
         <div class="header">
-            {% include 'html/game/component/userNavlet.twig' %}
-            {% include 'html/game/component/pmNavlet.twig' %}
-            {% include 'html/game/component/researchNavlet.twig' %}
-            {% include 'html/game/component/coloniesNavlet.twig' %}
+            <div id="navlet_user">
+                {% include 'html/game/component/userNavlet.twig' %}
+            </div>
+            <div id="navlet_pm">
+                {% include 'html/game/component/pmNavlet.twig' %}
+            </div>
+            <div id="navlet_research">
+                {% include 'html/game/component/researchNavlet.twig' %}
+            </div>
+            <div id="navlet_colonies">
+                {% include 'html/game/component/coloniesNavlet.twig' %}
+            </div>
             <div class="header_box header_box_logout border_box action" onclick="goToUrl('index.php?B_LOGOUT=1')"
                 onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
                 onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
@@ -77,7 +85,9 @@
                 <div style="width: 100%; padding-left: 12px; padding-right: 10px">
                     {% from 'html/macros.twig' import adminnavigation %}
                     {{ adminnavigation() }}
-                    {% include 'html/game/component/serverTimeAndVersion.twig' %}
+                    <div id="navlet_servertime">
+                        {% include 'html/game/component/serverTimeAndVersion.twig' %}
+                    </div>
                 </div>
             </div>
             <div id="innerContent" class="innerContent">

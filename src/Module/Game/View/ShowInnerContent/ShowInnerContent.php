@@ -27,7 +27,7 @@ final class ShowInnerContent implements ViewControllerInterface
         $view = $game->getViewContext()['VIEW'];
 
         $this->viewComponentLoader->registerViewComponents($view, $game);
-        $game->setTemplateVar('TEMPLATE', $view->getTemplate());
+        $game->setTemplateVar('VIEW_TEMPLATE', $view->getTemplate());
 
         $game->showMacro('html/view/breadcrumbAndView.twig');
     }

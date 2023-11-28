@@ -15,14 +15,15 @@
             {% if FIRST_ORBIT_SHIP %}
             <div style="width: 100%;">
                 <br />
-                <a href="javascript:void(0);" onclick="showBFromWindow();"
+                <a href="javascript:void(0);" onclick="showBFromSWindow();"
                     onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img
                         src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen" /></a>
-                <a href="javascript:void(0);" onclick="showBToWindow();" onmouseover="cp('beamto','buttons/b_up2')"
+                <a href="javascript:void(0);" onclick="showBToSWindow();" onmouseover="cp('beamto','buttons/b_up2')"
                     onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto"
                         title="Zu Schiff beamen" /></a>
-                <a href="javascript:void(0);" onclick="getOrbitShipList();">Liste</a> | <a
-                    href="?SHOW_ORBITAL_SHIPS=1&id={{ COLONY.getId }}">Management</a>
+                <a href="javascript:void(0);" onclick="getOrbitShipList({{ COLONY.getId }});">Liste</a> | <a
+                    href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_ORBITAL_SHIPS', 'Orbitalmanagement', 'id={{ COLONY.getId }}');">Management</a>
             </div>
             {% endif %}
         </div>
@@ -125,7 +126,7 @@
                 <tr>
                     <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
                     <td>
-                        <input type="text" size="5" name="frequency" value"{{ COLONY.getShieldFrequency }}"
+                        <input type="text" size="5" name="frequency" value="{{ COLONY.getShieldFrequency }}"
                             onkeydown="event.key == 'Enter' &&  $('changeFrequencyButton').click()" />
                         <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
                             id="changeFrequencyButton" />
@@ -182,9 +183,12 @@
                 {{ HOST.getFreeHousing }} ({{ HOST.getMaxBev }})
             </td>
             <td class="populationValue">
+                {% set growth = POPULATION_CALCULATOR.getGrowth %}
                 <div>Entwicklung</div>
                 <img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Wachstum" />
-                {{ POPULATION_CALCULATOR.getGrowth|addPlusCharacter }}
+                {% if growth %}
+                {{ growth|addPlusCharacter }}
+                {% endif %}
             </td>
         </tr>
     </table>
