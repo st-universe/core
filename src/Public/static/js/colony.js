@@ -52,15 +52,11 @@ function switchMenu(menu, id, func, fid) {
 		url += '&fid=' + fid;
 	}
 
-	new Ajax.Updater(id, url, {
-		onSuccess: function (transport) {
-			if (menu == 1) {
-				initBuildmenuMouseEvent();
-			}
-		},
-		method: 'get'
+	ajax_update(id, url);
+
+	if (menu == 1) {
+		//initBuildmenuMouseEvent();
 	}
-	);
 }
 
 var selectedbuilding = 0;
@@ -223,7 +219,6 @@ function toggleMaxEmpty(elem, max) {
 }
 
 function initBuildmenuMouseEvent() {
-	var elem = $('buildmenu1');
 	onmousewheel($('buildmenu1'), function (delta) {
 		scrollBuildmenuByMouse(1, delta);
 	});
