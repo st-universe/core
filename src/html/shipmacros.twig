@@ -123,7 +123,7 @@
             {% if SHIP.isBase and data.getLeadShip.isOwnedByCurrentUser %}
             <span>
                 (<a href="javascript:void(0);"
-                    onClick="actionToInnerContent('B_DOCK_FLEET', 'id={{ SHIP.getId }}&fid={{ data.getId }}&sstr={{ SESSIONSTRING }}', 'station.php');">andocken</a>)
+                    onClick="actionToInnerContent('B_DOCK_FLEET', 'id={{ SHIP.getId }}&fid={{ data.getId }}&sstr={{ SESSIONSTRING }}', null, 'station.php');">andocken</a>)
             </span>
             {% endif %}
         </td>
