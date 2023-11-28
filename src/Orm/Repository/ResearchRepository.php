@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Research\ResearchEnum;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
@@ -23,11 +24,16 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT t FROM %s t WHERE t.id NOT IN (
-                        SELECT r.research_id from %s r WHERE r.user_id = :userId
-                    )',
+                    'SELECT r FROM %s r
+                    JOIN %s c
+                    WITH r.commodity_id = c.id
+                    WHERE r.id NOT IN (
+                        SELECT red.research_id from %s red WHERE red.user_id = :userId
+                    )
+                    ORDER BY c.sort ASC, r.id ASC',
                     Research::class,
-                    Researched::class,
+                    Commodity::class,
+                    Researched::class
                 )
             )
             ->setParameter('userId', $userId)
