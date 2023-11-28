@@ -87,7 +87,7 @@ class ComponentLoaderTest extends StuTestCase
             ->andReturn($user);
 
         $this->componentProvider->shouldReceive('render')
-            ->with($user, $twigPage)
+            ->with($user, $twigPage, $this->game)
             ->once();
 
         $this->subject->loadRegisteredComponents($twigPage, $this->game);

@@ -72,18 +72,19 @@ function setVisibility(id, style) {
 	}
 }
 
+function refreshMapContent(direction) {
+
+	if (!isDirectionAllowed(direction)) {
+		return;
+	}
+
+	params = `section=${currentSection}&layerid=${currentLayerId}&direction=${direction}&macro=${currentMacro}`;
+	switchInnerContent(currentView, 'Sektion anzeigen', params, currentModule);
+}
+
 function refreshMapSection(direction, isRedirect) {
 
-	if (direction === 1 && !canNavigateLeft) {
-		return;
-	}
-	if (direction === 3 && !canNavigateRight) {
-		return;
-	}
-	if (direction === 4 && !canNavigateUp) {
-		return;
-	}
-	if (direction === 2 && !canNavigateDown) {
+	if (!isDirectionAllowed(direction)) {
 		return;
 	}
 
@@ -94,6 +95,24 @@ function refreshMapSection(direction, isRedirect) {
 	} else {
 		ajax_update('starmapsectiontable', href);
 	}
+}
+
+function isDirectionAllowed(direction) {
+
+	if (direction === 1 && !canNavigateLeft) {
+		return false;
+	}
+	if (direction === 3 && !canNavigateRight) {
+		return false;
+	}
+	if (direction === 4 && !canNavigateUp) {
+		return false;
+	}
+	if (direction === 2 && !canNavigateDown) {
+		return false;
+	}
+
+	return true;
 }
 
 function getMapUpdateHref(direction) {

@@ -1,14 +1,3 @@
-{% macro initial_js(shipId) %}
-<script>
-    var sstr = '{{ SESSIONSTRING }}';
-    var shipid = {{ shipId }};
-</script>
-<script src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
-<script src="{{ JAVASCRIPTPATH }}/js/shipmanagement.js"></script>
-<script src="{{ JAVASCRIPTPATH }}/js/starmap.js"></script>
-<script src="{{ JAVASCRIPTPATH }}/js/station.js"></script>
-{% endmacro %}
-
 {% macro shipimage(ship) %}
 {% if ship.isTrumfield %}
 <img src="/assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ rumpname }}"
@@ -65,6 +54,7 @@
 {% endmacro %}
 
 {% macro nbsblock(WRAPPER, hasNbs, cloakNbs, stationNbs, fleetNbs, shipNbs) %}
+{% from 'html/macros.twig' import onClickShip %}
 {% set SHIP = WRAPPER.get %}
 {% if not hasNbs and not cloakNbs %}
 <table class="tcal">
@@ -111,7 +101,7 @@
             <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
             {% endif %}
             {% if data.showManagement %}
-            <a href="?SHOW_SHIP=1&id={{ data.getLeadShip.getId }}">{{ data.getName|bbcode }}</a>
+            <a {{ onClickShip(data.getLeadShip) }}>{{ data.getName|bbcode }}</a>
             {% else %}
             <span>{{ data.getName|bbcode }}</span>
             {% endif %}
@@ -132,8 +122,8 @@
             {% endif %}
             {% if SHIP.isBase and data.getLeadShip.isOwnedByCurrentUser %}
             <span>
-                (<a
-                    href="station.php?B_DOCK_FLEET=1&id={{ SHIP.getId }}&fid={{ data.getId }}&sstr={{ SESSIONSTRING }}">andocken</a>)
+                (<a href="javascript:void(0);"
+                    onClick="actionToInnerContent('B_DOCK_FLEET', 'id={{ SHIP.getId }}&fid={{ data.getId }}&sstr={{ SESSIONSTRING }}', 'station.php');">andocken</a>)
             </span>
             {% endif %}
         </td>
@@ -187,6 +177,7 @@
 {% endmacro %}
 
 {% macro nbslist_body(WRAPPER, nbsItem) %}
+{% from 'html/macros.twig' import onClickShip %}
 {% set SHIP = WRAPPER.get %}
 {% set shipId = SHIP.getId %}
 {% set targetId = nbsItem.getId %}
@@ -334,7 +325,8 @@
     {% endif %}
     {% if nbsItem.isBase and not nbsItem.isDestroyed and not SHIP.getDockedTo %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_DOCK=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
+        <a href="javascript:void(0);"
+            onClick="actionToInnerContent('B_DOCK', 'id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"
             onmouseover="cp('dock_{{ targetId }}','buttons/dock2')"
             onmouseout="cp('dock_{{ targetId }}','buttons/dock1')">
             <img src="/assets/buttons/dock1.png" name="dock_{{ targetId }}"
@@ -370,7 +362,7 @@
 {% endif %}
 <td style="{{ nbsItem.getHoldingWebBackgroundStyle }}" class="nbsshipimage">
     {% if nbsItem.isOwnedByCurrentUser %}
-    <a href="ship.php?SHOW_SHIP=1&id={{ targetId }}">
+    <a {{ onClickShip(nbsItem) }}>
         {{ _self.shipimagewithoutwarp(nbsItem) }}
     </a>
     {% else %}
@@ -384,7 +376,7 @@
 </td>
 <td>
     {% if nbsItem.isOwnedByCurrentUser %}
-    <a href="ship.php?SHOW_SHIP=1&id={{ targetId }}"><span>{{ nbsItem.getName|bbcode }}</span></a>
+    <a {{ onClickShip(nbsItem) }}><span>{{ nbsItem.getName|bbcode }}</span></a>
     {% else %}
     {{ nbsItem.getName|bbcode }}
     {% endif %}
@@ -418,6 +410,7 @@
     <tr>
         <th><img onClick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum" /> Lagerraum
             {{ ship.getStorageSum }}/{{ ship.getMaxStorage }}</th>
+    </tr>
     <tr>
         <td>
             {% for storage in ship.getStorage %}
@@ -441,7 +434,6 @@
             {% endif %}
             {% endfor %}
         </td>
-    </tr>
     </tr>
 </table>
 {% endmacro %}

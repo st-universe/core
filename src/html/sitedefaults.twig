@@ -11,6 +11,13 @@
         var userDeals = {{ USER.showDeals }};
     </script>
     <script src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/colony.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/shipmanagement.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/starmap.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/station.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
     <title>{{ PAGETITLE|bbcode2txt }}</title>
     <script>
         var gfx_path = '/assets';
@@ -78,13 +85,20 @@
                 <div style="width: 100%; padding-left: 12px; padding-right: 10px">
                     {% from 'html/macros.twig' import navigation %}
                     {{ navigation(USER.hasStationsNavigation, ISADMIN) }}
-                    {% include 'html/game/component/serverTimeAndVersion.twig' %}
+                    <div id="navlet_servertime">
+                        {% include 'html/game/component/serverTimeAndVersion.twig' %}
+                    </div>
                 </div>
             </div>
             <div id="innerContent" class="innerContent">
                 {% block body %}
                 ...
                 {% endblock %}
+                <script>
+                    window.addEventListener("popstate", function (e) {
+                        window.location.reload();
+                    });
+                </script>
             </div>
             <div class="footer">
                 {% set benchmark = BENCHMARK %}

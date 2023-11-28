@@ -100,7 +100,7 @@ final class EditSection implements ViewControllerInterface
             $possibleBorder['row_' . ($key % 1)][] = $value;
         }
 
-        $game->setTemplateFile('html/admin/mapeditor_section.twig');
+        $game->setViewTemplate('html/admin/mapeditor_section.twig');
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(

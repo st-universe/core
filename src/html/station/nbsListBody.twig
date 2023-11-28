@@ -1,15 +1,17 @@
 {% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+{% from 'html/macros.twig' import onClickShip %}
+
 <td colspan="2" style="text-align: center;">
 </td>
 {% if ship.isOwnedByCurrentUser %}
 <td style="width: 200px; background-color: #000000 !important;">
-  <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}">
+  <a {{ onClickShip(ship) }}>
     {{ shipimagewithoutwarp(ship) }}
   </a>
 </td>
 <td></td>
 <td>
-  <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}"> {{ ship.getName|bbcode }}</a>
+  <a {{ onClickShip(ship) }}> {{ ship.getName|bbcode }}</a>
 </td>
 {% else %}
 <td style="width: 200px; background-color: #000000 !important;">

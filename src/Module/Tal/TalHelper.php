@@ -55,17 +55,9 @@ final class TalHelper
         return sprintf('+%d', $value);
     }
 
-    public static function getContactListModeDescription(int $mode): string
+    public static function getContactListModeDescription(ContactListModeEnum $mode): string
     {
-        switch ($mode) {
-            case ContactListModeEnum::CONTACT_FRIEND:
-                return _('Freund');
-            case ContactListModeEnum::CONTACT_ENEMY:
-                return _('Feind');
-            case ContactListModeEnum::CONTACT_NEUTRAL:
-                return _('Neutral');
-        }
-        return '';
+        return $mode->getTitle();
     }
 
     public static function getBBCodeParser(): Parser

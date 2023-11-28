@@ -9,17 +9,21 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Control\Render\Fragments\ColonyFragment;
 use Stu\Module\Control\Render\Fragments\MessageFolderFragment;
 use Stu\Module\Control\Render\Fragments\ResearchFragment;
+use Stu\Module\Control\Render\Fragments\ServertimeFragment;
 use Stu\Module\Control\Render\Fragments\UserFragment;
 use Stu\Module\Game\Action\SwitchView\SwitchView;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoader;
 use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
+use Stu\Module\Game\Lib\GameSetup;
+use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\View\Provider\AllianceProvider;
 use Stu\Module\Game\Lib\View\Provider\ColonyListProvider;
 use Stu\Module\Game\Lib\View\Provider\CommunicationProvider;
 use Stu\Module\Game\Lib\View\Provider\DatabaseProvider;
 use Stu\Module\Game\Lib\View\Provider\HistoryProvider;
 use Stu\Module\Game\Lib\View\Provider\MaindeskProvider;
+use Stu\Module\Game\Lib\View\Provider\MapProvider;
 use Stu\Module\Game\Lib\View\Provider\MessageProvider;
 use Stu\Module\Game\Lib\View\Provider\PlayerSettingsProvider;
 use Stu\Module\Game\Lib\View\Provider\ResearchProvider;
@@ -36,6 +40,7 @@ use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 use function DI\autowire;
 
 return [
+    GameSetupInterface::class => autowire(GameSetup::class),
     ViewComponentLoaderInterface::class => autowire(ViewComponentLoader::class)->constructorParameter(
         'viewComponentProviders',
         [
@@ -50,6 +55,7 @@ return [
             ModuleViewEnum::ALLIANCE->value => autowire(AllianceProvider::class),
             ModuleViewEnum::DATABASE->value => autowire(DatabaseProvider::class),
             ModuleViewEnum::HISTORY->value => autowire(HistoryProvider::class),
+            ModuleViewEnum::MAP->value => autowire(MapProvider::class),
             ModuleViewEnum::OPTIONS->value => autowire(PlayerSettingsProvider::class),
             ModuleViewEnum::PROFILE->value => autowire(UserProfileProvider::class),
         ]
@@ -58,7 +64,7 @@ return [
         'componentProviders',
         [
             ComponentEnum::PM_NAVLET->value => autowire(MessageFolderFragment::class),
-            ComponentEnum::SERVERTIME_NAVLET->value => autowire(MessageFolderFragment::class),
+            ComponentEnum::SERVERTIME_NAVLET->value => autowire(ServertimeFragment::class),
             ComponentEnum::RESEARCH_NAVLET->value => autowire(ResearchFragment::class),
             ComponentEnum::COLONIES_NAVLET->value => autowire(ColonyFragment::class),
             ComponentEnum::USER_NAVLET->value => autowire(UserFragment::class),

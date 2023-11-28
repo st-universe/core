@@ -1,8 +1,15 @@
+var shipid = null;
+var sstr = null;
+function setShipIdAndSstr(id, sessionString) {
+	shipid = id;
+	sstr = sessionString;
+}
+
 function moveToPosition(posx, posy) {
 	if (!posx || !posy || !sstr || !shipid) {
 		return;
 	}
-	window.location.href = 'ship.php?B_MOVE=1&id=' + shipid + '&posx=' + posx + '&posy=' + posy + '&sstr=' + sstr;
+	actionToInnerContent('B_MOVE', `id=${shipid}&posx=${posx}&posy=${posy}&sstr=${sstr}`, null, 'ship.php');
 }
 
 var lastPosition = '';

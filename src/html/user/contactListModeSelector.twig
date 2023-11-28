@@ -1,0 +1,7 @@
+<select name="{{ divname }}" id="{{ divname }}">
+    {% for item in CONTACT_LIST_MODES %}
+    <option value="{{ item.value }}">
+        {{ item.getTitle }}
+    </option>
+    {% endfor %}
+</select>

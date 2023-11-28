@@ -6,6 +6,7 @@ namespace Stu\Module\Message\View\ShowContactModeSwitch5;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\View\ShowContactModeSwitch\ShowContactModeSwitchRequestInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
@@ -33,7 +34,8 @@ final class ShowContactModeSwitch implements ViewControllerInterface
             return;
         }
         $game->setPageTitle(_('Status'));
-        $game->setMacroInAjaxWindow('html/commmacros.xhtml/clmodeswitch');
+        $game->setMacroInAjaxWindow('html/user/contactModeSwitch.twig');
         $game->setTemplateVar('contact', $contact);
+        $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
     }
 }

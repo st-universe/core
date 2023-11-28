@@ -23,7 +23,7 @@ final class ShowContactList implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $game->setTemplateFile('html/contactlist.xhtml');
+        $game->setViewTemplate('html/user/contactList.twig');
         $game->appendNavigationPart(
             sprintf('pm.php?%s=1', static::VIEW_IDENTIFIER),
             _('Kontaktliste')

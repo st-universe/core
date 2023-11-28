@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Starmap\Lib\StarmapUiFactory;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
-use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 use Stu\Module\Starmap\View\ShowByPosition\ShowByPosition;
 use Stu\Module\Starmap\View\ShowSection\ShowSection;

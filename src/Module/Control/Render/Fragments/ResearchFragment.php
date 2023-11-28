@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalComponentFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
@@ -34,7 +35,8 @@ final class ResearchFragment implements RenderFragmentInterface
 
     public function render(
         UserInterface $user,
-        TalPageInterface|TwigPageInterface $page
+        TalPageInterface|TwigPageInterface $page,
+        GameControllerInterface $game
     ): void {
         $researchStatusBar = '';
         $currentResearch = $this->researchedRepository->getCurrentResearch($user);

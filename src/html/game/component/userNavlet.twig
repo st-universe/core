@@ -1,5 +1,4 @@
-<div id="navlet_user" class="header_box header_box_user border_box action"
-    onclick="goToUrl('maindesk.php'); return false;">
+<div class="header_box header_box_user border_box action" onclick="goToUrl('maindesk.php'); return false;">
     <div style="margin: 5px">
         <div class="user_box_grid">
             <div class="user_box_avatar" onclick="event.stopPropagation();">
@@ -17,7 +16,8 @@
                     onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
                     <img src="/assets/buttons/notiz1.png" name="headerNotiz" />
                 </a>
-                <a href="/pm.php?WRITE_PM=1" onclick="event.stopPropagation();"
+                <a href="javascript:void(0);"
+                    onclick="event.stopPropagation(); switchInnerContent('WRITE_PM', 'Neue private Nachricht', null, '/pm.php');"
                     onmouseover="cp('writePm','buttons/msg2')" onmouseout="cp('writePm','buttons/msg1')">
                     <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben" />
                 </a>

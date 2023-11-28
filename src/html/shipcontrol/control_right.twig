@@ -58,9 +58,13 @@
         </td>
         <td>
             {% if ship.getWarpState %}
-            <a href="?B_DEACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">deaktivieren</a>
+            <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_DEACTIVATE_WARP', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
+                class="linkbutton">deaktivieren</a>
             {% else %}
-            <a href="?B_ACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">aktivieren</a>
+            <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_ACTIVATE_WARP', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
+                class="linkbutton">aktivieren</a>
             {% endif %}
         </td>
     </tr>
@@ -244,7 +248,8 @@
         <td>
             {% if ship.isTractoring %}
             {% if ship.isBase and not ship.getTractoredShip.isDestroyed %}
-            <a href="?B_DOCK_TRACTORED=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
+            <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_DOCK_TRACTORED', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
                 onmouseover="cp('docktractored','buttons/dock2')" onmouseout="cp('docktractored','buttons/dock1')">
                 <img src="/assets/buttons/dock1.png" name="docktractored" title="Gezogenes Schiff andocken" />
             </a>
@@ -368,6 +373,7 @@
 
 {% macro fleetInfo(wrapper) %}
 {% from 'html/shipmacros.twig' import shipimagenameastitle %}
+{% from 'html/macros.twig' import onClickShip %}
 
 {% set ship = wrapper.get %}
 {% set fleet = ship.getFleet %}
@@ -377,7 +383,7 @@
     <tr>
         <th>
             <div style="display: inline-block;width: 80%;">
-                <a href="?SHOW_SHIP=1&id={{ fleet.getLeadShip.getId }}">
+                <a {{ onClickShip(fleet.getLeadShip) }}>
                     <img src="/assets/buttons/fleet.png" title="zum Führungsschiff wechseln" />
                     <span>zum Führungsschiff wechseln</span></a>
             </div>
@@ -415,8 +421,8 @@
     {% if fleetShip.getId != ship.getId %}
     <tr>
         <td style="background-color: #000000 ! important">
-            <a href="ship.php?SHOW_SHIP=1&id={{ fleetShip.getId }}"
-                onmouseover="openStorageInit(this, {{ fleetShip.getId }});" onmouseout="closeStorage();">
+            <a {{ onClickShip(fleetShip) }} onmouseover="openStorageInit(this, {{ fleetShip.getId }});"
+                onmouseout="closeStorage();">
                 {{ shipimagenameastitle(fleetShip) }}
             </a>
         </td>

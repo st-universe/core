@@ -14,7 +14,7 @@ function switchToShip(obj) {
 	if (link.length == 0) {
 		return;
 	}
-	goToUrl(link[0].href);
+	link[0].click();
 }
 function shipSelectorChoose(obj) {
 	shiplist = document.getElementById("shiplist");

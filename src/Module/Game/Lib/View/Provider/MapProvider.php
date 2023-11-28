@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\Overview;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
-final class Overview implements ViewControllerInterface
+final class MapProvider implements ViewComponentProviderInterface
 {
     private LayerRepositoryInterface $layerRepository;
 
@@ -20,12 +20,8 @@ final class Overview implements ViewControllerInterface
         $this->layerRepository = $layerRepository;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function setTemplateVariables(GameControllerInterface $game): void
     {
-        $game->setPageTitle(_('Sternenkarte'));
-        $game->setTemplateFile('html/starmap.xhtml');
-        $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
-
         //only layers, that are known by user
         $layers = $this->layerRepository->getKnownByUser($game->getUser()->getId());
 

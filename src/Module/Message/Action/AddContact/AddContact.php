@@ -67,9 +67,9 @@ final class AddContact implements ActionControllerInterface
             return;
         }
 
-        $mode = $this->addContactRequest->getModeId();
+        $mode = ContactListModeEnum::tryFrom($this->addContactRequest->getModeId());
 
-        if (!in_array($mode, ContactListModeEnum::AVAILABLE_MODES)) {
+        if ($mode === null) {
             return;
         }
         $contact = $this->contactRepository->prototype();
@@ -80,7 +80,7 @@ final class AddContact implements ActionControllerInterface
 
         $this->contactRepository->save($contact);
 
-        if ($mode == ContactListModeEnum::CONTACT_ENEMY) {
+        if ($mode == ContactListModeEnum::ENEMY) {
             $this->privateMessageSender->send(
                 $userId,
                 $recipient->getId(),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render\Fragments;
 
 use Mockery\MockInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
@@ -86,7 +87,7 @@ class MessageFolderFragmentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->render($user, $talPage);
+        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
     }
 
     public function testRenderRendersFolderListWithStation(): void
@@ -142,6 +143,6 @@ class MessageFolderFragmentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->render($user, $talPage);
+        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
     }
 }

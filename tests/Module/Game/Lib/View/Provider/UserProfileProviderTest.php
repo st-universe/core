@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\PlayerProfile\View\Overview;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
+use request;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
@@ -18,7 +20,7 @@ use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
-class OverviewTest extends StuTestCase
+class UserProfileProviderTest extends StuTestCase
 {
     /** @var MockInterface&RpgPlotMemberRepositoryInterface */
     private MockInterface $rpgPlotMemberRepository;
@@ -32,13 +34,10 @@ class OverviewTest extends StuTestCase
     /** @var MockInterface&ParserWithImageInterface */
     private MockInterface $parserWithImage;
 
-    /** @var MockInterface&OverviewRequestInterface */
-    private MockInterface $overviewRequest;
-
     /** @var MockInterface&ProfileVisitorRegistrationInterface */
     private MockInterface $profileVisitorRegistration;
 
-    private Overview $subject;
+    private ViewComponentProviderInterface $subject;
 
     protected function setUp(): void
     {
@@ -46,15 +45,13 @@ class OverviewTest extends StuTestCase
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->parserWithImage = $this->mock(ParserWithImageInterface::class);
-        $this->overviewRequest = $this->mock(OverviewRequestInterface::class);
         $this->profileVisitorRegistration = $this->mock(ProfileVisitorRegistrationInterface::class);
 
-        $this->subject = new Overview(
+        $this->subject = new UserProfileProvider(
             $this->rpgPlotMemberRepository,
             $this->contactRepository,
             $this->userRepository,
             $this->parserWithImage,
-            $this->overviewRequest,
             $this->profileVisitorRegistration
         );
     }
@@ -67,17 +64,14 @@ class OverviewTest extends StuTestCase
 
         static::expectException(ItemNotFoundException::class);
 
-        $this->overviewRequest->shouldReceive('getPlayerId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($playerId);
+        request::setMockVars(['uid' => $playerId]);
 
         $this->userRepository->shouldReceive('find')
             ->with($playerId)
             ->once()
             ->andReturnNull();
 
-        $this->subject->handle($game);
+        $this->subject->setTemplateVariables($game);
     }
 
     public function testHandleRenders(): void
@@ -95,10 +89,7 @@ class OverviewTest extends StuTestCase
         $friend = $this->mock(UserInterface::class);
         $bbCodeParser = $this->mock(Parser::class);
 
-        $this->overviewRequest->shouldReceive('getPlayerId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($playerId);
+        request::setMockVars(['uid' => $playerId]);
 
         $this->userRepository->shouldReceive('find')
             ->with($playerId)
@@ -109,18 +100,6 @@ class OverviewTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($visitor);
-        $game->shouldReceive('setTemplateFile')
-            ->with('html/userprofile.xhtml')
-            ->once();
-        $game->shouldReceive('setPageTitle')
-            ->with('Spielerprofil')
-            ->once();
-        $game->shouldReceive('appendNavigationPart')
-            ->with(
-                sprintf('userprofile.php?uid=%d', $playerId),
-                'Spielerprofil'
-            )
-            ->once();
         $game->shouldReceive('setTemplateVar')
             ->with('PROFILE', $player)
             ->once();
@@ -142,6 +121,9 @@ class OverviewTest extends StuTestCase
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with('FRIENDS', [$friend])
+            ->once();
+        $game->shouldReceive('setTemplateVar')
+            ->with('CONTACT_LIST_MODES', ContactListModeEnum::cases())
             ->once();
 
         $visitor->shouldReceive('getId')
@@ -187,6 +169,6 @@ class OverviewTest extends StuTestCase
             ->once()
             ->andReturn([$friend]);
 
-        $this->subject->handle($game);
+        $this->subject->setTemplateVariables($game);
     }
 }

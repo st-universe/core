@@ -45,6 +45,7 @@
 </div>
 {% endmacro %}
 
+
 {% macro navigation(hasStationsNavigation, isAdmin) %}
 {{ _self.navigation_item('Kolonien', 'colony', 'planets') }}
 {{ _self.navigation_item('Schiffe', 'ship', 'ships') }}
@@ -64,7 +65,7 @@
 <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin'; }"
     onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
     onmouseout="cp('{{ linkid }}','navigation/menu_ticks0', 'png')">
-    <a class="navitem_link" href="'/admin'">
+    <a class="navitem_link" href="/admin">
         <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="{{ linkid }}" title="'Admin'" />
         <div class="navitem_title">'Admin'</div>
     </a>
@@ -73,12 +74,25 @@
 {% endmacro %}
 
 {% macro adminnavigation() %}
-{{ _self.navigation_item('Spielerliste', '/admin/?SHOW_PLAYER_LIST=1', 'ally') }}
-{{ _self.navigation_item('Nachrichten', '/admin/?SHOW_MASS_MAIL=1', 'msg') }}
-{{ _self.navigation_item('Karteneditor', '/admin/?SHOW_MAP_EDITOR=1&layerid=1', 'map') }}
-{{ _self.navigation_item('Kolonie-Sandbox', '/admin/?SHOW_COLONY_SANDBOX=1', 'sandbox') }}
-{{ _self.navigation_item('Ticks', '/admin/?SHOW_TICKS=1', 'ticks') }}
-{{ _self.navigation_item('Skripte', '/admin/?SHOW_SCRIPTS=1', 'scripts') }}
+{{ _self.admin_navigation_item('Spielerliste', '/admin/?SHOW_PLAYER_LIST=1', 'ally') }}
+{{ _self.admin_navigation_item('Nachrichten', '/admin/?SHOW_MASS_MAIL=1', 'msg') }}
+{{ _self.admin_navigation_item('Karteneditor', '/admin/?SHOW_MAP_EDITOR=1&layerid=1', 'map') }}
+{{ _self.admin_navigation_item('Kolonie-Sandbox', '/admin/?SHOW_COLONY_SANDBOX=1', 'sandbox') }}
+{{ _self.admin_navigation_item('Ticks', '/admin/?SHOW_TICKS=1', 'ticks') }}
+{{ _self.admin_navigation_item('Skripte', '/admin/?SHOW_SCRIPTS=1', 'scripts') }}
+{% endmacro %}
+
+{% macro admin_navigation_item(title, url, iconUrl) %}
+{% set linkid = 'nav_item_' ~ iconUrl %}
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='{{ url }}'; }"
+    onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
+    onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
+    <a class="navitem_link" href="{{ url }}">
+        <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
+            title="{{ title }}" />
+        <div class="navitem_title">{{ title }}</div>
+    </a>
+</div>
 {% endmacro %}
 
 {% macro pmWindow(USER, id) %}
@@ -93,11 +107,11 @@
 
 {% macro contactModeSwitcher(contact, div) %}
 {% if contact %}
-{% set mode = contact.getMode %}
-{% set description = contact.getMode|clmodeDescription %}
+{% set mode = contact.getMode.value %}
+{% set description = contact.getMode.getTitle %}
 {% if div %}
 <span class="cltype{{ mode }}" id="contact{{ contact.getId }}"
-    onclick="showContactModeSwitcher('${div}',{{ contact.getId }});">{{ description }}</span>
+    onclick="showContactModeSwitcher('{{ div }}',{{ contact.getId }});">{{ description }}</span>
 {% else %}
 <span class="cltype{{ mode }}" style="cursor: auto;">{{ description }}</span>
 {% endif %}
@@ -115,7 +129,13 @@
 {% endmacro %}
 
 {% macro onClickShip(ship) %}
-{% set shipId = ship.getId %}
+{% set id = ship.getId %}
 href="javascript:void(0);"
-onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ shipId }}');"
+onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php');"
+{% endmacro %}
+
+{% macro onClickColony(colony) %}
+{% set id = colony.getId %}
+href="javascript:void(0);"
+onClick = "switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '/colony.php');"
 {% endmacro %}

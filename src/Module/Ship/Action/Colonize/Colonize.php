@@ -27,6 +27,8 @@ use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Game\Lib\Component\ComponentEnum;
+use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -63,6 +65,8 @@ final class Colonize implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private ComponentLoaderInterface $componentLoader;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
@@ -77,7 +81,8 @@ final class Colonize implements ActionControllerInterface
         ColonizationCheckerInterface $colonizationChecker,
         TroopTransferUtilityInterface $troopTransferUtility,
         ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ComponentLoaderInterface $componentLoader
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
@@ -93,6 +98,7 @@ final class Colonize implements ActionControllerInterface
         $this->troopTransferUtility = $troopTransferUtility;
         $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
         $this->userRepository = $userRepository;
+        $this->componentLoader = $componentLoader;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -188,6 +194,8 @@ final class Colonize implements ActionControllerInterface
         $this->shipRemover->remove($ship);
 
         $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
+
+        $this->componentLoader->addComponentUpdate(ComponentEnum::COLONIES_NAVLET);
 
         $game->redirectTo(sprintf(
             '/colony.php?%s=1&id=%d',

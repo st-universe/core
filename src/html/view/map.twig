@@ -1,0 +1,38 @@
+{% if LAYERS %}
+<div>
+	<select onchange="window.location.href='?layerid=' + this.value">
+		{% for layer in LAYERS %}
+		{% if layer.getId == LAYERID %}
+		<option value="{{ layer.getId }}" selected="1">
+			{{ layer.getName }}</option>
+		{% else %}
+		<option value="{{ layer.getId }}">
+			{{ layer.getName }}</option>
+		{% endif %}
+		{% endfor %}
+	</select>
+</div>
+<br />
+<table class="tcal">
+	<tr>
+		<th>x|y</th>
+		{% for data in X_HEAD_ROW %}
+		{% set x = data * FIELDS_PER_SECTION %}
+		<th>{{ x }}</th>
+		{% endfor %}
+	</tr>
+	{% for rowy in SECTIONS %}
+	<tr>
+		{% set y = loop.index * FIELDS_PER_SECTION %}
+		<th style="width: 30px;">{{ y }}</th>
+		{% for data in rowy %}
+		<td>
+			<a href="javascript:void(0);"
+				onclick="switchInnerContent('SHOW_SECTION', 'Sektion anzeigen', 'section={{ data }}&layerid={{ LAYERID }}');">
+				Sektor {{ data }}</a>
+		</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+{% endif %}

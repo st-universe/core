@@ -1,4 +1,5 @@
 {# needs following variables: SHIP, wrapper) #}
+{% from 'html/macros.twig' import onClickShip %}
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
 <li>
@@ -7,7 +8,7 @@
     <tr>
       <td class="darkbg" colspan="5">
         {% if wrapper.isOwnedByCurrentUser %}
-        <a type="hidden" href="ship.php?SHOW_SHIP=1&id={{ shipId }}" />
+        <a type="hidden" {{ onClickShip(ship) }} />
         {% endif %}
         {{ ship.getName|bbcode }} | {{ ship.getUserName|bbcode }}
       </td>
@@ -15,7 +16,8 @@
     <tr>
       <td style="width: 20px; vertical-align: middle;">
         {% if CAN_UNDOCK %}
-        <a href="ship.php?id={{ SHIP.getId }}&B_UNDOCK_SHIP=1&target={{ shipId }}&sstr={{ SESSIONSTRING }}"><img
+        <a href="javascript:void(0);"
+          onClick="actionToInnerContent('B_UNDOCK_SHIP', 'id={{ SHIP.getId }}&target={{ shipId }}&sstr={{ SESSIONSTRING }}', '/ship.php');"><img
             src="/assets/buttons/dock1.png" title="abdocken" /></a>
         {% endif %}
       </td>

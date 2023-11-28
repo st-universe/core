@@ -1,4 +1,5 @@
-{% from 'html/shipmacros.twig' import nbsblock, shipimagewithoutwarp, shipstorage, initial_js %}
+{% from 'html/shipmacros.twig' import nbsblock, shipimagewithoutwarp, shipstorage %}
+{% from 'html/macros.twig' import onClickShip %}
 {% from 'html/shipcontrol/control_nav.twig' import control_nav %}
 {% from 'html/shipcontrol/control_mid.twig' import control_mid %}
 {% from 'html/shipcontrol/control_right.twig' import control_right %}
@@ -31,10 +32,9 @@
 {% if WRAPPER %}
 {% set SHIP = WRAPPER.get %}
 {% set shipId = SHIP.getId %}
-{{ initial_js(WRAPPER.get.getId) }}
 <form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
 	<input type="hidden" name="id" value="{{ SHIP.getId }}" />
-	<input type="hidden" name="sstr" value"{{ SESSIONSTRING }}" />
+	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 	<table class="tcal">
 		<tr>
 			<th style="text-align: center;">Typ</th>
@@ -134,7 +134,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<a href="?SHOW_SHIP=1&id={{ SHIP.getId }}" onmouseover="cp('uship','buttons/update1');"
+				<a {{ onClickShip(SHIP) }} onmouseover="cp('uship','buttons/update1');"
 					onmouseout="cp('uship','buttons/update0');">
 					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship" />
 				</a>
@@ -229,10 +229,12 @@
 										name="beamto" title="Zu Schiff beamen" /></a>
 								<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
 								{% if CAN_MANAGE %}
-								| <a href="station.php?SHOW_SHIP_MANAGEMENT=1&id={{ SHIP.getId }}">Management</a>
+								<a href="javascript:void(0);"
+									onclick="switchInnerContent('SHOW_SHIP_MANAGEMENT', 'Schiffsmanagement', 'id={{ SHIP.getId }}', 'station.php');">Management</a>
 								{% endif %}
 								{% if CAN_REPAIR %}
-								| <a href="station.php?SHOW_SHIP_REPAIR=1&id={{ SHIP.getId }}">Reparatur</a>
+								| <a href="javascript:void(0);"
+									onclick="switchInnerContent('SHOW_SHIP_REPAIR', 'Schiffreparatur', 'id={{ SHIP.getId }}', 'station.php');">Reparatur</a>
 								{% endif %}
 							</div>
 							{% endif %}

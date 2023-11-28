@@ -57,7 +57,7 @@ final class GameTalRenderer implements GameTalRendererInterface
         // render fragments are user related, so render them only if a user is available
         if ($user !== null) {
             foreach ($this->renderFragments as $renderFragment) {
-                $renderFragment->render($user, $talPage);
+                $renderFragment->render($user, $talPage, $game);
             }
         }
 

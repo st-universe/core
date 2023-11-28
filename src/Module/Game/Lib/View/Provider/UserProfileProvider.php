@@ -9,6 +9,7 @@ use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
@@ -81,5 +82,6 @@ final class UserProfileProvider implements ViewComponentProviderInterface
                 $player->getAlliance()
             )
         );
+        $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
     }
 }

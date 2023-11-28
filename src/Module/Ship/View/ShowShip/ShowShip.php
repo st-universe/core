@@ -168,8 +168,7 @@ final class ShowShip implements ViewControllerInterface
             $ship->getName()
         );
 
-        $game->setInnerContent('html/ship/ship.twig');
-
+        $game->setViewTemplate('html/ship/ship.twig');
         $game->setTemplateVar('WRAPPER', $wrapper);
 
         if ($ship->getLss()) {
@@ -218,6 +217,7 @@ final class ShowShip implements ViewControllerInterface
                 : $this->shipCrewCalculator->getMaxCrewCountByShip($ship)
         );
 
+        $game->addExecuteJS(sprintf("setShipIdAndSstr(%d, '%s')", $ship->getId(), $game->getSessionString()));
         $this->addWarpcoreSplitJavascript($wrapper, $game);
 
         $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));

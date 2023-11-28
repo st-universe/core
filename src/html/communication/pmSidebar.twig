@@ -4,7 +4,9 @@
     </tr>
     <tr>
         <td>
-            <span style="color: #cecece">&gt;</span> <a href="?WRITE_PM=1">Nachricht verfassen</a>
+            <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                onclick="switchInnerContent('WRITE_PM', 'Neue private Nachricht');">
+                Nachricht verfassen</a>
             {% if markcat %}
             <div>
                 <br />
@@ -30,7 +32,9 @@
     <div class="box_body">
         <ul>
             <li>
-                <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1">Alle Kontakte</a>
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_CONTACTLIST', 'Kontaktliste');">
+                    Alle Kontakte</a>
             </li>
             <li>
                 <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1">Ignorierte Siedler</a>

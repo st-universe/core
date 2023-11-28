@@ -1,138 +1,145 @@
-<html xmlns:stu="stu">
-<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-	<tal:block metal:fill-slot="body">
-		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+{% from 'html/macros.twig' import userAvatar, pmWindow, contactModeSwitcher %}
 
-		<div style="width: 530px; float: left;">
-			<div class="userProfileView">
-				<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER PROFILE" />
-				<div style="width: 100%;" tal:condition="not:IS_PROFILE_CURRENT_USER">
-					<br />
-					<br />
-					<br />
-					<div style="margin: auto; width: 530px;" class="divhead">Aktionen</div>
-					<div style="margin: auto; width: 530px; text-align: left;" class="divbody">
-						<table style="width: 100%;" cellpadding="0" cellspacing="0">
-							<tr>
-								<td style="text-align: center; width: 6%">
-									<metal:block metal:use-macro="html/macros.xhtml/pmwindow"
-										tal:define="id PROFILE/getId" />
-								</td>
-								<td style="text-align: center; width: 47%">
-									<tal:block tal:define="contact CONTACT; handle THIS/getUniqId">
-										<tal:block tal:condition="contact">
-											<span tal:attributes="id handle">
-												<metal:macro tal:define="div handle"
-													metal:use-macro="html/commmacros.xhtml/clmodeview" />
-											</span>
-										</tal:block>
-										<tal:block tal:condition="not:contact"
-											tal:define="divname string:selector_${handle};div handle; userid PROFILE/getId"
-											metal:use-macro="html/macros.xhtml/contactbutton" />
-									</tal:block>
-								</td>
-								<td style="text-align: center; width: 47%">
-									<metal:macro metal:use-macro="html/macros.xhtml/ignorebutton"
-										tal:define="div string:ignore; userid PROFILE/getId" />
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div style="float: left;">
-				<div style="width: 350px;">
-					<div class="divhead">Name</div>
-					<div class="divbody">
-						<img src="assets/rassen/${PROFILE/getFactionId}s.png" />
-						<span tal:replace="structure bbcode:PROFILE/getName">NAME</span>
-					</div>
-					<br />
-					<tal:block tal:condition="PROFILE/getAlliance">
-						<div class="divhead">Allianz</div>
-						<div class="divbody">
-							<a href="alliance.php?id=${PROFILE/getAlliance/getId}"
-								tal:content="structure bbcode:PROFILE/getAlliance/getName">ALLIANZ</a>
-						</div>
-					</tal:block>
-					<br />
-					<div class="divhead">Siedler seit</div>
-					<div class="divbody" tal:content="datetime:PROFILE/getCreationDate">CDATE</div>
-				</div>
-			</div>
-
-			<br style="clear: both;" />
+<div style="width: 530px; float: left;">
+	{% set alliance = PROFILE.getAlliance %}
+	<div class="userProfileView">
+		{{ userAvatar(PROFILE) }}
+		{% if not IS_PROFILE_CURRENT_USER %}
+		{% set userId = PROFILE.getId %}
+		<div style="width: 100%;">
 			<br />
-			<tal:block tal:condition="DESCRIPTION">
-				<div class="divhead" style="width: 530px;">Beschreibung <a tal:condition="PROFILE/hasTranslation"
-						onmouseover="cp('translate','buttons/translate1', 'png')"
-						onmouseout="cp('translate','buttons/translate0', 'png')">
-
-						<img src="assets/buttons/translate0.png" alt="Übersetzen"
-							style="cursor:pointer; margin-left: 5px;" onclick="toggleTranslation('description')"
-							name="translate" />
-
-					</a></div>
-				<div id="description" class="divbody translatable-content" style="width: 530px; word-wrap: break-word;"
-					tal:content="structure nl2br:DESCRIPTION">DESCRIPTION</div>
-				<br />
-			</tal:block>
-			<div style="width: 530px;">
-				<table class="tcal">
+			<br />
+			<br />
+			<div style="margin: auto; width: 530px;" class="divhead">Aktionen</div>
+			<div style="margin: auto; width: 530px; text-align: left;" class="divbody">
+				<table style="width: 100%;" cellpadding="0" cellspacing="0">
 					<tr>
-						<th>Plots</th>
-					</tr>
-					<tr tal:condition="not:RPG_PLOTS">
-						<td>Keine</td>
-					</tr>
-					<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data RPG_PLOTS">
-						<td>
-							<a href="comm.php?SHOW_PLOT=1&plotid=${data/getPlotId}"
-								tal:content="structure data/getRpgPlot/getTitle">NAME</a>
+						<td style="text-align: center; width: 6%">
+							{{ pmWindow(USER, userId) }}
+						</td>
+						<td style="text-align: center; width: 47%">
+							{% set handle = getUniqId() %}
+							{% if CONTACT %}
+							<span id="{{ handle }}">
+								{{ contactModeSwitcher(CONTACT, handle) }}
+							</span>
+							{% else %}
+							{% set divname = 'selector_' ~ handle %}
+							{% set div = handle %}
+							{% include 'html/user/contactButton.twig' %}
+							{% endif %}
+						</td>
+						<td style="text-align: center; width: 47%">
+							{% set div = 'ignore' %}
+							{% include 'html/user/ignoreButton.twig' %}
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-
-		<div style="float: left;">
-			<div style="margin-left: 5px;">
-				<table class="tcal">
-					<tr>
-						<th style="width: 300px;">Freunde</th>
-					</tr>
-					<tr>
-						<td>
-							<div tal:condition="not:FRIENDS" class="darkbg" style="text-align: center;">Keine
-							</div>
-							<div tal:condition="FRIENDS">
-								<tal:block tal:repeat="USER FRIENDS">
-									<metal:macro metal:use-macro="macros.xhtml/useravatar" />
-								</tal:block>
-							</div>
-						</td>
-					</tr>
-				</table>
+		{% endif %}
+	</div>
+	<div style="float: left;">
+		<div style="width: 350px;">
+			<div class="divhead">Name</div>
+			<div class="divbody">
+				<img src="assets/rassen/{{ PROFILE.getFactionId }}s.png" />
+				{{ PROFILE.getName|bbcode }}
 			</div>
-			<div style="margin-left: 5px; margin-top: 20px;">
-				<table class="tcal">
-					<tr>
-						<th style="width: 300px;">Awards</th>
-					</tr>
-					<tr>
-						<td>
-							<div tal:condition="not:PROFILE/getAwards" class="darkbg" style="text-align: center;">Keine
-							</div>
-							<img tal:repeat="data PROFILE/getAwards" src="assets/awards/${data/getAward/getId}.png"
-								tal:attributes="title data/getAward/getDescription" title="runtime"
-								style="width: 65px; height: 65px; padding: 5px;" />
-						</td>
-					</tr>
-				</table>
+			<br />
+			{% if alliance %}
+			<div class="divhead">Allianz</div>
+			<div class="divbody">
+				<a href="alliance.php?id={{ alliance.getId }}">
+					{{ alliance.getName|bbcode }}
+				</a>
 			</div>
+			{% endif %}
+			<br />
+			<div class="divhead">Siedler seit</div>
+			<div class="divbody">{{ PROFILE.getCreationDate|stuDateTime }}</div>
 		</div>
+	</div>
 
-	</tal:block>
-</tal:block>
+	<br style="clear: both;" />
+	<br />
+	{% if DESCRIPTION %}
+	<div class="divhead" style="width: 530px;">Beschreibung
+		{% if PROFILE.hasTranslation %}
+		<a onmouseover="cp('translate','buttons/translate1', 'png')"
+			onmouseout="cp('translate','buttons/translate0', 'png')">
+			<img src="assets/buttons/translate0.png" alt="Übersetzen" style="cursor:pointer; margin-left: 5px;"
+				onclick="toggleTranslation('description')" name="translate" />
+		</a>
+		{% endif %}
+	</div>
+	<div id="description" class="divbody translatable-content" style="width: 530px; word-wrap: break-word;">
+		{% autoescape false %}
+		{{ DESCRIPTION|nl2br }}
+		{% endautoescape %}
+	</div>
+	<br />
+	{% endif %}
+	<div style="width: 530px;">
+		<table class="tcal">
+			<tr>
+				<th>Plots</th>
+			</tr>
+			{% if not RPG_PLOTS %}
+			<tr>
+				<td>Keine</td>
+			</tr>
+			{% endif %}
+			{% for data in RPG_PLOTS %}
+			<tr class="row">
+				<td>
+					<a href="comm.php?SHOW_PLOT=1&plotid={{ data.getPlotId }}">
+						{{ data.getRpgPlot.getTitle }}
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
 
-</html>
+<div style="float: left;">
+	<div style="margin-left: 5px;">
+		<table class="tcal">
+			<tr>
+				<th style="width: 300px;">Freunde</th>
+			</tr>
+			<tr>
+				<td>
+					{% if FRIENDS %}
+					{% for user in FRIENDS %}
+					{{ userAvatar(user) }}
+					{% endfor %}
+					{% else %}
+					<div class="darkbg" style="text-align: center;">Keine
+					</div>
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="margin-left: 5px; margin-top: 20px;">
+		<table class="tcal">
+			<tr>
+				<th style="width: 300px;">Awards</th>
+			</tr>
+			<tr>
+				<td>
+					{% if not PROFILE.getAwards %}
+					<div class="darkbg" style="text-align: center;">Keine
+					</div>
+					{% endif %}
+					{% for data in PROFILE.getAwards %}
+					<img src="assets/awards/{{ data.getAward.getId }}.png" title="{{ data.getAward.getDescription }}"
+						style="width: 65px; height: 65px; padding: 5px;" />
+					{% endfor %}
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

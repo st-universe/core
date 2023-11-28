@@ -101,9 +101,10 @@ final class ShowColony implements ViewControllerInterface
             sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $colony->getId()),
             $colony->getName()
         );
-        $game->setTemplateFile('html/colony/colony.twig');
+        $game->setViewTemplate('html/colony/colony.twig');
         $game->setPagetitle(sprintf(_('Kolonie: %s'), $colony->getName()));
 
+        $game->addExecuteJS(sprintf("setColonyIdAndSstr(%d, '%s')", $colony->getId(), $game->getSessionString()));
 
         $game->setTemplateVar('SELECTED_COLONY_MENU_TEMPLATE', $menu->getTemplate());
 

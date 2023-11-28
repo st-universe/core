@@ -34,7 +34,7 @@ final class MapSectionHelper
         int $currentSection,
         bool $isMapEditor = false,
         int $direction = null
-    ): void {
+    ): int {
         //$this->loggerUtil->init('MSH', LoggerEnum::LEVEL_ERROR);
 
         $section = $this->getSection($currentSection, $direction, $layer);
@@ -82,6 +82,8 @@ final class MapSectionHelper
                 $game
             );
         }
+
+        return $section;
     }
 
     private function enablePreviewRows(

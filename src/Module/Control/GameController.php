@@ -32,10 +32,10 @@ use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTalRendererInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
+use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -101,6 +101,8 @@ final class GameController implements GameControllerInterface
 
     private EventDispatcherInterface $eventDispatcher;
 
+    private GameSetupInterface $gameSetup;
+
     private bool $isTwig = false;
 
     /** @var array<Notification> */
@@ -156,7 +158,8 @@ final class GameController implements GameControllerInterface
         LoggerUtilFactoryInterface $loggerUtilFactory,
         UuidGeneratorInterface $uuidGenerator,
         EventDispatcherInterface $eventDispatcher,
-        GameRequestSaverInterface $gameRequestSaver
+        GameRequestSaverInterface $gameRequestSaver,
+        GameSetupInterface $gameSetup
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -178,6 +181,9 @@ final class GameController implements GameControllerInterface
         $this->uuidGenerator = $uuidGenerator;
         $this->gameRequestSaver = $gameRequestSaver;
         $this->eventDispatcher = $eventDispatcher;
+        $this->gameSetup = $gameSetup;
+
+        //$this->loggerUtil->init('game', LoggerEnum::LEVEL_ERROR);
     }
 
     /**
@@ -207,22 +213,28 @@ final class GameController implements GameControllerInterface
         return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
     }
 
-    public function setTemplateFile(string $tpl): void
+    public function setViewTemplate(string $viewTemplate): void
     {
-        if (str_ends_with($tpl, '.twig')) {
-            $this->isTwig = true;
-            $this->twigPage->setTemplate($tpl);
+        $isSwitch = request::has('switch');
+        if ($isSwitch) {
+            $this->setTemplateFile('html/view/breadcrumbAndView.twig');
+            $this->setTemplateVar('VIEW_TEMPLATE', $viewTemplate);
         } else {
-            $this->talPage->setTemplate($tpl);
+            $this->gameSetup->setTemplateAndComponents($viewTemplate, $this);
         }
     }
 
-    public function setInnerContent(string $twigTemplate): void
+    public function setTemplateFile(string $template): void
     {
-        $this->setTemplateFile('html/view/breadcrumbAndView.twig');
-        $this->setTemplateVar('TEMPLATE', $twigTemplate);
-    }
+        $this->loggerUtil->log(sprintf('setTemplateFile: %s', $template));
 
+        if (str_ends_with($template, '.twig')) {
+            $this->isTwig = true;
+            $this->twigPage->setTemplate($template);
+        } else {
+            $this->talPage->setTemplate($template);
+        }
+    }
 
     public function setMacroAndTemplate(string $macro, string $tpl): void
     {
@@ -236,7 +248,6 @@ final class GameController implements GameControllerInterface
 
         if (str_ends_with($macro, '.twig')) {
             $this->setTemplateFile('html/ajaxwindow.twig');
-            $this->setTemplateVar('TEMPLATE', $macro);
         } else {
             $this->setTemplateFile('html/ajaxwindow.xhtml');
         }
@@ -244,11 +255,12 @@ final class GameController implements GameControllerInterface
 
     public function showMacro(string $macro): void
     {
+        $this->loggerUtil->log(sprintf('showMacro: %s', $macro));
+
         $this->macro = $macro;
 
         if (str_ends_with($macro, '.twig')) {
             $this->setTemplateFile('html/ajaxempty.twig');
-            $this->setTemplateVar('TEMPLATE', $macro);
         } else {
             $this->setTemplateFile('html/ajaxempty.xhtml');
         }
@@ -662,10 +674,10 @@ final class GameController implements GameControllerInterface
             $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException $e) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
-            $this->setTemplateFile('html/ship/ship.twig');
+            $this->setViewTemplate('html/ship/ship.twig');
         } catch (ShipIsDestroyedException $e) {
             $this->addInformation('Dieses Schiff wurde zerstört!');
-            $this->setTemplateFile('html/ship/ship.twig');
+            $this->setViewTemplate('html/ship/ship.twig');
         } catch (ItemNotFoundException $e) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
             $this->setTemplateFile('html/notfound.xhtml');
@@ -675,7 +687,7 @@ final class GameController implements GameControllerInterface
             if (request::isAjaxRequest()) {
                 $this->setMacroInAjaxWindow('html/sitemacros.xhtml/systeminformation');
             } else {
-                $this->setTemplateFile('html/ship/ship.twig');
+                $this->setViewTemplate('html/ship/ship.twig');
             }
         } catch (Throwable $e) {
             throw $e;
@@ -858,21 +870,6 @@ final class GameController implements GameControllerInterface
             'executionTime' => $this->benchmark->getTime(),
             'memoryUsage' => $this->benchmark->getMemoryUsage(),
             'memoryPeakUsage' => $this->benchmark->getMemoryPeak()
-        ];
-    }
-
-    public function getContactlistModes(): array
-    {
-        return [
-            ContactListModeEnum::CONTACT_FRIEND => [
-                'mode' => ContactListModeEnum::CONTACT_FRIEND, 'name' => _('Freund')
-            ],
-            ContactListModeEnum::CONTACT_ENEMY => [
-                'mode' => ContactListModeEnum::CONTACT_ENEMY, 'name' => _('Feind')
-            ],
-            ContactListModeEnum::CONTACT_NEUTRAL => [
-                'mode' => ContactListModeEnum::CONTACT_NEUTRAL, 'name' => _('Neutral')
-            ],
         ];
     }
 }
