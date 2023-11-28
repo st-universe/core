@@ -64,7 +64,7 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         }
         $this->message->setNew(false);
 
-        $this->privateMessageRepository->save($this->message);
+        $this->privateMessageRepository->save($this->message, true);
 
         return true;
     }
