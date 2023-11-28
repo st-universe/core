@@ -8,6 +8,8 @@ use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Game\Lib\Component\ComponentEnum;
+use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
@@ -33,18 +35,22 @@ final class MessageProvider implements ViewComponentProviderInterface
 
     private PrivateMessageUiFactoryInterface $privateMessageUiFactory;
 
+    private ComponentLoaderInterface $componentLoader;
+
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         IgnoreListRepositoryInterface $ignoreListRepository,
         PrivateMessageUiFactoryInterface $privateMessageUiFactory,
-        ContactRepositoryInterface $contactRepository
+        ContactRepositoryInterface $contactRepository,
+        ComponentLoaderInterface $componentLoader
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->ignoreListRepository = $ignoreListRepository;
         $this->contactRepository = $contactRepository;
         $this->privateMessageUiFactory = $privateMessageUiFactory;
+        $this->componentLoader = $componentLoader;
     }
 
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -132,5 +138,7 @@ final class MessageProvider implements ViewComponentProviderInterface
                 $this->privateMessageFolderRepository->getOrderedByUser($userId)
             )
         );
+
+        $this->componentLoader->addComponentUpdate(ComponentEnum::PM_NAVLET);
     }
 }
