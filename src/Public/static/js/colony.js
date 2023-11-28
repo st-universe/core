@@ -1,7 +1,13 @@
 var colonyid = null;
+var hostid = null;
+var hosttype = null;
 var sstr = null;
-function setColonyIdAndSstr(id, sessionString) {
+var scrollOffset = 6;
+
+function initializeJsVars(id, type, sessionString) {
 	colonyid = id;
+	hostid = id;
+	hosttype = type;
 	sstr = sessionString;
 }
 

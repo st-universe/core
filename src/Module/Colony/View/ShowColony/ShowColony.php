@@ -9,6 +9,7 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
+use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -104,7 +105,12 @@ final class ShowColony implements ViewControllerInterface
         $game->setViewTemplate('html/colony/colony.twig');
         $game->setPagetitle(sprintf(_('Kolonie: %s'), $colony->getName()));
 
-        $game->addExecuteJS(sprintf("setColonyIdAndSstr(%d, '%s')", $colony->getId(), $game->getSessionString()));
+        $game->addExecuteJS(sprintf(
+            "initializeJsVars(%d, %d, '%s')",
+            $colony->getId(),
+            PlanetFieldHostTypeEnum::COLONY->value,
+            $game->getSessionString()
+        ));
 
         $game->setTemplateVar('SELECTED_COLONY_MENU_TEMPLATE', $menu->getTemplate());
 
