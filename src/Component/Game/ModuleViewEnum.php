@@ -73,7 +73,7 @@ enum ModuleViewEnum: string
             self::MAP => 'html/view/map.twig',
             self::NOTES => 'not needed',
             self::OPTIONS => 'html/view/options.twig',
-            self::PROFILE => 'html/view/userProfile.twig',
+            self::PROFILE => 'html/view/userprofile.twig',
             self::ADMIN => 'not needed'
         };
     }
