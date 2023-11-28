@@ -331,7 +331,7 @@ canColonize) %}
             <br />
             {% if ship.hasWarpdrive %}
             <a href="javascript:void(0);"
-                onClick="actionToInnerContent('B_LEAVE_STARSYSTEM', null, 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');">
+                onClick="actionToInnerContent('B_LEAVE_STARSYSTEM', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');">
                 <img src="/assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
             </a>
             {% endif %}
