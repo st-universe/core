@@ -72,7 +72,6 @@
                         {{ userProfile(postUser.getId) }}
                     </div>
                     {% endif %}
-                    {% if KN_OFFSET %}
                     <div class="segment">
                         {% if post.hasTranslation %}
                         <a onmouseover="cp('translate{{ postId }}','buttons/translate1', 'png')"
@@ -99,7 +98,6 @@
                         </a>
                         {% endif %}
                     </div>
-                    {% endif %}
                 </div>
                 <div class="knGridRating">
                     {% if post.getEditDate %}
