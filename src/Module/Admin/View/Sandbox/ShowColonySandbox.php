@@ -57,6 +57,13 @@ final class ShowColonySandbox implements ViewControllerInterface
                 $sandbox->getName()
             );
 
+            $game->addExecuteJS(sprintf(
+                "initializeJsVars(%d, %d, '%s')",
+                $sandbox->getId(),
+                PlanetFieldHostTypeEnum::SANDBOX->value,
+                $game->getSessionString()
+            ));
+
             $menu = ColonyMenuEnum::getFor($game->getViewContext()['COLONY_MENU'] ?? null);
 
             $this->colonyGuiHelper->registerMenuComponents($menu, $sandbox, $game);
