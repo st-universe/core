@@ -20,11 +20,15 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         return new PrivateMessage();
     }
 
-    public function save(PrivateMessageInterface $post): void
+    public function save(PrivateMessageInterface $post, bool $doFlush = false): void
     {
         $em = $this->getEntityManager();
 
         $em->persist($post);
+
+        if ($doFlush) {
+            $em->flush();
+        }
     }
 
     public function delete(PrivateMessageInterface $post): void

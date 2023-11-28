@@ -18,7 +18,7 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
 {
     public function prototype(): PrivateMessageInterface;
 
-    public function save(PrivateMessageInterface $post): void;
+    public function save(PrivateMessageInterface $post, bool $doFlush = false): void;
 
     public function delete(PrivateMessageInterface $post): void;
 
