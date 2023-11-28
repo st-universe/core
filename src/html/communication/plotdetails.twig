@@ -1,0 +1,77 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
+
+<form action="comm.php" method="post">
+  {% set navigationMacro = 'plotNavigation' %}
+  <input type="hidden" name="SHOW_PLOT" value="1" />
+  <input type="hidden" name="plotid" value="{{ PLOT.getId }}" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  <div style="display: grid; grid-template-columns: auto 550px; grid-gap: 30px; width: 100%;">
+    <div>
+      {% include 'html/communication/kn.twig' %}
+    </div>
+    <div>
+      <div class="divhead">Beschreibung</div>
+      <div class="divbody">
+        {% autoescape false %}
+        {{ PLOT.getDescription|bbcode|nl2br }}
+        {% endautoescape %}
+      </div>
+      <br />
+      <div class="divhead">Status</div>
+      <div class="divbody">
+        {% if PLOT.isActive %}
+        <div>
+          <div>
+            Plot läuft seit {{ PLOT.getStartDate|stuDate }}
+          </div>
+          {% if MAY_EDIT %}
+          <div style="padding-top: 15px">
+            <input type="submit" value="Plot beenden" name="B_END_PLOT" />
+          </div>
+          <div style="padding-top: 30px">
+            Spieler-ID <input type="text" name="memid" style="width: 50px;" /> <input type="submit" value="Hinzufügen"
+              name="B_ADD_PLOTMEMBER" />
+          </div>
+          <div style="padding-top: 30px">
+            Beitrag-ID <input type="text" name="addknid" style="width: 50px;" /> <input type="submit" value="Hinzufügen"
+              name="B_APPLY_POST_TO_PLOT" />
+          </div>
+          {% endif %}
+        </div>
+        {% else %}
+        <div>
+          Plot beendet seit: {{ PLOT.getEndDate|stuDate }}
+        </div>
+        {% endif %}
+      </div>
+      <br />
+      <div class="divhead">Schreiber</div>
+      <div class="divbody">
+        {% for member in PLOT.getMembers %}
+        <div class="plotMemberList">
+          <div class="plotMemberListItemAvatar">
+            {{ userAvatar(member.getUser) }}
+          </div>
+          <div class="plotMemberListItemName">
+            {{ member.getUser.getName|bbcode }}
+          </div>
+          <div>
+            <div class="plotMemberListItemPm">
+              {{ pmWindow(USER, member.getUserId) }}
+            </div>
+            <div class="plotMemberListItemDelete">
+              {% if MAY_EDIT %}
+              <a href="?SHOW_PLOT=1&plotid={{ PLOT.getId }}&B_DEL_PLOTMEMBER=1&memid={{ member.getUserId }}&sstr={{ SESSIONSTRING }}"
+                onmouseover="cp('rmm{{ member.getUserId }}','buttons/x2')"
+                onmouseout="cp('rmm{{ member.getUserId }}','buttons/x1')">
+                <img src="assets/buttons/x1.png" title="Schreiber entfernen" name="rmm{{ member.getUserId }}" />
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</form>

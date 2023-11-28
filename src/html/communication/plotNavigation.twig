@@ -1,0 +1,10 @@
+<table>
+    <tr>
+        {% for item in KN_NAVIGATION %}
+        <td>
+            <a href="?SHOW_PLOT=1&plotid={{ PLOT.getId }}&mark={{ item.mark }}" class="{{ item.cssclass }}">
+                {{ item.page }}</a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>

@@ -74,7 +74,7 @@ final class ShowKnPlot implements ViewControllerInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
 
-        $game->setTemplateFile('html/plotdetails.xhtml');
+        $game->setViewTemplate('html/communication/plotdetails.twig');
         $game->setPageTitle(sprintf('Plot: %s', $plot->getTitle()));
 
         $game->appendNavigationPart('comm.php', _('KommNet'));
@@ -91,7 +91,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn (KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),
@@ -105,7 +105,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setTemplateVar(
             'POSTS',
             array_map(
-                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn (KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),
