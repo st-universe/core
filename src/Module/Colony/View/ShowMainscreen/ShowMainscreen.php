@@ -32,5 +32,7 @@ final class ShowMainscreen implements ViewControllerInterface
 
         $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_MAINSCREEN, $host, $game);
         $game->showMacro(ColonyMenuEnum::MENU_MAINSCREEN->getTemplate());
+
+        $game->setTemplateVar('SELECTED_COLONY_SUB_MENU_TEMPLATE', ColonyMenuEnum::MENU_INFO->getTemplate());
     }
 }
