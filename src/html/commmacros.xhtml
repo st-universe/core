@@ -69,15 +69,6 @@
   </form>
 </metal:macro>
 
-<tal:block metal:define-macro="clmodeview">
-  <tal:block tal:condition="contact">
-    <span tal:condition="div" class="cltype${contact/getMode}" id="contact${contact/getId}"
-      onclick="showContactModeSwitcher('${div}',${contact/getId});"
-      tal:content="clmodeDescription:contact/getMode">MODE</span>
-    <span tal:condition="not:div" class="cltype${contact/getMode}" style="cursor: auto;"
-      tal:content="clmodeDescription:contact/getMode">MODE</span>
-  </tal:block>
-</tal:block>
 <metal:macro metal:define-macro="write_quick_pm">
   <input type="hidden" name="pm_sstr" id="pm_sstr" tal:attributes="value THIS/getSessionString" />
   <form id="quickpm" tal:condition="exists: RECIPIENT">

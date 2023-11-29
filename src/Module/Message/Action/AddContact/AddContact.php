@@ -8,6 +8,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\View\ShowContactMode\ShowContactMode;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -37,6 +38,8 @@ final class AddContact implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowContactMode::VIEW_IDENTIFIER);
+
         $game->setTemplateVar('div', $this->addContactRequest->getContactDiv());
         $game->setTemplateVar('contact', null);
 

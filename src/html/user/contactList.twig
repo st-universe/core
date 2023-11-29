@@ -1,79 +1,79 @@
+{% from 'html/macros.twig' import pmWindow, userProfile %}
+
 <form action="pm.php" method="post" name="contactlist" id="contactlist">
 	<input type="hidden" name="SHOW_CONTACTLIST" value="1" />
 	<input type="hidden" name="runtime" id="formaction" value="1" />
 	<input type="hidden" name="edit_contact" id="edit_contact" value="0" />
-	<input type="hidden" name="formaction" value="1" />
 	<input type="hidden" name="deletion_mark" id="deletion_mark" value="" />
 	<div style="float: left; width: 75%;">
-		<tal:block tal:repeat="contact CONTACT_LIST">
-			<table class="tcal">
-				<tr tal:attributes="class string:row${repeat/contact/odd}">
-					<td style="width: 20px; text-align: center;">
-						<input type="checkbox" name="deleted[]" value="runtime" tal:attributes="value contact/getId" />
-					</td>
-					<td style="width: 60px;">
-						<span id="contact${contact/getId}">
-							<tal:block tal:define="div string:contact${contact/getId}"
-								metal:use-macro="html/commmacros.xhtml/clmodeview" />
-						</span>
-					</td>
-					<td tal:define="id contact/getRecipient/getId">
-						<metal-macro metal:use-macro="html/macros.xhtml/pmwindow" />
-						<metal-macro metal:use-macro="html/macros.xhtml/userprofile" />
-						<span tal:replace="structure bbcode:contact/getRecipient/getName">USER</span> (<span
-							tal:replace="contact/getRecipient/getId">ID</span>)
-					</td>
-					<td style="width: 16px;">
-						<img tal:condition="not:contact/getComment" src="assets/buttons/b_down1.png" title="Kommentar"
-							onclick="toggleTableRowVisible('contact_comment_${contact/getId}')" />
-					</td>
-				</tr>
-				<tr tal:condition="contact/getComment" id="contact_comment_${contact/getId}">
-					<td colspan="4">
-						<span>Kommentar</span>
-						<input type="text" style="width: 500px" name="comment_${contact/getId}"
-							id="contact_comment_input_${contact/getId}"
-							tal:attributes="value structure contact/getComment" />
-						<input type="button" class="button" value="speichern"
-							onclick="saveContactComment(${contact/getId})" />
-						<input type="button" class="button" value="löschen"
-							onclick="emptyContactComment(${contact/getId})" />
-					</td>
-				</tr>
-				<tr tal:condition="not:contact/getComment" style="display: none" id="contact_comment_${contact/getId}">
-					<td colspan="4">
-						<span>Kommentar</span>
-						<input type="text" style="width: 500px" name="comment_${contact/getId}"
-							id="contact_comment_input_${contact/getId}"
-							tal:attributes="value structure contact/getComment" />
-						<input type="button" class="button" value="speichern"
-							onclick="saveContactComment(${contact/getId})" />
-						<input type="button" class="button" value="löschen"
-							onclick="emptyContactComment(${contact/getId})" />
-					</td>
-				</tr>
-			</table>
-			<br />
-		</tal:block>
-		<tal:block tal:condition="REMOTE_CONTACTS">
-			<br /><br />
-			<table class="tcal">
-				<tr>
-					<th colspan="2">Dir freundlich/feindlich gesinnte Siedler</th>
-				</tr>
-				<tr tal:attributes="class string:row${repeat/contact/odd}" tal:repeat="contact REMOTE_CONTACTS">
-					<td style="width: 60px;">
-						<span id="contact${contact/getId}">
-							<tal:block tal:define="div php:FALSE" metal:use-macro="html/commmacros.xhtml/clmodeview" />
-						</span>
-					</td>
-					<td>
-						<span tal:replace="structure bbcode:contact/getUser/getName">USER</span> (<span
-							tal:replace="contact/getUser/getId">ID</span>)
-					</td>
-				</tr>
-			</table>
-		</tal:block>
+		{% for contact in CONTACT_LIST %}
+		{% set contactId = contact.getId %}
+		<table class="tcal">
+			<tr class="row">
+				<td style="width: 20px; text-align: center;">
+					<input type="checkbox" name="deleted[]" value="{{ contactId }}" />
+				</td>
+				<td style="width: 60px;">
+					<span id="contact{{ contactId }}">
+						{% set div = 'contact' ~ contactId %}
+						{% include 'html/user/contactMode.twig' %}
+					</span>
+				</td>
+
+				<td>
+					{% set recipientId = contact.getRecipient.getId %}
+					{{ pmWindow(USER, recipientId) }}
+					{{ userProfile(recipientId) }}
+					{{ contact.getRecipient.getName|bbcode }} ({{ recipientId }})
+				</td>
+				<td style="width: 16px;">
+					{% if not contact.getComment %}
+					<img src="assets/buttons/b_down1.png" title="Kommentar"
+						onclick="toggleTableRowVisible('contact_comment_{{ contactId }}')" />
+					{% endif %}
+				</td>
+			</tr>
+			{% if contact.getComment %}
+			{% set style = '' %}
+			{% else %}
+			{% set style = 'display: none' %}
+			{% endif %}
+			<tr style="{{ style }}" id="contact_comment_{{ contactId }}">
+				<td colspan="4">
+					<span>Kommentar</span>
+					<input type="text" style="width: 500px" name="comment_{{ contactId }}"
+						id="contact_comment_input_{{ contactId }}" value="{{ contact.getComment }}" />
+					<input type="button" class="button" value="speichern"
+						onclick="saveContactComment({{ contactId }})" />
+					<input type="button" class="button" value="löschen"
+						onclick="emptyContactComment({{ contactId }})" />
+				</td>
+			</tr>
+		</table>
+		<br />
+		{% endfor %}
+		{% if REMOTE_CONTACTS %}
+		<br /><br />
+		<table class="tcal">
+			<tr>
+				<th colspan="2">Dir freundlich/feindlich gesinnte Siedler</th>
+			</tr>
+			{% for contact in REMOTE_CONTACTS %}
+			{% set contactId = contact.getId %}
+			<tr class="row">
+				<td style="width: 60px;">
+					<span id="contact{{ contactId }}">
+						{% set div = false %}
+						{% include 'html/user/contactMode.twig' %}
+					</span>
+				</td>
+				<td>
+					{{ contact.getUser.getName|bbcode }} ({{ contact.getUser.getId }})
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
 	</div>
 	<div style="float: left; padding-left: 1%; width: 24%;">
 		<table class="tcal">
@@ -83,8 +83,8 @@
 			<tr>
 				<td>
 					Siedler ID <input type="text" style="width: 50px;" name="recid" />
-					<tal:block tal:define="obj THIS; divname string:clmode"
-						metal:use-macro="html/commmacros.xhtml/clmodeselector" />
+					{% set divname = 'clmode' %}
+					{% include 'html/user/contactListModeSelector.twig' %}
 					<input type="submit" value="Hinzufügen" name="B_ADD_CONTACT" />
 				</td>
 			</tr>
@@ -105,8 +105,8 @@
 					<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
 						onclick="deleteMarkedContacts();">Alle selektierten löschen</a>
 					<br /><br />
-					<span style="color: #cecece">&gt;</span> <a
-						href="?B_DELETE_ALL_CONTACTS=1&sstr=${THIS/getSessionString}">
+					<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+						onClick="actionToInnerContent('B_DELETE_ALL_CONTACTS', 'sstr={{ SESSIONSTRING }}');">
 						Alle löschen</a>
 				</td>
 			</tr>

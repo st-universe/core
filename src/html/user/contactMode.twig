@@ -1,0 +1,12 @@
+{% if contact %}
+{% set mode = contact.getMode %}
+{% set value = mode.value %}
+{% set title = mode.getTitle %}
+
+{% if div %}
+<span class="cltype{{ value }}" id="contact{{ contact.getId }}"
+    onclick="showContactModeSwitcher('{{ div }}', {{ contact.getId }});">{{ title }}</span>
+{% else %}
+<span class="cltype{{ value }}" style="cursor: auto;">{{ title }}</span>
+{% endif %}
+{% endif %}
