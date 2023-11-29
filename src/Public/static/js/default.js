@@ -665,7 +665,7 @@ function switchView(view, title, url) {
 function switchInnerContent(view, title, params, page) {
         closeAjaxWindow();
 
-        url = `?${view}=1&switch=1`;
+        url = `?${view}=1`;
         if (page) {
                 url = page + url;
         }
@@ -674,7 +674,9 @@ function switchInnerContent(view, title, params, page) {
                 url += `&${params}`;
         }
 
-        new Ajax.Updater('innerContent', url, {
+        switchUrl = url + '&switch=1';
+
+        new Ajax.Updater('innerContent', switchUrl, {
                 onSuccess: function () {
                         let doc = new DOMParser().parseFromString(title, 'text/html');
                         document.title = doc.body.textContent || "";
@@ -689,12 +691,14 @@ function switchInnerContent(view, title, params, page) {
 function actionToInnerContent(action, params, title, page) {
         closeAjaxWindow();
 
-        url = `?${action}=1&switch=1&${params}`;
+        url = `?${action}=1&${params}`;
         if (page) {
                 url = page + url;
         }
 
-        new Ajax.Updater('innerContent', url, {
+        switchUrl = url + '&switch=1';
+
+        new Ajax.Updater('innerContent', switchUrl, {
                 onSuccess: function () {
                         if (title) {
                                 let doc = new DOMParser().parseFromString(title, 'text/html');
