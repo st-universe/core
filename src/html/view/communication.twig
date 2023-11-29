@@ -51,20 +51,26 @@
   <div class="box">
     <div class="box_title">Suche</div>
     <div class="box_body">
-      <form method="post" action="comm.php">
+      <form method="post" action="comm.php" name="knsearchform">
         <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <ul>
           <li>
             <input type="text" name="search" style="width: 150px;" onkeypress="return event.keyCode != 13;" />
           </li>
           <li>
-            <input type="submit" class="button" value="nach Spieler-ID suchen" name="SHOW_USER_SEARCH" />
+            <a href="javascript:void(0);" onClick="searchKn('SHOW_USER_SEARCH');" class="linkbutton">
+              nach Spieler-ID suchen
+            </a>
           </li>
           <li>
-            <input type="submit" class="button" value="nach Beitrag-ID suchen" name="SHOW_POSTID_SEARCH" />
+            <a href="javascript:void(0);" onClick="searchKn('SHOW_POSTID_SEARCH');" class="linkbutton">
+              nach Beitrag-ID suchen
+            </a>
           </li>
           <li>
-            <input type="submit" class="button" value="nach Text suchen" name="SHOW_POST_SEARCH" />
+            <a href="javascript:void(0);" onClick="searchKn('SHOW_POST_SEARCH');" class="linkbutton">
+              nach Text suchen
+            </a>
           </li>
         </ul>
       </form>

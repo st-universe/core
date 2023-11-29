@@ -5,8 +5,8 @@ function openNewCatWindow() {
 }
 
 function addNewCategory() {
-	name = $('catname').value;
-	if (name.length < 1) {
+	catname = $('catname').value;
+	if (catname.length < 1) {
 		alert('Es wurde kein Name eingegeben');
 		return;
 	}
@@ -15,8 +15,8 @@ function addNewCategory() {
 }
 
 function changeCategoryName() {
-	name = $('catname').value;
-	if (name.length < 1) {
+	catname = $('catname').value;
+	if (catname.length < 1) {
 		alert('Es wurde kein Name eingegeben');
 		return;
 	}
@@ -125,4 +125,10 @@ function rateKnPost(postId, rating) {
 			'rating': rating
 		}
 	);
+}
+
+function searchKn(view) {
+	search = document.knsearchform.search.value;
+
+	switchInnerContent(view, 'KommNet - Suche', `search=${search}`);
 }
