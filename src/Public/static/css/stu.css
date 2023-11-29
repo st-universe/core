@@ -804,30 +804,6 @@ tr.fleetLeader {
   outline: 1px dashed #ffec00ab ! important;
 }
 
-input.upButton {
-  background: url(/assets/buttons/b_up1.png) no-repeat;
-  height: 22px;
-  width: 22px;
-}
-
-input.downButton {
-  background: url(/assets/buttons/b_down1.png) no-repeat;
-  height: 22px;
-  width: 22px;
-}
-
-input.leftButton {
-  background: url(/assets/buttons/b_from1.png) no-repeat;
-  height: 22px;
-  width: 22px;
-}
-
-input.rightButton {
-  background: url(/assets/buttons/b_to1.png) no-repeat;
-  height: 22px;
-  width: 22px;
-}
-
 td.module_select_base {
   height: 40px;
   width: 20%;
