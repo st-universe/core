@@ -154,7 +154,13 @@ function refreshHost() {
 }
 
 function createHostUri(IDENTIFIER, extra) {
-	return '?id=' + hostid + '&hosttype=' + hosttype + '&' + IDENTIFIER + '=1' + extra
+	uri = `?id=${hostid}&hosttype=${hosttype}&${IDENTIFIER}=1`;
+
+	if (extra) {
+		uri += extra;
+	}
+
+	return uri;
 }
 
 function getOrbitShipList(colonyId) {
