@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowSearchResult;
 
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -35,8 +36,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        $game->setPageTitle(_('Kommunikationsnetzwerk'));
-        $game->setTemplateFile('html/comm.xhtml');
+        $game->setViewTemplate(ModuleViewEnum::COMMUNICATION->getTemplate());
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
         $id = $this->showSearchResultRequest->getSearchId();
@@ -59,7 +59,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                fn(KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn (KnPostInterface $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),
