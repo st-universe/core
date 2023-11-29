@@ -9,7 +9,12 @@ function moveToPosition(posx, posy) {
 	if (!posx || !posy || !sstr || !shipid) {
 		return;
 	}
-	actionToInnerContent('B_MOVE', `id=${shipid}&posx=${posx}&posy=${posy}&sstr=${sstr}`, null, 'ship.php');
+	actionToInnerContent('B_MOVE', `id=${shipid}&posx=${posx}&posy=${posy}&sstr=${sstr}`);
+}
+
+function moveInDirection(action) {
+	amount = document.shipform.navapp.value;
+	actionToInnerContent(action, `id=${shipid}&navapp=${amount}&sstr=${sstr}`);
 }
 
 var lastPosition = '';
@@ -20,7 +25,7 @@ function focusNavApplet() {
 }
 
 function blurNavApplet() {
-	if (document.shipform.navapp.value != lastPosition) {
+	if (document.shipform.navapp.value != '') {
 		return;
 	}
 	document.shipform.navapp.value = lastPosition;

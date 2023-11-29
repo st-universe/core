@@ -56,39 +56,49 @@
         <tr>
             <td colspan="3" style="text-align: center;">
                 {% if navPanel.getUp.isDisabled %}
-                <input type="submit" value="&nbsp;" class="button upButton" name="B_MOVE_UP" disabled="disabled" />
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_up1.png" />
                 {% else %}
-                <input type="submit" value="&nbsp;" class="button upButton" name="B_MOVE_UP" />
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_UP');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_up1.png" title="Nach oben fliegen" />
+                </a>
                 {% endif %}
             </td>
         </tr>
         <tr>
             <td>
                 {% if navPanel.getLeft.isDisabled %}
-                <input type="submit" value="&nbsp;" class="button leftButton" name="B_MOVE_LEFT" disabled="disabled" />
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_from1.png" />
                 {% else %}
-                <input type="submit" value="&nbsp;" class="button leftButton" name="B_MOVE_LEFT" />
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_LEFT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_from1.png"
+                        title="Nach links fliegen" />
+                </a>
                 {% endif %}
             </td>
             <td style="text-align: center; font-weight: bold;">
-                <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" name="navapp"
+                <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp"
                     style="text-align: center;" size="1" value="1" />
             </td>
             <td>
                 {% if navPanel.getRight.isDisabled %}
-                <input type="submit" value="&nbsp;" class="button rightButton" name="B_MOVE_RIGHT"
-                    disabled="disabled" />
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_to1.png" />
                 {% else %}
-                <input type="submit" value="&nbsp;" class="button rightButton" name="B_MOVE_RIGHT" />
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_RIGHT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_to1.png"
+                        title="Nach rechts fliegen" />
+                </a>
                 {% endif %}
             </td>
         </tr>
         <tr>
             <td colspan="3" style="text-align: center;">
                 {% if navPanel.getDown.isDisabled %}
-                <input type="submit" value="&nbsp;" class="button downButton" name="B_MOVE_DOWN" disabled="disabled" />
+                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_down1.png" />
                 {% else %}
-                <input type="submit" value="&nbsp;" class="button downButton" name="B_MOVE_DOWN" />
+                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_DOWN');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_down1.png"
+                        title="Nach rechts fliegen" />
+                </a>
                 {% endif %}
             </td>
         </tr>
@@ -119,43 +129,51 @@
     <tr>
         <td colspan="3" style="text-align: center;">
             {% if up.isDisabled %}
-            <input type="submit" class="button" name="B_MOVE_UP" style="width: 100px;" value="{{ up.getLabel }}"
-                disabled="disabled" />
+            <input type="submit" class="button" style="width: 100px;" value="{{ up.getLabel }}" disabled="disabled" />
             {% else %}
-            <input type="submit" class="button" name="B_MOVE_UP" style="width: 100px;" value="{{ up.getLabel }}" />
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_UP');" class="linkbutton"
+                style="width: 100px;">
+                {{ up.getLabel }}
+            </a>
             {% endif %}
         </td>
     </tr>
     <tr>
         <td style="text-align: center;">
             {% if left.isDisabled %}
-            <input type="submit" class="button" name="B_MOVE_LEFT" style="width: 100px;" value="{{ left.getLabel }}"
-                disabled="disabled" />
+            <input type="submit" class="button" style="width: 100px;" value="{{ left.getLabel }}" disabled="disabled" />
             {% else %}
-            <input type="submit" class="button" name="B_MOVE_LEFT" style="width: 100px;" value="{{ left.getLabel }}" />
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_LEFT');" class="linkbutton"
+                style="width: 100px;">
+                {{ left.getLabel }}
+            </a>
             {% endif %}
         </td>
         <td style="width: 100px; text-align: center; font-weight: bold;">
-            <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" name="navapp"
+            <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp"
                 style="text-align: center;" size="7" value="{{ ship.getPosX }}|{{ ship.getPosY }}" />
         </td>
         <td style="text-align: center;">
             {% if right.isDisabled %}
-            <input type="submit" class="button" style="width: 100px;" name="B_MOVE_RIGHT" value="{{ right.getLabel }}"
+            <input type="submit" class="button" style="width: 100px;" value="{{ right.getLabel }}"
                 disabled="disabled" />
             {% else %}
-            <input type="submit" class="button" style="width: 100px;" name="B_MOVE_RIGHT"
-                value="{{ right.getLabel }}" />
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_RIGHT');" class="linkbutton"
+                style="width: 100px;">
+                {{ right.getLabel }}
+            </a>
             {% endif %}
         </td>
     </tr>
     <tr>
         <td colspan="3" style="text-align: center;">
             {% if down.isDisabled %}
-            <input type="submit" class="button" style="width: 100px;" name="B_MOVE_DOWN" value="{{ down.getLabel }}"
-                disabled="disabled" />
+            <input type="submit" class="button" style="width: 100px;" value="{{ down.getLabel }}" disabled="disabled" />
             {% else %}
-            <input type="submit" class="button" style="width: 100px;" name="B_MOVE_DOWN" value="{{ down.getLabel }}" />
+            <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_DOWN');" class="linkbutton"
+                style="width: 100px;">
+                {{ down.getLabel }}
+            </a>
             {% endif %}
         </td>
     </tr>
