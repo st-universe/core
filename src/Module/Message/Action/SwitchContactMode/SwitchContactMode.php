@@ -33,6 +33,8 @@ final class SwitchContactMode implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowContactMode::VIEW_IDENTIFIER);
+
         $game->setTemplateVar('div', $this->switchContactModeRequest->getContactDiv());
 
         $contact = $this->contactRepository->find($this->switchContactModeRequest->getContactId());
@@ -76,7 +78,6 @@ final class SwitchContactMode implements ActionControllerInterface
         $this->contactRepository->save($contact);
 
         $game->setTemplateVar('contact', $contact);
-        $game->setView(ShowContactMode::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool

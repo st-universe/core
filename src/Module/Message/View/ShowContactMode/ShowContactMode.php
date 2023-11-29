@@ -13,6 +13,6 @@ final class ShowContactMode implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->showMacro('html/commmacros.xhtml/clmodeview');
+        $game->showMacro('html/user/contactMode.twig');
     }
 }

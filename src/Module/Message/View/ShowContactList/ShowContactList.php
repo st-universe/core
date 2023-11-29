@@ -6,6 +6,7 @@ namespace Stu\Module\Message\View\ShowContactList;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class ShowContactList implements ViewControllerInterface
@@ -32,5 +33,6 @@ final class ShowContactList implements ViewControllerInterface
 
         $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($userId));
         $game->setTemplateVar('REMOTE_CONTACTS', $this->contactRepository->getRemoteOrderedByUser($userId));
+        $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
     }
 }

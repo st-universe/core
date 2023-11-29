@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Message\View\ShowContactModeSwitch5;
+namespace Stu\Module\Message\View\ShowContactModeSwitch;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -33,6 +33,7 @@ final class ShowContactModeSwitch implements ViewControllerInterface
         if ($contact === null || $contact->getUserId() !== $game->getUser()->getId()) {
             return;
         }
+
         $game->setPageTitle(_('Status'));
         $game->setMacroInAjaxWindow('html/user/contactModeSwitch.twig');
         $game->setTemplateVar('contact', $contact);

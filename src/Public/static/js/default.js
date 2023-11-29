@@ -112,7 +112,7 @@ function addUserContact(obj, userid) {
         } else {
                 mode = $(contact).value;
         }
-        ajax_update(obj, '/pm.php?B_ADD_CONTACT=1&SHOW_CONTACT_MODE=1&recid=' + userid + '&clmode=' + mode + '&cldiv=' + obj);
+        ajax_update(obj, '/pm.php?B_ADD_CONTACT=1&recid=' + userid + '&clmode=' + mode + '&cldiv=' + obj);
 }
 var clmodeswitchdiv = '';
 function showContactModeSwitcher(div, contactid) {
@@ -122,7 +122,7 @@ function showContactModeSwitcher(div, contactid) {
         ajax_update('clmswitcher', '/pm.php?SHOW_CONTACT_MODESWITCH=1&cid=' + contactid);
 }
 function switchContactMode(contactid, mode) {
-        ajax_update(clmodeswitchdiv, '/pm.php?B_CHANGE_CONTACTMODE=1&SHOW_CONTACT_MODE=1&cid=' + contactid + '&clmode=' + mode + "&cldiv=" + clmodeswitchdiv);
+        ajax_update(clmodeswitchdiv, '/pm.php?B_CHANGE_CONTACTMODE=1&cid=' + contactid + '&clmode=' + mode + "&cldiv=" + clmodeswitchdiv);
         clmodeswitcdiv = '';
         cClick();
 }
