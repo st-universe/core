@@ -88,7 +88,7 @@ final class UserList implements ViewControllerInterface
             );
         }
 
-        $game->setTemplateVar('NAVIGATION', $this->getUserListNavigation());
+        $game->setTemplateVar('USER_LIST_NAVIGATION', $this->getUserListNavigation());
         $game->setTemplateVar('LIST', $user_list);
         $game->setTemplateVar('SORT_ORDER', $sort_field);
         $game->setTemplateVar('ORDER_BY', $sort_order);
