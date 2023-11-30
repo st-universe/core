@@ -200,7 +200,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ?ColonyInterface $colony,
         ?ShipInterface $station,
         ShipRumpInterface $rump,
-        int $userId,
+        UserInterface $user,
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelector {
 
@@ -214,7 +214,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $colony,
             $station,
             $rump,
-            $userId,
+            $user,
             $addon,
             $buildplan
         );
@@ -225,7 +225,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ?ColonyInterface $colony,
         ?ShipInterface $station,
         ShipRumpInterface $rump,
-        int $userId,
+        UserInterface $user,
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelectorSpecial {
         return new ModuleSelectorSpecial(
@@ -236,7 +236,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $colony,
             $station,
             $rump,
-            $userId,
+            $user,
             null,
             $buildplan
         );

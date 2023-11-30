@@ -90,13 +90,15 @@ final class BuildShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $user = $game->getUser();
+        $userId = $user->getId();
+
         $mod = null;
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
-        $userId = $game->getUser()->getId();
         $colonyId = $colony->getId();
 
         $rump = $this->shipRumpRepository->find(request::indInt('rump'));
@@ -187,7 +189,7 @@ final class BuildShip implements ActionControllerInterface
                 }
 
                 $crew = $mod->getCrewByFactionAndRumpLvl(
-                    $game->getUser()->getFactionId(),
+                    $user->getFactionId(),
                     $rump->getModuleLevel()
                 );
                 $crew_usage += $crew;
@@ -215,7 +217,7 @@ final class BuildShip implements ActionControllerInterface
                 $colony,
                 null,
                 $rump,
-                $userId
+                $user
             );
             if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
                 return;

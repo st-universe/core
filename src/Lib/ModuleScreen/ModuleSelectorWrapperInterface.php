@@ -14,4 +14,6 @@ interface ModuleSelectorWrapperInterface
     public function getBuildplan(): ?ShipBuildplanInterface;
 
     public function getModule(): ModuleInterface;
+
+    public function getNeededCrew(): int;
 }

@@ -261,22 +261,17 @@ function showModuleSelectTab(obj, tabId) {
 	$('module_select_tab_' + tabId).show();
 	currentTab = $('module_select_tab_' + tabId);
 }
-function replaceTabImage(type, moduleId, commodityId, module_crew, module_lvl, userfaction, modulefaction) {
+function replaceTabImage(type, moduleId, commodityId, module_crew) {
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
-		updateCrewCount(type, 0, 0);
+		updateCrewCount(type, 0);
 	} else {
 		Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
 		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
-		if (modulefaction != null) {
-			if (userfaction != modulefaction) {
-				module_crew += 1;
-			}
-		}
-		updateCrewCount(type, module_crew, module_lvl);
+		updateCrewCount(type, module_crew);
 	}
 	enableShipBuildButton();
 }
@@ -288,11 +283,11 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew) {
 		if (elem.checked) {
 			innerHTML = innerHTML.concat($(elem.value + '_content').innerHTML);
 			if (elem.value == module_id) {
-				updateCrewCount(elem.value, module_crew, 0);
+				updateCrewCount(elem.value, module_crew);
 			}
 			checkedCount++;
 		} else {
-			updateCrewCount(elem.value, 0, 0);
+			updateCrewCount(elem.value, 0);
 		}
 	});
 	$('module_tab_info_' + type).innerHTML = checkedCount + ' von max. ' + specialSlots;
@@ -316,27 +311,21 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew) {
 }
 var maxCrew;
 var baseCrew;
-var rumpModuleLvl;
 var specialSlots;
-function setFixValues(base_crew, max_crew, rump_module_lvl, special_slots) {
+function setFixValues(base_crew, max_crew, special_slots) {
 	baseCrew = base_crew;
 	maxCrew = max_crew;
-	rumpModuleLvl = rump_module_lvl;
 	specialSlots = special_slots;
 }
 var crew_type = new Hash();
-function updateCrewCount(type, module_crew, module_lvl) {
-	crew_type.set(type, { lvl: module_lvl, crew: module_crew });
+function updateCrewCount(type, module_crew) {
+	crew_type.set(type, module_crew);
 }
 function checkCrewCount() {
 	crewSum = baseCrew;
 	crew_type.each(function (pair) {
-		if (pair.value.crew >= 0) {
-			if (pair.value.lvl > rumpModuleLvl) {
-				crewSum += pair.value.crew + 1;
-			} else {
-				crewSum += pair.value.crew;
-			}
+		if (pair.value >= 0) {
+			crewSum += pair.value;
 		}
 	});
 	$('crewdisplay').select('div').each(function (elem) {

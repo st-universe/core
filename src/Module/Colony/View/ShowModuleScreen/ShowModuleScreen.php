@@ -81,7 +81,7 @@ final class ShowModuleScreen implements ViewControllerInterface
                     $colony,
                     null,
                     $rump,
-                    $userId
+                    $game->getUser()
                 );
             } else {
                 $moduleSelectors[] = $this->colonyLibFactory->createModuleSelector(
@@ -89,7 +89,7 @@ final class ShowModuleScreen implements ViewControllerInterface
                     $colony,
                     null,
                     $rump,
-                    $userId
+                    $game->getUser()
                 );
             }
         }

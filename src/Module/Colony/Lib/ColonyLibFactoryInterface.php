@@ -54,7 +54,7 @@ interface ColonyLibFactoryInterface
         ?ColonyInterface $colony,
         ?ShipInterface $station,
         ShipRumpInterface $rump,
-        int $userId,
+        UserInterface $user,
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelector;
 
@@ -63,7 +63,7 @@ interface ColonyLibFactoryInterface
         ?ColonyInterface $colony,
         ?ShipInterface $station,
         ShipRumpInterface $rump,
-        int $userId,
+        UserInterface $user,
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelectorSpecial;
 
