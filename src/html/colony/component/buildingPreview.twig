@@ -71,7 +71,7 @@
             </div>
             {% endif %}
             {% set commodityPreview = getCommodityProductionPreview(HOST, building) %}
-            {% for data in commodityPreview %}
+            {% for data in commodityPreview.getPreview %}
             <div>
                 <img src="/assets/commodities/{{ data.getCommodityId }}.png" title="{{ data.getCommodity.getName }}" />
                 <span class="{{ data.getCssClass }}">{{ data.getProductionDisplay }}</span>
