@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -52,14 +53,14 @@ final class Terraform implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $game->addExecuteJS('refreshHost();');
+
         $user = $game->getUser();
         $userId = $user->getId();
 
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
         $host = $field->getHost();
-
-        $game->setView($host->getDefaultViewIdentifier());
-
 
         if ($field->getBuildingId() > 0) {
             return;
@@ -68,7 +69,7 @@ final class Terraform implements ActionControllerInterface
             return;
         }
 
-        $terraforming = $this->terraformingRepository->find(request::getIntFatal('tfid'));
+        $terraforming = $this->terraformingRepository->find(request::postIntFatal('tfid'));
         if ($terraforming === null) {
             return;
         }
