@@ -183,6 +183,14 @@ td.l {
   margin: 0;
 }
 
+.cfc {
+  border: 1px solid;
+  border-image: conic-gradient(yellow, black, yellow, black, yellow, black, yellow, black, yellow, black, yellow) 1;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
 .cfu {
   border: 1px solid #505656;
   text-align: center;

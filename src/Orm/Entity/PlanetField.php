@@ -247,8 +247,14 @@ class PlanetField implements PlanetFieldInterface
         if ($this->hasHighDamage()) {
             return 'cfhd';
         }
-        if ($this->hasBuilding() && $this->isActivateable()) {
-            return 'cfd';
+        if ($this->hasBuilding()) {
+            if ($this->isUnderConstruction()) {
+                return 'cfc';
+            }
+
+            if ($this->isActivateable()) {
+                return 'cfd';
+            }
         }
 
         return 'cfu';
