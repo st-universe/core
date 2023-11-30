@@ -49,7 +49,8 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
@@ -80,7 +81,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                     $colony,
                     null,
                     $rump,
-                    $userId,
+                    $user,
                     $plan
                 );
             } else {
@@ -89,7 +90,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                     $colony,
                     null,
                     $rump,
-                    $userId,
+                    $user,
                     $plan,
                 );
             }

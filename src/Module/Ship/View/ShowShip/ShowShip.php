@@ -370,7 +370,7 @@ final class ShowShip implements ViewControllerInterface
                     null,
                     $ship,
                     $plan->getRump(),
-                    $game->getUser()->getId()
+                    $game->getUser()
                 );
 
                 $ms->setDummyId($plan->getId());
