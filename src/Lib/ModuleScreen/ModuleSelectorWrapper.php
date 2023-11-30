@@ -8,16 +8,28 @@ use request;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
 {
     private ModuleInterface $module;
 
+    private ShipRumpInterface $rump;
+
+    private UserInterface $user;
+
     private ?ShipBuildplanInterface $buildplan;
 
-    public function __construct(ModuleInterface $module, ?ShipBuildplanInterface $buildplan = null)
-    {
+    public function __construct(
+        ModuleInterface $module,
+        ShipRumpInterface $rump,
+        UserInterface $user,
+        ?ShipBuildplanInterface $buildplan = null
+    ) {
         $this->module = $module;
+        $this->rump = $rump;
+        $this->user = $user;
         $this->buildplan = $buildplan;
     }
 
@@ -25,7 +37,7 @@ final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
     {
         if ($this->buildplan !== null) {
             $module_id_list = array_map(
-                fn(BuildplanModuleInterface $buildplanModule): int => $buildplanModule->getModuleId(),
+                fn (BuildplanModuleInterface $buildplanModule): int => $buildplanModule->getModuleId(),
                 $this->buildplan->getModulesByType($this->module->getType())
             );
             if (in_array($this->module->getId(), $module_id_list)) {
@@ -44,5 +56,10 @@ final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
     public function getModule(): ModuleInterface
     {
         return $this->module;
+    }
+
+    public function getNeededCrew(): int
+    {
+        return $this->getModule()->getCrewByFactionAndRumpLvl($this->user->getFactionId(), $this->rump->getModuleLevel());
     }
 }

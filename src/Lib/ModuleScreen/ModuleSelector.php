@@ -16,6 +16,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
@@ -28,7 +29,7 @@ class ModuleSelector implements ModuleSelectorInterface
     private ?array $moduleSelectorWrappers = null;
     private int $moduleType;
     private ShipRumpInterface $rump;
-    private int $userId;
+    private UserInterface $user;
     private ?ColonyInterface $colony;
     private ?ShipInterface $station;
     private ?ShipBuildplanInterface $buildplan;
@@ -48,13 +49,13 @@ class ModuleSelector implements ModuleSelectorInterface
         ?ColonyInterface $colony,
         ?ShipInterface $station,
         ShipRumpInterface $rump,
-        int $userId,
+        UserInterface $user,
         ?ModuleSelectorAddonInterface $addon,
         ?ShipBuildplanInterface $buildplan = null
     ) {
         $this->moduleType = $moduleType;
         $this->rump = $rump;
-        $this->userId = $userId;
+        $this->user = $user;
         $this->colony = $colony;
         $this->station = $station;
         $this->buildplan = $buildplan;
@@ -98,7 +99,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function getUserId(): int
     {
-        return $this->userId;
+        return $this->user->getId();
     }
 
     public function getRump(): ShipRumpInterface
@@ -152,7 +153,12 @@ class ModuleSelector implements ModuleSelectorInterface
                 );
             }
             foreach ($modules as $obj) {
-                $this->moduleSelectorWrappers[$obj->getId()] = new ModuleSelectorWrapper($obj, $this->getBuildplan());
+                $this->moduleSelectorWrappers[$obj->getId()] = new ModuleSelectorWrapper(
+                    $obj,
+                    $this->getRump(),
+                    $this->user,
+                    $this->getBuildplan()
+                );
             }
         }
         return $this->moduleSelectorWrappers;

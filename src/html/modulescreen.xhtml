@@ -4,10 +4,9 @@
     <metal:macro metal:use-macro="html/colonymacros.xhtml/initial_js" />
     <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
     <form action="colony.php" method="post" name="colmanform">
-      <tal:block
-        tal:define="baseCrew RUMP/getBaseCrew; maxCrew MAX_CREW_COUNT; moduleLvl RUMP/getModuleLevel; specialSlots RUMP/getSpecialSlots">
+      <tal:block tal:define="baseCrew RUMP/getBaseCrew; maxCrew MAX_CREW_COUNT; specialSlots RUMP/getSpecialSlots">
         <script>
-          setFixValues(${baseCrew}, ${maxCrew}, ${moduleLvl}, ${specialSlots});
+          setFixValues(${baseCrew}, ${maxCrew}, ${specialSlots});
         </script>
       </tal:block>
       <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
@@ -182,6 +181,7 @@
       <tal:block tal:condition="THIS/getAvailableModules">
         <tr>
           <th colspan="3">Modulbezeichnung</th>
+          <th>benötigte Crew</th>
           <th>lagernd</th>
           <th>Auswirkungen</th>
         </tr>
@@ -199,10 +199,11 @@
             <input type="radio"
               tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getCommodityId}/1"
               name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}"
-              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getCommodityId},${module/getModule/getCrew},${module/getModule/getLevel},${COLONY/getUser/getFactionId},${module/getModule/getFactionId})" />
+              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getCommodityId},${module/getNeededCrew});" />
             <img src="assets/commodities/${module/getModule/getCommodityId}.png" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
+          <td style="width: 30px; text-align: center;" tal:content=" module/getNeededCrew">CREW</td>
           <td style="width: 30px; text-align: center;"
             tal:content="HAS_STORAGE/${module/getModule/getCommodityId}/getAmount">STORED</td>
           <td id="${module/getModule/getId}_content" tal:define="modSel THIS">
@@ -217,6 +218,7 @@
     <table class="tcal" tal:define="rump THIS/getRump" tal:condition="THIS/allowMultiple">
       <tr>
         <th colspan="2">Modulbezeichnung</th>
+        <th>benötigte Crew</th>
         <th>lagernd</th>
         <th>Auswirkungen</th>
       </tr>
@@ -230,6 +232,7 @@
             <img src="assets/commodities/${module/getModule/getCommodityId}.png" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
+          <td style="width: 30px; text-align: center;" tal:content="module/getNeededCrew">CREW</td>
           <td style="width: 30px; text-align: center;"
             tal:content="HAS_STORAGE/${module/getModule/getCommodityId}/getAmount">STORED</td>
           <td id="${module/getModule/getId}_content" tal:define="modSel THIS">

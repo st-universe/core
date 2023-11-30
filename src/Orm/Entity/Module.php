@@ -275,9 +275,13 @@ class Module implements ModuleInterface
     {
         $result = $this->getCrew();
 
+        $moduleFactionId = $this->getFactionId();
+
+        //echo sprintf('%s: %d - ', $this->getName(), $moduleFactionId);
+
         if (
-            $this->getFactionId() !== null
-            && $this->getFactionId() !== $factionId
+            $moduleFactionId !== null
+            && $moduleFactionId !== $factionId
         ) {
             $result += 1;
         }
