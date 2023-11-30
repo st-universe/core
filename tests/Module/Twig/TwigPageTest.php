@@ -44,7 +44,7 @@ class TwigPageTest extends StuTestCase
         $templateWrapper = new TemplateWrapper($this->environment, $template);
 
         $template->shouldReceive('render')
-            ->with([], [])
+            ->with([])
             ->andReturn('rendered');
 
         $this->environment->shouldReceive('addGlobal')
@@ -67,7 +67,7 @@ class TwigPageTest extends StuTestCase
         $templateWrapper = new TemplateWrapper($this->environment, $template);
 
         $template->shouldReceive('render')
-            ->with(['key' => 'value'], [])
+            ->with(['key' => 'value'])
             ->andReturn('rendered');
 
         $this->environment->shouldReceive('load')
