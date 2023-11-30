@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowSingleKn;
 
 use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -35,7 +36,7 @@ final class ShowSingleKn implements ViewControllerInterface
         $post = $this->knPostRepository->find($this->showSingleKnRequest->getPostId());
 
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
-        $game->setTemplateFile('html/comm.xhtml');
+        $game->setViewTemplate(ModuleViewEnum::COMMUNICATION->getTemplate());
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
         $knPostings = [];
