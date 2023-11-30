@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\RemoveBuilding;
 
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
+use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 
@@ -27,11 +28,10 @@ final class RemoveBuilding implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $game->addExecuteJS('refreshHost();');
+
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
-        $host = $field->getHost();
-
-        $game->setView($host->getDefaultViewIdentifier(), ['SANDBOX' => $host]);
-
 
         if (!$field->hasBuilding()) {
             return;

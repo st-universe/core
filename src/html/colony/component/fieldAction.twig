@@ -249,7 +249,8 @@
                         </tr>
                         <tr>
                             <td colspan="4" style="text-align: center;">
-                                <a href="?B_UPGRADE_BUILDING=1&id={{ fieldHostId }}&hosttype={{ fieldHostType }}&fid={{ fieldId }}&upid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
+                                <a href="javascript:void(0);"
+                                    onClick="cClick(); buildOnField('B_UPGRADE_BUILDING', {{ fieldId }}, {{ data.getId }});"
                                     class="linkbutton">Durchführen</a>
                                 <br />
                                 <strong>Dauer</strong><br />
@@ -326,7 +327,8 @@
                         </tr>
                         <tr>
                             <td colspan="3" style="text-align: center">
-                                <a href="?B_TERRAFORM=1&id={{ fieldHostId }}&hosttype={{ fieldHostType }}&fid={{ fieldId }}&tfid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
+                                <a href="javascript:void(0);"
+                                    onClick="cClick(); terraformOnField({{ fieldId }}, {{ data.getId }});"
                                     class="linkbutton">Durchführen</a>
                                 <br />
                                 <strong>Dauer</strong><br />
@@ -382,8 +384,8 @@
                     <td style="width: 100px;">
                         {% if building.isRemovable %}
                         <div id="confirm_remove" style="display:none;" class="fabutton_red">
-                            <input type="submit" class="fabutton fabutton_red" name="B_REMOVE_BUILDING"
-                                value="bestätigen">
+                            <a href="javascript:void(0);" onClick="cClick(); removeOnField({{ fieldId }});"
+                                class="fabutton_red">bestätigen</a>
                         </div>
                         {% endif %}
                     </td>

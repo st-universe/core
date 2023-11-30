@@ -114,26 +114,46 @@ function fieldMouseClick(obj, fieldId, buildingId) {
 		if (obj.parentNode.className == 'cfb') {
 			if (buildingId > 0) {
 				if (confirm('Soll das Gebäude auf diesem Feld abgerissen werden?')) {
-					buildOnField(fieldId);
+					buildOnField('B_BUILD', fieldId);
 				}
 			} else {
-				buildOnField(fieldId);
+				buildOnField('B_BUILD', fieldId);
 			}
 		}
 	} else {
-		fieldAction(fieldId);
+		showField(fieldId);
 	}
 }
 
-function fieldAction(fieldId) {
+function showField(fieldId) {
 	elt = 'fieldaction';
 	openPJsWin(elt);
 	ajax_update(elt, '/colony.php?fid=' + fieldId + '&SHOW_FIELD=1');
 }
-function buildOnField(fieldId) {
+function buildOnField(action, fieldId, buildingId) {
+
+	if (buildingId) {
+		bid = buildingId;
+	} else {
+		bid = selectedbuilding;
+	}
+
+	performActionAndUpdateResult(action, `fid=${fieldId}&bid=${bid}`);
+}
+
+function terraformOnField(fieldId, terraformId) {
+	performActionAndUpdateResult('B_TERRAFORM', `fid=${fieldId}&tfid=${terraformId}`);
+}
+
+function removeOnField(fieldId) {
+	performActionAndUpdateResult('B_REMOVE_BUILDING', `fid=${fieldId}`);
+}
+
+function performActionAndUpdateResult(action, params) {
+
 	new Ajax.Updater('result', '/colony.php', {
 		method: 'post',
-		parameters: 'fid=' + fieldId + '&B_BUILD=1&bid=' + selectedbuilding,
+		parameters: `${action}=1&${params}`,
 		evalScripts: true,
 		onSuccess: function (transport) {
 			var counter = document.getElementById("counter");
