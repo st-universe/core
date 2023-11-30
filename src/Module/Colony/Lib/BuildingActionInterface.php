@@ -14,7 +14,6 @@ interface BuildingActionInterface
 
     public function remove(
         PlanetFieldInterface $field,
-        GameControllerInterface $game,
-        bool $upgrade = false
+        GameControllerInterface $game
     ): void;
 }
