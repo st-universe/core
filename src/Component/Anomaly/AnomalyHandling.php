@@ -13,11 +13,11 @@ final class AnomalyHandling implements AnomalyHandlingInterface
 {
     private AnomalyRepositoryInterface $anomalyRepository;
 
-    /** @var array<AnomalyHandlerInterface> */
+    /** @var array<int, AnomalyHandlerInterface> */
     private array $handlerList;
 
     /**
-     * @param array<AnomalyHandlerInterface> $handlerList
+     * @param array<int, AnomalyHandlerInterface> $handlerList
      */
     public function __construct(
         AnomalyRepositoryInterface $anomalyRepository,
@@ -30,11 +30,13 @@ final class AnomalyHandling implements AnomalyHandlingInterface
     public function processExistingAnomalies(): void
     {
         foreach ($this->anomalyRepository->findAllActive() as $anomaly) {
-            if (!array_key_exists($anomaly->getAnomalyType()->getId(), $this->handlerList)) {
-                throw new RuntimeException(sprintf('no handler defined for type: %d', $anomaly->getAnomalyType()->getId()));
+            $type = $anomaly->getAnomalyType()->getId();
+
+            if (!array_key_exists($type, $this->handlerList)) {
+                throw new RuntimeException(sprintf('no handler defined for type: %d', $type));
             }
 
-            $handler = $this->handlerList[$anomaly->getAnomalyType()->getId()];
+            $handler = $this->handlerList[$type];
 
             $handler->handleShipTick($anomaly);
             $this->decreaseLifespan($anomaly, $handler);

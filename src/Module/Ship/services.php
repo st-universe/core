@@ -103,6 +103,7 @@ use Stu\Module\Ship\Action\MoveShip\MoveShipRequest;
 use Stu\Module\Ship\Action\MoveShip\MoveShipRequestInterface;
 use Stu\Module\Ship\Action\MoveShip\MoveShipRight;
 use Stu\Module\Ship\Action\MoveShip\MoveShipUp;
+use Stu\Module\Ship\Action\OpenAdventDoor\OpenAdventDoor;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleet;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequest;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequestInterface;
@@ -520,6 +521,7 @@ return [
         UnsupportTholianWeb::ACTION_IDENTIFIER => autowire(UnsupportTholianWeb::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
+        OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
         StartEmergency::ACTION_IDENTIFIER => autowire(StartEmergency::class)
             ->constructorParameter(
                 'startEmergencyRequest',

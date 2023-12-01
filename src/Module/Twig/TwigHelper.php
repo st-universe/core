@@ -16,6 +16,7 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Tal\TalHelper;
+use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Twig\Environment;
@@ -150,6 +151,11 @@ class TwigHelper
             return htmlspecialchars($text);
         });
         $this->environment->addFilter($htmlSafeFilter);
+
+        $adventDoorFilter = new TwigFilter('adventDoor', function (AnomalyInterface $anomaly): int {
+            return (int)((120 - $anomaly->getRemainingTicks()) / 5) + 1;
+        });
+        $this->environment->addFilter($adventDoorFilter);
     }
 
     private function registerFunctions(): void

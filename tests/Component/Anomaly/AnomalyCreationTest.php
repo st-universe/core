@@ -6,6 +6,7 @@ namespace Stu\Component\Anomaly;
 
 use Mockery\MockInterface;
 use RuntimeException;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\AnomalyTypeInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -37,15 +38,15 @@ class AnomalyCreationTest extends StuTestCase
 
     public function testCreateExpectExceptionWhenAnomalyTypeUnknown(): void
     {
-        static::expectExceptionMessage('no anomaly type defined for: 666');
+        static::expectExceptionMessage('no anomaly in database for type: 1');
         static::expectException(RuntimeException::class);
 
         $this->anomalyTypeRepository->shouldReceive('find')
-            ->with(666)
+            ->with(1)
             ->once()
             ->andReturnNull();
 
-        $this->subject->create(666, $this->mock(MapInterface::class));
+        $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $this->mock(MapInterface::class));
     }
 
     public function testCreateExpectNewEntityWithMapLocation(): void
@@ -70,7 +71,7 @@ class AnomalyCreationTest extends StuTestCase
             ->once();
 
         $this->anomalyTypeRepository->shouldReceive('find')
-            ->with(42)
+            ->with(1)
             ->once()
             ->andReturn($anomalyType);
 
@@ -82,7 +83,7 @@ class AnomalyCreationTest extends StuTestCase
             ->with($anomaly)
             ->once();
 
-        $result = $this->subject->create(42, $map);
+        $result = $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $map);
 
         $this->assertSame($anomaly, $result);
     }
@@ -109,7 +110,7 @@ class AnomalyCreationTest extends StuTestCase
             ->once();
 
         $this->anomalyTypeRepository->shouldReceive('find')
-            ->with(42)
+            ->with(1)
             ->once()
             ->andReturn($anomalyType);
 
@@ -121,7 +122,7 @@ class AnomalyCreationTest extends StuTestCase
             ->with($anomaly)
             ->once();
 
-        $result = $this->subject->create(42, $map);
+        $result = $this->subject->create(AnomalyTypeEnum::SUBSPACE_ELLIPSE, $map);
 
         $this->assertSame($anomaly, $result);
     }

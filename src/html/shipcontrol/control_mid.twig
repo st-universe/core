@@ -292,13 +292,9 @@ canColonize) %}
             {{ _self.influenceArea(ship.getCurrentMapField.getInfluenceArea.getBase.getUser) }}
             {% endif %}
             {% set anomalies = ship.getLocation.getAnomalies %}
-            <br />
             {% for anomaly in anomalies %}
-            <a>
-                <img src="/assets/anomalies/{{ anomaly.getAnomalyType.getId }}.png"
-                    name="{{ anomaly.getAnomalyType.getName }}" />
-                {{ anomaly.getAnomalyType.getName }}
-            </a>
+            <br />
+            {% include anomaly.getAnomalyType.getTemplate %}
             {% endfor %}
 
         </td>

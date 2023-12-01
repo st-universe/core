@@ -366,7 +366,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'modeOn' => ShipSystemModeEnum::MODE_ON,
             'regenerationThreshold' => $regenerationThreshold,
             'destroyedState' => 0,
-            'anomalyType' => AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE
+            'anomalyType' => AnomalyTypeEnum::SUBSPACE_ELLIPSE
         ])->getResult();
     }
 

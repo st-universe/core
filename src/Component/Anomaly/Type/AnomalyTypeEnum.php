@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type;
 
-final class AnomalyTypeEnum
+enum AnomalyTypeEnum: int
 {
-    // anomaly types
-    public const ANOMALY_TYPE_SUBSPACE_ELLIPSE = 1;
+        // anomaly types
+    case SUBSPACE_ELLIPSE = 1;
 
-    public static function getDescription(int $anomalyType): string
+        // special anomalies
+    case SPECIAL_ADVENT_DOOR = 1001;
+
+    public function getTemplate(): string
     {
-        switch ($anomalyType) {
-            case static::ANOMALY_TYPE_SUBSPACE_ELLIPSE:
-                return _("Subraumellipse");
-        }
-        return '';
+        return match ($this) {
+            self::SUBSPACE_ELLIPSE => 'html/anomaly/standardAnomaly.twig',
+            self::SPECIAL_ADVENT_DOOR => 'html/anomaly/adventDoor.twig'
+        };
     }
 }

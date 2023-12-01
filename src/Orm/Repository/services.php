@@ -76,6 +76,7 @@ use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\News;
 use Stu\Orm\Entity\Note;
+use Stu\Orm\Entity\OpenedAdventDoor;
 use Stu\Orm\Entity\PartnerSite;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
@@ -480,6 +481,11 @@ return [
         ContainerInterface $c
     ): NoteRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Note::class);
+    },
+    OpenedAdventDoorRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): OpenedAdventDoorRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(OpenedAdventDoor::class);
     },
     PartnerSiteRepositoryInterface::class => function (
         ContainerInterface $c

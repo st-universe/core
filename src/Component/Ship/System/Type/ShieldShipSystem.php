@@ -52,7 +52,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
             return false;
         }
 
-        if ($ship->getLocation()->hasAnomaly(AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE)) {
+        if ($ship->getLocation()->hasAnomaly(AnomalyTypeEnum::SUBSPACE_ELLIPSE)) {
             $reason = _('in diesem Sektor eine Subraumellipse vorhanden ist');
             return false;
         }
