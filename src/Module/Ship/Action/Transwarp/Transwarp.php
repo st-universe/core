@@ -93,14 +93,13 @@ final class Transwarp extends AbstractDirectedMovement
         }
 
         $map = $this->mapRepository->getByCoordinates($layerId, $cx, $cy);
-
-        if ($map->getLayer()->isHidden()) {
-            throw new SanityCheckException('tried to access hidden layer');
-        }
-
         if ($map === null) {
             $game->addInformation(_('Zielkoordinaten existieren nicht'));
             return true;
+        }
+
+        if ($map->getLayer()->isHidden()) {
+            throw new SanityCheckException('tried to access hidden layer');
         }
 
         if (!$map->getFieldType()->getPassable()) {
