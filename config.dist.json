@@ -29,7 +29,7 @@
   },
   "debug": {
     "debug_mode": true,
-    "logfile_path": "/path/to/log",
+    "logfile_path": "pathtodebug.log",
     "loglevel": 7,
     "logging": {
       "log_dir": "/path/to/logfiles",
