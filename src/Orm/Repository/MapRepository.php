@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
+use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -334,18 +335,17 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->createNativeQuery(
                 'SELECT m.id
                 FROM stu_map m
-                JOIN stu_layer l
-                ON m.layer_id = l.id
                 JOIN stu_map_ftypes mft
                 ON m.field_id = mft.id
                 WHERE NOT EXISTS (SELECT s.id FROM stu_ships s WHERE s.map_id = m.id)
-                AND l.is_hidden = false
+                AND m.layer_id = :layerId
                 AND mft.x_damage = 0
                 AND mft.passable = true
                 ORDER BY RANDOM()
                 LIMIT 1',
                 $rsm
             )
+            ->setParameter('layerId', MapEnum::DEFAULT_LAYER)
             ->getSingleScalarResult();
     }
 }
