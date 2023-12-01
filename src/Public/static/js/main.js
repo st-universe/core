@@ -232,4 +232,14 @@ function updateMobileValue() {
 	document.getElementById('combinedMobileValue').textContent = combinedValue;
 }
 
+function updateBannerImage() {
+	var currentDate = new Date();
+	var year = currentDate.getFullYear();
+	var startHoliday = new Date(year, 11, 1);
+	var endHoliday = new Date(year + 1, 0, 6);
+	if ((currentDate >= startHoliday && currentDate <= new Date(year, 11, 31)) ||
+		(currentDate >= new Date(year + 1, 0, 1) && currentDate <= endHoliday)) {
+		document.getElementById('bannerImg').src = "/assets/main/banner_x_mas.png";
+	}
+}
 
