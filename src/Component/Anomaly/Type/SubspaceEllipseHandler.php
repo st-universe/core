@@ -74,13 +74,13 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         foreach ($this->mapRepository->getForSubspaceEllipseCreation() as $map) {
             $subspaceEllipses[] = $this->anomalyCreation->create(
-                AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE,
+                AnomalyTypeEnum::SUBSPACE_ELLIPSE,
                 $map
             );
         }
         foreach ($this->starSystemMapRepository->getForSubspaceEllipseCreation() as $starsystemMap) {
             $subspaceEllipses[] = $this->anomalyCreation->create(
-                AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE,
+                AnomalyTypeEnum::SUBSPACE_ELLIPSE,
                 $starsystemMap
             );
         }

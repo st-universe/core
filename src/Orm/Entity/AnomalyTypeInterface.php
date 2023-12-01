@@ -9,4 +9,6 @@ interface AnomalyTypeInterface
     public function getName(): string;
 
     public function getLifespanInTicks(): int;
+
+    public function getTemplate(): string;
 }

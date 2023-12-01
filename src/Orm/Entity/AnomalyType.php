@@ -6,9 +6,9 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AnomalyTypeRepository")
@@ -21,8 +21,6 @@ class AnomalyType implements AnomalyTypeInterface
     /**
      * @Id
      * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
      */
     private int $id;
 
@@ -51,5 +49,10 @@ class AnomalyType implements AnomalyTypeInterface
     public function getLifespanInTicks(): int
     {
         return $this->lifespan_in_ticks;
+    }
+
+    public function getTemplate(): string
+    {
+        return AnomalyTypeEnum::from($this->getId())->getTemplate();
     }
 }

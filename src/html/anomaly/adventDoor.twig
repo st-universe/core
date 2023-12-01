@@ -1,0 +1,11 @@
+<a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ADVENT_DOOR', 'id={{ shipId }}&target={{ anomaly.getId }}&sstr={{ SESSIONSTRING }}');"
+    title="Adventstürchen öffnen">
+    {% set name =
+    '✨[b][color=red]Ad[/color][color=green]ve[/color][color=white]nt[/color][color=red]st[/color][color=green]ür[/color][color=white]ch[/color][color=red]en[/color][/b]
+    🎁🎄' %}
+    <img src="/assets/anomalies/advent/{{ anomaly|adventDoor }}.png" name="{{ anomaly.getAnomalyType.getName }}" />
+    {% autoescape false %}
+    {{ name|bbcode }}
+    {% endautoescape %}
+</a>

@@ -7,6 +7,7 @@ namespace Stu\Lib\Map;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -107,7 +108,7 @@ class LocationTest extends StuTestCase
 
         $location = new Location($map, null);
 
-        $result = $location->hasAnomaly(42);
+        $result = $location->hasAnomaly(AnomalyTypeEnum::SUBSPACE_ELLIPSE);
 
         $this->assertFalse($result);
     }
@@ -129,7 +130,7 @@ class LocationTest extends StuTestCase
 
         $location = new Location($map, null);
 
-        $result = $location->hasAnomaly(42);
+        $result = $location->hasAnomaly(AnomalyTypeEnum::SUBSPACE_ELLIPSE);
 
         $this->assertFalse($result);
     }
@@ -155,7 +156,7 @@ class LocationTest extends StuTestCase
 
         $location = new Location($map, null);
 
-        $result = $location->hasAnomaly(42);
+        $result = $location->hasAnomaly(AnomalyTypeEnum::SUBSPACE_ELLIPSE);
 
         $this->assertFalse($result);
     }
@@ -177,11 +178,11 @@ class LocationTest extends StuTestCase
         $anomaly->shouldReceive('getAnomalyType->getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(1);
 
         $location = new Location($map, null);
 
-        $result = $location->hasAnomaly(42);
+        $result = $location->hasAnomaly(AnomalyTypeEnum::SUBSPACE_ELLIPSE);
 
         $this->assertTrue($result);
     }

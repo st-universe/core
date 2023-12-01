@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly;
 
 use RuntimeException;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -26,18 +27,18 @@ final class AnomalyCreation implements AnomalyCreationInterface
     }
 
     public function create(
-        int $anomalyType,
+        AnomalyTypeEnum $type,
         MapInterface|StarSystemMapInterface $map
     ): AnomalyInterface {
-        $type = $this->anomalyTypeRepository->find($anomalyType);
+        $anomalyType = $this->anomalyTypeRepository->find($type->value);
 
-        if ($type === null) {
-            throw new RuntimeException(sprintf('no anomaly type defined for: %d', $anomalyType));
+        if ($anomalyType === null) {
+            throw new RuntimeException(sprintf('no anomaly in database for type: %d', $type->value));
         }
 
         $anomaly = $this->anomalyRepository->prototype();
-        $anomaly->setAnomalyType($type);
-        $anomaly->setRemainingTicks($type->getLifespanInTicks());
+        $anomaly->setAnomalyType($anomalyType);
+        $anomaly->setRemainingTicks($anomalyType->getLifespanInTicks());
 
         if ($map instanceof MapInterface) {
             $anomaly->setMap($map);

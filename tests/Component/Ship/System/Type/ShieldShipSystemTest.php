@@ -151,7 +151,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->andReturn($location);
 
         $location->shouldReceive('hasAnomaly')
-            ->with(AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE)
+            ->with(AnomalyTypeEnum::SUBSPACE_ELLIPSE)
             ->once()
             ->andReturn(true);
 
@@ -188,7 +188,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->andReturn($location);
 
         $location->shouldReceive('hasAnomaly')
-            ->with(AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE)
+            ->with(AnomalyTypeEnum::SUBSPACE_ELLIPSE)
             ->once()
             ->andReturn(false);
 

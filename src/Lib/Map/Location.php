@@ -7,6 +7,7 @@ namespace Stu\Lib\Map;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ReadableCollection;
 use InvalidArgumentException;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -49,10 +50,10 @@ class Location
         return $this->location->getAnomalies()->filter(fn (AnomalyInterface $anomaly): bool => $anomaly->isActive());
     }
 
-    public function hasAnomaly(int $anomalyType): bool
+    public function hasAnomaly(AnomalyTypeEnum $type): bool
     {
         foreach ($this->getAnomalies() as $anomaly) {
-            if ($anomaly->getAnomalyType()->getId() === $anomalyType) {
+            if ($anomaly->getAnomalyType()->getId() === $type->value) {
                 return true;
             }
         }

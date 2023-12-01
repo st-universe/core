@@ -37,9 +37,6 @@ final class CommodityTypeEnum
     public const BASE_ID_WORKBEE = 20060;
     public const BASE_IDS_SHUTTLE =  [self::BASE_ID_WORKBEE];
 
-    /**
-     * @deprecated not in use, but kept for documentation reasons
-     */
     public const COMMODITY_ADVENT_POINT = 60;
 
     public static function getDescription(int $commodityId): string
