@@ -36,7 +36,7 @@
 		{% if HISTORY %}
 		{% for entry in HISTORY %}
 		<tr class="row">
-			<td>{{ entry.getText|bbcode }}/td>
+			<td>{{ entry.getText|bbcode }}</td>
 			<td>{{ entry.getDate|stuDateTime }}</td>
 		</tr>
 		{% endfor %}
