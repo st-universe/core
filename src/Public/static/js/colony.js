@@ -223,12 +223,12 @@ function openShuttleManagement(obj, ship, colony) {
 	ajax_update('elt', 'colony.php?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&colony=' + colony);
 }
 
-function triggerBeamTo() {
+function triggerBeamToShip() {
 	var shipid = $('selshipid').value;
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
 }
 
-function triggerBeamFrom() {
+function triggerBeamFromShip() {
 	var shipid = $('selshipid').value;
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
 }
