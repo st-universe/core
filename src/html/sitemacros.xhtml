@@ -299,12 +299,12 @@
     <script src="/static/js/main.js"></script>
   </head>
 
-  <body onload="if ($('login')) $('login').focus();">
+  <body onload="if ($('login')) $('login').focus(); updateBannerImage();">
     <input type="hidden" name="PHPSESSID" tal:attributes="value php:session_id();" />
     <div style="width: 100%">
       <div style="margin: auto;">
         <div id="banner">
-          <img src="/assets/main/banner.png" border="0" title="Star Trek Universe" />
+          <img id="bannerImg" src="/assets/main/banner.png" border="0" title="Star Trek Universe" />
         </div>
         <div style="width: 1160px; margin: auto;">
           <div style="width: 880px; float: left;">
