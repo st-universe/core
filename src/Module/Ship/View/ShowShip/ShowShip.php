@@ -22,7 +22,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -33,6 +32,7 @@ use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
@@ -77,7 +77,7 @@ final class ShowShip implements ViewControllerInterface
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
-    private FightLibInterface $fightLib;
+    private AnomalyRepositoryInterface $anomalyRepository;
 
     public function __construct(
         SessionInterface $session,
@@ -95,7 +95,7 @@ final class ShowShip implements ViewControllerInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         ShipUiFactoryInterface $shipUiFactory,
         ShipCrewCalculatorInterface $shipCrewCalculator,
-        FightLibInterface $fightLib,
+        AnomalyRepositoryInterface $anomalyRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -115,7 +115,9 @@ final class ShowShip implements ViewControllerInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipUiFactory = $shipUiFactory;
         $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->fightLib = $fightLib;
+        $this->anomalyRepository = $anomalyRepository;
+
+        //$this->loggerUtil->init('SHOW', LoggerEnum::LEVEL_ERROR);
     }
 
     public function handle(GameControllerInterface $game): void
@@ -196,7 +198,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CAN_COLONIZE', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
-        $game->setTemplateVar('FIGHT_LIB', $this->fightLib);
+        $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($ship));
 
         $userLayers = $user->getUserLayers();
         if ($ship->hasTranswarp()) {

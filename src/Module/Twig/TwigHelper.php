@@ -9,6 +9,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
@@ -35,18 +36,22 @@ class TwigHelper
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private GradientColorInterface $gradientColor;
+
     public function __construct(
         Environment $environment,
         Parser $parser,
         ConfigInterface $config,
         FightLibInterface $fightLib,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        GradientColorInterface $gradientColor
     ) {
         $this->environment = $environment;
         $this->parser = $parser;
         $this->config = $config;
         $this->fightLib = $fightLib;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->gradientColor = $gradientColor;
     }
 
     public function registerGlobalVariables(): void
@@ -189,5 +194,10 @@ class TwigHelper
             return uniqid();
         });
         $this->environment->addFunction($getUniqIdFunction);
+
+        $gradientColorFunction = new TwigFunction('gradientColor', function (int $value, int $lowest, int $highest): string {
+            return $this->gradientColor->calculateGradientColor($value, $lowest, $highest);
+        });
+        $this->environment->addFunction($gradientColorFunction);
     }
 }

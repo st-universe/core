@@ -1,5 +1,5 @@
 {% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
-canColonize) %}
+canColonize, closestAnomalyDistance) %}
 
 {% from 'html/macros.twig' import onClickShip %}
 
@@ -292,11 +292,16 @@ canColonize) %}
             {{ _self.influenceArea(ship.getCurrentMapField.getInfluenceArea.getBase.getUser) }}
             {% endif %}
             {% set anomalies = ship.getLocation.getAnomalies %}
+            {% if not anomalies.isEmpty %}
             {% for anomaly in anomalies %}
             <br />
             {% include anomaly.getAnomalyType.getTemplate %}
             {% endfor %}
-
+            {% elseif closestAnomalyDistance %}
+            <br />
+            <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, ship.getSensorRange * 2, 1) }}"
+                title="Es wurde eine Anomalie in der Nähe detektiert">Anomalie in der Nähe</span>
+            {% endif %}
         </td>
         {% if starSystem %}
         <td>
