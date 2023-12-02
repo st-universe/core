@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 /**
  * @extends ObjectRepository<Anomaly>
@@ -24,4 +25,6 @@ interface AnomalyRepositoryInterface extends ObjectRepository
      * @return array<AnomalyInterface>
      */
     public function findAllActive(): array;
+
+    public function getClosestAnomalyDistance(ShipInterface $ship): ?int;
 }

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\ShipInterface;
 
 /**
  * @extends EntityRepository<Anomaly>
@@ -47,5 +50,45 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
                 )
             )
             ->getResult();
+    }
+
+    public function getClosestAnomalyDistance(ShipInterface $ship): ?int
+    {
+        $map = $ship->getMap();
+        if ($map === null) {
+            return null;
+        }
+
+        $range = $ship->getSensorRange() * 2;
+
+        try {
+            return (int)$this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT SQRT(ABS(m.cx - :x) * ABS(m.cx - :x) + ABS(m.cy - :y) * ABS(m.cy - :y)) as foo
+                    FROM %s a
+                    JOIN %s m
+                    WITH a.map_id = m.id
+                    WHERE (m.cx BETWEEN :startX AND :endX)
+                    AND (m.cy BETWEEN :startY AND :endY)
+                    AND m.layer = :layer
+                    ORDER BY foo ASC',
+                    Anomaly::class,
+                    Map::class
+                )
+            )
+                ->setMaxResults(1)
+                ->setParameters([
+                    'layer' => $map->getLayer(),
+                    'x' => $map->getX(),
+                    'y' => $map->getY(),
+                    'startX' => $map->getX() - $range,
+                    'endX' => $map->getX() +  $range,
+                    'startY' => $map->getY() - $range,
+                    'endY' => $map->getY() +  $range
+                ])
+                ->getSingleScalarResult();
+        } catch (NoResultException) {
+            return null;
+        }
     }
 }
