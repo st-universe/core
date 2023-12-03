@@ -13,7 +13,8 @@
         <a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
         {% endif %}
         {% if CAN_EDIT %}
-        <a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
+        <a href="javascript:void(0);" onclick="switchInnerContent('EDIT_ALLIANCE', 'Allianz editieren');"
+          class="linkbutton">Editieren</a>
         <a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
         <a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
         {% endif %}

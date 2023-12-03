@@ -46,7 +46,7 @@ final class Edit implements ViewControllerInterface
             'alliance.php?EDIT_ALLIANCE=1',
             _('Editieren')
         );
-        $game->setTemplateFile('html/allianceedit.xhtml');
+        $game->setViewTemplate('html/alliance/allianceEdit.twig');
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar(
             'CAN_EDIT_FACTION_MODE',

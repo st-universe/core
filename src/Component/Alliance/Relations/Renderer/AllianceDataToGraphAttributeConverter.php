@@ -40,10 +40,10 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         AllianceInterface $alliance,
         string $defaultColor = '#8b8b8b'
     ): string {
-        $factionId = $alliance->getFactionId();
+        $faction = $alliance->getFaction();
 
-        if ($factionId !== null) {
-            return FactionEnum::FACTION_ID_TO_COLOR_MAP[$factionId];
+        if ($faction !== null) {
+            return FactionEnum::FACTION_ID_TO_COLOR_MAP[$faction->getId()];
         }
 
         $rgbCode = $alliance->getRgbCode();

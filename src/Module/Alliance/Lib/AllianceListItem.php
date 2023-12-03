@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\FactionInterface;
 
 final class AllianceListItem
 {
@@ -26,9 +27,9 @@ final class AllianceListItem
         return $this->alliance->getName();
     }
 
-    public function getFactionId(): ?int
+    public function getFaction(): ?FactionInterface
     {
-        return $this->alliance->getFactionId();
+        return $this->alliance->getFaction();
     }
 
     public function getMemberCount(): int

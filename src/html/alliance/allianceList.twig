@@ -21,8 +21,8 @@
     {% for data in ALLIANCE_LIST_OPEN %}
     <div class="allianceListItem">
         <div class="allianceListItemName">
-            {% if data.getFactionId %}
-            <img src="assets/rassen/{{ data.getFactionId }}s.png" />
+            {% if data.getFaction %}
+            <img src="assets/rassen/{{ data.getFaction.getId }}s.png" />
             {% endif %}
             <a href="alliance.php?id={{ data.getId }}">{{ data.getName|bbcode }}</a>
         </div>
@@ -48,8 +48,8 @@
     {% for data in ALLIANCE_LIST_CLOSED %}
     <div class="allianceListItem">
         <div class="allianceListItemName">
-            {% if data.getFactionId %}
-            <img src="assets/rassen/{{ data.getFactionId }}s.png" />
+            {% if data.getFaction %}
+            <img src="assets/rassen/{{ data.getFaction.getId }}s.png" />
             {% endif %}
             <a href="alliance.php?id={{ data.getId }}">{{ data.getName|bbcode }}</a>
         </div>

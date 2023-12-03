@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\FactionInterface;
 use Stu\StuTestCase;
 
 class AllianceDataToGraphAttributeConverterTest extends StuTestCase
@@ -63,8 +64,13 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
     public function testGetFrameColorReturnMappedFactionColor(): void
     {
         $alliance = $this->mock(AllianceInterface::class);
+        $faction = $this->mock(FactionInterface::class);
 
-        $alliance->shouldReceive('getFactionId')
+        $alliance->shouldReceive('getFaction')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($faction);
+        $faction->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn(FactionEnum::FACTION_FEDERATION);
@@ -81,7 +87,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
         $rgbCode = 'some-code';
 
-        $alliance->shouldReceive('getFactionId')
+        $alliance->shouldReceive('getFaction')
             ->withNoArgs()
             ->once()
             ->andReturnNull();
@@ -102,7 +108,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
         $default = 'some-code';
 
-        $alliance->shouldReceive('getFactionId')
+        $alliance->shouldReceive('getFaction')
             ->withNoArgs()
             ->once()
             ->andReturnNull();

@@ -135,7 +135,7 @@
         <td style="text-align: right; width: 30%;">
             {% if ship.isBase %}
             {% if eps.reloadBattery %}
-            <input type="checkbox" checked="checked"
+            <input type="checkbox" checked="true"
                 onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}'" />
             {% else %}
             <input type="checkbox"
@@ -403,7 +403,7 @@
                     <span>
                         {% if ship.getFleet.isFleetFixed %}
                         <input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
-                            id="changefixationbutton" /><input type="checkbox" name="fleetfixed" checked="checked"
+                            id="changefixationbutton" /><input type="checkbox" name="fleetfixed" checked="true"
                             onchange="$('changefixationbutton').click();" />
                         {% else %}
                         <input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
