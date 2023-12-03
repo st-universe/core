@@ -43,43 +43,46 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
     public function setTemplateVariables(GameControllerInterface $game): void
     {
-        $playerId = request::getIntFatal('uid');
+        if (!request::has('uid')) {
+            $user = $game->getUser();
+        } else {
+            $userId = request::getIntFatal('uid');
 
-        $player = $this->userRepository->find($playerId);
-        if ($player === null) {
-            throw new ItemNotFoundException();
+            $user = $this->userRepository->find($userId);
+            if ($user === null) {
+                throw new ItemNotFoundException();
+            }
         }
 
-        $user = $game->getUser();
-        $userId = $user->getId();
+        $currentUser = $game->getUser();
 
-        $this->profileVisitorRegistration->register($player, $user);
+        $this->profileVisitorRegistration->register($user, $currentUser);
 
-        $game->setTemplateVar('PROFILE', $player);
+        $game->setTemplateVar('PROFILE', $user);
         $game->setTemplateVar(
             'DESCRIPTION',
-            $this->parserWithImage->parse($player->getDescription())->getAsHTML()
+            $this->parserWithImage->parse($user->getDescription())->getAsHTML()
         );
         $game->setTemplateVar(
             'IS_PROFILE_CURRENT_USER',
-            $playerId === $userId
+            $user === $currentUser
         );
         $game->setTemplateVar(
             'RPG_PLOTS',
-            $this->rpgPlotMemberRepository->getByUser($player)
+            $this->rpgPlotMemberRepository->getByUser($user)
         );
         $game->setTemplateVar(
             'CONTACT',
             $this->contactRepository->getByUserAndOpponent(
-                $userId,
-                $playerId
+                $currentUser->getId(),
+                $user->getId()
             )
         );
         $game->setTemplateVar(
             'FRIENDS',
             $this->userRepository->getFriendsByUserAndAlliance(
-                $player,
-                $player->getAlliance()
+                $user,
+                $user->getAlliance()
             )
         );
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
