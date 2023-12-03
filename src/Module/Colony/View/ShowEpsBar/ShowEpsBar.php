@@ -28,7 +28,7 @@ final class ShowEpsBar implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
         $this->colonyGuiHelper->registerComponents($host, $game, [GuiComponentEnum::EPS_BAR]);
 

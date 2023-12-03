@@ -9,7 +9,7 @@ use Stu\Orm\Entity\UserInterface;
 
 interface PlanetFieldHostProviderInterface
 {
-    public function loadFieldViaRequestParameter(UserInterface $user): PlanetFieldInterface;
+    public function loadFieldViaRequestParameter(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldInterface;
 
-    public function loadHostViaRequestParameters(UserInterface $user): PlanetFieldHostInterface;
+    public function loadHostViaRequestParameters(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldHostInterface;
 }

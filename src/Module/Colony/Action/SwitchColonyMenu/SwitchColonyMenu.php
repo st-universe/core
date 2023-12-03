@@ -36,7 +36,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
         $menu = ColonyMenuEnum::getFor(request::getIntFatal('menu'));
 

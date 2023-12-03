@@ -29,7 +29,6 @@ final class RemoveBuilding implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS('refreshHost();');
 
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
 
@@ -41,6 +40,8 @@ final class RemoveBuilding implements ActionControllerInterface
         }
 
         $this->buildingAction->remove($field, $game);
+
+        $game->addExecuteJS('refreshHost();');
     }
 
     public function performSessionCheck(): bool

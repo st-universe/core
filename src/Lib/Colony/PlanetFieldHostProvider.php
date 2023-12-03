@@ -31,7 +31,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
         $this->colonyLoader = $colonyLoader;
     }
 
-    public function loadFieldViaRequestParameter(UserInterface $user): PlanetFieldInterface
+    public function loadFieldViaRequestParameter(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldInterface
     {
         if (!request::has('fid')) {
             throw new RuntimeException(sprintf('request param "fid" is missing'));
@@ -44,12 +44,12 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
         }
 
         $host = $field->getHost();
-        $this->getHostInternal($host->getId(), $host->getHostType(), $user);
+        $this->getHostInternal($host->getId(), $host->getHostType(), $user, $checkForEntityLock);
 
         return $field;
     }
 
-    public function loadHostViaRequestParameters(UserInterface $user): PlanetFieldHostInterface
+    public function loadHostViaRequestParameters(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldHostInterface
     {
         if (!request::has('id')) {
             throw new RuntimeException(sprintf('request param "id" is missing'));
@@ -61,19 +61,21 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
         $id = request::indInt('id');
         $hostType = PlanetFieldHostTypeEnum::from(request::indInt('hosttype'));
 
-        return $this->getHostInternal($id, $hostType, $user);
+        return $this->getHostInternal($id, $hostType, $user, $checkForEntityLock);
     }
 
     private function getHostInternal(
         int $id,
         PlanetFieldHostTypeEnum $hostType,
-        UserInterface $user
+        UserInterface $user,
+        bool $checkForEntityLock
     ): PlanetFieldHostInterface {
 
         if ($hostType === PlanetFieldHostTypeEnum::COLONY) {
             return $this->colonyLoader->byIdAndUser(
                 $id,
-                $user->getId()
+                $user->getId(),
+                $checkForEntityLock
             );
         }
         $sandbox = $this->colonySandboxRepository->find($id);

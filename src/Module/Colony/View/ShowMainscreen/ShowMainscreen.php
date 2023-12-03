@@ -28,7 +28,7 @@ final class ShowMainscreen implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
         $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_MAINSCREEN, $host, $game);
         $game->showMacro(ColonyMenuEnum::MENU_MAINSCREEN->getTemplate());

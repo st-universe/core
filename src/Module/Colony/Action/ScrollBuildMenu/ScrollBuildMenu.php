@@ -33,7 +33,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
         $menu = request::getIntFatal('menu');
         $offset = request::getInt('offset');

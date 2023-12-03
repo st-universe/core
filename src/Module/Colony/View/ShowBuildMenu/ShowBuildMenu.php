@@ -28,7 +28,7 @@ final class ShowBuildMenu implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
         $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_BUILD, $host, $game);
 

@@ -76,7 +76,6 @@ final class BuildOnField implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS('refreshHost();');
 
         $user = $game->getUser();
         $userId = $user->getId();
@@ -145,6 +144,8 @@ final class BuildOnField implements ActionControllerInterface
 
         $field->setBuilding($building);
         $field->setActivateAfterBuild(true);
+
+        $game->addExecuteJS('refreshHost();');
 
         if ($host instanceof ColonySandboxInterface) {
             $this->buildingManager->finish($field);
