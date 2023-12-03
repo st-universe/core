@@ -297,7 +297,7 @@ canColonize, closestAnomalyDistance) %}
             <br />
             {% include anomaly.getAnomalyType.getTemplate %}
             {% endfor %}
-            {% elseif closestAnomalyDistance %}
+            {% elseif ship.getLss and closestAnomalyDistance %}
             <br />
             <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, ship.getSensorRange * 2, 1) }}"
                 title="Es wurde eine Anomalie in der Nähe detektiert">Anomalie in der Nähe</span>
