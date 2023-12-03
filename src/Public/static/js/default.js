@@ -655,6 +655,7 @@ function switchView(view, title, url) {
                 onSuccess: function () {
                         document.title = title;
                         window.history.pushState(null, title, url);
+                        window.scrollTo(0, 0);
                 },
                 method: 'get',
                 evalScripts: true
@@ -681,6 +682,9 @@ function switchInnerContent(view, title, params, page) {
                         let doc = new DOMParser().parseFromString(title, 'text/html');
                         document.title = doc.body.textContent || "";
                         window.history.pushState(null, title, url);
+                        if (page) {
+                                window.scrollTo(0, 0);
+                        }
                 },
                 method: 'get',
                 evalScripts: true
