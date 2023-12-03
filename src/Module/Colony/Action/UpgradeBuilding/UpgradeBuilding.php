@@ -69,7 +69,6 @@ final class UpgradeBuilding implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS('refreshHost();');
 
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
         $host = $field->getHost();
@@ -120,6 +119,8 @@ final class UpgradeBuilding implements ActionControllerInterface
         }
 
         $field->setBuilding($building);
+
+        $game->addExecuteJS('refreshHost();');
 
         if ($host instanceof ColonySandboxInterface) {
             $this->buildingManager->finish($field);

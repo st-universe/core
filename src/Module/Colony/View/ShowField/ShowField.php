@@ -64,7 +64,7 @@ final class ShowField implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser(), false);
         $host = $field->getHost();
 
         $terraformingOptions = $this->terraformingRepository->getBySourceFieldTypeAndUser(

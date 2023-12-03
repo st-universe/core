@@ -80,7 +80,7 @@ class PlanetFieldHostProviderTest extends StuTestCase
             ->andReturn(666);
 
         $this->colonyLoader->shouldReceive('byIdAndUser')
-            ->with(42, 666)
+            ->with(42, 666, true)
             ->once()
             ->andReturn($colony);
 

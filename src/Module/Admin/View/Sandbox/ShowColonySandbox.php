@@ -43,7 +43,7 @@ final class ShowColonySandbox implements ViewControllerInterface
 
         $sandbox = $game->getViewContext()['HOST'] ?? null;
         if ($sandbox === null && request::has('id')) {
-            $sandbox = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+            $sandbox = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
         }
         $game->appendNavigationPart('/admin/?SHOW_COLONY_SANDBOX=1', _('Kolonie-Sandbox'));
 

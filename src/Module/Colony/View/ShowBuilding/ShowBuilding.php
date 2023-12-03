@@ -47,7 +47,7 @@ final class ShowBuilding implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
         $building = $this->buildingRepository->find($this->showBuildingRequest->getBuildingId());
         if ($building === null) {

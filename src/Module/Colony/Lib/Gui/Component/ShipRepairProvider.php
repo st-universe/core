@@ -44,7 +44,7 @@ final class ShipRepairProvider implements GuiComponentProviderInterface
         PlanetFieldHostInterface $host,
         GameControllerInterface $game
     ): void {
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser(), false);
 
         $building = $field->getBuilding();
         if ($building === null) {

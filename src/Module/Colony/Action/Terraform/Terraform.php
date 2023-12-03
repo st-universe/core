@@ -54,7 +54,6 @@ final class Terraform implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS('refreshHost();');
 
         $user = $game->getUser();
         $userId = $user->getId();
@@ -98,6 +97,8 @@ final class Terraform implements ActionControllerInterface
                 $terraforming->getDescription()
             );
         }
+
+        $game->addExecuteJS('refreshHost();');
 
         $this->planetFieldRepository->save($field);
     }

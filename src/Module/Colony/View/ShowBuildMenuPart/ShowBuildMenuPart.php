@@ -30,7 +30,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
         $menus = [];
 
