@@ -54,9 +54,9 @@ final class UserProfileProvider implements ViewComponentProviderInterface
             }
         }
 
-        $currentUser = $game->getUser();
+        $visitor = $game->getUser();
 
-        $this->profileVisitorRegistration->register($user, $currentUser);
+        $this->profileVisitorRegistration->register($user, $visitor);
 
         $game->setTemplateVar('PROFILE', $user);
         $game->setTemplateVar(
@@ -65,7 +65,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         );
         $game->setTemplateVar(
             'IS_PROFILE_CURRENT_USER',
-            $user === $currentUser
+            $user === $visitor
         );
         $game->setTemplateVar(
             'RPG_PLOTS',
@@ -74,7 +74,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'CONTACT',
             $this->contactRepository->getByUserAndOpponent(
-                $currentUser->getId(),
+                $visitor->getId(),
                 $user->getId()
             )
         );
