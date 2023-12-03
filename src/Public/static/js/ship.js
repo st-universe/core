@@ -163,10 +163,12 @@ function openStarMap(obj, shipId) {
 	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
 	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&sid=' + shipId);
 }
+
+storageTimer = null;
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
-	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
-	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
+	storageTimer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
+	obj.onmouseout = function () { clearTimeout(storageTimer); } //remove timer
 }
 function openStorage(id) {
 	openPJsWin('elt', 1);
@@ -174,6 +176,11 @@ function openStorage(id) {
 }
 function closeStorage() {
 	closeAjaxWindow();
+}
+function showShiplistShip(id, title) {
+	clearTimeout(storageTimer);
+	switchInnerContent('SHOW_SHIP', title, `id=${id}`, 'ship.php');
+	cClick();
 }
 function showShipDetails(id) {
 	closeAjaxWindow();

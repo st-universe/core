@@ -131,7 +131,8 @@
 {% macro onClickShip(ship) %}
 {% set id = ship.getId %}
 href="javascript:void(0);"
-onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php');"
+onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php');
+cClick();"
 {% endmacro %}
 
 {% macro onClickColony(colony) %}
