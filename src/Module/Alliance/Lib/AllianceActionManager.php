@@ -137,7 +137,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
     public function mayEditFactionMode(AllianceInterface $alliance, int $factionId): bool
     {
-        if ($alliance->getFactionId() != 0) {
+        if ($alliance->getFaction() === null) {
             return true;
         }
 

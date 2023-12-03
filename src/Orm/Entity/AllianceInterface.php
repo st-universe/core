@@ -25,7 +25,7 @@ interface AllianceInterface
 
     public function setDate(int $date): AllianceInterface;
 
-    public function getFactionId(): ?int;
+    public function getFaction(): ?FactionInterface;
 
     public function setFaction(?FactionInterface $faction): AllianceInterface;
 

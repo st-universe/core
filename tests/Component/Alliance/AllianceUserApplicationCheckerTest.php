@@ -7,6 +7,7 @@ namespace Stu\Component\Alliance;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
+use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\StuTestCase;
@@ -111,19 +112,19 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
-        $this->alliance->shouldReceive('getFactionId')
+        $this->alliance->shouldReceive('getFaction')
             ->withNoArgs()
             ->twice()
-            ->andReturn(42);
+            ->andReturn($this->mock(FactionInterface::class));
 
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
             ->andReturnNull();
-        $this->user->shouldReceive('getFactionId')
+        $this->user->shouldReceive('getFaction')
             ->withNoArgs()
             ->once()
-            ->andReturn(666);
+            ->andReturn($this->mock(FactionInterface::class));
 
         $this->assertFalse(
             $this->subject->mayApply($this->user, $this->alliance)
@@ -132,7 +133,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
 
     public function testMayApplyReturnsTrueIfFactionsMatch(): void
     {
-        $factionId = 666;
+        $faction = $this->mock(FactionInterface::class);
 
         $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(
@@ -147,19 +148,19 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
-        $this->alliance->shouldReceive('getFactionId')
+        $this->alliance->shouldReceive('getFaction')
             ->withNoArgs()
             ->twice()
-            ->andReturn($factionId);
+            ->andReturn($faction);
 
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
             ->andReturnNull();
-        $this->user->shouldReceive('getFactionId')
+        $this->user->shouldReceive('getFaction')
             ->withNoArgs()
             ->once()
-            ->andReturn($factionId);
+            ->andReturn($faction);
 
         $this->assertTrue(
             $this->subject->mayApply($this->user, $this->alliance)
@@ -181,10 +182,10 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
-        $this->alliance->shouldReceive('getFactionId')
+        $this->alliance->shouldReceive('getFaction')
             ->withNoArgs()
             ->once()
-            ->andReturn(0);
+            ->andReturn(null);
 
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()

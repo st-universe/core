@@ -159,9 +159,9 @@ class Alliance implements AllianceInterface
         return $this;
     }
 
-    public function getFactionId(): ?int
+    public function getFaction(): ?FactionInterface
     {
-        return $this->faction_id;
+        return $this->faction;
     }
 
     public function setFaction(?FactionInterface $faction): AllianceInterface

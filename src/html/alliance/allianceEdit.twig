@@ -1,0 +1,93 @@
+{% from 'html/alliancemacros.twig' import alliance_avatar %}
+
+<form action="alliance.php" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+	<div style="width: 505px; float: left;">
+		<div class="divhead">Name</div>
+		<div class="divbody">
+			<input type="text" style="width: 500px" name="name" value="{{ ALLIANCE.getName }}" />
+		</div>
+		<br />
+		<div class="divhead">Homepage</div>
+		<div class="divbody">
+			<input type="text" style="width: 500px" name="homepage" value="{{ ALLIANCE.getHomepage }}" />
+		</div>
+		<br />
+		<div class="divhead">Beschreibung</div>
+		<div class="divbody">
+			<textarea name="description" style="width: 500px; height: 150px;">{{ ALLIANCE.getDescription }}</textarea>
+		</div>
+	</div>
+	<div style="margin-left: 5px; width: 200px; float: left;">
+		<div class="divhead">Rassenallianz</div>
+		<div class="divbody">
+			<img src="assets/rassen/{{ USER.getFactionId }}s.png" />
+			{% set checked = ALLIANCE.getFaction ? 'checked="true"' : '' %}
+			{% if CAN_EDIT_FACTION_MODE %}
+			<input type="checkbox" name="factionid" value="1" {{ checked }} />
+			{% else %}
+			<input type="checkbox" disabled="disabled" name="factionid" {{ checked }} />
+			{% endif %}
+		</div>
+		<br />
+		<div class=" divhead">Bewerbungen
+		</div>
+		<div class="divbody">
+			<label>
+				{% set checked = ALLIANCE.getAcceptApplications ? 'checked="true"' : '' %}
+				<input type="radio" name="acceptapp" value="1" {{ checked }} />
+				erlauben
+			</label>
+			<label>
+				{% set checked = ALLIANCE.getAcceptApplications ? '' : 'checked="true"' %}
+				<input type="radio" name="acceptapp" value="0" {{ checked }} />
+				verbieten
+			</label>
+		</div>
+		<br />
+		<div class="divhead" style="color: #FF0000;">Löschung</div>
+		<div class="divbody">
+			<a href="javascript:void(0);" class="linkbutton" onclick="$('real_del').show();">Allianz
+				löschen?</a>
+			<div id="real_del" style="display: none">
+				<br />
+				<a href="alliance.php?B_DELETE_ALLIANCE=1&sstr={{ SESSIONSTRING }}" class="linkbutton"
+					style="color: #FF0000">Löschen!</a>
+			</div>
+		</div>
+		<br />
+		<div class="divhead">Editieren</div>
+		<div class="divbody">
+			<input type="submit" class="button" name="B_UPDATE_ALLIANCE" value="Allianz editieren" />
+		</div>
+	</div>
+	<div style="padding-top: 10px; width: 505px; clear: both;">
+		<div class="divhead">Allianzlogo</div>
+		<div class="divbody">
+			<table style="width: 100%">
+				<tr>
+					<td style="vertical-align: top;">
+						<input type="file" class="button" name="avatar" />
+						<input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button" /> <input
+							type="submit" name="B_DELETE_AVATAR" value="Löschen" class="button" />
+					</td>
+				</tr>
+				{% if ALLIANCE.getAvatar %}
+				<tr>
+					<td>
+						{{ alliance_avatar(ALLIANCE) }}
+					</td>
+				</tr>
+				{% endif %}
+			</table>
+		</div>
+		<div class="divhead">Territorialfarbe</div>
+		<div class="divbody">
+			<input type="text" style="width: 500px" name="rgb" value="{{ ALLIANCE.getRgbCode }}" />
+		</div>
+		<div class="divbody">Dieser RGB-Farbcode kennzeichnet Kartenfelder, die der Allianz zugeordnet
+			werden können. Beispiel: #9ab5ef
+		</div>
+		<br />
+	</div>
+</form>
