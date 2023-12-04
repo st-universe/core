@@ -48,7 +48,7 @@ final class ShowSignatures implements ViewControllerInterface
             return;
         }
 
-        $layerId = request::postInt('layerid');
+        $layerId = request::postIntFatal('layerid');
         $shipId = request::postInt('shipid');
         $userId = request::postInt('userid');
         $allyId = request::postInt('allyid');
@@ -72,6 +72,8 @@ final class ShowSignatures implements ViewControllerInterface
             $signatureRange = $this->flightSignatureRepository->getSignatureRangeForUser($userId);
         } elseif ($allyId !== 0) {
             $signatureRange = $this->flightSignatureRepository->getSignatureRangeForAlly($allyId);
+        } else {
+            $signatureRange = $this->flightSignatureRepository->getSignatureRange();
         }
 
         if ($signatureRange === []) {

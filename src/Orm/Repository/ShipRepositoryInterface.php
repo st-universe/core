@@ -162,6 +162,11 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return array<VisualPanelEntryData>
      */
+    public function getSignaturesOuterSystem(int $minx, int $maxx, int $miny, int $maxy, int $layerId): array;
+
+    /**
+     * @return array<VisualPanelEntryData>
+     */
     public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): array;
 
     /**
