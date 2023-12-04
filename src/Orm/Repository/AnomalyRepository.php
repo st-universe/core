@@ -62,7 +62,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
         $range = $ship->getSensorRange() * 2;
 
         try {
-            return (int)$this->getEntityManager()->createQuery(
+            $result = (int)$this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT SQRT(ABS(m.cx - :x) * ABS(m.cx - :x) + ABS(m.cy - :y) * ABS(m.cy - :y)) as foo
                     FROM %s a
@@ -87,6 +87,12 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
                     'endY' => $map->getY() +  $range
                 ])
                 ->getSingleScalarResult();
+
+            if ($result > $range) {
+                return null;
+            }
+
+            return $result;
         } catch (NoResultException) {
             return null;
         }
