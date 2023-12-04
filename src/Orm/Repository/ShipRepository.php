@@ -669,6 +669,60 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    private const ADMIN_SIGNATURE_MAP_COUNT =
+    ',(select count(distinct fs1.ship_id) from stu_flight_sig fs1
+    where fs1.map_id = a.id
+    AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
+    (select count(distinct fs2.ship_id) from stu_flight_sig fs2
+    where fs2.map_id = a.id
+    AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
+    (select count(distinct fs3.ship_id) from stu_flight_sig fs3
+    where fs3.map_id = a.id
+    AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
+    (select count(distinct fs4.ship_id) from stu_flight_sig fs4
+    where fs4.map_id = a.id
+    AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c ';
+
+    public function getSignaturesOuterSystem(int $minx, int $maxx, int $miny, int $maxy, int $layerId): array
+    {
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult(VisualPanelEntryData::class, 'd');
+        $rsm->addFieldResult('d', 'posx', 'posx');
+        $rsm->addFieldResult('d', 'posy', 'posy');
+        $rsm->addFieldResult('d', 'shipcount', 'shipcount');
+        $rsm->addFieldResult('d', 'type', 'type');
+
+        $rsm->addFieldResult('d', 'd1c', 'd1c');
+        $rsm->addFieldResult('d', 'd2c', 'd2c');
+        $rsm->addFieldResult('d', 'd3c', 'd3c');
+        $rsm->addFieldResult('d', 'd4c', 'd4c');
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
+                    (SELECT count(distinct b.id)
+                        FROM stu_ships b
+                        WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id) as shipcount
+                %s
+                FROM stu_map a
+                LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd
+                AND a.cy BETWEEN :syStart AND :syEnd
+                AND a.layer_id = :layerId
+                GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
+                self::ADMIN_SIGNATURE_MAP_COUNT
+            ),
+            $rsm
+        )->setParameters([
+            'sxStart' => $minx,
+            'sxEnd' => $maxx,
+            'syStart' => $miny,
+            'syEnd' => $maxy,
+            'layerId' => $layerId
+        ])->getResult();
+    }
+
     private const ADMIN_SIGNATURE_MAP_COUNT_USER =
     ',(select count(distinct fs1.ship_id) from stu_flight_sig fs1
     where fs1.map_id = a.id

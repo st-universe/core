@@ -94,7 +94,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
-    public function getSignatureRangeForUser(int $userId): array
+    public function createSignatureRangeResultMapping(): ResultSetMapping
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('minx', 'minx', 'integer');
@@ -102,13 +102,31 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('miny', 'miny', 'integer');
         $rsm->addScalarResult('maxy', 'maxy', 'integer');
 
+        return $rsm;
+    }
+
+    public function getSignatureRange(): array
+    {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx,
+                    COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                FROM stu_flight_sig fs
+                JOIN stu_map m ON m.id = fs.map_id',
+                $this->createSignatureRangeResultMapping()
+            )
+            ->getResult();
+    }
+
+    public function getSignatureRangeForUser(int $userId): array
+    {
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
                 FROM stu_flight_sig fs
                 JOIN stu_map m ON m.id = fs.map_id
                 WHERE fs.user_id = :userId',
-                $rsm
+                $this->createSignatureRangeResultMapping()
             )
             ->setParameter('userId', $userId)
             ->getResult();
@@ -116,12 +134,6 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
 
     public function getSignatureRangeForAlly(int $allyId): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('minx', 'minx', 'integer');
-        $rsm->addScalarResult('maxx', 'maxx', 'integer');
-        $rsm->addScalarResult('miny', 'miny', 'integer');
-        $rsm->addScalarResult('maxy', 'maxy', 'integer');
-
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
@@ -129,7 +141,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 JOIN stu_map m ON m.id = fs.map_id
                 JOIN stu_user u	ON fs.user_id = u.id
                 WHERE u.allys_id = :allyId',
-                $rsm
+                $this->createSignatureRangeResultMapping()
             )
             ->setParameter('allyId', $allyId)
             ->getResult();

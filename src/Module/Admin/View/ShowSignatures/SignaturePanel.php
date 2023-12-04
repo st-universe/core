@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
-use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
-use Stu\Component\Map\MapEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\SignaturePanelEntry;
 use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
@@ -77,7 +75,13 @@ class SignaturePanel extends AbstractVisualPanel
             );
         }
 
-        throw new RuntimeException('either userId or allyId has to be set');
+        return $this->shipRepository->getSignaturesOuterSystem(
+            $this->data['minx'],
+            $this->data['maxx'],
+            $this->data['miny'],
+            $this->data['maxy'],
+            $this->layer->getId()
+        );
     }
 
     protected function loadLSS(): array
