@@ -4,7 +4,7 @@
         {% if user.getAvatar %}
         <img src="/{{ ASSET_PATHS.user }}/{{ user.getAvatar }}.png" title="{{ user.getName|bbcode2txt }}" />
         {% else %}
-        <img src="/{{ ASSET_PATHS.faction }}/{{ user.getFactionId }}kn.png" title"{{ user.getName|bbcode2txt }}" />
+        <img src="/{{ ASSET_PATHS.faction }}/{{ user.getFactionId }}kn.png" title="{{ user.getName|bbcode2txt }}" />
         {% endif %}
     </a>
 </div>
