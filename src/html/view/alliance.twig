@@ -32,7 +32,7 @@
       </div>
     </div>
     {% if DESCRIPTION %}
-    <div class="allianceDescription translatable-content" id="allianceDescription" tal:content="structure ">
+    <div class="allianceDescription translatable-content" id="allianceDescription" style="overflow-wrap: break-word;">
       {% autoescape false %}
       {{ DESCRIPTION|nl2br }}
       {% endautoescape %}</div>
@@ -62,7 +62,6 @@
       {% if diplomatic %}
       <div class="allianceMinister">
         {{ userAvatar(diplomatic.getUser) }}
-        <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data" />
         <div class="name">{{ diplomatic.getUser.getName|bbcode }}</div>
         <div class="jobDescription">Außenminister</div>
       </div>
@@ -79,7 +78,7 @@
           <img src="assets/rassen/{{ data.getUser.getFactionId }}s.png" />
         </div>
         {% if IS_IN_ALLIANCE %}
-        <div tal:attributes="class data/getOnlineStateCssClass"> </div>
+        <div class="{{ data.getOnlineStateCssClass }}"> </div>
         {% else %}
         <div> </div>
         {% endif %}
