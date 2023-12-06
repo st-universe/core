@@ -17,7 +17,7 @@ final class ComponentLoader implements ComponentLoaderInterface
     /** @var array<int, RenderFragmentInterface> */
     private array $componentProviders;
 
-    /** @var array<ComponentEnum> */
+    /** @var array<string, ComponentUpdate> */
     private array $componentUpdates = [];
 
     /** @var array<ComponentEnum> */
@@ -31,10 +31,10 @@ final class ComponentLoader implements ComponentLoaderInterface
     }
 
 
-    public function addComponentUpdate(ComponentEnum $component): void
+    public function addComponentUpdate(ComponentEnum $component, bool $isInstantUpdate = true): void
     {
-        if (!in_array($component, $this->componentUpdates)) {
-            $this->componentUpdates[] = $component;
+        if (!array_key_exists($component->value, $this->componentUpdates)) {
+            $this->componentUpdates[$component->value] = new ComponentUpdate($component, $isInstantUpdate);
         }
     }
 
@@ -43,18 +43,41 @@ final class ComponentLoader implements ComponentLoaderInterface
      */
     public function loadComponentUpdates(GameControllerInterface $game): void
     {
-        foreach ($this->componentUpdates as $component) {
+        foreach ($this->componentUpdates as $update) {
+
+            $component = $update->getComponent();
+            $isInstantUpdate = $update->isInstantUpdate();
+
+            if ($isInstantUpdate) {
+                $this->addExecuteJs(
+                    $component->value,
+                    '',
+                    $game
+                );
+            }
+
             $refreshInterval = $component->getRefreshIntervalInSeconds();
 
-            $game->addExecuteJS(sprintf(
-                "updateComponent('navlet_%s', '/%s?%s=1&component=%s'%s);",
-                $component->value,
-                ModuleViewEnum::GAME->getPhpPage(),
-                ShowComponent::VIEW_IDENTIFIER,
-                $component->value,
-                $refreshInterval === null ? '' : sprintf(', %d', $refreshInterval * 1000)
-            ), GameEnum::JS_EXECUTION_AFTER_RENDER);
+            if (!$isInstantUpdate || $refreshInterval !== null) {
+                $this->addExecuteJs(
+                    $component->value,
+                    $refreshInterval === null ? '' : sprintf(', %d', $refreshInterval * 1000),
+                    $game
+                );
+            }
         }
+    }
+
+    private function addExecuteJs(string $componentValue, string $refreshParam, GameControllerInterface $game): void
+    {
+        $game->addExecuteJS(sprintf(
+            "updateComponent('navlet_%s', '/%s?%s=1&component=%s'%s);",
+            $componentValue,
+            ModuleViewEnum::GAME->getPhpPage(),
+            ShowComponent::VIEW_IDENTIFIER,
+            $componentValue,
+            $refreshParam
+        ), GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 
     public function registerComponent(ComponentEnum $component): void

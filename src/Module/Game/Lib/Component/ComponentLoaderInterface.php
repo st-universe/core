@@ -10,7 +10,7 @@ interface ComponentLoaderInterface
     /**
      * If the component needs update.
      */
-    public function addComponentUpdate(ComponentEnum $component): void;
+    public function addComponentUpdate(ComponentEnum $component, bool $isInstantUpdate = true): void;
 
     /** 
      * Adds the execute javascript after render.

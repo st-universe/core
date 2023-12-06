@@ -32,10 +32,24 @@ class ComponentLoaderTest extends StuTestCase
         $this->subject = new ComponentLoader([ComponentEnum::PM_NAVLET->value => $this->componentProvider]);
     }
 
-    public function testLoadComponentUpdatesWithoutRefreshInterval(): void
+    public function testLoadComponentUpdatesAsInstantUpdate(): void
     {
         $this->subject->addComponentUpdate(ComponentEnum::USER_NAVLET);
-        $this->subject->addComponentUpdate(ComponentEnum::USER_NAVLET);
+
+        $this->game->shouldReceive('addExecuteJS')
+            ->with(
+                "updateComponent('navlet_user', '/game.php?SHOW_COMPONENT=1&component=user');",
+                GameEnum::JS_EXECUTION_AFTER_RENDER
+            )
+            ->once();
+
+        $this->subject->loadComponentUpdates($this->game);
+    }
+
+    public function testLoadComponentUpdatesWithoutRefreshInterval(): void
+    {
+        $this->subject->addComponentUpdate(ComponentEnum::USER_NAVLET, false);
+        $this->subject->addComponentUpdate(ComponentEnum::USER_NAVLET, false);
 
         $this->game->shouldReceive('addExecuteJS')
             ->with(
@@ -49,8 +63,28 @@ class ComponentLoaderTest extends StuTestCase
 
     public function testLoadComponentUpdatesWithRefreshInterval(): void
     {
+        $this->subject->addComponentUpdate(ComponentEnum::PM_NAVLET, false);
+
+        $this->game->shouldReceive('addExecuteJS')
+            ->with(
+                "updateComponent('navlet_pm', '/game.php?SHOW_COMPONENT=1&component=pm', 60000);",
+                GameEnum::JS_EXECUTION_AFTER_RENDER
+            )
+            ->once();
+
+        $this->subject->loadComponentUpdates($this->game);
+    }
+
+    public function testLoadComponentUpdatesWithInstantAndRefreshInterval(): void
+    {
         $this->subject->addComponentUpdate(ComponentEnum::PM_NAVLET);
 
+        $this->game->shouldReceive('addExecuteJS')
+            ->with(
+                "updateComponent('navlet_pm', '/game.php?SHOW_COMPONENT=1&component=pm');",
+                GameEnum::JS_EXECUTION_AFTER_RENDER
+            )
+            ->once();
         $this->game->shouldReceive('addExecuteJS')
             ->with(
                 "updateComponent('navlet_pm', '/game.php?SHOW_COMPONENT=1&component=pm', 60000);",
