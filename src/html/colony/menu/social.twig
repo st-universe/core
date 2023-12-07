@@ -2,24 +2,28 @@
 {% block containment %}
 <div>
     <table class="tcal" style="width: 40vw;">
+        {% set primaryEffectCommodity = FACTION.getPrimaryEffectCommodity %}
+        {% set secondaryEffectCommodity = FACTION.getSecondaryEffectCommodity %}
         <tr>
             <th colspan="4">Crewberechnung dieser Kolonie</th>
         </tr>
         <tr>
             <td style="width: 25%" class="darkbg">
-                {{ FACTION.getPrimaryEffectCommodity.getName }}
+                {{ primaryEffectCommodity.getName }}
             </td>
             <td style="width: 25%" class="darkbg">
-                {{ FACTION.getSecondaryEffectCommodity.getName }}
+                {{ secondaryEffectCommodity.getName }}
             </td>
         </tr>
         <tr>
             <td>
-                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                <img src="assets/commodities/{{ primaryEffectCommodity.getId }}.png"
+                    title="{{ primaryEffectCommodity.getName }}" />
                 {{ POPULATION_CALCULATOR.getPositiveEffectPrimary }}
             </td>
             <td>
-                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                <img src="assets/commodities/{{ secondaryEffectCommodity.getId }}.png"
+                    title="{{ secondaryEffectCommodity.getName }}" />
                 {{ POPULATION_CALCULATOR.getPositiveEffectSecondary }}
             </td>
         </tr>
@@ -35,7 +39,7 @@
                 {{ POPULATION_CALCULATOR.getNegativeEffect }}
             </td>
             <td>
-                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Prozent" />
+                <img src="/assets/commodities/1300.png" title="Lebensstandard">
                 {{ POPULATION_CALCULATOR.getLifeStandardPercentage }}%
             </td>
         </tr>
