@@ -54,7 +54,12 @@ final class ResearchRanking implements ViewControllerInterface
         $game->setTemplateVar(
             'RESEARCH_LIST',
             array_map(
-                fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string) $data['points']),
+                fn (array $data): DatabaseTopListWithPoints
+                => $this->databaseUiFactory->createDatabaseTopListWithPoints(
+                    $data['user_id'],
+                    (string) $data['points'],
+                    $data['timestamp']
+                ),
                 array_slice($list, 0, 10)
             )
         );

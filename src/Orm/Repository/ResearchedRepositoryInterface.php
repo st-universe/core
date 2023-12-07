@@ -43,7 +43,7 @@ interface ResearchedRepositoryInterface extends ObjectRepository
     public function truncateForUser(int $userId): void;
 
     /**
-     * @return array<array{user_id: int, points: int}>
+     * @return array<array{user_id: int, points: int, timestamp: int}>
      */
     public function getResearchedPoints(): array;
 }

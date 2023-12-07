@@ -28,7 +28,8 @@ interface DatabaseUiFactoryInterface
 
     public function createDatabaseTopListWithPoints(
         int $userId,
-        string $points
+        string $points,
+        int $time = null
     ): DatabaseTopListWithPoints;
 
     /**
