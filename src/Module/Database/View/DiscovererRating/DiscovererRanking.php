@@ -44,7 +44,11 @@ final class DiscovererRanking implements ViewControllerInterface
         $game->setTemplateVar(
             'DISCOVERER_LIST',
             array_map(
-                fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string) $data['points']),
+                fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints(
+                    $data['user_id'],
+                    (string) $data['points'],
+                    $data['timestamp'],
+                ),
                 $this->databaseUserRepository->getTopList()
             )
         );

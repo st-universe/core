@@ -62,15 +62,22 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
         $rsm->addScalarResult('points', 'points', 'integer');
+        $rsm->addScalarResult('timestamp', 'timestamp', 'integer');
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT dbu.user_id, SUM(dbc.points) as points FROM stu_database_user dbu LEFT JOIN
-                stu_database_entrys dbe ON dbe.id = dbu.database_id LEFT JOIN stu_database_categories dbc ON
-                dbc.id = dbe.category_id
+                'SELECT dbu.user_id, SUM(dbc.points) AS points,
+                    (SELECT MAX(du.date)
+                        FROM stu_database_user du
+                        WHERE du.user_id = dbu.user_id) AS timestamp
+                FROM stu_database_user dbu
+                LEFT JOIN stu_database_entrys dbe
+                    ON dbe.id = dbu.database_id
+                LEFT JOIN stu_database_categories dbc
+                    ON dbc.id = dbe.category_id
                 WHERE dbu.user_id > :firstUserId
                 GROUP BY dbu.user_id
-                ORDER BY points DESC
+                ORDER BY points DESC, timestamp ASC
                 LIMIT 10',
                 $rsm
             )
