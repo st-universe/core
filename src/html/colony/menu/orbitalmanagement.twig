@@ -53,7 +53,7 @@
         {% if ship.canMan %}
         <div>
           <input type="checkbox" name="man[{{ shipId }}]" />
-          <span>Hochbeamen</span> ({{ ship.getCrewCount }}/{{ ship.getBuildplangetCrew }})
+          <span>Hochbeamen</span> ({{ ship.getCrewCount }}/{{ ship.getBuildplan.getCrew }})
         </div>
         {% else %}
         {% if ship.getCrewCount %}
