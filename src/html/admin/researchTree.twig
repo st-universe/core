@@ -1,0 +1,10 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<div>
+  {% autoescape false %}
+  {{ TREE }}
+  {% endautoescape %}
+</div>
+{% endblock %}

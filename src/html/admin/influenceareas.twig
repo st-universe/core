@@ -1,0 +1,12 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<div>
+  <div>
+    {% autoescape false %}
+    {{ GRAPH }}
+    {% endautoescape %}
+  </div>
+</div>
+{% endblock %}

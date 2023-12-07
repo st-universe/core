@@ -31,7 +31,7 @@ final class Playerlist implements ViewControllerInterface
             ),
             _('Spielerliste')
         );
-        $game->setTemplateFile('html/admin/playerlist.xhtml');
+        $game->setTemplateFile('html/admin/playerList.twig');
         $game->setPageTitle(_('Spielerliste'));
         $game->setTemplateVar(
             'LIST',

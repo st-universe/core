@@ -78,7 +78,7 @@ final class ShowResearchTree implements ViewControllerInterface
             ),
             _('Forschungsbaum')
         );
-        $game->setTemplateFile('html/admin/tree.xhtml');
+        $game->setTemplateFile('html/admin/researchTree.twig');
         $game->setPageTitle(_('Forschungsbaum'));
         $game->setTemplateVar('TREE', $graphviz->createImageHtml($graph));
     }

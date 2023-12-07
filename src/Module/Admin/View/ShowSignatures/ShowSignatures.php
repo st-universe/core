@@ -55,7 +55,7 @@ final class ShowSignatures implements ViewControllerInterface
 
         $game->setTemplateVar('DONOTHING', true);
 
-        $game->showMacro('html/admin/adminmacros.xhtml/signaturescan');
+        $game->setTemplateFile('html/admin/signatureScan.twig');
 
         $signatureRange = [];
 

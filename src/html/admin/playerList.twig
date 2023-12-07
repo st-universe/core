@@ -1,0 +1,62 @@
+{% from 'html/macros.twig' import userAvatar, userInfo, pmWindow, userProfile %}
+
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<div class="userList">
+  {% for listEntry in LIST %}
+  {% set user = listEntry.getUser %}
+  {% set userId = user.getId %}
+  <div class="userListItem">
+    <div>
+      {{ userAvatar(user) }}
+    </div>
+    <div>
+      <div class="userListItemName">
+        {{ userInfo(user) }}
+      </div>
+      <div class="userListItemAllianceName">
+        {% set alliance = user.getAlliance %}
+        {% if alliance %}
+        <a href="/alliance.php?id={{ alliance.getId }}">{{ alliance.getName|bbcode }}</a>
+        {% else %}
+        <span>-</span>
+        {% endif %}
+      </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+        {{ userProfile(userId) }}
+        {{ pmWindow(USER, userId) }}
+      </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          {{ user.getLastAction|stuDateTime }}
+        </div>
+        <div>STATUS:
+          <span style="color: {{ listEntry.getUserStateColor }};">{{ listEntry.getUserStateDescription }}</span>
+          {% if user.isLocked %}
+          <a href="javascript:void(0)" onclick="showUserLock({{ userId }});"
+            onmouseover="cp('lock{{ userId }}','buttons/block1', 'png');"
+            onmouseout="cp('lock{{ userId }}','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock{{ userId }}" title="Spielersperre editieren" /></a>
+          <a href="/admin/?B_UNLOCK_USER=1&uid={{ userId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('activate{{ userId }}','buttons/update1', 'png');"
+            onmouseout="cp('activate{{ userId }}','buttons/update0', 'png');"><img src="/assets/buttons/update0.png"
+              name="activate{{ userId }}" title="Spieler entsperren" /></a>
+          {% else %}
+          <a href="javascript:void(0)" onclick="showUserLock({{ userId }});"
+            onmouseover="cp('lock{{ userId }}','buttons/block1', 'png');"
+            onmouseout="cp('lock{{ userId }}','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock{{ userId }}" title="Spielersperre setzen" /></a>
+          {% endif %}
+          <a href="/admin/?B_BLOCK_USER=1&uid={{ userId }}&sstr={{ SESSIONSTRING }}"><img
+              src="/assets/buttons/selfdes2.png" name="block{{ userId }}" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -38,14 +38,4 @@ final class UserlistEntry
         }
         return '#dddddd';
     }
-
-    public function isUserActive(): bool
-    {
-        return $this->user->getState() === UserEnum::USER_STATE_ACTIVE;
-    }
-
-    public function isUserLocked(): bool
-    {
-        return $this->user->isLocked();
-    }
 }

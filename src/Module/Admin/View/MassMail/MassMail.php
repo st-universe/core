@@ -20,7 +20,7 @@ final class MassMail implements ViewControllerInterface
             ),
             _('Massen-Mails')
         );
-        $game->setTemplateFile('html/admin/massmail.xhtml');
+        $game->setTemplateFile('html/admin/massMail.twig');
         $game->setPageTitle(_('Massen-Mails'));
     }
 }

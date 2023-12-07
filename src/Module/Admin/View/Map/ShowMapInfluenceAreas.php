@@ -50,7 +50,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             ),
             _('Einflussgebiete')
         );
-        $game->setTemplateFile('html/admin/influenceareas.xhtml');
+        $game->setTemplateFile('html/admin/influenceareas.twig');
 
         $game->setTemplateVar('GRAPH', $this->imageCreation->gdImageInSrc($this->buildImage($layer, $showAllyAreas !== 0)));
     }

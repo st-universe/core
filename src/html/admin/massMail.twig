@@ -1,0 +1,43 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<form action="/admin/index.php" method="post" name="massmailform" id="massmailform">
+  <input type="hidden" name="SHOW_MASS_MAIL" value="1" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  <div style="float: left; width: 75%;">
+    <table class="tcal">
+      <tr>
+        <th>Empfangsmedium</th>
+      </tr>
+      <tr>
+        <td>
+          <label>
+            <input type="radio" name="medium" value="1" /> via E-Mail
+          </label>
+          <label>
+            <input type="radio" name="medium" value="2" /> via PM
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <th>Betreff</th>
+      </tr>
+      <tr>
+        <td><input type="text" style="width: 100%" name="subject" value="Wichtige Information" /></td>
+      </tr>
+      <tr>
+        <th>Text</th>
+      </tr>
+      <tr>
+        <td><textarea name="text" style="width: 100%; height: 300px;"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <input type="submit" name="B_MASS_MAIL" value="Absenden" />
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+{% endblock %}

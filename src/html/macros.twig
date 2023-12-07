@@ -29,6 +29,16 @@
 {% endif %}
 {% endmacro %}
 
+{% macro pmWindow(USER, id) %}
+{% set handle = getUniqId() %}
+{% if USER.getId != id %}
+<a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/msg2', 'png');"
+    onmouseout="cp('{{ handle }}','buttons/msg1', 'png');"
+    onclick="closePopup();openPmWindow({{ USER.getId }}, {{ id }}, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="{{ handle }}" title="Nachricht senden" /></a>
+{% endif %}
+{% endmacro %}
+
 {% macro navigation_item(title, viewValue, iconUrl) %}
 {% set linkid = 'nav_item_' ~ iconUrl %}
 {% set view = getView(viewValue) %}
@@ -93,16 +103,6 @@
         <div class="navitem_title">{{ title }}</div>
     </a>
 </div>
-{% endmacro %}
-
-{% macro pmWindow(USER, id) %}
-{% set handle = getUniqId() %}
-{% if USER.getId != id %}
-<a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/msg2', 'png');"
-    onmouseout="cp('{{ handle }}','buttons/msg1', 'png');"
-    onclick="closePopup();openPmWindow({{ USER.getId }}, {{ id }}, 1,1);"><img src="/assets/buttons/msg1.png"
-        name="{{ handle }}" title="Nachricht senden" /></a>
-{% endif %}
 {% endmacro %}
 
 {% macro contactModeSwitcher(contact, div) %}

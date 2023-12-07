@@ -13,7 +13,7 @@ final class ShowTicks implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/admin/ticks.xhtml');
+        $game->setTemplateFile('html/admin/ticks.twig');
         $game->appendNavigationPart('/admin/?SHOW_TICKS=1', _('Ticks'));
         $game->setPageTitle(_('Ticks'));
     }

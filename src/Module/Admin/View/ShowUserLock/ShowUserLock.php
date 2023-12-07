@@ -26,7 +26,7 @@ final class ShowUserLock implements ViewControllerInterface
         $userIdToLock = request::getIntFatal('uid');
 
         $game->setPageTitle(_('User-Lock setzen'));
-        $game->setMacroInAjaxWindow('html/admin/adminmacros.xhtml/user_lock');
+        $game->setMacroInAjaxWindow('html/admin/userLock.twig');
 
         $game->setTemplateVar('USERID', $userIdToLock);
         $game->setTemplateVar('LOCK', $this->userLockRepository->getActiveByUser($userIdToLock));
