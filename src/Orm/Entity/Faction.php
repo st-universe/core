@@ -30,57 +30,58 @@ class Faction implements FactionInterface
 
     /**
      * @Column(type="string")
-     *
      */
     private string $name = '';
 
     /**
      * @Column(type="text")
-     *
      */
     private string $description = '';
 
     /**
      * @Column(type="string")
-     *
      */
     private string $darker_color = '';
 
     /**
      * @Column(type="boolean")
-     *
      */
     private bool $chooseable = false;
 
     /**
      * @Column(type="integer")
-     *
      */
     private int $player_limit = 0;
 
     /**
      * @Column(type="integer")
-     *
      */
     private int $start_building_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
      */
     private ?int $start_research_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
      */
     private ?int $start_map_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
      */
     private ?int $close_combat_score = null;
+
+    /**
+     * @Column(type="integer", nullable=true)
+     */
+    private ?int $positive_effect_primary_commodity_id = null;
+
+    /**
+     * @Column(type="integer", nullable=true)
+     */
+    private ?int $positive_effect_secondary_commodity_id = null;
 
     //TODO survivor_rate to escape pods
     /**
