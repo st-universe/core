@@ -122,6 +122,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
         $rsm->addScalarResult('points', 'points', 'integer');
+        $rsm->addScalarResult('timestamp', 'timestamp', 'integer');
 
         return $this
             ->getEntityManager()
@@ -146,10 +147,13 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
                         FROM stu_researched red JOIN stu_research r ON red.research_id = r.id
                         WHERE red.user_id = u.id
                         AND red.finished > 0
-                        AND r.commodity_id IN (:lvl4)) *4 AS points
+                        AND r.commodity_id IN (:lvl4)) *4 AS points,
+                    (SELECT MAX(red.finished)
+                        FROM stu_researched red
+                        WHERE red.user_id = u.id) AS timestamp
                 FROM stu_user u
                 WHERE u.id >= :firstUserId
-                ORDER BY points DESC',
+                ORDER BY points DESC, timestamp ASC',
                 $rsm
             )
             ->setParameters([

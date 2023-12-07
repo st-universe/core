@@ -59,7 +59,7 @@
 										tal:define="USER entry/getUser" />
 								</div>
 								<div class="userName" tal:content="structure bbcode:entry/getUser/getName">USER</div>
-								<div>
+								<div tal:attributes="title datetime:entry/getTime">
 									Punkte: <span tal:content="entry/getPoints">AMOUNT</span>
 								</div>
 								<div>
