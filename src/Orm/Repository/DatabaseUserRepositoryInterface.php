@@ -22,7 +22,7 @@ interface DatabaseUserRepositoryInterface extends ObjectRepository
     public function save(DatabaseUserInterface $entry): void;
 
     /**
-     * @return array<array{user_id: int, points: int}>
+     * @return array<array{user_id: int, points: int, timestamp: int}>
      */
     public function getTopList(): array;
 
