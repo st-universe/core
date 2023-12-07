@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use RuntimeException;
-use Stu\Component\Faction\FactionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -83,32 +81,15 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     public function getPositiveEffectPrimary(): int
     {
         if ($this->positive_effect_primary === null) {
-            // TODO we should use a faction-factory...
-            switch ($this->host->getUser()->getFactionId()) {
-                case FactionEnum::FACTION_FEDERATION:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FED_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_ROMULAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_ROMULAN_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_KLINGON:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_KLINGON_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_CARDASSIAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_CARDASSIAN_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_FERENGI:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FERENGI_PRIMARY;
-                    break;
-                default:
-                    throw new RuntimeException('faction id is not configured');
-            }
             $this->positive_effect_primary = 0;
-            if (!array_key_exists($key, $this->production)) {
-                return 0;
+
+            $commodity = $this->host->getUser()->getFaction()->getPrimaryEffectCommodity();
+
+            if ($commodity !== null && array_key_exists($commodity->getId(), $this->production)) {
+                $this->positive_effect_primary += $this->production[$commodity->getId()]->getProduction();
             }
-            $this->positive_effect_primary += $this->production[$key]->getProduction();
         }
+
         return $this->positive_effect_primary;
     }
 
@@ -116,30 +97,12 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     {
         if ($this->positive_effect_secondary === null) {
             $this->positive_effect_secondary = 0;
-            // XXX we should use a faction-factory...
-            switch ($this->host->getUser()->getFactionId()) {
-                case FactionEnum::FACTION_FEDERATION:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FED_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_ROMULAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_ROMULAN_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_KLINGON:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_KLINGON_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_CARDASSIAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_CARDASSIAN_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_FERENGI:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FERENGI_SECONDARY;
-                    break;
-                default:
-                    throw new RuntimeException('faction id is not configured');
+
+            $commodity = $this->host->getUser()->getFaction()->getSecondaryEffectCommodity();
+
+            if ($commodity !== null && array_key_exists($commodity->getId(), $this->production)) {
+                $this->positive_effect_secondary += $this->production[$commodity->getId()]->getProduction();
             }
-            if (!array_key_exists($key, $this->production)) {
-                return 0;
-            }
-            $this->positive_effect_secondary += $this->production[$key]->getProduction();
         }
         return $this->positive_effect_secondary;
     }
@@ -167,52 +130,5 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
             return 0;
         }
         return (int) $im;
-    }
-
-    public function getPositiveEffectPrimaryDescription(): string
-    {
-        switch ($this->host->getUser()->getFactionId()) {
-            case FactionEnum::FACTION_FEDERATION:
-                return _('Zufriedenheit');
-            case FactionEnum::FACTION_ROMULAN:
-                return _('Loyalität');
-            case FactionEnum::FACTION_KLINGON:
-                return _('Ehre');
-            case FactionEnum::FACTION_CARDASSIAN:
-                return _('Stolz');
-            case FactionEnum::FACTION_FERENGI:
-                return _('Wohlstand');
-        }
-        return '';
-    }
-
-    public function getPositiveEffectSecondaryDescription(): string
-    {
-        switch ($this->host->getUser()->getFactionId()) {
-            case FactionEnum::FACTION_FEDERATION:
-                return _('Bildung');
-            case FactionEnum::FACTION_ROMULAN:
-                return _('Imperiales Gedankengut');
-            case FactionEnum::FACTION_KLINGON:
-                return _('Kampftraining');
-            case FactionEnum::FACTION_CARDASSIAN:
-                return _('Patriotismus');
-            case FactionEnum::FACTION_FERENGI:
-                return _('Profitgier');
-        }
-        return '';
-    }
-
-    public function getNegativeEffectDescription(): string
-    {
-        switch ($this->host->getUser()->getFactionId()) {
-            case FactionEnum::FACTION_FEDERATION:
-            case FactionEnum::FACTION_ROMULAN:
-            case FactionEnum::FACTION_KLINGON:
-            case FactionEnum::FACTION_CARDASSIAN:
-            case FactionEnum::FACTION_FERENGI:
-                return _('Bevölkerungsdichte');
-        }
-        return '';
     }
 }

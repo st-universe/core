@@ -39,4 +39,8 @@ interface FactionInterface
     public function setStartMap(?MapInterface $start_map): FactionInterface;
 
     public function getCloseCombatScore(): ?int;
+
+    public function getPrimaryEffectCommodity(): ?CommodityInterface;
+
+    public function getSecondaryEffectCommodity(): ?CommodityInterface;
 }

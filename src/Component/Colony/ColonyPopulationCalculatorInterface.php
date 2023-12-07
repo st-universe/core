@@ -19,10 +19,4 @@ interface ColonyPopulationCalculatorInterface
     public function getPositiveEffectSecondary(): int;
 
     public function getGrowth(): int;
-
-    public function getPositiveEffectPrimaryDescription(): string;
-
-    public function getPositiveEffectSecondaryDescription(): string;
-
-    public function getNegativeEffectDescription(): string;
 }

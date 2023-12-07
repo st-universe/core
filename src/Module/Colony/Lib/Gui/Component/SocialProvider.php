@@ -37,6 +37,8 @@ final class SocialProvider implements GuiComponentProviderInterface
             $this->colonyLibFactory->createColonyPopulationCalculator($host)
         );
 
+        $game->setTemplateVar('FACTION', $game->getUser()->getFaction());
+
         $game->setTemplateVar(
             'CREW_COUNT_DEBRIS_AND_TRADE_POSTS',
             $this->crewCountRetriever->getDebrisAndTradePostsCount($user)

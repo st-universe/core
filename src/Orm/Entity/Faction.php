@@ -97,6 +97,18 @@ class Faction implements FactionInterface
      */
     private ?MapInterface $start_map = null;
 
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @JoinColumn(name="positive_effect_primary_commodity_id", referencedColumnName="id")
+     */
+    private ?CommodityInterface $primaryEffectCommodity;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @JoinColumn(name="positive_effect_secondary_commodity_id", referencedColumnName="id")
+     */
+    private ?CommodityInterface $secondaryEffectCommodity;
+
     public function getId(): int
     {
         return $this->id;
@@ -199,5 +211,15 @@ class Faction implements FactionInterface
     public function getCloseCombatScore(): ?int
     {
         return $this->close_combat_score;
+    }
+
+    public function getPrimaryEffectCommodity(): ?CommodityInterface
+    {
+        return $this->primaryEffectCommodity;
+    }
+
+    public function getSecondaryEffectCommodity(): ?CommodityInterface
+    {
+        return $this->secondaryEffectCommodity;
     }
 }
