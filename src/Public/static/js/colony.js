@@ -33,23 +33,26 @@ function switchColonyMenu(menu, func, fid) {
 	switchMenu(menu, 'colonymenu', func, fid);
 }
 
-function switchColonySubmenu(menu, func) {
+function switchColonySubmenu(menu, params) {
 	document.querySelectorAll('.colmenubutton').forEach(function (elem) {
 		Element.removeClassName(elem, 'selected');
 	});
-	switchMenu(menu, 'submenu', func);
+	switchMenu(menu, 'submenu', null, null, params);
 	$('colmenubutton_' + menu).addClassName('selected');
 }
 
-function switchMenu(menu, id, func, fid) {
+function switchMenu(menu, id, func, fid, params) {
 	$('result').hide();
 	closeAjaxWindow();
-	url = createHostUri('B_SWITCH_COLONYMENU', '&menu=' + menu);
+	url = createHostUri('B_SWITCH_COLONYMENU', `&menu=${menu}`);
 	if (func) {
-		url += '&func=' + func;
+		url += `&func=${func}`;
 	}
 	if (fid) {
-		url += '&fid=' + fid;
+		url += `&fid=${fid}`;
+	}
+	if (params) {
+		url += `&${params}`;
 	}
 
 	ajax_update(id, url);
