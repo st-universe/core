@@ -563,6 +563,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $targetUser = $this->mock(UserInterface::class);
         $storage = $this->mock(StorageInterface::class);
+        $boundStorage = $this->mock(StorageInterface::class);
 
         $takeover->shouldReceive('getSourceShip')
             ->withNoArgs()
@@ -604,7 +605,7 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->andReturn($targetUser);
         $this->target->shouldReceive('getStorage')
             ->withNoArgs()
-            ->andReturn(new ArrayCollection([$storage]));
+            ->andReturn(new ArrayCollection([$storage, $boundStorage]));
         $this->target->shouldReceive('setUser')
             ->with($user)
             ->once();
@@ -628,6 +629,14 @@ class ShipTakeoverManagerTest extends StuTestCase
         $storage->shouldReceive('setUser')
             ->with($user)
             ->once();
+        $storage->shouldReceive('getCommodity->isBoundToAccount')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $boundStorage->shouldReceive('getCommodity->isBoundToAccount')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
 
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
@@ -642,6 +651,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->storageRepository->shouldReceive('save')
             ->with($storage)
+            ->once();
+        $this->storageRepository->shouldReceive('delete')
+            ->with($boundStorage)
             ->once();
 
         $this->privateMessageSender->shouldReceive('send')

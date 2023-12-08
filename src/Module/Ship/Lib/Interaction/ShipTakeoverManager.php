@@ -320,9 +320,15 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $this->shipRepository->save($ship);
 
         // change storage owner
-        foreach ($ship->getStorage() as $storage) {
-            $storage->setUser($user);
-            $this->storageRepository->save($storage);
+        foreach ($ship->getStorage() as $storage) { #
+
+            if ($storage->getCommodity()->isBoundToAccount()) {
+                $ship->getStorage()->removeElement($storage);
+                $this->storageRepository->delete($storage);
+            } else {
+                $storage->setUser($user);
+                $this->storageRepository->save($storage);
+            }
         }
     }
 
