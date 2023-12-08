@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Researched;
@@ -18,28 +19,41 @@ use Stu\Orm\Entity\ResearchInterface;
  */
 final class BuildingRepository extends EntityRepository implements BuildingRepositoryInterface
 {
-    public function getByColonyAndUserAndBuildMenu(
+    public function getBuildmenuBuildings(
         PlanetFieldHostInterface $host,
         int $userId,
         int $buildMenu,
-        int $offset
+        int $offset,
+        int $commodityId = null
     ): array {
+
+        $commodityFilter = $commodityId === null ? '' : sprintf(
+            'AND EXISTS (SELECT bc.id FROM %s bc WHERE bc.buildings_id = b.id AND bc.commodity_id = %d)',
+            BuildingCommodity::class,
+            $commodityId
+        );
+
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT b FROM %s b WHERE b.bm_col = :buildMenu AND b.view = :viewState AND (
-                        b.research_id is null OR b.research_id IN (
+                    'SELECT b FROM %s b
+                    WHERE b.bm_col = :buildMenu
+                    AND b.view = :viewState
+                    AND (b.research_id is null OR b.research_id IN (
                             SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.aktiv = :activeState
                         ) AND b.id IN (
                             SELECT fb.buildings_id FROM %s fb WHERE fb.type IN (
                                 SELECT fd.type_id FROM %s fd WHERE fd.%s = :hostId
                             )
-                        )) ORDER BY b.name',
+                        ))
+                    %s
+                    ORDER BY b.name',
                     Building::class,
                     Researched::class,
                     PlanetFieldTypeBuilding::class,
                     PlanetField::class,
-                    $host->getPlanetFieldHostColumnIdentifier()
+                    $host->getPlanetFieldHostColumnIdentifier(),
+                    $commodityFilter
                 )
             )
             ->setMaxResults(ColonyEnum::BUILDMENU_SCROLLOFFSET)

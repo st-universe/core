@@ -18,11 +18,12 @@ interface BuildingRepositoryInterface extends ObjectRepository
     /**
      * @return array<BuildingInterface>
      */
-    public function getByColonyAndUserAndBuildMenu(
+    public function getBuildmenuBuildings(
         PlanetFieldHostInterface $host,
         int $userId,
         int $buildMenu,
-        int $offset
+        int $offset,
+        int $commodityId = null
     ): array;
 
     /** @return array<BuildingInterface> */

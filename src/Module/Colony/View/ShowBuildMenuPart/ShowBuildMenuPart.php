@@ -35,7 +35,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
         $menus = [];
 
         foreach (BuildMenuEnum::BUILDMENU_IDS as $id) {
-            $menus[$id]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+            $menus[$id]['buildings'] = $this->buildingRepository->getBuildmenuBuildings(
                 $host,
                 $userId,
                 $id,
