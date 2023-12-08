@@ -203,7 +203,7 @@
                 </div>
                 {% endif %}
                 {% for data in building.getCommodities %}
-                <div>
+                <div onclick="switchColonySubmenu(1, 'cid={{ data.getCommodityId }}');">
                     <img src="/assets/commodities/{{ data.getCommodityId }}.png"
                         title="{{ data.getCommodity.getName }}" />
                     {{ data.getAmount|addPlusCharacter }}

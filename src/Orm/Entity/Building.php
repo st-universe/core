@@ -146,7 +146,7 @@ class Building implements BuildingInterface
     /**
      * @var ArrayCollection<int, BuildingCommodityInterface>
      *
-     * @OneToMany(targetEntity="BuildingCommodity", mappedBy="building")
+     * @OneToMany(targetEntity="BuildingCommodity", mappedBy="building", indexBy="commodity_id")
      */
     private Collection $commodities;
 
