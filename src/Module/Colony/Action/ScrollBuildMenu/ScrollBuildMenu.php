@@ -43,7 +43,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($offset % ColonyEnum::BUILDMENU_SCROLLOFFSET != 0) {
             $offset = (int)floor($offset / ColonyEnum::BUILDMENU_SCROLLOFFSET);
         }
-        $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+        $ret = $this->buildingRepository->getBuildmenuBuildings(
             $host,
             $userId,
             $menu,
@@ -51,7 +51,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         );
         if ($ret === []) {
             $offset = max(0, $offset - ColonyEnum::BUILDMENU_SCROLLOFFSET);
-            $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+            $ret = $this->buildingRepository->getBuildmenuBuildings(
                 $host,
                 $userId,
                 $menu,

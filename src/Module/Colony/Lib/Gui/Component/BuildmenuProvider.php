@@ -6,7 +6,6 @@ use request;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 
@@ -15,7 +14,7 @@ final class BuildmenuProvider implements GuiComponentProviderInterface
     private BuildingRepositoryInterface $buildingRepository;
 
     public function __construct(
-        BuildingRepositoryInterface $buildingRepository,
+        BuildingRepositoryInterface $buildingRepository
     ) {
         $this->buildingRepository = $buildingRepository;
     }
@@ -29,22 +28,14 @@ final class BuildmenuProvider implements GuiComponentProviderInterface
 
         foreach (BuildMenuEnum::BUILDMENU_IDS as $id) {
 
-            $buildings = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+            $menus[$id]['name'] = BuildMenuEnum::getDescription($id);
+            $menus[$id]['buildings'] = $this->buildingRepository->getBuildmenuBuildings(
                 $host,
                 $game->getUser()->getId(),
                 $id,
-                0
+                0,
+                request::has('cid') ? request::getIntFatal('cid') : null
             );
-
-            if (request::has('cid')) {
-                $buildings = array_filter(
-                    $buildings,
-                    fn (BuildingInterface $building) => $building->getCommodities()->containsKey(request::getIntFatal('cid'))
-                );
-            }
-
-            $menus[$id]['buildings'] = $buildings;
-            $menus[$id]['name'] = BuildMenuEnum::getDescription($id);
         }
 
         $game->setTemplateVar('BUILD_MENUS', $menus);
