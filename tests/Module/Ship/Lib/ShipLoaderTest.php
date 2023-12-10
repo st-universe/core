@@ -8,11 +8,14 @@ use Mockery\MockInterface;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\AccessViolation;
+use Stu\Exception\EntityLockedException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
+use Stu\Module\Tick\Lock\LockManagerInterface;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
@@ -24,6 +27,8 @@ class ShipLoaderTest extends StuTestCase
     private SemaphoreUtilInterface $semaphoreUtil;
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
+
+    private LockManagerInterface $lockManager;
 
     private GameControllerInterface $game;
 
@@ -51,6 +56,7 @@ class ShipLoaderTest extends StuTestCase
         $this->semaphoreUtil = $this->mock(SemaphoreUtilInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
+        $this->lockManager = $this->mock(LockManagerInterface::class);
 
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -65,13 +71,32 @@ class ShipLoaderTest extends StuTestCase
             $this->shipRepository,
             $this->semaphoreUtil,
             $this->game,
-            $this->shipWrapperFactory
+            $this->shipWrapperFactory,
+            $this->lockManager
         );
     }
 
-    public function testByIdAndUserAwaitExceptionIfShipNonExistent(): void
+    public function testgGtByIdAndUserExpectErrorWhenEntityLocked(): void
+    {
+        static::expectExceptionMessage('Tick läuft gerade, Zugriff auf Schiff ist daher blockiert');
+        static::expectException(EntityLockedException::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(true);
+
+        $this->shipLoader->getByIdAndUser($this->shipId, $this->userId);
+    }
+
+    public function testGetByIdAndUserAwaitExceptionIfShipNonExistent(): void
     {
         $this->expectException(ShipDoesNotExistException::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -81,10 +106,14 @@ class ShipLoaderTest extends StuTestCase
         $this->shipLoader->getByIdAndUser($this->shipId, $this->userId);
     }
 
-    public function testByIdAndUserAwaitExceptionIfShipIsDestroyed(): void
+    public function testGetByIdAndUserAwaitExceptionIfShipIsDestroyed(): void
     {
         $this->expectException(ShipIsDestroyedException::class);
-        $userSema = 123456;
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -98,9 +127,14 @@ class ShipLoaderTest extends StuTestCase
         $this->shipLoader->getByIdAndUser($this->shipId, $this->userId);
     }
 
-    public function testByIdAndUserAwaitExceptionIfShipBelongsToOtherUser(): void
+    public function testGetByIdAndUserAwaitExceptionIfShipBelongsToOtherUser(): void
     {
         $this->expectException(AccessViolation::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -120,9 +154,14 @@ class ShipLoaderTest extends StuTestCase
         $this->assertEquals($this->ship, $result);
     }
 
-    public function testByIdAndUserAwaitExceptionIfOperationUnallowedWithUplink(): void
+    public function testGetByIdAndUserAwaitExceptionIfOperationUnallowedWithUplink(): void
     {
         $this->expectException(UnallowedUplinkOperation::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -142,9 +181,14 @@ class ShipLoaderTest extends StuTestCase
         $this->assertEquals($this->ship, $result);
     }
 
-    public function testByIdAndUserAwaitExceptionIfUplinkOffline(): void
+    public function testGetByIdAndUserAwaitExceptionIfUplinkOffline(): void
     {
         $this->expectException(UnallowedUplinkOperation::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -168,9 +212,14 @@ class ShipLoaderTest extends StuTestCase
         $this->assertEquals($this->ship, $result);
     }
 
-    public function testByIdAndUserAwaitExceptionIfOwnerOnVacation(): void
+    public function testGetByIdAndUserAwaitExceptionIfOwnerOnVacation(): void
     {
         $this->expectException(UnallowedUplinkOperation::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -201,6 +250,11 @@ class ShipLoaderTest extends StuTestCase
     public function testGetByIdAndUserSuccessful(): void
     {
         $userSema = 123456;
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -240,6 +294,11 @@ class ShipLoaderTest extends StuTestCase
     {
         $userSema = 123456;
 
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
+
         $this->shipRepository->shouldReceive('find')
             ->with(5)
             ->once()
@@ -273,6 +332,11 @@ class ShipLoaderTest extends StuTestCase
     public function testgetWrappersBySourceAndUserAndTargetAwaitTargetNull(): void
     {
         $userSema = 123456;
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         //ship
         $this->shipRepository->shouldReceive('find')
@@ -313,6 +377,11 @@ class ShipLoaderTest extends StuTestCase
         $targetUserSema = 23456;
         $target = $this->mock(ShipInterface::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->shipId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
 
         //ship
         $this->shipRepository->shouldReceive('find')

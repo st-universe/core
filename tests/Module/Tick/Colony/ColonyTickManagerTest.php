@@ -12,7 +12,7 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Tick\Lock\LockEnum;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -98,10 +98,10 @@ class ColonyTickManagerTest extends StuTestCase
             ->andThrow(new Exception(''));
 
         $this->lockManager->shouldReceive('setLock')
-            ->with($groupId, LockEnum::LOCK_TYPE_COLONY_GROUP)
+            ->with($groupId, LockTypeEnum::COLONY_GROUP)
             ->once();
         $this->lockManager->shouldReceive('clearLock')
-            ->with($groupId, LockEnum::LOCK_TYPE_COLONY_GROUP)
+            ->with($groupId, LockTypeEnum::COLONY_GROUP)
             ->once();
 
         $this->subject->work($groupId, 1);

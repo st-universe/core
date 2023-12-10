@@ -16,6 +16,8 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Tick\AbstractTickManager;
+use Stu\Module\Tick\Lock\LockManagerInterface;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Ship\Crew\CrewLimitationsInterface;
 use Stu\Module\Tick\Ship\Repair\RepairActionsInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -51,6 +53,8 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
     private AnomalyHandlingInterface $anomalyHandling;
 
+    private LockManagerInterface $lockManager;
+
     private LoggerUtilInterface $loggerUtil;
 
     private Ubench $benchmark;
@@ -68,6 +72,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         ColonyLibFactoryInterface $colonyLibFactory,
         RepairActionsInterface $repairActions,
         AnomalyHandlingInterface $anomalyHandling,
+        LockManagerInterface $lockManager,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         Ubench $benchmark
     ) {
@@ -83,56 +88,63 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         $this->colonyLibFactory = $colonyLibFactory;
         $this->repairActions = $repairActions;
         $this->anomalyHandling = $anomalyHandling;
+        $this->lockManager = $lockManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->benchmark = $benchmark;
     }
 
     public function work(): void
     {
-        $this->anomalyHandling->processExistingAnomalies();
-        $this->crewLimitations->work();
+        $this->setLock(1);
 
-        $startTime = microtime(true);
-        $this->handleEscapePods();
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\thandleEscapePods, seconds: %F", $endTime - $startTime));
+        try {
+            $this->anomalyHandling->processExistingAnomalies();
+            $this->crewLimitations->work();
+
+            $startTime = microtime(true);
+            $this->handleEscapePods();
+            if ($this->loggerUtil->doLog()) {
+                $endTime = microtime(true);
+                $this->loggerUtil->log(sprintf("\t\thandleEscapePods, seconds: %F", $endTime - $startTime));
+            }
+            $this->repairActions->work();
+
+            $startTime = microtime(true);
+            $entityCount = 0;
+            foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
+                //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
+
+                $this->shipTick->work($this->shipWrapperFactory->wrapShip($ship));
+                $entityCount++;
+            }
+            if ($this->loggerUtil->doLog()) {
+                $endTime = microtime(true);
+                $this->loggerUtil->log(sprintf("\t\tshipTick, seconds: %F", $endTime - $startTime));
+            }
+
+            $startTime = microtime(true);
+            $this->handleNPCShips();
+            if ($this->loggerUtil->doLog()) {
+                $endTime = microtime(true);
+                $this->loggerUtil->log(sprintf("\t\thandleNPCShips, seconds: %F", $endTime - $startTime));
+            }
+
+            $startTime = microtime(true);
+            $this->lowerTrumfieldHull();
+            $this->lowerOrphanizedTradepostHull();
+            $this->lowerStationConstructionHull();
+            if ($this->loggerUtil->doLog()) {
+                $endTime = microtime(true);
+                $this->loggerUtil->log(sprintf("\t\tloweringTrumfieldConstruction, seconds: %F", $endTime - $startTime));
+            }
+
+            $this->loggerUtil->init('SHIPTICK', LoggerEnum::LEVEL_WARNING);
+            $this->logBenchmarkResult($entityCount);
+
+            $this->anomalyHandling->createNewAnomalies();
+        } finally {
+            $this->clearLock(1);
         }
-        $this->repairActions->work();
-
-        $startTime = microtime(true);
-        $entityCount = 0;
-        foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
-            //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
-
-            $this->shipTick->work($this->shipWrapperFactory->wrapShip($ship));
-            $entityCount++;
-        }
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\tshipTick, seconds: %F", $endTime - $startTime));
-        }
-
-        $startTime = microtime(true);
-        $this->handleNPCShips();
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\thandleNPCShips, seconds: %F", $endTime - $startTime));
-        }
-
-        $startTime = microtime(true);
-        $this->lowerTrumfieldHull();
-        $this->lowerOrphanizedTradepostHull();
-        $this->lowerStationConstructionHull();
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\tloweringTrumfieldConstruction, seconds: %F", $endTime - $startTime));
-        }
-
-        $this->loggerUtil->init('SHIPTICK', LoggerEnum::LEVEL_WARNING);
-        $this->logBenchmarkResult($entityCount);
-
-        $this->anomalyHandling->createNewAnomalies();
     }
 
     private function handleEscapePods(): void
@@ -284,6 +296,16 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
                 $warpdrive->setWarpDrive($warpdrive->getWarpDrive() + $reactor->getEffectiveWarpDriveProduction())->update();
             }
         }
+    }
+
+    private function setLock(int $batchGroupId): void
+    {
+        $this->lockManager->setLock($batchGroupId, LockTypeEnum::SHIP_GROUP);
+    }
+
+    private function clearLock(int $batchGroupId): void
+    {
+        $this->lockManager->clearLock($batchGroupId, LockTypeEnum::SHIP_GROUP);
     }
 
     protected function getBenchmark(): Ubench

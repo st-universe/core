@@ -129,7 +129,8 @@ final class ShowShip implements ViewControllerInterface
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
-            true
+            true,
+            false
         );
         $ship = $wrapper->get();
 

@@ -17,7 +17,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tick\AbstractTickManager;
-use Stu\Module\Tick\Lock\LockEnum;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -175,12 +175,12 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
 
     private function setLock(int $batchGroupId): void
     {
-        $this->lockManager->setLock($batchGroupId, LockEnum::LOCK_TYPE_COLONY_GROUP);
+        $this->lockManager->setLock($batchGroupId, LockTypeEnum::COLONY_GROUP);
     }
 
     private function clearLock(int $batchGroupId): void
     {
-        $this->lockManager->clearLock($batchGroupId, LockEnum::LOCK_TYPE_COLONY_GROUP);
+        $this->lockManager->clearLock($batchGroupId, LockTypeEnum::COLONY_GROUP);
     }
 
     protected function getBenchmark(): Ubench
