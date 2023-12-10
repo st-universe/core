@@ -44,7 +44,9 @@ final class ShowColonization implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true,
+            false
         );
 
         $colony = $this->colonyRepository->getByPosition(

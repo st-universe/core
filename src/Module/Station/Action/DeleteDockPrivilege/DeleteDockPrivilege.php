@@ -33,7 +33,9 @@ final class DeleteDockPrivilege implements ActionControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);

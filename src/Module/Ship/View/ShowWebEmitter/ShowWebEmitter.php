@@ -46,7 +46,9 @@ final class ShowWebEmitter implements ViewControllerInterface
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
         $ship = $wrapper->get();
 
@@ -89,7 +91,7 @@ final class ShowWebEmitter implements ViewControllerInterface
                             $ship->getStarsystemMap(),
                             $ship->getMap()
                         ),
-                        fn(ShipInterface $target): bool => !$target->getCloakState() && !$target->getWarpState() && $target !== $ship
+                        fn (ShipInterface $target): bool => !$target->getCloakState() && !$target->getWarpState() && $target !== $ship
                     );
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);

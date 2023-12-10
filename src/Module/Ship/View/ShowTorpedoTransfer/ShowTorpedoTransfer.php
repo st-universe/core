@@ -39,7 +39,9 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
-            $targetId
+            $targetId,
+            false,
+            false
         );
 
         $wrapper = $wrappers->getSource();

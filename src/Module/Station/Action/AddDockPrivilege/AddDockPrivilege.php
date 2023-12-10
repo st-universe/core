@@ -49,7 +49,9 @@ final class AddDockPrivilege implements ActionControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $target = request::getIntFatal('target');

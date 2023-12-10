@@ -32,7 +32,12 @@ final class ShowByPosition implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $ship =  $this->shipLoader->getByIdAndUser(request::getIntFatal('sid'), $game->getUser()->getId(), true);
+        $ship =  $this->shipLoader->getByIdAndUser(
+            request::getIntFatal('sid'),
+            $game->getUser()->getId(),
+            true,
+            false
+        );
 
         $layer = $ship->getLayer();
         $section = $ship->getSectorId();

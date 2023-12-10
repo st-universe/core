@@ -35,7 +35,9 @@ final class ShowStationShiplist implements ViewControllerInterface
 
         $station = $this->shipLoader->getByIdAndUser(
             $this->showStationShiplistRequest->getStationId(),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         if (!$station->isBase()) {

@@ -32,7 +32,9 @@ final class ShowStationCosts implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $game->getUser()->getId(),
+            false,
+            false
         );
 
         $game->setPageTitle(_('Baukosten'));

@@ -38,7 +38,9 @@ final class ShowShipRepair implements ViewControllerInterface
 
         $station = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         if (!$this->stationUtility->canRepairShips($station)) {

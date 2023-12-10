@@ -99,8 +99,8 @@ final class ShipLoader implements ShipLoaderInterface
         bool $checkForEntityLock
     ): SourceAndTargetWrappersInterface {
 
-        if ($checkForEntityLock && $this->lockManager->isLocked($shipId, LockTypeEnum::SHIP_GROUP)) {
-            throw new EntityLockedException('Tick läuft gerade, Zugriff auf Schiff ist daher blockiert');
+        if ($checkForEntityLock) {
+            $this->checkForEntityLock($shipId);
         }
 
         $ship = $this->shipRepository->find($shipId);
@@ -110,6 +110,13 @@ final class ShipLoader implements ShipLoaderInterface
         $this->checkviolations($ship, $userId, $allowUplink);
 
         return $this->acquireSemaphores($ship, $targetId);
+    }
+
+    private function checkForEntityLock(int $shipId): void
+    {
+        if ($this->lockManager->isLocked($shipId, LockTypeEnum::SHIP_GROUP)) {
+            throw new EntityLockedException('Tick läuft gerade, Zugriff auf Schiff ist daher blockiert');
+        }
     }
 
     private function checkviolations(ShipInterface $ship, int $userId, bool $allowUplink): void
@@ -135,8 +142,12 @@ final class ShipLoader implements ShipLoaderInterface
         }
     }
 
-    public function find(int $shipId): ?ShipWrapperInterface
+    public function find(int $shipId, bool $checkForEntityLock = true): ?ShipWrapperInterface
     {
+        if ($checkForEntityLock) {
+            $this->checkForEntityLock($shipId);
+        }
+
         $ship = $this->shipRepository->find($shipId);
         if ($ship === null) {
             return null;

@@ -38,7 +38,9 @@ final class ShowShipCommunication implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $game->setPageTitle(_('Schiffskommunikation'));

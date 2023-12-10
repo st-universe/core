@@ -40,7 +40,12 @@ final class ShowShipManagement implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser($this->showShipManagementRequest->getStationId(), $userId);
+        $station = $this->shipLoader->getByIdAndUser(
+            $this->showShipManagementRequest->getStationId(),
+            $userId,
+            false,
+            false
+        );
 
         if (!$station->isBase()) {
             return;
