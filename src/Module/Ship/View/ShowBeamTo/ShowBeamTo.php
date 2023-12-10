@@ -32,7 +32,9 @@ final class ShowBeamTo implements ViewControllerInterface
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $user->getId(),
-            $targetId
+            $targetId,
+            true,
+            false
         );
 
         $wrapper = $wrappers->getSource();

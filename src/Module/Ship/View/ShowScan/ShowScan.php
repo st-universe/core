@@ -45,7 +45,8 @@ final class ShowScan implements ViewControllerInterface
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $user->getId(),
-            $targetId
+            $targetId,
+            true
         );
 
         $wrapper = $wrappers->getSource();

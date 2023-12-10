@@ -39,7 +39,9 @@ final class ShowDockingPrivilegesConfig implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $game->setPageTitle(_('Dockrechte'));
@@ -50,7 +52,7 @@ final class ShowDockingPrivilegesConfig implements ViewControllerInterface
             'DOCKING_PRIVILEGES',
             $ship->getDockPrivileges()->map(
                 fn (DockingPrivilegeInterface $dockingPrivilege): DockingPrivilegeItem =>
-                   $this->stationUiFactory->createDockingPrivilegeItem($dockingPrivilege)
+                $this->stationUiFactory->createDockingPrivilegeItem($dockingPrivilege)
             )
         );
     }

@@ -27,7 +27,9 @@ final class ShowRenameCrew implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $game->showMacro('html/shipmacros.xhtml/crewslot');

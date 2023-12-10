@@ -28,7 +28,9 @@ final class ShowRegionInfo implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true,
+            false
         );
 
         $regionId = request::getIntFatal('region');

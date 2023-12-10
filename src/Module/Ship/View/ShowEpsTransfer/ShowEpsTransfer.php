@@ -32,7 +32,9 @@ final class ShowEpsTransfer implements ViewControllerInterface
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
-            $targetId
+            $targetId,
+            true,
+            false
         );
 
         $wrapper = $wrappers->getSource();

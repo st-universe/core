@@ -43,7 +43,9 @@ final class ShowAstroEntry implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true,
+            false
         );
 
         $isSystem = request::getIntFatal('isSystem');

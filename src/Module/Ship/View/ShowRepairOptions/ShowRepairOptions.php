@@ -33,7 +33,9 @@ final class ShowRepairOptions implements ViewControllerInterface
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $ship = $wrapper->get();

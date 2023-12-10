@@ -28,7 +28,7 @@ interface ShipLoaderInterface
         bool $checkForEntityLock = true
     ): SourceAndTargetWrappersInterface;
 
-    public function find(int $shipId): ?ShipWrapperInterface;
+    public function find(int $shipId, bool $checkForEntityLock = true): ?ShipWrapperInterface;
 
     public function save(ShipInterface $ship): void;
 }

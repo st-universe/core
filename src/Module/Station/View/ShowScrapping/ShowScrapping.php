@@ -27,7 +27,9 @@ final class ShowScrapping implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $code = substr(md5($ship->getName()), 0, 6);

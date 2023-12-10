@@ -34,7 +34,9 @@ final class ShowDockingPrivileges implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $game->showMacro('html/stationmacros.xhtml/dockprivilegelist');
@@ -44,7 +46,7 @@ final class ShowDockingPrivileges implements ViewControllerInterface
             'DOCKING_PRIVILEGES',
             $ship->getDockPrivileges()->map(
                 fn (DockingPrivilegeInterface $dockingPrivilege): DockingPrivilegeItem =>
-                    $this->stationUiFactory->createDockingPrivilegeItem($dockingPrivilege)
+                $this->stationUiFactory->createDockingPrivilegeItem($dockingPrivilege)
             )
         );
     }

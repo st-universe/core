@@ -38,7 +38,9 @@ final class ShowBeamFromColony implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $user->getId()
+            $user->getId(),
+            true,
+            false
         );
 
         $game->setPageTitle('Von Kolonie beamen');

@@ -27,7 +27,9 @@ final class ShowAlertLevel implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true,
+            false
         );
 
         $game->setPageTitle(_('Alarmstufe ändern'));

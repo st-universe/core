@@ -38,7 +38,9 @@ final class ShowBeamToColony implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $user->getId()
+            $user->getId(),
+            true,
+            false
         );
         $game->setPageTitle('Zu Kolonie beamen');
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');

@@ -50,12 +50,10 @@ final class ShowTroopTransfer implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $user->getId()
+            $user->getId(),
+            false,
+            false
         );
-
-        //if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-        //    return;
-        //}
 
         $isColony = request::has('isColony');
         $isUnload = request::has('isUnload');

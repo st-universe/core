@@ -44,7 +44,9 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false,
+            false
         );
 
         $mode = request::getStringFatal('mode');

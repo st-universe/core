@@ -28,7 +28,8 @@ final class ShowShipStorage implements ViewControllerInterface
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
-            true
+            true,
+            false
         );
 
         $game->setPageTitle(_('Schiffsfracht'));
