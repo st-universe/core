@@ -78,18 +78,25 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
         foreach ($licensesToDelete as $license) {
             $latestLicenseInfo = $this->tradeLicenseInfoRepository->getLatestLicenseInfo($license->getTradePostId());
 
-            // send message to user
-            $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
-                $license->getUser()->getId(),
-                sprintf(
-                    "Deine Lizenz am Handelsposten %s ist abgelaufen.\nEine neue Lizenz kostet dort aktuell %d %s.",
-                    $license->getTradePost()->getName(),
-                    $latestLicenseInfo->getAmount(),
-                    $latestLicenseInfo->getCommodity()->getName()
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
-            );
+            $userId = $license->getUser()->getId();
+            $tradePost = $license->getTradePost();
+
+            $userHasLicense = $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradePost->getId());
+            if (!$userHasLicense) {
+
+                // send message to user
+                $this->privateMessageSender->send(
+                    UserEnum::USER_NOONE,
+                    $userId,
+                    sprintf(
+                        "Deine Lizenz am Handelsposten %s ist abgelaufen.\nEine neue Lizenz kostet dort aktuell %d %s.",
+                        $tradePost->getName(),
+                        $latestLicenseInfo->getAmount(),
+                        $latestLicenseInfo->getCommodity()->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+                );
+            }
 
             $this->tradeLicenseRepository->delete($license);
         }
