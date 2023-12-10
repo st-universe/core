@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
-use Stu\Module\Tick\Lock\LockEnum;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -27,7 +27,7 @@ final class ColonyLoader implements ColonyLoaderInterface
 
     public function byIdAndUser(int $colonyId, int $userId, bool $checkForEntityLock = true): ColonyInterface
     {
-        if ($checkForEntityLock && $this->lockManager->isLocked($colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)) {
+        if ($checkForEntityLock && $this->lockManager->isLocked($colonyId, LockTypeEnum::COLONY_GROUP)) {
             throw new EntityLockedException('Tick läuft gerade, Zugriff auf Kolonie ist daher blockiert');
         }
 

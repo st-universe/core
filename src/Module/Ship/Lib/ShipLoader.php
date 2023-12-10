@@ -8,11 +8,14 @@ use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\AccessViolation;
+use Stu\Exception\EntityLockedException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
+use Stu\Module\Tick\Lock\LockManagerInterface;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -26,40 +29,80 @@ final class ShipLoader implements ShipLoaderInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private LockManagerInterface $lockManager;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         SemaphoreUtilInterface $semaphoreUtil,
         GameControllerInterface $game,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        LockManagerInterface $lockManager
     ) {
         $this->shipRepository = $shipRepository;
         $this->semaphoreUtil = $semaphoreUtil;
         $this->game = $game;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->lockManager = $lockManager;
     }
 
-    public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface
-    {
-        return $this->getByIdAndUserAndTargetIntern($shipId, $userId, null, $allowUplink)->getSource()->get();
-    }
-
-    public function getWrapperByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipWrapperInterface
-    {
+    public function getByIdAndUser(
+        int $shipId,
+        int $userId,
+        bool $allowUplink = false,
+        bool $checkForEntityLock = true
+    ): ShipInterface {
         return $this->getByIdAndUserAndTargetIntern(
             $shipId,
             $userId,
             null,
-            $allowUplink
+            $allowUplink,
+            $checkForEntityLock
+        )->getSource()->get();
+    }
+
+    public function getWrapperByIdAndUser(
+        int $shipId,
+        int $userId,
+        bool $allowUplink = false,
+        bool $checkForEntityLock = true
+    ): ShipWrapperInterface {
+        return $this->getByIdAndUserAndTargetIntern(
+            $shipId,
+            $userId,
+            null,
+            $allowUplink,
+            $checkForEntityLock
         )->getSource();
     }
 
-    public function getWrappersBySourceAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): SourceAndTargetWrappersInterface
-    {
-        return $this->getByIdAndUserAndTargetIntern($shipId, $userId, $targetId, $allowUplink);
+    public function getWrappersBySourceAndUserAndTarget(
+        int $shipId,
+        int $userId,
+        int $targetId,
+        bool $allowUplink = false,
+        bool $checkForEntityLock = true
+    ): SourceAndTargetWrappersInterface {
+        return $this->getByIdAndUserAndTargetIntern(
+            $shipId,
+            $userId,
+            $targetId,
+            $allowUplink,
+            $checkForEntityLock
+        );
     }
 
-    private function getByIdAndUserAndTargetIntern(int $shipId, int $userId, ?int $targetId, bool $allowUplink): SourceAndTargetWrappersInterface
-    {
+    private function getByIdAndUserAndTargetIntern(
+        int $shipId,
+        int $userId,
+        ?int $targetId,
+        bool $allowUplink,
+        bool $checkForEntityLock
+    ): SourceAndTargetWrappersInterface {
+
+        if ($checkForEntityLock && $this->lockManager->isLocked($shipId, LockTypeEnum::SHIP_GROUP)) {
+            throw new EntityLockedException('Tick läuft gerade, Zugriff auf Schiff ist daher blockiert');
+        }
+
         $ship = $this->shipRepository->find($shipId);
         if ($ship === null) {
             throw new ShipDoesNotExistException(_('Ship does not exist!'));

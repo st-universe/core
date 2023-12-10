@@ -28,7 +28,7 @@ class LockManagerTest extends StuTestCase
 
     public function testFunctionality(): void
     {
-        $lockType = LockEnum::LOCK_TYPE_COLONY_GROUP;
+        $lockType = LockTypeEnum::COLONY_GROUP;
 
         $this->config->shouldReceive('getGameSettings->getColonySettings->getTickWorker')
             ->with()

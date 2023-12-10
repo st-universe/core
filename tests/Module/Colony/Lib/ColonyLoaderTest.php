@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
-use Stu\Module\Tick\Lock\LockEnum;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -59,7 +59,7 @@ class ColonyLoaderTest extends StuTestCase
         static::expectException(EntityLockedException::class);
 
         $this->lockManager->shouldReceive('isLocked')
-            ->with($this->colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)
+            ->with($this->colonyId, LockTypeEnum::COLONY_GROUP)
             ->once()
             ->andReturn(true);
 
@@ -72,7 +72,7 @@ class ColonyLoaderTest extends StuTestCase
         static::expectException(AccessViolation::class);
 
         $this->lockManager->shouldReceive('isLocked')
-            ->with($this->colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)
+            ->with($this->colonyId, LockTypeEnum::COLONY_GROUP)
             ->once()
             ->andReturn(false);
 
@@ -87,7 +87,7 @@ class ColonyLoaderTest extends StuTestCase
     public function testByIdAndUserReturnsColonyIfNotLocked(): void
     {
         $this->lockManager->shouldReceive('isLocked')
-            ->with($this->colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)
+            ->with($this->colonyId, LockTypeEnum::COLONY_GROUP)
             ->once()
             ->andReturn(false);
 
@@ -112,7 +112,7 @@ class ColonyLoaderTest extends StuTestCase
         static::expectException(AccessViolation::class);
 
         $this->lockManager->shouldReceive('isLocked')
-            ->with($this->colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)
+            ->with($this->colonyId, LockTypeEnum::COLONY_GROUP)
             ->once()
             ->andReturn(false);
 

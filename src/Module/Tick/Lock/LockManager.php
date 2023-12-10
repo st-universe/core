@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Lock;
 
-use Stu\Exception\InvalidParamException;
 use Stu\Module\Config\StuConfigInterface;
 
 final class LockManager implements LockManagerInterface
@@ -16,38 +15,38 @@ final class LockManager implements LockManagerInterface
         $this->config = $config;
     }
 
-    public function setLock(int $batchGroupId, int $lockType): void
+    public function setLock(int $batchGroupId, LockTypeEnum $type): void
     {
-        @touch($this->getLockPath($batchGroupId, $lockType));
+        @touch($this->getLockPath($batchGroupId, $type));
     }
 
-    public function clearLock(int $batchGroupId, int $lockType): void
+    public function clearLock(int $batchGroupId, LockTypeEnum $type): void
     {
-        @unlink($this->getLockPath($batchGroupId, $lockType));
+        @unlink($this->getLockPath($batchGroupId, $type));
     }
 
-    public function isLocked(int $entityId, int $lockType): bool
+    public function isLocked(int $entityId, LockTypeEnum $type): bool
     {
-        return @file_exists($this->getLockPath($entityId % $this->getGroupCount($lockType) + 1, $lockType));
+        return @file_exists($this->getLockPath($entityId % $this->getGroupCount($type) + 1, $type));
     }
 
-    private function getLockPath(int $batchGroupId, int $lockType): string
+    private function getLockPath(int $batchGroupId, LockTypeEnum $type): string
     {
         return sprintf(
             '%s/%s_%d.lock',
             $this->config->getGameSettings()->getTempDir(),
-            LockEnum::getLockPathIdentifier($lockType),
+            $type->getName(),
             $batchGroupId
         );
     }
 
-    private function getGroupCount(int $lockType): int
+    private function getGroupCount(LockTypeEnum $type): int
     {
-        switch ($lockType) {
-            case LockEnum::LOCK_TYPE_COLONY_GROUP:
+        switch ($type) {
+            case LockTypeEnum::COLONY_GROUP:
                 return $this->config->getGameSettings()->getColonySettings()->getTickWorker();
-            default:
-                throw new InvalidParamException('lockType does not exist');
+            case LockTypeEnum::SHIP_GROUP:
+                return 1;
         }
     }
 }
