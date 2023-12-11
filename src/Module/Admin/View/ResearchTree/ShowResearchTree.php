@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\View\ResearchTree;
 
 use Fhaculty\Graph\Graph;
 use Graphp\GraphViz\GraphViz;
-use Stu\Component\Research\ResearchEnum;
+use Stu\Component\Research\ResearchModeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
@@ -42,10 +42,10 @@ final class ShowResearchTree implements ViewControllerInterface
         $research_list = $this->researchRepository->getForFaction(1);
 
         $dependencies = $this->researchDependencyRepository->getByMode([
-            ResearchEnum::RESEARCH_MODE_REQUIRE,
-            ResearchEnum::RESEARCH_MODE_REQUIRE_SOME
+            ResearchModeEnum::REQUIRE->value,
+            ResearchModeEnum::REQUIRE_SOME->value
         ]);
-        $excludes = $this->researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_EXCLUDE]);
+        $excludes = $this->researchDependencyRepository->getByMode([ResearchModeEnum::EXCLUDE->value]);
 
         $vertexes = [];
 
