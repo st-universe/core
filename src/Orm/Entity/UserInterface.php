@@ -4,6 +4,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 
 interface UserInterface
@@ -46,7 +47,7 @@ interface UserInterface
 
     public function getCss(): string;
 
-    public function setCss(string $Css): UserInterface;
+    public function setCss(UserCssClassEnum $cssClass): UserInterface;
 
     /**
      * @return Collection<int, UserAwardInterface>
