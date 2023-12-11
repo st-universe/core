@@ -1817,6 +1817,16 @@ parameters:
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
 
 		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ReactorWrapper\\:\\:getEffectiveEpsProduction\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ReactorWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ReactorWrapper\\:\\:getEffectiveWarpDriveProduction\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ReactorWrapper.php
+
+		-
 			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowColonization/ShowColonization.php

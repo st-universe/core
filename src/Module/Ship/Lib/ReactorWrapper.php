@@ -75,10 +75,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
-            $epsSystem = $this->wrapper->getEpsSystemData();
-            $missingEps = $epsSystem === null ? 0 : $epsSystem->getMaxEps() - $epsSystem->getEps();
-            $epsChange = $this->getEpsProduction() - $this->wrapper->getEpsUsage();
-            $this->effectiveEpsProduction = min($missingEps, $epsChange);
+            $this->calculateEffectiveProduction();
         }
         return $this->effectiveEpsProduction;
     }
@@ -86,13 +83,39 @@ final class ReactorWrapper implements ReactorWrapperInterface
     public function getEffectiveWarpDriveProduction(): int
     {
         if ($this->effectiveWarpDriveProduction === null) {
-            $warpdrive = $this->wrapper->getWarpDriveSystemData();
-            $missingWarpdrive = $warpdrive === null ? 0 : $warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive();
-
-            $this->effectiveWarpDriveProduction = min($missingWarpdrive, $this->getWarpdriveProduction());
+            $this->calculateEffectiveProduction();
         }
 
         return $this->effectiveWarpDriveProduction;
+    }
+
+    private function calculateEffectiveProduction(): void
+    {
+        $epsSystem = $this->wrapper->getEpsSystemData();
+        $warpdrive = $this->wrapper->getWarpDriveSystemData();
+
+        $missingEps = $epsSystem === null ? 0 : $epsSystem->getMaxEps() - $epsSystem->getEps();
+        $missingWarpdrive = $warpdrive === null ? 0 : $warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive();
+
+        $potential = $this->getOutputCappedByLoad();
+        $potential -= $this->wrapper->getEpsUsage();
+
+        $flightCost = $this->wrapper->get()->getRump()->getFlightEcost();
+
+        $epsChange = $this->getEpsProduction() - $this->wrapper->getEpsUsage();
+        $effEpsProd = min($missingEps, $epsChange);
+        $effWdProd = min($missingWarpdrive, $this->getWarpdriveProduction());
+
+        if ($warpdrive !== null && $warpdrive->getAutoCarryOver()) {
+            $excess = max(0, $potential - $effEpsProd - $effWdProd);
+            $epsChange = $this->getEpsProduction() + $excess - $this->wrapper->getEpsUsage();
+
+            $effEpsProd = min($missingEps, $epsChange);
+            $effWdProd = min($missingWarpdrive, $this->getWarpdriveProduction() + (int)floor($excess / $flightCost));
+        }
+
+        $this->effectiveEpsProduction = $effEpsProd;
+        $this->effectiveWarpDriveProduction = $effWdProd;
     }
 
     public function getUsage(): int

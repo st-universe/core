@@ -412,7 +412,9 @@ function setReactorSplitConstants(output, usage, cost, meps, wd, mwd) {
 	maxWarpdrive = mwd;
 }
 
-function updateReactorValues(value) {
+function updateReactorValues() {
+
+	value = document.getElementById('warpdriveSplit').value;
 
 	// calculate absolute values
 	const warpdriveSplit = parseInt(value);
@@ -425,11 +427,19 @@ function updateReactorValues(value) {
 	document.getElementById('calculatedWarpDrive').textContent = warpDriveProduction > 0 ? '+' + warpDriveProduction : '0';
 
 	// calculate effective values
-	const epsChange = epsProduction - epsUsage;
-	const effEpsProduction = Math.min(missingEps, epsChange);
+	let epsChange = epsProduction - epsUsage;
+	let missingWarpdrive = maxWarpdrive - currentWarpdrive;
+	let effEpsProduction = Math.min(missingEps, epsChange);
+	let effWarpdriveProduction = Math.min(missingWarpdrive, warpDriveProduction);
 
-	const missingWarpdrive = maxWarpdrive - currentWarpdrive;
-	const effWarpdriveProduction = Math.min(missingWarpdrive, warpDriveProduction);
+	autoCarryOver = document.getElementById('autoCarryOver').checked;
+	if (autoCarryOver) {
+		excess = Math.max(0, reactorOutput - epsUsage - effEpsProduction - effWarpdriveProduction);
+		epsChange = epsProduction + excess - epsUsage;
+
+		effEpsProduction = Math.min(missingEps, epsChange);
+		effWarpdriveProduction = Math.min(missingWarpdrive, warpDriveProduction + Math.floor(excess / flightCost));
+	}
 
 	// set effective labels
 	document.getElementById('effectiveEps').textContent = effEpsProduction > 0 ? '+' + effEpsProduction : String(effEpsProduction);

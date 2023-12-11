@@ -167,7 +167,6 @@ class ReactorWrapperTest extends StuTestCase
 
         $this->wrapper->shouldReceive('getWarpDriveSystemData')
             ->withNoArgs()
-            ->twice()
             ->andReturn($warpdrive);
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
@@ -175,7 +174,6 @@ class ReactorWrapperTest extends StuTestCase
             ->andReturn($eps);
         $this->wrapper->shouldReceive('get->getRump->getFlightEcost')
             ->withNoArgs()
-            ->twice()
             ->andReturn(5);
         $this->wrapper->shouldReceive('getEpsUsage')
             ->withNoArgs()
@@ -185,6 +183,16 @@ class ReactorWrapperTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn(50);
+        $warpdrive->shouldReceive('getWarpDrive')
+            ->withNoArgs()
+            ->andReturn(90);
+        $warpdrive->shouldReceive('getMaxWarpDrive')
+            ->withNoArgs()
+            ->andReturn(100);
+        $warpdrive->shouldReceive('getAutoCarryOver')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $eps->shouldReceive('getEps')
             ->withNoArgs()
@@ -215,7 +223,6 @@ class ReactorWrapperTest extends StuTestCase
 
         $this->wrapper->shouldReceive('getWarpDriveSystemData')
             ->withNoArgs()
-            ->twice()
             ->andReturn($warpdrive);
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
@@ -223,7 +230,6 @@ class ReactorWrapperTest extends StuTestCase
             ->andReturn($eps);
         $this->wrapper->shouldReceive('get->getRump->getFlightEcost')
             ->withNoArgs()
-            ->twice()
             ->andReturn(5);
         $this->wrapper->shouldReceive('getEpsUsage')
             ->withNoArgs()
@@ -233,6 +239,16 @@ class ReactorWrapperTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn(50);
+        $warpdrive->shouldReceive('getWarpDrive')
+            ->withNoArgs()
+            ->andReturn(90);
+        $warpdrive->shouldReceive('getMaxWarpDrive')
+            ->withNoArgs()
+            ->andReturn(100);
+        $warpdrive->shouldReceive('getAutoCarryOver')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $eps->shouldReceive('getEps')
             ->withNoArgs()
@@ -260,13 +276,15 @@ class ReactorWrapperTest extends StuTestCase
     {
         $warpdrive = $this->mock(WarpDriveSystemData::class);
 
+        $this->wrapper->shouldReceive('getEpsSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
         $this->wrapper->shouldReceive('getWarpDriveSystemData')
             ->withNoArgs()
-            ->twice()
             ->andReturn($warpdrive);
         $this->wrapper->shouldReceive('get->getRump->getFlightEcost')
             ->withNoArgs()
-            ->once()
             ->andReturn(4);
         $this->wrapper->shouldReceive('getEpsUsage')
             ->withNoArgs()
@@ -282,6 +300,10 @@ class ReactorWrapperTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(30);
+        $warpdrive->shouldReceive('getAutoCarryOver')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $this->reactorSystemData->shouldReceive('getOutput')
             ->withNoArgs()

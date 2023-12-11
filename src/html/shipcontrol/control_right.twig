@@ -40,14 +40,15 @@
         <td style="width: 60%;"><img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
             <input type="range" min="0" max="100" value="{{ warpdriveSplit }}" id="warpdriveSplit"
-                oninput="saveWarpCoreSplit({{ shipId }});  updateReactorValues(this.value);">
+                oninput="saveWarpCoreSplit({{ shipId }});  updateReactorValues();">
             <img src="/assets/buttons/battp2.png" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
         </td>
         <td>
             <div style="display: inline-block;" title="Überschüssige Energie wird in anderen Speicher übertragen">
                 {% set checked = autoCarryOver ? 'checked="true"' : '' %}
-                <input type="checkbox" id="autoCarryOver" {{ checked }} onchange="saveWarpCoreSplit({{ shipId }});" />
+                <input type="checkbox" id="autoCarryOver" {{ checked }}
+                    onchange="saveWarpCoreSplit({{ shipId }}); updateReactorValues();" />
                 <span>
                     Übertrag <img src="/assets/buttons/info2.png" style="height:16px;" />
                 </span>
@@ -57,6 +58,8 @@
             {% if ship.isFleetLeader %}
             <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit({{ shipId }});" />
                 Flotte</span>
+            {% else %}
+            <input type="checkbox" id="fleetSplit" style="display: none;" />
             {% endif %}
         </td>
     </tr>
