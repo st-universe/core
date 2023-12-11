@@ -305,7 +305,7 @@ final class ShipTick implements ShipTickInterface
         $neededParts = $this->repairUtil->determineSpareParts($wrapper);
 
         // parts stored?
-        if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $station, false, $station)) {
+        if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $station, $station)) {
             return;
         }
 
@@ -337,7 +337,7 @@ final class ShipTick implements ShipTickInterface
         }
 
         // consume spare parts
-        $this->repairUtil->consumeSpareParts($neededParts, $station, false);
+        $this->repairUtil->consumeSpareParts($neededParts, $station);
 
         if (!$wrapper->canBeRepaired()) {
             $station->setHuell($station->getMaxHull());

@@ -169,7 +169,7 @@ final class RepairActions implements RepairActionsInterface
 
             $usedShipyards[$colony->getId()][$field->getFieldId()] = [$field->getFieldId()];
 
-            if ($this->repairShipOnEntity($ship, $colony, true, $isRepairStationBonus)) {
+            if ($this->repairShipOnEntity($ship, $colony, $isRepairStationBonus)) {
                 $this->colonyShipRepairRepository->delete($obj);
                 $this->shipRepository->save($ship);
             }
@@ -188,14 +188,14 @@ final class RepairActions implements RepairActionsInterface
                 continue;
             }
 
-            if ($this->repairShipOnEntity($ship, $station, false, false)) {
+            if ($this->repairShipOnEntity($ship, $station, false)) {
                 $this->stationShipRepairRepository->delete($obj);
                 $this->shipRepository->save($ship);
             }
         }
     }
 
-    private function repairShipOnEntity(ShipInterface $ship, ColonyInterface|ShipInterface $entity, bool $isColony, bool $isRepairStationBonus): bool
+    private function repairShipOnEntity(ShipInterface $ship, ColonyInterface|ShipInterface $entity, bool $isRepairStationBonus): bool
     {
         // check for U-Mode
         if ($entity->getUser()->isVacationRequestOldEnough()) {
@@ -206,7 +206,7 @@ final class RepairActions implements RepairActionsInterface
         $neededParts = $this->repairUtil->determineSpareParts($wrapper);
 
         // parts stored?
-        if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $entity, $isColony, $ship)) {
+        if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $entity, $ship)) {
             return false;
         }
 
@@ -261,7 +261,7 @@ final class RepairActions implements RepairActionsInterface
         }
 
         // consume spare parts
-        $this->repairUtil->consumeSpareParts($neededParts, $entity, $isColony);
+        $this->repairUtil->consumeSpareParts($neededParts, $entity);
 
         if (!$wrapper->canBeRepaired()) {
             $repairFinished = true;
@@ -310,7 +310,7 @@ final class RepairActions implements RepairActionsInterface
                 UserEnum::USER_NOONE,
                 $entity->getUser()->getId(),
                 $entityOwnerMessage,
-                $isColony ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :
+                $entity instanceof ColonyInterface ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
             );
         }

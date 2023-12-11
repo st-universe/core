@@ -4,6 +4,7 @@ namespace Stu\Component\Ship\Repair;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -15,9 +16,9 @@ interface RepairUtilInterface
      */
     public function determineSpareParts(ShipWrapperInterface $wrapper): array;
 
-    public function enoughSparePartsOnEntity(array $neededParts, $entity, bool $isColony, ShipInterface $ship): bool;
+    public function enoughSparePartsOnEntity(array $neededParts, ColonyInterface|ShipInterface $entity, ShipInterface $ship): bool;
 
-    public function consumeSpareParts(array $neededParts, $entity, bool $isColony): void;
+    public function consumeSpareParts(array $neededParts, ColonyInterface|ShipInterface $entity): void;
 
     public function determineFreeEngineerCount(ShipInterface $ship): int;
 
