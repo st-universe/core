@@ -13,6 +13,7 @@ use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\UserSettingRepositoryInterface;
 
 final class UserReset implements UserResetInterface
 {
@@ -25,6 +26,8 @@ final class UserReset implements UserResetInterface
     private PrestigeLogRepositoryInterface $prestigeLogRepository;
 
     private UserRepositoryInterface $userRepository;
+
+    private UserSettingRepositoryInterface $userSettingRepository;
 
     private UserInvitationRepositoryInterface $userInvitationRepository;
 
@@ -40,6 +43,7 @@ final class UserReset implements UserResetInterface
         NoteRepositoryInterface $noteRepository,
         PrestigeLogRepositoryInterface $prestigeLogRepository,
         UserRepositoryInterface $userRepository,
+        UserSettingRepositoryInterface $userSettingRepository,
         UserInvitationRepositoryInterface $userInvitationRepository,
         UserIpTableRepositoryInterface $userIpTableRepository,
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
@@ -50,6 +54,7 @@ final class UserReset implements UserResetInterface
         $this->noteRepository = $noteRepository;
         $this->prestigeLogRepository = $prestigeLogRepository;
         $this->userRepository = $userRepository;
+        $this->userSettingRepository = $userSettingRepository;
         $this->userInvitationRepository = $userInvitationRepository;
         $this->userIpTableRepository = $userIpTableRepository;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
@@ -107,12 +112,12 @@ final class UserReset implements UserResetInterface
             $npc->setLastaction($time);
             $npc->setKnMark(0);
             $npc->setDescription('');
-            $npc->setRgbCode('');
             $npc->setPrestige(0);
-            $npc->setStartPage(null);
             $npc->setSessiondata('');
 
             $this->userRepository->save($npc);
+
+            $this->userSettingRepository->truncateByUser($npc);
         }
 
         $this->entityManager->flush();

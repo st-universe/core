@@ -19,12 +19,12 @@ use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePasswordRequest;
 use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePasswordRequestInterface;
 use Stu\Module\PlayerSetting\Action\ChangeRgbCode\ChangeRgbCode;
 use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettings;
-use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettingsRequest;
-use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettingsRequestInterface;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
+use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
+use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 
 use function DI\autowire;
 
@@ -33,7 +33,7 @@ return [
     ChangePasswordRequestInterface::class => autowire(ChangePasswordRequest::class),
     ChangeEmailRequestInterface::class => autowire(ChangeEmailRequest::class),
     ChangeDescriptionRequestInterface::class => autowire(ChangeDescriptionRequest::class),
-    ChangeSettingsRequestInterface::class => autowire(ChangeSettingsRequest::class),
+    ChangeUserSettingInterface::class => autowire(ChangeUserSetting::class),
     'PLAYER_SETTING_ACTIONS' => [
         ChangeUserName::ACTION_IDENTIFIER => autowire(ChangeUserName::class),
         ChangePassword::ACTION_IDENTIFIER => autowire(ChangePassword::class),

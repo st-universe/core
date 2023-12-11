@@ -7,23 +7,24 @@ namespace Stu\Module\PlayerSetting\Action\ChangeRgbCode;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
+use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 final class ChangeRgbCode implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_USER_RGB';
 
-    private UserRepositoryInterface $userRepository;
+    private ChangeUserSettingInterface $changerUserSetting;
 
     public function __construct(
-        UserRepositoryInterface $userRepository
+        ChangeUserSettingInterface $changerUserSetting,
     ) {
-        $this->userRepository = $userRepository;
+        $this->changerUserSetting = $changerUserSetting;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $value = request::postStringFatal('rgb');
+        $value = request::postStringFatal('rgb_code');
         if (strlen($value) != 7) {
             $game->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
             return;
@@ -34,11 +35,11 @@ final class ChangeRgbCode implements ActionControllerInterface
             return;
         }
 
-        $user = $game->getUser();
-
-        $user->setRgbCode($value);
-
-        $this->userRepository->save($user);
+        $this->changerUserSetting->change(
+            $game->getUser(),
+            UserSettingEnum::RGB_CODE,
+            $value
+        );
 
         $game->addInformation(_('Dein RGB-Code wurde geändert'));
     }

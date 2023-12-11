@@ -4,95 +4,40 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeSettings;
 
-use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Player\UserCssClassEnum;
-use Stu\Component\Player\UserRpgBehaviorEnum;
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
+use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 final class ChangeSettings implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_SETTINGS';
 
-    private ChangeSettingsRequestInterface $changeSettingsRequest;
-
-    private UserRepositoryInterface $userRepository;
+    private ChangeUserSettingInterface $changeUserSetting;
 
     public function __construct(
-        ChangeSettingsRequestInterface $changeSettingsRequest,
-        UserRepositoryInterface $userRepository
+        ChangeUserSettingInterface $changeUserSetting
     ) {
-        $this->changeSettingsRequest = $changeSettingsRequest;
-        $this->userRepository = $userRepository;
+        $this->changeUserSetting = $changeUserSetting;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
 
-        $settings = [
-            function (UserInterface $user): void {
-                $user->setEmailNotification(
-                    $this->changeSettingsRequest->getEmailNotification() === 1
-                );
-            },
-            function (UserInterface $user): void {
-                $user->setSaveLogin(
-                    $this->changeSettingsRequest->getSaveLogin() === 1
-                );
-            },
-            function (UserInterface $user): void {
-                $user->setStorageNotification(
-                    $this->changeSettingsRequest->getStorageNotification() === 1
-                );
-            },
-            function (UserInterface $user): void {
-                $user->setShowOnlineState(
-                    $this->changeSettingsRequest->getShowOnlineState() === 1
-                );
-            },
-            function (UserInterface $user): void {
-                $user->setShowPmReadReceipt(
-                    $this->changeSettingsRequest->getPmReadReceipt() === 1
-                );
-            },
-            function (UserInterface $user): void {
-                $user->setFleetFixedDefault(
-                    $this->changeSettingsRequest->getFleetsFixedDefault() === 1
-                );
-            },
-            function (UserInterface $user): void {
-                $value = $this->changeSettingsRequest->getStartpage();
+        foreach (UserSettingEnum::cases() as $setting) {
+            if (!request::has($setting->value)) {
+                $this->changeUserSetting->reset($user, $setting);
+            } else {
 
-                $view = ModuleViewEnum::tryFrom($value);
-                if ($view !== null) {
-                    $user->setStartPage($view->value);
-                }
-            },
-            function (UserInterface $user): void {
-                $value = $this->changeSettingsRequest->getRpgBehavior();
-
-                $rpgBehavior = UserRpgBehaviorEnum::tryFrom($value);
-                if ($rpgBehavior !== null) {
-                    $user->setRpgBehavior($rpgBehavior);
-                }
-            },
-            function (UserInterface $user): void {
-                $value = $this->changeSettingsRequest->getCssStyle();
-
-                $cssClass = UserCssClassEnum::tryFrom($value);
-                if ($cssClass !== null) {
-                    $user->setCss($cssClass);
-                }
-            },
-        ];
-        foreach ($settings as $callable) {
-            $callable($user);
+                $this->changeUserSetting->change(
+                    $user,
+                    $setting,
+                    request::postStringFatal($setting->value)
+                );
+            }
         }
-
-        $this->userRepository->save($user);
 
         $game->addInformation(_('Die Accounteinstellungen wurden aktualisiert'));
     }
