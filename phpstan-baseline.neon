@@ -2512,7 +2512,32 @@ parameters:
 			path: src/Orm/Entity/TradeTransaction.php
 
 		-
+			message: "#^Cannot access property \\$value on Stu\\\\Component\\\\Player\\\\UserCssClassEnum\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
 			message: "#^Cannot call method isExplored\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getAvatar\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getFleetFixedDefault\\(\\) should return bool but returns bool\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getRgbCode\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getRpgBehavior\\(\\) should return Stu\\\\Component\\\\Player\\\\UserRpgBehaviorEnum but returns Stu\\\\Component\\\\Player\\\\UserRpgBehaviorEnum\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
@@ -2522,57 +2547,32 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$css type mapping mismatch\\: database can contain Stu\\\\Component\\\\Player\\\\UserCssClassEnum\\|null but property expects Stu\\\\Component\\\\Player\\\\UserCssClassEnum\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isEmailNotification\\(\\) should return bool but returns bool\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$email_notification type mapping mismatch\\: database can contain bool\\|null but property expects bool\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isSaveLogin\\(\\) should return bool but returns bool\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$fleet_fixed_default type mapping mismatch\\: database can contain bool\\|null but property expects bool\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isShowOnlineState\\(\\) should return bool but returns bool\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$propic type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isShowPmReadReceipt\\(\\) should return bool but returns bool\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$rgb_code type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$rpg_behavior type mapping mismatch\\: database can contain Stu\\\\Component\\\\Player\\\\UserRpgBehaviorEnum\\|null but property expects Stu\\\\Component\\\\Player\\\\UserRpgBehaviorEnum\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$save_login type mapping mismatch\\: database can contain bool\\|null but property expects bool\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isStorageNotification\\(\\) should return bool but returns bool\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$settings type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<string, Stu\\\\Orm\\\\Entity\\\\UserSettingInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\UserSetting\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$show_online_status type mapping mismatch\\: database can contain bool\\|null but property expects bool\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$show_pm_read_receipt type mapping mismatch\\: database can contain bool\\|null but property expects bool\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$storage_notification type mapping mismatch\\: database can contain bool\\|null but property expects bool\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 

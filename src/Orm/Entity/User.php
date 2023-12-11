@@ -103,13 +103,13 @@ class User implements UserInterface
      * @Column(type="string", length=200, nullable=true)
      *
      */
-    private string $propic = '';
+    private ?string $propic = '';
 
     /**
      * @Column(type="boolean", nullable=true)
      *
      */
-    private bool $email_notification = true;
+    private ?bool $email_notification = true;
 
     /**
      * @Column(type="integer")
@@ -151,7 +151,7 @@ class User implements UserInterface
      * @Column(type="boolean", nullable=true)
      *
      */
-    private bool $storage_notification = true;
+    private ?bool $storage_notification = true;
 
     /**
      * @Column(type="text")
@@ -163,25 +163,25 @@ class User implements UserInterface
      * @Column(type="boolean", nullable=true)
      *
      */
-    private bool $show_online_status = true;
+    private ?bool $show_online_status = true;
 
     /**
      * @Column(type="boolean", nullable=true)
      *
      */
-    private bool $show_pm_read_receipt = true;
+    private ?bool $show_pm_read_receipt = true;
 
     /**
      * @Column(type="boolean", nullable=true)
      *
      */
-    private bool $save_login = true;
+    private ?bool $save_login = true;
 
     /**
      * @Column(type="boolean", nullable=true)
      *
      */
-    private bool $fleet_fixed_default = false;
+    private ?bool $fleet_fixed_default = false;
 
     /**
      * @Column(type="boolean", nullable=true)
@@ -217,7 +217,7 @@ class User implements UserInterface
      * @Column(type="string", length=7, nullable=true)
      *
      */
-    private string $rgb_code = '';
+    private ?string $rgb_code = '';
 
     /**
      * @Column(type="integer")
@@ -235,13 +235,13 @@ class User implements UserInterface
      * @Column(type="smallint", length=1, enumType=UserRpgBehaviorEnum::class, nullable=true)
      *
      */
-    private UserRpgBehaviorEnum $rpg_behavior = UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
+    private ?UserRpgBehaviorEnum $rpg_behavior = UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
 
     /**
      * @Column(type="string", length=100, enumType=UserCssClassEnum::class, nullable=true)
      *
      */
-    private UserCssClassEnum $css = UserCssClassEnum::BLACK;
+    private ?UserCssClassEnum $css = UserCssClassEnum::BLACK;
 
     /**
      * @Column(type="boolean", options={"default": false})
