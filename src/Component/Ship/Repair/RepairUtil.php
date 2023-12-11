@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
+use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -17,6 +18,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -99,7 +101,7 @@ final class RepairUtil implements RepairUtilInterface
         ];
     }
 
-    public function enoughSparePartsOnEntity(array $neededParts, $entity, bool $isColony, ShipInterface $ship): bool
+    public function enoughSparePartsOnEntity(array $neededParts, ColonyInterface|ShipInterface $entity, ShipInterface $ship): bool
     {
         $neededSpareParts = $neededParts[CommodityTypeEnum::COMMODITY_SPARE_PART];
         $neededSystemComponents = $neededParts[CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT];
@@ -108,7 +110,7 @@ final class RepairUtil implements RepairUtilInterface
             $spareParts = $entity->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART);
 
             if ($spareParts === null || $spareParts->getAmount() < $neededSpareParts) {
-                $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity, $isColony);
+                $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity);
                 return false;
             }
         }
@@ -117,7 +119,7 @@ final class RepairUtil implements RepairUtilInterface
             $systemComponents = $entity->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT);
 
             if ($systemComponents === null || $systemComponents->getAmount() < $neededSystemComponents) {
-                $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity, $isColony);
+                $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity);
                 return false;
             }
         }
@@ -125,8 +127,12 @@ final class RepairUtil implements RepairUtilInterface
         return true;
     }
 
-    private function sendNeededAmountMessage(int $neededSpareParts, int $neededSystemComponents, ShipInterface $ship, $entity, bool $isColony): void
-    {
+    private function sendNeededAmountMessage(
+        int $neededSpareParts,
+        int $neededSystemComponents,
+        ShipInterface $ship,
+        ColonyInterface|ShipInterface $entity
+    ): void {
         $neededPartsString = sprintf(
             "%d %s%s",
             $neededSpareParts,
@@ -137,6 +143,8 @@ final class RepairUtil implements RepairUtilInterface
                 CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)
             ) : '')
         );
+
+        $isColony = $entity instanceof ColonyInterface;
 
         //PASSIVE REPAIR OF STATION BY WORKBEES
         if ($entity === $ship) {
@@ -167,13 +175,13 @@ final class RepairUtil implements RepairUtilInterface
         }
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
-            $entity->getUserId(),
+            $entity->getUser()->getId(),
             $entityOwnerMessage,
             $isColony ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY : PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
         );
     }
 
-    public function consumeSpareParts(array $neededParts, $entity, bool $isColony): void
+    public function consumeSpareParts(array $neededParts, ColonyInterface|ShipInterface $entity): void
     {
         foreach ($neededParts as $commodityKey => $amount) {
             //$this->loggerUtil->log(sprintf('consume, cid: %d, amount: %d', $commodityKey, $amount));
@@ -182,9 +190,13 @@ final class RepairUtil implements RepairUtilInterface
                 continue;
             }
 
-            $commodity = $entity->getStorage()->get($commodityKey)->getCommodity();
+            $storage = $entity->getStorage()->get($commodityKey);
+            if ($storage === null) {
+                throw new RuntimeException('enoughSparePartsOnEntity should be called beforehand!');
+            }
+            $commodity = $storage->getCommodity();
 
-            if ($isColony) {
+            if ($entity instanceof ColonyInterface) {
                 $this->colonyStorageManager->lowerStorage($entity, $commodity, $amount);
             } else {
                 $this->shipStorageManager->lowerStorage($entity, $commodity, $amount);

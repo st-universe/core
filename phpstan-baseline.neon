@@ -24,17 +24,7 @@ parameters:
 			path: src/Component/Logging/services.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:enoughSparePartsOnEntity\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtil.php
 
@@ -44,22 +34,7 @@ parameters:
 			path: src/Component/Ship/Repair/RepairUtil.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:sendNeededAmountMessage\\(\\) has parameter \\$entity with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:consumeSpareParts\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:enoughSparePartsOnEntity\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtilInterface.php
 
