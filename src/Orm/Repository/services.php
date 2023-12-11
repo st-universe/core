@@ -136,6 +136,7 @@ use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
+use Stu\Orm\Entity\UserSetting;
 use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Entity\WeaponShield;
@@ -791,6 +792,11 @@ return [
         ContainerInterface $c
     ): UserProfileVisitorRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class);
+    },
+    UserSettingRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserSettingRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserSetting::class);
     },
     UserTagRepositoryInterface::class => function (
         ContainerInterface $c

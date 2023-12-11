@@ -14,7 +14,7 @@ use Stu\Component\Cli\ManagerTickCommand;
 use Stu\Component\Cli\ProcessTickCommand;
 use Stu\Component\Cli\ShipTickCommand;
 use Stu\Component\Cli\UserCreateCommand;
-use Stu\Component\Cli\ReactorRefactorCommand;
+use Stu\Component\Cli\RefactorCommand;
 use Stu\Config\Init;
 use Stu\Module\Config\StuConfigInterface;
 
@@ -68,7 +68,7 @@ Init::run(
         $app->add(new GameResetCommand($dic));
 
         //refactor
-        $app->add(new ReactorRefactorCommand($dic));
+        $app->add(new RefactorCommand($dic));
 
         $app->handle($_SERVER['argv']);
     }

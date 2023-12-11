@@ -6,9 +6,9 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
 use Psr\Container\ContainerInterface;
-use Stu\Component\Ship\Refactor\RefactorReactorRunner;
+use Stu\Component\Ship\Refactor\RefactorUserSettingsRunner;
 
-final class ReactorRefactorCommand extends Command
+final class RefactorCommand extends Command
 {
     private ContainerInterface $dic;
 
@@ -18,23 +18,23 @@ final class ReactorRefactorCommand extends Command
         $this->dic = $dic;
 
         parent::__construct(
-            'refactor:reactor',
-            'Moves reactor values from ship to system data'
+            'refactor:run',
+            'Start the needed refactoring'
         );
 
         $this
             ->usage(
-                '<bold>  $0 refactor:reactor</end> <comment></end> ## Refactors reactor values<eol/>'
+                '<bold>  $0 refactor:run</end> <comment></end> ## Starts the refactoring<eol/>'
             );
     }
 
     public function execute(): void
     {
-        $runner = $this->dic->get(RefactorReactorRunner::class);
+        $runner = $this->dic->get(RefactorUserSettingsRunner::class);
         $runner->refactor();
 
         $this->io()->ok(
-            'Reactor values have been refactored',
+            'Refactoring has been executed',
             true
         );
     }
