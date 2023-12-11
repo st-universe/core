@@ -9,21 +9,22 @@ use GdImage;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
+use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 final class ChangeAvatar implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    private UserRepositoryInterface $userRepository;
+    private ChangeUserSettingInterface $changerUserSetting;
 
     private ConfigInterface $config;
 
     public function __construct(
-        UserRepositoryInterface $userRepository,
+        ChangeUserSettingInterface $changerUserSetting,
         ConfigInterface $config
     ) {
-        $this->userRepository = $userRepository;
+        $this->changerUserSetting = $changerUserSetting;
         $this->config = $config;
     }
 
@@ -83,9 +84,11 @@ final class ChangeAvatar implements ActionControllerInterface
             )
         );
 
-        $user->setAvatar($imageName);
-
-        $this->userRepository->save($user);
+        $this->changerUserSetting->change(
+            $user,
+            UserSettingEnum::AVATAR,
+            $imageName
+        );
 
         $game->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }

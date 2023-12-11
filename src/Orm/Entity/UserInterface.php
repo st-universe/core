@@ -4,7 +4,6 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 
 interface UserInterface
@@ -37,8 +36,6 @@ interface UserInterface
 
     public function getRgbCode(): string;
 
-    public function setRgbCode(string $rgbCode): UserInterface;
-
     public function getFactionId(): int;
 
     public function setFaction(FactionInterface $faction): UserInterface;
@@ -46,8 +43,6 @@ interface UserInterface
     public function getFaction(): FactionInterface;
 
     public function getCss(): string;
-
-    public function setCss(UserCssClassEnum $cssClass): UserInterface;
 
     /**
      * @return Collection<int, UserAwardInterface>
@@ -71,11 +66,7 @@ interface UserInterface
 
     public function getAvatar(): string;
 
-    public function setAvatar(string $avatar): UserInterface;
-
     public function isEmailNotification(): bool;
-
-    public function setEmailNotification(bool $email_notification): UserInterface;
 
     public function getLastaction(): int;
 
@@ -105,19 +96,13 @@ interface UserInterface
 
     public function isStorageNotification(): bool;
 
-    public function setStorageNotification(bool $storage_notification): UserInterface;
-
     public function getDescription(): string;
 
     public function setDescription(string $description): UserInterface;
 
     public function isShowOnlineState(): bool;
 
-    public function setShowOnlineState(bool $showOnlineState): UserInterface;
-
     public function isShowPmReadReceipt(): bool;
-
-    public function setShowPmReadReceipt(bool $showPmReadReceipt): UserInterface;
 
     public function getDeals(): bool;
 
@@ -129,11 +114,9 @@ interface UserInterface
 
     public function isSaveLogin(): bool;
 
-    public function setSaveLogin(bool $save_login): UserInterface;
-
     public function getFleetFixedDefault(): bool;
 
-    public function setFleetFixedDefault(bool $fleetFixedDefault): UserInterface;
+    public function getWarpsplitAutoCarryoverDefault(): bool;
 
     public function getTick(): int;
 
@@ -147,6 +130,11 @@ interface UserInterface
     public function hasSeen(int $layerId): bool;
 
     public function hasExplored(int $layerId): bool;
+
+    /**
+     * @return Collection<string, UserSettingInterface>
+     */
+    public function getSettings(): Collection;
 
     public function getSessiondata(): string;
 
@@ -162,11 +150,7 @@ interface UserInterface
 
     public function getDefaultView(): ModuleViewEnum;
 
-    public function setStartPage(?string $startPage): UserInterface;
-
     public function getRpgBehavior(): UserRpgBehaviorEnum;
-
-    public function setRpgBehavior(UserRpgBehaviorEnum $rpgBehavior): UserInterface;
 
     public function isOnline(): bool;
 

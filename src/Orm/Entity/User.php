@@ -24,6 +24,7 @@ use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserRepository")
@@ -183,6 +184,12 @@ class User implements UserInterface
     private bool $fleet_fixed_default = false;
 
     /**
+     * @Column(type="boolean", nullable=true)
+     *
+     */
+    private ?bool $warp_split_auto_carryover_default = null;
+
+    /**
      * @Column(type="smallint")
      *
      */
@@ -290,6 +297,13 @@ class User implements UserInterface
      */
     private ?UserLockInterface $userLock = null;
 
+    /**
+     * @var ArrayCollection<string, UserSettingInterface>
+     *
+     * @OneToMany(targetEntity="UserSetting", mappedBy="user", indexBy="setting")
+     */
+    private Collection $settings;
+
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
@@ -298,6 +312,7 @@ class User implements UserInterface
         $this->awards = new ArrayCollection();
         $this->colonies = new ArrayCollection();
         $this->userLayers = new ArrayCollection();
+        $this->settings = new ArrayCollection();
     }
 
     public function getId(): int
@@ -377,26 +392,23 @@ class User implements UserInterface
 
     public function getRgbCode(): string
     {
-        return $this->rgb_code;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::RGB_CODE->value);
+        if ($setting !== null) {
+            return $setting->getValue();
+        }
 
-    public function setRgbCode(string $rgbCode): UserInterface
-    {
-        $this->rgb_code = $rgbCode;
-        return $this;
+        return $this->rgb_code;
     }
 
     public function getCss(): string
     {
+        $setting = $this->getSettings()->get(UserSettingEnum::CSS_COLOR_SHEET->value);
+        if ($setting !== null) {
+            return $setting->getValue();
+        }
+
         return $this->css->value;
     }
-
-    public function setCss(UserCssClassEnum $cssClass): UserInterface
-    {
-        $this->css = $cssClass;
-        return $this;
-    }
-
 
     public function getFactionId(): int
     {
@@ -462,24 +474,22 @@ class User implements UserInterface
 
     public function getAvatar(): string
     {
-        return $this->propic;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::AVATAR->value);
+        if ($setting !== null) {
+            return $setting->getValue();
+        }
 
-    public function setAvatar(string $avatar): UserInterface
-    {
-        $this->propic = $avatar;
-        return $this;
+        return $this->propic;
     }
 
     public function isEmailNotification(): bool
     {
-        return $this->email_notification;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::EMAIL_NOTIFICATION->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
 
-    public function setEmailNotification(bool $email_notification): UserInterface
-    {
-        $this->email_notification = $email_notification;
-        return $this;
+        return $this->email_notification;
     }
 
     public function getLastaction(): int
@@ -556,13 +566,12 @@ class User implements UserInterface
 
     public function isStorageNotification(): bool
     {
-        return $this->storage_notification;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::STORAGE_NOTIFICATION->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
 
-    public function setStorageNotification(bool $storage_notification): UserInterface
-    {
-        $this->storage_notification = $storage_notification;
-        return $this;
+        return $this->storage_notification;
     }
 
     public function getDescription(): string
@@ -578,46 +587,52 @@ class User implements UserInterface
 
     public function isShowOnlineState(): bool
     {
-        return $this->show_online_status;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::SHOW_ONLINE_STATUS->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
 
-    public function setShowOnlineState(bool $showOnlineState): UserInterface
-    {
-        $this->show_online_status = $showOnlineState;
-        return $this;
+        return $this->show_online_status;
     }
 
     public function isShowPmReadReceipt(): bool
     {
-        return $this->show_pm_read_receipt;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::SHOW_PM_READ_RECEIPT->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
 
-    public function setShowPmReadReceipt(bool $showPmReadReceipt): UserInterface
-    {
-        $this->show_pm_read_receipt = $showPmReadReceipt;
-        return $this;
+        return $this->show_pm_read_receipt;
     }
 
     public function isSaveLogin(): bool
     {
-        return $this->save_login;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::SAVE_LOGIN->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
 
-    public function setSaveLogin(bool $save_login): UserInterface
-    {
-        $this->save_login = $save_login;
-        return $this;
+        return $this->save_login;
     }
 
     public function getFleetFixedDefault(): bool
     {
+        $setting = $this->getSettings()->get(UserSettingEnum::FLEET_FIXED_DEFAULT->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
+
         return $this->fleet_fixed_default;
     }
 
-    public function setFleetFixedDefault(bool $fleetFixedDefault): UserInterface
+    public function getWarpsplitAutoCarryoverDefault(): bool
     {
-        $this->fleet_fixed_default = $fleetFixedDefault;
-        return $this;
+        $setting = $this->getSettings()->get(UserSettingEnum::WARPSPLIT_AUTO_CARRYOVER_DEFAULT->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
+
+        return false;
     }
 
     public function getTick(): int
@@ -644,6 +659,11 @@ class User implements UserInterface
     public function hasExplored(int $layerId): bool
     {
         return $this->hasSeen($layerId) && $this->getUserLayers()->get($layerId)->isExplored();
+    }
+
+    public function getSettings(): Collection
+    {
+        return $this->settings;
     }
 
     public function getSessiondata(): string
@@ -682,6 +702,11 @@ class User implements UserInterface
 
     public function getDefaultView(): ModuleViewEnum
     {
+        $setting = $this->getSettings()->get(UserSettingEnum::DEFAULT_VIEW->value);
+        if ($setting !== null) {
+            return ModuleViewEnum::from($setting->getValue());
+        }
+
         if ($this->start_page === null) {
             return ModuleViewEnum::MAINDESK;
         }
@@ -689,21 +714,14 @@ class User implements UserInterface
         return ModuleViewEnum::from($this->start_page);
     }
 
-    public function setStartPage(?string $startPage): UserInterface
-    {
-        $this->start_page = $startPage;
-        return $this;
-    }
-
     public function getRpgBehavior(): UserRpgBehaviorEnum
     {
-        return $this->rpg_behavior;
-    }
+        $setting = $this->getSettings()->get(UserSettingEnum::RPG_BEHAVIOR->value);
+        if ($setting !== null) {
+            return UserRpgBehaviorEnum::from((int)$setting->getValue());
+        }
 
-    public function setRpgBehavior(UserRpgBehaviorEnum $rpgBehavior): UserInterface
-    {
-        $this->rpg_behavior = $rpgBehavior;
-        return $this;
+        return $this->rpg_behavior;
     }
 
     public function getDeals(): bool

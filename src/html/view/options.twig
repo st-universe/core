@@ -97,7 +97,7 @@
                 <th>Territorialfarbe</th>
             </tr>
             <tr>
-                <td><input type="text" style="width: 250px;" name="rgb" class="text"
+                <td><input type="text" style="width: 250px;" name="rgb_code" class="text"
                         value="{{ REAL_USER.getRgbCode }}" /> <input type="submit" name="B_CHANGE_USER_RGB"
                         value="ändern" class="button" /></td>
             </tr>
@@ -132,9 +132,9 @@
             <tr>
                 <td>
                     {% if REAL_USER.isEmailNotification %}
-                    <input type="checkbox" name="email_not" value="1" checked="true" />
+                    <input type="checkbox" name="email_notification" value="1" checked="true" />
                     {% else %}
-                    <input type="checkbox" name="email_not" value="1" />
+                    <input type="checkbox" name="email_notification" value="1" />
                     {% endif %}
                 </td>
                 <td>
@@ -156,9 +156,9 @@
             <tr>
                 <td>
                     {% if REAL_USER.isStorageNotification %}
-                    <input type="checkbox" name="storage_not" value="1" checked="true" />
+                    <input type="checkbox" name="storage_notification" value="1" checked="true" />
                     {% else %}
-                    <input type="checkbox" name="storage_not" value="1" />
+                    <input type="checkbox" name="storage_notification" value="1" />
                     {% endif %}
                 </td>
                 <td>
@@ -168,9 +168,9 @@
             <tr>
                 <td>
                     {% if REAL_USER.isShowOnlineState %}
-                    <input type="checkbox" name="storage_not" value="1" checked="true" />
+                    <input type="checkbox" name="show_online_status" value="1" checked="true" />
                     {% else %}
-                    <input type="checkbox" name="storage_not" value="1" />
+                    <input type="checkbox" name="show_online_status" value="1" />
                     {% endif %}
                 </td>
                 <td>
@@ -180,9 +180,9 @@
             <tr>
                 <td>
                     {% if REAL_USER.isShowPmReadReceipt %}
-                    <input type="checkbox" name="pm_read_receipt" value="1" checked="true" />
+                    <input type="checkbox" name="show_pm_read_receipt" value="1" checked="true" />
                     {% else %}
-                    <input type="checkbox" name="pm_read_receipt" value="1" />
+                    <input type="checkbox" name="show_pm_read_receipt" value="1" />
                     {% endif %}
                 </td>
                 <td>
@@ -193,9 +193,9 @@
             <tr>
                 <td>
                     {% if REAL_USER.getFleetFixedDefault %}
-                    <input type="checkbox" name="fleets_fixed" value="1" checked="true" />
+                    <input type="checkbox" name="fleet_fixed_default" value="1" checked="true" />
                     {% else %}
-                    <input type="checkbox" name="fleets_fixed" value="1" />
+                    <input type="checkbox" name="fleet_fixed_default" value="1" />
                     {% endif %}
                 </td>
                 <td>
@@ -205,8 +205,21 @@
             </tr>
             <tr>
                 <td>
+                    {% if REAL_USER.getWarpsplitAutoCarryoverDefault %}
+                    <input type="checkbox" name="warpsplit_auto_carryover_default" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="warpsplit_auto_carryover_default" value="1" />
+                    {% endif %}
+                </td>
+                <td>
+                    Führt dazu, dass überschüssige Reaktorleistung bei Schiffen automatisch an die übrigen Systeme
+                    transferiert wird.
+                </td>
+            </tr>
+            <tr>
+                <td>
                     {% set defaultView = REAL_USER.getDefaultView %}
-                    <select name="startpage">
+                    <select name="default_view">
                         <option value="0">----------------------</option>
                         {% for value in VIEWS %}
                         {% if defaultView == value %}
@@ -228,7 +241,7 @@
             <tr>
                 <td>
                     {% set rpgBehavior = REAL_USER.getRpgBehavior %}
-                    <select name="rpgbehavior">
+                    <select name="rpg_behavior">
                         {% for value in RPG_BEHAVIOR_VALUES %}
                         {% if rpgBehavior == value %}
                         <option value="{{ value.value }}" selected="1">
@@ -248,7 +261,7 @@
             </tr>
             <tr>
                 <td>
-                    <select name="css">
+                    <select name="css_color_sheet">
                         {% for cssClass in CSS_VALUES %}
                         {% set value = cssClass.value %}
                         {% if REAL_USER.getCss == value %}

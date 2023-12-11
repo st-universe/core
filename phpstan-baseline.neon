@@ -2522,6 +2522,11 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$settings type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<string, Stu\\\\Orm\\\\Entity\\\\UserSettingInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\UserSetting\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserInterface.php
