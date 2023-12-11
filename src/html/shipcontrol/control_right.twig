@@ -40,7 +40,7 @@
         <td style="width: 60%;"><img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
             <input type="range" min="0" max="100" value="{{ warpdriveSplit }}" id="warpdriveSplit"
-                oninput="saveWarpCoreSplit({{ shipId }});  updateReactorValues();">
+                onchange="saveWarpCoreSplit({{ shipId }});" oninput="updateReactorValues();">
             <img src="/assets/buttons/battp2.png" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
         </td>
