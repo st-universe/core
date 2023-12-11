@@ -53,7 +53,7 @@ final class LoadReactor implements ActionControllerInterface
 
         $requestedLoad = request::postIntFatal('reactorload');
 
-        if (request::postString('fleet') !== false) {
+        if (request::postString('fleet_reactor') !== false) {
             $msg = [];
             $msg[] = _('Flottenbefehl ausgeführt: Aufladung des Reaktors');
 

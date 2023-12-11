@@ -14,6 +14,7 @@ class WarpDriveSystemData extends AbstractSystemData
     public int $wd = 0;
     public int $maxwd = 0;
     public int $split = 100;
+    public bool $autoCarryOver = false;
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
@@ -79,6 +80,17 @@ class WarpDriveSystemData extends AbstractSystemData
     public function setWarpDriveSplit(int $split): WarpDriveSystemData
     {
         $this->split = $split;
+        return $this;
+    }
+
+    public function getAutoCarryOver(): bool
+    {
+        return $this->autoCarryOver;
+    }
+
+    public function setAutoCarryOver(bool $autoCarryOver): WarpDriveSystemData
+    {
+        $this->autoCarryOver = $autoCarryOver;
         return $this;
     }
 

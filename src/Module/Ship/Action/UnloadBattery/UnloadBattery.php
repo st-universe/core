@@ -51,7 +51,7 @@ final class UnloadBattery implements ActionControllerInterface
             return;
         }
 
-        if (request::postString('fleet') !== false) {
+        if (request::postString('fleet_batt') !== false) {
             $msg = [];
             $msg[] = _('Flottenbefehl ausgeführt: Ersatzbatterie entladen');
 

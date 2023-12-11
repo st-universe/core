@@ -8,25 +8,25 @@
 {% if reactor %}
 <table class="tcal">
     <tr>
-        <th colspan="2">
+        <th colspan="3">
             <img src="/assets/buttons/{{ reactor.get.getIcon }}" />
             <span>Reaktor-System</span>
         </th>
     </tr>
     <tr>
-        <td style="width:50%;">
+        <td colspan="2">
             <img src="/assets/buttons/{{ reactor.get.getIcon }}"
                 title="{{ reactor.get.getSystemType.getDescription }}" />
             <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity }}</span>
-        </td>
-        <td>
             <input type="text" size="3" name="reactorload" id="reactorload" value="1"
                 onkeydown="event.key == 'Enter' && $('loadreactorbutton').click();" />
             <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton" />
             <input type="button" class="button" value="max"
                 onClick="$('reactorload').value = 9999; $('loadreactorbutton').click()" />
+        </td>
+        <td style="width: 15%;">
             {% if ship.isFleetLeader %}
-            <span><input type="checkbox" name="fleet" />
+            <span><input type="checkbox" name="fleet_reactor" />
                 Flotte</span>
             {% endif %}
         </td>
@@ -34,29 +34,43 @@
     {% if ship.hasWarpDrive %}
     {% set epssystem = wrapper.getEpsSystemData %}
     {% set warpdriveSplit = wrapper.getWarpDriveSystemData.getWarpDriveSplit %}
+    {% set autoCarryOver = wrapper.getWarpDriveSystemData.getAutoCarryOver %}
 
     <tr>
-        <td colspan="2"><img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
+        <td style="width: 60%;"><img src="/assets/buttons/wkp2.png" title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
             <input type="range" min="0" max="100" value="{{ warpdriveSplit }}" id="warpdriveSplit"
-                oninput="saveWarpCoreSplit(this.value, {{ shipId }});  updateReactorValues(this.value);">
+                oninput="saveWarpCoreSplit({{ shipId }});  updateReactorValues(this.value);">
             <img src="/assets/buttons/battp2.png" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
+        </td>
+        <td>
+            <div style="display: inline-block;" title="Überschüssige Energie wird in anderen Speicher übertragen">
+                {% set checked = autoCarryOver ? 'checked="true"' : '' %}
+                <input type="checkbox" id="autoCarryOver" {{ checked }} onchange="saveWarpCoreSplit({{ shipId }});" />
+                <span>
+                    Übertrag <img src="/assets/buttons/info2.png" style="height:16px;" />
+                </span>
+            </div>
+        </td>
+        <td style="width: 15%;">
+            {% if ship.isFleetLeader %}
+            <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit({{ shipId }});" />
+                Flotte</span>
+            {% endif %}
         </td>
     </tr>
 
 
     {% if ship.isWarpPossible %}
     <tr>
-        <td style="width:50%;">
+        <td colspan="3">
             {% if ship.getWarpState %}
             <img src="/assets/buttons/warp1.png" title="Warpantrieb aktiviert" />
             {% else %}
             <img src="/assets/buttons/warp2.png" title="Warpantrieb deaktiviert" />
             {% endif %}
             Warpantrieb
-        </td>
-        <td>
             {% if ship.getWarpState %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_DEACTIVATE_WARP', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
@@ -73,15 +87,13 @@
     {% if ship.hasTranswarp %}
     <tr>
         {% set cooldown = ship.getTranswarpCooldown %}
-        <td style="width:50%;">
+        <td colspan="2">
             <img src="/assets/buttons/transw.png" title="Transwarpantrieb" />
             Transwarpantrieb
             {% if cooldown %}
             <span><br />
                 Gesperrt bis {{ cooldown|stuDateTime }}</span>
             {% endif %}
-        </td>
-        <td>
             {% if not cooldown %}
             Areal:
             <select name="transwarplayer">
@@ -97,8 +109,10 @@
             Y:
             <input type="text" size="2" name="transwarpcy" id="transwarpcy"
                 onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
-            <input type="submit" class="button" name="B_TRANSWARP" value="Transwarpflug" id="transwarpButton" />
             {% endif %}
+        </td>
+        <td style="width: 15%;">
+            <input type="submit" class="button" name="B_TRANSWARP" value="Start" id="transwarpButton" />
         </td>
     </tr>
     {% endif %}
@@ -108,41 +122,39 @@
 {% if eps and eps.getMaxBattery > 0 %}
 <table class="tcal">
     <tr>
-        <th colspan="2">
+        <th colspan="3">
             <img src="/assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
             {{ eps.getBattery }} / {{ eps.getMaxBattery }}
         </th>
     </tr>
     <tr>
         {% if eps.isEBattUseable %}
-        <td style="width: 70%;">
+        <td style="width: 60%;">
             Einheiten
             <input type="text" size="5" name="ebattload" id="ebattload"
                 onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
             <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton" />
             <input type="button" class="button"
                 onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max" />
-            {% if ship.isFleetLeader %}
-            <span><input type="checkbox" name="fleet" />
-                Flotte</span>
-            {% endif %}
         </td>
         {% else %}
-        <td style="width: 70%;">
+        <td style="width: 60%;">
             Gesperrt bis {{ eps.getBatteryCooldown|stuDateTime }}
         </td>
         {% endif %}
-        <td style="text-align: right; width: 30%;">
+        <td>
             {% if ship.isBase %}
-            {% if eps.reloadBattery %}
-            <input type="checkbox" checked="true"
-                onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}'" />
-            {% else %}
-            <input type="checkbox"
-                onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}'" />
-            {% endif %}
+            {% set checked = eps.reloadBattery ? 'checked="true"' : '' %}
+            <input type="checkbox" {{ checked }}
+                onchange="actionToInnerContent('B_TOGGLE_BATT_RELOAD', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');" />
             reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="/assets/buttons/info2.png"
                 style="height:16px;" />
+            {% endif %}
+        </td>
+        <td style="width: 15%;">
+            {% if ship.isFleetLeader %}
+            <span><input type="checkbox" name="fleet_batt" />
+                Flotte</span>
             {% endif %}
         </td>
     </tr>

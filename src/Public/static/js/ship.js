@@ -439,16 +439,22 @@ function updateReactorValues(value) {
 
 var saveTimeout;
 
-function saveWarpCoreSplit(value, shipId, successCallback) {
+function saveWarpCoreSplit(shipId) {
 	clearTimeout(saveTimeout);
 
+	value = document.getElementById('warpdriveSplit').value;
+	autoCarryOver = document.getElementById('autoCarryOver').checked ? 1 : 0;
+	fleetSplit = document.getElementById('fleetSplit').checked ? 1 : 0;
+
+	params = `B_SPLIT_REACTOR_OUTPUT=1&id=${shipId}&value=${value}&fleet=${fleetSplit}&autocarryover=${autoCarryOver}`;
+
 	saveTimeout = setTimeout(function () {
-		new Ajax.Request('ship.php', {
+		new Ajax.Updater('result', 'ship.php', {
 			method: 'post',
-			parameters: 'B_SPLIT_REACTOR_OUTPUT=1&id=' + shipId + '&value=' + value,
+			parameters: params,
 			evalScripts: true,
 			onSuccess: function () {
-				successCallback(value);
+				$('result').show();
 			},
 		});
 	}, 150);

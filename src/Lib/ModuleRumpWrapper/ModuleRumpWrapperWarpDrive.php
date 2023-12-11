@@ -35,6 +35,7 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
         $systemData
             ->setMaxWarpDrive($this->getValue())
             ->setWarpDriveSplit(100)
+            ->setAutoCarryOver($ship->getUser()->getWarpsplitAutoCarryoverDefault())
             ->update();
     }
 }
