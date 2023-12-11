@@ -249,14 +249,15 @@
             <tr>
                 <td>
                     <select name="css">
-                        {% for value in CSS_VALUES %}
-                        {% if REAL_USER.getCss == value['css'] %}
-                        <option value="{{ value.css }}" selected="1">
-                            {{ value.title }}
+                        {% for cssClass in CSS_VALUES %}
+                        {% set value = cssClass.value %}
+                        {% if REAL_USER.getCss == value %}
+                        <option value="{{ value }}" selected="1">
+                            {{ cssClass.getTitle }}
                         </option>
                         {% else %}
-                        <option value="{{ value.css }}">
-                            {{ value.title }}
+                        <option value="{{ value }}">
+                            {{ cssClass.getTitle }}
                         </option>
                         {% endif %}
                         {% endfor %}

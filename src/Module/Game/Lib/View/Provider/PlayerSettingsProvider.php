@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Player\UserCssEnum;
+use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
@@ -24,6 +24,6 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('REAL_USER', $user);
         $game->setTemplateVar('VIEWS', ModuleViewEnum::cases());
         $game->setTemplateVar('RPG_BEHAVIOR_VALUES', UserRpgBehaviorEnum::cases());
-        $game->setTemplateVar('CSS_VALUES', UserCssEnum::CSS_CLASS);
+        $game->setTemplateVar('CSS_VALUES', UserCssClassEnum::cases());
     }
 }

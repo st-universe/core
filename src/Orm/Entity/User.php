@@ -21,6 +21,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
+use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
@@ -230,10 +231,10 @@ class User implements UserInterface
     private UserRpgBehaviorEnum $rpg_behavior = UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
 
     /**
-     * @Column(type="string", length=100)
+     * @Column(type="string", length=100, enumType=UserCssClassEnum::class)
      *
      */
-    private string $css = 'schwarz';
+    private UserCssClassEnum $css = UserCssClassEnum::BLACK;
 
     /**
      * @Column(type="boolean", options={"default": false})
@@ -387,12 +388,12 @@ class User implements UserInterface
 
     public function getCss(): string
     {
-        return $this->css;
+        return $this->css->value;
     }
 
-    public function setCss(string $Css): UserInterface
+    public function setCss(UserCssClassEnum $cssClass): UserInterface
     {
-        $this->css = $Css;
+        $this->css = $cssClass;
         return $this;
     }
 
