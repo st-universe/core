@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Stu\Component\Research\ResearchEnum;
+use Stu\Component\Research\ResearchModeEnum;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -130,7 +130,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         $dependencies = [];
 
         $dependencies_result = $this->researchDependencyRepository->getByMode(
-            [ResearchEnum::RESEARCH_MODE_REQUIRE, ResearchEnum::RESEARCH_MODE_REQUIRE_SOME]
+            [ResearchModeEnum::REQUIRE->value, ResearchModeEnum::REQUIRE_SOME->value]
         );
 
         foreach ($dependencies_result as $dependency) {
@@ -144,9 +144,9 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                 ];
             }
 
-            if ($mode === ResearchEnum::RESEARCH_MODE_REQUIRE) {
+            if ($mode === ResearchModeEnum::REQUIRE->value) {
                 $dependencies[$research_id]['AND'][] = $dependency->getDependsOn();
-            } elseif ($mode === ResearchEnum::RESEARCH_MODE_REQUIRE_SOME) {
+            } elseif ($mode === ResearchModeEnum::REQUIRE_SOME->value) {
                 $dependencies[$research_id]['OR'][] = $dependency->getDependsOn();
             }
         }
@@ -157,7 +157,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
     private function loadExcludes(): array
     {
         $excludes = [];
-        $exclude_result = $this->researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_EXCLUDE]);
+        $exclude_result = $this->researchDependencyRepository->getByMode([ResearchModeEnum::EXCLUDE->value]);
 
         foreach ($exclude_result as $dependency) {
             $research_id = $dependency->getDependsOn();

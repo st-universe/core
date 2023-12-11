@@ -6,7 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Stu\Component\Research\ResearchEnum;
+use Stu\Component\Research\ResearchModeEnum;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
@@ -98,7 +98,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
             )
             ->setParameters([
                 'researchId' => $researchId,
-                'modeExclude' => ResearchEnum::RESEARCH_MODE_EXCLUDE
+                'modeExclude' => ResearchModeEnum::EXCLUDE->value
             ])
             ->getResult();
     }
