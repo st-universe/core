@@ -7,6 +7,7 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Station\StationUtilityInterface;
@@ -18,6 +19,8 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
+use Stu\Module\Ship\Lib\ReactorWrapper;
+use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\DatabaseEntryInterface;
@@ -111,9 +114,10 @@ final class ShipTick implements ShipTickInterface
             return;
         }
 
+        $hasEnoughCrew = $ship->hasEnoughCrew();
+
         // not enough crew
-        $availableEps = $eps->getEps();
-        if (!$ship->hasEnoughCrew()) {
+        if (!$hasEnoughCrew) {
             $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
 
             //deactivate all systems except life support
@@ -122,9 +126,20 @@ final class ShipTick implements ShipTickInterface
                     $this->shipSystemManager->deactivate($wrapper, $system->getSystemType(), true);
                 }
             }
-        } elseif ($reactor !== null) {
-            $availableEps = $eps->getEps() + $reactor->getEpsProduction();
         }
+
+        $reactorUsageForWarpdrive = $this->loadWarpdrive(
+            $wrapper,
+            $hasEnoughCrew
+        );
+
+        $availableEps = $this->getAvailableEps(
+            $wrapper,
+            $eps,
+            $reactor,
+            $hasEnoughCrew,
+            $reactorUsageForWarpdrive
+        );
 
         //try to save energy by reducing alert state
         if ($wrapper->getEpsUsage() > $availableEps) {
@@ -191,7 +206,7 @@ final class ShipTick implements ShipTickInterface
             $newEps = $eps->getMaxEps();
         }
 
-        $reactorUsageForWarpdrive = $this->loadWarpdrive($wrapper);
+
         $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps()) + $reactorUsageForWarpdrive;
 
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$wrapper->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
@@ -214,8 +229,44 @@ final class ShipTick implements ShipTickInterface
         $this->sendMessages($ship);
     }
 
-    private function loadWarpdrive(ShipWrapperInterface $wrapper): int
+    private function getAvailableEps(
+        ShipWrapperInterface $wrapper,
+        EpsSystemData $eps,
+        ?ReactorWrapperInterface $reactor,
+        bool $hasEnoughCrew,
+        int $reactorUsageForWarpdrive
+    ): int {
+        if ($hasEnoughCrew && $reactor !== null) {
+
+            return $eps->getEps() + $reactor->getEpsProduction() +  $this->getCarryOver(
+                $wrapper,
+                $reactor,
+                $reactorUsageForWarpdrive
+            );
+        }
+
+        return $eps->getEps();
+    }
+
+    private function getCarryOver(
+        ShipWrapperInterface $wrapper,
+        ReactorWrapperInterface $reactor,
+        int $reactorUsageForWarpdrive
+    ): int {
+        $warpdrive = $wrapper->getWarpDriveSystemData();
+        if ($warpdrive === null || !$warpdrive->getAutoCarryOver()) {
+            return 0;
+        }
+
+        return $reactor->getOutputCappedByLoad() - $reactor->getEpsProduction() - $reactorUsageForWarpdrive;
+    }
+
+    private function loadWarpdrive(ShipWrapperInterface $wrapper, bool $hasEnoughCrew): int
     {
+        if (!$hasEnoughCrew) {
+            return 0;
+        }
+
         $reactor = $wrapper->getReactorWrapper();
         $warpdrive = $wrapper->getWarpDriveSystemData();
         if ($warpdrive === null || $reactor === null) {

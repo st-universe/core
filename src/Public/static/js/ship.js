@@ -434,7 +434,7 @@ function updateReactorValues() {
 
 	autoCarryOver = document.getElementById('autoCarryOver').checked;
 	if (autoCarryOver) {
-		excess = Math.max(0, reactorOutput - epsUsage - effEpsProduction - effWarpdriveProduction);
+		excess = Math.max(0, reactorOutput - epsUsage - effEpsProduction - effWarpdriveProduction * flightCost);
 		epsChange = epsProduction + excess - epsUsage;
 
 		effEpsProduction = Math.min(missingEps, epsChange);

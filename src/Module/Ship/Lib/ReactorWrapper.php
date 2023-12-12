@@ -107,7 +107,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         $effWdProd = min($missingWarpdrive, $this->getWarpdriveProduction());
 
         if ($warpdrive !== null && $warpdrive->getAutoCarryOver()) {
-            $excess = max(0, $potential - $effEpsProd - $effWdProd);
+            $excess = max(0, $potential - $effEpsProd - $effWdProd * $flightCost);
             $epsChange = $this->getEpsProduction() + $excess - $this->wrapper->getEpsUsage();
 
             $effEpsProd = min($missingEps, $epsChange);
