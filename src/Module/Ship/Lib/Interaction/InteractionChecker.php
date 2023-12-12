@@ -39,11 +39,11 @@ final class InteractionChecker implements InteractionCheckerInterface
 
         $interactionChecker = new InteractionChecker();
         if ($target instanceof ColonyInterface) {
-            return $interactionChecker->checkColonyPosition($target, $ship) && $target->getId() != $ship->getId();
+            return $interactionChecker->checkColonyPosition($target, $ship) && $target !== $ship;
         } elseif (!$interactionChecker->checkPosition($ship, $target)) {
             return false;
         }
-        if ($target->getShieldState() && $target->getUserId() != $ship->getUser()->getId()) {
+        if ($target->getShieldState() && $target->getUser() !== $ship->getUser()) {
             return false;
         }
         return !($doCloakCheck && $target->getCloakState());
