@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
 use Exception;
 use Noodlehaus\ConfigInterface;
+use RuntimeException;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -68,7 +69,7 @@ final class ChangeAvatar implements ActionControllerInterface
         }
 
         if ($alliance->hasAvatar()) {
-            @unlink(
+            $result = @unlink(
                 sprintf(
                     '%s/%s/%s.png',
                     $this->config->get('game.webroot'),
@@ -76,6 +77,10 @@ final class ChangeAvatar implements ActionControllerInterface
                     $alliance->getAvatar()
                 )
             );
+
+            if ($result === false) {
+                throw new RuntimeException('old alliance avatar could not be deleted');
+            }
         }
 
         $imageName = md5($alliance->getId() . "_" . time());

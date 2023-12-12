@@ -7,6 +7,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 use Exception;
 use GdImage;
 use Noodlehaus\ConfigInterface;
+use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
@@ -54,7 +55,11 @@ final class ChangeAvatar implements ActionControllerInterface
                 $avatar
             );
             if (file_exists($path)) {
-                @unlink($path);
+                $result = @unlink($path);
+
+                if ($result === false) {
+                    throw new RuntimeException('old alliance avatar could not be deleted');
+                }
             }
         }
         $imageName = md5($user->getId() . "_" . time());
