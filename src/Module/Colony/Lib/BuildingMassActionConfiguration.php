@@ -28,7 +28,7 @@ final class BuildingMassActionConfiguration implements BuildingMassActionConfigu
     public function getConfigurations(): array
     {
         return [
-            static::CONFIGURATION_EPS => fn (PlanetFieldHostInterface $host, $selection = null): iterable => $this->planetFieldRepository->getEnergyConsumingByHost($host),
+            static::CONFIGURATION_EPS => fn (PlanetFieldHostInterface $host): iterable => $this->planetFieldRepository->getEnergyConsumingByHost($host),
             static::CONFIGURATION_SELECTION => function (PlanetFieldHostInterface $host, $selection = null): iterable {
                 if (!is_array($selection)) {
                     return [];
@@ -43,9 +43,9 @@ final class BuildingMassActionConfiguration implements BuildingMassActionConfigu
                 }
                 return $fields;
             },
-            static::CONFIGURATION_EPS_PRODUCER => fn (PlanetFieldHostInterface $host, $selection = null): iterable => $this->planetFieldRepository->getEnergyProducingByHost($host),
-            static::CONFIGURATION_INDUSTRY => fn (PlanetFieldHostInterface $host, $selection = null): iterable => $this->planetFieldRepository->getWorkerConsumingByHost($host),
-            static::CONFIGURATION_RESIDENTIALS => fn (PlanetFieldHostInterface $host, $selection = null): iterable => $this->planetFieldRepository->getHousingProvidingByHost($host),
+            static::CONFIGURATION_EPS_PRODUCER => fn (PlanetFieldHostInterface $host): iterable => $this->planetFieldRepository->getEnergyProducingByHost($host),
+            static::CONFIGURATION_INDUSTRY => fn (PlanetFieldHostInterface $host): iterable => $this->planetFieldRepository->getWorkerConsumingByHost($host),
+            static::CONFIGURATION_RESIDENTIALS => fn (PlanetFieldHostInterface $host): iterable => $this->planetFieldRepository->getHousingProvidingByHost($host),
             static::CONFIGURATION_COMMODITY_CONSUMER => fn (PlanetFieldHostInterface $host, $selection = null): iterable => $this->planetFieldRepository->getCommodityConsumingByHostAndCommodity(
                 $host,
                 (int) $selection

@@ -15,7 +15,7 @@ use function DI\create;
 use function DI\get;
 
 return [
-    'kn_bbcode_parser' => static function (ContainerInterface $c): Parser {
+    'kn_bbcode_parser' => static function (): Parser {
         $parser = new Parser();
         $parser->addCodeDefinitionSet(new KnBbCodeDefinitionSet());
         return $parser;

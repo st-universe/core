@@ -72,7 +72,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
 
         $moduleSelectors = [];
-        $moduleSelectors = [];
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
 
             if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {

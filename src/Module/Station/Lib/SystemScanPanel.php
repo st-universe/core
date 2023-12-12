@@ -66,8 +66,6 @@ class SystemScanPanel extends AbstractVisualPanel
             $endTime = microtime(true);
         }
 
-        $currentShip = $this->currentShip;
-
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
