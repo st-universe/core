@@ -98,7 +98,6 @@ final class ShowField implements ViewControllerInterface
             );
             $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
 
-            $terraFormingState = null;
             $terraFormingState = $this->colonyTerraformingRepository->getByColonyAndField(
                 $host->getId(),
                 $field->getId()

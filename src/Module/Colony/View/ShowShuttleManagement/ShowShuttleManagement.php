@@ -92,8 +92,6 @@ final class ShowShuttleManagement implements ViewControllerInterface
             }
         }
 
-        $smi = current($shuttles);
-
         $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
