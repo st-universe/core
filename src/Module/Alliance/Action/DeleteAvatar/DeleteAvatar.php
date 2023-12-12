@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteAvatar;
 
 use Noodlehaus\ConfigInterface;
+use RuntimeException;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -51,7 +52,7 @@ final class DeleteAvatar implements ActionControllerInterface
         $game->setView(Edit::VIEW_IDENTIFIER);
 
         if ($alliance->hasAvatar()) {
-            @unlink(
+            $result = @unlink(
                 sprintf(
                     '%s%s/%s.png',
                     $this->config->get('game.webroot'),
@@ -59,6 +60,12 @@ final class DeleteAvatar implements ActionControllerInterface
                     $alliance->getAvatar()
                 )
             );
+
+
+            if ($result === false) {
+                throw new RuntimeException('alliance avatar could not be deleted');
+            }
+
             $alliance->setAvatar('');
 
             $this->allianceRepository->save($alliance);

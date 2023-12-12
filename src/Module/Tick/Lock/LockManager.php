@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Lock;
 
+use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 
 final class LockManager implements LockManagerInterface
@@ -17,12 +18,28 @@ final class LockManager implements LockManagerInterface
 
     public function setLock(int $batchGroupId, LockTypeEnum $type): void
     {
-        @touch($this->getLockPath($batchGroupId, $type));
+        $result = @touch($this->getLockPath($batchGroupId, $type));
+
+        if ($result === false) {
+            throw new RuntimeException(sprintf(
+                'lock with batchGroupId "%d" of type "%d" could not be created',
+                $type->value,
+                $batchGroupId
+            ));
+        }
     }
 
     public function clearLock(int $batchGroupId, LockTypeEnum $type): void
     {
-        @unlink($this->getLockPath($batchGroupId, $type));
+        $result = @unlink($this->getLockPath($batchGroupId, $type));
+
+        if ($result === false) {
+            throw new RuntimeException(sprintf(
+                'lock with batchGroupId "%d" of type "%d" could not be deleted',
+                $type->value,
+                $batchGroupId
+            ));
+        }
     }
 
     public function isLocked(int $entityId, LockTypeEnum $type): bool

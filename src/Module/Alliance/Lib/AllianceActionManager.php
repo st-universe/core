@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Noodlehaus\ConfigInterface;
+use RuntimeException;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -89,7 +90,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         }
 
         if ($alliance->hasAvatar()) {
-            @unlink(
+            $result = @unlink(
                 sprintf(
                     '%s/%s/%s.png',
                     $this->config->get('game.webroot'),
@@ -97,6 +98,11 @@ final class AllianceActionManager implements AllianceActionManagerInterface
                     $alliance->getAvatar()
                 )
             );
+
+
+            if ($result === false) {
+                throw new RuntimeException('alliance avatar could not be deleted');
+            }
         }
 
         $this->allianceRepository->delete($alliance);
