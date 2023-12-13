@@ -12,44 +12,27 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\StationShipRepairRepository")
- * @Table(name="stu_station_shiprepair")
- **/
+#[Table(name: 'stu_station_shiprepair')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\StationShipRepairRepository')]
 class StationShipRepair implements StationShipRepairInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $station_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $station;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function getId(): int

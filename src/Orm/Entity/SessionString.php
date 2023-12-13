@@ -14,49 +14,28 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\SessionStringRepository")
- * @Table(
- *     name="stu_session_strings",
- *     indexes={
- *         @Index(name="session_string_user_idx", columns={"sess_string", "user_id"}),
- *         @Index(name="session_string_date_idx", columns={"date"})
- *     }
- * )
- **/
+#[Table(name: 'stu_session_strings')]
+#[Index(name: 'session_string_user_idx', columns: ['sess_string', 'user_id'])]
+#[Index(name: 'session_string_date_idx', columns: ['date'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\SessionStringRepository')]
 class SessionString implements SessionStringInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $sess_string = '';
 
-    /**
-     * @Column(type="datetime", nullable=true)
-     *
-     */
+    #[Column(type: 'datetime', nullable: true)]
     private DateTimeInterface $date;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 
     public function getId(): int

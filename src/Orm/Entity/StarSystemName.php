@@ -10,23 +10,16 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity
- * @Table(
- *     name="stu_system_name"
- * )
- **/
+#[Table(name: 'stu_system_name')]
+#[Entity]
 class StarSystemName implements StarSystemNameInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /** @Column(type="string") */
+    #[Column(type: 'string')]
     private string $name = '';
 
     public function getId(): int

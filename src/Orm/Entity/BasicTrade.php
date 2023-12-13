@@ -13,79 +13,43 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BasicTradeRepository")
- * @Table(
- *     name="stu_basic_trade",
- *     indexes={
- *         @Index(name="base_trade_idx", columns={"faction_id", "commodity_id", "date_ms"})
- *     }
- * )
- **/
+#[Table(name: 'stu_basic_trade')]
+#[Index(name: 'base_trade_idx', columns: ['faction_id', 'commodity_id', 'date_ms'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BasicTradeRepository')]
 class BasicTrade implements BasicTradeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $buy_sell = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $value = 0;
 
-    /**
-     * @Column(type="bigint", nullable=true)
-     *
-     */
+    #[Column(type: 'bigint', nullable: true)]
     private ?int $date_ms = null;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $uniqid;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $user_id = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Faction")
-     * @JoinColumn(name="faction_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Faction')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
     private FactionInterface $faction;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     public function getId(): int

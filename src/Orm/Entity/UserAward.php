@@ -12,46 +12,27 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\UserAwardRepository")
- * @Table(
- *     name="stu_user_award"
- * )
- **/
+#[Table(name: 'stu_user_award')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\UserAwardRepository')]
 class UserAward implements UserAwardInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $award_id;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Award")
-     * @JoinColumn(name="award_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Award')]
+    #[JoinColumn(name: 'award_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AwardInterface $award;
 
     public function getId(): int

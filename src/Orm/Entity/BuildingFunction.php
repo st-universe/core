@@ -13,44 +13,28 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingFunctionRepository")
- * @Table(
- *     name="stu_buildings_functions",
- *     indexes={
- *         @Index(name="building_function_building_idx", columns={"buildings_id"}),
- *         @Index(name="building_function_function_idx", columns={"function"})
- *     }
- * )
- **/
+#[Table(name: 'stu_buildings_functions')]
+#[Index(name: 'building_function_building_idx', columns: ['buildings_id'])]
+#[Index(name: 'building_function_function_idx', columns: ['function'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingFunctionRepository')]
 class BuildingFunction implements BuildingFunctionInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildings_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $function = 0;
 
     /**
      * @var BuildingInterface
-     *
-     * @ManyToOne(targetEntity="Building", inversedBy="buildingFunctions")
-     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ManyToOne(targetEntity: 'Building', inversedBy: 'buildingFunctions')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
     public function getId(): int

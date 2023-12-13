@@ -15,67 +15,39 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TerraformingRepository")
- * @Table(
- *     name="stu_terraforming",
- *     uniqueConstraints={@UniqueConstraint(name="field_transformation_idx", columns={"v_feld", "z_feld"})},
- *     indexes={
- *         @Index(name="terraforming_research_idx", columns={"research_id"})
- *     }
- * )
- */
+#[Table(name: 'stu_terraforming')]
+#[Index(name: 'terraforming_research_idx', columns: ['research_id'])]
+#[UniqueConstraint(name: 'field_transformation_idx', columns: ['v_feld', 'z_feld'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TerraformingRepository')]
 class Terraforming implements TerraformingInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ecost = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $v_feld = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $z_feld = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $duration = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $research_id = null;
 
     /**
      * @var ArrayCollection<int, TerraformingCostInterface>
-     *
-     * @OneToMany(targetEntity="TerraformingCost", mappedBy="terraforming")
      */
+    #[OneToMany(targetEntity: 'TerraformingCost', mappedBy: 'terraforming')]
     private Collection $costs;
 
     public function __construct()

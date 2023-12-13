@@ -14,43 +14,27 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ModuleSpecialRepository")
- * @Table(
- *     name="stu_modules_specials",
- *     indexes={
- *         @Index(name="module_special_module_idx", columns={"module_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_modules_specials')]
+#[Index(name: 'module_special_module_idx', columns: ['module_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleSpecialRepository')]
 class ModuleSpecial implements ModuleSpecialInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $special_id = 0;
 
     /**
      * @var ModuleInterface
-     *
-     * @ManyToOne(targetEntity="Module", inversedBy="moduleSpecials")
-     * @JoinColumn(name="module_id", referencedColumnName="id")
      */
+    #[ManyToOne(targetEntity: 'Module', inversedBy: 'moduleSpecials')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private $module;
 
     public function getId(): int

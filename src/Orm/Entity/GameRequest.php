@@ -13,86 +13,49 @@ use Doctrine\ORM\Mapping\Table;
 use Throwable;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\GameRequestRepository")
- * @Table(
- *     name="stu_game_request",
- *     indexes={
- *         @Index(name="game_request_idx", columns={"user_id", "action", "view"})
- *     }
- * )
  *
  * @todo remove entity and repo
  **/
+#[Table(name: 'stu_game_request')]
+#[Index(name: 'game_request_idx', columns: ['user_id', 'action', 'view'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\GameRequestRepository')]
 class GameRequest implements GameRequestInterface
 {
     public const TABLE_NAME = 'stu_game_request';
 
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $user_id = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $turn_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $time;
 
-    /**
-     * @Column(type="string", nullable=true)
-     *
-     */
+    #[Column(type: 'string', nullable: true)]
     private ?string $module = null;
 
-    /**
-     * @Column(type="string", nullable=true)
-     *
-     */
+    #[Column(type: 'string', nullable: true)]
     private ?string $action = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $action_ms = null;
 
-    /**
-     * @Column(type="string", nullable=true)
-     *
-     */
+    #[Column(type: 'string', nullable: true)]
     private ?string $view = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $view_ms = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $render_ms = null;
 
-    /**
-     * @Column(type="text", nullable=true)
-     *
-     */
+    #[Column(type: 'text', nullable: true)]
     private ?string $params = null;
 
     /** @var array<mixed> */

@@ -13,83 +13,47 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AstroEntryRepository")
- * @Table(
- *     name="stu_astro_entry",
- *     indexes={
- *         @Index(name="astro_entry_user_idx", columns={"user_id"}),
- *         @Index(name="astro_entry_star_system_idx", columns={"systems_id"}),
- *         @Index(name="astro_entry_map_region_idx", columns={"region_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_astro_entry')]
+#[Index(name: 'astro_entry_user_idx', columns: ['user_id'])]
+#[Index(name: 'astro_entry_star_system_idx', columns: ['systems_id'])]
+#[Index(name: 'astro_entry_map_region_idx', columns: ['region_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AstroEntryRepository')]
 class AstronomicalEntry implements AstronomicalEntryInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="smallint", length=1)
-     *
-     */
+    #[Column(type: 'smallint', length: 1)]
     private int $state = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $astro_start_turn = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $systems_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $region_id = null;
 
-    /**
-     * @Column(type="text") *
-     * 
-     */
+    #[Column(type: 'text')]
     private string $field_ids = '';
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystem")
-     * @JoinColumn(name="systems_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystem')]
+    #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $starSystem;
 
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MapRegion")
-     * @JoinColumn(name="region_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MapRegion')]
+    #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $region;
 
     public function getId(): int

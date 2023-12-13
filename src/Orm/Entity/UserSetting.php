@@ -12,39 +12,23 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\UserSettingRepository")
- * @Table(
- *     name="stu_user_setting"
- * )
- **/
+#[Table(name: 'stu_user_setting')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\UserSettingRepository')]
 class UserSetting implements UserSettingInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Id
-     * @Column(type="string", enumType=UserSettingEnum::class)
-     *
-     */
+    #[Id]
+    #[Column(type: 'string', enumType: UserSettingEnum::class)]
     private UserSettingEnum $setting;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $value = '';
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function setUser(UserInterface $user): UserSettingInterface

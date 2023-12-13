@@ -24,7 +24,7 @@ class AllianceMemberWrapperTest extends StuTestCase
         $this->user = $this->mock(UserInterface::class);
         $this->alliance = $this->mock(AllianceInterface::class);
 
-        $this->subject = new \Stu\Module\Alliance\Lib\AllianceMemberWrapper(
+        $this->subject = new AllianceMemberWrapper(
             $this->user,
             $this->alliance
         );

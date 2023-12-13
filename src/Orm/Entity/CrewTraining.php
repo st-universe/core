@@ -13,50 +13,29 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\CrewTrainingRepository")
- * @Table(
- *     name="stu_crew_training",
- *     indexes={
- *         @Index(name="crew_training_colony_idx", columns={"colony_id"}),
- *         @Index(name="crew_training_user_idx", columns={"user_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_crew_training')]
+#[Index(name: 'crew_training_colony_idx', columns: ['colony_id'])]
+#[Index(name: 'crew_training_user_idx', columns: ['user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\CrewTrainingRepository')]
 class CrewTraining implements CrewTrainingInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $colony_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colony_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id')]
     private ColonyInterface $colony;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

@@ -13,50 +13,30 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipRepairRepository")
- * @Table(name="stu_colonies_shiprepair")
- */
+#[Table(name: 'stu_colonies_shiprepair')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyShipRepairRepository')]
 class ColonyShipRepair implements ColonyShipRepairInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $colony_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $field_id;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
-    /**
-     *
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function getId(): int

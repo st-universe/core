@@ -11,40 +11,22 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity
- * @Table(
- *     name="stu_planets_commodity",
- *     indexes={
- *         @Index(name="planet_classes_idx", columns={"planet_classes_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_planets_commodity')]
+#[Index(name: 'planet_classes_idx', columns: ['planet_classes_id'])]
+#[Entity]
 class PlanetCommodity implements PlanetCommodityInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $planet_classes_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $count = 0;
 }

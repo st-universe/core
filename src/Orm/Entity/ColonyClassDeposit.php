@@ -11,52 +11,30 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassDepositRepository")
- * @Table(
- *     name="stu_colony_class_deposit"
- * )
- **/
+#[Table(name: 'stu_colony_class_deposit')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyClassDepositRepository')]
 class ColonyClassDeposit implements ColonyClassDepositInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $colony_class_id;
 
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $commodity_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $min_amount = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $max_amount = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ColonyClass")
-     * @JoinColumn(name="colony_class_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ColonyClass')]
+    #[JoinColumn(name: 'colony_class_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyClassInterface $colonyClass;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     public function getColonyClass(): ColonyClassInterface

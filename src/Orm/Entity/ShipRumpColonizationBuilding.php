@@ -11,35 +11,20 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpColonizationBuildingRepository")
- * @Table(
- *     name="stu_rumps_colonize_building",
- *     indexes={
- *         @Index(name="rump_colonize_building_ship_rump_idx", columns={"rump_id"})
- *     }
- * )
- */
+#[Table(name: 'stu_rumps_colonize_building')]
+#[Index(name: 'rump_colonize_building_ship_rump_idx', columns: ['rump_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpColonizationBuildingRepository')]
 class ShipRumpColonizationBuilding implements ShipRumpColonizationBuildingInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $building_id = 0;
 
     public function getId(): int

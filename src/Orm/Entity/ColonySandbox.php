@@ -20,71 +20,45 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonySandboxRepository")
- * @Table(
- *     name="stu_colony_sandbox",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_colony_sandbox')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonySandboxRepository')]
 class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     */
+    #[Column(type: 'integer')]
     private int $colony_id;
 
-    /**
-     * @Column(type="string")
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer", length=5)
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $bev_work = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $bev_max = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $max_eps = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $max_storage = 0;
 
-    /**
-     * @Column(type="text", nullable=true)
-     */
+    #[Column(type: 'text', nullable: true)]
     private ?string $mask = null;
 
     /**
      * @var ArrayCollection<int, PlanetFieldInterface>
-     *
-     * @OneToMany(targetEntity="PlanetField", mappedBy="sandbox", indexBy="field_id", fetch="EXTRA_LAZY")
-     * @OrderBy({"field_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'PlanetField', mappedBy: 'sandbox', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
+    #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 
-    /**
-     * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colony_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id')]
     private ColonyInterface $colony;
 
     public function __construct()

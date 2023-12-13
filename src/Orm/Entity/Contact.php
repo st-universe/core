@@ -14,67 +14,37 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ContactRepository")
- * @Table(
- *     name="stu_contactlist",
- *     indexes={
- *         @Index(name="user_pair_idx", columns={"user_id", "recipient"})
- *     }
- * )
- **/
+#[Table(name: 'stu_contactlist')]
+#[Index(name: 'user_pair_idx', columns: ['user_id', 'recipient'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ContactRepository')]
 class Contact implements ContactInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $recipient = 0;
 
-    /**
-     * @Column(type="smallint", enumType=ContactListModeEnum::class)
-     *
-     */
+    #[Column(type: 'smallint', enumType: ContactListModeEnum::class)]
     private ContactListModeEnum $mode = ContactListModeEnum::FRIEND;
 
-    /**
-     * @Column(type="string", length=50)
-     *
-     */
+    #[Column(type: 'string', length: 50)]
     private string $comment = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'recipient', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $opponent;
 
     public function getId(): int

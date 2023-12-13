@@ -36,373 +36,223 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\FightLib;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
- * @Table(
- *     name="stu_ships",
- *     indexes={
- *         @Index(name="ship_fleet_idx", columns={"fleets_id"}),
- *         @Index(name="ship_map_idx", columns={"map_id"}),
- *         @Index(name="ship_starsystem_map_idx", columns={"starsystem_map_id"}),
- *         @Index(name="outer_system_location_idx", columns={"cx", "cy"}),
- *         @Index(name="ship_rump_idx", columns={"rumps_id"}),
- *         @Index(name="ship_web_idx", columns={"holding_web_id"}),
- *         @Index(name="ship_user_idx", columns={"user_id"}),
- *         @Index(name="ship_tractored_idx", columns={"tractored_ship_id"}),
- *         @Index(name="ship_influence_area_idx", columns={"influence_area_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_ships')]
+#[Index(name: 'ship_fleet_idx', columns: ['fleets_id'])]
+#[Index(name: 'ship_map_idx', columns: ['map_id'])]
+#[Index(name: 'ship_starsystem_map_idx', columns: ['starsystem_map_id'])]
+#[Index(name: 'outer_system_location_idx', columns: ['cx', 'cy'])]
+#[Index(name: 'ship_rump_idx', columns: ['rumps_id'])]
+#[Index(name: 'ship_web_idx', columns: ['holding_web_id'])]
+#[Index(name: 'ship_user_idx', columns: ['user_id'])]
+#[Index(name: 'ship_tractored_idx', columns: ['tractored_ship_id'])]
+#[Index(name: 'ship_influence_area_idx', columns: ['influence_area_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRepository')]
 class Ship implements ShipInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rumps_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $plans_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $fleets_id = null;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $layer_id = MapEnum::DEFAULT_LAYER;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $cx = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $cy = 0;
 
-    /**
-     * @Column(type="smallint", length=1)
-     *
-     */
+    #[Column(type: 'smallint', length: 1)]
     private int $direction = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="smallint", length=1, enumType=ShipAlertStateEnum::class)
-     *
-     */
+    #[Column(type: 'smallint', length: 1, enumType: ShipAlertStateEnum::class)]
     private ShipAlertStateEnum $alvl = ShipAlertStateEnum::ALERT_GREEN;
 
-    /**
-     * @Column(type="smallint", length=1)
-     *
-     */
+    #[Column(type: 'smallint', length: 1)]
     private int $lss_mode = ShipLSSModeEnum::LSS_NORMAL;
 
-    /**
-     * @Column(type="integer", length=6)
-     *
-     */
+    #[Column(type: 'integer', length: 6)]
     private int $huelle = 0;
 
-    /**
-     * @Column(type="integer", length=6)
-     *
-     */
+    #[Column(type: 'integer', length: 6)]
     private int $max_huelle = 0;
 
-    /**
-     * @Column(type="integer", length=6)
-     *
-     */
+    #[Column(type: 'integer', length: 6)]
     private int $schilde = 0;
 
-    /**
-     * @Column(type="integer", length=6)
-     *
-     */
+    #[Column(type: 'integer', length: 6)]
     private int $max_schilde = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $tractored_ship_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $holding_web_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $dock = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $former_rumps_id = 0;
 
-    /**
-     * @Column(type="smallint", length=1, nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', length: 1, nullable: true)]
     private ?int $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $database_id = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_destroyed = false;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $disabled = false;
 
-    /**
-     * @Column(type="smallint", length=3)
-     *
-     */
+    #[Column(type: 'smallint', length: 3)]
     private int $hit_chance = 0;
 
-    /**
-     * @Column(type="smallint", length=3)
-     *
-     */
+    #[Column(type: 'smallint', length: 3)]
     private int $evade_chance = 0;
 
-    /**
-     * @Column(type="smallint", length=4)
-     *
-     */
+    #[Column(type: 'smallint', length: 4)]
     private int $base_damage = 0;
 
-    /**
-     * @Column(type="smallint", length=3)
-     *
-     */
+    #[Column(type: 'smallint', length: 3)]
     private int $sensor_range = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $shield_regeneration_timer = 0;
 
-    /**
-     * @Column(type="smallint", enumType=ShipStateEnum::class)
-     *
-     */
+    #[Column(type: 'smallint', enumType: ShipStateEnum::class)]
     private ShipStateEnum $state = ShipStateEnum::SHIP_STATE_NONE;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $astro_start_turn = null;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_fleet_leader = false;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $starsystem_map_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $influence_area_id = null;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $in_emergency = false;
 
-    /**
-     * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
-     * @JoinColumn(name="fleets_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Fleet', inversedBy: 'ships')]
+    #[JoinColumn(name: 'fleets_id', referencedColumnName: 'id')]
     private ?FleetInterface $fleet = null;
 
-    /**
-     * @OneToOne(targetEntity="TradePost", mappedBy="ship")
-     */
+    #[OneToOne(targetEntity: 'TradePost', mappedBy: 'ship')]
     private ?TradePostInterface $tradePost = null;
 
-    /**
-     * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
-     * @JoinColumn(name="dock", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Ship', inversedBy: 'dockedShips')]
+    #[JoinColumn(name: 'dock', referencedColumnName: 'id')]
     private ?ShipInterface $dockedTo = null;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
-     *
-     * @OneToMany(targetEntity="Ship", mappedBy="dockedTo", indexBy="id")
-     * @OrderBy({"fleets_id": "DESC", "is_fleet_leader": "DESC"})
      */
+    #[OneToMany(targetEntity: 'Ship', mappedBy: 'dockedTo', indexBy: 'id')]
+    #[OrderBy(['fleets_id' => 'DESC', 'is_fleet_leader' => 'DESC'])]
     private Collection $dockedShips;
 
     /**
      * @var ArrayCollection<int, DockingPrivilegeInterface>
-     *
-     * @OneToMany(targetEntity="DockingPrivilege", mappedBy="ship")
      */
+    #[OneToMany(targetEntity: 'DockingPrivilege', mappedBy: 'ship')]
     private Collection $dockingPrivileges;
 
-    /**
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="tractored_ship_id", referencedColumnName="id")
-     */
+    #[OneToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id')]
     private ?ShipInterface $tractoredShip = null;
 
-    /**
-     * @OneToOne(targetEntity="Ship", mappedBy="tractoredShip")
-     */
+    #[OneToOne(targetEntity: 'Ship', mappedBy: 'tractoredShip')]
     private ?ShipInterface $tractoringShip = null;
 
-    /**
-     * @ManyToOne(targetEntity="TholianWeb")
-     * @JoinColumn(name="holding_web_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'TholianWeb')]
+    #[JoinColumn(name: 'holding_web_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TholianWebInterface $holdingWeb = null;
 
-    /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, ShipCrewInterface>
-     *
-     * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id")
-     * @OrderBy({"id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'ShipCrew', mappedBy: 'ship', indexBy: 'id')]
+    #[OrderBy(['id' => 'ASC'])]
     private Collection $crew;
 
-    /**
-     * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship")
-     */
+    #[OneToOne(targetEntity: 'TorpedoStorage', mappedBy: 'ship')]
     private ?TorpedoStorageInterface $torpedoStorage = null;
 
     /**
      * @var ArrayCollection<int, ShipSystemInterface>
-     *
-     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type")
-     * @OrderBy({"system_type": "ASC"})
      */
+    #[OneToMany(targetEntity: 'ShipSystem', mappedBy: 'ship', indexBy: 'system_type')]
+    #[OrderBy(['system_type' => 'ASC'])]
     private Collection $systems;
 
-    /**
-     * @ManyToOne(targetEntity="ShipRump")
-     * @JoinColumn(name="rumps_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[JoinColumn(name: 'rumps_id', referencedColumnName: 'id')]
     private ShipRumpInterface $rump;
 
-    /**
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="plans_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[JoinColumn(name: 'plans_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ShipBuildplanInterface $buildplan = null;
 
     /**
      * @var ArrayCollection<int, StorageInterface>
-     *
-     * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
-     * @OrderBy({"commodity_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'Storage', mappedBy: 'ship', indexBy: 'commodity_id')]
+    #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    /**
-     * @ManyToOne(targetEntity="Map")
-     * @JoinColumn(name="map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Map')]
+    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
     private ?MapInterface $map = null;
 
-    /**
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystemMap')]
+    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
-    /**
-     * @ManyToOne(targetEntity="StarSystem")
-     * @JoinColumn(name="influence_area_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystem')]
+    #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
 
     /**
      * @var ArrayCollection<int, ShipLogInterface>
-     *
-     * @OneToMany(targetEntity="ShipLog", mappedBy="ship", fetch="EXTRA_LAZY")
-     * @OrderBy({"id": "DESC"})
      */
+    #[OneToMany(targetEntity: 'ShipLog', mappedBy: 'ship', fetch: 'EXTRA_LAZY')]
+    #[OrderBy(['id' => 'DESC'])]
     private Collection $logbook;
 
-    /**
-     * @OneToOne(targetEntity="ShipTakeover", mappedBy="source")
-     */
+    #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'source')]
     private ?ShipTakeoverInterface $takeoverActive = null;
 
-    /**
-     * @OneToOne(targetEntity="ShipTakeover", mappedBy="target")
-     */
+    #[OneToOne(targetEntity: 'ShipTakeover', mappedBy: 'target')]
     private ?ShipTakeoverInterface $takeoverPassive = null;
 
     public function __construct()

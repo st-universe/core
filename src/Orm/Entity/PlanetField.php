@@ -16,105 +16,61 @@ use RuntimeException;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldRepository")
- * @Table(
- *     name="stu_colonies_fielddata",
- *     indexes={
- *         @Index(name="colony_field_idx", columns={"colonies_id", "field_id"}),
- *         @Index(name="sandbox_field_idx", columns={"colony_sandbox_id", "field_id"}),
- *         @Index(name="colony_building_active_idx", columns={"colonies_id", "buildings_id", "aktiv"}),
- *         @Index(name="sandbox_building_active_idx", columns={"colony_sandbox_id", "buildings_id", "aktiv"}),
- *         @Index(name="active_idx", columns={"aktiv"})
- *     }
- * )
- **/
+#[Table(name: 'stu_colonies_fielddata')]
+#[Index(name: 'colony_field_idx', columns: ['colonies_id', 'field_id'])]
+#[Index(name: 'sandbox_field_idx', columns: ['colony_sandbox_id', 'field_id'])]
+#[Index(name: 'colony_building_active_idx', columns: ['colonies_id', 'buildings_id', 'aktiv'])]
+#[Index(name: 'sandbox_building_active_idx', columns: ['colony_sandbox_id', 'buildings_id', 'aktiv'])]
+#[Index(name: 'active_idx', columns: ['aktiv'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PlanetFieldRepository')]
 class PlanetField implements PlanetFieldInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $colonies_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $colony_sandbox_id = null;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $field_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $buildings_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $terraforming_id = null;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $integrity = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $aktiv = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $activate_after_build = true;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Building")
-     * @JoinColumn(name="buildings_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Building')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id')]
     private ?BuildingInterface $building = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Terraforming")
-     * @JoinColumn(name="terraforming_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Terraforming')]
+    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id')]
     private ?TerraformingInterface $terraforming = null;
 
-    /**
-     * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ColonyInterface $colony = null;
 
-    /**
-     * @ManyToOne(targetEntity="ColonySandbox")
-     * @JoinColumn(name="colony_sandbox_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ColonySandbox')]
+    #[JoinColumn(name: 'colony_sandbox_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ColonySandboxInterface $sandbox = null;
 
     private bool $buildmode = false;

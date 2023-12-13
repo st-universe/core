@@ -13,55 +13,31 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeCostRepository")
- * @Table(
- *     name="stu_buildings_upgrades_cost",
- *     indexes={
- *         @Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_buildings_upgrades_cost')]
+#[Index(name: 'buildings_upgrades_idx', columns: ['buildings_upgrades_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingUpgradeCostRepository')]
 class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="bigint")
-     *
-     */
+    #[Column(type: 'bigint')]
     private int $buildings_upgrades_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $amount;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\BuildingUpgrade")
-     * @JoinColumn(name="buildings_upgrades_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\BuildingUpgrade')]
+    #[JoinColumn(name: 'buildings_upgrades_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingUpgradeInterface $upgrade;
 
     public function getId(): int

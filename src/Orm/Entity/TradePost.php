@@ -19,101 +19,60 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TradePostRepository")
- * @Table(
- *     name="stu_trade_posts",
- *     indexes={
- *         @Index(name="trade_network_idx", columns={"trade_network"}),
- *         @Index(name="trade_post_ship_idx", columns={"ship_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_trade_posts')]
+#[Index(name: 'trade_network_idx', columns: ['trade_network'])]
+#[Index(name: 'trade_post_ship_idx', columns: ['ship_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TradePostRepository')]
 class TradePost implements TradePostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $trade_network = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $level = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $transfer_capacity = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $storage = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, TradeLicenseInfoInterface>
-     *
-     * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost")
-     * @OrderBy({"id": "DESC"})
      */
+    #[OneToMany(targetEntity: 'TradeLicenseInfo', mappedBy: 'tradePost')]
+    #[OrderBy(['id' => 'DESC'])]
     private Collection $licenseInfos;
 
-    /**
-     *
-     * @OneToOne(targetEntity="Ship", inversedBy="tradePost")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'Ship', inversedBy: 'tradePost')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     /**
      * @var Collection<int, ShipCrewInterface>
-     *
-     * @OneToMany(targetEntity="ShipCrew", mappedBy="tradepost")
      */
+    #[OneToMany(targetEntity: 'ShipCrew', mappedBy: 'tradepost')]
     private Collection $crewAssignments;
 
     public function __construct()

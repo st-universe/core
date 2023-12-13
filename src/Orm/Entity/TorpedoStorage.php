@@ -14,55 +14,31 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TorpedoStorageRepository")
- * @Table(
- *     name="stu_torpedo_storage",
- *     indexes={
- *         @Index(name="torpedo_storage_ship_idx", columns={"ship_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_torpedo_storage')]
+#[Index(name: 'torpedo_storage_ship_idx', columns: ['ship_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TorpedoStorageRepository')]
 class TorpedoStorage implements TorpedoStorageInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id;
 
-    /**
-     * @Column(type="integer", length=3)
-     *
-     */
+    #[Column(type: 'integer', length: 3)]
     private int $torpedo_type;
 
-    /**
-     *
-     * @OneToOne(targetEntity="Ship", inversedBy="torpedoStorage")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'Ship', inversedBy: 'torpedoStorage')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="TorpedoType")
-     * @JoinColumn(name="torpedo_type", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'TorpedoType')]
+    #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private TorpedoTypeInterface $torpedo;
 
-    /**
-     *
-     * @OneToOne(targetEntity="Storage", mappedBy="torpedoStorage")
-     */
+    #[OneToOne(targetEntity: 'Storage', mappedBy: 'torpedoStorage')]
     private StorageInterface $storage;
 
     public function getId(): int

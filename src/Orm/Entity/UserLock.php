@@ -13,54 +13,30 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\UserLockRepository")
- * @Table(
- *     name="stu_user_lock",
- *     indexes={
- *         @Index(name="user_lock_user_idx", columns={"user_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_user_lock')]
+#[Index(name: 'user_lock_user_idx', columns: ['user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\UserLockRepository')]
 class UserLock implements UserLockInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $user_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $former_user_id = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $remaining_ticks = 0;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $reason = '';
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 
     public function getId(): int

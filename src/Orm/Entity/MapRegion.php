@@ -12,41 +12,23 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\MapRegionRepository")
- * @Table(
- *     name="stu_map_regions",
- *     indexes={
- *     }
- * )
- */
+#[Table(name: 'stu_map_regions')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\MapRegionRepository')]
 class MapRegion implements MapRegionInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="DatabaseEntry")
-     * @JoinColumn(name="database_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
     public function getId(): int

@@ -12,47 +12,26 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\History\HistoryTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\HistoryRepository")
- * @Table(
- *     name="stu_history",
- *     indexes={
- *         @Index(name="type_idx", columns={"type"})
- *     }
- * )
- **/
+#[Table(name: 'stu_history')]
+#[Index(name: 'type_idx', columns: ['type'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\HistoryRepository')]
 class History implements HistoryInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="smallint", length=1, enumType=HistoryTypeEnum::class)
-     *
-     */
+    #[Column(type: 'smallint', length: 1, enumType: HistoryTypeEnum::class)]
     private HistoryTypeEnum $type = HistoryTypeEnum::OTHER;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
     public function getId(): int

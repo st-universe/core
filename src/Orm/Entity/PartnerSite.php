@@ -10,46 +10,25 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\PartnerSiteRepository")
- * @Table(
- *     name="stu_partnersite",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_partnersite')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PartnerSiteRepository')]
 class PartnerSite implements PartnerSiteInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $url = '';
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="string", length=200)
-     *
-     */
+    #[Column(type: 'string', length: 200)]
     private string $banner = '';
 
     public function getId(): int

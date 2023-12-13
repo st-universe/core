@@ -14,104 +14,57 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TradeOfferRepository")
- * @Table(
- *     name="stu_trade_offers",
- *     indexes={
- *         @Index(name="trade_post_user_idx", columns={"posts_id", "user_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_trade_offers')]
+#[Index(name: 'trade_post_user_idx', columns: ['posts_id', 'user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TradeOfferRepository')]
 class TradeOffer implements TradeOfferInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $posts_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $amount = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $wg_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $wg_count = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $gg_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $gg_count = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="TradePost")
-     * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'TradePost')]
+    #[JoinColumn(name: 'posts_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TradePostInterface $tradePost;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="wg_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'wg_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $wantedCommodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="gg_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'gg_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $offeredCommodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     * @OneToOne(targetEntity="Storage", mappedBy="tradeOffer")
-     */
+    #[OneToOne(targetEntity: 'Storage', mappedBy: 'tradeOffer')]
     private StorageInterface $storage;
 
     public function getId(): int

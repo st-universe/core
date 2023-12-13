@@ -20,92 +20,62 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\SectorString;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\StarSystemMapRepository")
- * @Table(
- *     name="stu_sys_map",
- *     uniqueConstraints={@UniqueConstraint(name="system_coordinates_idx", columns={"sx", "sy", "systems_id"})}
- * )
- **/
+#[Table(name: 'stu_sys_map')]
+#[UniqueConstraint(name: 'system_coordinates_idx', columns: ['sx', 'sy', 'systems_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\StarSystemMapRepository')]
 class StarSystemMap implements StarSystemMapInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $sx = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $sy = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $systems_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $field_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystem", inversedBy="fields")
-     * @JoinColumn(name="systems_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystem', inversedBy: 'fields')]
+    #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
     private StarSystemInterface $starSystem;
 
-    /**
-     * @OneToOne(targetEntity="Colony", mappedBy="starsystem_map")
-     */
+    #[OneToOne(targetEntity: 'Colony', mappedBy: 'starsystem_map')]
     private ?ColonyInterface $colony = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MapFieldType")
-     * @JoinColumn(name="field_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MapFieldType')]
+    #[JoinColumn(name: 'field_id', referencedColumnName: 'id')]
     private MapFieldTypeInterface $mapFieldType;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
-     *
-     * @OneToMany(targetEntity="Ship", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
      */
+    #[OneToMany(targetEntity: 'Ship', mappedBy: 'starsystem_map', fetch: 'EXTRA_LAZY')]
     private Collection $ships;
 
     /**
      * @var ArrayCollection<int, FlightSignatureInterface>
-     *
-     * @OneToMany(targetEntity="FlightSignature", mappedBy="starsystem_map")
-     * @OrderBy({"time": "DESC"})
      */
+    #[OneToMany(targetEntity: 'FlightSignature', mappedBy: 'starsystem_map')]
+    #[OrderBy(['time' => 'DESC'])]
     private Collection $signatures;
 
     /**
      * @var ArrayCollection<int, AnomalyInterface>
-     *
-     * @OneToMany(targetEntity="Anomaly", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
      */
+    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'starsystem_map', fetch: 'EXTRA_LAZY')]
     private Collection $anomalies;
 
     /**
      * @var ArrayCollection<int, WormholeEntryInterface>
-     *
-     * @OneToMany(targetEntity="WormholeEntry", mappedBy="systemMap")
      */
+    #[OneToMany(targetEntity: 'WormholeEntry', mappedBy: 'systemMap')]
     private Collection $wormholeEntries;
 
     public function __construct()

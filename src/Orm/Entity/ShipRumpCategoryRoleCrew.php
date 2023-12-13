@@ -13,84 +13,45 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepository")
- * @Table(
- *     name="stu_rumps_cat_role_crew",
- *     indexes={
- *         @Index(name="ship_rump_category_role_idx", columns={"rump_category_id", "rump_role_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_rumps_cat_role_crew')]
+#[Index(name: 'ship_rump_category_role_idx', columns: ['rump_category_id', 'rump_role_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepository')]
 class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_category_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_role_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $job_1_crew = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $job_2_crew = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $job_3_crew = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $job_4_crew = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $job_5_crew = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $job_6_crew = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $job_7_crew = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipRumpRole")
-     * @JoinColumn(name="rump_role_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipRumpRole')]
+    #[JoinColumn(name: 'rump_role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpRoleInterface $shiprumpRole;
 
     public function getId(): int

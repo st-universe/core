@@ -13,54 +13,29 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\DockingPrivilegeRepository")
- * @Table(
- *     name="stu_dockingrights",
- *     indexes={
- *         @Index(name="dockingrights_ship_idx", columns={"ships_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_dockingrights')]
+#[Index(name: 'dockingrights_ship_idx', columns: ['ships_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\DockingPrivilegeRepository')]
 class DockingPrivilege implements DockingPrivilegeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ships_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $target = 0; //TODO create refs to user, ally, ship and faction entities and make cascade delete
-
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $privilege_type = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $privilege_mode = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Ship", inversedBy="dockingPrivileges")
-     * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship', inversedBy: 'dockingPrivileges')]
+    #[JoinColumn(name: 'ships_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function getId(): int

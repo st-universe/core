@@ -11,7 +11,7 @@ use Stu\StuTestCase;
 
 class GameRequestSaverTest extends StuTestCase
 {
-    /** @var MockInterface&\Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface */
+    /** @var MockInterface&GameRequestLoggerInterface */
     private MockInterface $gameRequestLogger;
 
     /** @var MockInterface&ParameterSanitizerInterface */

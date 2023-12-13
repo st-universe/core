@@ -14,67 +14,40 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Lib\Map\Location;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AnomalyRepository")
- * @Table(
- *     name="stu_anomaly",
- *     indexes={
- *         @Index(name="anomaly_to_type_idx", columns={"anomaly_type_id"}),
- *         @Index(name="anomaly_map_idx", columns={"map_id"}),
- *         @Index(name="anomaly_starsystem_map_idx", columns={"starsystem_map_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_anomaly')]
+#[Index(name: 'anomaly_to_type_idx', columns: ['anomaly_type_id'])]
+#[Index(name: 'anomaly_map_idx', columns: ['map_id'])]
+#[Index(name: 'anomaly_starsystem_map_idx', columns: ['starsystem_map_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AnomalyRepository')]
 class Anomaly implements AnomalyInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $remaining_ticks;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $anomaly_type_id;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $starsystem_map_id = null;
 
-    /**
-     * @ManyToOne(targetEntity="AnomalyType")
-     * @JoinColumn(name="anomaly_type_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'AnomalyType')]
+    #[JoinColumn(name: 'anomaly_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AnomalyTypeInterface $anomalyType;
 
-    /**
-     * @ManyToOne(targetEntity="Map")
-     * @JoinColumn(name="map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Map')]
+    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
     private ?MapInterface $map = null;
 
-    /**
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystemMap')]
+    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int

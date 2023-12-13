@@ -13,96 +13,51 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\MapFieldTypeRepository")
- * @Table(
- *     name="stu_map_ftypes",
- *     indexes={
- *         @Index(name="map_ftypes_type_idx", columns={"type"})
- *     }
- * )
- **/
+#[Table(name: 'stu_map_ftypes')]
+#[Index(name: 'map_ftypes_type_idx', columns: ['type'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\MapFieldTypeRepository')]
 class MapFieldType implements MapFieldTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_system = false;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $ecost = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $colonies_classes_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $damage = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $x_damage = 0;
 
-    /**
-     * @Column(type="smallint", nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', nullable: true)]
     private ?int $x_damage_system = 0;
 
-    /**
-     * @Column(type="smallint", nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', nullable: true)]
     private ?int $x_damage_type = null;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $view = false;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $passable = false;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ColonyClass")
-     * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ColonyClass')]
+    #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id')]
     private ?ColonyClassInterface $colonyClass = null;
 
     public function getId(): int

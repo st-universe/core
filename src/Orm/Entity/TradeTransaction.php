@@ -13,73 +13,40 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TradeTransactionRepository")
- * @Table(
- *     name="stu_trade_transaction",
- *     indexes={
- *         @Index(name="trade_transaction_date_tradepost_idx", columns={"date", "tradepost_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_trade_transaction')]
+#[Index(name: 'trade_transaction_date_tradepost_idx', columns: ['date', 'tradepost_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TradeTransactionRepository')]
 class TradeTransaction implements TradeTransactionInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $wg_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $wg_count = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $gg_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $gg_count = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $tradepost_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="wg_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'wg_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $wantedCommodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="gg_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'gg_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $offeredCommodity;
 
     public function getId(): int

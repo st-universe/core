@@ -12,101 +12,63 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\FactionRepository")
- * @Table(
- *     name="stu_factions"
- * )
- */
+#[Table(name: 'stu_factions')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\FactionRepository')]
 class Faction implements FactionInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="text")
-     */
+    #[Column(type: 'text')]
     private string $description = '';
 
-    /**
-     * @Column(type="string")
-     */
+    #[Column(type: 'string')]
     private string $darker_color = '';
 
-    /**
-     * @Column(type="boolean")
-     */
+    #[Column(type: 'boolean')]
     private bool $chooseable = false;
 
-    /**
-     * @Column(type="integer")
-     */
+    #[Column(type: 'integer')]
     private int $player_limit = 0;
 
-    /**
-     * @Column(type="integer")
-     */
+    #[Column(type: 'integer')]
     private int $start_building_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $start_research_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $start_map_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $close_combat_score = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $positive_effect_primary_commodity_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $positive_effect_secondary_commodity_id = null;
 
     //TODO survivor_rate to escape pods
-    /**
-     *
-     * @ManyToOne(targetEntity="Research")
-     * @JoinColumn(name="start_research_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Research')]
+    #[JoinColumn(name: 'start_research_id', referencedColumnName: 'id')]
     private ?ResearchInterface $start_research = null;
 
-    /**
-     * @ManyToOne(targetEntity="Map")
-     * @JoinColumn(name="start_map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Map')]
+    #[JoinColumn(name: 'start_map_id', referencedColumnName: 'id')]
     private ?MapInterface $start_map = null;
 
-    /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="positive_effect_primary_commodity_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[JoinColumn(name: 'positive_effect_primary_commodity_id', referencedColumnName: 'id')]
     private ?CommodityInterface $primaryEffectCommodity;
 
-    /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="positive_effect_secondary_commodity_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[JoinColumn(name: 'positive_effect_secondary_commodity_id', referencedColumnName: 'id')]
     private ?CommodityInterface $secondaryEffectCommodity;
 
     public function getId(): int

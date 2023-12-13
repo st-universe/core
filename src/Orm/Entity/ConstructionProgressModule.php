@@ -12,46 +12,27 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ConstructionProgressModuleRepository")
- * @Table(
- *     name="stu_progress_module"
- * )
- **/
+#[Table(name: 'stu_progress_module')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ConstructionProgressModuleRepository')]
 class ConstructionProgressModule implements ConstructionProgressModuleInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $progress_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ConstructionProgress")
-     * @JoinColumn(name="progress_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ConstructionProgress')]
+    #[JoinColumn(name: 'progress_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ConstructionProgressInterface $progress;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Module")
-     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Module')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
     public function getId(): int

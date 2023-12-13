@@ -13,56 +13,34 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldTypeBuildingRepository")
- * @Table(
- *     name="stu_field_build",
- *     indexes={
- *         @Index(name="type_building_idx", columns={"type", "buildings_id"}),
- *         @Index(name="type_building_research_idx", columns={"type", "research_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_field_build')]
+#[Index(name: 'type_building_idx', columns: ['type', 'buildings_id'])]
+#[Index(name: 'type_building_research_idx', columns: ['type', 'research_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PlanetFieldTypeBuildingRepository')]
 class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildings_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $research_id = null;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $view = true;
 
     /**
      * @var BuildingInterface
-     *
-     * @ManyToOne(targetEntity="Building", inversedBy="buildingPossibleFieldTypes")
-     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ManyToOne(targetEntity: 'Building', inversedBy: 'buildingPossibleFieldTypes')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
     public function getId(): int

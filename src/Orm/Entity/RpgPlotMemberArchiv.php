@@ -13,52 +13,30 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotMemberArchivRepository")
- * @Table(
- *     name="stu_plots_members_archiv",
- *     uniqueConstraints={@UniqueConstraint(name="plot_archiv_user_idx", columns={"plot_id", "user_id"})}
- * )
- */
+#[Table(name: 'stu_plots_members_archiv')]
+#[UniqueConstraint(name: 'plot_archiv_user_idx', columns: ['plot_id', 'user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\RpgPlotMemberArchivRepository')]
 class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $version = '';
 
-    /**
-     * @Column(type="integer")
-     * 
-     */
+    #[Column(type: 'integer')]
     private int $former_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $plot_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="RpgPlotArchiv", inversedBy="members")
-     * @JoinColumn(name="plot_id", referencedColumnName="former_id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'RpgPlotArchiv', inversedBy: 'members')]
+    #[JoinColumn(name: 'plot_id', referencedColumnName: 'former_id', onDelete: 'CASCADE')]
     private RpgPlotArchivInterface $rpgPlot;
 
     public function getId(): int

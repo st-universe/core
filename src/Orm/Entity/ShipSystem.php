@@ -14,81 +14,47 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipSystemRepository")
- * @Table(
- *     name="stu_ship_system",
- *     indexes={
- *         @Index(name="ship_system_ship_idx", columns={"ship_id"}),
- *         @Index(name="ship_system_status_idx", columns={"status"}),
- *         @Index(name="ship_system_type_idx", columns={"system_type"}),
- *         @Index(name="ship_system_module_idx", columns={"module_id"}),
- *         @Index(name="ship_system_mode_idx", columns={"mode"})
- *     }
- * )
- **/
+#[Table(name: 'stu_ship_system')]
+#[Index(name: 'ship_system_ship_idx', columns: ['ship_id'])]
+#[Index(name: 'ship_system_status_idx', columns: ['status'])]
+#[Index(name: 'ship_system_type_idx', columns: ['system_type'])]
+#[Index(name: 'ship_system_module_idx', columns: ['module_id'])]
+#[Index(name: 'ship_system_mode_idx', columns: ['mode'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipSystemRepository')]
 class ShipSystem implements ShipSystemInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     * @Column(type="smallint", enumType=ShipSystemTypeEnum::class)
-     *
-     */
+    #[Column(type: 'smallint', enumType: ShipSystemTypeEnum::class)]
     private ShipSystemTypeEnum $system_type = ShipSystemTypeEnum::SYSTEM_HULL;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $module_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $status = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $mode = 1;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $cooldown = null;
 
-    /**
-     * @Column(type="text", nullable=true)
-     *
-     */
+    #[Column(type: 'text', nullable: true)]
     private ?string $data = null;
 
-    /**
-     * @ManyToOne(targetEntity="Module")
-     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Module')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ModuleInterface $module = null;
 
-    /**
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function getId(): int

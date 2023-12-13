@@ -13,107 +13,59 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\FlightSignatureRepository")
- * @Table(
- *     name="stu_flight_sig",
- *     indexes={
- *         @Index(name="flight_sig_user_idx", columns={"user_id"}),
- *         @Index(name="flight_sig_map_idx", columns={"map_id"}),
- *         @Index(name="flight_sig_starsystem_map_idx", columns={"starsystem_map_id"}),
- *         @Index(name="flight_sig_sensor_result_idx", columns={"from_direction", "to_direction", "time"})
- *     }
- * )
- **/
+#[Table(name: 'stu_flight_sig')]
+#[Index(name: 'flight_sig_user_idx', columns: ['user_id'])]
+#[Index(name: 'flight_sig_map_idx', columns: ['map_id'])]
+#[Index(name: 'flight_sig_starsystem_map_idx', columns: ['starsystem_map_id'])]
+#[Index(name: 'flight_sig_sensor_result_idx', columns: ['from_direction', 'to_direction', 'time'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\FlightSignatureRepository')]
 class FlightSignature implements FlightSignatureInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $time = 0;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $starsystem_map_id = null;
 
-    /**
-     * @Column(type="smallint", length=1)
-     *
-     */
+    #[Column(type: 'smallint', length: 1)]
     private int $from_direction = 0;
 
-    /**
-     * @Column(type="smallint", length=1)
-     *
-     */
+    #[Column(type: 'smallint', length: 1)]
     private int $to_direction = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $ship_name;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_cloaked = false;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipRump")
-     * @JoinColumn(name="rump_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id')]
     private ShipRumpInterface $rump;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Map")
-     * @JoinColumn(name="map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Map')]
+    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
     private ?MapInterface $map = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'StarSystemMap')]
+    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int

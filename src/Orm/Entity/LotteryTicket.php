@@ -13,48 +13,27 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\LotteryTicketRepository")
- * @Table(
- *     name="stu_lottery_ticket",
- *     indexes={
- *         @Index(name="lottery_ticket_period_idx", columns={"period"})
- *     }
- * )
- **/
+#[Table(name: 'stu_lottery_ticket')]
+#[Index(name: 'lottery_ticket_period_idx', columns: ['period'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\LotteryTicketRepository')]
 class LotteryTicket implements LotteryTicketInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $period;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $is_winner = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

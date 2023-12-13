@@ -16,49 +16,30 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ConstructionProgressRepository")
- * @Table(
- *     name="stu_construction_progress",
- *     indexes={
- *         @Index(name="construction_progress_ship_idx", columns={"ship_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_construction_progress')]
+#[Index(name: 'construction_progress_ship_idx', columns: ['ship_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ConstructionProgressRepository')]
 class ConstructionProgress implements ConstructionProgressInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $remaining_ticks = 0;
 
     /**
      * @var ArrayCollection<int, ConstructionProgressModuleInterface>
-     *
-     * @OneToMany(targetEntity="ConstructionProgressModule", mappedBy="progress")
      */
+    #[OneToMany(targetEntity: 'ConstructionProgressModule', mappedBy: 'progress')]
     private Collection $specialModules;
 
-    /**
-     *
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function __construct()

@@ -13,55 +13,33 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TorpedoHullRepository")
- * @Table(
- *     name="stu_torpedo_hull",
- *     indexes={
- *         @Index(name="torpedo_hull_module_idx", columns={"module_id"}),
- *         @Index(name="torpedo_hull_torpedo_idx", columns={"torpedo_type"})
- *     }
- * )
- **/
+#[Table(name: 'stu_torpedo_hull')]
+#[Index(name: 'torpedo_hull_module_idx', columns: ['module_id'])]
+#[Index(name: 'torpedo_hull_torpedo_idx', columns: ['torpedo_type'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TorpedoHullRepository')]
 class TorpedoHull implements TorpedoHullInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $torpedo_type = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $modificator = 0;
 
 
-    /**
-     * @ManyToOne(targetEntity="TorpedoType")
-     * @JoinColumn(name="torpedo_type", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'TorpedoType')]
+    #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private TorpedoTypeInterface $torpedo;
 
-    /**
-     * @ManyToOne(targetEntity="Module")
-     * @JoinColumn(name="module_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Module')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private ModuleInterface $module;
 
     public function getId(): int

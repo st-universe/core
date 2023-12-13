@@ -13,41 +13,24 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpUserRepository")
- * @Table(
- *     name="stu_rumps_user",
- *     indexes={
- *         @Index(name="rump_user_idx", columns={"rump_id", "user_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_rumps_user')]
+#[Index(name: 'rump_user_idx', columns: ['rump_id', 'user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpUserRepository')]
 class ShipRumpUser implements ShipRumpUserInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

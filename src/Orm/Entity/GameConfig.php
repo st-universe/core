@@ -11,37 +11,22 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\GameConfigRepository")
- * @Table(
- *     name="stu_game_config",
- *     indexes={
- *         @Index(name="option_idx", columns={"option"})
- *     }
- * )
- **/
+#[Table(name: 'stu_game_config')]
+#[Index(name: 'option_idx', columns: ['option'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\GameConfigRepository')]
 class GameConfig implements GameConfigInterface
 {
     public const TABLE_NAME = 'stu_game_config';
 
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $option = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $value = 0;
 
     public function getId(): int

@@ -16,75 +16,46 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotRepository")
- * @Table(
- *     name="stu_plots",
- *     indexes={
- *         @Index(name="rpg_plot_end_date_idx", columns={"end_date"}),
- *         @Index(name="rpg_plot_user_idx", columns={"user_id"}),
- *     }
- * )
- **/
+#[Table(name: 'stu_plots')]
+#[Index(name: 'rpg_plot_end_date_idx', columns: ['end_date'])]
+#[Index(name: 'rpg_plot_user_idx', columns: ['user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\RpgPlotRepository')]
 class RpgPlot implements RpgPlotInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $title = '';
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $start_date = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $end_date = null;
 
     /**
      * @var ArrayCollection<int, KnPostInterface>
-     *
-     * @OneToMany(targetEntity="KnPost", mappedBy="rpgPlot")
      */
+    #[OneToMany(targetEntity: 'KnPost', mappedBy: 'rpgPlot')]
     private Collection $posts;
 
     /**
      * @var ArrayCollection<int, RpgPlotMemberInterface>
-     *
-     * @OneToMany(targetEntity="RpgPlotMember", mappedBy="rpgPlot", indexBy="user_id")
      */
+    #[OneToMany(targetEntity: 'RpgPlotMember', mappedBy: 'rpgPlot', indexBy: 'user_id')]
     private Collection $members;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private UserInterface $user;
 
     public function __construct()

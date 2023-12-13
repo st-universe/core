@@ -13,79 +13,42 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\KnCommentArchivRepository")
- * @Table(
- *     name="stu_kn_comments_archiv",
- *     uniqueConstraints={
- *         @UniqueConstraint(name="unique_comments_former_id", columns={"former_id"}) 
- *     }
- * )
- */
-
+#[Table(name: 'stu_kn_comments_archiv')]
+#[UniqueConstraint(name: 'unique_comments_former_id', columns: ['former_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\KnCommentArchivRepository')]
 class KnCommentArchiv implements KnCommentArchivInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $version = '';
 
-    /**
-     * @Column(type="integer")
-     * 
-     */
+    #[Column(type: 'integer')]
     private int $former_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $post_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $username = '';
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="KnPostArchiv")
-     * @JoinColumn(name="post_id", referencedColumnName="former_id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'KnPostArchiv')]
+    #[JoinColumn(name: 'post_id', referencedColumnName: 'former_id', onDelete: 'CASCADE')]
     private KnPostArchivInterface $post;
 
 

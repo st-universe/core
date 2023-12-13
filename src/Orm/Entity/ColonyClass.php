@@ -17,92 +17,56 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassRepository")
- * @Table(
- *     name="stu_colonies_classes",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_colonies_classes')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyClassRepository')]
 class ColonyClass implements ColonyClassInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = null;
 
     /**
-     * @Column(type="json")
-     *
      * @var array<int>
      */
+    #[Column(type: 'json')]
     private array $colonizeable_fields = [];
 
-    /**
-     * @Column(type="smallint") *
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $bev_growth_rate = 0;
 
-    /**
-     * @Column(type="smallint") *
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $special = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $allow_start = false;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $min_rot = 1;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $max_rot = 1;
 
     /**
      * @var DatabaseEntryInterface|null
-     *
-     * @OneToOne(targetEntity="DatabaseEntry")
-     * @JoinColumn(name="database_id", referencedColumnName="id")
      */
+    #[OneToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private $databaseEntry;
 
     /**
      * @var ArrayCollection<int, ColonyClassDepositInterface>
-     *
-     * @OneToMany(targetEntity="ColonyClassDeposit", mappedBy="colonyClass", indexBy="commodity_id")
      */
+    #[OneToMany(targetEntity: 'ColonyClassDeposit', mappedBy: 'colonyClass', indexBy: 'commodity_id')]
     private Collection $colonyClassDeposits;
 
     public function __construct()

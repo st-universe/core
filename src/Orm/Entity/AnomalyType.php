@@ -10,30 +10,18 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AnomalyTypeRepository")
- * @Table(
- *     name="stu_anomaly_type"
- * )
- **/
+#[Table(name: 'stu_anomaly_type')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AnomalyTypeRepository')]
 class AnomalyType implements AnomalyTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @Column(type="string", length=200)
-     *
-     */
+    #[Column(type: 'string', length: 200)]
     private string $name;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $lifespan_in_ticks;
 
     public function getId(): int

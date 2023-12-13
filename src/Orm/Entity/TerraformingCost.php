@@ -13,54 +13,31 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TerraformingCostRepository")
- * @Table(
- *     name="stu_terraforming_cost",
- *     indexes={
- *         @Index(name="terraforming_idx", columns={"terraforming_id"})
- *     })
- **/
+#[Table(name: 'stu_terraforming_cost')]
+#[Index(name: 'terraforming_idx', columns: ['terraforming_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TerraformingCostRepository')]
 class TerraformingCost implements TerraformingCostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $terraforming_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $count = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Terraforming")
-     * @JoinColumn(name="terraforming_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Terraforming')]
+    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TerraformingInterface $terraforming;
 
     public function getId(): int

@@ -13,62 +13,35 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipTakeoverRepository")
- * @Table(
- *     name="stu_ship_takeover",
- *     indexes={
- *         @Index(name="ship_takeover_source_idx", columns={"source_ship_id"}),
- *         @Index(name="ship_takeover_target_idx", columns={"target_ship_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_ship_takeover')]
+#[Index(name: 'ship_takeover_source_idx', columns: ['source_ship_id'])]
+#[Index(name: 'ship_takeover_target_idx', columns: ['target_ship_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipTakeoverRepository')]
 class ShipTakeover implements ShipTakeoverInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $source_ship_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $target_ship_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $start_turn = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    /**
-     *
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="source_ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'source_ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $source;
 
-    /**
-     *
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="target_ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'target_ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $target;
 
     public function getId(): int

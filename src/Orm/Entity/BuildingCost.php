@@ -13,55 +13,34 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingCostRepository")
- * @Table(
- *     name="stu_buildings_cost",
- *     indexes={
- *         @Index(name="building_cost_building_idx", columns={"buildings_id"})
- *     })
- **/
+#[Table(name: 'stu_buildings_cost')]
+#[Index(name: 'building_cost_building_idx', columns: ['buildings_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingCostRepository')]
 class BuildingCost implements BuildingCostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildings_id = 0;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $count = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     /**
      * @var BuildingInterface
-     *
-     * @ManyToOne(targetEntity="Building", inversedBy="buildingCosts")
-     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ManyToOne(targetEntity: 'Building', inversedBy: 'buildingCosts')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
     public function getId(): int

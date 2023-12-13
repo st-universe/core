@@ -13,94 +13,52 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipQueueRepository")
- * @Table(
- *     name="stu_colonies_shipqueue",
- *     indexes={
- *         @Index(name="colony_shipqueue_building_function_idx", columns={"colony_id", "building_function_id"}),
- *         @Index(name="colony_shipqueue_user_idx", columns={"user_id"}),
- *         @Index(name="colony_shipqueue_finish_date_idx", columns={"finish_date"})
- *     }
- * )
- **/
+#[Table(name: 'stu_colonies_shipqueue')]
+#[Index(name: 'colony_shipqueue_building_function_idx', columns: ['colony_id', 'building_function_id'])]
+#[Index(name: 'colony_shipqueue_user_idx', columns: ['user_id'])]
+#[Index(name: 'colony_shipqueue_finish_date_idx', columns: ['finish_date'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyShipQueueRepository')]
 class ColonyShipQueue implements ColonyShipQueueInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $colony_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildplan_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildtime = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $finish_date = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $stop_date = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $building_function_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $shipBuildplan;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipRump")
-     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpInterface $shipRump;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
     public function getId(): int

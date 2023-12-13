@@ -13,56 +13,35 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingCommodityRepository")
- * @Table(
- *     name="stu_buildings_commodity",
- *     indexes={
- *         @Index(name="building_commodity_building_idx", columns={"buildings_id"}),
- *         @Index(name="commodity_count_idx", columns={"commodity_id", "count"})
- *     })
- **/
+#[Table(name: 'stu_buildings_commodity')]
+#[Index(name: 'building_commodity_building_idx', columns: ['buildings_id'])]
+#[Index(name: 'commodity_count_idx', columns: ['commodity_id', 'count'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingCommodityRepository')]
 class BuildingCommodity implements BuildingCommodityInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildings_id = 0;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $count = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     /**
      * @var BuildingInterface
-     *
-     * @ManyToOne(targetEntity="Building", inversedBy="buildingCommodities")
-     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ManyToOne(targetEntity: 'Building', inversedBy: 'buildingCommodities')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
     public function getId(): int

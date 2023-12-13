@@ -13,64 +13,36 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\RepairTaskRepository")
- * @Table(
- *     name="stu_repair_task"
- * )
- */
+#[Table(name: 'stu_repair_task')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\RepairTaskRepository')]
 class RepairTask implements RepairTaskInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $finish_time = 0;
 
-    /**
-     * @Column(type="integer", enumType=ShipSystemTypeEnum::class)
-     *
-     */
+    #[Column(type: 'integer', enumType: ShipSystemTypeEnum::class)]
     private ShipSystemTypeEnum $system_type = ShipSystemTypeEnum::SYSTEM_HULL;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $healing_percentage = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function getId(): int

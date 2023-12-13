@@ -14,60 +14,33 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\PrivateMessageFolderRepository")
- * @Table(
- *     name="stu_pm_cats",
- *     indexes={
- *         @Index(name="user_special_idx", columns={"user_id", "special"})
- *     }
- * )
- **/
+#[Table(name: 'stu_pm_cats')]
+#[Index(name: 'user_special_idx', columns: ['user_id', 'special'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PrivateMessageFolderRepository')]
 class PrivateMessageFolder implements PrivateMessageFolderInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $sort = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $special = PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

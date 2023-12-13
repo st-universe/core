@@ -13,66 +13,36 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Crew\CrewEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\CrewRepository")
- * @Table(
- *     name="stu_crew",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_crew')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\CrewRepository')]
 class Crew implements CrewInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $type = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $gender = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $race_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="CrewRace")
-     * @JoinColumn(name="race_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'CrewRace')]
+    #[JoinColumn(name: 'race_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CrewRaceInterface $race;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

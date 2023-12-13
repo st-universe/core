@@ -17,144 +17,86 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Building\BuildingEnum;
 
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingRepository")
- * @Table(
- *     name="stu_buildings",
- *     indexes={
- *         @Index(name="eps_production_idx", columns={"eps_proc"}),
- *         @Index(name="buildmenu_column_idx", columns={"bm_col"}),
- *         @Index(name="building_research_idx", columns={"research_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_buildings')]
+#[Index(name: 'eps_production_idx', columns: ['eps_proc'])]
+#[Index(name: 'buildmenu_column_idx', columns: ['bm_col'])]
+#[Index(name: 'building_research_idx', columns: ['research_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingRepository')]
 class Building implements BuildingInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $lager = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $eps = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $eps_cost = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $eps_proc = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $bev_pro = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $bev_use = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $integrity = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $research_id = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $view = false;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildtime = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $blimit = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $bclimit = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_activateable = false;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $bm_col = 0;
 
     /**
      * @var ArrayCollection<int, BuildingCostInterface>
-     *
-     * @OneToMany(targetEntity="BuildingCost", mappedBy="building")
-     * @OrderBy({"commodity_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'BuildingCost', mappedBy: 'building')]
+    #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $costs;
 
     /**
      * @var ArrayCollection<int, BuildingFunctionInterface>
-     *
-     * @OneToMany(targetEntity="BuildingFunction", mappedBy="building", indexBy="function")
      */
+    #[OneToMany(targetEntity: 'BuildingFunction', mappedBy: 'building', indexBy: 'function')]
     private Collection $functions;
 
     /**
      * @var ArrayCollection<int, BuildingCommodityInterface>
-     *
-     * @OneToMany(targetEntity="BuildingCommodity", mappedBy="building", indexBy="commodity_id")
      */
+    #[OneToMany(targetEntity: 'BuildingCommodity', mappedBy: 'building', indexBy: 'commodity_id')]
     private Collection $commodities;
 
     /**
      * @var ArrayCollection<int, PlanetFieldTypeBuildingInterface>
-     *
-     * @OneToMany(targetEntity="PlanetFieldTypeBuilding", mappedBy="building", indexBy="type")
      */
+    #[OneToMany(targetEntity: 'PlanetFieldTypeBuilding', mappedBy: 'building', indexBy: 'type')]
     private Collection $possibleFieldTypes;
 
     public function __construct()

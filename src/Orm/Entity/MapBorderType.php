@@ -10,38 +10,22 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\MapBorderTypeRepository")
- * @Table(
- *     name="stu_map_bordertypes"
- * )
- **/
+#[Table(name: 'stu_map_bordertypes')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\MapBorderTypeRepository')]
 class MapBorderType implements MapBorderTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $faction_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $color = '';
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description;
 
     public function getId(): int

@@ -19,110 +19,63 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\KnPostArchivRepository")
- * @Table(
- *     name="stu_kn_archiv",
- *     indexes={
- *         @Index(name="plot_archiv_idx", columns={"plot_id"}),
- *         @Index(name="kn_post_archiv_date_idx", columns={"date"}),
- *     },
- *     uniqueConstraints={
- *         @UniqueConstraint(name="unique_kn_archiv_former_id", columns={"former_id"}) 
- *     }
- * )
- */
-
+#[Table(name: 'stu_kn_archiv')]
+#[Index(name: 'plot_archiv_idx', columns: ['plot_id'])]
+#[Index(name: 'kn_post_archiv_date_idx', columns: ['date'])]
+#[UniqueConstraint(name: 'unique_kn_archiv_former_id', columns: ['former_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\KnPostArchivRepository')]
 class KnPostArchiv implements KnPostArchivInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $version = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $former_id;
 
-    /**
-     * @Column(type="string", nullable=true)
-     *
-     */
+    #[Column(type: 'string', nullable: true)]
     private ?string $titel;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $username = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $del_user_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $lastedit = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $plot_id = null;
 
     /**
-     * @Column(type="json")
-     *
      * @var array<mixed>
      */
+    #[Column(type: 'json')]
     private array $ratings = [];
 
     /**
      * @var ArrayCollection<int, KnCommentArchivInterface>
-     *
-     * @OneToMany(targetEntity="KnCommentArchiv", mappedBy="post")
-     * @OrderBy({"id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'KnCommentArchiv', mappedBy: 'post')]
+    #[OrderBy(['id' => 'ASC'])]
     private Collection $comments;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="RpgPlotArchiv", inversedBy="posts")
-     * @JoinColumn(name="plot_id", referencedColumnName="former_id")
-     */
+    #[ManyToOne(targetEntity: 'RpgPlotArchiv', inversedBy: 'posts')]
+    #[JoinColumn(name: 'plot_id', referencedColumnName: 'former_id')]
     private ?RpgPlotArchivInterface $rpgPlot = null;
 
     public function __construct()

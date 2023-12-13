@@ -13,54 +13,30 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\SpacecraftEmergencyRepository")
- * @Table(
- *     name="stu_spacecraft_emergency",
- *     indexes={
- *         @Index(name="spacecraft_emergency_ship_idx", columns={"ship_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_spacecraft_emergency')]
+#[Index(name: 'spacecraft_emergency_ship_idx', columns: ['ship_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\SpacecraftEmergencyRepository')]
 class SpacecraftEmergency implements SpacecraftEmergencyInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function getId(): int

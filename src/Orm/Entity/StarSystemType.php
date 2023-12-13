@@ -15,66 +15,42 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use RuntimeException;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\StarSystemTypeRepository")
- * @Table(
- *     name="stu_system_types",
- *     indexes={
- *          @Index(name="starsystem_mass_center_1_idx", columns={"first_mass_center_id"}),
- *          @Index(name="starsystem_mass_center_2_idx", columns={"second_mass_center_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_system_types')]
+#[Index(name: 'starsystem_mass_center_1_idx', columns: ['first_mass_center_id'])]
+#[Index(name: 'starsystem_mass_center_2_idx', columns: ['second_mass_center_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\StarSystemTypeRepository')]
 class StarSystemType implements StarSystemTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = null;
 
-    /** @Column(type="boolean", nullable=true) */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $is_generateable = null;
 
-    /** @Column(type="integer", nullable=true) */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $first_mass_center_id = null;
 
-    /** @Column(type="integer", nullable=true) */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $second_mass_center_id = null;
 
-    /**
-     *
-     * @OneToOne(targetEntity="DatabaseEntry")
-     * @JoinColumn(name="database_id", referencedColumnName="id")
-     */
+    #[OneToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MassCenterType")
-     * @JoinColumn(name="first_mass_center_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MassCenterType')]
+    #[JoinColumn(name: 'first_mass_center_id', referencedColumnName: 'id')]
     private ?MassCenterTypeInterface $firstMassCenterType = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MassCenterType")
-     * @JoinColumn(name="second_mass_center_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MassCenterType')]
+    #[JoinColumn(name: 'second_mass_center_id', referencedColumnName: 'id')]
     private ?MassCenterTypeInterface $secondMassCenterType = null;
 
     public function getId(): int

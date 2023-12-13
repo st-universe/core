@@ -18,97 +18,57 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\FleetRepository")
- * @Table(
- *     name="stu_fleets",
- *     indexes={
- *         @Index(name="fleet_user_idx", columns={"user_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_fleets')]
+#[Index(name: 'fleet_user_idx', columns: ['user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\FleetRepository')]
 class Fleet implements FleetInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string", length=200)
-     *
-     */
+    #[Column(type: 'string', length: 200)]
     private string $name = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ships_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $defended_colony_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $blocked_colony_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $sort = null;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_fixed = false;
 
     private string $hiddenStyle;
 
-    /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     * @OneToMany(targetEntity="Ship", mappedBy="fleet", indexBy="id")
-     * @OrderBy({"is_fleet_leader": "DESC", "name": "ASC"})
-     */
+    #[OneToMany(targetEntity: 'Ship', mappedBy: 'fleet', indexBy: 'id')]
+    #[OrderBy(['is_fleet_leader' => 'DESC', 'name' => 'ASC'])]
     private Collection $shiplist;
 
-    /**
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="ships_id", referencedColumnName="id")
-     */
+    #[OneToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ships_id', referencedColumnName: 'id')]
     private ShipInterface $fleetLeader;
 
-    /**
-     * @ManyToOne(targetEntity="Colony", inversedBy="defenders")
-     * @JoinColumn(name="defended_colony_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Colony', inversedBy: 'defenders')]
+    #[JoinColumn(name: 'defended_colony_id', referencedColumnName: 'id')]
     private ?ColonyInterface $defendedColony = null;
 
-    /**
-     * @ManyToOne(targetEntity="Colony", inversedBy="blockers")
-     * @JoinColumn(name="blocked_colony_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Colony', inversedBy: 'blockers')]
+    #[JoinColumn(name: 'blocked_colony_id', referencedColumnName: 'id')]
     private ?ColonyInterface $blockedColony = null;
 
     public function __construct()

@@ -13,65 +13,36 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\WeaponRepository")
- * @Table(
- *     name="stu_weapons",
- *     indexes={
- *         @Index(name="weapon_module_idx", columns={"module_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_weapons')]
+#[Index(name: 'weapon_module_idx', columns: ['module_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\WeaponRepository')]
 class Weapon implements WeaponInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $variance = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $critical_chance = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $type = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $firing_mode = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    /**
-     * @OneToOne(targetEntity="Module", inversedBy="weapon")
-     * @JoinColumn(name="module_id", referencedColumnName="id")
-     */
+    #[OneToOne(targetEntity: 'Module', inversedBy: 'weapon')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private ModuleInterface $module;
 
     public function getId(): int

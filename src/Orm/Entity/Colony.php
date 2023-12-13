@@ -23,225 +23,137 @@ use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
- * @Table(
- *     name="stu_colonies",
- *     indexes={
- *         @Index(name="colony_user_idx", columns={"user_id"}),
- *         @Index(name="colony_classes_idx", columns={"colonies_classes_id"}),
- *         @Index(name="colony_sys_map_idx", columns={"starsystem_map_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_colonies')]
+#[Index(name: 'colony_user_idx', columns: ['user_id'])]
+#[Index(name: 'colony_classes_idx', columns: ['colonies_classes_id'])]
+#[Index(name: 'colony_sys_map_idx', columns: ['starsystem_map_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyRepository')]
 class Colony implements ColonyInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $colonies_classes_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $starsystem_map_id = null;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="string", length=100)
-     *
-     */
+    #[Column(type: 'string', length: 100)]
     private string $planet_name = '';
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $bev_work = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $bev_free = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $bev_max = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $eps = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $max_eps = 0;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $max_storage = 0;
 
-    /**
-     * @Column(type="text", nullable=true)
-     *
-     */
+    #[Column(type: 'text', nullable: true)]
     private ?string $mask = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = null;
 
-    /**
-     * @Column(type="integer", length=5)
-     *
-     */
+    #[Column(type: 'integer', length: 5)]
     private int $populationlimit = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $immigrationstate = true;
 
-    /**
-     * @Column(type="integer", length=6, nullable=true)
-     *
-     */
+    #[Column(type: 'integer', length: 6, nullable: true)]
     private ?int $shields = 0;
 
-    /**
-     * @Column(type="integer", length=6, nullable=true)
-     *
-     */
+    #[Column(type: 'integer', length: 6, nullable: true)]
     private ?int $shield_frequency = 0;
 
-    /**
-     * @Column(type="integer", length=3, nullable=true)
-     *
-     */
+    #[Column(type: 'integer', length: 3, nullable: true)]
     private ?int $torpedo_type = null;
 
-    /**
-     * @Column(type="integer", length=3)
-     *
-     */
+    #[Column(type: 'integer', length: 3)]
     private int $rotation_factor = 1;
 
-    /**
-     * @Column(type="integer", length=2)
-     *
-     */
+    #[Column(type: 'integer', length: 2)]
     private int $surface_width = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ColonyClass")
-     * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ColonyClass')]
+    #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id')]
     private ColonyClassInterface $colonyClass;
 
-    /**
-     *
-     * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
-     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'StarSystemMap', inversedBy: 'colony')]
+    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, PlanetFieldInterface>
-     *
-     * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
-     * @OrderBy({"field_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'PlanetField', mappedBy: 'colony', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
+    #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 
     /**
      * @var ArrayCollection<int, StorageInterface>
-     *
-     * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
-     * @OrderBy({"commodity_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'Storage', mappedBy: 'colony', indexBy: 'commodity_id')]
+    #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="TorpedoType")
-     * @JoinColumn(name="torpedo_type", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'TorpedoType')]
+    #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private ?TorpedoTypeInterface $torpedo = null;
 
     /**
      * @var ArrayCollection<int, FleetInterface>
-     *
-     * @OneToMany(targetEntity="Fleet", mappedBy="defendedColony")
      */
+    #[OneToMany(targetEntity: 'Fleet', mappedBy: 'defendedColony')]
     private Collection $defenders;
 
     /**
      * @var ArrayCollection<int, FleetInterface>
-     *
-     * @OneToMany(targetEntity="Fleet", mappedBy="blockedColony")
      */
+    #[OneToMany(targetEntity: 'Fleet', mappedBy: 'blockedColony')]
     private Collection $blockers;
 
     /**
      * @var ArrayCollection<int, ShipCrewInterface>
-     *
-     * @OneToMany(targetEntity="ShipCrew", mappedBy="colony")
      */
+    #[OneToMany(targetEntity: 'ShipCrew', mappedBy: 'colony')]
     private Collection $crewAssignments;
 
     /**
      * @var ArrayCollection<int, ShipCrewInterface>
-     *
-     * @OneToMany(targetEntity="CrewTraining", mappedBy="colony")
      */
+    #[OneToMany(targetEntity: 'CrewTraining', mappedBy: 'colony')]
     private Collection $crewTrainings;
 
     /**
      * @var Collection<int, ColonyDepositMiningInterface>
-     *
-     * @OneToMany(targetEntity="ColonyDepositMining", mappedBy="colony")
-     * @OrderBy({"commodity_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'ColonyDepositMining', mappedBy: 'colony')]
+    #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $depositMinings;
 
     public function __construct()
