@@ -9,10 +9,12 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Exception\FallbackUserDoesNotExistException;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserSetting;
 
 /**
  * @extends EntityRepository<User>
@@ -185,18 +187,25 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 'SELECT u FROM %s u
                 WHERE u.id != :ignoreUserId
                 AND u.id > :firstUserId
-                AND (u.show_online_status = :allowStart OR u.id IN (
+                AND (EXISTS (SELECT us
+                            FROM %s us
+                            WHERE us.user_id = u.id
+                            AND us.setting = :showOnlineStateSetting
+                            AND us.value = :showOnlineState)
+                    OR u.id IN (
                         SELECT cl.user_id FROM %s cl WHERE cl.mode = :contactListModeFriend AND cl.recipient = :ignoreUserId
                     )
                 ) AND u.lastaction > :lastActionThreshold',
                 User::class,
+                UserSetting::class,
                 Contact::class
             )
         )->setParameters([
             'ignoreUserId' => $ignoreUserId,
             'contactListModeFriend' => ContactListModeEnum::FRIEND->value,
             'lastActionThreshold' => $lastActionThreshold,
-            'allowStart' => 1,
+            'showOnlineStateSetting' => UserSettingEnum::SHOW_ONLINE_STATUS->value,
+            'showOnlineState' => 1,
             'firstUserId' => UserEnum::USER_FIRST_ID
         ])
             ->setMaxResults($limit)
