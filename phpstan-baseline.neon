@@ -2514,62 +2514,12 @@ parameters:
 			path: src/Orm/Entity/TradeTransaction.php
 
 		-
-			message: "#^Cannot access property \\$value on Stu\\\\Component\\\\Player\\\\UserCssClassEnum\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Cannot call method isExplored\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getAvatar\\(\\) should return string but returns string\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getFleetFixedDefault\\(\\) should return bool but returns bool\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getRgbCode\\(\\) should return string but returns string\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getRpgBehavior\\(\\) should return Stu\\\\Component\\\\Player\\\\UserRpgBehaviorEnum but returns Stu\\\\Component\\\\Player\\\\UserRpgBehaviorEnum\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isEmailNotification\\(\\) should return bool but returns bool\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isSaveLogin\\(\\) should return bool but returns bool\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isShowOnlineState\\(\\) should return bool but returns bool\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isShowPmReadReceipt\\(\\) should return bool but returns bool\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:isStorageNotification\\(\\) should return bool but returns bool\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 

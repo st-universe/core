@@ -63,12 +63,6 @@ class User implements UserInterface
     #[Column(type: 'smallint')]
     private int $state = UserEnum::USER_STATE_NEW;
 
-    #[Column(type: 'string', length: 200, nullable: true)]
-    private ?string $propic = '';
-
-    #[Column(type: 'boolean', nullable: true)]
-    private ?bool $email_notification = true;
-
     #[Column(type: 'integer')]
     private int $lastaction = 0;
 
@@ -87,26 +81,8 @@ class User implements UserInterface
     #[Column(type: 'integer')]
     private int $vac_request_date = 0;
 
-    #[Column(type: 'boolean', nullable: true)]
-    private ?bool $storage_notification = true;
-
     #[Column(type: 'text')]
     private string $description = '';
-
-    #[Column(type: 'boolean', nullable: true)]
-    private ?bool $show_online_status = true;
-
-    #[Column(type: 'boolean', nullable: true)]
-    private ?bool $show_pm_read_receipt = true;
-
-    #[Column(type: 'boolean', nullable: true)]
-    private ?bool $save_login = true;
-
-    #[Column(type: 'boolean', nullable: true)]
-    private ?bool $fleet_fixed_default = false;
-
-    #[Column(type: 'boolean', nullable: true)]
-    private ?bool $warp_split_auto_carryover_default = null;
 
     #[Column(type: 'smallint')]
     private int $tick = 1;
@@ -120,20 +96,8 @@ class User implements UserInterface
     #[Column(type: 'string', length: 255)]
     private string $password_token = '';
 
-    #[Column(type: 'string', length: 7, nullable: true)]
-    private ?string $rgb_code = '';
-
     #[Column(type: 'integer')]
     private int $prestige = 0;
-
-    #[Column(type: 'string', length: 100, nullable: true)]
-    private ?string $start_page = null;
-
-    #[Column(type: 'smallint', length: 1, enumType: UserRpgBehaviorEnum::class, nullable: true)]
-    private ?UserRpgBehaviorEnum $rpg_behavior = UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
-
-    #[Column(type: 'string', length: 100, enumType: UserCssClassEnum::class, nullable: true)]
-    private ?UserCssClassEnum $css = UserCssClassEnum::BLACK;
 
     #[Column(type: 'boolean', options: ['default' => false])]
     private bool $deals = false;
@@ -271,7 +235,7 @@ class User implements UserInterface
             return $setting->getValue();
         }
 
-        return $this->rgb_code;
+        return '';
     }
 
     public function getCss(): string
@@ -281,7 +245,7 @@ class User implements UserInterface
             return $setting->getValue();
         }
 
-        return $this->css->value;
+        return UserCssClassEnum::BLACK->value;
     }
 
     public function getFactionId(): int
@@ -353,7 +317,7 @@ class User implements UserInterface
             return $setting->getValue();
         }
 
-        return $this->propic;
+        return '';
     }
 
     public function isEmailNotification(): bool
@@ -363,7 +327,7 @@ class User implements UserInterface
             return (bool)$setting->getValue();
         }
 
-        return $this->email_notification;
+        return false;
     }
 
     public function getLastaction(): int
@@ -445,7 +409,7 @@ class User implements UserInterface
             return (bool)$setting->getValue();
         }
 
-        return $this->storage_notification;
+        return false;
     }
 
     public function getDescription(): string
@@ -466,7 +430,7 @@ class User implements UserInterface
             return (bool)$setting->getValue();
         }
 
-        return $this->show_online_status;
+        return false;
     }
 
     public function isShowPmReadReceipt(): bool
@@ -476,7 +440,7 @@ class User implements UserInterface
             return (bool)$setting->getValue();
         }
 
-        return $this->show_pm_read_receipt;
+        return false;
     }
 
     public function isSaveLogin(): bool
@@ -486,7 +450,7 @@ class User implements UserInterface
             return (bool)$setting->getValue();
         }
 
-        return $this->save_login;
+        return false;
     }
 
     public function getFleetFixedDefault(): bool
@@ -496,7 +460,7 @@ class User implements UserInterface
             return (bool)$setting->getValue();
         }
 
-        return $this->fleet_fixed_default;
+        return false;
     }
 
     public function getWarpsplitAutoCarryoverDefault(): bool
@@ -581,11 +545,7 @@ class User implements UserInterface
             return ModuleViewEnum::from($setting->getValue());
         }
 
-        if ($this->start_page === null) {
-            return ModuleViewEnum::MAINDESK;
-        }
-
-        return ModuleViewEnum::from($this->start_page);
+        return ModuleViewEnum::MAINDESK;
     }
 
     public function getRpgBehavior(): UserRpgBehaviorEnum
@@ -595,7 +555,7 @@ class User implements UserInterface
             return UserRpgBehaviorEnum::from((int)$setting->getValue());
         }
 
-        return $this->rpg_behavior;
+        return UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
     }
 
     public function getDeals(): bool
