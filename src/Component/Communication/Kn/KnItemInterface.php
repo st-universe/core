@@ -9,7 +9,7 @@ interface KnItemInterface
 {
     public function getId(): int;
 
-    public function getUser(): ?UserInterface;
+    public function getUser(): UserInterface;
 
     public function getUserId(): int;
 

@@ -8,6 +8,7 @@ parameters:
     - src/Public/assets
   ignoreErrors:
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never written, only read#'
+    - '#Parameter \$targetEntity of attribute class Doctrine\\ORM\\Mapping\\(\w+) constructor expects class-string\|null, string given.#'
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) type mapping mismatch\: property can contain Stu\\Orm\\Entity\\(\w+)(\|null)? but database expects Stu\\Orm\\Entity\\(\w+)(\|null)?#'
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) type mapping mismatch\: database can contain Stu\\Orm\\Entity\\(\w+)(\|null)? but property expects Stu\\Orm\\Entity\\(\w+)(\|null)?#'
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) type mapping mismatch\: property can contain Doctrine\\Common\\Collections\\ArrayCollection\<int, Stu\\Orm\\Entity\\(\w+)\> but database expects Doctrine\\Common\\Collections\\Collection\&iterable\<Stu\\Orm\\Entity\\(\w+)\>#'

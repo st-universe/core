@@ -44,7 +44,7 @@ final class KnItem implements KnItemInterface
         return $this->post->getId();
     }
 
-    public function getUser(): ?UserInterface
+    public function getUser(): UserInterface
     {
         return $this->post->getUser();
     }
