@@ -112,11 +112,11 @@ function fieldMouseOut(obj, fieldtype) {
 	document.body.style.cursor = 'auto';
 }
 
-function fieldMouseClick(obj, fieldId, buildingId) {
+function fieldMouseClick(obj, fieldId, buildingId, buildingName) {
 	if (buildmode == 1) {
 		if (obj.parentNode.className == 'cfb') {
 			if (buildingId > 0) {
-				if (confirm('Soll das Gebäude auf diesem Feld abgerissen werden?')) {
+				if (confirm(`Soll das Gebäude "${buildingName}" auf diesem Feld abgerissen werden?`)) {
 					buildOnField('B_BUILD', fieldId);
 				}
 			} else {
