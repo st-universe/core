@@ -10,33 +10,19 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseTypeRepository")
- * @Table(
- *     name="stu_database_types",
- *     options={"engine": "InnoDB"}
- * )
- **/
+#[Table(name: 'stu_database_types', options: ['engine' => 'InnoDB'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseTypeRepository')]
 class DatabaseType implements DatabaseTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $macro;
 
     public function getId(): int

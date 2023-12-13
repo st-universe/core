@@ -18,109 +18,62 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\StarSystemRepository")
- * @Table(
- *     name="stu_systems",
- *     indexes={
- *         @Index(name="coordinate_idx", columns={"cx", "cy"})
- *     }
- * )
- **/
+#[Table(name: 'stu_systems')]
+#[Index(name: 'coordinate_idx', columns: ['cx', 'cy'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\StarSystemRepository')]
 class StarSystem implements StarSystemInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $cx = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $cy = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $max_x = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $max_y = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $bonus_fields = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_wormhole = false;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemType")
-     * @JoinColumn(name="type", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'StarSystemType')]
+    #[JoinColumn(name: 'type', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StarSystemTypeInterface $systemType;
 
-    /**
-     * @OneToOne(targetEntity="Map", mappedBy="starSystem")
-     */
+    #[OneToOne(targetEntity: 'Map', mappedBy: 'starSystem')]
     private ?MapInterface $map = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="DatabaseEntry")
-     * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
-    /**
-     * @OneToOne(targetEntity="Ship", mappedBy="influenceArea")
-     */
+    #[OneToOne(targetEntity: 'Ship', mappedBy: 'influenceArea')]
     private ?ShipInterface $base = null;
 
     /**
      * @var Collection<int, StarSystemMapInterface>
-     *
-     * @OneToMany(targetEntity="StarSystemMap", mappedBy="starSystem")
-     * @OrderBy({"sy": "ASC", "sx": "ASC"})
      */
+    #[OneToMany(targetEntity: 'StarSystemMap', mappedBy: 'starSystem')]
+    #[OrderBy(['sy' => 'ASC', 'sx' => 'ASC'])]
     private Collection $fields;
 
     public function __construct()

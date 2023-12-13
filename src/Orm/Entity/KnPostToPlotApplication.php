@@ -12,52 +12,30 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\KnPostToPlotApplicationRepository")
- * @Table(
- *     name="stu_kn_plot_application"
- * )
- **/
+#[Table(name: 'stu_kn_plot_application')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\KnPostToPlotApplicationRepository')]
 class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $post_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $plot_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $time = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="KnPost")
-     * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'KnPost')]
+    #[JoinColumn(name: 'post_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private KnPostInterface $knPost;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="RpgPlot")
-     * @JoinColumn(name="plot_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'RpgPlot')]
+    #[JoinColumn(name: 'plot_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private RpgPlotInterface $rpgPlot;
 
     public function getId(): int

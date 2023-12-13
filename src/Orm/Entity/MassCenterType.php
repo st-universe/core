@@ -13,42 +13,27 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity
- * @Table(
- *     name="stu_mass_center_type",
- *     indexes={
- *          @Index(name="mass_center_field_type_idx", columns={"first_field_type_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_mass_center_type')]
+#[Index(name: 'mass_center_field_type_idx', columns: ['first_field_type_id'])]
+#[Entity]
 class MassCenterType implements MassCenterTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /** @Column(type="integer") */
+    #[Column(type: 'integer')]
     private int $size = 1;
 
-    /** @Column(type="integer") */
+    #[Column(type: 'integer')]
     private int $first_field_type_id = 0;
 
-    /**
-     *
-     * @OneToOne(targetEntity="MapFieldType")
-     * @JoinColumn(name="first_field_type_id", referencedColumnName="id")
-     */
+    #[OneToOne(targetEntity: 'MapFieldType')]
+    #[JoinColumn(name: 'first_field_type_id', referencedColumnName: 'id')]
     private MapFieldTypeInterface $firstFieldType;
 
     public function getId(): int

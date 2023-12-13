@@ -72,7 +72,7 @@ return [
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $stuConfig = $c->get(StuConfigInterface::class);
 
-        $emConfig = ORMSetup::createAnnotationMetadataConfiguration(
+        $emConfig = ORMSetup::createAttributeMetadataConfiguration(
             [__DIR__ . '/../Orm/Entity/'],
             $stuConfig->getDebugSettings()->isDebugMode(),
             __DIR__ . '/../OrmProxy/',

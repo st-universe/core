@@ -18,89 +18,52 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Alliance\View\Topic\Topic;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AllianceBoardTopicRepository")
- * @Table(
- *     name="stu_alliance_topics",
- *     indexes={
- *         @Index(name="recent_topics_idx", columns={"alliance_id", "last_post_date"}),
- *         @Index(name="ordered_topics_idx", columns={"board_id", "last_post_date"})
- *     }
- * )
- **/
+#[Table(name: 'stu_alliance_topics')]
+#[Index(name: 'recent_topics_idx', columns: ['alliance_id', 'last_post_date'])]
+#[Index(name: 'ordered_topics_idx', columns: ['board_id', 'last_post_date'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceBoardTopicRepository')]
 class AllianceBoardTopic implements AllianceBoardTopicInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $board_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $alliance_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $last_post_date = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $sticky = false;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="AllianceBoard", inversedBy="topics")
-     * @JoinColumn(name="board_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'AllianceBoard', inversedBy: 'topics')]
+    #[JoinColumn(name: 'board_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceBoardInterface $board;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Alliance")
-     * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Alliance')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     /**
      * @var ArrayCollection<int, AllianceBoardPostInterface>
-     *
-     * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="topic")
-     * @OrderBy({"date": "DESC"})
      */
+    #[OneToMany(targetEntity: 'AllianceBoardPost', mappedBy: 'topic')]
+    #[OrderBy(['date' => 'DESC'])]
     private Collection $posts;
 
     public function __construct()

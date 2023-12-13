@@ -12,46 +12,26 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\GameTurnRepository")
- * @Table(
- *     name="stu_game_turns",
- *     indexes={
- *         @Index(name="turn_idx", columns={"turn"})
- *     }
- * )
- **/
+#[Table(name: 'stu_game_turns')]
+#[Index(name: 'turn_idx', columns: ['turn'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\GameTurnRepository')]
 class GameTurn implements GameTurnInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $turn = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $startdate = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $enddate;
 
-    /**
-     * @OneToOne(targetEntity="GameTurnStats", mappedBy="turn")
-     */
+    #[OneToOne(targetEntity: 'GameTurnStats', mappedBy: 'turn')]
     private ?GameTurnStatsInterface $stats = null;
 
     public function getId(): int

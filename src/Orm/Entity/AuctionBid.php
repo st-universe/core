@@ -13,55 +13,31 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AuctionBidRepository")
- * @Table(
- *     name="stu_auction_bid",
- *     indexes={
- *         @Index(name="auction_bid_sort_idx", columns={"max_amount"})
- *     }
- * )
- **/
+#[Table(name: 'stu_auction_bid')]
+#[Index(name: 'auction_bid_sort_idx', columns: ['max_amount'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AuctionBidRepository')]
 class AuctionBid implements AuctionBidInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $auction_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $max_amount;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Deals")
-     * @JoinColumn(name="auction_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Deals')]
+    #[JoinColumn(name: 'auction_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private DealsInterface $auction;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

@@ -13,112 +13,64 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Colony\ColonyTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ResearchRepository")
- * @Table(name="stu_research")
- **/
+#[Table(name: 'stu_research')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ResearchRepository')]
 class Research implements ResearchInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $description;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $sort;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rumps_id;
 
     /**
-     * @Column(type="json")
-     *
      * @var int[]|null
      */
+    #[Column(type: 'json')]
     private ?array $database_entries = null;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $points;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $reward_buildplan_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $award_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $needed_award = null;
 
-    /**
-     * @Column(type="smallint", nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', nullable: true)]
     private ?int $upper_limit_colony_type = null;
 
-    /**
-     * @Column(type="smallint", nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', nullable: true)]
     private ?int $upper_limit_colony_amount = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="reward_buildplan_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[JoinColumn(name: 'reward_buildplan_id', referencedColumnName: 'id')]
     private ?ShipBuildplanInterface $rewardBuildplan = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Award")
-     * @JoinColumn(name="award_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Award')]
+    #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
     private ?AwardInterface $award = null;
 
     public function getId(): int

@@ -13,70 +13,40 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TachyonScanRepository")
- * @Table(
- *     name="stu_tachyon_scan",
- *     indexes={
- *         @Index(name="tachyon_scan_user_idx", columns={"user_id"}),
- *         @Index(name="tachyon_scan_map_idx", columns={"map_id"}),
- *         @Index(name="tachyon_scan_sysmap_idx", columns={"starsystem_map_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_tachyon_scan')]
+#[Index(name: 'tachyon_scan_user_idx', columns: ['user_id'])]
+#[Index(name: 'tachyon_scan_map_idx', columns: ['map_id'])]
+#[Index(name: 'tachyon_scan_sysmap_idx', columns: ['starsystem_map_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TachyonScanRepository')]
 class TachyonScan implements TachyonScanInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $scan_time = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $starsystem_map_id = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Map")
-     * @JoinColumn(name="map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Map')]
+    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
     private ?MapInterface $map = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemMap")
-     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystemMap')]
+    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int

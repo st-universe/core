@@ -12,47 +12,26 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpCategoryRepository")
- * @Table(
- *     name="stu_rumps_categories",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_rumps_categories')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpCategoryRepository')]
 class ShipRumpCategory implements ShipRumpCategoryInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $points = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="DatabaseEntry")
-     * @JoinColumn(name="database_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
     public function getId(): int

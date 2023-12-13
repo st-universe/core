@@ -16,49 +16,30 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TholianWebRepository")
- * @Table(
- *     name="stu_tholian_web",
- *     indexes={
- *         @Index(name="tholian_web_ship_idx", columns={"ship_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_tholian_web')]
+#[Index(name: 'tholian_web_ship_idx', columns: ['ship_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TholianWebRepository')]
 class TholianWeb implements TholianWebInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $finished_time = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $webShip;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
-     *
-     * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb")
      */
+    #[OneToMany(targetEntity: 'Ship', mappedBy: 'holdingWeb')]
     private Collection $capturedShips;
 
     public function __construct()

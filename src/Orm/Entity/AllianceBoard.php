@@ -17,57 +17,37 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AllianceBoardRepository")
- * @Table(
- *     name="stu_alliance_boards",
- *     indexes={
- *         @Index(name="alliance_idx", columns={"alliance_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_alliance_boards')]
+#[Index(name: 'alliance_idx', columns: ['alliance_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceBoardRepository')]
 class AllianceBoard implements AllianceBoardInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer") *
-     *
-     */
+    #[Column(type: 'integer')]
     private int $alliance_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
     /**
      * @var Collection<int, AllianceBoardTopicInterface>
-     *
-     * @OneToMany(targetEntity="AllianceBoardTopic", mappedBy="board")
      */
+    #[OneToMany(targetEntity: 'AllianceBoardTopic', mappedBy: 'board')]
     private Collection $topics;
 
     /**
      * @var ArrayCollection<int, AllianceBoardPostInterface>
-     *
-     * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="board")
-     * @OrderBy({"date": "DESC"})
      */
+    #[OneToMany(targetEntity: 'AllianceBoardPost', mappedBy: 'board')]
+    #[OrderBy(['date' => 'DESC'])]
     private Collection $posts;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Alliance")
-     * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Alliance')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
     public function __construct()

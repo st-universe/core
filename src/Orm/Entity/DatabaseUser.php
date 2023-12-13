@@ -13,54 +13,31 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseUserRepository")
- * @Table(
- *     name="stu_database_user",
- *     options={"engine": "InnoDB"},
- *     uniqueConstraints={@UniqueConstraint(name="entry_user_idx", columns={"database_id", "user_id"})}
- * )
- **/
+#[Table(name: 'stu_database_user', options: ['engine' => 'InnoDB'])]
+#[UniqueConstraint(name: 'entry_user_idx', columns: ['database_id', 'user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseUserRepository')]
 class DatabaseUser implements DatabaseUserInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $database_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseEntry")
-     * @JoinColumn(name="database_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private DatabaseEntryInterface $databaseEntry;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

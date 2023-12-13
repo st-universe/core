@@ -11,47 +11,26 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\PrestigeLogRepository")
- * @Table(
- *     name="stu_prestige_log",
- *     indexes={
- *         @Index(name="prestige_log_user_idx", columns={"user_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_prestige_log')]
+#[Index(name: 'prestige_log_user_idx', columns: ['user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PrestigeLogRepository')]
 class PrestigeLog implements PrestigeLogInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $amount = 0;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date;
 
     public function getId(): int

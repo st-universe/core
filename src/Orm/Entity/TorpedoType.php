@@ -16,109 +16,61 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TorpedoTypeRepository")
- * @Table(
- *     name="stu_torpedo_types",
- *     indexes={
- *         @Index(name="torpedo_type_research_idx", columns={"research_id"}),
- *         @Index(name="level_idx", columns={"level"})
- *     })
- **/
+#[Table(name: 'stu_torpedo_types')]
+#[Index(name: 'torpedo_type_research_idx', columns: ['research_id'])]
+#[Index(name: 'level_idx', columns: ['level'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TorpedoTypeRepository')]
 class TorpedoType implements TorpedoTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $base_damage = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $critical_chance = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $hit_factor = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $hull_damage_factor = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $shield_damage_factor = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $variance = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $level = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $research_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ecost = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $amount = 0;
 
     /**
      * @var ArrayCollection<int, TorpedoTypeCostInterface>
-     *
-     * @OneToMany(targetEntity="TorpedoTypeCost", mappedBy="torpedoType")
      */
+    #[OneToMany(targetEntity: 'TorpedoTypeCost', mappedBy: 'torpedoType')]
     private Collection $productionCosts;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id')]
     private CommodityInterface $commodity;
 
     public function __construct()

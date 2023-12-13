@@ -13,60 +13,34 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingFieldAlternativeRepository")
- * @Table(
- *     name="stu_buildings_field_alternative",
- *     indexes={
- *         @Index(name="building_field_idx", columns={"fieldtype", "buildings_id"})
- *     })
- **/
+#[Table(name: 'stu_buildings_field_alternative')]
+#[Index(name: 'building_field_idx', columns: ['fieldtype', 'buildings_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingFieldAlternativeRepository')]
 class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $fieldtype = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildings_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $alternate_buildings_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $research_id = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Building")
-     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Building')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingInterface $building;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Building")
-     * @JoinColumn(name="alternate_buildings_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Building')]
+    #[JoinColumn(name: 'alternate_buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingInterface $alternateBuilding;
 
     public function getId(): int

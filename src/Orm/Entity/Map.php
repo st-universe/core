@@ -21,179 +21,110 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\SectorString;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\MapRepository")
- * @Table(
- *     name="stu_map",
- *     indexes={
- *         @Index(name="coordinates_idx", columns={"cx", "cy"}),
- *         @Index(name="coordinates_reverse_idx", columns={"cy", "cx"}),
- *         @Index(name="map_field_type_idx", columns={"field_id"}),
- *         @Index(name="map_layer_idx", columns={"layer_id"}),
- *         @Index(name="map_system_idx", columns={"systems_id"}),
- *         @Index(name="map_system_type_idx", columns={"system_type_id"}),
- *         @Index(name="map_influence_area_idx", columns={"influence_area_id"}),
- *         @Index(name="map_bordertype_idx", columns={"bordertype_id"}),
- *         @Index(name="map_admin_region_idx", columns={"admin_region_id"})
- *     },
- *     uniqueConstraints={
- *         @UniqueConstraint(name="map_coordinate_idx", columns={"layer_id", "cx", "cy"})
- *     }
- * )
- **/
+#[Table(name: 'stu_map')]
+#[Index(name: 'coordinates_idx', columns: ['cx', 'cy'])]
+#[Index(name: 'coordinates_reverse_idx', columns: ['cy', 'cx'])]
+#[Index(name: 'map_field_type_idx', columns: ['field_id'])]
+#[Index(name: 'map_layer_idx', columns: ['layer_id'])]
+#[Index(name: 'map_system_idx', columns: ['systems_id'])]
+#[Index(name: 'map_system_type_idx', columns: ['system_type_id'])]
+#[Index(name: 'map_influence_area_idx', columns: ['influence_area_id'])]
+#[Index(name: 'map_bordertype_idx', columns: ['bordertype_id'])]
+#[Index(name: 'map_admin_region_idx', columns: ['admin_region_id'])]
+#[UniqueConstraint(name: 'map_coordinate_idx', columns: ['layer_id', 'cx', 'cy'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\MapRepository')]
 class Map implements MapInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $cx = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $cy = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $layer_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $field_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $system_type_id = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $systems_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $influence_area_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $bordertype_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $region_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $admin_region_id = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Layer")
-     * @JoinColumn(name="layer_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Layer')]
+    #[JoinColumn(name: 'layer_id', referencedColumnName: 'id')]
     private LayerInterface $layer;
 
-    /**
-     *
-     * @OneToOne(targetEntity="StarSystem", inversedBy="map")
-     * @JoinColumn(name="systems_id", referencedColumnName="id")
-     */
+    #[OneToOne(targetEntity: 'StarSystem', inversedBy: 'map')]
+    #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $starSystem = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystem")
-     * @JoinColumn(name="influence_area_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystem')]
+    #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MapFieldType")
-     * @JoinColumn(name="field_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MapFieldType')]
+    #[JoinColumn(name: 'field_id', referencedColumnName: 'id')]
     private MapFieldTypeInterface $mapFieldType;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemType")
-     * @JoinColumn(name="system_type_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystemType')]
+    #[JoinColumn(name: 'system_type_id', referencedColumnName: 'id')]
     private ?StarSystemTypeInterface $starSystemType;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MapBorderType")
-     * @JoinColumn(name="bordertype_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MapBorderType')]
+    #[JoinColumn(name: 'bordertype_id', referencedColumnName: 'id')]
     private ?MapBorderTypeInterface $mapBorderType = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MapRegion")
-     * @JoinColumn(name="region_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MapRegion')]
+    #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $mapRegion = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="MapRegion")
-     * @JoinColumn(name="admin_region_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'MapRegion')]
+    #[JoinColumn(name: 'admin_region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $administratedRegion = null;
 
     /**
      * @var ArrayCollection<int, ShipInterface>
-     *
-     * @OneToMany(targetEntity="Ship", mappedBy="map", fetch="EXTRA_LAZY")
      */
+    #[OneToMany(targetEntity: 'Ship', mappedBy: 'map', fetch: 'EXTRA_LAZY')]
     private Collection $ships;
 
     /**
      * @var ArrayCollection<int, FlightSignatureInterface>
-     *
-     * @OneToMany(targetEntity="FlightSignature", mappedBy="map")
-     * @OrderBy({"time": "DESC"})
      */
+    #[OneToMany(targetEntity: 'FlightSignature', mappedBy: 'map')]
+    #[OrderBy(['time' => 'DESC'])]
     private Collection $signatures;
 
     /**
      * @var ArrayCollection<int, AnomalyInterface>
-     *
-     * @OneToMany(targetEntity="Anomaly", mappedBy="map", fetch="EXTRA_LAZY")
      */
+    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'map', fetch: 'EXTRA_LAZY')]
     private Collection $anomalies;
 
     /**
      * @var ArrayCollection<int, WormholeEntryInterface>
-     *
-     * @OneToMany(targetEntity="WormholeEntry", mappedBy="map")
      */
+    #[OneToMany(targetEntity: 'WormholeEntry', mappedBy: 'map')]
     private Collection $wormholeEntries;
 
 

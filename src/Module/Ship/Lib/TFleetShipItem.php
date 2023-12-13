@@ -7,18 +7,16 @@ namespace Stu\Module\Ship\Lib;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 
-/**
- * @Entity
- */
+#[Entity]
 class TFleetShipItem extends TShipItem implements TFleetShipItemInterface
 {
-    /** @Column(type="string") * */
+    #[Column(type: 'string')]
     private string $fleet_name = '';
 
-    /** @Column(type="boolean") * */
+    #[Column(type: 'boolean')]
     private bool $is_defending = false;
 
-    /** @Column(type="boolean") * */
+    #[Column(type: 'boolean')]
     private bool $is_blocking = false;
 
     public function getFleetName(): string

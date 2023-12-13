@@ -13,72 +13,40 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseEntryRepository")
- * @Table(
- *     name="stu_database_entrys",
- *     options={"engine": "InnoDB"},
- *     indexes={@Index(name="database_entry_category_id_idx", columns={"category_id"})}
- * )
- **/
+#[Table(name: 'stu_database_entrys', options: ['engine' => 'InnoDB'])]
+#[Index(name: 'database_entry_category_id_idx', columns: ['category_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseEntryRepository')]
 class DatabaseEntry implements DatabaseEntryInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $data;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $category_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $sort;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $object_id;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseType")
-     * @JoinColumn(name="type", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\DatabaseType')]
+    #[JoinColumn(name: 'type', referencedColumnName: 'id')]
     private DatabaseTypeInterface $type_object;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseCategory", inversedBy="entries")
-     * @JoinColumn(name="category_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\DatabaseCategory', inversedBy: 'entries')]
+    #[JoinColumn(name: 'category_id', referencedColumnName: 'id')]
     private DatabaseCategoryInterface $category;
 
     public function getId(): int

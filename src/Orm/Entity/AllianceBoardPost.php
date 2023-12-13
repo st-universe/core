@@ -13,87 +13,48 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AllianceBoardPostRepository")
- * @Table(
- *     name="stu_alliance_posts",
- *     indexes={
- *         @Index(name="topic_date_idx", columns={"topic_id", "date"}),
- *         @Index(name="board_date_idx", columns={"board_id", "date"})
- *     }
- * )
- **/
+#[Table(name: 'stu_alliance_posts')]
+#[Index(name: 'topic_date_idx', columns: ['topic_id', 'date'])]
+#[Index(name: 'board_date_idx', columns: ['board_id', 'date'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceBoardPostRepository')]
 class AllianceBoardPost implements AllianceBoardPostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $topic_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $board_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $lastedit = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="AllianceBoardTopic", inversedBy="posts")
-     * @JoinColumn(name="topic_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'AllianceBoardTopic', inversedBy: 'posts')]
+    #[JoinColumn(name: 'topic_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceBoardTopicInterface $topic;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="AllianceBoard", inversedBy="posts")
-     * @JoinColumn(name="board_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'AllianceBoard', inversedBy: 'posts')]
+    #[JoinColumn(name: 'board_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceBoardInterface $board;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

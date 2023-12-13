@@ -13,69 +13,39 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyTerraformingRepository")
- * @Table(
- *     name="stu_colonies_terraforming",
- *     indexes={
- *         @Index(name="colony_idx", columns={"colonies_id"}),
- *         @Index(name="finished_idx", columns={"finished"})
- *     }
- * )
- */
+#[Table(name: 'stu_colonies_terraforming')]
+#[Index(name: 'colony_idx', columns: ['colonies_id'])]
+#[Index(name: 'finished_idx', columns: ['finished'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyTerraformingRepository')]
 class ColonyTerraforming implements ColonyTerraformingInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $colonies_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $field_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $terraforming_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $finished = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Terraforming")
-     * @JoinColumn(name="terraforming_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Terraforming')]
+    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TerraformingInterface $terraforming;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="PlanetField")
-     * @JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'PlanetField')]
+    #[JoinColumn(name: 'field_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PlanetFieldInterface $field;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
     public function getId(): int

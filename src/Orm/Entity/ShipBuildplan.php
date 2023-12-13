@@ -16,86 +16,51 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipBuildplanRepository")
- * @Table(
- *     name="stu_buildplans",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_buildplans')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipBuildplanRepository')]
 class ShipBuildplan implements ShipBuildplanInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildtime = 0;
 
-    /**
-     * @Column(type="string", length=32, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 32, nullable: true)]
     private ?string $signature = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $crew = 0;
 
     /**
      * @var Collection<int, ShipInterface>
-     *
-     * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY")
      */
+    #[OneToMany(targetEntity: 'Ship', mappedBy: 'buildplan', fetch: 'EXTRA_LAZY')]
     private Collection $ships;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipRump")
-     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpInterface $shipRump;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     /**
      * @var Collection<int, BuildplanModuleInterface>
-     *
-     * @OneToMany(targetEntity="BuildplanModule", mappedBy="buildplan", indexBy="module_id", fetch="EXTRA_LAZY")
      */
+    #[OneToMany(targetEntity: 'BuildplanModule', mappedBy: 'buildplan', indexBy: 'module_id', fetch: 'EXTRA_LAZY')]
     private Collection $modules;
 
     public function __construct()

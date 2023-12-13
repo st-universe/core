@@ -11,47 +11,26 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\NewsRepository")
- * @Table(
- *     name="stu_news",
- *     indexes={
- *         @Index(name="news_date_idx", columns={"date"})
- *     }
- * )
- **/
+#[Table(name: 'stu_news')]
+#[Index(name: 'news_date_idx', columns: ['date'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\NewsRepository')]
 class News implements NewsInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $subject = '';
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $refs = '';
 
     public function getId(): int

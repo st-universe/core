@@ -13,41 +13,24 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpSpecialRepository")
- * @Table(
- *     name="stu_rumps_specials",
- *     indexes={
- *         @Index(name="rump_special_ship_rump_idx", columns={"rumps_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_rumps_specials')]
+#[Index(name: 'rump_special_ship_rump_idx', columns: ['rumps_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpSpecialRepository')]
 class ShipRumpSpecial implements ShipRumpSpecialInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rumps_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $special = 0;
 
-    /**
-     * @ManyToOne(targetEntity="ShipRump", inversedBy="specialAbilities")
-     * @JoinColumn(name="rumps_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipRump', inversedBy: 'specialAbilities')]
+    #[JoinColumn(name: 'rumps_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ShipRumpInterface $shipRump = null;
 
     public function getId(): int

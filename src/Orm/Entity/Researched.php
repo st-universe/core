@@ -12,56 +12,33 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ResearchedRepository")
- * @Table(name="stu_researched")
- **/
+#[Table(name: 'stu_researched')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ResearchedRepository')]
 class Researched implements ResearchedInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $research_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $aktiv = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $finished = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
-     * @JoinColumn(name="research_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Research')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
     private ResearchInterface $research;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

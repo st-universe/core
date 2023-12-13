@@ -11,55 +11,31 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Commodity\CommodityTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\CommodityRepository")
- * @Table(name="stu_commodity", indexes={
- * })
- **/
+#[Table(name: 'stu_commodity')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\CommodityRepository')]
 class Commodity implements CommodityInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $sort = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $view = true;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $type = CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $npc_commodity = false;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $bound = false;
 
     public function getId(): int

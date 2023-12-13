@@ -13,65 +13,37 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildplanModuleRepository")
- * @Table(
- *     name="stu_buildplans_modules",
- *     uniqueConstraints={@UniqueConstraint(name="buildplan_module_type_idx", columns={"buildplan_id", "module_type", "module_special"})}
- * )
- **/
+#[Table(name: 'stu_buildplans_modules')]
+#[UniqueConstraint(name: 'buildplan_module_type_idx', columns: ['buildplan_id', 'module_type', 'module_special'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildplanModuleRepository')]
 class BuildplanModule implements BuildplanModuleInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildplan_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $module_type = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    /**
-     * @Column(type="smallint", nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', nullable: true)]
     private ?int $module_special = null;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $module_count = 1;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $buildplan;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Module")
-     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Module')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
     public function getId(): int

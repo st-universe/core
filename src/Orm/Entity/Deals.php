@@ -17,139 +17,77 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\DealsRepository")
- * @Table(
- *     name="stu_deals"
- * )
- **/
+#[Table(name: 'stu_deals')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\DealsRepository')]
 class Deals implements DealsInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $auction = false;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $amount = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $give_commodity = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $want_commodity = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $give_commodity_amonut = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $want_commodity_amount = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $want_prestige = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $buildplan_id = null;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $ship = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $start;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $end;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $taken_time = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $auction_user = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $auction_amount = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="want_commodity", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'want_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $wantedCommodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="give_commodity", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'give_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $giveCommodity;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="buildplan_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id')]
     private ?ShipBuildplanInterface $buildplan = null;
 
     /**
      * @var ArrayCollection<int, AuctionBidInterface>
-     *
-     * @OneToMany(targetEntity="AuctionBid", mappedBy="auction")
-     * @OrderBy({"max_amount": "ASC"})
      */
+    #[OneToMany(targetEntity: 'AuctionBid', mappedBy: 'auction')]
+    #[OrderBy(['max_amount' => 'ASC'])]
     private Collection $auctionBids;
 
     public function __construct()

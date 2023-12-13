@@ -12,47 +12,27 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\UserInvitationRepository")
- * @Table(
- *     name="stu_user_invitations",
- *     indexes={
- *         @Index(name="user_invitation_user_idx", columns={"user_id"}),
- *         @Index(name="user_invitation_token_idx", columns={"token"})
- *     }
- * )
- **/
+#[Table(name: 'stu_user_invitations')]
+#[Index(name: 'user_invitation_user_idx', columns: ['user_id'])]
+#[Index(name: 'user_invitation_token_idx', columns: ['token'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\UserInvitationRepository')]
 class UserInvitation implements UserInvitationInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $invited_user_id = null;
 
-    /**
-     * @Column(type="datetime")
-     */
+    #[Column(type: 'datetime')]
     private DateTimeInterface $date;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $token = '';
 
     public function getId(): int

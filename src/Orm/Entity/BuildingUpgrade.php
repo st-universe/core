@@ -16,75 +16,46 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeRepository")
- * @Table(
- *     name="stu_buildings_upgrades",
- *     indexes={
- *         @Index(name="upgrade_from_research_idx", columns={"upgrade_from", "research_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_buildings_upgrades')]
+#[Index(name: 'upgrade_from_research_idx', columns: ['upgrade_from', 'research_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingUpgradeRepository')]
 class BuildingUpgrade implements BuildingUpgradeInterface
 {
-    /**
-     * @Id
-     * @Column(type="bigint")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'bigint')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $upgrade_from = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $upgrade_to = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $research_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $energy_cost = 0;
 
     /**
      * @var ArrayCollection<int, BuildingUpgradeCostInterface>
-     *
-     * @OneToMany(targetEntity="BuildingUpgradeCost", mappedBy="upgrade")
      */
+    #[OneToMany(targetEntity: 'BuildingUpgradeCost', mappedBy: 'upgrade')]
     private Collection $upgradeCosts;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Building")
-     * @JoinColumn(name="upgrade_to", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Building')]
+    #[JoinColumn(name: 'upgrade_to', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingInterface $upgradeToBuilding;
 
     /**
      * @var BuildingInterface
-     *
-     * @ManyToOne(targetEntity="Building")
-     * @JoinColumn(name="upgrade_from", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ManyToOne(targetEntity: 'Building')]
+    #[JoinColumn(name: 'upgrade_from', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $upgradeFromBuilding;
 
     public function __construct()

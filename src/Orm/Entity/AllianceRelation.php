@@ -14,61 +14,34 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Alliance\AllianceEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AllianceRelationRepository")
- * @Table(
- *     name="stu_alliances_relations",
- *     indexes={
- *         @Index(name="alliance_relation_idx", columns={"alliance_id", "recipient"})
- *     }
- * )
- **/
+#[Table(name: 'stu_alliances_relations')]
+#[Index(name: 'alliance_relation_idx', columns: ['alliance_id', 'recipient'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceRelationRepository')]
 class AllianceRelation implements AllianceRelationInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $type = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $alliance_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $recipient = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Alliance")
-     * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Alliance')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $alliance;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Alliance")
-     * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Alliance')]
+    #[JoinColumn(name: 'recipient', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $opponent;
 
     public function getId(): int

@@ -10,28 +10,16 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpRoleRepository")
- * @Table(
- *     name="stu_rumps_roles",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_rumps_roles')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpRoleRepository')]
 class ShipRumpRole implements ShipRumpRoleInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
     public function getId(): int

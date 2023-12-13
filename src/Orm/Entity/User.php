@@ -26,282 +26,156 @@ use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\UserRepository")
- * @Table(
- *     name="stu_user",
- *     indexes={
- *         @Index(name="user_alliance_idx", columns={"allys_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_user')]
+#[Index(name: 'user_alliance_idx', columns: ['allys_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\UserRepository')]
 class User implements UserInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $username = '';
 
-    /**
-     * @Column(type="string", length=20)
-     *
-     */
+    #[Column(type: 'string', length: 20)]
     private string $login = '';
 
-    /**
-     * @Column(type="string", length=255)
-     *
-     */
+    #[Column(type: 'string', length: 255)]
     private string $pass = '';
 
-    /**
-     * @Column(type="string", length=6, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 6, nullable: true)]
     private ?string $sms_code = null;
 
-    /**
-     * @Column(type="string", length=200)
-     *
-     */
+    #[Column(type: 'string', length: 200)]
     private string $email = '';
 
-    /**
-     * @Column(type="string", length=255, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private ?string $mobile = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $allys_id = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $race = 9;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $state = UserEnum::USER_STATE_NEW;
 
-    /**
-     * @Column(type="string", length=200, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 200, nullable: true)]
     private ?string $propic = '';
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $email_notification = true;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $lastaction = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $creation = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $kn_lez = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $delmark = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $vac_active = false;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $vac_request_date = 0;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $storage_notification = true;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $description = '';
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $show_online_status = true;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $show_pm_read_receipt = true;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $save_login = true;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $fleet_fixed_default = false;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $warp_split_auto_carryover_default = null;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $tick = 1;
 
-    /**
-     * @Column(type="smallint", nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', nullable: true)]
     private ?int $maptype = MapEnum::MAPTYPE_INSERT;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $sessiondata = '';
 
-    /**
-     * @Column(type="string", length=255)
-     *
-     */
+    #[Column(type: 'string', length: 255)]
     private string $password_token = '';
 
-    /**
-     * @Column(type="string", length=7, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 7, nullable: true)]
     private ?string $rgb_code = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $prestige = 0;
 
-    /**
-     * @Column(type="string", length=100, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 100, nullable: true)]
     private ?string $start_page = null;
 
-    /**
-     * @Column(type="smallint", length=1, enumType=UserRpgBehaviorEnum::class, nullable=true)
-     *
-     */
+    #[Column(type: 'smallint', length: 1, enumType: UserRpgBehaviorEnum::class, nullable: true)]
     private ?UserRpgBehaviorEnum $rpg_behavior = UserRpgBehaviorEnum::RPG_BEHAVIOR_NOT_SET;
 
-    /**
-     * @Column(type="string", length=100, enumType=UserCssClassEnum::class, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 100, enumType: UserCssClassEnum::class, nullable: true)]
     private ?UserCssClassEnum $css = UserCssClassEnum::BLACK;
 
-    /**
-     * @Column(type="boolean", options={"default": false})
-     *
-     */
+    #[Column(type: 'boolean', options: ['default' => false])]
     private bool $deals = false;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $last_boarding = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Alliance", inversedBy="members")
-     * @JoinColumn(name="allys_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Alliance', inversedBy: 'members')]
+    #[JoinColumn(name: 'allys_id', referencedColumnName: 'id')]
     private ?AllianceInterface $alliance = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Faction")
-     * @JoinColumn(name="race", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Faction')]
+    #[JoinColumn(name: 'race', referencedColumnName: 'id')]
     private FactionInterface $faction;
 
     /**
      * @var ArrayCollection<int, UserAwardInterface>
-     *
-     * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id")
-     * @OrderBy({"award_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'UserAward', mappedBy: 'user', indexBy: 'award_id')]
+    #[OrderBy(['award_id' => 'ASC'])]
     private Collection $awards;
 
     /**
      * @var ArrayCollection<int, ColonyInterface>
-     *
-     * @OneToMany(targetEntity="Colony", mappedBy="user", indexBy="id")
-     * @OrderBy({"colonies_classes_id": "ASC", "id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'Colony', mappedBy: 'user', indexBy: 'id')]
+    #[OrderBy(['colonies_classes_id' => 'ASC', 'id' => 'ASC'])]
     private Collection $colonies;
 
     /**
      * @var ArrayCollection<int, UserLayerInterface>
-     *
-     * @OneToMany(targetEntity="UserLayer", mappedBy="user", indexBy="layer_id")
      */
+    #[OneToMany(targetEntity: 'UserLayer', mappedBy: 'user', indexBy: 'layer_id')]
     private Collection $userLayers;
 
-    /**
-     * @OneToOne(targetEntity="UserLock", mappedBy="user")
-     */
+    #[OneToOne(targetEntity: 'UserLock', mappedBy: 'user')]
     private ?UserLockInterface $userLock = null;
 
     /**
      * @var ArrayCollection<string, UserSettingInterface>
-     *
-     * @OneToMany(targetEntity="UserSetting", mappedBy="user", indexBy="setting")
      */
+    #[OneToMany(targetEntity: 'UserSetting', mappedBy: 'user', indexBy: 'setting')]
     private Collection $settings;
 
     /** @var null|array<mixed> */

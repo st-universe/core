@@ -11,45 +11,26 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldTypeRepository")
- * @Table(
- *     name="stu_colony_fieldtype",
- *     indexes={@Index(name="field_id_idx", columns={"field_id"})}
- * )
- **/
+#[Table(name: 'stu_colony_fieldtype')]
+#[Index(name: 'field_id_idx', columns: ['field_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PlanetFieldTypeRepository')]
 class PlanetFieldType implements PlanetFieldTypeInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $field_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $normal_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $category;
 
     public function getId(): int

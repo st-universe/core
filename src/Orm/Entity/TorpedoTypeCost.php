@@ -12,52 +12,30 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity
- * @Table(
- *     name="stu_torpedo_cost"
- * )
- */
+#[Table(name: 'stu_torpedo_cost')]
+#[Entity]
 class TorpedoTypeCost implements TorpedoTypeCostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $torpedo_type_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $count = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\TorpedoType")
-     * @JoinColumn(name="torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\TorpedoType')]
+    #[JoinColumn(name: 'torpedo_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TorpedoTypeInterface $torpedoType;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     public function getId(): int

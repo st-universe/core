@@ -12,46 +12,27 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\UserLayerRepository")
- * @Table(
- *     name="stu_user_layer"
- * )
- **/
+#[Table(name: 'stu_user_layer')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\UserLayerRepository')]
 class UserLayer implements UserLayerInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $layer_id;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $map_type = MapEnum::MAPTYPE_INSERT;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Layer")
-     * @JoinColumn(name="layer_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Layer')]
+    #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private LayerInterface $layer;
 
     public function getUser(): UserInterface

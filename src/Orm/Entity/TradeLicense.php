@@ -15,61 +15,34 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\TradeLicenseRepository")
- * @Table(
- *     name="stu_trade_license",
- *     indexes={
- *         @Index(name="user_trade_post_idx", columns={"user_id", "posts_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_trade_license')]
+#[Index(name: 'user_trade_post_idx', columns: ['user_id', 'posts_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\TradeLicenseRepository')]
 class TradeLicense implements TradeLicenseInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $posts_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $expired = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="TradePost")
-     * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'TradePost')]
+    #[JoinColumn(name: 'posts_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TradePostInterface $tradePost;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

@@ -17,295 +17,160 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipRumpEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpRepository")
- * @Table(
- *     name="stu_rumps",
- *     indexes={
- *         @Index(name="rump_category_idx", columns={"category_id"}),
- *         @Index(name="rump_role_idx", columns={"role_id"})
- *     }
- * )
- */
+#[Table(name: 'stu_rumps')]
+#[Index(name: 'rump_category_idx', columns: ['category_id'])]
+#[Index(name: 'rump_role_idx', columns: ['role_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpRepository')]
 class ShipRump implements ShipRumpInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @column(type="integer")
-     *
-     */
+    #[column(type: 'integer')]
     private int $category_id;
 
-    /**
-     * @column(type="integer", nullable=true)
-     *
-     */
+    #[column(type: 'integer', nullable: true)]
     private ?int $role_id = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $evade_chance = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $hit_chance = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $module_level = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $base_crew = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $base_eps = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $base_reactor = 0;
 
-    /**
-     * @column(type="integer")
-     *
-     */
+    #[column(type: 'integer')]
     private int $base_hull = 0;
 
-    /**
-     * @column(type="integer")
-     *
-     */
+    #[column(type: 'integer')]
     private int $base_shield = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $base_damage = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $base_sensor_range = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $base_torpedo_storage = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $phaser_volleys = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $phaser_hull_damage_factor = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $phaser_shield_damage_factor = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $torpedo_level = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $torpedo_volleys = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_buildable;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_npc;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $eps_cost = 0;
 
-    /**
-     * @column(type="integer")
-     *
-     */
+    #[column(type: 'integer')]
     private int $storage = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $slots = 0;
 
-    /**
-     * @column(type="integer")
-     *
-     */
+    #[column(type: 'integer')]
     private int $buildtime = 0;
 
-    /**
-     * @column(type="smallint", nullable=true)
-     *
-     */
+    #[column(type: 'smallint', nullable: true)]
     private ?int $needed_workbees = null;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $sort = 0;
 
-    /**
-     * @column(type="integer", nullable=true)
-     *
-     */
+    #[column(type: 'integer', nullable: true)]
     private ?int $database_id = 0;
 
-    /**
-     * @column(type="integer", nullable=true)
-     *
-     */
+    #[column(type: 'integer', nullable: true)]
     private ?int $commodity_id = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $flight_ecost = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $beam_factor = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $special_slots = 0;
 
-    /**
-     * @column(type="smallint")
-     *
-     */
+    #[column(type: 'smallint')]
     private int $shuttle_slots = 0;
 
-    /**
-     * @column(type="integer")
-     *
-     */
+    #[column(type: 'integer')]
     private int $tractor_mass = 1;
 
-    /**
-     * @column(type="integer")
-     *
-     */
+    #[column(type: 'integer')]
     private int $tractor_payload = 100;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $prestige;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $base_warpdrive = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipRumpRole")
-     * @JoinColumn(name="role_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ShipRumpRole')]
+    #[JoinColumn(name: 'role_id', referencedColumnName: 'id')]
     private ?ShipRumpRoleInterface $shipRumpRole = null;
 
     /**
      * @var Collection<int, ShipRumpSpecialInterface>
-     *
-     * @OneToMany(targetEntity="ShipRumpSpecial", mappedBy="shipRump", indexBy="special")
      */
+    #[OneToMany(targetEntity: 'ShipRumpSpecial', mappedBy: 'shipRump', indexBy: 'special')]
     private Collection $specialAbilities;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipRumpCategory")
-     * @JoinColumn(name="category_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ShipRumpCategory')]
+    #[JoinColumn(name: 'category_id', referencedColumnName: 'id')]
     private ShipRumpCategoryInterface $shipRumpCategory;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id')]
     private ?CommodityInterface $commodity = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="DatabaseEntry")
-     * @JoinColumn(name="database_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
      * @var ArrayCollection<int, ShipRumpCostInterface>
-     *
-     * @OneToMany(targetEntity="ShipRumpCost", mappedBy="shipRump")
      */
+    #[OneToMany(targetEntity: 'ShipRumpCost', mappedBy: 'shipRump')]
     private Collection $buildingCosts;
 
     /**
      * @var ArrayCollection<int, BuildplanHangarInterface>
-     *
-     * @OneToMany(targetEntity="BuildplanHangar", mappedBy="shipRump")
      */
+    #[OneToMany(targetEntity: 'BuildplanHangar', mappedBy: 'shipRump')]
     private Collection $startHangar;
 
     public function __construct()

@@ -13,63 +13,38 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildplanHangarRepository")
- * @Table(
- *     name="stu_buildplans_hangar",
- *     uniqueConstraints={@UniqueConstraint(name="rump_idx", columns={"rump_id"})}
- * )
- **/
+#[Table(name: 'stu_buildplans_hangar')]
+#[UniqueConstraint(name: 'rump_idx', columns: ['rump_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildplanHangarRepository')]
 class BuildplanHangar implements BuildplanHangarInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildplan_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $default_torpedo_type_id = null;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $start_energy_costs;
 
-    /**
-     * @ManyToOne(targetEntity="TorpedoType")
-     * @JoinColumn(name="default_torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'TorpedoType')]
+    #[JoinColumn(name: 'default_torpedo_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TorpedoTypeInterface $defaultTorpedoType = null;
 
-    /**
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $buildplan;
 
-    /**
-     * @ManyToOne(targetEntity="ShipRump", inversedBy="startHangar")
-     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipRump', inversedBy: 'startHangar')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpInterface $shipRump;
 
     public function getId(): int

@@ -13,69 +13,38 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\LayerRepository")
- * @Table(
- *     name="stu_layer"
- * )
- **/
+#[Table(name: 'stu_layer')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\LayerRepository')]
 class Layer implements LayerInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $width;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $height;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $is_hidden;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $is_finished = null;
 
-    /**
-     * @Column(type="boolean", nullable=true)
-     *
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $is_encoded = null;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $award_id = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Award")
-     * @JoinColumn(name="award_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Award')]
+    #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
     private ?AwardInterface $award = null;
 
 

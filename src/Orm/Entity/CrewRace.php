@@ -12,58 +12,32 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\CrewRaceRepository")
- * @Table(
- *     name="stu_crew_race",
- *     indexes={
- *     })
- **/
+#[Table(name: 'stu_crew_race')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\CrewRaceRepository')]
 class CrewRace implements CrewRaceInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $faction_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $chance = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $maleratio = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $define = '';
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Faction")
-     * @JoinColumn(name="faction_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Faction')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private FactionInterface $faction;
 
     public function getId(): int

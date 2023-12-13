@@ -2,9 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-/**
- * @Entity @Table(name="stu_map_regions_settlement")
- **/
 interface MapRegionSettlementInterface
 {
     public function getId(): int;

@@ -13,87 +13,48 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipyardShipQueueRepository")
- * @Table(
- *     name="stu_shipyard_shipqueue",
- *     indexes={
- *         @Index(name="shipyard_shipqueue_user_idx", columns={"user_id"}),
- *         @Index(name="shipyard_shipqueue_finish_date_idx", columns={"finish_date"})
- *     }
- * )
- **/
+#[Table(name: 'stu_shipyard_shipqueue')]
+#[Index(name: 'shipyard_shipqueue_user_idx', columns: ['user_id'])]
+#[Index(name: 'shipyard_shipqueue_finish_date_idx', columns: ['finish_date'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipyardShipQueueRepository')]
 class ShipyardShipQueue implements ShipyardShipQueueInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildplan_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildtime = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $finish_date = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $stop_date = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipBuildplan')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $shipBuildplan;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ShipRump")
-     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'ShipRump')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpInterface $shipRump;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Ship')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
     public function getId(): int

@@ -9,37 +9,21 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\BlockedUserRepository")
- * @Table(
- *     name="stu_blocked_user"
- * )
- **/
+#[Table(name: 'stu_blocked_user')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\BlockedUserRepository')]
 class BlockedUser implements BlockedUserInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $time = 0;
 
-    /**
-     * @Column(type="string", length=255)
-     *
-     */
+    #[Column(type: 'string', length: 255)]
     private string $email_hash = '';
 
-    /**
-     * @Column(type="string", length=255, nullable=true)
-     *
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private ?string $mobile_hash = null;
 
     public function getId(): int

@@ -17,91 +17,53 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\AllianceRepository")
- * @Table(
- *     name="stu_alliances",
- *     indexes={
- *     }
- * )
- **/
+#[Table(name: 'stu_alliances')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceRepository')]
 class Alliance implements AllianceInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $description = '';
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $homepage = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $accept_applications = false;
 
-    /**
-     * @Column(type="string", length=32)
-     *
-     */
+    #[Column(type: 'string', length: 32)]
     private string $avatar = '';
 
-    /**
-     * @Column(type="string", length=7)
-     *
-     */
+    #[Column(type: 'string', length: 7)]
     private string $rgb_code = '';
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Faction")
-     * @JoinColumn(name="faction_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Faction')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
     private ?FactionInterface $faction = null;
 
     /**
      * @var ArrayCollection<int, UserInterface>
-     *
-     * @OneToMany(targetEntity="User", mappedBy="alliance")
      */
+    #[OneToMany(targetEntity: 'User', mappedBy: 'alliance')]
     private Collection $members;
 
     /**
      * @var ArrayCollection<int, AllianceJobInterface>
-     *
-     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance", indexBy="type")
      */
+    #[OneToMany(targetEntity: 'AllianceJob', mappedBy: 'alliance', indexBy: 'type')]
     private Collection $jobs;
 
     public function __construct()

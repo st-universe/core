@@ -20,174 +20,111 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ModuleRepository")
- * @Table(
- *     name="stu_modules",
- *     indexes={
- *         @Index(name="ship_rump_role_type_idx", columns={"rumps_role_id", "type"})
- *     }
- * )
- **/
+#[Table(name: 'stu_modules')]
+#[Index(name: 'ship_rump_role_type_idx', columns: ['rumps_role_id', 'type'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleRepository')]
 class Module implements ModuleInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $name = '';
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $level = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $upgrade_factor = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $default_factor = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $downgrade_factor = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $crew = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $research_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $viewable = false;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $rumps_role_id = 0;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $ecost = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
-    /**
-     * @Column(type="integer", enumType=ShipSystemTypeEnum::class, nullable=true)
-     *
-     */
+    #[Column(type: 'integer', enumType: ShipSystemTypeEnum::class, nullable: true)]
     private ?ShipSystemTypeEnum $system_type = null;
 
     /**
      * @var ResearchInterface
-     *
-     * @ManyToOne(targetEntity="Research")
-     * @JoinColumn(name="research_id", referencedColumnName="id")
      */
+    #[ManyToOne(targetEntity: 'Research')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
     private $research;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     /**
      * @var FactionInterface
-     *
-     * @ManyToOne(targetEntity="Faction")
-     * @JoinColumn(name="faction_id", referencedColumnName="id")
      */
+    #[ManyToOne(targetEntity: 'Faction')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
     private $faction;
 
     /**
      * @var ShipRumpRoleInterface
-     *
-     * @ManyToOne(targetEntity="ShipRumpRole")
-     * @JoinColumn(name="rumps_role_id", referencedColumnName="id")
      */
+    #[ManyToOne(targetEntity: 'ShipRumpRole')]
+    #[JoinColumn(name: 'rumps_role_id', referencedColumnName: 'id')]
     private $shipRumpRole;
 
     /**
      * @var ArrayCollection<int, ModuleSpecialInterface>
-     *
-     * @OneToMany(targetEntity="ModuleSpecial", mappedBy="module")
-     * @OrderBy({"special_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'ModuleSpecial', mappedBy: 'module')]
+    #[OrderBy(['special_id' => 'ASC'])]
     private Collection $moduleSpecials;
 
     /**
      * @var ArrayCollection<int, ModuleCostInterface>
-     *
-     * @OneToMany(targetEntity="ModuleCost", mappedBy="module")
      */
+    #[OneToMany(targetEntity: 'ModuleCost', mappedBy: 'module')]
     private Collection $buildingCosts;
 
     /**
      * @var ArrayCollection<int, TorpedoHullInterface>
-     *
-     * @OneToMany(targetEntity="TorpedoHull", mappedBy="module", indexBy="torpedo_type")
-     * @OrderBy({"torpedo_type": "ASC"})
      */
+    #[OneToMany(targetEntity: 'TorpedoHull', mappedBy: 'module', indexBy: 'torpedo_type')]
+    #[OrderBy(['torpedo_type' => 'ASC'])]
     private Collection $torpedoHull;
 
     /**
      * @var ArrayCollection<int, WeaponShieldInterface>
-     *
-     * @OneToMany(targetEntity="WeaponShield", mappedBy="module", indexBy="weapon_id")
-     * @OrderBy({"weapon_id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'WeaponShield', mappedBy: 'module', indexBy: 'weapon_id')]
+    #[OrderBy(['weapon_id' => 'ASC'])]
     private Collection $weaponShield;
 
-    /**
-     * @OneToOne(targetEntity="Weapon", mappedBy="module")
-     */
+    #[OneToOne(targetEntity: 'Weapon', mappedBy: 'module')]
     private ?WeaponInterface $weapon = null;
 
     /** @var null|array<int> */

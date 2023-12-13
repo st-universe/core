@@ -11,60 +11,35 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyDepositMiningRepository")
- * @Table(
- *     name="stu_colony_deposit_mining"
- * )
- **/
+#[Table(name: 'stu_colony_deposit_mining')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyDepositMiningRepository')]
 class ColonyDepositMining implements ColonyDepositMiningInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $colony_id;
 
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private int $commodity_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $amount_left;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Colony')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     public function getUser(): UserInterface

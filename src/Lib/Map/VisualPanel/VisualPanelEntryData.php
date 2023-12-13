@@ -8,38 +8,36 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 
-/**
- * @Entity
- */
+#[Entity]
 class VisualPanelEntryData
 {
-    /** @Id @Column(type="integer") * */
+    #[Id]
     private int $posx = 0;
-    /** @Id @Column(type="integer") * */
+    #[Id]
     private int $posy = 0;
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $sysid = null;
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $shipcount = 0;
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $cloakcount = 0;
-    /** @Column(type="string", nullable=true) * */
+    #[Column(type: 'string', nullable: true)]
     private ?string $allycolor = null;
-    /** @Column(type="string", nullable=true) * */
+    #[Column(type: 'string', nullable: true)]
     private ?string $usercolor = null;
-    /** @Column(type="string", nullable=true) * */
+    #[Column(type: 'string', nullable: true)]
     private ?string $factioncolor = null;
-    /** @Column(type="boolean", nullable=true) * */
+    #[Column(type: 'boolean', nullable: true)]
     private ?bool $shieldstate = null;
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $type = 0;
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $d1c = null;
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $d2c = null;
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $d3c = null;
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $d4c = null;
 
     public function getPosX(): int

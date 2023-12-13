@@ -14,69 +14,39 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\UserIpTableRepository")
- * @Table(
- *     name="stu_user_iptable",
- *     indexes={
- *         @Index(name="session_idx", columns={"session"}),
- *         @Index(name="iptable_start_idx", columns={"startDate"}),
- *         @Index(name="iptable_end_idx", columns={"endDate"}),
- *         @Index(name="iptable_ip_idx", columns={"ip"})
- *     }
- * )
- **/
+#[Table(name: 'stu_user_iptable')]
+#[Index(name: 'session_idx', columns: ['session'])]
+#[Index(name: 'iptable_start_idx', columns: ['startDate'])]
+#[Index(name: 'iptable_end_idx', columns: ['endDate'])]
+#[Index(name: 'iptable_ip_idx', columns: ['ip'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\UserIpTableRepository')]
 class UserIpTable implements UserIpTableInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $ip;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $session;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $agent;
 
-    /**
-     * @Column(type="datetime", nullable=true)
-     *
-     */
+    #[Column(type: 'datetime', nullable: true)]
     private ?DateTimeInterface $startDate = null;
 
-    /**
-     * @Column(type="datetime", nullable=true)
-     *
-     */
+    #[Column(type: 'datetime', nullable: true)]
     private ?DateTimeInterface $endDate = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
     public function getId(): int

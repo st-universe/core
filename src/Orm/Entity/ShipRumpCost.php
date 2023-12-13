@@ -13,56 +13,34 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpCostRepository")
- * @Table(
- *     name="stu_rump_costs",
- *     indexes={
- *         @Index(name="rump_cost_ship_rump_idx", columns={"rump_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_rump_costs')]
+#[Index(name: 'rump_cost_ship_rump_idx', columns: ['rump_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpCostRepository')]
 class ShipRumpCost implements ShipRumpCostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $commodity_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $count = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Commodity')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
     /**
      * @var ShipRumpInterface
-     *
-     * @ManyToOne(targetEntity="ShipRump", inversedBy="buildingCosts")
-     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ManyToOne(targetEntity: 'ShipRump', inversedBy: 'buildingCosts')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $shipRump;
 
     public function getId(): int

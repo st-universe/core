@@ -8,78 +8,76 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 
-/**
- * @Entity
- */
+#[Entity]
 class TShipItem implements TShipItemInterface
 {
-    /** @Id @Column(type="integer") * */
+    #[Id]
     private int $ship_id = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $fleet_id = null;
 
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $rump_id = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $former_rump_id = null;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $warp_state = null;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $cloak_state = null;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $shield_state = null;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $uplink_state = null;
 
-    /** @Column(type="boolean") * */
+    #[Column(type: 'boolean')]
     private bool $is_destroyed = false;
 
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $spacecraft_type = 0;
 
-    /** @Column(type="string") * */
+    #[Column(type: 'string')]
     private string $ship_name = '';
 
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $hull = 0;
 
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $max_hull = 0;
 
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $shield = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $web_id = null;
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $web_finish_time = null;
 
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /** @Column(type="string") * */
+    #[Column(type: 'string')]
     private string $user_name = '';
 
-    /** @Column(type="integer") * */
+    #[Column(type: 'integer')]
     private int $rump_category_id = 0;
 
-    /** @Column(type="string") * */
+    #[Column(type: 'string')]
     private string $rump_name = '';
 
-    /** @Column(type="integer", nullable=true) * */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $rump_role_id = null;
 
-    /** @Column(type="boolean") * */
+    #[Column(type: 'boolean')]
     private bool $has_logbook = false;
 
-    /** @Column(type="boolean") * */
+    #[Column(type: 'boolean')]
     private bool $has_crew = false;
 
     public function getShipId(): int

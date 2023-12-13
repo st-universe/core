@@ -13,96 +13,51 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\GameTurnStatsRepository")
- * @Table(
- *     name="stu_game_turn_stats",
- *     indexes={
- *         @Index(name="game_turn_stats_turn_idx", columns={"turn_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_game_turn_stats')]
+#[Index(name: 'game_turn_stats_turn_idx', columns: ['turn_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\GameTurnStatsRepository')]
 class GameTurnStats implements GameTurnStatsInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $turn_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_count;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $logins_24h;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $inactive_count;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $vacation_count;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_count;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_count_manned;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $ship_count_npc;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $kn_count;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $flight_sig_24h;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $flight_sig_system_24h;
 
-    /**
-     *
-     * @OneToOne(targetEntity="GameTurn")
-     * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[OneToOne(targetEntity: 'GameTurn')]
+    #[JoinColumn(name: 'turn_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private GameTurnInterface $turn;
 
     public function getId(): int

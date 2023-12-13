@@ -16,83 +16,49 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotArchivRepository")
- * @Table(
- *     name="stu_plots_archiv",
- *     indexes={
- *         @Index(name="rpg_plot_archiv_end_date_idx", columns={"end_date"}),
- *     },
- *     uniqueConstraints={
- *         @UniqueConstraint(name="unique_plot_id", columns={"id"}),
- *         @UniqueConstraint(name="unique_former_id", columns={"former_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_plots_archiv')]
+#[Index(name: 'rpg_plot_archiv_end_date_idx', columns: ['end_date'])]
+#[UniqueConstraint(name: 'unique_plot_id', columns: ['id'])]
+#[UniqueConstraint(name: 'unique_former_id', columns: ['former_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\RpgPlotArchivRepository')]
 class RpgPlotArchiv implements RpgPlotArchivInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $version = '';
 
-    /**
-     * @Column(type="integer")
-     * 
-     */
+    #[Column(type: 'integer')]
     private int $former_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $title = '';
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $description = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $start_date = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $end_date = null;
 
     /**
      * @var ArrayCollection<int, KnPostArchivInterface>
-     *
-     * @OneToMany(targetEntity="KnPostArchiv", mappedBy="rpgPlot")
      */
+    #[OneToMany(targetEntity: 'KnPostArchiv', mappedBy: 'rpgPlot')]
     private Collection $posts;
 
     /**
      * @var ArrayCollection<int, RpgPlotMemberArchivInterface>
-     *
-     * @OneToMany(targetEntity="RpgPlotMemberArchiv", mappedBy="rpgPlot", indexBy="user_id")
      */
+    #[OneToMany(targetEntity: 'RpgPlotMemberArchiv', mappedBy: 'rpgPlot', indexBy: 'user_id')]
     private Collection $members;
 
     public function __construct()

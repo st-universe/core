@@ -13,105 +13,57 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\PrivateMessageRepository")
- * @Table(
- *     name="stu_pms",
- *     indexes={
- *         @Index(name="recipient_folder_idx", columns={"recip_user", "cat_id"}),
- *         @Index(name="correspondence", columns={"recip_user", "send_user"})
- *     }
- * )
- **/
+#[Table(name: 'stu_pms')]
+#[Index(name: 'recipient_folder_idx', columns: ['recip_user', 'cat_id'])]
+#[Index(name: 'correspondence', columns: ['recip_user', 'send_user'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PrivateMessageRepository')]
 class PrivateMessage implements PrivateMessageInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $send_user = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $recip_user = 0;
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $new = false;
 
-    /**
-     * @Column(type="boolean")
-     *
-     */
+    #[Column(type: 'boolean')]
     private bool $replied = false;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $cat_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $inbox_pm_id = null;
 
-    /**
-     * @Column(type="string", nullable=true)
-     *
-     */
+    #[Column(type: 'string', nullable: true)]
     private ?string $href = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="PrivateMessageFolder")
-     * @JoinColumn(name="cat_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'PrivateMessageFolder')]
+    #[JoinColumn(name: 'cat_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PrivateMessageFolderInterface $category;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="send_user", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'send_user', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $sendingUser;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="recip_user", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'recip_user', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $receivingUser;
 
     public function getId(): int

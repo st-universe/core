@@ -16,69 +16,42 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseCategoryRepository")
- * @Table(name="stu_database_categories")
- */
+#[Table(name: 'stu_database_categories')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseCategoryRepository')]
 class DatabaseCategory implements DatabaseCategoryInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $description;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $points;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $type;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $sort;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $prestige;
 
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $award_id = null;
 
     /**
      * @var ArrayCollection<int, DatabaseEntryInterface>
-     *
-     * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
-     * @OrderBy({"sort": "ASC"})
      */
+    #[OneToMany(targetEntity: 'Stu\Orm\Entity\DatabaseEntry', mappedBy: 'category')]
+    #[OrderBy(['sort' => 'ASC'])]
     private Collection $entries;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Award")
-     * @JoinColumn(name="award_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Award')]
+    #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
     private ?AwardInterface $award = null;
 
     public function __construct()

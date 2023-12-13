@@ -12,50 +12,30 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ResearchDependencyRepository")
- * @Table(name="stu_research_dependencies")
- */
+#[Table(name: 'stu_research_dependencies')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ResearchDependencyRepository')]
 class ResearchDependency implements ResearchDependencyInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $research_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $depends_on;
 
-    /**
-     * @Column(type="smallint")
-     *
-     */
+    #[Column(type: 'smallint')]
     private int $mode;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
-     * @JoinColumn(name="research_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Research')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
     private ResearchInterface $research;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
-     * @JoinColumn(name="depends_on", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Research')]
+    #[JoinColumn(name: 'depends_on', referencedColumnName: 'id')]
     private ResearchInterface $research_depends_on;
 
     public function getId(): int

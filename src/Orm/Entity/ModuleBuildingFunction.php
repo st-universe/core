@@ -13,42 +13,24 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ModuleBuildingFunctionRepository")
- * @Table(
- *     name="stu_modules_buildingfunction",
- *     indexes={
- *         @Index(name="module_buildingfunction_idx", columns={"module_id", "buildingfunction"})
- *     }
- * )
- **/
+#[Table(name: 'stu_modules_buildingfunction')]
+#[Index(name: 'module_buildingfunction_idx', columns: ['module_id', 'buildingfunction'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleBuildingFunctionRepository')]
 class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $buildingfunction = 0;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Module")
-     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ManyToOne(targetEntity: 'Module')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
     public function getId(): int

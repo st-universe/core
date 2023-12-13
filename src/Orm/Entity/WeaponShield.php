@@ -13,60 +13,35 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\WeaponShieldRepository")
- * @Table(
- *     name="stu_weapon_shield",
- *     indexes={
- *         @Index(name="weapon_shield_module_idx", columns={"module_id"}),
- *         @Index(name="weapon_shield_weapon_idx", columns={"weapon_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_weapon_shield')]
+#[Index(name: 'weapon_shield_module_idx', columns: ['module_id'])]
+#[Index(name: 'weapon_shield_weapon_idx', columns: ['weapon_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\WeaponShieldRepository')]
 class WeaponShield implements WeaponShieldInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $module_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $weapon_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $modificator = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = 0;
 
-    /**
-     * @ManyToOne(targetEntity="Weapon")
-     * @JoinColumn(name="weapon_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Weapon')]
+    #[JoinColumn(name: 'weapon_id', referencedColumnName: 'id')]
     private WeaponInterface $weapon;
 
-    /**
-     * @ManyToOne(targetEntity="Module")
-     * @JoinColumn(name="module_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Module')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private ModuleInterface $module;
 
     public function getId(): int

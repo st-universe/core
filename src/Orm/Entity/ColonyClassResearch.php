@@ -13,50 +13,29 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassResearchRepository")
- * @Table(
- *     name="stu_planet_type_research",
- *     indexes={
- *         @Index(name="planet_type_idx", columns={"planet_type_id"})
- *     }
- * )
- **/
 //TODO rename table and column planet_type_id
+#[Table(name: 'stu_planet_type_research')]
+#[Index(name: 'planet_type_idx', columns: ['planet_type_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyClassResearchRepository')]
 class ColonyClassResearch implements ColonyClassResearchInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $research_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $planet_type_id;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Research")
-     * @JoinColumn(name="research_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Research')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
     private ResearchInterface $research;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="ColonyClass")
-     * @JoinColumn(name="planet_type_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'ColonyClass')]
+    #[JoinColumn(name: 'planet_type_id', referencedColumnName: 'id')]
     private ColonyClassInterface $colonyClass;
 
     public function getId(): int

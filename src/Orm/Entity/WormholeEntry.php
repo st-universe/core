@@ -13,77 +13,43 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\WormholeEntryRepository")
- * @Table(
- *     name="stu_wormhole_entry"
- * )
- **/
+#[Table(name: 'stu_wormhole_entry')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\WormholeEntryRepository')]
 class WormholeEntry implements WormholeEntryInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $map_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $system_id;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $system_map_id;
 
-    /**
-     * @Column(type="smallint", length=1)
-     *
-     */
+    #[Column(type: 'smallint', length: 1)]
     private int $type = MapEnum::WORMHOLE_ENTRY_TYPE_BOTH;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $last_used = null;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $cooldown = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="Map", inversedBy="wormholeEntries")
-     * @JoinColumn(name="map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'Map', inversedBy: 'wormholeEntries')]
+    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
     private MapInterface $map;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystem")
-     * @JoinColumn(name="system_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystem')]
+    #[JoinColumn(name: 'system_id', referencedColumnName: 'id')]
     private StarSystemInterface $starSystem;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="StarSystemMap", inversedBy="wormholeEntries")
-     * @JoinColumn(name="system_map_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'StarSystemMap', inversedBy: 'wormholeEntries')]
+    #[JoinColumn(name: 'system_map_id', referencedColumnName: 'id')]
     private StarSystemMapInterface $systemMap;
 
     public function getId(): int

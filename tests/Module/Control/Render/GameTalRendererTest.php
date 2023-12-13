@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render;
 
+use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
@@ -25,7 +26,7 @@ class GameTalRendererTest extends StuTestCase
     protected function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);
-        $this->renderFragment = $this->mock(Fragments\RenderFragmentInterface::class);
+        $this->renderFragment = $this->mock(RenderFragmentInterface::class);
 
         $this->subject = new GameTalRenderer(
             $this->config,

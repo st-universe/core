@@ -18,102 +18,61 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\KnPostRepository")
- * @Table(
- *     name="stu_kn",
- *     indexes={
- *         @Index(name="plot_idx", columns={"plot_id"}),
- *         @Index(name="kn_post_date_idx", columns={"date"}),
- *         @Index(name="kn_post_user_idx", columns={"user_id"})
- *     }
- * )
- **/
+#[Table(name: 'stu_kn')]
+#[Index(name: 'plot_idx', columns: ['plot_id'])]
+#[Index(name: 'kn_post_date_idx', columns: ['date'])]
+#[Index(name: 'kn_post_user_idx', columns: ['user_id'])]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\KnPostRepository')]
 class KnPost implements KnPostInterface
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    /**
-     * @Column(type="string", nullable=true)
-     *
-     */
+    #[Column(type: 'string', nullable: true)]
     private ?string $titel = '';
 
-    /**
-     * @Column(type="text")
-     *
-     */
+    #[Column(type: 'text')]
     private string $text = '';
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $date = 0;
 
-    /**
-     * @Column(type="string")
-     *
-     */
+    #[Column(type: 'string')]
     private string $username = '';
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $user_id = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $del_user_id = 0;
 
-    /**
-     * @Column(type="integer")
-     *
-     */
+    #[Column(type: 'integer')]
     private int $lastedit = 0;
 
-    /**
-     * @Column(type="integer", nullable=true)
-     *
-     */
+    #[Column(type: 'integer', nullable: true)]
     private ?int $plot_id = null;
 
     /**
-     * @Column(type="json")
-     *
      * @var array<mixed>
      */
+    #[Column(type: 'json')]
     private array $ratings = [];
 
     /**
      * @var ArrayCollection<int, KnCommentInterface>
-     *
-     * @OneToMany(targetEntity="KnComment", mappedBy="post")
-     * @OrderBy({"id": "ASC"})
      */
+    #[OneToMany(targetEntity: 'KnComment', mappedBy: 'post')]
+    #[OrderBy(['id' => 'ASC'])]
     private Collection $comments;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="RpgPlot", inversedBy="posts")
-     * @JoinColumn(name="plot_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'RpgPlot', inversedBy: 'posts')]
+    #[JoinColumn(name: 'plot_id', referencedColumnName: 'id')]
     private ?RpgPlotInterface $rpgPlot = null;
 
-    /**
-     *
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private UserInterface $user;
 
     public function __construct()
