@@ -12,8 +12,10 @@ use Doctrine\ORM\Mapping\Id;
 class VisualPanelEntryData
 {
     #[Id]
+    #[Column(type: 'integer')]
     private int $posx = 0;
     #[Id]
+    #[Column(type: 'integer')]
     private int $posy = 0;
     #[Column(type: 'integer', nullable: true)]
     private ?int $sysid = null;

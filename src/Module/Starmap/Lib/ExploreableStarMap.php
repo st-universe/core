@@ -17,6 +17,7 @@ use Stu\Orm\Entity\StarSystemInterface;
 class ExploreableStarMap implements ExploreableStarMapInterface
 {
     #[Id]
+    #[Column(type: 'integer')]
     private int $id = 0;
 
     #[Column(type: 'integer')]

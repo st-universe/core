@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Id;
 class TShipItem implements TShipItemInterface
 {
     #[Id]
+    #[Column(type: 'integer')]
     private int $ship_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
