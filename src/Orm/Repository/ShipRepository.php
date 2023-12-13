@@ -17,6 +17,7 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\TFleetShipItem;
 use Stu\Module\Ship\Lib\TShipItem;
@@ -636,18 +637,20 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                         AND ss2.mode > 1)) AS cloakcount,
 				(SELECT al.rgb_code FROM stu_alliances al
 					JOIN stu_user u ON al.id = u.allys_id
-						JOIN stu_ships s ON u.id = s.user_id
-							JOIN stu_map m ON m.influence_area_id = s.influence_area_id
-							WHERE m.id = a.id AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
+                    JOIN stu_ships s ON u.id = s.user_id
+                    JOIN stu_map m ON m.influence_area_id = s.influence_area_id
+                    WHERE m.id = a.id AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
 							AS allycolor,
-				(SELECT u.rgb_code FROM stu_user u
+				(SELECT COALESCE(us.value, \'\') FROM stu_user u
+                    LEFT JOIN stu_user_setting us ON u.id = us.user_id
 					JOIN stu_ships s ON u.id = s.user_id
-						JOIN stu_map m ON m.influence_area_id = s.influence_area_id
-						WHERE m.id = a.id AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
+                    JOIN stu_map m ON m.influence_area_id = s.influence_area_id
+                    WHERE us.setting = :rgbCodeSetting
+                    AND m.id = a.id AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
 						as usercolor,
 				(SELECT mb.color FROM stu_map_bordertypes mb
 					JOIN stu_map m ON m.bordertype_id = mb.id
-						WHERE m.id = a.id AND m.bordertype_id IS NOT NULL)
+                    WHERE m.id = a.id AND m.bordertype_id IS NOT NULL)
 						AS factioncolor
                 %s
                 FROM stu_map a
@@ -665,7 +668,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
             'layerId' => $layerId,
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
+            'rgbCodeSetting' => UserSettingEnum::RGB_CODE->value,
         ])->getResult();
     }
 
