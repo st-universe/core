@@ -47,11 +47,11 @@
         <td>
             <div style="display: inline-block;" title="Überschüssige Energie wird in anderen Speicher übertragen">
                 {% set checked = autoCarryOver ? 'checked="true"' : '' %}
+                <span>
+                    <img src="/assets/buttons/transfer.png" style="height:16px;" />
+                </span>
                 <input type="checkbox" id="autoCarryOver" {{ checked }}
                     onchange="saveWarpCoreSplit({{ shipId }}); updateReactorValues();" />
-                <span>
-                    Übertrag <img src="/assets/buttons/info2.png" style="height:16px;" />
-                </span>
             </div>
         </td>
         <td style="width: 15%;">
