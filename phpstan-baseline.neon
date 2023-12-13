@@ -1889,12 +1889,17 @@ parameters:
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$influence_area_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$adminRegion type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapRegionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapRegion\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$region_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$influenceArea type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
+			count: 1
+			path: src/Module/Starmap/Lib/ExploreableStarMap.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$mapBorderType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapBorderTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapBorderType\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
