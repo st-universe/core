@@ -27,6 +27,10 @@ final class ChangeSettings implements ActionControllerInterface
         $user = $game->getUser();
 
         foreach (UserSettingEnum::cases() as $setting) {
+            if ($setting->isDistinctSetting()) {
+                continue;
+            }
+
             if (!request::has($setting->value)) {
                 $this->changeUserSetting->reset($user, $setting);
             } else {
