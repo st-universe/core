@@ -52,7 +52,7 @@ final class ShowScan implements ViewControllerInterface
         $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
+        $game->setMacroInAjaxWindow('html/entityNotAvailable.twig');
 
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {

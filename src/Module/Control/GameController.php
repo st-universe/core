@@ -232,6 +232,7 @@ final class GameController implements GameControllerInterface
             $this->isTwig = true;
             $this->twigPage->setTemplate($template);
         } else {
+            $this->isTwig = false;
             $this->talPage->setTemplate($template);
         }
     }

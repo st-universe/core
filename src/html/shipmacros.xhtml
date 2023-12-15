@@ -62,11 +62,6 @@
     </table>
   </form>
 </metal:block>
-<metal:block metal:define-macro="entity_not_available">
-  <div class="box">
-    <div class="box_body">Das Ziel wurde nicht gefunden</div>
-  </div>
-</metal:block>
 <metal:block metal:define-macro="show_ship_beamto">
   <form action="ship.php" method="post">
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />

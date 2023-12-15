@@ -47,7 +47,7 @@ final class ShowBeamTo implements ViewControllerInterface
         $target = $targetWrapper->get();
 
         $game->setPageTitle(_('Zu Schiff beamen'));
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
+        $game->setMacroInAjaxWindow('html/entityNotAvailable.twig');
 
         if (!InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;

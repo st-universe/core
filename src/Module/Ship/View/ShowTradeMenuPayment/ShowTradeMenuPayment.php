@@ -67,7 +67,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             false,
             false
         );
-        $game->showMacro('html/shipmacros.xhtml/entity_not_available');
+        $game->showMacro('html/entityNotAvailable.twig');
 
         $tradepost = $this->tradePostRepository->find(request::getIntFatal('postid'));
         if ($tradepost === null) {
