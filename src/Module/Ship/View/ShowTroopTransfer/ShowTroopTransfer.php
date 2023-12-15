@@ -113,7 +113,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
             );
         }
 
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
+        $game->setMacroInAjaxWindow('html/entityNotAvailable.twig');
 
         if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
             return;
