@@ -293,50 +293,6 @@
 		</table>
 	</form>
 </metal:macro>
-<metal:macro metal:define-macro="takeoffer">
-	<form method="post" action="trade.php">
-		<input type="hidden" name="offerid" tal:attributes="value SELECTED_OFFER/getId" />
-		<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-		<table class="tcal">
-			<tr>
-				<td>
-					Wie oft soll das Angebot angenommen werden?<br /><br />
-					<div style="width: 100%; text-align: center;">
-						<img src="assets/commodities/${SELECTED_OFFER/getOfferedCommodityId}.png" />
-						<span tal:replace="SELECTED_OFFER/getOfferedCommodityCount">GCOUNT</span>
-						gegen
-						<img src="assets/commodities/${SELECTED_OFFER/getWantedCommodityId}.png" />
-						<span tal:replace="SELECTED_OFFER/getWantedCommodityCount">WCOUNT</span>
-						<br />
-						<br />
-						x <input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen"
-							name="B_TAKE_OFFER" />
-					</div>
-					<br />
-					<div style="text-align: center;"
-						tal:condition="exists:SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedCommodityId}">
-						Lagernd auf diesem Handelsposten: <img
-							src="assets/commodities/${SELECTED_OFFER/getWantedCommodityId}.png" /> <span
-							tal:replace="SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedCommodityId}/getAmount">COUNT</span><br />
-					</div>
-				</td>
-			</tr>
-		</table>
-		<br />
-		<table class="tcal">
-			<tr>
-				<th>Freier Lagerraum</th>
-			</tr>
-			<tr>
-				<td>
-					<img src="assets/buttons/lager.png" title="Freier Lagerraum" /> <span
-						tal:replace="TRADE_POST/getFreeStorage">FREESTORAGE</span> (<span
-						tal:replace="SELECTED_OFFER/getTradePost/getStorage">STORAGE</span>)
-				</td>
-			</tr>
-		</table>
-	</form>
-</metal:macro>
 <metal:macro metal:define-macro="tradelicenselist">
 	<table class="tcal" style="width: 400px;">
 		<tr>

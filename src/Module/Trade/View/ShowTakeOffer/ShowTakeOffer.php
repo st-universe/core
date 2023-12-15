@@ -37,25 +37,35 @@ final class ShowTakeOffer implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $selectedOffer = $this->tradeOfferRepository->find($this->showTakeOfferRequest->getOfferId());
+        $userId = $game->getUser()->getId();
 
-        if ($selectedOffer === null || !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost(
-            $game->getUser()->getId(),
-            $selectedOffer->getTradePostId()
-        )) {
-            throw new AccessViolation();
-        }
-
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/takeoffer');
+        $game->setMacroInAjaxWindow('html/trade/takeOffer.twig');
         $game->setPageTitle(_('Angebot annehmen'));
 
-        $game->setTemplateVar(
-            'SELECTED_OFFER',
-            $selectedOffer
-        );
-        $game->setTemplateVar(
-            'TRADE_POST',
-            $this->tradeLibFactory->createTradeAccountTal($selectedOffer->getTradePost(), $game->getUser()->getId())
-        );
+        $selectedOffer = $this->tradeOfferRepository->find($this->showTakeOfferRequest->getOfferId());
+
+        if ($selectedOffer !== null && !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost(
+            $userId,
+            $selectedOffer->getTradePostId()
+        )) {
+            throw new AccessViolation(sprintf(
+                'userId %d does not have a license for tradePostId %d',
+                $userId,
+                $selectedOffer->getTradePostId()
+            ));
+        }
+
+        if ($selectedOffer !== null) {
+            $game->setTemplateVar(
+                'SELECTED_OFFER',
+                $selectedOffer
+            );
+
+            $tradeAccount = $this->tradeLibFactory->createTradeAccountTal($selectedOffer->getTradePost(), $game->getUser()->getId());
+            $isStorageExistent = array_key_exists($selectedOffer->getWantedCommodityId(), $tradeAccount->getStorage());
+
+            $game->setTemplateVar('TRADE_ACCOUNT', $tradeAccount);
+            $game->setTemplateVar('STORED', $isStorageExistent ? $tradeAccount->getStorage()[$selectedOffer->getWantedCommodityId()]->getAmount() : null);
+        }
     }
 }

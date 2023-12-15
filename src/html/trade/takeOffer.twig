@@ -1,0 +1,48 @@
+{% if SELECTED_OFFER %}
+<form method="post" action="trade.php">
+    <input type="hidden" name="offerid" value="{{ SELECTED_OFFER.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <table class="tcal">
+        <tr>
+            <td>
+                Wie oft soll das Angebot angenommen werden?<br /><br />
+                <div style="width: 100%; text-align: center;">
+                    <img src="assets/commodities/{{ SELECTED_OFFER.getOfferedCommodityId }}.png" />
+                    {{ SELECTED_OFFER.getOfferedCommodityCount }}
+                    gegen
+                    <img src="assets/commodities/{{ SELECTED_OFFER.getWantedCommodityId }}.png" />
+                    {{ SELECTED_OFFER.getWantedCommodityCount }}
+                    <br />
+                    <br />
+                    x <input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen"
+                        name="B_TAKE_OFFER" />
+                </div>
+                <br />
+                {% if STORED %}
+                <div style="text-align: center;">
+                    Lagernd auf diesem Handelsposten:
+                    <img src="assets/commodities/{{ SELECTED_OFFER.getWantedCommodityId }}.png" />
+                    {{ STORED }}
+                    <br />
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th>Freier Lagerraum</th>
+        </tr>
+        <tr>
+            <td>
+                <img src="assets/buttons/lager.png" title="Freier Lagerraum" />
+                {{ TRADE_ACCOUNT.getFreeStorage }}
+                ({{ SELECTED_OFFER.getTradePost.getStorage }})
+            </td>
+        </tr>
+    </table>
+</form>
+{% else %}
+Dieses Angebot existiert nicht mehr
+{% endif %}
