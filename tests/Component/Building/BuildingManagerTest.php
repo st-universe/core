@@ -714,6 +714,133 @@ class BuildingManagerTest extends StuTestCase
         $this->buildingManager->remove($field);
     }
 
+    public function testRemoveExpectRemovalWhenUpgrade(): void
+    {
+        $field = $this->mock(PlanetFieldInterface::class);
+        $building = $this->mock(BuildingInterface::class);
+        $host = $this->mock(ColonyInterface::class);
+        $function = $this->mock(BuildingFunctionInterface::class);
+        $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
+
+        $currentStorage = 555;
+        $storage = 44;
+        $currentEps = 33;
+        $eps = 22;
+        $functionId = 123;
+        $buildingWorkers = 123;
+
+        $field->shouldReceive('getBuilding')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($building);
+        $field->shouldReceive('getHost')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($host);
+        $field->shouldReceive('clearBuilding')
+            ->withNoArgs()
+            ->once();
+        $field->shouldReceive('isUnderConstruction')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $field->shouldReceive('isActivateable')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $field->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $field->shouldReceive('setActive')
+            ->with(false)
+            ->once();
+
+        $building->shouldReceive('getStorage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($storage);
+        $building->shouldReceive('getEpsStorage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($eps);
+        $building->shouldReceive('getWorkers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($buildingWorkers);
+        $building->shouldReceive('getHousing')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+        $building->shouldReceive('getFunctions')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$function]));
+
+        $function->shouldReceive('getFunction')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($functionId);
+
+        $this->buildingFunctionActionMapper->shouldReceive('map')
+            ->with($functionId)
+            ->once()
+            ->andReturn($buildingAction);
+
+        $buildingAction->shouldReceive('destruct')
+            ->with($functionId, $host)
+            ->once();
+
+        $host->shouldReceive('getMaxStorage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($currentStorage);
+        $host->shouldReceive('getMaxEps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($currentEps);
+        $host->shouldReceive('setMaxStorage')
+            ->with($currentStorage - $storage)
+            ->once()
+            ->andReturnSelf();
+        $host->shouldReceive('setMaxEps')
+            ->with($currentEps - $eps)
+            ->once();
+        $host->shouldReceive('getWorkless')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(0);
+        $host->shouldReceive('setWorkless')
+            ->with($buildingWorkers)
+            ->once();
+        $host->shouldReceive('getWorkers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($buildingWorkers);
+        $host->shouldReceive('setWorkers')
+            ->with(0)
+            ->once();
+        $host->shouldReceive('getMaxBev')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(200);
+        $host->shouldReceive('setMaxBev')
+            ->with(100)
+            ->once();
+
+        $this->planetFieldRepository->shouldReceive('save')
+            ->with($field)
+            ->twice();
+        $this->colonyRepository->shouldReceive('save')
+            ->with($host)
+            ->twice();
+        $this->buildingPostAction->shouldReceive('handleDeactivation')
+            ->with($building, $host)
+            ->once();
+
+        $this->buildingManager->remove($field, true);
+    }
+
     public function testFinishFailsIfNoBuildingAvailable(): void
     {
         $field = $this->mock(PlanetFieldInterface::class);

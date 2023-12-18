@@ -137,14 +137,14 @@ final class BuildingManager implements BuildingManagerInterface
         $host->setMaxBev($host->getMaxBev() - $building->getHousing());
     }
 
-    public function remove(PlanetFieldInterface $field): void
+    public function remove(PlanetFieldInterface $field, bool $isDueToUpgrade = false): void
     {
         $building = $field->getBuilding();
         if ($building === null) {
             return;
         }
 
-        if (!$building->isRemovable()) {
+        if (!$isDueToUpgrade && !$building->isRemovable()) {
             return;
         }
 

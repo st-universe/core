@@ -89,19 +89,21 @@ final class BuildingAction implements BuildingActionInterface
 
     public function remove(
         PlanetFieldInterface $field,
-        GameControllerInterface $game
+        GameControllerInterface $game,
+        bool $isDueToUpgrade = false
     ): void {
+
         if (!$field->hasBuilding()) {
             return;
         }
 
         $building = $field->getBuilding();
 
-        if (!$building->isRemovable()) {
+        if (!$isDueToUpgrade && !$building->isRemovable()) {
             return;
         }
 
-        $this->buildingManager->remove($field);
+        $this->buildingManager->remove($field, $isDueToUpgrade);
 
         $game->addInformationf(
             _('%s auf Feld %d wurde demontiert'),
