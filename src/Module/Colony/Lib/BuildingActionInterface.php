@@ -3,7 +3,6 @@
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
 interface BuildingActionInterface
@@ -14,6 +13,7 @@ interface BuildingActionInterface
 
     public function remove(
         PlanetFieldInterface $field,
-        GameControllerInterface $game
+        GameControllerInterface $game,
+        bool $isDueToUpgrade = false
     ): void;
 }
