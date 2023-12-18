@@ -110,6 +110,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         );
         $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
 
+        $isActive = $field->isActive();
         $this->buildingAction->remove($field, $game);
 
         if ($host instanceof ColonyInterface) {
@@ -119,6 +120,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         }
 
         $field->setBuilding($building);
+        $field->setActivateAfterBuild($isActive);
 
         $game->addExecuteJS('refreshHost();');
 
