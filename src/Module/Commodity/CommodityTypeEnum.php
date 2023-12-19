@@ -27,7 +27,7 @@ final class CommodityTypeEnum
     public const COMMODITY_RESEARCH_LVL1 = 1701;
     public const COMMODITY_RESEARCH_LVL2 = 1702;
     public const COMMODITY_RESEARCH_LVL3 = 1703;
-    public const COMMODITY_RESEARCH_LVL4 = [1711, 1712, 1721, 1731];
+    public const COMMODITY_RESEARCH_LVL4 = [1711, 1712, 1721, 1722, 1731];
 
 
     //effects
