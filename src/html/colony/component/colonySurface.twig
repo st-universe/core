@@ -14,7 +14,7 @@
 
         {% if field.isUnderConstruction %}
         <div style="background-image: url(/assets/generated/fields/{{ dayNightPrefix }}{{ fieldType }}.png); width: 40px; height: 40px;"
-            onclick="fieldMouseClick(this,{{ fieldId }},{{ buildingId }}, '{{ buildingName }}');"
+            onclick="fieldMouseClick(this,{{ fieldId }},{{ buildingId }}, '{{ buildingName|htmlSafe }}');"
             id="field{{ fieldId }}">
             <div onmouseover="fieldMouseOver(this,{{ buildingId }},{{ fieldType }})"
                 onmouseout="fieldMouseOut(this,{{ fieldType }})"
@@ -27,7 +27,7 @@
         </div>
         {% else %}
         <div style="background-image: url(/assets/generated/fields/{{ dayNightPrefix }}{{ fieldType }}.png); width: 40px; height: 40px;"
-            onclick="fieldMouseClick(this,{{ fieldId }},{{ buildingId }}, '{{ buildingName }}');"
+            onclick="fieldMouseClick(this,{{ fieldId }},{{ buildingId }}, '{{ buildingName|htmlSafe }}');"
             id="field{{ fieldId }}">
             <div onmouseover="fieldMouseOver(this,{{ buildingId }},{{ fieldType }})"
                 onmouseout="fieldMouseOut(this,{{ fieldType }})">
