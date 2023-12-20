@@ -220,7 +220,11 @@ final class TroopTransfer implements ActionControllerInterface
             )
         );
 
-        if ($ship->getCrewCount() <= $ship->getBuildplan()->getCrew()) {
+        if (
+            $ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            && $ship->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            && $ship->getCrewCount() <= $ship->getBuildplan()->getCrew()
+        ) {
             $this->helper->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
     }
@@ -258,12 +262,12 @@ final class TroopTransfer implements ActionControllerInterface
         );
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-        if (
-            $amount > 0
-            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-            && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
-        ) {
-            throw new SystemNotActivatableException();
+            if (
+                $amount > 0
+                && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
+            ) {
+                throw new SystemNotActivatableException();
             }
         }
 
@@ -342,12 +346,12 @@ final class TroopTransfer implements ActionControllerInterface
         );
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-        if (
-            $amount > 0
-            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-            && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
-        ) {
-            throw new SystemNotActivatableException();
+            if (
+                $amount > 0
+                && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
+            ) {
+                throw new SystemNotActivatableException();
             }
         }
 
