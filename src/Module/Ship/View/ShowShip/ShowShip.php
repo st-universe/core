@@ -182,7 +182,6 @@ final class ShowShip implements ViewControllerInterface
                 $ship,
                 $game->getUser(),
                 $this->loggerUtilFactory->getLoggerUtil(),
-                $ship->getTachyonState(),
                 $tachyonFresh
             ));
         }

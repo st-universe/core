@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 use Stu\Orm\Entity\StarSystemInterface;
 
 class SystemScanPanelEntry extends SignaturePanelEntry
@@ -11,10 +12,12 @@ class SystemScanPanelEntry extends SignaturePanelEntry
     private StarSystemInterface $system;
 
     public function __construct(
-        VisualPanelEntryData $data,
+        int $x,
+        int $y,
+        PanelLayers $layers,
         StarSystemInterface $system
     ) {
-        parent::__construct($data, null, null);
+        parent::__construct($x, $y, $layers);
 
         $this->system = $system;
     }
@@ -28,8 +31,8 @@ class SystemScanPanelEntry extends SignaturePanelEntry
     {
         return sprintf(
             'showSectorScanWindow(this, %d, %d, %d, %s);',
-            $this->data->getPosX(),
-            $this->data->getPosY(),
+            $this->x,
+            $this->y,
             $this->system->getId(),
             'false'
         );

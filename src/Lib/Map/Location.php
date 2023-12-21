@@ -29,6 +29,11 @@ class Location
         $this->location = $map ?? $sysMap;
     }
 
+    public function get(): MapInterface|StarSystemMapInterface
+    {
+        return $this->location;
+    }
+
     /**
      * @return Collection<int, ShipInterface>
      */
@@ -59,5 +64,15 @@ class Location
         }
 
         return false;
+    }
+
+    public function isMap(): bool
+    {
+        return $this->location instanceof MapInterface;
+    }
+
+    public function getId(): int
+    {
+        return $this->location->getId();
     }
 }

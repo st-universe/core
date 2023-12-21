@@ -7,7 +7,7 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
-use Stu\Lib\Map\VisualPanel\SystemCellData;
+use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -159,7 +159,9 @@ final class DatabaseEntry implements ViewControllerInterface
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
                 foreach ($starSystem->getFields() as $obj) {
                     $fields['fields'][$obj->getSY()][] = [
-                        'systemCellData' => $this->createSystemCellData($obj),
+
+                        //TODO do it with nav panel layer stuff!
+                        'systemCellData' => $this->createMapData($obj),
                         'colony' => $obj->getColony(),
                         'showPm' => $userHasColonyInSystem && $this->showPmHref($obj, $game->getUser())
                     ];
@@ -194,15 +196,12 @@ final class DatabaseEntry implements ViewControllerInterface
         return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
-    private function createSystemCellData(StarSystemMapInterface $systemMap): SystemCellData
+    private function createMapData(StarSystemMapInterface $systemMap): MapData
     {
-        return new SystemCellData(
+        return new MapData(
             $systemMap->getSx(),
             $systemMap->getSy(),
             $systemMap->getFieldId(),
-            false,
-            null,
-            null
         );
     }
 

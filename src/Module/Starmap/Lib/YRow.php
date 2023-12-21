@@ -6,7 +6,7 @@ namespace Stu\Module\Starmap\Lib;
 
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
-use Stu\Lib\Map\VisualPanel\SystemCellData;
+use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Module\Admin\View\Map\EditSection\MapItem;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -26,7 +26,7 @@ class YRow
 
     protected int|StarSystemInterface $system;
 
-    /** @var null|array<MapItem>|array<SystemCellData> */
+    /** @var null|array<MapItem>|array<MapData> */
     protected $fields;
 
     private MapRepositoryInterface $mapRepository;
@@ -56,7 +56,7 @@ class YRow
     }
 
     /**
-     * @return array<MapItem>|array<SystemCellData>
+     * @return array<MapItem>|array<MapData>
      */
     public function getFields(): array
     {
@@ -86,7 +86,7 @@ class YRow
     }
 
     /**
-     * @return array<MapItem>|array<SystemCellData>
+     * @return array<MapItem>|array<MapData>
      */
     public function getSystemFields(): array
     {
@@ -95,7 +95,7 @@ class YRow
 
             if ($this->system instanceof StarSystemInterface) {
                 $this->fields = array_map(
-                    fn (StarSystemMapInterface $systemMap) => $this->mapSystemMapToSystemCellData($systemMap),
+                    fn (StarSystemMapInterface $systemMap) => $this->mapSystemMapToMapData($systemMap),
                     array_filter(
                         $this->system->getFields()->toArray(),
                         fn (StarSystemMapInterface $systemMap) => $systemMap->getSy() === $this->row
@@ -110,7 +110,7 @@ class YRow
                         $this->row
                     );
                     if ($systemMap !== null) {
-                        $this->fields[] = $this->mapSystemMapToSystemCellData($systemMap);
+                        $this->fields[] = $this->mapSystemMapToMapData($systemMap);
                     }
                 }
             }
@@ -118,15 +118,12 @@ class YRow
         return $this->fields;
     }
 
-    private function mapSystemMapToSystemCellData(StarSystemMapInterface $systemMap): SystemCellData
+    private function mapSystemMapToMapData(StarSystemMapInterface $systemMap): MapData
     {
-        return new SystemCellData(
+        return new MapData(
             $systemMap->getSx(),
             $systemMap->getSy(),
-            $systemMap->getFieldId(),
-            false,
-            null,
-            null
+            $systemMap->getFieldId()
         );
     }
 

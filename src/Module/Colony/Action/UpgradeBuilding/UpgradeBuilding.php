@@ -111,7 +111,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
 
         $isActive = $field->isActive();
-        $this->buildingAction->remove($field, $game);
+        $this->buildingAction->remove($field, $game, true);
 
         if ($host instanceof ColonyInterface) {
             foreach ($upgrade->getUpgradeCosts() as $obj) {

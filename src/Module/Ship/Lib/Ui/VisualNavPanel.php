@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
-use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Lib\Map\Location;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
-use Stu\Lib\Map\VisualPanel\VisualPanelRow;
-use Stu\Lib\Map\VisualPanel\VisualPanelRowIndex;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
+use Stu\Lib\Map\VisualPanel\PanelBoundaries;
+use Stu\Lib\Map\VisualPanel\VisualNavPanelEntry;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class VisualNavPanel extends AbstractVisualPanel
@@ -22,41 +23,114 @@ class VisualNavPanel extends AbstractVisualPanel
 
     private UserInterface $user;
 
-    private bool $isTachyonSystemActive;
-
     private bool $tachyonFresh;
 
     private UserMapRepositoryInterface $userMapRepository;
 
-    private ShipRepositoryInterface $shipRepository;
+    private ?Location $panelCenter = null;
 
-    private ShipUiFactoryInterface $shipUiFactory;
+    private ?bool $isOnShipLevel = null;
 
     public function __construct(
-        ShipUiFactoryInterface $shipUiFactory,
+        PanelLayerCreationInterface $panelLayerCreation,
         UserMapRepositoryInterface $userMapRepository,
-        ShipRepositoryInterface $shipRepository,
         ShipInterface $currentShip,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
-        bool $isTachyonSystemActive,
         bool $tachyonFresh
     ) {
-        parent::__construct($loggerUtil);
+        parent::__construct($panelLayerCreation, $loggerUtil);
 
         $this->userMapRepository = $userMapRepository;
-        $this->shipRepository = $shipRepository;
         $this->currentShip = $currentShip;
         $this->user = $user;
-        $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
-        $this->shipUiFactory = $shipUiFactory;
     }
 
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    private function getOuterSystemResult(): array
+    protected function createBoundaries(): PanelBoundaries
+    {
+        return PanelBoundaries::fromLocation($this->getPanelCenter(), $this->currentShip->getSensorRange());
+    }
+
+    protected function loadLayers(): void
+    {
+
+        $panelLayerCreation = $this->panelLayerCreation
+            ->addShipCountLayer($this->tachyonFresh, $this->currentShip)
+            ->addBorderLayer($this->currentShip, $this->isOnShipLevel());
+
+        $map = $this->getPanelCenter()->get();
+
+        if ($map instanceof MapInterface) {
+            $panelLayerCreation->addMapLayer($map->getLayer());
+            $this->createUserMapEntries();
+        } else {
+            $panelLayerCreation
+                ->addSystemLayer()
+                ->addColonyShieldLayer();
+        }
+
+        if ($this->currentShip->getSubspaceState()) {
+            $panelLayerCreation->addSubspaceLayer($this->user->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
+        }
+
+        $this->layers = $panelLayerCreation->build($this);
+    }
+
+    protected function getEntryCallable(): callable
+    {
+        return fn (int $x, int $y) => new VisualNavPanelEntry(
+            $x,
+            $y,
+            $this->isOnShipLevel(),
+            $this->layers,
+            $this->currentShip
+        );
+    }
+
+    protected function getPanelViewportPercentage(): int
+    {
+        return $this->currentShip->isBase() ? 50 : 33;
+    }
+
+    private function isOnShipLevel(): bool
+    {
+        if ($this->isOnShipLevel === null) {
+            $this->isOnShipLevel = $this->currentShip->getLocation()->get() === $this->getPanelCenter()->get();
+        }
+
+        return $this->isOnShipLevel;
+    }
+
+    private function getPanelCenter(): Location
+    {
+        if ($this->panelCenter === null) {
+            $this->panelCenter = $this->determinePanelCenter();
+        }
+
+        return $this->panelCenter;
+    }
+
+    private function determinePanelCenter(): Location
+    {
+        $map = $this->currentShip->getCurrentMapField();
+        if ($map instanceof MapInterface) {
+            return new Location($map, null);
+        }
+
+        if (
+            $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR
+            || $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE
+        ) {
+            $mapOfSystem = $map->getSystem()->getMapField();
+
+            return $mapOfSystem === null ? new Location(null, $map) : new Location($mapOfSystem, null);
+        }
+
+        return new Location(null, $map);
+    }
+
+    private function createUserMapEntries(): void
     {
         $cx = $this->currentShip->getCX();
         $cy = $this->currentShip->getCY();
@@ -72,15 +146,6 @@ class VisualNavPanel extends AbstractVisualPanel
                 $range
             );
         }
-
-        return $this->shipRepository->getSensorResultOuterSystem(
-            $cx,
-            $cy,
-            $layerId,
-            $range,
-            $this->currentShip->getSubspaceState(),
-            $this->user->getId()
-        );
     }
 
     private function isUserMapActive(int $layerId): bool
@@ -90,131 +155,5 @@ class VisualNavPanel extends AbstractVisualPanel
         }
 
         return !$this->user->hasExplored($layerId);
-    }
-
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    private function getInnerSystemResult(): iterable
-    {
-        return $this->shipRepository->getSensorResultInnerSystem(
-            $this->currentShip,
-            $this->user->getId()
-        );
-    }
-
-    protected function loadLSS(): array
-    {
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-        if ($this->showOuterMap()) {
-            $result = $this->getOuterSystemResult();
-        } else {
-            $result = $this->getInnerSystemResult();
-        }
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-        }
-
-        $currentShip = $this->currentShip;
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-
-        $rows = [];
-
-        foreach ($result as $data) {
-            $y = $data->getPosY();
-
-            if ($y < 1) {
-                continue;
-            }
-
-            //create new row if y changed
-            if (!array_key_exists($y, $rows)) {
-                $navPanelRow = new VisualPanelRow();
-                $rowIndex = new VisualPanelRowIndex($y, 'th');
-                $navPanelRow->addEntry($rowIndex);
-
-                $rows[$y] = $navPanelRow;
-            }
-
-            $navPanelRow = $rows[$y];
-            $entry = $this->shipUiFactory->createVisualNavPanelEntry(
-                $data,
-                $currentShip->getLayer(),
-                $currentShip,
-                $this->isTachyonSystemActive,
-                $this->tachyonFresh
-            );
-            $navPanelRow->addEntry($entry);
-        }
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            //$this->loggerUtil->log(sprintf("\tloadLSS-loop, seconds: %F", $endTime - $startTime));
-        }
-
-        return $rows;
-    }
-
-    /**
-     * @return array<array{value: int}>
-     */
-    public function getHeadRow(): array
-    {
-        if ($this->headRow === null) {
-            $cx = $this->showOuterMap() ? $this->currentShip->getCx() : $this->currentShip->getPosX();
-            $range = $this->currentShip->getSensorRange();
-
-            $min = $cx - $range;
-            $max = $cx + $range;
-
-            $row = [];
-
-            while ($min <= $max) {
-                if ($min < 1) {
-                    $min++;
-                    continue;
-                }
-                if ($this->showOuterMap()) {
-                    if ($this->currentShip->getLayer() === null) {
-                        throw new RuntimeException('layer should not be null if outside of system');
-                    }
-
-                    if ($min > $this->currentShip->getLayer()->getWidth()) {
-                        break;
-                    }
-                }
-                if (!$this->showOuterMap()) {
-                    if ($this->currentShip->getSystem() === null) {
-                        throw new RuntimeException('system should not be null if inside of system');
-                    }
-
-                    if ($min > $this->currentShip->getSystem()->getMaxX()) {
-                        break;
-                    }
-                }
-                $row[]['value'] = $min;
-                $min++;
-            }
-
-            $this->headRow = $row;
-        }
-
-        return $this->headRow;
-    }
-
-    protected function getPanelViewportPercentage(): int
-    {
-        return $this->currentShip->isBase() ? 50 : 33;
-    }
-
-    private function showOuterMap(): bool
-    {
-        return $this->currentShip->getSystem() === null
-            || $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR
-            || $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE;
     }
 }

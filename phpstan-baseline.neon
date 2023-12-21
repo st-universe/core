@@ -129,6 +129,11 @@ parameters:
 			path: src/Lib/CleanTextUtils.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: src/Lib/Map/VisualPanel/Layer/DataProvider/Subspace/SubspaceDataProviderFactory.php
+
+		-
 			message: "#^Cannot call method setMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperEps.php
@@ -422,11 +427,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$array of function array_map expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\UserInterface\\> given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Playerlist/Playerlist.php
-
-		-
-			message: "#^Variable \\$row might not be defined\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
@@ -2576,21 +2576,6 @@ parameters:
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
 			count: 6
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Cannot call method getSx\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 2
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Cannot call method getSy\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 2
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 1
 			path: src/Orm/Repository/ShipRepository.php
 
 		-

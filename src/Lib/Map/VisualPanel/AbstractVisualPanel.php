@@ -4,35 +4,53 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 use Stu\Lib\Map\VisualPanel\VisualPanelRow;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 abstract class AbstractVisualPanel
 {
+    protected PanelLayerCreationInterface $panelLayerCreation;
+
     protected LoggerUtilInterface $loggerUtil;
+
+    protected PanelLayers $layers;
+
+    private ?PanelBoundaries $boundaries = null;
 
     /** @var null|array<int, VisualPanelRow> */
     private ?array $rows = null;
 
-    /** @var null|array<array{value: int}> */
-    protected ?array $headRow = null;
-
     private ?float $viewport = null;
 
-    private ?string $viewportPerColumn = null;
+    private ?string $heightAndWidth = null;
 
-    private ?string $viewportForFont = null;
+    private ?string $fontSize = null;
 
     public function __construct(
+        PanelLayerCreationInterface $panelLayerCreation,
         LoggerUtilInterface $loggerUtil
     ) {
+        $this->panelLayerCreation = $panelLayerCreation;
         $this->loggerUtil = $loggerUtil;
     }
 
+    protected abstract function createBoundaries(): PanelBoundaries;
+
+    protected abstract function loadLayers(): void;
+
+    protected abstract function getEntryCallable(): callable;
+
+    protected abstract function getPanelViewportPercentage(): int;
+
     /**
-     * @return array<array{value: int}>
+     * @return array<int>
      */
-    public abstract function getHeadRow(): array;
+    public function getHeadRow(): array
+    {
+        return $this->getBoundaries()->getColumnRange();
+    }
 
     /**
      * @return array<int, VisualPanelRow>
@@ -40,7 +58,8 @@ abstract class AbstractVisualPanel
     public function getRows(): array
     {
         if ($this->rows === null) {
-            $this->rows = $this->loadLSS();
+            $this->loadLayers();
+            $this->rows = $this->loadPanelRows();
         }
         return $this->rows;
     }
@@ -48,9 +67,50 @@ abstract class AbstractVisualPanel
     /**
      * @return array<VisualPanelRow>
      */
-    protected abstract function loadLSS(): array;
+    private function loadPanelRows(): array
+    {
+        $rows = [];
 
-    protected abstract function getPanelViewportPercentage(): int;
+        foreach ($this->getBoundaries()->getRowRange() as $y) {
+
+            $rows[$y] = new VisualPanelRow($y);
+
+            $callable = $this->getEntryCallable();
+
+            foreach ($this->getBoundaries()->getColumnRange() as $x) {
+                $rows[$y]->addEntry($callable($x, $y));
+            }
+        }
+
+        return $rows;
+    }
+
+    public function getBoundaries(): PanelBoundaries
+    {
+        if ($this->boundaries === null) {
+            $this->boundaries = $this->createBoundaries();
+        }
+
+        return $this->boundaries;
+    }
+
+    public function getHeightAndWidth(): string
+    {
+        if ($this->heightAndWidth === null) {
+
+            $viewPortScale = number_format($this->getViewport(), 1);
+            $this->heightAndWidth = sprintf('height: %1$svw; width: %1$svw;', $viewPortScale);
+        }
+        return $this->heightAndWidth;
+    }
+
+    public function getFontSize(): string
+    {
+        if ($this->fontSize === null) {
+            $this->fontSize =  sprintf('font-size: %svw;', number_format($this->getViewport() / 2, 1));
+        }
+        return $this->fontSize;
+    }
 
     private function getViewport(): float
     {
@@ -60,21 +120,5 @@ abstract class AbstractVisualPanel
             $this->viewport = min($perColumn, 1.7);
         }
         return $this->viewport;
-    }
-
-    public function getViewportPerColumn(): string
-    {
-        if ($this->viewportPerColumn === null) {
-            $this->viewportPerColumn = number_format($this->getViewport(), 1);
-        }
-        return $this->viewportPerColumn;
-    }
-
-    public function getViewportForFont(): string
-    {
-        if ($this->viewportForFont === null) {
-            $this->viewportForFont = number_format($this->getViewport() / 2, 1);
-        }
-        return $this->viewportForFont;
     }
 }

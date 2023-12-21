@@ -8,11 +8,14 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Map\MapEnum;
+use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\LayerInterface;
@@ -143,6 +146,258 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $em->persist($map);
     }
 
+    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.cx AS x, m.cy AS y,
+                (SELECT al.rgb_code FROM stu_alliances al
+                    JOIN stu_user u ON al.id = u.allys_id
+                    JOIN stu_ships s ON u.id = s.user_id
+                    JOIN stu_map ma ON ma.influence_area_id = s.influence_area_id
+                    WHERE ma.id = m.id AND ma.bordertype_id IS NULL AND ma.admin_region_id IS NULL)
+                            AS allycolor,
+                (SELECT COALESCE(us.value, \'\') FROM stu_user u
+                    LEFT JOIN stu_user_setting us ON u.id = us.user_id
+                    JOIN stu_ships s ON u.id = s.user_id
+                    JOIN stu_map mu ON mu.influence_area_id = s.influence_area_id
+                    WHERE us.setting = :rgbCodeSetting
+                    AND mu.id = m.id AND mu.bordertype_id IS NULL AND mu.admin_region_id IS NULL)
+                        as usercolor,
+                (SELECT mbt.color FROM stu_map_bordertypes mbt
+                    JOIN stu_map mb ON mb.bordertype_id = mbt.id
+                    WHERE mb.id = m.id AND mb.bordertype_id IS NOT NULL)
+                        AS factioncolor
+            FROM stu_map m
+            WHERE m.cx BETWEEN :xStart AND :xEnd
+            AND m.cy BETWEEN :yStart AND :yEnd
+            AND m.layer_id = :layerId',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'rgbCodeSetting' => UserSettingEnum::RGB_CODE->value
+        ])->getResult();
+    }
+
+
+    public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.cx as x, m.cy AS y, ft.type
+                FROM stu_map m
+                JOIN stu_map_ftypes ft ON ft.id = m.field_id
+                WHERE m.cx BETWEEN :xStart AND :xEnd AND m.cy BETWEEN :yStart AND :yEnd
+                AND m.layer_id = :layerId',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+        ])->getResult();
+    }
+
+    public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.id, m.cx as x, m.cy AS y,
+                (SELECT count(DISTINCT b.id) FROM stu_ships b
+                    WHERE m.id = b.map_id
+                    AND NOT EXISTS (SELECT ss.id
+                                        FROM stu_ship_system ss
+                                        WHERE b.id = ss.ship_id
+                                        AND ss.system_type = :cloakSystemId
+                                        AND ss.mode > 1)) AS shipcount,
+                (SELECT count(DISTINCT c.id) FROM stu_ships c
+                    WHERE m.id = c.map_id
+                    AND EXISTS (SELECT ss2.id
+                                        FROM stu_ship_system ss2
+                                        WHERE c.id = ss2.ship_id
+                                        AND ss2.system_type = :cloakSystemId
+                                        AND ss2.mode > 1)) AS cloakcount
+            FROM stu_map m
+            WHERE m.cx BETWEEN :xStart AND :xEnd AND m.cy BETWEEN :yStart AND :yEnd
+            AND m.layer_id = :layerId
+            GROUP BY m.id, m.cy, m.cx',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
+        ])->getResult();
+    }
+
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array
+    {
+        $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT m.cx AS x, m.cy AS y,
+                (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
+                WHERE fs1.map_id = m.id
+                AND fs1.user_id != %1$d
+                AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
+                AND fs1.time > %2$d) as d1c,
+                (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
+                WHERE fs2.map_id = m.id
+                AND fs2.user_id != %1$d
+                AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
+                AND fs2.time > %2$d) as d2c,
+                (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
+                WHERE fs3.map_id = m.id
+                AND fs3.user_id != %1$d
+                AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
+                AND fs3.time > %2$d) as d3c,
+                (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
+                WHERE fs4.map_id = m.id
+                AND fs4.user_id != %1$d
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
+                AND fs4.time > %2$d) as d4c 
+                FROM stu_map m
+                WHERE m.cx BETWEEN :xStart AND :xEnd
+                AND m.cy BETWEEN :yStart AND :yEnd
+                AND m.layer_id = :layerId',
+                $ignoreId,
+                $maxAge
+            ),
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+        ])->getResult();
+    }
+
+    public function getSignaturesOuterSystem(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.id, m.cx as x, m.cy as y, ft.type,
+                (SELECT count(distinct b.id)
+                    FROM stu_ships b
+                    WHERE b.map_id = m.id) as shipcount,
+            (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
+                WHERE fs1.map_id = m.id
+                AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
+            (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
+                WHERE fs2.map_id = m.id
+                AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
+            (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
+                WHERE fs3.map_id = m.id
+                AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
+            (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
+                WHERE fs4.map_id = m.id
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+            FROM stu_map m
+            LEFT JOIN stu_map_ftypes ft ON ft.id = m.field_id
+            WHERE m.cx BETWEEN :xStart AND :xEnd
+            AND m.cy BETWEEN :yStart AND :yEnd
+            AND m.layer_id = :layerId
+            GROUP BY m.cy, m.cx, m.id, ft.type, m.field_id',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    public function getSignaturesOuterSystemOfUser(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.id, m.cx as x, m.cy as y, ft.type,
+            (SELECT count(distinct b.id)
+                FROM stu_ships b
+                WHERE b.map_id = m.id
+                AND b.user_id = :userId) as shipcount,
+            (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
+                WHERE fs1.map_id = m.id
+                AND fs1.user_id = :userId
+                AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
+            (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
+                WHERE fs2.map_id = m.id
+                AND fs2.user_id = :userId
+                AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
+            (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
+                WHERE fs3.map_id = m.id
+                AND fs3.user_id = :userId
+                AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
+            (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
+                WHERE fs4.map_id = m.id
+                AND fs4.user_id = :userId
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+            FROM stu_map m
+            LEFT JOIN stu_map_ftypes ft ON ft.id = m.field_id
+            WHERE m.cx BETWEEN :xStart AND :xEnd
+            AND m.cy BETWEEN :yStart AND :yEnd
+            AND m.layer_id = :layerId
+            GROUP BY m.cy, m.cx, m.id, d.type, m.field_id',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'userId' => $userId
+        ])->getResult();
+    }
+
+    public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.id, m.cx as x, m.cy as y, ft.type,
+                (SELECT count(distinct b.id)
+                    FROM stu_ships b
+                    JOIN stu_user u ON b.user_id = u.id
+                    WHERE b.map_id = m.id
+                    AND u.allys_id = :allyId) as shipcount
+                    (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
+            JOIN stu_user u1 ON fs1.user_id = u1.id
+            WHERE fs1.map_id = m.id
+            AND u1.allys_id = :allyId
+            AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
+            (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
+            JOIN stu_user u2 ON fs2.user_id = u2.id
+            WHERE fs2.map_id = m.id
+            AND u2.allys_id = :allyId
+            AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
+            (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
+            JOIN stu_user u3 ON fs3.user_id = u3.id
+            WHERE fs3.map_id = m.id
+            AND u3.allys_id = :allyId
+            AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
+            (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
+            JOIN stu_user u4 ON fs4.user_id = u4.id
+            WHERE fs4.map_id = m.id
+            AND u4.allys_id = :allyId
+            AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+            FROM stu_map m
+            WHERE m.cx BETWEEN :xStart AND :xEnd
+            AND m.cy BETWEEN :yStart AND :yEnd
+            AND m.layer_id = :layerId',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'allyId' => $allianceId
+        ])->getResult();
+    }
+
     public function getExplored(int $userId, int $layerId, int $startX, int $endX, int $cy): array
     {
         $rsm = new ResultSetMapping();
@@ -229,7 +484,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                             AND s.map_id = m.id
                                             AND ss.mode > :mode)
                                         * 100, 0) - :threshold as descriminator,
-                        m.id AS map_id FROM stu_map m
+                        m.id AS map_id
+                        FROM stu_map m
                         JOIN stu_ships s
                         ON s.map_id = m.id
                         LEFT JOIN stu_rumps r1

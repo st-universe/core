@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Lib;
 
 use Mockery\MockInterface;
-use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -27,8 +27,8 @@ class StationUiFactoryTest extends StuTestCase
     /** @var MockInterface&ShipRepositoryInterface */
     private MockInterface $shipRepository;
 
-    /** @var MockInterface&EncodedMapInterface */
-    private MockInterface $encodedMap;
+    /** @var MockInterface&PanelLayerCreationInterface */
+    private MockInterface $panelLayerCreation;
 
     private StationUiFactory $subject;
 
@@ -38,14 +38,14 @@ class StationUiFactoryTest extends StuTestCase
         $this->allianceRepository = $this->mock(AllianceRepositoryInterface::class);
         $this->factionRepository = $this->mock(FactionRepositoryInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
-        $this->encodedMap = $this->mock(EncodedMapInterface::class);
+        $this->panelLayerCreation = $this->mock(PanelLayerCreationInterface::class);
 
         $this->subject = new StationUiFactory(
             $this->userRepository,
             $this->allianceRepository,
             $this->factionRepository,
             $this->shipRepository,
-            $this->encodedMap
+            $this->panelLayerCreation
         );
     }
 

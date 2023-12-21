@@ -4,104 +4,50 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
-use Stu\Component\Map\EncodedMapInterface;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Orm\Entity\LayerInterface;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 use Stu\Orm\Entity\ShipInterface;
 
 class VisualNavPanelEntry extends SignaturePanelEntry
 {
     private ShipInterface $currentShip;
 
-    private bool $isTachyonSystemActive;
-
-    private bool $tachyonFresh;
+    private bool $isOnShipLevel;
 
     public function __construct(
-        VisualPanelEntryData $data,
-        ?LayerInterface $layer,
-        EncodedMapInterface $encodedMap,
-        ShipInterface $currentShip,
-        bool $isTachyonSystemActive = false,
-        bool $tachyonFresh = false
+        int $x,
+        int $y,
+        bool $isOnShipLevel,
+        PanelLayers $layers,
+        ShipInterface $currentShip
     ) {
-        parent::__construct($data, $layer, $encodedMap);
+        parent::__construct($x, $y, $layers);
         $this->currentShip = $currentShip;
-        $this->isTachyonSystemActive = $isTachyonSystemActive;
-        $this->tachyonFresh = $tachyonFresh;
-    }
-
-    protected function getDisplayCount(): ?string
-    {
-        if ($this->data->getShipCount() > 0) {
-            return (string) $this->data->getShipCount();
-        }
-        if ($this->data->hasCloakedShips()) {
-            if ($this->tachyonFresh) {
-                return "?";
-            }
-
-            if (
-                $this->isTachyonSystemActive
-                && abs($this->data->getPosX() - $this->currentShip->getPosX()) < $this->getTachyonRange()
-                && abs($this->data->getPosY() - $this->currentShip->getPosY()) < $this->getTachyonRange()
-            ) {
-                return "?";
-            }
-        }
-        return null;
-    }
-
-    private function getTachyonRange(): int
-    {
-        return $this->currentShip->isBase() ? 7 : 3;
+        $this->isOnShipLevel = $isOnShipLevel;
     }
 
     private function isCurrentShipPosition(): bool
     {
-        return $this->data->getSystemId() == $this->currentShip->getSystemsId()
-            && $this->data->getPosX() == $this->currentShip->getPosX()
-            && $this->data->getPosY() == $this->currentShip->getPosY();
-    }
-
-    public function getBorder(): string
-    {
-        // current position gets grey border
-        if ($this->isCurrentShipPosition()) {
-            return '#9b9b9b';
+        if (!$this->isOnShipLevel) {
+            return false;
         }
 
-        // hierarchy based border style
-        if (
-            $this->currentShip->getLSSmode() == ShipLSSModeEnum::LSS_BORDER
-        ) {
-            $factionColor = $this->data->getFactionColor();
-            if (!empty($factionColor)) {
-                return $factionColor;
-            }
-
-            $allyColor = $this->data->getAllyColor();
-            if (!empty($allyColor)) {
-                return $allyColor;
-            }
-
-            $userColor = $this->data->getUserColor();
-            if (!empty($userColor)) {
-                return $userColor;
-            }
+        if ($this->x !== $this->currentShip->getPosX()) {
+            return false;
+        }
+        if ($this->y !== $this->currentShip->getPosY()) {
+            return false;
         }
 
-        // default border style
-        return '#2d2d2d';
+        return true;
     }
 
-    public function getCSSClass(): string
+    public function getCssClass(): string
     {
         if ($this->isCurrentShipPosition()) {
             return 'lss_current';
         }
-        return parent::getCSSClass();
+        return parent::getCssClass();
     }
 
     public function isClickAble(): bool
@@ -117,7 +63,7 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         }
 
         return !$this->isCurrentShipPosition()
-            && ($this->data->getPosX() === $this->currentShip->getPosX() || $this->data->getPosY() === $this->currentShip->getPosY());
+            && ($this->x === $this->currentShip->getPosX() || $this->y === $this->currentShip->getPosY());
     }
 
     public function getOnClick(): string
@@ -128,17 +74,12 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         ) {
             return sprintf(
                 'showSectorScanWindow(this, %d, %d, %d, %s);',
-                $this->data->getPosX(),
-                $this->data->getPosY(),
+                $this->x,
+                $this->y,
                 0,
                 'true'
             );
         }
-        return sprintf('moveToPosition(%d,%d);', $this->data->getPosX(), $this->data->getPosY());
-    }
-
-    public function isRowIndex(): bool
-    {
-        return false;
+        return sprintf('moveToPosition(%d,%d);', $this->x, $this->y);
     }
 }
