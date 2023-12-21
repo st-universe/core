@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
-use Stu\Lib\Map\VisualPanel\SystemScanPanelEntry;
-use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -29,16 +28,20 @@ final class StationUiFactory implements StationUiFactoryInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private PanelLayerCreationInterface $panelLayerCreation;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         AllianceRepositoryInterface $allianceRepository,
         FactionRepositoryInterface $factionRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        PanelLayerCreationInterface $panelLayerCreation
     ) {
         $this->userRepository = $userRepository;
         $this->allianceRepository = $allianceRepository;
         $this->factionRepository = $factionRepository;
         $this->shipRepository = $shipRepository;
+        $this->panelLayerCreation = $panelLayerCreation;
     }
 
     public function createSystemScanPanel(
@@ -48,22 +51,11 @@ final class StationUiFactory implements StationUiFactoryInterface
         StarSystemInterface $system
     ): SystemScanPanel {
         return new SystemScanPanel(
-            $this,
-            $this->shipRepository,
+            $this->panelLayerCreation,
             $currentShip,
             $system,
             $user,
             $loggerUtil
-        );
-    }
-
-    public function createSystemScanPanelEntry(
-        VisualPanelEntryData $data,
-        StarSystemInterface $system,
-    ): SystemScanPanelEntry {
-        return new SystemScanPanelEntry(
-            $data,
-            $system
         );
     }
 

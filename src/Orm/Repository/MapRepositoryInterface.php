@@ -2,7 +2,10 @@
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
+use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
@@ -47,6 +50,27 @@ interface MapRepositoryInterface extends ObjectRepository
     ): array;
 
     public function save(MapInterface $map): void;
+
+    /** @return array<CellDataInterface> */
+    public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getSignaturesOuterSystem(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getSignaturesOuterSystemOfUser(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
 
     /**
      * @return array<ExploreableStarMapInterface>

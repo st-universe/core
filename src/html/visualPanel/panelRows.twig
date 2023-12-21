@@ -1,0 +1,22 @@
+{% set fontSize = visualPanel.getFontSize %}
+{% set heightAndWidth = visualPanel.getHeightAndWidth %}
+
+{% for row in visualPanel.getRows %}
+<tr>
+    <td style="{{ heightAndWidth }} {{ fontSize }}" class="th">{{ row.getY }}</td>
+    {% for entry in row.getEntries %}
+    <td class="{{ entry.getCssClass }}" style="{{ entry.getBorder }} {{ heightAndWidth }} background-size: cover;">
+        {% if entry.isClickable %}
+        <div style="{{ heightAndWidth }} position: relative !important; top: 0px;" class="lssobj imgOverlayText"
+            onclick="{{ entry.getOnClick }}">
+            {% include 'html/visualPanel/cellLayers.twig' %}
+        </div>
+        {% else %}
+        <div class="imgOverlayText" style="{{ heightAndWidth }} position: relative !important; top: 0px;">
+            {% include 'html/visualPanel/cellLayers.twig' %}
+        </div>
+        {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+{% endfor %}

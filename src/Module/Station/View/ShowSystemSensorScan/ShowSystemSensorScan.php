@@ -50,8 +50,6 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
 
-        $game->setTemplateVar('DONOTHING', true);
-
         if (
             $cx < $ship->getCx() - $ship->getSensorRange()
             || $cx > $ship->getCx() + $ship->getSensorRange()
@@ -63,7 +61,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
         $mapField = $this->mapRepository->getByCoordinates($ship->getLayerId(), $cx, $cy);
 
-        $game->showMacro('html/stationmacros.xhtml/systemsensorscan');
+        $game->showMacro('html/visualPanel/panel.twig');
 
         $system = $mapField->getSystem();
         if ($system === null) {
@@ -78,7 +76,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             return;
         }
 
-        $game->setTemplateVar('SYSTEM_SCAN_PANEL', $this->stationUiFactory->createSystemScanPanel(
+        $game->setTemplateVar('VISUAL_PANEL', $this->stationUiFactory->createSystemScanPanel(
             $ship,
             $game->getUser(),
             $this->loggerUtilFactory->getLoggerUtil(),
@@ -86,6 +84,5 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         ));
 
         $game->setTemplateVar('SHIP', $ship);
-        $game->setTemplateVar('DONOTHING', false);
     }
 }

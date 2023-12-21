@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
-use Stu\Component\Map\EncodedMapInterface;
-use Stu\Lib\Map\VisualPanel\VisualNavPanelEntry;
-use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 /**
@@ -21,52 +17,28 @@ final class ShipUiFactory implements ShipUiFactoryInterface
 {
     private UserMapRepositoryInterface $userMapRepository;
 
-    private ShipRepositoryInterface $shipRepository;
-
-    private EncodedMapInterface $encodedMap;
+    private PanelLayerCreationInterface $panelLayerCreation;
 
     public function __construct(
         UserMapRepositoryInterface $userMapRepository,
-        ShipRepositoryInterface $shipRepository,
-        EncodedMapInterface $encodedMap
+        PanelLayerCreationInterface $panelLayerCreation
     ) {
         $this->userMapRepository = $userMapRepository;
-        $this->shipRepository = $shipRepository;
-        $this->encodedMap = $encodedMap;
+        $this->panelLayerCreation = $panelLayerCreation;
     }
 
     public function createVisualNavPanel(
         ShipInterface $currentShip,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
-        bool $isTachyonSystemActive,
         bool $tachyonFresh
     ): VisualNavPanel {
         return new VisualNavPanel(
-            $this,
+            $this->panelLayerCreation,
             $this->userMapRepository,
-            $this->shipRepository,
             $currentShip,
             $user,
             $loggerUtil,
-            $isTachyonSystemActive,
-            $tachyonFresh
-        );
-    }
-
-    public function createVisualNavPanelEntry(
-        VisualPanelEntryData $data,
-        ?LayerInterface $layer,
-        ShipInterface $currentShip,
-        bool $isTachyonSystemActive = false,
-        bool $tachyonFresh = false
-    ): VisualNavPanelEntry {
-        return new VisualNavPanelEntry(
-            $data,
-            $layer,
-            $this->encodedMap,
-            $currentShip,
-            $isTachyonSystemActive,
             $tachyonFresh
         );
     }

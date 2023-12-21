@@ -1,53 +1,26 @@
-{% macro control_nav(ship, navPanel, visualNavPanel) %}
+{% macro control_nav(ship, navPanel, visualPanel) %}
 {% if ship.getLss %}
 
-{% set viewportFont = visualNavPanel.getViewportForFont %}
-{% set fontSize = 'font-size: ' ~ viewportFont ~ 'vw;' %}
-
-{% set viewportScale = visualNavPanel.getViewportPerColumn %}
-{% set height = 'height: ' ~ viewportScale ~ 'vw;' %}
-{% set width = 'width: ' ~ viewportScale ~ 'vw;' %}
-{% set heightAndWidth = height ~ width %}
+{% set fontSize = panel.getFontSize %}
+{% set heightAndWidth = visualPanel.getHeightAndWidth %}
 
 <div style="float:left; padding-bottom:5px;">
     <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
-            <td style="text-align: center; {{ height }} position: relative !important; top: 0px;">
+            <td style="text-align: center; {{ heightAndWidth }} position: relative !important; top: 0px;">
                 <a href="ship.php?B_DEACTIVATE_LSS=1&id={{ ship.getId }}"
                     style="{{ heightAndWidth }} position: absolute !important; top: 0px; left: 0px;"><img
                         src="/assets/buttons/lss1.png" name="lss_panel"
                         style="{{ heightAndWidth }} position: relative !important; top: 0px;"
                         title="Langstreckensensoren deaktivieren" /></a>
             </td>
-            {% for row in visualNavPanel.getHeadRow %}
-            <td style="{{ fontSize }} {{ heightAndWidth }} position: relative !important; top: 0px;" class="th">{{
-                row.value }}
+            {% for column in visualPanel.getHeadRow %}
+            <td style="{{ fontSize }} {{ heightAndWidth }} position: relative !important; top: 0px;" class="th">
+                {{ column }}
             </td>
             {% endfor %}
         </tr>
-        {% for row in visualNavPanel.getRows %}
-        <tr>
-            {% for entry in row.getEntries %}
-            {% if entry.isRowIndex %}
-            <td style="{{ heightAndWidth }} {{ fontSize }}" class="{{ entry.getCSSClass }}">{{ entry.getRow }}</td>
-            {% else %}
-            <td class="{{ entry.getCSSClass }}"
-                style="border:1px solid {{ entry.getBorder }}; {{ heightAndWidth }} background-size: cover;">
-                {% if entry.isClickable %}
-                <div style="{{ heightAndWidth }} position: relative !important; top: 0px;" class="lssobj imgOverlayText"
-                    onclick="{{ entry.getOnClick }}">
-                    {{ _self.lssCellLayers(entry.getCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
-                </div>
-                {% else %}
-                <div class="imgOverlayText" style="{{ heightAndWidth }} position: relative !important; top: 0px;">
-                    {{ _self.lssCellLayers(entry.getCellData, fontSize, heightAndWidth, ship.getSubspaceState) }}
-                </div>
-                {% endif %}
-            </td>
-            {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
+        {% include 'html/visualPanel/panelRows.twig' %}
     </table>
 </div>
 {% if ship.canMove %}
@@ -179,30 +152,5 @@
     </tr>
     {% endif %}
 </table>
-{% endif %}
-{% endmacro %}
-
-{% macro lssCellLayers(cellData, fontSize, heightAndWidth, subspaceState) %}
-{% if cellData.getSystemBackgroundId %}
-<img src="/assets/map/starmap/{{ cellData.getSystemBackgroundId }}.png"
-    style="z-index: 1; {{ heightAndWidth }} opacity:1;" />
-{% if cellData.getSystemFieldId %}
-<img src="/assets/map/{{ cellData.getSystemFieldId }}.png" class="lssSubspaceOverShield"
-    style="z-index: 2; {{ heightAndWidth }} opacity:2;" />
-{% endif %}
-{% else %}
-<img src="/assets/map/{{ cellData.getMapGraphicPath }}" style="z-index: 2; {{ heightAndWidth }} opacity:1;" />
-{% endif %}
-{% if cellData.getColonyShieldState %}
-<img src="/assets/planets/s1.png" class="lssColoShield" style="z-index: 3; {{ heightAndWidth }}" />
-{% endif %}
-{% set subspaceCode = cellData.getSubspaceCode %}
-{% if subspaceState and subspaceCode %}
-<img src="/assets/subspace/generated/{{ subspaceCode }}.png" class="lssSubspaceOverShield"
-    style="z-index: 4; {{ heightAndWidth }}" />
-{% endif %}
-{% if cellData.getDisplayCount %}
-<div style="{{ fontSize }}; z-index: 5;" class="centered">{{ cellData.getDisplayCount }}
-</div>
 {% endif %}
 {% endmacro %}

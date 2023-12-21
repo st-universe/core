@@ -10,6 +10,15 @@ use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Map\DistanceCalculation;
 use Stu\Lib\Map\DistanceCalculationInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\BorderDataProvider;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\ColonyShieldDataProvider;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\MapDataProvider;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\ShipCountDataProvider;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactory;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\GradientColor;
@@ -43,5 +52,16 @@ return [
             autowire(ManageReactor::class),
             autowire(ManageTorpedo::class),
         ]
-    )
+    ),
+    SubspaceDataProviderFactoryInterface::class => autowire(SubspaceDataProviderFactory::class),
+    PanelLayerCreationInterface::class => autowire(PanelLayerCreation::class)->constructorParameter(
+        'dataProviders',
+        [
+            PanelLayerEnum::SYSTEM->value => autowire(MapDataProvider::class),
+            PanelLayerEnum::MAP->value => autowire(MapDataProvider::class),
+            PanelLayerEnum::COLONY_SHIELD->value => autowire(ColonyShieldDataProvider::class),
+            PanelLayerEnum::SHIP_COUNT->value => autowire(ShipCountDataProvider::class),
+            PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class)
+        ]
+    ),
 ];

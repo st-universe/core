@@ -3,13 +3,11 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Lib\Map\VisualPanel\VisualPanelEntryData;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Module\Ship\Lib\TShipItemInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -137,42 +135,6 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return iterable<ShipInterface>
      */
     public function getNpcShipsForTick(): iterable;
-
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    public function getSensorResultInnerSystem(
-        ShipInterface $ship,
-        int $ignoreId,
-        StarSystemInterface $system = null
-    ): array;
-
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    public function getSensorResultOuterSystem(
-        int $cx,
-        int $cy,
-        int $layerId,
-        int $sensorRange,
-        bool $doSubspace,
-        int $ignoreId
-    ): array;
-
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    public function getSignaturesOuterSystem(int $minx, int $maxx, int $miny, int $maxy, int $layerId): array;
-
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): array;
-
-    /**
-     * @return array<VisualPanelEntryData>
-     */
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): array;
 
     /**
      * @return array<TFleetShipItemInterface>

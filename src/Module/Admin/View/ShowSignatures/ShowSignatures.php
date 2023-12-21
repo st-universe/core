@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\ShowSignatures;
 
 use request;
-use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowSignatures implements ViewControllerInterface
 {
@@ -21,23 +20,19 @@ final class ShowSignatures implements ViewControllerInterface
 
     private LoggerUtilFactoryInterface $loggerUtilFactory;
 
-    private ShipRepositoryInterface $shipRepository;
-
-    private EncodedMapInterface $encodedMap;
+    private PanelLayerCreationInterface $panelLayerCreation;
 
     private LayerRepositoryInterface $layerRepository;
 
     public function __construct(
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        ShipRepositoryInterface $shipRepository,
-        EncodedMapInterface $encodedMap,
+        PanelLayerCreationInterface $panelLayerCreation,
         LayerRepositoryInterface $layerRepository
     ) {
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->loggerUtilFactory = $loggerUtilFactory;
-        $this->shipRepository = $shipRepository;
-        $this->encodedMap = $encodedMap;
+        $this->panelLayerCreation = $panelLayerCreation;
         $this->layerRepository = $layerRepository;
     }
 
@@ -52,8 +47,6 @@ final class ShowSignatures implements ViewControllerInterface
         $shipId = request::postInt('shipid');
         $userId = request::postInt('userid');
         $allyId = request::postInt('allyid');
-
-        $game->setTemplateVar('DONOTHING', true);
 
         $game->setTemplateFile('html/admin/signatureScan.twig');
 
@@ -80,16 +73,13 @@ final class ShowSignatures implements ViewControllerInterface
             return;
         }
 
-        $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
-            $this->shipRepository,
-            $this->encodedMap,
+        $game->setTemplateVar('VISUAL_PANEL', new SignaturePanel(
+            current($signatureRange),
+            $this->panelLayerCreation,
             $layer,
             $userId,
             $allyId,
-            $this->loggerUtilFactory->getLoggerUtil(),
-            current($signatureRange)
+            $this->loggerUtilFactory->getLoggerUtil()
         ));
-
-        $game->setTemplateVar('DONOTHING', false);
     }
 }
