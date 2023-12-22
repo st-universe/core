@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
@@ -40,6 +41,10 @@ Init::run(function (ContainerInterface $dic): void {
 
     if ($rumpId !== 0) {
         $rump = $shipRumpRepo->find($rumpId);
+        if ($rump === null) {
+            throw new RuntimeException(sprintf('rumpId %d does not exist!', $rumpId));
+        }
+
         $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
             $rump->getId()
         );
@@ -66,9 +71,13 @@ Init::run(function (ContainerInterface $dic): void {
             ShipModuleTypeEnum::MODULE_TYPE_COMPUTER,
             ShipModuleTypeEnum::MODULE_TYPE_PHASER,
             ShipModuleTypeEnum::MODULE_TYPE_TORPEDO,
-            ShipModuleTypeEnum::MODULE_TYPE_SENSOR,
-            ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE,
+            ShipModuleTypeEnum::MODULE_TYPE_SENSOR
         ];
+
+        if ($rump->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_STATION) {
+            $moduleTypes[] = ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE;
+        }
+
         $moduleList = request::postArray('mod');
         $moduleSpecialList = request::postArray('special_mod');
         if (count($moduleList) >= $mod_level->getMandatoryModulesCount()) {
