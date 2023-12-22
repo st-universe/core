@@ -8,6 +8,7 @@ use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperComputer;
@@ -113,6 +114,10 @@ final class ShipCreator implements ShipCreatorInterface
         $ship->setBuildplan($buildplan);
         $ship->setRump($rump);
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+
+        if ($ship->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_STATION) {
+            $ship->setSpacecraftType(SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION);
+        }
 
         //create ship systems
         $this->createShipSystemsByModuleList(
