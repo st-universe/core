@@ -206,14 +206,14 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return $this->getEntityManager()->createNativeQuery(
             'SELECT m.id, m.cx as x, m.cy AS y,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
-                    WHERE m.id = b.map_id
+                    WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
                                         WHERE b.id = ss.ship_id
                                         AND ss.system_type = :cloakSystemId
                                         AND ss.mode > 1)) AS shipcount,
                 (SELECT count(DISTINCT c.id) FROM stu_ships c
-                    WHERE m.id = c.map_id
+                    WHERE c.cx = m.cx AND c.cy = m.cy AND c.layer_id = m.layer_id
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ship_system ss2
                                         WHERE c.id = ss2.ship_id
