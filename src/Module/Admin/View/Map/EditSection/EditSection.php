@@ -100,15 +100,24 @@ final class EditSection implements ViewControllerInterface
             $possibleBorder['row_' . ($key % 1)][] = $value;
         }
 
-        $game->setViewTemplate('html/admin/mapeditor_section.twig');
+        $helper = $this->starmapUiFactory->createMapSectionHelper();
+        $newSectionId = $helper->setTemplateVars(
+            $game,
+            $layer,
+            $section_id,
+            true,
+            $this->request->getDirection()
+        );
+
+        $game->setTemplateFile('html/admin/mapeditor_section.twig');
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(
                 '/admin/?SHOW_EDIT_MAP_SECTION=1&section=%d&layerid=%d',
-                $section_id,
+                $newSectionId,
                 $layerId
             ),
-            sprintf(_('Sektion %d anzeigen'), $section_id)
+            sprintf(_('Sektion %d anzeigen'), $newSectionId)
         );
         $game->setPageTitle(_('Sektion anzeigen'));
         $game->setTemplateVar('POSSIBLE_FIELD_TYPES', $possibleFieldTypes);
@@ -118,17 +127,9 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegion);
         $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
 
-        $helper = $this->starmapUiFactory->createMapSectionHelper();
-        $helper->setTemplateVars(
-            $game,
-            $layer,
-            $section_id,
-            true,
-            $this->request->getDirection()
-        );
 
         $game->addExecuteJS(sprintf(
-            "registerNavKeys('admin/', '%s', '', true);",
+            "registerNavKeys('/admin/', '%s', '', true);",
             self::VIEW_IDENTIFIER
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
     }

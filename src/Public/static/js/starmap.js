@@ -1,8 +1,13 @@
+var navKeysRegistered = false;
 var currentModule = '';
 var currentView = '';
 var currentMacro = '';
 
-function registerNavKeys(module, view, macro, isRedirect) {
+function registerNavKeys(module, view, macro, isRedirect, isInnerContent) {
+
+	if (navKeysRegistered) {
+		return;
+	}
 
 	currentModule = module;
 	currentView = view;
@@ -11,18 +16,20 @@ function registerNavKeys(module, view, macro, isRedirect) {
 	document.addEventListener("keydown", (event) => {
 
 		if (event.key === "ArrowUp") {
-			refreshMapSection(4, isRedirect);
+			refreshMapSection(4, isRedirect, isInnerContent);
 		}
 		if (event.key === "ArrowDown") {
-			refreshMapSection(2, isRedirect);
+			refreshMapSection(2, isRedirect, isInnerContent);
 		}
 		if (event.key === "ArrowLeft") {
-			refreshMapSection(1, isRedirect);
+			refreshMapSection(1, isRedirect, isInnerContent);
 		}
 		if (event.key === "ArrowRight") {
-			refreshMapSection(3, isRedirect);
+			refreshMapSection(3, isRedirect, isInnerContent);
 		}
 	});
+
+	navKeysRegistered = true;
 }
 
 var currentSection = 0;
@@ -82,7 +89,12 @@ function refreshMapContent(direction) {
 	switchInnerContent(currentView, 'Sektion anzeigen', params, currentModule);
 }
 
-function refreshMapSection(direction, isRedirect) {
+function refreshMapSection(direction, isRedirect, isInnerContent) {
+
+	if (isInnerContent) {
+		refreshMapContent(direction);
+		return;
+	}
 
 	if (!isDirectionAllowed(direction)) {
 		return;

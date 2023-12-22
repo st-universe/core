@@ -37,11 +37,7 @@ final class ShowMapEditor implements ViewControllerInterface
         $layers = $this->layerRepository->findAllIndexed();
 
         $layerId = request::getInt('layerid');
-        $layer = $layerId === 0 ? current($layers) : $layers[$layerId];
-
-        if ($layer === false) {
-            return;
-        }
+        $layer = $layerId === 0 ? $layers[MapEnum::DEFAULT_LAYER] : $layers[$layerId];
 
         //HEADROW
         $xHeadRow = [];
