@@ -649,24 +649,17 @@ function closeNagusPopup() {
 }
 
 function switchView(view, title, url) {
-        closeAjaxWindow();
-
-        new Ajax.Updater('innerContent', '/game.php?B_SWITCH_VIEW=1&view=' + view, {
-                onSuccess: function () {
-                        document.title = title;
-                        window.history.pushState(null, title, url);
-                        window.scrollTo(0, 0);
-                },
-                method: 'get',
-                evalScripts: true
-        }
-        );
+        switchInnerContent('B_SWITCH_VIEW', title, `view=${view}`, '/game.php', url);
 }
 
-function switchInnerContent(view, title, params, page) {
+function actionToInnerContent(action, params, title, page) {
+        switchInnerContent(action, title, params, page);
+}
+
+function switchInnerContent(identifier, title, params, page, stateUrl) {
         closeAjaxWindow();
 
-        url = `?${view}=1`;
+        url = `?${identifier}=1`;
         if (page) {
                 url = page + url;
         }
@@ -679,36 +672,14 @@ function switchInnerContent(view, title, params, page) {
 
         new Ajax.Updater('innerContent', switchUrl, {
                 onSuccess: function () {
-                        let doc = new DOMParser().parseFromString(title, 'text/html');
-                        document.title = doc.body.textContent || "";
-                        window.history.pushState(null, title, url);
-                        if (page) {
-                                window.scrollTo(0, 0);
-                        }
-                },
-                method: 'get',
-                evalScripts: true
-        }
-        );
-}
-
-function actionToInnerContent(action, params, title, page) {
-        closeAjaxWindow();
-
-        url = `?${action}=1&${params}`;
-        if (page) {
-                url = page + url;
-        }
-
-        switchUrl = url + '&switch=1';
-
-        new Ajax.Updater('innerContent', switchUrl, {
-                onSuccess: function () {
                         if (title) {
                                 let doc = new DOMParser().parseFromString(title, 'text/html');
                                 document.title = doc.body.textContent || "";
                         }
-                        window.history.pushState(null, title, url);
+                        window.history.pushState(null, title, stateUrl ?? url);
+                        if (page) {
+                                window.scrollTo(0, 0);
+                        }
                 },
                 method: 'get',
                 evalScripts: true
