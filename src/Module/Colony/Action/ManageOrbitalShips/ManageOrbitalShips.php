@@ -20,7 +20,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MANAGE_ORBITAL_SHIPS';
+    public const ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
 
     private ColonyLoaderInterface $colonyLoader;
 

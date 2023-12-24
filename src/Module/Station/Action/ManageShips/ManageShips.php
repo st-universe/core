@@ -20,7 +20,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ManageShips implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MANAGE_STATION_SHIPS';
+    public const ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
 
     private ShipLoaderInterface $shipLoader;
 

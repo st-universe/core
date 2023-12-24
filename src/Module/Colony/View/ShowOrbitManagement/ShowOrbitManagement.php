@@ -13,7 +13,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_ORBITAL_SHIPS';
+    public const VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
 
     private ColonyLoaderInterface $colonyLoader;
 
@@ -95,7 +95,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $game->setPagetitle(sprintf('%s Orbit', $colony->getName()));
         $game->setViewTemplate('html/colony/menu/orbitalmanagement.twig');
 
-        $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('FLEETWRAPPERS', $list);
+        $game->setTemplateVar('MANAGER_ID', $colony->getId());
+        $game->setTemplateVar('FLEET_WRAPPERS', $list);
     }
 }
