@@ -1,0 +1,141 @@
+{% from 'html/macros.twig' import onClickShip %}
+
+<input type="hidden" name="id" value="{{ MANAGER_ID }}" />
+<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+<input type="hidden" name="SHOW_SHIP_MANAGEMENT" value="1" />
+<table class="tcal">
+  <tr>
+    <th>Klasse</th>
+    <th>Name</th>
+    <th>Crew</th>
+    <th>Batterie</th>
+    <th>Warpkern</th>
+    <th>Torpedo-Transfer</th>
+    <th>Shuttle-Transfer</th>
+  </tr>
+  {% for fleetwrapper in FLEET_WRAPPERS %}
+  {% set fleet = fleetwrapper.get %}
+  <tr>
+    <td colspan="7">
+      {{ fleet.getName|bbcode }}
+      {% if fleetwrapper.isForeignFleet %}
+      <span> von </span>
+      {{ fleet.getUser.getName|bbcode }}
+      {% endif %}
+    </td>
+  </tr>
+  {% for wrapper in fleetwrapper.getShipWrappers %}
+  {% set ship = wrapper.get %}
+  {% set shipId = ship.getId %}
+  {% set rumpId = ship.getRumpId %}
+  <tr class="row">
+    <td>
+      <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
+      {% if wrapper.isOwnedByCurrentUser %}
+      <a {{ onClickShip(ship) }}>
+        <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
+      </a>
+      {% else %}
+      <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
+      {% endif %}
+    </td>
+    {% if wrapper.isOwnedByCurrentUser %}
+    <td>
+      <a {{ onClickShip(ship) }}>{{ ship.getName|bbcode }}</a>
+    </td>
+    {% else %}
+    <td>{{ ship.getName|bbcode }}</td>
+    {% endif %}
+    {% if not ship.isDestroyed %}
+    <td>
+      {% if wrapper.isOwnedByCurrentUser %}
+      {% if ship.canMan %}
+      <div>
+        <input type="checkbox" name="man[{{ shipId }}]" />
+        <span>Hochbeamen</span> ({{ ship.getCrewCount }}/{{ ship.getBuildplan.getCrew }})
+      </div>
+      {% else %}
+      {% if ship.getCrewCount %}
+      <input type="checkbox" name="unman[{{ shipId }}]" />
+      <span>Runterbeamen</span>: {{ ship.getCrewCount }}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+    </td>
+    <td>
+      {% set eps = wrapper.getEpsSystemData %}
+      {% if eps %}
+      <div>
+        <img class="center" onclick="this.up('div').down('input').value={{ eps.getMaxBattery }}"
+          src="assets/buttons/batt.png" title="Ersatzbatterie" />
+        <input type="text" size="3" name="batt[{{ shipId }}]" />
+        {% if wrapper.isOwnedByCurrentUser %}
+        {{ eps.getBattery }}/{{ eps.getMaxBattery }}
+        {% endif %}
+      </div>
+      {% endif %}
+    </td>
+    <td>
+      {% set reactor = wrapper.getReactorWrapper %}
+      {% if reactor %}
+      <div>
+        <img class="center" onclick="this.up('div').down('input').value={{ reactor.getCapacity }}"
+          src="assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" />
+        <input type="text" size="3" name="reactor[{{ shipId }}]" />
+        {% if wrapper.isOwnedByCurrentUser %}
+        {{ reactor.getLoad }}/{{ reactor.getCapacity }}
+        {% endif %}
+      </div>
+      {% endif %}
+    </td>
+    <td>
+      {% if ship.getMaxTorpedos > 0 %}
+      <div>
+        {% if ship.getTorpedoCount %}
+        <img class="center" src="assets/commodities/{{ ship.getTorpedo.getCommodityId }}.png"
+          title="{{ ship.getTorpedo.getName }}" />
+        {% else %}
+        <img class="center" onclick="this.up('div').down('input').value={{ ship.getMaxTorpedos }}"
+          src="assets/buttons/torp.png" title="Torpedos" />
+        {% endif %}
+        {% if wrapper.isOwnedByCurrentUser %}
+        <input type="text" size="3" name="torp[{{ shipId }}]" value="{{ ship.getTorpedoCount }}" />
+        <span>Max.</span> {{ ship.getMaxTorpedos }}
+        {% else %}
+        <input type="text" size="3" name="torp[{{ shipId }}]" />
+        {% endif %}
+        {% if not ship.getTorpedoCount %}
+        {% for data in wrapper.getPossibleTorpedoTypes %}
+        <img class="center" src="assets/commodities/{{ data.getCommodityId }}.png" title="{{ data.getName }}" />
+        {% if loop.first %}
+        <input type="radio" name="torp_type[{{ shipId }}]" checked="true" value="{{ data.getId }}" />
+        {% else %}
+        <input type="radio" name="torp_type[{{ shipId }}]" value="{{ data.getId }}" />
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </div>
+      {% endif %}
+    </td>
+    <td>
+      {% if ship.hasShuttleRamp %}
+      {% if ship.isShuttleRampHealthy %}
+      <div>
+        <a href="javascript:void(0);" onclick="openShuttleManagement(this, {{ shipId }}, {{ MANAGER_ID }});">
+          Shuttle-Management öffnen
+        </a>
+      </div>
+      {% else %}
+      <div>
+        <span>Shuttle-Rampe ist defekt</span>
+      </div>
+      {% endif %}
+      {% endif %}
+    </td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  {% endfor %}
+</table>
+<br />
+<input type="submit" style="cursor: pointer" name="B_MANAGE_SHIPS" value="Ausführen" />

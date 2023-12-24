@@ -48,7 +48,7 @@ final class ShipListProvider implements ViewComponentProviderInterface
 
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
         $game->setTemplateVar('SHIPS_AVAILABLE', $fleets !== [] || $ships !== []);
-        $game->setTemplateVar('FLEETWRAPPERS', $this->shipWrapperFactory->wrapFleets($fleets));
+        $game->setTemplateVar('FLEET_WRAPPERS', $this->shipWrapperFactory->wrapFleets($fleets));
         $game->setTemplateVar('SINGLESHIPWRAPPERS', $this->shipWrapperFactory->wrapShips($ships));
     }
 }

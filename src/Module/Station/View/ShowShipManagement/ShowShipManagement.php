@@ -130,9 +130,9 @@ final class ShowShipManagement implements ViewControllerInterface
             _('Schiffsmanagement')
         );
         $game->setPagetitle(sprintf('%s Bereich', $station->getName()));
-        $game->setViewTemplate('html/stationshipmanagement.xhtml');
+        $game->setViewTemplate('html/station/shipManagement.twig');
 
-        $game->setTemplateVar('STATION', $station);
+        $game->setTemplateVar('MANAGER_ID', $station->getId());
         $game->setTemplateVar('FLEET_WRAPPERS', $list);
     }
 }
