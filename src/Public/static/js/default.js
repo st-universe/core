@@ -671,7 +671,7 @@ function switchInnerContent(identifier, title, params, page, stateUrl) {
         switchUrl = url + '&switch=1';
 
         new Ajax.Updater('innerContent', switchUrl, {
-                onSuccess: function (response) {
+                onComplete: function (response) {
                         if (400 == response.status) {
                                 window.location.href = '/index.php'
                                 return;
