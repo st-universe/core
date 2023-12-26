@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\InformationWrapper;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
@@ -1247,9 +1248,28 @@ class FightLibTest extends StuTestCase
         $this->assertTrue($result);
     }
 
+    public function testIsBoardingPossibleExpectFalseWhenNpc(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserEnum::USER_FIRST_ID - 1);
+
+        $result = FightLib::isBoardingPossible($ship);
+
+        $this->assertFalse($result);
+    }
+
     public function testIsBoardingPossibleExpectFalseWhenBase(): void
     {
         $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserEnum::USER_FIRST_ID);
 
         $ship->shouldReceive('isBase')
             ->withNoArgs()
@@ -1264,6 +1284,11 @@ class FightLibTest extends StuTestCase
     public function testIsBoardingPossibleExpectFalseWhenTrumfield(): void
     {
         $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserEnum::USER_FIRST_ID);
 
         $ship->shouldReceive('isBase')
             ->withNoArgs()
@@ -1282,6 +1307,11 @@ class FightLibTest extends StuTestCase
     public function testIsBoardingPossibleExpectFalseWhenCloaked(): void
     {
         $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserEnum::USER_FIRST_ID);
 
         $ship->shouldReceive('isBase')
             ->withNoArgs()
@@ -1304,6 +1334,11 @@ class FightLibTest extends StuTestCase
     public function testIsBoardingPossibleExpectFalseWhenShieldsOn(): void
     {
         $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserEnum::USER_FIRST_ID);
 
         $ship->shouldReceive('isBase')
             ->withNoArgs()
@@ -1330,6 +1365,11 @@ class FightLibTest extends StuTestCase
     public function testIsBoardingPossibleExpectFalseWhenWarped(): void
     {
         $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserEnum::USER_FIRST_ID);
 
         $ship->shouldReceive('isBase')
             ->withNoArgs()
