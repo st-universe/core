@@ -632,9 +632,14 @@ class User implements UserInterface
         return $this->hasAward(UserAwardEnum::RESEARCHED_STATIONS);
     }
 
+    public static function isUserNpc(int $userId): bool
+    {
+        return $userId < UserEnum::USER_FIRST_ID;
+    }
+
     public function isNpc(): bool
     {
-        return $this->getId() < UserEnum::USER_FIRST_ID;
+        return self::isUserNpc($this->getId());
     }
 
     public function getUserLock(): ?UserLockInterface
