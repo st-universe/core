@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -45,6 +46,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private ThreatReactionInterface $threatReaction;
 
+    private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
@@ -53,7 +56,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
         ShipStateChangerInterface $shipStateChanger,
-        ThreatReactionInterface $threatReaction
+        ThreatReactionInterface $threatReaction,
+        TractorMassPayloadUtilInterface $tractorMassPayloadUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
@@ -63,6 +67,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->shipStateChanger = $shipStateChanger;
         $this->threatReaction = $threatReaction;
+        $this->shipStateChanger = $shipStateChanger;
+        $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -192,7 +198,11 @@ final class ActivateTractorBeam implements ActionControllerInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId())
         );
-        $game->addInformation("Der Traktorstrahl wurde auf die " . $targetName . " gerichtet");
+        $game->addInformationf("Der Traktorstrahl wurde auf die %s gerichtet", $targetName);
+
+        if ($this->tractorMassPayloadUtil->isTractorSystemStressed($wrapper, $target)) {
+            $game->addInformation("[color=yellow]Die Traktoremitter sind überaus beansprucht und könnten beschädigt werden[/color]");
+        }
     }
 
     private function abort(ShipWrapperInterface $wrapper, GameControllerInterface $game): void

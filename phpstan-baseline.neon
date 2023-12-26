@@ -1709,6 +1709,11 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/AlertRedHelper.php
 
 		-
+			message: "#^Call to deprecated method getUserId\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/FightLib.php
+
+		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
