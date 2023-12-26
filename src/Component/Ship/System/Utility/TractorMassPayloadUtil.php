@@ -54,17 +54,26 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return null;
     }
 
+    public function isTractorSystemStressed(
+        ShipWrapperInterface $wrapper,
+        ShipInterface $tractoredShip
+    ): bool {
+        $ship = $wrapper->get();
+        $mass = $tractoredShip->getRump()->getTractorMass();
+        $payload = $ship->getTractorPayload();
+
+        // damage tractor system if mass over 90% of max
+        return $mass > self::POSSIBLE_DAMAGE_THRESHOLD * $payload;
+    }
+
     public function stressTractorSystemForTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,
         MessageCollectionInterface $messages
     ): void {
         $ship = $wrapper->get();
-        $mass = $tractoredShip->getRump()->getTractorMass();
-        $payload = $ship->getTractorPayload();
 
-        // damage tractor system if mass over 90% of max
-        if (($mass > self::POSSIBLE_DAMAGE_THRESHOLD * $payload) && $this->stuRandom->rand(1, 10) === 1) {
+        if ($this->isTractorSystemStressed($wrapper, $tractoredShip) && $this->stuRandom->rand(1, 10) === 1) {
             $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
 
             $informations = new InformationWrapper();

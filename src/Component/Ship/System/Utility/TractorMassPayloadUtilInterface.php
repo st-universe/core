@@ -13,6 +13,11 @@ interface TractorMassPayloadUtilInterface
         ShipInterface $tractoredShip
     ): ?string;
 
+    public function isTractorSystemStressed(
+        ShipWrapperInterface $wrapper,
+        ShipInterface $tractoredShip
+    ): bool;
+
     public function stressTractorSystemForTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,
