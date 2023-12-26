@@ -12,6 +12,7 @@ use Stu\Lib\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\User;
 
 final class FightLib implements FightLibInterface
 {
@@ -222,7 +223,8 @@ final class FightLib implements FightLibInterface
 
     public static function isBoardingPossible(ShipInterface|ShipNfsItem $ship): bool
     {
-        return !($ship->isBase()
+        return !(User::isUserNpc($ship->getUserId())
+            || $ship->isBase()
             || $ship->isTrumfield()
             || $ship->getCloakState()
             || $ship->getShieldState()
