@@ -61,16 +61,22 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array;
+    public function getAllianceShipcountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getSignaturesOuterSystem(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+    public function getUserShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
     public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getSignaturesOuterSystemOfUser(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+    public function getUserSubspaceLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
 
     /**
      * @return array<ExploreableStarMapInterface>

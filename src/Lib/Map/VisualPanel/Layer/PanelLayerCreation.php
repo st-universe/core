@@ -8,6 +8,8 @@ use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\PanelLayerDataProviderInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountDataProviderFactoryInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Render\BorderLayerRenderer;
@@ -24,6 +26,8 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
 {
     private EncodedMapInterface $encodedMap;
 
+    private ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory;
+
     private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory;
 
     /** @var array<int, PanelLayerDataProviderInterface> */
@@ -38,10 +42,12 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
     public function __construct(
         EncodedMapInterface $encodedMap,
+        ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory,
         SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
         array $dataProviders
     ) {
         $this->encodedMap = $encodedMap;
+        $this->shipcountDataProviderFactory = $shipcountDataProviderFactory;
         $this->subspaceDataProviderFactory = $subspaceDataProviderFactory;
         $this->dataProviders = $dataProviders;
     }
@@ -77,9 +83,12 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
 
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
-        ?ShipInterface $currentShip
+        ?ShipInterface $currentShip,
+        ShipcountLayerTypeEnum $type,
+        int $id
     ): PanelLayerCreationInterface {
         $this->layers[PanelLayerEnum::SHIP_COUNT->value] = new ShipCountLayerRenderer($showCloakedEverywhere, $currentShip);
+        $this->specialDataProviders[PanelLayerEnum::SHIP_COUNT->value] = $this->shipcountDataProviderFactory->getDataProvider($id, $type);
 
         return $this;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer;
 
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -21,7 +22,12 @@ interface PanelLayerCreationInterface
 
     public function addBorderLayer(?ShipInterface $currentShip, ?bool $isOnShipLevel): PanelLayerCreationInterface;
 
-    public function addShipCountLayer(bool $showCloakedEverywhere, ?ShipInterface $currentShip): PanelLayerCreationInterface;
+    public function addShipCountLayer(
+        bool $showCloakedEverywhere,
+        ?ShipInterface $currentShip,
+        ShipcountLayerTypeEnum $type,
+        int $id
+    ): PanelLayerCreationInterface;
 
     public function build(AbstractVisualPanel $panel): PanelLayers;
 }

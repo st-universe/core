@@ -13,7 +13,8 @@ use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\BorderDataProvider;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\ColonyShieldDataProvider;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\MapDataProvider;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\ShipCountDataProvider;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountDataProviderFactory;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactory;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
@@ -54,13 +55,13 @@ return [
         ]
     ),
     SubspaceDataProviderFactoryInterface::class => autowire(SubspaceDataProviderFactory::class),
+    ShipcountDataProviderFactoryInterface::class => autowire(ShipcountDataProviderFactory::class),
     PanelLayerCreationInterface::class => autowire(PanelLayerCreation::class)->constructorParameter(
         'dataProviders',
         [
             PanelLayerEnum::SYSTEM->value => autowire(MapDataProvider::class),
             PanelLayerEnum::MAP->value => autowire(MapDataProvider::class),
             PanelLayerEnum::COLONY_SHIELD->value => autowire(ColonyShieldDataProvider::class),
-            PanelLayerEnum::SHIP_COUNT->value => autowire(ShipCountDataProvider::class),
             PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class)
         ]
     ),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Lib;
 
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -44,7 +45,7 @@ class SystemScanPanel extends AbstractVisualPanel
     protected function loadLayers(): void
     {
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($this->currentShip->getTachyonState(), null)
+            ->addShipCountLayer($this->currentShip->getTachyonState(), null, ShipcountLayerTypeEnum::ALL, 0)
             ->addBorderLayer($this->currentShip, $this->system === $this->currentShip->getSystem());
 
         $panelLayerCreation

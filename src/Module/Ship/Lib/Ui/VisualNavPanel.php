@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Ui;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Lib\Map\Location;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -56,7 +57,7 @@ class VisualNavPanel extends AbstractVisualPanel
     {
 
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($this->tachyonFresh, $this->currentShip)
+            ->addShipCountLayer($this->tachyonFresh, $this->currentShip, ShipcountLayerTypeEnum::ALL, 0)
             ->addBorderLayer($this->currentShip, $this->isOnShipLevel());
 
         $map = $this->getPanelCenter()->get();
