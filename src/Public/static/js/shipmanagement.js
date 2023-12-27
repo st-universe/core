@@ -50,3 +50,11 @@ function increaseShuttleAmount(cid, maxOf, maxTotal) {
 		$('storedshuttles').innerHTML = current + 1;
 	}
 }
+
+function openShuttleManagement(obj, ship, entity) {
+	closeAjaxWindow();
+
+	var pos = findObject(obj);
+	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
+	ajax_update('elt', 'station.php?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&entity=' + entity);
+}

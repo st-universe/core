@@ -29,13 +29,7 @@ function getShipList() {
 	openPJsWin('shiplist', 1);
 	ajax_update('shiplist', 'station.php?id=' + shipid + '&SHOW_STATION_SHIPLIST=1');
 }
-function openShuttleManagement(obj, ship, station) {
-	closeAjaxWindow();
 
-	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
-	ajax_update('elt', 'station.php?SHOW_STATION_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&station=' + station);
-}
 function showBeamToWindow() {
 	closeAjaxWindow();
 
