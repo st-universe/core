@@ -14,7 +14,7 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ShowShuttleManagement implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_STATION_SHUTTLE_MANAGEMENT';
+    public const VIEW_IDENTIFIER = 'SHOW_SHUTTLE_MANAGEMENT';
 
     private ShowShuttleManagementRequestInterface $request;
 

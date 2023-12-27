@@ -218,14 +218,6 @@ function showPodLocationWindow() {
 	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
 }
 
-function openShuttleManagement(obj, ship, colony) {
-	closeAjaxWindow();
-
-	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
-	ajax_update('elt', 'colony.php?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&colony=' + colony);
-}
-
 function triggerBeamToShip() {
 	var shipid = $('selshipid').value;
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);

@@ -12,7 +12,7 @@ final class ShowShuttleManagementRequest implements ShowShuttleManagementRequest
 
     public function getStationId(): int
     {
-        return $this->queryParameter('station')->int()->required();
+        return $this->queryParameter('entity')->int()->required();
     }
 
     public function getShipId(): int
