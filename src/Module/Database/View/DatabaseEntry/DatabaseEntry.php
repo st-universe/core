@@ -8,6 +8,8 @@ use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
+use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
+use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -155,20 +157,34 @@ final class DatabaseEntry implements ViewControllerInterface
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM:
                 $starSystem = $this->starSystemRepository->find($entry_object_id);
-                $fields = [];
+                $data = [];
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
-                foreach ($starSystem->getFields() as $obj) {
-                    $fields['fields'][$obj->getSY()][] = [
 
-                        //TODO do it with nav panel layer stuff!
-                        'systemCellData' => $this->createMapData($obj),
+                $renderer = new SystemLayerRenderer();
+                $panel = new class() implements PanelAttributesInterface
+                {
+                    public function getHeightAndWidth(): string
+                    {
+                        return 'height: 30px; width: 30px;';
+                    }
+
+                    public function getFontSize(): string
+                    {
+                        return '';
+                    }
+                };
+
+                foreach ($starSystem->getFields() as $obj) {
+                    $data['fields'][$obj->getSY()][] = [
+
+                        'rendered' => $renderer->render($this->createMapData($obj), $panel),
                         'colony' => $obj->getColony(),
                         'showPm' => $userHasColonyInSystem && $this->showPmHref($obj, $game->getUser())
                     ];
                 }
-                $fields['xaxis'] = range(1, $starSystem->getMaxX());
+                $data['xaxis'] = range(1, $starSystem->getMaxX());
                 $game->setTemplateVar('SYSTEM', $starSystem);
-                $game->setTemplateVar('FIELDS', $fields);
+                $game->setTemplateVar('DATA', $data);
                 $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($game->getUser(), $entry_object_id));
                 break;
         }

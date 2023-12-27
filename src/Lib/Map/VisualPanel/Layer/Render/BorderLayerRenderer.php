@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Stu\Component\Ship\ShipLSSModeEnum;
-use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
+use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class BorderLayerRenderer implements LayerRendererInterface
@@ -25,7 +25,7 @@ final class BorderLayerRenderer implements LayerRendererInterface
     }
 
     /** @param BorderData $data */
-    public function render(CellDataInterface $data, AbstractVisualPanel $panel): string
+    public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(
             'border:1px solid %s;',

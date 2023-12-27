@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Stu\Component\Map\EncodedMapInterface;
-use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
+use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 use Stu\Orm\Entity\LayerInterface;
 
 final class MapLayerRenderer implements LayerRendererInterface
@@ -24,7 +24,7 @@ final class MapLayerRenderer implements LayerRendererInterface
     }
 
     /** @param MapData $data */
-    public function render(CellDataInterface $data, AbstractVisualPanel $panel): string
+    public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(
             '<img src="/assets/map/%s" style="z-index: %d; %s opacity:1;" />',

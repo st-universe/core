@@ -99,21 +99,19 @@
 </metal:block>
 <metal:macro metal:define-macro="starsystem">
   <div style="display: table-cell">
-    <table class="use" tal:define="map FIELDS">
+    <table class="use">
       <tr>
         <th></th>
-        <th class="cen" tal:repeat="field map/xaxis" tal:content="field">CX</th>
+        <th class="cen" tal:repeat="x DATA/xaxis" tal:content="x">CX</th>
       </tr>
-      <tr tal:repeat="yaxis map/fields">
-        <th tal:content="repeat/yaxis/key">CY</th>
-        <td tal:repeat="xaxis yaxis" class="lss" style="background-size: cover;">
-          <div class="lssobj imgOverlayText" tal:define="systemCellData xaxis/systemCellData"
-            style=" position: relative !important; top: 0px; height: 30px; width: 30px">
-            <img tal:condition="systemCellData/getMapfieldType" class="lssColoShield"
-              src="assets/map/${systemCellData/getMapfieldType}.png" style="z-index: 2;" />
-            <a tal:condition="xaxis/showPm" href="javascript:void(0);"
-              onclick="openPmWindow(${THIS/getUser/getId},${xaxis/colony/getId},1,5)"
-              title="Nachricht an ${bbcode2txt:xaxis/colony/getUser/getName} verfassen"><img class="lssColoShield"
+      <tr tal:repeat="row DATA/fields">
+        <th tal:content="repeat/row/key">CY</th>
+        <td tal:repeat="field row" class="lss">
+          <div class="imgOverlayText" style="height: 30px; width: 30px;">
+            <span tal:replace="structure field/rendered">RENDERED</span>
+            <a tal:condition="field/showPm" href="javascript:void(0);"
+              onclick="openPmWindow(${THIS/getUser/getId},${field/colony/getId},1,5)"
+              title="Nachricht an ${bbcode2txt:field/colony/getUser/getName} verfassen"><img class="lssColoShield"
                 src="assets/map/pm.png" style="z-index: 3;" /></a>
           </div>
         </td>
