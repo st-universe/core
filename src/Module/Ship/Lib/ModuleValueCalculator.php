@@ -14,9 +14,9 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         $rump,
         ModuleInterface $module,
         $callback = 'aggi',
-        $value = false
+        bool|int $value = false
     ): int {
-        if (!$value) {
+        if ($value === false) {
             $value = $rump->$callback();
         }
         if ($module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SENSOR) {
