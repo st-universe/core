@@ -204,7 +204,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT m.id, m.cx as x, m.cy AS y,
+            'SELECT m.cx as x, m.cy AS y,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
                     WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
                     AND NOT EXISTS (SELECT ss.id
@@ -221,8 +221,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                         AND ss2.mode > 1)) AS cloakcount
             FROM stu_map m
             WHERE m.cx BETWEEN :xStart AND :xEnd AND m.cy BETWEEN :yStart AND :yEnd
-            AND m.layer_id = :layerId
-            GROUP BY m.id, m.cy, m.cx',
+            AND m.layer_id = :layerId',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),
@@ -231,6 +230,54 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'yEnd' => $boundaries->getMaxY(),
             'layerId' => $boundaries->getParentId(),
             'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
+        ])->getResult();
+    }
+
+    public function getAllianceShipcountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.cx as x, m.cy as y,
+             (SELECT count(distinct b.id)
+                    FROM stu_ships b
+                    JOIN stu_user u ON b.user_id = u.id
+                    WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
+                    AND u.allys_id = :allyId) as shipcount
+            FROM stu_map m
+            WHERE m.cx BETWEEN :xStart AND :xEnd
+            AND m.cy BETWEEN :yStart AND :yEnd
+            AND m.layer_id = :layerId',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'allyId' => $allianceId
+        ])->getResult();
+    }
+
+    public function getUserShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT m.cx as x, m.cy as y,
+            (SELECT count(distinct b.id)
+                FROM stu_ships b
+                WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
+                AND b.user_id = :userId) as shipcount
+            FROM stu_map m
+            WHERE m.cx BETWEEN :xStart AND :xEnd
+            AND m.cy BETWEEN :yStart AND :yEnd
+            AND m.layer_id = :layerId
+            GROUP BY m.cy, m.cx, m.id',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId(),
+            'userId' => $userId
         ])->getResult();
     }
 
@@ -278,13 +325,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
-    public function getSignaturesOuterSystem(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
+    public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT m.id, m.cx as x, m.cy as y, ft.type,
-                (SELECT count(distinct b.id)
-                    FROM stu_ships b
-                    WHERE b.map_id = m.id) as shipcount,
+            'SELECT m.cx as x, m.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.map_id = m.id
                 AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
@@ -298,11 +342,9 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 WHERE fs4.map_id = m.id
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
             FROM stu_map m
-            LEFT JOIN stu_map_ftypes ft ON ft.id = m.field_id
             WHERE m.cx BETWEEN :xStart AND :xEnd
             AND m.cy BETWEEN :yStart AND :yEnd
-            AND m.layer_id = :layerId
-            GROUP BY m.cy, m.cx, m.id, ft.type, m.field_id',
+            AND m.layer_id = :layerId',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),
@@ -313,14 +355,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
-    public function getSignaturesOuterSystemOfUser(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
+    public function getUserSubspaceLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT m.id, m.cx as x, m.cy as y, ft.type,
-            (SELECT count(distinct b.id)
-                FROM stu_ships b
-                WHERE b.map_id = m.id
-                AND b.user_id = :userId) as shipcount,
+            'SELECT m.cx as x, m.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.map_id = m.id
                 AND fs1.user_id = :userId
@@ -338,11 +376,9 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 AND fs4.user_id = :userId
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
             FROM stu_map m
-            LEFT JOIN stu_map_ftypes ft ON ft.id = m.field_id
             WHERE m.cx BETWEEN :xStart AND :xEnd
             AND m.cy BETWEEN :yStart AND :yEnd
-            AND m.layer_id = :layerId
-            GROUP BY m.cy, m.cx, m.id, d.type, m.field_id',
+            AND m.layer_id = :layerId',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),
@@ -357,32 +393,27 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT m.id, m.cx as x, m.cy as y, ft.type,
-                (SELECT count(distinct b.id)
-                    FROM stu_ships b
-                    JOIN stu_user u ON b.user_id = u.id
-                    WHERE b.map_id = m.id
-                    AND u.allys_id = :allyId) as shipcount
-                    (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
-            JOIN stu_user u1 ON fs1.user_id = u1.id
-            WHERE fs1.map_id = m.id
-            AND u1.allys_id = :allyId
-            AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
+            'SELECT m.id, m.cx as x, m.cy as y,
+            (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
+                JOIN stu_user u1 ON fs1.user_id = u1.id
+                WHERE fs1.map_id = m.id
+                AND u1.allys_id = :allyId
+                AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
             (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
-            JOIN stu_user u2 ON fs2.user_id = u2.id
-            WHERE fs2.map_id = m.id
-            AND u2.allys_id = :allyId
-            AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
+                JOIN stu_user u2 ON fs2.user_id = u2.id
+                WHERE fs2.map_id = m.id
+                AND u2.allys_id = :allyId
+                AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
             (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
-            JOIN stu_user u3 ON fs3.user_id = u3.id
-            WHERE fs3.map_id = m.id
-            AND u3.allys_id = :allyId
-            AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
+                JOIN stu_user u3 ON fs3.user_id = u3.id
+                WHERE fs3.map_id = m.id
+                AND u3.allys_id = :allyId
+                AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
             (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
-            JOIN stu_user u4 ON fs4.user_id = u4.id
-            WHERE fs4.map_id = m.id
-            AND u4.allys_id = :allyId
-            AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+                JOIN stu_user u4 ON fs4.user_id = u4.id
+                WHERE fs4.map_id = m.id
+                AND u4.allys_id = :allyId
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
             FROM stu_map m
             WHERE m.cx BETWEEN :xStart AND :xEnd
             AND m.cy BETWEEN :yStart AND :yEnd

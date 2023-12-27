@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\ShowSignatures;
 
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -48,17 +49,18 @@ class SignaturePanel extends AbstractVisualPanel
     {
 
         $panelLayerCreation = $this->panelLayerCreation
-            //TODO shipCountLayerFactory...
-            //->addShipCountLayer($this->isTachyonSystemActive, $this->tachyonFresh, $this->currentShip)
             ->addBorderLayer(null, null);
 
         $panelLayerCreation->addMapLayer($this->layer);
 
         if ($this->userId !== 0) {
+            $panelLayerCreation->addShipCountLayer(true, null, ShipcountLayerTypeEnum::USER_ONLY, $this->userId);
             $panelLayerCreation->addSubspaceLayer($this->userId, SubspaceLayerTypeEnum::USER_ONLY);
         } elseif ($this->allyId !== 0) {
+            $panelLayerCreation->addShipCountLayer(true, null, ShipcountLayerTypeEnum::ALLIANCE_ONLY, $this->allyId);
             $panelLayerCreation->addSubspaceLayer($this->allyId, SubspaceLayerTypeEnum::ALLIANCE_ONLY);
         } else {
+            $panelLayerCreation->addShipCountLayer(true, null, ShipcountLayerTypeEnum::ALL, 0);
             $panelLayerCreation->addSubspaceLayer(0, SubspaceLayerTypeEnum::ALL);
         }
 

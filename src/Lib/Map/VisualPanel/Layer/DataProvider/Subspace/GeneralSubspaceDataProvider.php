@@ -11,7 +11,7 @@ final class GeneralSubspaceDataProvider extends AbstractSubspaceDataProvider
 {
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
-        return $this->mapRepository->getSignaturesOuterSystem($boundaries, $this->createResultSetMapping());
+        return $this->mapRepository->getSubspaceLayerData($boundaries, $this->createResultSetMapping());
     }
 
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
