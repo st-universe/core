@@ -9,7 +9,7 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 use Stu\Lib\Map\VisualPanel\VisualPanelRow;
 use Stu\Module\Logging\LoggerUtilInterface;
 
-abstract class AbstractVisualPanel
+abstract class AbstractVisualPanel implements PanelAttributesInterface
 {
     protected PanelLayerCreationInterface $panelLayerCreation;
 

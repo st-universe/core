@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\ShipCountData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
+use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShipCountLayerRenderer implements LayerRendererInterface
@@ -23,7 +23,7 @@ final class ShipCountLayerRenderer implements LayerRendererInterface
     }
 
     /** @param ShipCountData $data */
-    public function render(CellDataInterface $data, AbstractVisualPanel $panel): string
+    public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         $displayCount = $this->getDisplayCount($data);
         if ($displayCount === null) {

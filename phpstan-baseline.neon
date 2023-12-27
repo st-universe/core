@@ -1804,17 +1804,7 @@ parameters:
 			path: src/Module/Ship/Lib/ModuleValueCalculator.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ModuleValueCalculator.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
 

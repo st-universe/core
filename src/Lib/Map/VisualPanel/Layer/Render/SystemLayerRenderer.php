@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
+use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 
 final class SystemLayerRenderer implements LayerRendererInterface
 {
     private const ONLY_BACKGROUND_IMAGE = 1;
 
     /** @param MapData $data */
-    public function render(CellDataInterface $data, AbstractVisualPanel $panel): string
+    public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(
             '%s%s',
@@ -23,7 +23,7 @@ final class SystemLayerRenderer implements LayerRendererInterface
         );
     }
 
-    private function getBackgroundImage(MapData $data, AbstractVisualPanel $panel): string
+    private function getBackgroundImage(MapData $data, PanelAttributesInterface $panel): string
     {
         return sprintf(
             '<img src="/assets/map/starmap/%s.png"
@@ -34,7 +34,7 @@ final class SystemLayerRenderer implements LayerRendererInterface
         );
     }
 
-    private function getFieldImage(MapData $data, AbstractVisualPanel $panel): string
+    private function getFieldImage(MapData $data, PanelAttributesInterface $panel): string
     {
         $fieldId = $this->getSystemFieldId($data);
         if ($fieldId === null) {
