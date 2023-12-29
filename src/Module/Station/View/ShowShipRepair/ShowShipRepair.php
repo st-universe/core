@@ -72,14 +72,13 @@ final class ShowShipRepair implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                '?id=%s&%d=1',
-                $station->getId(),
-                static::VIEW_IDENTIFIER
+                '?%s=1&id=%d',
+                static::VIEW_IDENTIFIER,
+                $station->getId()
             ),
             _('Schiffreparatur')
         );
-        $game->setPagetitle(_('Schiffreparatur'));
-        $game->setTemplateFile('html/station_shiprepair.xhtml');
+        $game->setViewTemplate('html/station/shipRepair.twig');
 
         $game->setTemplateVar('REPAIRABLE_SHIP_LIST', $repairableShips);
         $game->setTemplateVar('STATION', $station);
