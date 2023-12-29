@@ -1,0 +1,9 @@
+<metal:macro metal:use-macro="html/stationmacros.xhtml/initial_js" />
+<form action="station.php" method="post">
+	<input type="hidden" name="id" value="{{ STATION.getId }}" />
+	<input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+	<input type="hidden" name="SHOW_SHIP_REPAIR" value="1" />
+	{% set host = STATION %}
+	{% include 'html/ship/repairableShipList.twig' %}
+	<br />
+</form>

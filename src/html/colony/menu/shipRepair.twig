@@ -1,51 +1,12 @@
 {% embed "html/colony/menu/container.twig" %}
 
 {% block containment %}
-{% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
-
 <input type="hidden" name="SHOW_SHIP_REPAIR" value="1" />
 
 {% include 'html/colony/component/shipyardTabs.twig' %}
 <br />
-<table class="tcal">
-	<tr>
-		<th>Klasse</th>
-		<th>Name</th>
-		<th>Dauer in Ticks</th>
-		<th>Insgesamt benötigte Teile</th>
-		<th></th>
-	</tr>
-	{% for wrapper in REPAIRABLE_SHIP_LIST %}
-	{% set ship = wrapper.get %}
-	<tr class="row">
-		<td>
-			<input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-			{{ shipimagewithoutwarp(ship) }}
-		</td>
-		<td>{{ ship.getName|bbcode }}</td>
-		<td>{{ wrapper.getRepairDurationPreview|bbcode }}</td>
-		<td>
-			<table class="tcal">
-				{% for cost in wrapper.getRepairCosts %}
-				<tr>
-					<td>{{ cost.getAmount }}</td>
-					<td><img src="assets/commodities/{{ cost.getCommodityId }}.png"
-							title="{{ cost.getCommodityName }}" /></td>
-				</tr>
-				{% endfor %}
-			</table>
-		</td>
-		<td>
-			{% if wrapper.canBeRepaired %}
-			<div>
-				<a
-					href="?id={{ COLONY.getId }}&B_REPAIR_SHIP=1&ship_id={{ ship.getId }}&fid={{ FIELD.getId }}">Reparieren</a>
-			</div>
-			{% endif %}
-		</td>
-	</tr>
-	{% endfor %}
-</table>
+{% set host = COLONY %}
+{% include 'html/ship/repairableShipList.twig' %}
 <br />
 {% endblock %}
 {% endembed %}
