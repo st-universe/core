@@ -56,42 +56,45 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         $list_result = [];
 
         //load dependencies
-        $dependencies = $this->loadDependencies();
+        $allDependencies = $this->loadDependencies();
 
         //load excludes
         $excludes = $this->loadExcludes();
 
         // calculate possible research items
-        foreach ($result as $obj) {
+        foreach ($result as $research) {
             // check for existent user award
-            if ($obj->getNeededAwardId() !== null && !$user->hasAward($obj->getNeededAwardId())) {
+            if ($research->getNeededAwardId() !== null && !$user->hasAward($research->getNeededAwardId())) {
                 continue;
             }
 
-            $key = $obj->getId();
+            $researchId = $research->getId();
 
             // excludelogic
-            if (isset($excludes[$key])) {
-                foreach ($excludes[$key] as $exclude) {
+            if (isset($excludes[$researchId])) {
+                foreach ($excludes[$researchId] as $exclude) {
                     if (in_array($exclude->getResearchId(), $researchedIdsWithUnfinished)) {
                         continue 2;
                     }
                 }
             }
 
-            // dependencie logic
-            if (isset($dependencies[$key])) {
+            // dependency logic
+            if (isset($allDependencies[$researchId])) {
+
+                $dependencies = $allDependencies[$researchId];
+
                 // check for AND condition
-                foreach ($dependencies[$key]['AND'] as $and_condition) {
+                foreach ($dependencies['AND'] as $and_condition) {
                     if (!in_array($and_condition, $researchedIdsOnlyFinished)) {
                         continue 2;
                     }
                 }
 
                 // check for OR condition
-                if (!empty($dependencies[$key]['OR'])) {
+                if (!empty($dependencies['OR'])) {
                     $or_condition_met = false;
-                    foreach ($dependencies[$key]['OR'] as $or_condition) {
+                    foreach ($dependencies['OR'] as $or_condition) {
                         if (in_array($or_condition, $researchedIdsOnlyFinished)) {
                             $or_condition_met = true;
                             break;
@@ -103,7 +106,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                 }
             }
 
-            $list_result[$key] = $obj;
+            $list_result[$researchId] = $research;
         }
 
 
@@ -127,31 +130,31 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
     private function loadDependencies(): array
     {
-        $dependencies = [];
+        $allDependencies = [];
 
-        $dependencies_result = $this->researchDependencyRepository->getByMode(
+        $allDependencies_result = $this->researchDependencyRepository->getByMode(
             [ResearchModeEnum::REQUIRE->value, ResearchModeEnum::REQUIRE_SOME->value]
         );
 
-        foreach ($dependencies_result as $dependency) {
+        foreach ($allDependencies_result as $dependency) {
             $research_id = $dependency->getResearchId();
             $mode = $dependency->getMode();
 
-            if (!isset($dependencies[$research_id])) {
-                $dependencies[$research_id] = [
+            if (!isset($allDependencies[$research_id])) {
+                $allDependencies[$research_id] = [
                     'AND' => [],
                     'OR' => []
                 ];
             }
 
             if ($mode === ResearchModeEnum::REQUIRE->value) {
-                $dependencies[$research_id]['AND'][] = $dependency->getDependsOn();
+                $allDependencies[$research_id]['AND'][] = $dependency->getDependsOn();
             } elseif ($mode === ResearchModeEnum::REQUIRE_SOME->value) {
-                $dependencies[$research_id]['OR'][] = $dependency->getDependsOn();
+                $allDependencies[$research_id]['OR'][] = $dependency->getDependsOn();
             }
         }
 
-        return $dependencies;
+        return $allDependencies;
     }
 
     private function loadExcludes(): array
