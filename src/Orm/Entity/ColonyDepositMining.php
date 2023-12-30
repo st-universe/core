@@ -95,6 +95,6 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
 
     public function isEnoughLeft(int $neededAmount): bool
     {
-        return $this->getAmountLeft() > $neededAmount;
+        return $this->getAmountLeft() >= $neededAmount;
     }
 }
