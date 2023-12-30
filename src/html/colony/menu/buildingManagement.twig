@@ -7,13 +7,10 @@
             <select style="width: 100%; height: 370px;" multiple="multiple" name="selection[]">
                 {% for data in PLANET_FIELD_LIST %}
                 {% if data.isActivateable %}
-                {% if data.isActive %}
-                {% set name = data.getBuilding.getName ~ '(an)' %}
-                {% else %}
-                {% set name = data.getBuilding.getName ~ '(aus)' %}
-                {% endif %}
-                <option style="padding-top: 2px; padding-left: 2px;" value="{{ data.getId }}">
-                    {{ name }}
+                {% set name = data.getBuilding.getName %}
+                {% set state = data.isActive ? '[an] ' : '[aus] ' %}
+                <option style="padding-top: 2px; padding-left: 2px;" value="{{ data.getId }}" title="{{ name }}">
+                    {{ state ~ name|shortName }}
                 </option>
                 {% endif %}
                 {% endfor %}
