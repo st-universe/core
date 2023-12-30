@@ -30,5 +30,6 @@ interface TalSelectedTechInterface
 
     public function getWikiLink(): string;
 
-    public function getBuilding(): ?BuildingInterface;
+    /** @return array<BuildingInterface> */
+    public function getBuildings(): array;
 }
