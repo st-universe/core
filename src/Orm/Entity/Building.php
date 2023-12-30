@@ -91,6 +91,7 @@ class Building implements BuildingInterface
      * @var ArrayCollection<int, BuildingCommodityInterface>
      */
     #[OneToMany(targetEntity: 'BuildingCommodity', mappedBy: 'building', indexBy: 'commodity_id')]
+    #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $commodities;
 
     /**

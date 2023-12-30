@@ -157,15 +157,9 @@ final class TalSelectedTech implements TalSelectedTechInterface
             : $researchState->getFinished() > 0;
     }
 
-    public function getBuilding(): ?BuildingInterface
+    public function getBuildings(): array
     {
-        $buildings = $this->buildingRepository->getByResearch($this->getResearch());
-
-        if (empty($buildings)) {
-            return null;
-        }
-
-        return current($buildings);
+        return $this->buildingRepository->getByResearch($this->getResearch());
     }
 
     public function getStatusBar(): string

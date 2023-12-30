@@ -2,7 +2,6 @@
 	<table class="tcal">
 		{% set research = TAL_RESEARCH.getResearch %}
 		{% set researchId = research.getId %}
-		{% set building = TAL_RESEARCH.getBuilding %}
 		<tr>
 			<td rowspan="2" style="width: 110px; height: 110px">
 				<img src="assets/research/{{ researchId }}.png" />
@@ -58,13 +57,14 @@
 					href="{{ TAL_RESEARCH.getWikiLink }}">Wiki-Seite</a>
 			</td>
 		</tr>
-		{% if building %}
+		{% for building in TAL_RESEARCH.getBuildings %}
 		<tr>
+			<td>{{ building.getName }}</td>
 			<td colspan="3">
 				{% include 'html/colony/component/buildingPreview.twig' %}
 			</td>
 		</tr>
-		{% endif %}
+		{% endfor %}
 	</table>
 	{% if TAL_RESEARCH.getResearchState %}
 	<div>

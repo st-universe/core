@@ -78,8 +78,12 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
 
     public function getByResearch(ResearchInterface $research): array
     {
-        return $this->findBy([
-            'research_id' => $research->getId()
-        ]);
+        return $this->findBy(
+            [
+                'research_id' => $research->getId(),
+                'view' => true
+            ],
+            ['id' => 'ASC']
+        );
     }
 }
