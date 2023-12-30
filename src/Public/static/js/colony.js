@@ -3,6 +3,7 @@ var hostid = null;
 var hosttype = null;
 var sstr = null;
 var scrollOffset = 6;
+var colonySubMenu = null;
 
 function initializeJsVars(id, type, sessionString) {
 	colonyid = id;
@@ -39,6 +40,8 @@ function switchColonySubmenu(menu, params) {
 	});
 	switchMenu(menu, 'submenu', null, null, params);
 	$('colmenubutton_' + menu).addClassName('selected');
+
+	colonySubMenu = menu;
 }
 
 function switchMenu(menu, id, func, fid, params) {
@@ -72,6 +75,10 @@ function openBuildingInfo(buildingId) {
 	ajax_update('colsurface', createHostUri('SHOW_SURFACE', '&bid=' + buildingId));
 	buildmode = 1;
 	selectedbuilding = buildingId;
+
+	closeAjaxCallbacks.push(() => {
+		closeBuildingInfo();
+	});
 }
 
 function closeBuildingInfo() {
@@ -124,6 +131,12 @@ function fieldMouseClick(obj, fieldId, buildingId, buildingName) {
 			}
 		}
 	} else {
+		if (colonySubMenu == 1) {
+			switchColonySubmenu(1, `fid=${fieldId}`);
+			closeAjaxCallbacks.push(() => {
+				switchColonySubmenu(1);
+			});
+		}
 		showField(fieldId);
 	}
 }
