@@ -61,7 +61,7 @@ function switchMenu(menu, id, func, fid, params) {
 	ajax_update(id, url);
 
 	if (menu == 1) {
-		//initBuildmenuMouseEvent();
+		setTimeout('initBuildmenuMouseEvent()', 250);
 	}
 }
 
