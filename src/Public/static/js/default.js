@@ -36,6 +36,8 @@ function onmousewheel(element, callback) {
                 })(element.onmousewheel);
 };
 
+var closeAjaxCallbacks = new Array();
+
 function closePopup() {
         if (over) {
                 cClick();
@@ -46,25 +48,27 @@ function closePopup() {
 function kpListener(e) {
         if (!e) e = window.event; // Drecks IE
         if (e.keyCode == 27) {
-                if (buildmode == 1) {
-                        setTimeout("closeBuildingInfo()", 100);
-                        field_observer = 0;
-                }
-                if (over) {
-                        closePopup();
-                }
+                closeAjaxWindow();
         }
 }
 window.onkeydown = kpListener;
 
+var isClosingAjaxWindow = false;
+
 function closeAjaxWindow() {
-        if (buildmode == 1) {
-                closeBuildingInfo();
+        if (isClosingAjaxWindow) {
+                return;
         }
-        if (over) {
-                cClick();
-                over = null;
+        isClosingAjaxWindow = true;
+
+        for (index = 0; index < closeAjaxCallbacks.length; index++) {
+                closeAjaxCallbacks[index]();
         }
+
+        closeAjaxCallbacks = new Array();
+
+        closePopup();
+        isClosingAjaxWindow = false;
 }
 
 function ajaxrequest(url) {

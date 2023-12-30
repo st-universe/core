@@ -24,13 +24,20 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         int $userId,
         int $buildMenu,
         int $offset,
-        int $commodityId = null
+        int $commodityId = null,
+        int $fieldType = null
     ): array {
 
         $commodityFilter = $commodityId === null ? '' : sprintf(
             'AND EXISTS (SELECT bc.id FROM %s bc WHERE bc.buildings_id = b.id AND bc.commodity_id = %d)',
             BuildingCommodity::class,
             $commodityId
+        );
+
+        $fieldTypeFilter = $fieldType === null ? '' : sprintf(
+            'AND EXISTS (SELECT pftb.id FROM %s pftb WHERE pftb.buildings_id = b.id AND pftb.type = %d)',
+            PlanetFieldTypeBuilding::class,
+            $fieldType
         );
 
         return $this->getEntityManager()
@@ -46,14 +53,15 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                                 SELECT fd.type_id FROM %s fd WHERE fd.%s = :hostId
                             )
                         ))
-                    %s
+                    %s %s
                     ORDER BY b.name',
                     Building::class,
                     Researched::class,
                     PlanetFieldTypeBuilding::class,
                     PlanetField::class,
                     $host->getPlanetFieldHostColumnIdentifier(),
-                    $commodityFilter
+                    $commodityFilter,
+                    $fieldTypeFilter
                 )
             )
             ->setMaxResults(ColonyEnum::BUILDMENU_SCROLLOFFSET)
