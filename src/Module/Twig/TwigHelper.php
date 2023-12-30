@@ -6,6 +6,7 @@ namespace Stu\Module\Twig;
 
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -161,6 +162,15 @@ class TwigHelper
             return (int)((120 - $anomaly->getRemainingTicks()) / 5) + 1;
         });
         $this->environment->addFilter($adventDoorFilter);
+
+        $shortNameFilter = new TwigFilter('shortName', function (string $name): string {
+            return array_reduce(
+                array_keys(NameAbbreviations::ABBREVIATIONS),
+                fn (string $value, string $from): string => str_replace($from, NameAbbreviations::ABBREVIATIONS[$from], $value),
+                $name
+            );
+        });
+        $this->environment->addFilter($shortNameFilter);
     }
 
     private function registerFunctions(): void
