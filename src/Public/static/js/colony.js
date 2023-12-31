@@ -3,7 +3,7 @@ var hostid = null;
 var hosttype = null;
 var sstr = null;
 var scrollOffset = 6;
-var colonySubMenu = null;
+var colonySubMenu = 2;
 
 function initializeJsVars(id, type, sessionString) {
 	colonyid = id;
@@ -61,7 +61,7 @@ function switchMenu(menu, id, func, fid, params) {
 	ajax_update(id, url);
 
 	if (menu == 1) {
-		setTimeout('initBuildmenuMouseEvent()', 250);
+		setTimeout('initBuildmenuMouseEvent()', 1000);
 	}
 }
 
@@ -187,6 +187,11 @@ function refreshHost() {
 	ajax_update('colonyeps', createHostUri('SHOW_EPSBAR_AJAX'));
 	ajax_update('colonyshields', createHostUri('SHOW_SHIELDBAR_AJAX'));
 	ajax_update('colonystorage', createHostUri('SHOW_STORAGE_AJAX'));
+
+	//reload info submenu if selected
+	if (colonySubMenu == 2) {
+		switchColonySubmenu(2);
+	}
 }
 
 function createHostUri(IDENTIFIER, extra) {
