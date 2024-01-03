@@ -17,11 +17,11 @@
         {% set id = data.getId %}
         {% set elementId = buildplan_ ~ id %}
         <tr class="row" style="cursor: pointer;" title="Details">
-            <td class="selectable" onclick="toggleTableRowVisible('{{ elementid }}');">
+            <td class="selectable" onclick="toggleTableRowVisible('{{ elementId }}');">
                 {{ data.getName }}</td>
-            <td class="selectable" onclick="toggleTableRowVisible('{{ elementid }}');">
+            <td class="selectable" onclick="toggleTableRowVisible('{{ elementId }}');">
                 {{ data.getShipCount }}</td>
-            <td onclick="toggleTableRowVisible('{{ elementid }}');">
+            <td onclick="toggleTableRowVisible('{{ elementId }}');">
                 {{ data.getBuildtime|formatSeconds }}</td>
             <td style="text-align: center;">
                 <a class="linkbutton" href="?id={{ HOST.getId }}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid={{ id }}">Bauplan
@@ -35,7 +35,7 @@
                 {% endif %}
             </td>
         </tr>
-        <tr title="Details schließen" onclick="toggleTableRowVisible('{{ elementid }}');" id="{{ elementid }}"
+        <tr title="Details schließen" onclick="toggleTableRowVisible('{{ elementId }}');" id="{{ elementId }}"
             style="cursor: pointer; display: none;" class="row">
             <td colspan="4">
                 <table style="width: 100%">
