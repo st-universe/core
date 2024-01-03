@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
@@ -67,7 +67,7 @@ final class DisassembleShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShipDisassembly::VIEW_IDENTIFIER);
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -231,6 +231,6 @@ final class DisassembleShip implements ActionControllerInterface
 
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
