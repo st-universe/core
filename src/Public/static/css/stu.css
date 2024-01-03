@@ -1639,12 +1639,6 @@ div.allianceMember div.userAvatar {
   border: 0;
 }
 
-div.allianceMember div.allianceMemberName {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-
 div.allianceMember div.allianceMemberButtons {
   text-align: right;
 }
