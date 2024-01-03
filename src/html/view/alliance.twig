@@ -72,7 +72,7 @@
       {% for data in MEMBERS %}
       <div class="allianceMember">
         {{ userAvatar(data.getUser) }}
-        <div class="allianceMemberName">{{ data.getUser.getName|bbcode }}</div>
+        <div>{{ data.getUser.getName|bbcode }}</div>
         <div class="allianceMemberButtons" id="{{ data.getUserId }}">
           {{ pmWindow(USER, data.getUser.getId) }}
           <img src="assets/rassen/{{ data.getUser.getFactionId }}s.png" />
