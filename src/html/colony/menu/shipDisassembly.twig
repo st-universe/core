@@ -22,8 +22,10 @@
 		<td>{{ ship.getName|bbcode }}</td>
 		<td>
 			<div>
-				<a
-					href="?id={{ COLONY.getId }}&B_DISASSEMBLE_SHIP=1&ship_id={{ ship.getId }}&fid={{ FIELD.getId }}">Demontieren</a>
+				<a href="javascript:void(0);"
+					onClick="actionToInnerContent('B_DISASSEMBLE_SHIP', 'id={{ COLONY.getId }}&ship_id={{ ship.getId }}&fid={{ FIELD.getId }}&sstr={{ SESSIONSTRING }}');">
+					Demontieren
+				</a>
 			</div>
 		</td>
 	</tr>
