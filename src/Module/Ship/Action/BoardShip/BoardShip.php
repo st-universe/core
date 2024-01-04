@@ -364,7 +364,7 @@ final class BoardShip implements ActionControllerInterface
         $this->shipCrewRepository->delete($killedShipCrew);
 
         if ($ship->getCrewAssignments()->isEmpty()) {
-            $this->shipShutdown->shutdown($wrapper);
+            $this->shipShutdown->shutdown($wrapper, true);
         }
 
         return $killedShipCrew;

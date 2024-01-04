@@ -6,5 +6,5 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface ShipShutdownInterface
 {
-    public function shutdown(ShipWrapperInterface $wrapper): void;
+    public function shutdown(ShipWrapperInterface $wrapper, bool $doLeaveFleet = false): void;
 }
