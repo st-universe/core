@@ -38,13 +38,15 @@ final class ShipShutdown implements ShipShutdownInterface
         $this->shipUndocking = $shipUndocking;
     }
 
-    public function shutdown(ShipWrapperInterface $wrapper): void
+    public function shutdown(ShipWrapperInterface $wrapper, bool $doLeaveFleet = false): void
     {
         $this->shipSystemManager->deactivateAll($wrapper);
 
         $ship = $wrapper->get();
 
-        $this->leaveFleet->leaveFleet($ship);
+        if ($doLeaveFleet) {
+            $this->leaveFleet->leaveFleet($ship);
+        }
         $this->shipUndocking->undockAllDocked($ship);
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
 

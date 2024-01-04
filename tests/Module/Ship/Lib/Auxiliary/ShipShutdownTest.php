@@ -52,7 +52,13 @@ class ShipShutdownTest extends StuTestCase
         );
     }
 
-    public function testShutdown(): void
+    public static function parameterDataProvider(): array
+    {
+        return [[null], [true], [false]];
+    }
+
+    /** @dataProvider parameterDataProvider */
+    public function testShutdown(?bool $doLeaveFleet): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -73,9 +79,11 @@ class ShipShutdownTest extends StuTestCase
             ->with($wrapper)
             ->once();
 
-        $this->leaveFleet->shouldReceive('leaveFleet')
-            ->with($ship)
-            ->once();
+        if ($doLeaveFleet === true) {
+            $this->leaveFleet->shouldReceive('leaveFleet')
+                ->with($ship)
+                ->once();
+        }
 
         $this->shipUndocking->shouldReceive('undockAllDocked')
             ->with($ship)
@@ -89,6 +97,10 @@ class ShipShutdownTest extends StuTestCase
             ->with($ship)
             ->once();
 
-        $this->subject->shutdown($wrapper);
+        if ($doLeaveFleet !== null) {
+            $this->subject->shutdown($wrapper, $doLeaveFleet);
+        } else {
+            $this->subject->shutdown($wrapper);
+        }
     }
 }

@@ -118,7 +118,7 @@ final class ShipRemover implements ShipRemoverInterface
         $user = $ship->getUser();
 
         $this->cancelBothTakeover($ship);
-        $this->shipShutdown->shutdown($wrapper);
+        $this->shipShutdown->shutdown($wrapper, true);
 
         //leave ship if there is crew
         if ($ship->getCrewCount() > 0) {
@@ -284,7 +284,7 @@ final class ShipRemover implements ShipRemoverInterface
     {
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
 
-        $this->shipShutdown->shutdown($wrapper);
+        $this->shipShutdown->shutdown($wrapper, true);
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
 
         //both sides have to be cleared, foreign key violation
