@@ -68,7 +68,8 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
                     FROM %s a
                     JOIN %s m
                     WITH a.map_id = m.id
-                    WHERE (m.cx BETWEEN :startX AND :endX)
+                    WHERE a.remaining_ticks > 0
+                    AND (m.cx BETWEEN :startX AND :endX)
                     AND (m.cy BETWEEN :startY AND :endY)
                     AND m.layer = :layer
                     ORDER BY foo ASC',

@@ -18,6 +18,7 @@ use Stu\Lib\Map\Location;
 #[Index(name: 'anomaly_to_type_idx', columns: ['anomaly_type_id'])]
 #[Index(name: 'anomaly_map_idx', columns: ['map_id'])]
 #[Index(name: 'anomaly_starsystem_map_idx', columns: ['starsystem_map_id'])]
+#[Index(name: 'anomaly_remaining_idx', columns: ['remaining_ticks'])]
 #[Entity(repositoryClass: 'Stu\Orm\Repository\AnomalyRepository')]
 class Anomaly implements AnomalyInterface
 {
