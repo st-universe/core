@@ -1,7 +1,7 @@
 {% macro control_nav(ship, navPanel, visualPanel) %}
 {% if ship.getLss %}
 
-{% set fontSize = panel.getFontSize %}
+{% set fontSize = visualPanel.getFontSize %}
 {% set heightAndWidth = visualPanel.getHeightAndWidth %}
 
 <div style="float:left; padding-bottom:5px;">
