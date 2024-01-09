@@ -57,13 +57,18 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
 
         $game->setTemplateVar(
             'EMPLOYER_LIST',
-            array_map(
-                fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string)$data['satisfied']),
-                $this->colonyRepository->getSatisfiedWorkerTop10()
-            )
+            $this->retrieveEmployerList()
         );
 
         $this->setPointsForUser($game);
+    }
+
+    private function retrieveEmployerList(): callable
+    {
+        return fn () => array_map(
+            fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string)$data['satisfied']),
+            $this->colonyRepository->getSatisfiedWorkerTop10()
+        );
     }
 
     private function setPointsForUser(GameControllerInterface $game): void
