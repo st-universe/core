@@ -32,7 +32,7 @@ class GameRequest implements GameRequestInterface
     private ?int $user_id = null;
 
     #[Column(type: 'integer')]
-    private int $turn_id;
+    private int $turn_id = 0;
 
     #[Column(type: 'integer')]
     private int $time;
