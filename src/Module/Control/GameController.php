@@ -4,6 +4,7 @@ namespace Stu\Module\Control;
 
 use Throwable;
 use DateTimeImmutable;
+use Doctrine\DBAL\Driver\PDO\PDOException as PDOPDOException;
 use Doctrine\ORM\EntityManagerInterface;
 use PDOException;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -567,7 +568,7 @@ final class GameController implements GameControllerInterface
             $gameRequest->setTime(time());
             try {
                 $gameRequest->setTurnId($this->getCurrentRound());
-            } catch (PDOException) {
+            } catch (PDOException | PDOPDOException $e) {
             }
             $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
             $gameRequest->setRequestId($this->uuidGenerator->genV4());
