@@ -4,8 +4,8 @@ namespace Stu\Module\Control;
 
 use Throwable;
 use DateTimeImmutable;
-use Doctrine\DBAL\Driver\PDO\PDOException;
 use Doctrine\ORM\EntityManagerInterface;
+use PDOException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Game\GameEnum;
