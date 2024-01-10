@@ -11,8 +11,6 @@ use request;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ResearchDependencyInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -26,17 +24,12 @@ final class ShowResearchTree implements ViewControllerInterface
 
     private ResearchDependencyRepositoryInterface $researchDependencyRepository;
 
-    private LoggerUtilInterface $logger;
-
     public function __construct(
         FactionRepositoryInterface $factionRepository,
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->factionRepository = $factionRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
-        //$this->logger->init('RTREE', LoggerEnum::LEVEL_ERROR);
     }
 
     public function handle(GameControllerInterface $game): void
