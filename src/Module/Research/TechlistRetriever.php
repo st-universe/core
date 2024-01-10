@@ -147,9 +147,9 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                 ];
             }
 
-            if ($mode === ResearchModeEnum::REQUIRE->value) {
+            if ($mode === ResearchModeEnum::REQUIRE) {
                 $allDependencies[$research_id]['AND'][] = $dependency->getDependsOn();
-            } elseif ($mode === ResearchModeEnum::REQUIRE_SOME->value) {
+            } elseif ($mode === ResearchModeEnum::REQUIRE_SOME) {
                 $allDependencies[$research_id]['OR'][] = $dependency->getDependsOn();
             }
         }

@@ -27,4 +27,11 @@ final class ResearchDependencyRepository extends EntityRepository implements Res
             'mode' => ResearchModeEnum::EXCLUDE->value
         ]);
     }
+
+    public function getByDependingResearch(int $researchId): array
+    {
+        return $this->findBy([
+            'depends_on' => $researchId
+        ]);
+    }
 }

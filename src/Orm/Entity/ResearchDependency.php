@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Research\ResearchModeEnum;
 
 #[Table(name: 'stu_research_dependencies')]
 #[Entity(repositoryClass: 'Stu\Orm\Repository\ResearchDependencyRepository')]
@@ -27,8 +28,8 @@ class ResearchDependency implements ResearchDependencyInterface
     #[Column(type: 'integer')]
     private int $depends_on;
 
-    #[Column(type: 'smallint')]
-    private int $mode;
+    #[Column(type: 'smallint', enumType: ResearchModeEnum::class)]
+    private ResearchModeEnum $mode;
 
     #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Research')]
     #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
@@ -67,12 +68,12 @@ class ResearchDependency implements ResearchDependencyInterface
         return $this;
     }
 
-    public function getMode(): int
+    public function getMode(): ResearchModeEnum
     {
         return $this->mode;
     }
 
-    public function setMode(int $mode): ResearchDependencyInterface
+    public function setMode(ResearchModeEnum $mode): ResearchDependencyInterface
     {
         $this->mode = $mode;
 

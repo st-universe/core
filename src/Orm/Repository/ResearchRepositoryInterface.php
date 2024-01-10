@@ -19,11 +19,6 @@ interface ResearchRepositoryInterface extends ObjectRepository
      */
     public function getAvailableResearch(int $userId): array;
 
-    /**
-     * @return array<ResearchInterface>
-     */
-    public function getForFaction(int $factionId): array;
-
     public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int;
 
     /**

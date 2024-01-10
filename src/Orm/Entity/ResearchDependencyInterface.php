@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Research\ResearchModeEnum;
+
 interface ResearchDependencyInterface
 {
     public function getId(): int;
@@ -14,9 +16,9 @@ interface ResearchDependencyInterface
 
     public function setDependsOn(int $dependsOn): ResearchDependencyInterface;
 
-    public function getMode(): int;
+    public function getMode(): ResearchModeEnum;
 
-    public function setMode(int $mode): ResearchDependencyInterface;
+    public function setMode(ResearchModeEnum $mode): ResearchDependencyInterface;
 
     public function getResearch(): ResearchInterface;
 
