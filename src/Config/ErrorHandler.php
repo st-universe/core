@@ -46,10 +46,13 @@ final class ErrorHandler
         $this->session = $session;
     }
 
-    public function register(): void
+    public function register(bool $registerErrorHandlers): void
     {
         $this->setErrorReporting();
-        //$this->registerHandlers();
+
+        if ($registerErrorHandlers) {
+            $this->registerHandlers();
+        }
     }
 
     private function registerHandlers(): void

@@ -23,6 +23,6 @@ class InitTest extends StuTestCase
             echo $output;
         };
 
-        Init::run($app);
+        Init::run($app, false);
     }
 }
