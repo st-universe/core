@@ -18,7 +18,7 @@ final class Init
     /**
      * @param callable(ContainerInterface): mixed $app
      */
-    public static function run(callable $app): void
+    public static function run(callable $app, bool $registerErrorHandlers = true): void
     {
         date_default_timezone_set('Europe/Berlin');
 
@@ -81,7 +81,7 @@ final class Init
 
         $config = $container->get(StuConfigInterface::class);
 
-        $container->get(ErrorHandler::class)->register();
+        $container->get(ErrorHandler::class)->register($registerErrorHandlers);
 
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->getGameSettings()->getWebroot());
 
