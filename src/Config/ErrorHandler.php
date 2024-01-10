@@ -49,7 +49,11 @@ final class ErrorHandler
     public function register(): void
     {
         $this->setErrorReporting();
+        //$this->registerHandlers();
+    }
 
+    private function registerHandlers(): void
+    {
         $whoops = new Run();
 
         $whoops->appendHandler($this->outputHandler());
@@ -62,8 +66,10 @@ final class ErrorHandler
     private function outputHandler(): mixed
     {
 
-        if ($this->stuConfig->getDebugSettings()->isDebugMode()
-        || $this->isAdminUser()) {
+        if (
+            $this->stuConfig->getDebugSettings()->isDebugMode()
+            || $this->isAdminUser()
+        ) {
             if (Misc::isCommandLine()) {
                 $handler = new PlainTextHandler();
             } else {
