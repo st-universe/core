@@ -564,7 +564,7 @@ final class GameController implements GameControllerInterface
         if ($this->gameRequest === null) {
             $gameRequest = $this->gameRequestRepository->prototype();
             $gameRequest->setTime(time());
-            //    $gameRequest->setTurnId($this->getCurrentRound());
+            $gameRequest->setTurnId($this->getCurrentRound());
             $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
             $gameRequest->setRequestId($this->uuidGenerator->genV4());
 
