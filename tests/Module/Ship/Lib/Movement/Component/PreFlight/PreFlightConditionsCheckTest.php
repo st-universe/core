@@ -92,7 +92,7 @@ class PreFlightConditionsCheckTest extends StuTestCase
             echo $output;
         };
 
-        Init::run($app);
+        Init::run($app, false);
 
         $this->assertEquals(5, count(get('pre_flight_conditions')->resolve($container)));
     }
