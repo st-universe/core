@@ -40,27 +40,6 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
             ->getResult();
     }
 
-    /**
-     * Retrieves all tech entries for a faction. It relys on some fancy id magic, so consider this a temporary solution
-     */
-    public function getForFaction(int $factionId): array
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(Research::class, 'r');
-        $rsm->addFieldResult('r', 'id', 'id');
-        $rsm->addFieldResult('r', 'name', 'name');
-
-        return $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT r.id, r.name FROM stu_research r
-                    WHERE CAST(r.id AS TEXT) LIKE :factionId
-                    OR CAST(r.id AS TEXT) LIKE \'%%0\'',
-                $rsm
-            )
-            ->setParameter('factionId', sprintf('%%%d', $factionId))
-            ->getResult();
-    }
-
     public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int
     {
         return (int)$this->getEntityManager()->createQuery(

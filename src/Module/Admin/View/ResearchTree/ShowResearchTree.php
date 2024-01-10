@@ -5,27 +5,38 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\ResearchTree;
 
 use Fhaculty\Graph\Graph;
+use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
-use Stu\Component\Research\ResearchModeEnum;
+use request;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\ResearchDependencyInterface;
+use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
-use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class ShowResearchTree implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_RESEARCH_TREE';
 
-    private ResearchRepositoryInterface $researchRepository;
+    private FactionRepositoryInterface $factionRepository;
 
     private ResearchDependencyRepositoryInterface $researchDependencyRepository;
 
+    private LoggerUtilInterface $logger;
+
     public function __construct(
-        ResearchRepositoryInterface $researchRepository,
-        ResearchDependencyRepositoryInterface $researchDependencyRepository
+        FactionRepositoryInterface $factionRepository,
+        ResearchDependencyRepositoryInterface $researchDependencyRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->researchRepository = $researchRepository;
+        $this->factionRepository = $factionRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        //$this->logger->init('RTREE', LoggerEnum::LEVEL_ERROR);
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,35 +49,19 @@ final class ShowResearchTree implements ViewControllerInterface
 
         $graph = new Graph();
 
-
-        $research_list = $this->researchRepository->getForFaction(1);
-
-        $dependencies = $this->researchDependencyRepository->getByMode([
-            ResearchModeEnum::REQUIRE->value,
-            ResearchModeEnum::REQUIRE_SOME->value
-        ]);
-        $excludes = $this->researchDependencyRepository->getByMode([ResearchModeEnum::EXCLUDE->value]);
+        $factionId = request::postIntFatal('factionid');
+        $faction = $this->factionRepository->find($factionId);
+        if ($faction === null) {
+            $game->addInformationf('Faction with following id does not exist: %d', $factionId);
+            return;
+        }
 
         $vertexes = [];
+        $points = 0;
 
-        foreach ($research_list as $research) {
-            $vertex = $graph->createVertex($research->getId());
-            $vertex->setAttribute('graphviz.label', $research->getName());
-            $vertexes[$research->getId()] = $vertex;
-        }
-
-        foreach ($dependencies as $obj) {
-            if (!array_key_exists($obj->getDependsOn(), $vertexes) || !array_key_exists($obj->getResearchId(), $vertexes)) {
-                continue;
-            }
-            $vertexes[$obj->getDependsOn()]->createEdgeTo($vertexes[$obj->getResearchId()]);
-        }
-        foreach ($excludes as $obj) {
-            if (!array_key_exists($obj->getDependsOn(), $vertexes) || !array_key_exists($obj->getResearchId(), $vertexes)) {
-                continue;
-            }
-            $edge = $vertexes[$obj->getDependsOn()]->createEdgeTo($vertexes[$obj->getResearchId()]);
-            $edge->setAttribute('graphviz.color', 'red');
+        $startResearch = $faction->getStartResearch();
+        if ($startResearch !== null) {
+            $this->addResearch($startResearch, $graph, $vertexes, $points);
         }
 
         $graphviz = new GraphViz();
@@ -80,6 +75,54 @@ final class ShowResearchTree implements ViewControllerInterface
         );
         $game->setTemplateFile('html/admin/researchTree.twig');
         $game->setPageTitle(_('Forschungsbaum'));
+        $game->setTemplateVar('POINTS', $points);
         $game->setTemplateVar('TREE', $graphviz->createImageHtml($graph));
+    }
+
+    /** @param array<Vertex> $vertexes */
+    private function addResearch(ResearchInterface $research, Graph $graph, array &$vertexes, int &$points): void
+    {
+        $researchId = $research->getId();
+        if (array_key_exists($research->getId(), $vertexes)) {
+            return;
+        }
+
+        // create node
+        $vertex = $graph->createVertex($researchId);
+        $vertex->setAttribute('graphviz.label', $research->getName());
+        $vertexes[$researchId] = $vertex;
+
+        // compute dependencies
+        foreach ($this->researchDependencyRepository->getByDependingResearch($researchId) as $dependency) {
+            $this->addResearch($dependency->getResearch(), $graph, $vertexes, $points);
+            $this->addEdge($dependency, $vertexes);
+        }
+
+        $commodityId = $research->getCommodityId();
+
+        if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL1) {
+            $points += $research->getPoints() * 1;
+        }
+        if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL2) {
+            $points += $research->getPoints() * 2;
+        }
+        if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL3) {
+            $points += $research->getPoints() * 3;
+        }
+        if (in_array($commodityId, CommodityTypeEnum::COMMODITY_RESEARCH_LVL4)) {
+            $points += $research->getPoints() * 4;
+        }
+    }
+
+    /** @param array<Vertex> $vertexes */
+    private function addEdge(ResearchDependencyInterface $researchDependency, array $vertexes): void
+    {
+        $edge = $vertexes[$researchDependency->getDependsOn()]
+            ->createEdgeTo($vertexes[$researchDependency->getResearchId()]);
+
+        $color = $researchDependency->getMode()->getTechtreeEdgeColor();
+        if ($color !== null) {
+            $edge->setAttribute('graphviz.color', $color);
+        }
     }
 }
