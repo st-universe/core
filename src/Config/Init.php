@@ -80,7 +80,10 @@ final class Init
         $container = $builder->build();
 
         $config = $container->get(StuConfigInterface::class);
-        $container->get(ErrorHandler::class)->register();
+
+        if (false) {
+            $container->get(ErrorHandler::class)->register();
+        }
 
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->getGameSettings()->getWebroot());
 
