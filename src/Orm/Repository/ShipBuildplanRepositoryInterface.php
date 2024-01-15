@@ -10,6 +10,7 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
  * @extends ObjectRepository<ShipBuildplan>
  *
  * @method null|ShipBuildplanInterface find(integer $id)
+ * @method ShipBuildplanInterface[] findAll()
  */
 interface ShipBuildplanRepositoryInterface extends ObjectRepository
 {
