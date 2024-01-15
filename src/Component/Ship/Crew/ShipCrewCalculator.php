@@ -6,9 +6,11 @@ namespace Stu\Component\Ship\Crew;
 
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 
 /**
@@ -59,6 +61,18 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
             }
         }
         return $crewCount;
+    }
+
+    public function getCrewUsage(array $modules, ShipRumpInterface $rump, UserInterface $user): int
+    {
+        return array_reduce(
+            $modules,
+            fn (int $value, ModuleInterface $module) => $value + $module->getCrewByFactionAndRumpLvl(
+                $user->getFactionId(),
+                $rump->getModuleLevel()
+            ),
+            $rump->getBaseCrew()
+        );
     }
 
     private function getBaseCrewCount(ShipRumpInterface $shipRump): int

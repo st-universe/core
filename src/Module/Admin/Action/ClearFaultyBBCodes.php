@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\Action;
 
 use JBBCode\Parser;
 use Stu\Lib\CleanTextUtils;
-use Stu\Module\Admin\View\Ticks\ShowTicks;
+use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -49,7 +49,7 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowTicks::VIEW_IDENTIFIER);
+        $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
