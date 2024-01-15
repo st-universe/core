@@ -33,7 +33,7 @@ interface ModuleInterface
 
     public function setCrew(int $crew): ModuleInterface;
 
-    public function getCrewByFactionAndRumpLvl(?int $factionId, int $rumpModuleLvl = null): int;
+    public function getCrewByFactionAndRumpLvl(FactionInterface $faction, ShipRumpInterface $rump): int;
 
     public function getType(): int;
 

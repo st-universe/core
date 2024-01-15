@@ -139,9 +139,10 @@ final class BuildShip implements ActionControllerInterface
 
         $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
 
+        /** @var array<int, ModuleInterface> */
         $modules = [];
         $sigmod = [];
-        $crew_usage = $rump->getBaseCrew();
+
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
 
             $module = request::postArray('mod_' . $i);
@@ -164,8 +165,6 @@ final class BuildShip implements ActionControllerInterface
                         throw new RuntimeException(sprintf('moduleId %d does not exist', $id));
                     }
 
-                    $crew = $specialMod->getCrewByFactionAndRumpLvl($game->getUser()->getFactionId());
-                    $crew_usage += $crew;
                     $modules[$id] = $specialMod;
                     $sigmod[$id] = $id;
                     $specialCount++;
@@ -187,12 +186,6 @@ final class BuildShip implements ActionControllerInterface
                 if ($mod === null) {
                     throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                 }
-
-                $crew = $mod->getCrewByFactionAndRumpLvl(
-                    $user->getFactionId(),
-                    $rump->getModuleLevel()
-                );
-                $crew_usage += $crew;
             } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
                 return;
             }
@@ -202,7 +195,9 @@ final class BuildShip implements ActionControllerInterface
             $modules[current($module)] = $mod;
             $sigmod[$i] = $mod->getId();
         }
-        if ($crew_usage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
+
+        $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
+        if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }
@@ -227,7 +222,7 @@ final class BuildShip implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
-        $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
+        $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
             $plannameFromRequest = request::indString('buildplanname');
@@ -254,7 +249,7 @@ final class BuildShip implements ActionControllerInterface
             $plan->setName($planname);
             $plan->setSignature($signature);
             $plan->setBuildtime($rump->getBuildtime());
-            $plan->setCrew($crew_usage);
+            $plan->setCrew($crewUsage);
 
             $this->shipBuildplanRepository->save($plan);
 
