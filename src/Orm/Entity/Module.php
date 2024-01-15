@@ -212,7 +212,7 @@ class Module implements ModuleInterface
     {
         $result = $this->getCrew();
 
-        if ($this->getFaction !== $faction) {
+        if ($this->getFaction() !== $faction) {
             $result += 1;
         }
 
