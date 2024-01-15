@@ -60,6 +60,6 @@ final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
 
     public function getNeededCrew(): int
     {
-        return $this->getModule()->getCrewByFactionAndRumpLvl($this->user->getFactionId(), $this->rump->getModuleLevel());
+        return $this->getModule()->getCrewByFactionAndRumpLvl($this->user->getFaction(), $this->rump);
     }
 }

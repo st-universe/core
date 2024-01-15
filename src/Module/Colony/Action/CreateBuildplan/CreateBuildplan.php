@@ -100,9 +100,10 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
 
+        /** @var array<int, ModuleInterface> */
         $modules = [];
         $sigmod = [];
-        $crew_usage = $rump->getBaseCrew();
+
         $error = false;
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             $this->loggerUtil->log(sprintf('%d', $i));
@@ -129,9 +130,6 @@ final class CreateBuildplan implements ActionControllerInterface
                         continue;
                     }
 
-                    $crew = $specialMod->getCrewByFactionAndRumpLvl($user->getFactionId(), $rump->getModuleLevel());
-                    $crew_usage += $crew;
-
                     $modules[$id] = $specialMod;
                     $sigmod[$id] = $id;
                     $specialCount++;
@@ -156,9 +154,6 @@ final class CreateBuildplan implements ActionControllerInterface
                 if ($mod === null) {
                     throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                 }
-
-                $crew = $mod->getCrewByFactionAndRumpLvl($user->getFactionId(), $rump->getModuleLevel());
-                $crew_usage += $crew;
             } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
                 $this->exitOnError($game);
                 return;
@@ -174,14 +169,16 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         $this->loggerUtil->log('E');
-        if ($crew_usage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
+
+        $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
+        if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
             $this->loggerUtil->log('F');
             $this->exitOnError($game);
             return;
         }
         $this->loggerUtil->log('G');
-        $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
+        $signature = ShipBuildplan::createSignature($sigmod, $crewUsage);
 
         $plannameFromRequest = request::indString('buildplanname');
         if (
@@ -225,16 +222,14 @@ final class CreateBuildplan implements ActionControllerInterface
         $plan->setName($planname);
         $plan->setSignature($signature);
         $plan->setBuildtime($rump->getBuildtime());
-        $plan->setCrew($crew_usage);
+        $plan->setCrew($crewUsage);
 
         $this->shipBuildplanRepository->save($plan);
         $this->entityManager->flush();
 
         $this->loggerUtil->log('I');
 
-        /**
-         * @var ModuleInterface[] $modules
-         */
+
         foreach ($modules as $obj) {
             $mod = $this->buildplanModuleRepository->prototype();
             $mod->setModuleType($obj->getType());
@@ -243,6 +238,8 @@ final class CreateBuildplan implements ActionControllerInterface
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
 
             $this->buildplanModuleRepository->save($mod);
+
+            $plan->getModules()->set($mod->getId(), $mod);
         }
 
         $this->loggerUtil->log('J');
