@@ -128,7 +128,6 @@ Init::run(function (ContainerInterface $dic): void {
                 }
 
                 $moduleSpecialList = request::postArray('special_mod');
-
                 foreach ($moduleSpecialList as $moduleId) {
                     $module = $moduleRepo->find($moduleId);
                     if ($module === null) {
