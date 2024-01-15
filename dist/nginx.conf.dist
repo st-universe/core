@@ -29,7 +29,7 @@ server {
 	location ~ [^/]\.php(/|$) {
 		fastcgi_buffers 16 16k;
 		fastcgi_buffer_size 32k;
-		fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+		fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
 		fastcgi_read_timeout 300;
 		fastcgi_index index.php;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
