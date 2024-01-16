@@ -1391,7 +1391,7 @@ class Ship implements ShipInterface
 
     public function getRumpId(): int
     {
-        return $this->rumps_id;
+        return $this->getRump()->getId();
     }
 
     public function getRumpName(): string
