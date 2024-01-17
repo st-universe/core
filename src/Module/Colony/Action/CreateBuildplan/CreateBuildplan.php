@@ -238,8 +238,6 @@ final class CreateBuildplan implements ActionControllerInterface
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
 
             $this->buildplanModuleRepository->save($mod);
-
-            $plan->getModules()->set($mod->getId(), $mod);
         }
 
         $this->loggerUtil->log('J');
