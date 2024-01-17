@@ -453,7 +453,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
                     sys.name as system_name, m.layer_id,
                     (SELECT tp.id FROM stu_ships s JOIN stu_trade_posts tp ON s.id = tp.ship_id WHERE s.map_id = m.id) as tradepost_id,
-                    (SELECT mr.description FROM stu_map_regions mr left JOIN stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id WHERE m.region_id = mr.id) as region_description
+                    (SELECT mr.description FROM stu_map_regions mr JOIN stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id WHERE m.region_id = mr.id) as region_description
                 FROM stu_map m
                 LEFT JOIN stu_user_map um
                     ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId AND um.layer_id = m.layer_id

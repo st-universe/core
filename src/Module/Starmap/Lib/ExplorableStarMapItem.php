@@ -68,13 +68,27 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
         $tradepost = $this->getTradepost();
 
-        return sprintf(
-            '%s%s%s%s',
-            $tradepost !== null ? $this->getTradepostTitle($tradepost) : '',
-            $tradepost !== null && $this->exploreableStarMap->getMapped() !== null ? ' über ' : '',
-            $this->exploreableStarMap->getMapped() !== null ? $this->exploreableStarMap->getSystemName() . '-System' : '',
-            $this->exploreableStarMap->getRegionDescription() ?? ''
-        );
+        $result = '';
+
+        if ($tradepost !== null) {
+            $result .= $this->getTradepostTitle($tradepost);
+            $result .= ' über ';
+        }
+
+        $isSystemNameSet = false;
+        if ($this->exploreableStarMap->getMapped() !== null) {
+            $isSystemNameSet = true;
+            $result .= $this->exploreableStarMap->getSystemName() . '-System';
+        }
+
+        if ($this->exploreableStarMap->getRegionDescription() !== null) {
+            if ($isSystemNameSet) {
+                $result .= ', ';
+            }
+            $result .= $this->exploreableStarMap->getRegionDescription();
+        }
+
+        return $result;
     }
 
     private function getTradepostTitle(TradePostInterface $tradepost): string
