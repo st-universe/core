@@ -94,7 +94,6 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     private function getTradepostTitle(TradePostInterface $tradepost): string
     {
         $licenseInfo = $tradepost->getLatestLicenseInfo();
-
         if ($licenseInfo === null) {
             return $this->getStringWithoutBbCode($tradepost->getName());
         }
