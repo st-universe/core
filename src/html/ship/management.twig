@@ -83,7 +83,7 @@
           src="assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" />
         <input type="text" size="3" name="reactor[{{ shipId }}]" />
         {% if wrapper.isOwnedByCurrentUser %}
-        {{ reactor.getLoad }}/{{ reactor.getCapacity }}
+        <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity }}</span>
         {% endif %}
       </div>
       {% endif %}
