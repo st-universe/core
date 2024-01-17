@@ -106,8 +106,8 @@
         {% set reactor = wrapper.getReactorWrapper %}
         {% if reactor %}
         <div style="float: left; width: 50%">
-            <img src="/assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" /> <span>{{ reactor.getLoad
-                }}</span>
+            <img src="/assets/buttons/{{ reactor.get.getIcon }}" title="Reaktorladung" />
+            <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}</span>
         </div>
         {% endif %}
         {% if epssystem %}
