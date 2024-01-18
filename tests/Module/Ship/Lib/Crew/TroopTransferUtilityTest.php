@@ -14,11 +14,14 @@ use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\StuTestCase;
 
 class TroopTransferUtilityTest extends StuTestCase
 {
+    /** @var MockInterface&ShipCrewRepositoryInterface */
+    private MockInterface $shipCrewRepository;
+
     /** @var MockInterface&ShipTakeoverManagerInterface */
     private MockInterface $shipTakeoverManager;
 
@@ -32,12 +35,14 @@ class TroopTransferUtilityTest extends StuTestCase
 
     protected function setUp(): void
     {
+        $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
         $this->shipTakeoverManager = $this->mock(ShipTakeoverManagerInterface::class);
         $this->shipCrewCalculator = $this->mock(ShipCrewCalculatorInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
 
         $this->subject = new TroopTransferUtility(
+            $this->shipCrewRepository,
             $this->shipTakeoverManager,
             $this->shipCrewCalculator
         );
@@ -242,6 +247,10 @@ class TroopTransferUtilityTest extends StuTestCase
             )
             ->once();
 
+        $this->shipCrewRepository->shouldReceive('save')
+            ->with($shipCrew)
+            ->once();
+
         $this->subject->assignCrew($shipCrew, $target);
 
         $this->assertTrue($crewAssignments->isEmpty());
@@ -281,6 +290,10 @@ class TroopTransferUtilityTest extends StuTestCase
             ->andReturn($crewAssignments);
 
         $target->shouldReceive('getCrewAssignments->add')
+            ->with($shipCrew)
+            ->once();
+
+        $this->shipCrewRepository->shouldReceive('save')
             ->with($shipCrew)
             ->once();
 
