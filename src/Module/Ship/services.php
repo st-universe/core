@@ -27,8 +27,6 @@ use Stu\Module\Ship\Action\AttackShip\AttackShip;
 use Stu\Module\Ship\Action\AttackTrackedShip\AttackTrackedShip;
 use Stu\Module\Ship\Action\BeamFrom\BeamFrom;
 use Stu\Module\Ship\Action\BeamFromColony\BeamFromColony;
-use Stu\Module\Ship\Action\BeamTo\BeamTo;
-use Stu\Module\Ship\Action\BeamToColony\BeamToColony;
 use Stu\Module\Ship\Action\BoardShip\BoardShip;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
@@ -144,12 +142,11 @@ use Stu\Module\Ship\Action\TholianWeb\RemoveTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\SupportTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\UnsupportTholianWeb;
 use Stu\Module\Ship\Action\ToggleFleetVisibility\ToggleFleetVisibility;
-use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TrackShip\TrackShip;
+use Stu\Module\Ship\Action\Transfer\Transfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\Transwarp\Transwarp;
-use Stu\Module\Ship\Action\TroopTransfer\TroopTransfer;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
@@ -269,10 +266,6 @@ use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
 use Stu\Module\Ship\View\ShowAvailableShips\ShowAvailableShips;
-use Stu\Module\Ship\View\ShowBeamFrom\ShowBeamFrom;
-use Stu\Module\Ship\View\ShowBeamFromColony\ShowBeamFromColony;
-use Stu\Module\Ship\View\ShowBeamTo\ShowBeamTo;
-use Stu\Module\Ship\View\ShowBeamToColony\ShowBeamToColony;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
@@ -289,11 +282,10 @@ use Stu\Module\Ship\View\ShowShipDetails\ShowShipDetails;
 use Stu\Module\Ship\View\ShowShiplistFleet\ShowShiplistFleet;
 use Stu\Module\Ship\View\ShowShiplistSingles\ShowShiplistSingles;
 use Stu\Module\Ship\View\ShowShipStorage\ShowShipStorage;
-use Stu\Module\Ship\View\ShowTorpedoTransfer\ShowTorpedoTransfer;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
-use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
+use Stu\Module\Ship\View\ShowTransfer\ShowTransfer;
 use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
 
 use function DI\autowire;
@@ -351,7 +343,7 @@ return [
     LoadWaypointsInterface::class => autowire(LoadWaypoints::class),
     UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
-    'pre_flight_conditions' => [
+    'preFlightConditions' => [
         autowire(BlockedCondition::class),
         autowire(CrewCondition::class),
         autowire(DriveActivatableCondition::class),
@@ -361,9 +353,9 @@ return [
     PreFlightConditionsCheckInterface::class => autowire(PreFlightConditionsCheck::class)
         ->constructorParameter(
             'conditions',
-            get('pre_flight_conditions')
+            get('preFlightConditions')
         ),
-    'flight_consequences' => [
+    'flightConsequences' => [
         autowire(RepairConsequence::class),
         autowire(DockConsequence::class),
         autowire(TakeoverConsequence::class),
@@ -376,7 +368,7 @@ return [
         autowire(WarpdriveConsequence::class),
         autowire(FlightDirectionConsequence::class)
     ],
-    'post_flight_consequences' => [
+    'postFlightConsequences' => [
         autowire(PostFlightDirectionConsequence::class),
         autowire(PostFlightAstroMappingConsequence::class),
         autowire(DeactivateTranswarpConsequence::class),
@@ -386,10 +378,10 @@ return [
     FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class)
         ->constructorParameter(
             'flightConsequences',
-            get('flight_consequences')
+            get('flightConsequences')
         )->constructorParameter(
             'postFlightConsequences',
-            get('post_flight_consequences')
+            get('postFlightConsequences')
         ),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
@@ -445,10 +437,12 @@ return [
         SetYellowAlert::ACTION_IDENTIFIER => autowire(SetYellowAlert::class),
         SetRedAlert::ACTION_IDENTIFIER => autowire(SetRedAlert::class),
         EpsTransfer::ACTION_IDENTIFIER => autowire(EpsTransfer::class),
-        TorpedoTransfer::ACTION_IDENTIFIER => autowire(TorpedoTransfer::class),
-        BeamTo::ACTION_IDENTIFIER => autowire(BeamTo::class),
+        Transfer::ACTION_IDENTIFIER => autowire(Transfer::class)
+            ->constructorParameter(
+                'transferStrategies',
+                get('transferStrategies')
+            ),
         BeamFrom::ACTION_IDENTIFIER => autowire(BeamFrom::class),
-        BeamToColony::ACTION_IDENTIFIER => autowire(BeamToColony::class),
         BeamFromColony::ACTION_IDENTIFIER => autowire(BeamFromColony::class),
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
@@ -489,7 +483,6 @@ return [
                 autowire(ClosestLocations::class)
             )
         ),
-        TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class),
         StartDefending::ACTION_IDENTIFIER => autowire(StartDefending::class),
         StopDefending::ACTION_IDENTIFIER => autowire(StopDefending::class),
         StartBlocking::ACTION_IDENTIFIER => autowire(StartBlocking::class),
@@ -537,18 +530,17 @@ return [
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
-        ShowBeamTo::VIEW_IDENTIFIER => autowire(ShowBeamTo::class),
-        ShowBeamFrom::VIEW_IDENTIFIER => autowire(ShowBeamFrom::class),
-        ShowBeamToColony::VIEW_IDENTIFIER => autowire(ShowBeamToColony::class),
-        ShowBeamFromColony::VIEW_IDENTIFIER => autowire(ShowBeamFromColony::class),
+        ShowTransfer::VIEW_IDENTIFIER => autowire(ShowTransfer::class)
+            ->constructorParameter(
+                'transferStrategies',
+                get('transferStrategies')
+            ),
         ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
         ShowShipStorage::VIEW_IDENTIFIER => autowire(ShowShipStorage::class),
-        ShowTroopTransfer::VIEW_IDENTIFIER => autowire(ShowTroopTransfer::class),
-        ShowTorpedoTransfer::VIEW_IDENTIFIER => autowire(ShowTorpedoTransfer::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuPayment::VIEW_IDENTIFIER => autowire(ShowTradeMenuPayment::class),
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),

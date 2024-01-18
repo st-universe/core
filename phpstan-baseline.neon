@@ -1679,16 +1679,6 @@ parameters:
 			path: src/Module/Ship/Action/TransferToAccount/TransferToAccount.php
 
 		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/UnloadBattery/UnloadBattery.php

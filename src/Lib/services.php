@@ -33,8 +33,12 @@ use Stu\Lib\ShipManagement\Provider\ManagerProviderFactory;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
 use Stu\Lib\Transfer\BeamUtil;
 use Stu\Lib\Transfer\BeamUtilInterface;
+use Stu\Lib\Transfer\Strategy\CommodityTransferStrategy;
+use Stu\Lib\Transfer\Strategy\TorpedoTransferStrategy;
+use Stu\Lib\Transfer\Strategy\TroopTransferStrategy;
 use Stu\Lib\Transfer\TransferTargetLoader;
 use Stu\Lib\Transfer\TransferTargetLoaderInterface;
+use Stu\Lib\Transfer\TransferTypeEnum;
 
 use function DI\autowire;
 use function DI\create;
@@ -68,4 +72,9 @@ return [
             PanelLayerEnum::BORDER->value => autowire(BorderDataProvider::class)
         ]
     ),
+    'transferStrategies' => [
+        TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
+        TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class),
+        TransferTypeEnum::TORPEDOS->value => autowire(TorpedoTransferStrategy::class)
+    ]
 ];

@@ -413,11 +413,11 @@ canColonize, closestAnomalyDistance) %}
             {% endif %}
             {% if not currentColony.isFree %}
             <div style="margin-top: 5px; margin-right: 20px; float: left;">
-                <a href="javascript:void(0);" onclick="showBToColonyWindow({{ colonyId }});"
+                <a href="javascript:void(0);" onclick="showTransfer({{ colonyId }}, 1, true, true, false);"
                     onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
                     <img src="/assets/buttons/b_down1.png" name="beamfrom" title="Zu der Kolonie beamen" />
                 </a>
-                <a href="javascript:void(0);" onclick="showBFromColonyWindow({{ colonyId }});"
+                <a href="javascript:void(0);" onclick="showTransfer({{ colonyId }}, 1, false, true, false);"
                     onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
                     <img src="/assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
                 </a>
