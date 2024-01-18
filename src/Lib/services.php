@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Stu\Lib\BeamUtil\BeamUtil;
-use Stu\Lib\BeamUtil\BeamUtilInterface;
 use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Map\DistanceCalculation;
@@ -33,6 +31,10 @@ use Stu\Lib\ShipManagement\Manager\ManageTorpedo;
 use Stu\Lib\ShipManagement\Manager\ManageUnman;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactory;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
+use Stu\Lib\Transfer\BeamUtil;
+use Stu\Lib\Transfer\BeamUtilInterface;
+use Stu\Lib\Transfer\TransferTargetLoader;
+use Stu\Lib\Transfer\TransferTargetLoaderInterface;
 
 use function DI\autowire;
 use function DI\create;
@@ -45,6 +47,7 @@ return [
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
     BeamUtilInterface::class => autowire(BeamUtil::class),
     PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
+    TransferTargetLoaderInterface::class => autowire(TransferTargetLoader::class),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
         [
             autowire(ManageBattery::class),

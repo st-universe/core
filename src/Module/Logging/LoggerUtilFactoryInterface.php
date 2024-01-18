@@ -4,5 +4,5 @@ namespace Stu\Module\Logging;
 
 interface LoggerUtilFactoryInterface
 {
-    public function getLoggerUtil(): LoggerUtilInterface;
+    public function getLoggerUtil(bool $doDefaultInit = false): LoggerUtilInterface;
 }

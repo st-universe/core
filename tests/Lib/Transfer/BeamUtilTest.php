@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib;
+namespace Stu\Lib\Transfer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
-use Stu\Lib\BeamUtil\BeamUtil;
-use Stu\Lib\BeamUtil\BeamUtilInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;

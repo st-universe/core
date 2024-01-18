@@ -16,10 +16,16 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
         $this->config = $config;
     }
 
-    public function getLoggerUtil(): LoggerUtilInterface
+    public function getLoggerUtil(bool $doDefaultInit = false): LoggerUtilInterface
     {
-        return new LoggerUtil(
+        $loggerUtil = new LoggerUtil(
             $this->config
         );
+
+        if ($doDefaultInit) {
+            $loggerUtil->init('STU', LoggerEnum::LEVEL_ERROR);
+        }
+
+        return $loggerUtil;
     }
 }
