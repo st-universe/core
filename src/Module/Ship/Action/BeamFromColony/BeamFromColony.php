@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BeamFromColony;
 
 use request;
-use Stu\Lib\BeamUtil\BeamUtilInterface;
+use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;

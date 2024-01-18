@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\BeamFrom;
 
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\BeamUtil\BeamUtilInterface;
+use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
