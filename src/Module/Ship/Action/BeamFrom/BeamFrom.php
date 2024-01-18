@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\BeamFrom;
 
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\BeamUtil\BeamUtilInterface;
+use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
