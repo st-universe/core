@@ -133,6 +133,14 @@ final class StartTakeover implements ActionControllerInterface
             return;
         }
 
+        if ($target->getTakeoverPassive() !== null) {
+            $game->addInformationf(
+                'Aktion nicht möglich, das Ziel ist bereits im Begriff von der %s übernommen zu werden',
+                $target->getTakeoverPassive()->getSourceShip()->getName()
+            );
+            return;
+        }
+
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForTakeover($target);
         if ($user->getPrestige() < $neededPrestige) {
             $game->addInformation(sprintf(
