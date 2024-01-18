@@ -38,7 +38,7 @@ final class DeactivateShields implements ActionControllerInterface
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $game->getUser()->getId()
         );

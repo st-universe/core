@@ -38,7 +38,7 @@ final class ShowOrbitShiplist implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             $this->showOrbitShiplistRequest->getColonyId(),
             $userId,
             false

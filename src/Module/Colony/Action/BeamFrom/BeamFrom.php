@@ -46,7 +46,7 @@ final class BeamFrom implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $userId
         );

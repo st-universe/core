@@ -34,7 +34,7 @@ final class ShowShipDisassembly implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             $this->showShipDisassemblyRequest->getColonyId(),
             $userId,
             false

@@ -54,7 +54,7 @@ final class TrainCrew implements ActionControllerInterface
         $userId = $user->getId();
         $crewRemainingCount = $this->crewCountRetriever->getRemainingCount($user);
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $userId
         );

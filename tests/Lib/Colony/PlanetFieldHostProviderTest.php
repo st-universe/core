@@ -79,7 +79,7 @@ class PlanetFieldHostProviderTest extends StuTestCase
             ->once()
             ->andReturn(666);
 
-        $this->colonyLoader->shouldReceive('byIdAndUser')
+        $this->colonyLoader->shouldReceive('loadWithOwnerValidation')
             ->with(42, 666, true)
             ->once()
             ->andReturn($colony);

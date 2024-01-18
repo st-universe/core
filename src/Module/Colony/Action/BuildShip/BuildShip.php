@@ -94,7 +94,7 @@ final class BuildShip implements ActionControllerInterface
         $userId = $user->getId();
 
         $mod = null;
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $userId
         );
