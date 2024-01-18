@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight;
 
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -24,10 +23,6 @@ class ConditionCheckResultTest extends StuTestCase
     {
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
         $this->leader = $this->mock(ShipWrapperInterface::class);
-
-        $this->ship = $this->mock(ShipInterface::class);
-        $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->flightRoute = $this->mock(FlightRouteInterface::class);
     }
 
     public function testAddBlockedShipExpectBlockWhenFixedFleet(): void

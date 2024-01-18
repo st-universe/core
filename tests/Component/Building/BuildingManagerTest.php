@@ -23,6 +23,12 @@ class BuildingManagerTest extends StuTestCase
     private MockInterface $planetFieldRepository;
 
     /** @var MockInterface&ColonyRepositoryInterface */
+    private MockInterface $colonyRepository;
+
+    /** @var MockInterface&ColonySandboxRepositoryInterface */
+    private MockInterface $colonySandboxRepository;
+
+    /** @var MockInterface&ColonyRepositoryInterface */
     private MockInterface $hostRepository;
 
     /** @var MockInterface&ColonySandboxRepositoryInterface */

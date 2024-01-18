@@ -16,7 +16,6 @@ use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class ManageReactorTest extends StuTestCase
@@ -46,7 +45,6 @@ class ManageReactorTest extends StuTestCase
         $this->commodityCache = $this->mock(CommodityCacheInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
-        $this->user = $this->mock(UserInterface::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
         $this->subject = new ManageReactor(

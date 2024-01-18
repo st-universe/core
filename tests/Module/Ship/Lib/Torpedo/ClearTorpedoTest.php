@@ -11,7 +11,6 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoStorageInterface;
-use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 use Stu\StuTestCase;
@@ -44,7 +43,6 @@ class ClearTorpedoTest extends StuTestCase
         //params
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
-        $this->torpedoType = $this->mock(TorpedoTypeInterface::class);
 
         $this->subject = new ClearTorpedo(
             $this->shipSystemManager,
