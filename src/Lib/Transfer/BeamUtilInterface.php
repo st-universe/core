@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\BeamUtil;
+namespace Stu\Lib\Transfer;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -19,4 +19,9 @@ interface BeamUtilInterface
         ShipInterface|ColonyInterface $target,
         GameControllerInterface $game
     ): void;
+
+    public function isDockTransfer(
+        ShipInterface|ColonyInterface $source,
+        ShipInterface|ColonyInterface $target
+    ): bool;
 }

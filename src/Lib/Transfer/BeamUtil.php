@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\BeamUtil;
+namespace Stu\Lib\Transfer;
 
 use RuntimeException;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -52,8 +52,7 @@ final class BeamUtil implements BeamUtilInterface
             return;
         }
 
-        $isDockTransfer = $source instanceof ShipInterface && $target instanceof ShipInterface
-            && ($source->getDockedTo() === $target || $target->getDockedTo() === $source);
+        $isDockTransfer = $this->isDockTransfer($source, $target);
 
         $availableEps = $this->getAvailableEps($subject);
         if (!$isDockTransfer && $availableEps < 1) {
@@ -99,6 +98,14 @@ final class BeamUtil implements BeamUtilInterface
         $this->lowerSourceStorage($amount, $commodity, $source);
         $this->upperTargetStorage($amount, $commodity, $target);
         $this->consumeEps($epsUsage, $subject);
+    }
+
+    public function isDockTransfer(
+        ShipInterface|ColonyInterface $source,
+        ShipInterface|ColonyInterface $target
+    ): bool {
+        return $source instanceof ShipInterface && $target instanceof ShipInterface
+            && ($source->getDockedTo() === $target || $target->getDockedTo() === $source);
     }
 
     private function getBeamFactor(ShipWrapperInterface|ColonyInterface $subject): int
