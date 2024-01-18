@@ -1,0 +1,19 @@
+{% if BEAMABLE_STORAGE %}
+{% for storage in BEAMABLE_STORAGE %}
+<input type="hidden" name="commodities[]" value="{{ storage.getCommodity.getId }}" />
+{% if loop.index is divisible by(2) %}
+<div style="float: right; width: 50%;">
+    {% include 'html/transfer/commoditySelection.twig' %}
+</div>
+{% else %}
+<div style="float: left; width: 50%;">
+    {% include 'html/transfer/commoditySelection.twig' %}
+</div>
+{% if loop.index is divisible by(2) %}
+<br style="clear: both;" />
+{% endif %}
+{% endif %}
+{% endfor %}
+{% else %}
+Keine Waren vorhanden
+{% endif %}

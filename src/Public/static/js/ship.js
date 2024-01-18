@@ -43,79 +43,22 @@ function showETransferWindow(target) {
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ETRANSFER=1&target=' + target);
 }
 
-function showBToWindow(target) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
-}
-
-function showBFromWindow(target) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
-}
-
 function showAvailableShips(fleetid) {
 	closeAjaxWindow();
 	openWindow('elt', 1, 300);
 	ajax_update('elt', 'ship.php?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid);
 }
 
-function triggerBeamTo(target) {
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
-}
+function showTransfer(targetId, transferTypeValue, isUnload, isColonyTarget, isReplace) {
+	if (!isReplace) {
+		closeAjaxWindow();
+		openPJsWin('elt', 1);
+	}
 
-function triggerBeamFrom(target) {
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
-}
+	isUnloadValue = isUnload ? 1 : 0;
+	isColonyTargetValue = isColonyTarget ? 1 : 0;
 
-function triggerBeamCrewFrom(target, targetIsColony) {
-	isUnload = true;
-	colonyParam = targetIsColony ? '&isColony=1' : '';
-	directionParam = isUnload ? '&isUnload=1' : '';
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TROOP_TRANSFER=1&target=' + target + colonyParam + directionParam);
-}
-
-function triggerBeamCrewTo(target, targetIsColony) {
-	isUnload = false;
-	colonyParam = targetIsColony ? '&isColony=1' : '';
-	directionParam = isUnload ? '&isUnload=1' : '';
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TROOP_TRANSFER=1&target=' + target + colonyParam + directionParam);
-}
-
-function showBToColonyWindow(target) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
-}
-
-function showBFromColonyWindow(target) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMFROM=1&target=' + target);
-}
-
-function showBTroopTransferWindow(target, targetIsColony, isUnload) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	colonyParam = targetIsColony ? '&isColony=1' : '';
-	directionParam = isUnload ? '&isUnload=1' : '';
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TROOP_TRANSFER=1&target=' + target + colonyParam + directionParam);
-}
-
-function showBTorpTransferWindow(target, isUnload) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	directionParam = isUnload ? '&isUnload=1' : '';
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TORP_TRANSFER=1&target=' + target + directionParam);
-}
-
-function triggerBeamToColony(target) {
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
-}
-
-function triggerBeamFromColony(target) {
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMFROM=1&target=' + target);
+	ajax_update('elt', `?SHOW_TRANSFER=1&id=${shipid}&target=${targetId}&is_unload=${isUnloadValue}&is_colony=${isColonyTargetValue}&transfer_type=${transferTypeValue}`);
 }
 
 function showSelfdestructWindow(target) {

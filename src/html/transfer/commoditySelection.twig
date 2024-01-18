@@ -1,0 +1,18 @@
+<table style="width: 100%;">
+    {% set commodityId = storage.getCommodity.getId %}
+    {% set name = storage.getCommodity.getName %}
+    {% set amount = storage.getAmount %}
+    <tr>
+        <td style="width: 20px;">
+            <img src="/assets/commodities/{{ commodityId }}.png"
+                onclick="this.up('tr').down('.commodityAmount').value={{ amount }}" style="cursor: pointer;"
+                title="{{ name }}" />
+        </td>
+        <td style="width: 60px; vertical-align: middle;">
+            {{ amount }}
+        </td>
+        <td>
+            <input type="text" size="3" name="count[]" class="commodityAmount" />
+        </td>
+    </tr>
+</table>

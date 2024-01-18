@@ -69,5 +69,7 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $this->storageRepository->save($storage);
 
         $torpedoStorage->setStorage($storage);
+
+        $ship->setTorpedoStorage($torpedoStorage);
     }
 }

@@ -90,6 +90,9 @@ class ShipTorpedoManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
+        $this->ship->shouldReceive('setTorpedoStorage')
+            ->with($torpedoStorage)
+            ->once();
 
         $this->torpedoType->shouldReceive('getCommodity')
             ->withNoArgs()

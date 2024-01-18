@@ -17,7 +17,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class BeamTo implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BEAMTO';
+    public const ACTION_IDENTIFIER = 'B_TRANSFER';
 
     private ColonyLoaderInterface $colonyLoader;
 

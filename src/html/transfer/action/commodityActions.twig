@@ -1,0 +1,11 @@
+<td style="width: 60%;">
+    <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" />
+    <input type="submit" class="button" value="Beamen" name="B_TRANSFER" />
+</td>
+<td>
+    {% if SHIP.getIsFleetLeader %}
+    <input value="1" type="checkbox" name="isfleet" />
+    Flotte <img title="Alle Flottenschiffe versuchen die Waren zu beamen" src="assets/buttons/info2.png"
+        style="height:16px;" />
+    {% endif %}
+</td>

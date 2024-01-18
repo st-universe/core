@@ -10,17 +10,22 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class TroopTransferUtility implements TroopTransferUtilityInterface
 {
+    private ShipCrewRepositoryInterface $shipCrewRepository;
+
     private ShipTakeoverManagerInterface $shipTakeoverManager;
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
     public function __construct(
+        ShipCrewRepositoryInterface $shipCrewRepository,
         ShipTakeoverManagerInterface $shipTakeoverManager,
         ShipCrewCalculatorInterface $shipCrewCalculator
     ) {
+        $this->shipCrewRepository = $shipCrewRepository;
         $this->shipTakeoverManager = $shipTakeoverManager;
         $this->shipCrewCalculator = $shipCrewCalculator;
     }
@@ -105,5 +110,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
                 ', da das Schiff bemannt wurde'
             );
         }
+
+        $this->shipCrewRepository->save($crewAssignment);
     }
 }

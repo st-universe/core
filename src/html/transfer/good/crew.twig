@@ -1,0 +1,21 @@
+<table class="tcal">
+    {% if SHOW_TARGET_CREW %}
+    <tr>
+        <td>Aktuelle Crewanzahl des Ziels: {{ ACTUAL_TARGET_CREW }}</td>
+    </tr>
+    <tr>
+        <td>Minimalcrew des Ziels: {{ MINIMUM_TARGET_CREW }}</td>
+    </tr>
+    <tr>
+        <td>Maximalcrew des Ziels: {{ MAXIMUM_TARGET_CREW }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td>
+            <input type="range" name="crewcount" id="crew_transfer_slider" min="0" max="{{ MAXIMUM }}" value="0"
+                oninput="crewTransferCount.innerText = this.value;">
+            <span style="display: inline-block; min-width: 30px;" id="crewTransferCount">0</span>
+            <img src="/assets/buttons/crew.png" title="Crew" />
+        </td>
+    </tr>
+</table>
