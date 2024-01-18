@@ -25,7 +25,23 @@ final class ColonyLoader implements ColonyLoaderInterface
         $this->lockManager = $lockManager;
     }
 
-    public function byIdAndUser(int $colonyId, int $userId, bool $checkForEntityLock = true): ColonyInterface
+    public function loadWithOwnerValidation(int $colonyId, int $userId, bool $checkForEntityLock = true): ColonyInterface
+    {
+        $colony = $this->loadInternal($colonyId, $checkForEntityLock);
+
+        if ($colony->getUserId() !== $userId) {
+            throw new AccessViolation(sprintf("Colony owned by another user (%d)! Fool: %d", $colony->getUserId(), $userId));
+        }
+
+        return $colony;
+    }
+
+    public function load(int $colonyId, bool $checkForEntityLock = true): ColonyInterface
+    {
+        return $this->loadInternal($colonyId, $checkForEntityLock);
+    }
+
+    private function loadInternal(int $colonyId, bool $checkForEntityLock): ColonyInterface
     {
         if ($checkForEntityLock && $this->lockManager->isLocked($colonyId, LockTypeEnum::COLONY_GROUP)) {
             throw new EntityLockedException('Tick läuft gerade, Zugriff auf Kolonie ist daher blockiert');
@@ -33,11 +49,7 @@ final class ColonyLoader implements ColonyLoaderInterface
 
         $colony = $this->colonyRepository->find($colonyId);
         if ($colony === null) {
-            throw new AccessViolation(sprintf("Colony not existent! Fool: %d", $userId));
-        }
-
-        if ($colony->getUserId() !== $userId) {
-            throw new AccessViolation(sprintf("Colony owned by another user (%d)! Fool: %d", $colony->getUserId(), $userId));
+            throw new AccessViolation("Colony not existent!");
         }
 
         return $colony;

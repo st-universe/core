@@ -53,7 +53,7 @@ class ColonyLoaderTest extends StuTestCase
         );
     }
 
-    public function testByIdAndUserExpectErrorWhenEntityLocked(): void
+    public function testLoadWithOwnerValidationExpectErrorWhenEntityLocked(): void
     {
         static::expectExceptionMessage('Tick läuft gerade, Zugriff auf Kolonie ist daher blockiert');
         static::expectException(EntityLockedException::class);
@@ -63,12 +63,12 @@ class ColonyLoaderTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->byIdAndUser($this->colonyId, $this->userId);
+        $this->subject->loadWithOwnerValidation($this->colonyId, $this->userId);
     }
 
-    public function testByIdAndUserExpectErrorWhenColonyNotExistent(): void
+    public function testLoadWithOwnerValidationExpectErrorWhenColonyNotExistent(): void
     {
-        static::expectExceptionMessage("Colony not existent! Fool: 5");
+        static::expectExceptionMessage("Colony not existent!");
         static::expectException(AccessViolation::class);
 
         $this->lockManager->shouldReceive('isLocked')
@@ -81,10 +81,10 @@ class ColonyLoaderTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->subject->byIdAndUser($this->colonyId, $this->userId);
+        $this->subject->loadWithOwnerValidation($this->colonyId, $this->userId);
     }
 
-    public function testByIdAndUserReturnsColonyIfNotLocked(): void
+    public function testLoadReturnsColonyIfNotLocked(): void
     {
         $this->lockManager->shouldReceive('isLocked')
             ->with($this->colonyId, LockTypeEnum::COLONY_GROUP)
@@ -96,17 +96,12 @@ class ColonyLoaderTest extends StuTestCase
             ->once()
             ->andReturn($this->colony);
 
-        $this->colony->shouldReceive('getUserId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->userId);
-
-        $result = $this->subject->byIdAndUser($this->colonyId, $this->userId);
+        $result = $this->subject->load($this->colonyId);
 
         $this->assertSame($this->colony, $result);
     }
 
-    public function testByIdAndUserExpectErrorWhenForeignColony(): void
+    public function testLoadWithOwnerValidationExpectErrorWhenForeignColony(): void
     {
         static::expectExceptionMessage("Colony owned by another user (666)! Fool: 5");
         static::expectException(AccessViolation::class);
@@ -126,6 +121,6 @@ class ColonyLoaderTest extends StuTestCase
             ->twice()
             ->andReturn(666);
 
-        $this->subject->byIdAndUser($this->colonyId, $this->userId);
+        $this->subject->loadWithOwnerValidation($this->colonyId, $this->userId);
     }
 }

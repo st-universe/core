@@ -64,7 +64,7 @@ final class ShowColony implements ViewControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             $this->showColonyRequest->getColonyId(),
             $userId,
             false

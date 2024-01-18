@@ -72,7 +72,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
     ): PlanetFieldHostInterface {
 
         if ($hostType === PlanetFieldHostTypeEnum::COLONY) {
-            return $this->colonyLoader->byIdAndUser(
+            return $this->colonyLoader->loadWithOwnerValidation(
                 $id,
                 $user->getId(),
                 $checkForEntityLock

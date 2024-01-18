@@ -39,7 +39,7 @@ final class ShowBeamTo implements ViewControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             $this->showBeamToRequest->getColonyId(),
             $userId,
             false

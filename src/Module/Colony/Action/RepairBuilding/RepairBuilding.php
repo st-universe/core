@@ -44,7 +44,7 @@ final class RepairBuilding implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $game->getUser()->getId()
         );

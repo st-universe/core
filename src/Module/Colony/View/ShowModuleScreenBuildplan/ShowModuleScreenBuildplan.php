@@ -52,7 +52,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $userId,
             false

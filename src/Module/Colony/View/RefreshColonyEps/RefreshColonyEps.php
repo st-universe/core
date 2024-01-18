@@ -23,7 +23,7 @@ final class RefreshColonyEps implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::getIntFatal('id'),
             $game->getUser()->getId(),
             false

@@ -34,7 +34,7 @@ final class ShowShipyard implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
             $this->showShipyardRequest->getColonyId(),
             $userId,
             false
