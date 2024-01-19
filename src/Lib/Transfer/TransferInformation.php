@@ -73,7 +73,10 @@ class TransferInformation
             return false;
         }
 
-        if (!$this->isFriend) {
+        if (
+            !$this->isFriend
+            && $this->from->getUser() !== $this->to->getUser()
+        ) {
             return false;
         }
 
