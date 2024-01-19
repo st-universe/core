@@ -17,7 +17,6 @@ use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\StuTestCase;
 
 class ManagerProviderStationTest extends StuTestCase
@@ -31,9 +30,6 @@ class ManagerProviderStationTest extends StuTestCase
     /** @var MockInterface&TroopTransferUtilityInterface */
     private MockInterface $troopTransferUtility;
 
-    /** @var MockInterface&ShipCrewRepositoryInterface */
-    private MockInterface $shipCrewRepository;
-
     /** @var MockInterface&ShipStorageManagerInterface */
     private MockInterface $shipStorageManager;
 
@@ -46,7 +42,6 @@ class ManagerProviderStationTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->crewCreator = $this->mock(CrewCreatorInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
-        $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
         $this->shipStorageManager = $this->mock(ShipStorageManagerInterface::class);
 
         $this->station = $this->mock(ShipInterface::class);
@@ -55,7 +50,6 @@ class ManagerProviderStationTest extends StuTestCase
             $this->wrapper,
             $this->crewCreator,
             $this->troopTransferUtility,
-            $this->shipCrewRepository,
             $this->shipStorageManager
         );
     }
@@ -175,7 +169,7 @@ class ManagerProviderStationTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
 
         $this->crewCreator->shouldReceive('createShipCrew')
-            ->with($ship, null, $this->station)
+            ->with($ship, $this->station, 42)
             ->once()
             ->andReturn(123);
 
@@ -184,10 +178,10 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn($this->station);
 
-        $this->subject->createShipCrew($ship);
+        $this->subject->addShipCrew($ship, 42);
     }
 
-    public function testIsAbleToStoreCrewExpectFalseWhenSpaceInsufficient(): void
+    public function testGetFreeCrewStorage(): void
     {
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -199,48 +193,21 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn(4);
 
-        $this->assertFalse($this->subject->isAbleToStoreCrew(5));
-    }
-
-    public function testIsAbleToStoreCrewExpectTrueWhenSpaceSufficient(): void
-    {
-        $this->wrapper->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->station);
-
-        $this->troopTransferUtility->shouldReceive('getFreeQuarters')
-            ->with($this->station)
-            ->once()
-            ->andReturn(5);
-
-        $this->assertTrue($this->subject->isAbleToStoreCrew(5));
+        $this->assertEquals(4, $this->subject->GetFreeCrewStorage());
     }
 
     public function testAddCrewAssignments(): void
     {
-        $crewAssignments = new ArrayCollection();
         $crewAssignment = $this->mock(ShipCrewInterface::class);
-        $crewAssignments->add($crewAssignment);
+        $crewAssignments = [$crewAssignment];
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($this->station);
 
-        $crewAssignment->shouldReceive('setShip')
-            ->with($this->station)
-            ->once();
-        $crewAssignment->shouldReceive('setSlot')
-            ->with(null)
-            ->once();
-
-        $this->station->shouldReceive('getCrewAssignments->add')
-            ->with($crewAssignment)
-            ->once();
-
-        $this->shipCrewRepository->shouldReceive('save')
-            ->with($crewAssignment)
+        $this->troopTransferUtility->shouldReceive('assignCrew')
+            ->with($crewAssignment, $this->station)
             ->once();
 
         $this->subject->addCrewAssignments($crewAssignments);

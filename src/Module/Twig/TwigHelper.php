@@ -9,6 +9,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
@@ -37,6 +38,8 @@ class TwigHelper
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     private GradientColorInterface $gradientColor;
 
     public function __construct(
@@ -45,6 +48,7 @@ class TwigHelper
         ConfigInterface $config,
         FightLibInterface $fightLib,
         ColonyLibFactoryInterface $colonyLibFactory,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         GradientColorInterface $gradientColor
     ) {
         $this->environment = $environment;
@@ -52,6 +56,7 @@ class TwigHelper
         $this->config = $config;
         $this->fightLib = $fightLib;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipCrewCalculator = $shipCrewCalculator;
         $this->gradientColor = $gradientColor;
     }
 
@@ -171,6 +176,11 @@ class TwigHelper
             );
         });
         $this->environment->addFilter($shortNameFilter);
+
+        $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', function (ShipInterface $ship): int {
+            return $this->shipCrewCalculator->getMaxCrewCountByShip($ship);
+        });
+        $this->environment->addFilter($getMaxCrewCountByShipFilter);
     }
 
     private function registerFunctions(): void

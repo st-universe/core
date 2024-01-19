@@ -13,7 +13,6 @@ use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 class ManagerProviderStation implements ManagerProviderInterface
 {
@@ -23,21 +22,17 @@ class ManagerProviderStation implements ManagerProviderInterface
 
     private TroopTransferUtilityInterface $troopTransferUtility;
 
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
     private ShipStorageManagerInterface $shipStorageManager;
 
     public function __construct(
         ShipWrapperInterface $wrapper,
         CrewCreatorInterface $crewCreator,
         TroopTransferUtilityInterface $troopTransferUtility,
-        ShipCrewRepositoryInterface $shipCrewRepository,
         ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->wrapper = $wrapper;
         $this->crewCreator = $crewCreator;
         $this->troopTransferUtility = $troopTransferUtility;
-        $this->shipCrewRepository = $shipCrewRepository;
         $this->shipStorageManager = $shipStorageManager;
     }
 
@@ -91,29 +86,24 @@ class ManagerProviderStation implements ManagerProviderInterface
         return $this->wrapper->get()->getExcessCrewCount();
     }
 
-    public function createShipCrew(ShipInterface $ship): void
+    public function addShipCrew(ShipInterface $ship, int $amount): void
     {
-        $this->crewCreator->createShipCrew($ship, null, $this->wrapper->get());
+        $this->crewCreator->createShipCrew($ship, $this->wrapper->get(), $amount);
     }
 
-    public function isAbleToStoreCrew(int $amount): bool
+    public function getFreeCrewStorage(): int
     {
         $station = $this->wrapper->get();
 
-        $freeAssignmentCount = $this->troopTransferUtility->getFreeQuarters($station);
-
-        return $freeAssignmentCount >= $amount;
+        return $this->troopTransferUtility->getFreeQuarters($station);
     }
 
-    public function addCrewAssignments(Collection $crewAssignments): void
+    public function addCrewAssignments(array $crewAssignments): void
     {
         $station = $this->wrapper->get();
 
-        foreach ($crewAssignments as $shipCrew) {
-            $shipCrew->setShip($station);
-            $shipCrew->setSlot(null);
-            $station->getCrewAssignments()->add($shipCrew);
-            $this->shipCrewRepository->save($shipCrew);
+        foreach ($crewAssignments as $crewAssignment) {
+            $this->troopTransferUtility->assignCrew($crewAssignment, $station);
         }
     }
 

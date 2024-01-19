@@ -11,6 +11,7 @@ use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
@@ -30,11 +31,11 @@ class ManagerProviderColonyTest extends StuTestCase
     /** @var MockInterface&ColonyLibFactoryInterface */
     private MockInterface $colonyLibFactory;
 
-    /** @var MockInterface&ShipCrewRepositoryInterface */
-    private MockInterface $shipCrewRepository;
-
     /** @var MockInterface&ColonyStorageManagerInterface */
     private MockInterface $colonyStorageManager;
+
+    /** @var MockInterface&TroopTransferUtilityInterface */
+    private MockInterface $troopTransferUtility;
 
     private ManagerProviderInterface $subject;
 
@@ -43,15 +44,15 @@ class ManagerProviderColonyTest extends StuTestCase
         $this->colony = $this->mock(ColonyInterface::class);
         $this->crewCreator = $this->mock(CrewCreatorInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
-        $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
         $this->colonyStorageManager = $this->mock(ColonyStorageManagerInterface::class);
+        $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
 
         $this->subject = new ManagerProviderColony(
             $this->colony,
             $this->crewCreator,
             $this->colonyLibFactory,
-            $this->shipCrewRepository,
-            $this->colonyStorageManager
+            $this->colonyStorageManager,
+            $this->troopTransferUtility
         );
     }
 
@@ -93,7 +94,7 @@ class ManagerProviderColonyTest extends StuTestCase
             ->once()
             ->andReturn('foo');
 
-        $this->assertEquals('foo', $this->subject->getName());
+        $this->assertEquals('Kolonie foo', $this->subject->getName());
     }
 
     public function testGetSectorString(): void
@@ -121,14 +122,14 @@ class ManagerProviderColonyTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
 
         $this->crewCreator->shouldReceive('createShipCrew')
-            ->with($ship, $this->colony)
+            ->with($ship, $this->colony, 42)
             ->once()
             ->andReturn(123);
 
-        $this->subject->createShipCrew($ship);
+        $this->subject->addShipCrew($ship, 42);
     }
 
-    public function testIsAbleToStoreCrewExpectFalseWhenSpaceInsufficient(): void
+    public function testGetFreeCrewStorage(): void
     {
         $populationCalculator = $this->mock(ColonyPopulationCalculatorInterface::class);
 
@@ -142,48 +143,16 @@ class ManagerProviderColonyTest extends StuTestCase
             ->once()
             ->andReturn(4);
 
-        $this->assertFalse($this->subject->isAbleToStoreCrew(5));
-    }
-
-    public function testIsAbleToStoreCrewExpectTrueWhenSpaceSufficient(): void
-    {
-        $populationCalculator = $this->mock(ColonyPopulationCalculatorInterface::class);
-
-        $this->colonyLibFactory->shouldReceive('createColonyPopulationCalculator')
-            ->with($this->colony)
-            ->once()
-            ->andReturn($populationCalculator);
-
-        $populationCalculator->shouldReceive('getFreeAssignmentCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5);
-
-        $this->assertTrue($this->subject->isAbleToStoreCrew(5));
+        $this->assertEquals(4, $this->subject->getFreeCrewStorage());
     }
 
     public function testAddCrewAssignments(): void
     {
-        $crewAssignments = new ArrayCollection();
         $crewAssignment = $this->mock(ShipCrewInterface::class);
-        $crewAssignments->add($crewAssignment);
+        $crewAssignments = [$crewAssignment];
 
-        $crewAssignment->shouldReceive('setColony')
-            ->with($this->colony)
-            ->once();
-        $crewAssignment->shouldReceive('setShip')
-            ->with(null)
-            ->once();
-        $crewAssignment->shouldReceive('setSlot')
-            ->with(null)
-            ->once();
-
-        $this->colony->shouldReceive('getCrewAssignments->add')
-            ->with($crewAssignment)
-            ->once();
-
-        $this->shipCrewRepository->shouldReceive('save')
-            ->with($crewAssignment)
+        $this->troopTransferUtility->shouldReceive('assignCrew')
+            ->with($crewAssignment, $this->colony)
             ->once();
 
         $this->subject->addCrewAssignments($crewAssignments);

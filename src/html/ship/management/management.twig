@@ -47,21 +47,7 @@
     <td>{{ ship.getName|bbcode }}</td>
     {% endif %}
     {% if not ship.isDestroyed %}
-    <td>
-      {% if wrapper.isOwnedByCurrentUser %}
-      {% if ship.canMan %}
-      <div>
-        <input type="checkbox" name="man[{{ shipId }}]" />
-        <span>Hochbeamen</span> ({{ ship.getCrewCount }}/{{ ship.getBuildplan.getCrew }})
-      </div>
-      {% else %}
-      {% if ship.getCrewCount %}
-      <input type="checkbox" name="unman[{{ shipId }}]" />
-      <span>Runterbeamen</span>: {{ ship.getCrewCount }}
-      {% endif %}
-      {% endif %}
-      {% endif %}
-    </td>
+    {% include 'html/ship/management/crewManagement.twig' %}
     <td>
       {% set eps = wrapper.getEpsSystemData %}
       {% if eps %}

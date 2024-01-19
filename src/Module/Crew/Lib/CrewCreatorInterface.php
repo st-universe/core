@@ -10,5 +10,5 @@ interface CrewCreatorInterface
 {
     public function create(int $userId, ?ColonyInterface $colony = null): ShipCrewInterface;
 
-    public function createShipCrew(ShipInterface $ship, ?ColonyInterface $colony = null, ?ShipInterface $station = null): void;
+    public function createShipCrew(ShipInterface $ship, ColonyInterface|ShipInterface $crewProvider, int $amount = null): void;
 }

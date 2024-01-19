@@ -8,11 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 class ManagerProviderColony implements ManagerProviderInterface
 {
@@ -22,22 +22,22 @@ class ManagerProviderColony implements ManagerProviderInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
     private ColonyStorageManagerInterface $colonyStorageManager;
+
+    private TroopTransferUtilityInterface $troopTransferUtility;
 
     public function __construct(
         ColonyInterface $colony,
         CrewCreatorInterface $crewCreator,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        TroopTransferUtilityInterface $troopTransferUtility
     ) {
         $this->colony = $colony;
         $this->crewCreator = $crewCreator;
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipCrewRepository = $shipCrewRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->troopTransferUtility = $troopTransferUtility;
     }
 
     public function getUser(): UserInterface
@@ -59,7 +59,7 @@ class ManagerProviderColony implements ManagerProviderInterface
 
     public function getName(): string
     {
-        return $this->colony->getName();
+        return sprintf('Kolonie %s', $this->colony->getName());
     }
 
     public function getSectorString(): string
@@ -72,29 +72,22 @@ class ManagerProviderColony implements ManagerProviderInterface
         return $this->colony->getCrewAssignmentAmount();
     }
 
-    public function createShipCrew(ShipInterface $ship): void
+    public function addShipCrew(ShipInterface $ship, int $amount): void
     {
-        $this->crewCreator->createShipCrew($ship, $this->colony);
+        $this->crewCreator->createShipCrew($ship, $this->colony, $amount);
     }
 
-    public function isAbleToStoreCrew(int $amount): bool
+    public function getFreeCrewStorage(): int
     {
-        $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+        return $this->colonyLibFactory->createColonyPopulationCalculator(
             $this->colony
         )->getFreeAssignmentCount();
-
-        return $freeAssignmentCount >= $amount;
     }
 
-    public function addCrewAssignments(Collection $crewAssignments): void
+    public function addCrewAssignments(array $crewAssignments): void
     {
         foreach ($crewAssignments as $crewAssignment) {
-            $this->colony->getCrewAssignments()->add($crewAssignment);
-
-            $crewAssignment->setColony($this->colony);
-            $crewAssignment->setShip(null);
-            $crewAssignment->setSlot(null);
-            $this->shipCrewRepository->save($crewAssignment);
+            $this->troopTransferUtility->assignCrew($crewAssignment, $this->colony);
         }
     }
 

@@ -1,0 +1,24 @@
+<td>
+    {% if wrapper.isOwnedByCurrentUser and ship.canMan %}
+
+    {% set crewCount = ship.getCrewCount %}
+    {% set neededCrewCount = ship.getBuildplan.getCrew %}
+    {% set isManned = crewCount > 0 %}
+    {% set toggleId = 'crewToggle_' ~ shipId %}
+    {% set toggleLabel = isManned ? 'Alle runter beamen' : 'Minimalcrew hoch beamen' %}
+    {% set sliderColor = crewCount
+    < neededCrewCount ? 'red' : 'green' %} <input type="hidden" id="currentCrew_{{ shipId }}" value"{{ crewCount }}" />
+
+    <input type="checkbox" id="{{ toggleId }}"
+        onchange="toggleCrew({{ shipId }}, {{ crewCount }}, {{ neededCrewCount }});">
+    <label for="{{ toggleId }}">{{ toggleLabel }}</label><br>
+
+    <input style="accent-color: {{ sliderColor }};" type="range" id="crewRange_{{ shipId }}" name="crew[{{ shipId }}]"
+        min="0" max="{{ ship|getMaxCrewCountByShip }}" value="{{ crewCount }}"
+        oninput="setCrew(this, {{ shipId }}, {{ neededCrewCount }});">
+    <span style="display: inline-block; min-width: 20px;" id="crewCount_{{ shipId }}">
+        {{ crewCount }}
+    </span>von {{ ship|getMaxCrewCountByShip }}
+
+    {% endif %}
+</td>

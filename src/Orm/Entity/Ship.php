@@ -1552,8 +1552,7 @@ class Ship implements ShipInterface
 
     public function canMan(): bool
     {
-        return $this->getCrewCount() === 0
-            && $this->getBuildplan() !== null
+        return $this->getBuildplan() !== null
             && $this->getBuildplan()->getCrew() > 0
             && $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
     }

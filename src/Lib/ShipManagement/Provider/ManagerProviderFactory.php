@@ -11,15 +11,12 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 class ManagerProviderFactory implements ManagerProviderFactoryInterface
 {
     private CrewCreatorInterface $crewCreator;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
 
     private TroopTransferUtilityInterface $troopTransferUtility;
 
@@ -30,14 +27,12 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
     public function __construct(
         CrewCreatorInterface $crewCreator,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ShipCrewRepositoryInterface $shipCrewRepository,
         TroopTransferUtilityInterface $troopTransferUtility,
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->crewCreator = $crewCreator;
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipCrewRepository = $shipCrewRepository;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
@@ -49,8 +44,8 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
             $colony,
             $this->crewCreator,
             $this->colonyLibFactory,
-            $this->shipCrewRepository,
-            $this->colonyStorageManager
+            $this->colonyStorageManager,
+            $this->troopTransferUtility
         );
     }
 
@@ -60,7 +55,6 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
             $wrapper,
             $this->crewCreator,
             $this->troopTransferUtility,
-            $this->shipCrewRepository,
             $this->shipStorageManager
         );
     }

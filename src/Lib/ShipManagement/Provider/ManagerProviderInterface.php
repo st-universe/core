@@ -25,14 +25,14 @@ interface ManagerProviderInterface
 
     public function getFreeCrewAmount(): int;
 
-    public function createShipCrew(ShipInterface $ship): void;
+    public function addShipCrew(ShipInterface $ship, int $amount): void;
 
-    public function isAbleToStoreCrew(int $amount): bool;
+    public function getFreeCrewStorage(): int;
 
     /**
-     * @param Collection<int, ShipCrewInterface> $crewAssignments
+     * @param array<ShipCrewInterface> $crewAssignments
      */
-    public function addCrewAssignments(Collection $crewAssignments): void;
+    public function addCrewAssignments(array $crewAssignments): void;
 
     /**
      * @return Collection<int, StorageInterface>
