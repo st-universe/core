@@ -143,8 +143,9 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             return;
         }
         $game->addInformation(sprintf(
-            _('Die %s hat folgende Waren zur %s %s transferiert'),
+            _('Die %s hat folgende Waren %s %s %s transferiert'),
             $ship->getName(),
+            $isUnload ? 'zur' : 'von der',
             $target instanceof ColonyInterface ? 'Kolonie' : '',
             $target->getName()
         ));
@@ -159,8 +160,8 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 $commodityId,
                 $gcount[$key],
                 $wrapper,
-                $wrapper->get(),
-                $target,
+                $isUnload ? $ship : $target,
+                $transferTarget,
                 $game
             );
         }
