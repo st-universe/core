@@ -83,8 +83,7 @@ final class ManageShips implements ActionControllerInterface
 
         $values = [
             'batt' => request::postArray('batt'),
-            'man' => request::postArray('man'),
-            'unman' => request::postArray('unman'),
+            'crew' => request::postArray('crew'),
             'reactor' => request::postArray('reactor'),
             'torp' => request::postArray('torp'),
             'torp_type' => request::postArray('torp_type'),

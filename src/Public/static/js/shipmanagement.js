@@ -58,3 +58,33 @@ function openShuttleManagement(obj, ship, entity) {
 	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
 	ajax_update('elt', '?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&entity=' + entity);
 }
+
+function toggleCrew(shipId, currentCrew, neededCrew) {
+	var isToggleChecked = $(`crewToggle_${shipId}`).checked;
+	var isManned = currentCrew > 0;
+	var setToZero = isManned === isToggleChecked;
+	var crew = setToZero ? 0 : (isManned ? currentCrew : neededCrew);
+
+	$(`crewRange_${shipId}`).value = crew;
+	$(`crewCount_${shipId}`).innerText = crew;
+
+	setCrewSliderColor(shipId, neededCrew);
+}
+
+function setCrew(obj, shipId, neededCrew) {
+
+	$(`crewCount_${shipId}`).innerText = obj.value;
+	$(`crewToggle_${shipId}`).checked = false;
+
+	setCrewSliderColor(shipId, neededCrew);
+}
+
+function setCrewSliderColor(shipId, neededCrew) {
+	var obj = $(`crewRange_${shipId}`);
+
+	if (obj.value < neededCrew) {
+		obj.style = 'accent-color: red;';
+	} else {
+		obj.style = 'accent-color: green;';
+	}
+}

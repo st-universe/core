@@ -1254,11 +1254,6 @@ parameters:
 			path: src/Module/Crew/Lib/CrewCreator.php
 
 		-
-			message: "#^Parameter \\#1 \\$element of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\>\\:\\:removeElement\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Crew/Lib/CrewCreator.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\Lib\\\\GraphInfo\\:\\:__construct\\(\\) has parameter \\$plotInfos with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Database/Lib/GraphInfo.php
