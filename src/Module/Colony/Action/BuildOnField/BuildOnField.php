@@ -119,7 +119,11 @@ final class BuildOnField implements ActionControllerInterface
             );
             return;
         }
-        if ($building->hasLimit() && $this->planetFieldRepository->getCountByBuildingAndUser($buildingId, $userId) >= $building->getLimit()) {
+        if (
+            $host instanceof ColonyInterface
+            && $building->hasLimit()
+            && $this->planetFieldRepository->getCountByBuildingAndUser($buildingId, $userId) >= $building->getLimit()
+        ) {
             $game->addInformationf(
                 _('Dieses Gebäude kann insgesamt nur %d mal gebaut werden'),
                 $building->getLimit()
