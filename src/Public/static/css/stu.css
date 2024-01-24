@@ -1673,16 +1673,10 @@ div.allianceRelation div.userAvatar {
 
 div.allianceMinister div.name {
   font-size: 110%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
 }
 
 div.allianceMinister div.namePresident {
   font-size: 130%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
 }
 
 div.allianceMinister div.jobDescription {
