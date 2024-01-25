@@ -146,6 +146,10 @@ final class BuildOnField implements ActionControllerInterface
             }
         }
 
+        if ($field->hasBuilding()) {
+            $this->buildingAction->remove($field, $game);
+        }
+
         $field->setBuilding($building);
         $field->setActivateAfterBuild(true);
 
@@ -202,7 +206,6 @@ final class BuildOnField implements ActionControllerInterface
                 $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
                 return false;
             }
-            $this->buildingAction->remove($field, $game);
         }
 
         foreach ($building->getCosts() as $cost) {
