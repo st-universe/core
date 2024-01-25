@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManager;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
@@ -13,12 +13,12 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 
 final class BuildingAction implements BuildingActionInterface
 {
-    private ColonyStorageManager $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
     private BuildingManagerInterface $buildingManager;
 
     public function __construct(
-        ColonyStorageManager $colonyStorageManager,
+        ColonyStorageManagerInterface $colonyStorageManager,
         BuildingManagerInterface $buildingManager
     ) {
         $this->colonyStorageManager = $colonyStorageManager;
