@@ -38,14 +38,17 @@ function switchColonySubmenu(menu, params) {
 	document.querySelectorAll('.colmenubutton').forEach(function (elem) {
 		Element.removeClassName(elem, 'selected');
 	});
-	switchMenu(menu, 'submenu', null, null, params);
+	switchMenu(menu, 'submenu', null, null, params, true);
 	$('colmenubutton_' + menu).addClassName('selected');
 
 	colonySubMenu = menu;
 }
 
-function switchMenu(menu, id, func, fid, params) {
-	$('result').hide();
+function switchMenu(menu, id, func, fid, params, doPreserveResult) {
+	if (!doPreserveResult) {
+		$('result').hide();
+	}
+
 	closeAjaxWindow();
 	url = createHostUri('B_SWITCH_COLONYMENU', `&menu=${menu}`);
 	if (func) {
