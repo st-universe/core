@@ -25,8 +25,6 @@ use Stu\Module\Ship\Action\AstroMapping\StartAstroMapping;
 use Stu\Module\Ship\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Ship\Action\AttackShip\AttackShip;
 use Stu\Module\Ship\Action\AttackTrackedShip\AttackTrackedShip;
-use Stu\Module\Ship\Action\BeamFrom\BeamFrom;
-use Stu\Module\Ship\Action\BeamFromColony\BeamFromColony;
 use Stu\Module\Ship\Action\BoardShip\BoardShip;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
@@ -442,8 +440,6 @@ return [
                 'transferStrategies',
                 get('transferStrategies')
             ),
-        BeamFrom::ACTION_IDENTIFIER => autowire(BeamFrom::class),
-        BeamFromColony::ACTION_IDENTIFIER => autowire(BeamFromColony::class),
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
         AttackShip::ACTION_IDENTIFIER => autowire(AttackShip::class),
