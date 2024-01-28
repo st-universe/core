@@ -20,6 +20,7 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\TorpedoStorageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
@@ -563,6 +564,8 @@ class ShipTakeoverManagerTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $targetUser = $this->mock(UserInterface::class);
         $storage = $this->mock(StorageInterface::class);
+        $storage2 = $this->mock(StorageInterface::class);
+        $torpedoStorage = $this->mock(TorpedoStorageInterface::class);
         $boundStorage = $this->mock(StorageInterface::class);
 
         $takeover->shouldReceive('getSourceShip')
@@ -606,6 +609,9 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getStorage')
             ->withNoArgs()
             ->andReturn(new ArrayCollection([$storage, $boundStorage]));
+        $this->target->shouldReceive('getTorpedoStorage')
+            ->withNoArgs()
+            ->andReturn($torpedoStorage);
         $this->target->shouldReceive('setUser')
             ->with($user)
             ->once();
@@ -626,6 +632,10 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('TARGETUSER');
 
+        $torpedoStorage->shouldReceive('getStorage')
+            ->withNoArgs()
+            ->andReturn($storage2);
+
         $storage->shouldReceive('setUser')
             ->with($user)
             ->once();
@@ -637,6 +647,9 @@ class ShipTakeoverManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
+        $storage2->shouldReceive('setUser')
+            ->with($user)
+            ->once();
 
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
@@ -651,6 +664,9 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->storageRepository->shouldReceive('save')
             ->with($storage)
+            ->once();
+        $this->storageRepository->shouldReceive('save')
+            ->with($storage2)
             ->once();
         $this->storageRepository->shouldReceive('delete')
             ->with($boundStorage)
