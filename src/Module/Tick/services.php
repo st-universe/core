@@ -22,8 +22,9 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactory;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
-use Stu\Module\Tick\Ship\Crew\CrewLimitations;
-use Stu\Module\Tick\Ship\Crew\CrewLimitationsInterface;
+use Stu\Module\Tick\Ship\ManagerComponent\AnomalyCreationCheck;
+use Stu\Module\Tick\Ship\ManagerComponent\AnomalyProcessing;
+use Stu\Module\Tick\Ship\ManagerComponent\CrewLimitations;
 use Stu\Module\Tick\Ship\Repair\RepairActions;
 use Stu\Module\Tick\Ship\Repair\RepairActionsInterface;
 use Stu\Module\Tick\Ship\ShipTick;
@@ -45,8 +46,15 @@ return [
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
     ShipTickInterface::class => autowire(ShipTick::class),
     RepairActionsInterface::class => autowire(RepairActions::class),
-    CrewLimitationsInterface::class => autowire(CrewLimitations::class),
-    ShipTickManagerInterface::class => autowire(ShipTickManager::class),
+    ShipTickManagerInterface::class => autowire(ShipTickManager::class)
+        ->constructorParameter(
+            'components',
+            [
+                autowire(AnomalyProcessing::class),
+                autowire(CrewLimitations::class),
+                autowire(AnomalyCreationCheck::class),
+            ]
+        ),
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
     'process_tick_handler' => [
