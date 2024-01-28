@@ -20,16 +20,20 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\ReactorWrapperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Tick\Ship\ManagerComponent\ManagerComponentInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class ShipTick implements ShipTickInterface
+final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 {
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private ShipRepositoryInterface $shipRepository;
@@ -58,6 +62,7 @@ final class ShipTick implements ShipTickInterface
     private array $msg = [];
 
     public function __construct(
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
@@ -70,6 +75,7 @@ final class ShipTick implements ShipTickInterface
         RepairUtilInterface $repairUtil,
         ShipTakeoverManagerInterface $shipTakeoverManager
     ) {
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
@@ -83,7 +89,14 @@ final class ShipTick implements ShipTickInterface
         $this->shipTakeoverManager = $shipTakeoverManager;
     }
 
-    public function work(ShipWrapperInterface $wrapper): void
+    public function work(): void
+    {
+        foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
+            $this->workShip($this->shipWrapperFactory->wrapShip($ship));
+        }
+    }
+
+    public function workShip(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
 

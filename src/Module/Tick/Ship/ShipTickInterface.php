@@ -6,5 +6,5 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface ShipTickInterface
 {
-    public function work(ShipWrapperInterface $wrapper): void;
+    public function workShip(ShipWrapperInterface $wrapper): void;
 }

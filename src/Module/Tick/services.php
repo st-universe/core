@@ -25,8 +25,10 @@ use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Ship\ManagerComponent\AnomalyCreationCheck;
 use Stu\Module\Tick\Ship\ManagerComponent\AnomalyProcessing;
 use Stu\Module\Tick\Ship\ManagerComponent\CrewLimitations;
-use Stu\Module\Tick\Ship\Repair\RepairActions;
-use Stu\Module\Tick\Ship\Repair\RepairActionsInterface;
+use Stu\Module\Tick\Ship\ManagerComponent\EscapePodHandling;
+use Stu\Module\Tick\Ship\ManagerComponent\LowerHull;
+use Stu\Module\Tick\Ship\ManagerComponent\NpcShipHandling;
+use Stu\Module\Tick\Ship\ManagerComponent\RepairActions;
 use Stu\Module\Tick\Ship\ShipTick;
 use Stu\Module\Tick\Ship\ShipTickInterface;
 use Stu\Module\Tick\Ship\ShipTickManager;
@@ -45,13 +47,18 @@ return [
         ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
     ShipTickInterface::class => autowire(ShipTick::class),
-    RepairActionsInterface::class => autowire(RepairActions::class),
     ShipTickManagerInterface::class => autowire(ShipTickManager::class)
         ->constructorParameter(
             'components',
             [
                 autowire(AnomalyProcessing::class),
                 autowire(CrewLimitations::class),
+                autowire(EscapePodHandling::class),
+                autowire(RepairActions::class),
+                autowire(ShipTick::class),
+                autowire(NpcShipHandling::class),
+                autowire(LowerHull::class),
+
                 autowire(AnomalyCreationCheck::class),
             ]
         ),
