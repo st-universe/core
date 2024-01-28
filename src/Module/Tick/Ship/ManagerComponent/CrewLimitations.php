@@ -7,8 +7,6 @@ namespace Stu\Module\Tick\Ship\ManagerComponent;
 use InvalidArgumentException;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -40,8 +38,6 @@ final class CrewLimitations implements ManagerComponentInterface
 
     private CrewLimitCalculatorInterface $crewLimitCalculator;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
@@ -51,8 +47,7 @@ final class CrewLimitations implements ManagerComponentInterface
         ShipSystemManagerInterface $shipSystemManager,
         AlertRedHelperInterface $alertRedHelper,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        CrewLimitCalculatorInterface $crewLimitCalculator,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        CrewLimitCalculatorInterface $crewLimitCalculator
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -63,13 +58,10 @@ final class CrewLimitations implements ManagerComponentInterface
         $this->alertRedHelper = $alertRedHelper;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->crewLimitCalculator = $crewLimitCalculator;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(): void
     {
-        $startTime = microtime(true);
-
         $userList = $this->userRepository->getNonNpcList();
 
         foreach ($userList as $user) {
@@ -100,11 +92,6 @@ final class CrewLimitations implements ManagerComponentInterface
             if ($crewToQuit > 0) {
                 $this->letEscapePodAssignmentsQuit($userId, $crewToQuit);
             }
-        }
-
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\tcheckForCrewLimitation, seconds: %F", $endTime - $startTime));
         }
     }
 
