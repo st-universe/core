@@ -140,14 +140,14 @@ final class BuildOnField implements ActionControllerInterface
             $building = $alt_building->getAlternativeBuilding();
         }
 
+        if ($field->hasBuilding()) {
+            $this->buildingAction->remove($field, $game);
+        }
+
         if ($host instanceof ColonyInterface) {
             if (!$this->doColonyChecksAndConsume($field, $building, $host, $game)) {
                 return;
             }
-        }
-
-        if ($field->hasBuilding()) {
-            $this->buildingAction->remove($field, $game);
         }
 
         $field->setBuilding($building);
