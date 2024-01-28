@@ -97,7 +97,9 @@ final class BeamUtil implements BeamUtilInterface
 
         $this->lowerSourceStorage($amount, $commodity, $source);
         $this->upperTargetStorage($amount, $commodity, $target);
-        $this->consumeEps($epsUsage, $subject);
+        if (!$isDockTransfer) {
+            $this->consumeEps($epsUsage, $subject);
+        }
     }
 
     public function isDockTransfer(
