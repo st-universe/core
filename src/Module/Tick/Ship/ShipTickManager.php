@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
-use Stu\Component\Anomaly\AnomalyHandlingInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -18,7 +17,7 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Tick\AbstractTickManager;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
-use Stu\Module\Tick\Ship\Crew\CrewLimitationsInterface;
+use Stu\Module\Tick\Ship\Component\ManagerComponentInterface;
 use Stu\Module\Tick\Ship\Repair\RepairActionsInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -29,8 +28,6 @@ use Ubench;
 
 final class ShipTickManager extends AbstractTickManager implements ShipTickManagerInterface
 {
-    private CrewLimitationsInterface $crewLimitations;
-
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private ShipRemoverInterface $shipRemover;
@@ -51,16 +48,17 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
     private RepairActionsInterface $repairActions;
 
-    private AnomalyHandlingInterface $anomalyHandling;
-
     private LockManagerInterface $lockManager;
 
     private LoggerUtilInterface $loggerUtil;
 
     private Ubench $benchmark;
 
+    /** @var array<ManagerComponentInterface> */
+    private array $components;
+
+    /** @param array<ManagerComponentInterface> $components */
     public function __construct(
-        CrewLimitationsInterface $crewLimitations,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRemoverInterface $shipRemover,
         ShipTickInterface $shipTick,
@@ -71,12 +69,11 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         EntryCreatorInterface $entryCreator,
         ColonyLibFactoryInterface $colonyLibFactory,
         RepairActionsInterface $repairActions,
-        AnomalyHandlingInterface $anomalyHandling,
         LockManagerInterface $lockManager,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        Ubench $benchmark
+        Ubench $benchmark,
+        array $components
     ) {
-        $this->crewLimitations = $crewLimitations;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
         $this->shipTick = $shipTick;
@@ -87,10 +84,10 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         $this->entryCreator = $entryCreator;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->repairActions = $repairActions;
-        $this->anomalyHandling = $anomalyHandling;
         $this->lockManager = $lockManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->benchmark = $benchmark;
+        $this->components = $components;
     }
 
     public function work(): void
@@ -98,8 +95,9 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         $this->setLock(1);
 
         try {
-            $this->anomalyHandling->processExistingAnomalies();
-            $this->crewLimitations->work();
+            foreach ($this->components as $component) {
+                $component->work();
+            }
 
             $startTime = microtime(true);
             $this->handleEscapePods();
@@ -140,8 +138,6 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
             $this->loggerUtil->init('SHIPTICK', LoggerEnum::LEVEL_WARNING);
             $this->logBenchmarkResult($entityCount);
-
-            $this->anomalyHandling->createNewAnomalies();
         } finally {
             $this->clearLock(1);
         }

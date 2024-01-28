@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Tick\Ship\Crew;
+namespace Stu\Module\Tick\Ship\ManagerComponent;
 
 use InvalidArgumentException;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
@@ -14,12 +14,13 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Tick\Ship\ManagerComponent\ManagerComponentInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class CrewLimitations implements CrewLimitationsInterface
+final class CrewLimitations implements ManagerComponentInterface
 {
     private PrivateMessageSenderInterface $privateMessageSender;
 
