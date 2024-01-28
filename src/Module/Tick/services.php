@@ -28,6 +28,7 @@ use Stu\Module\Tick\Ship\ManagerComponent\CrewLimitations;
 use Stu\Module\Tick\Ship\ManagerComponent\EscapePodHandling;
 use Stu\Module\Tick\Ship\ManagerComponent\LowerHull;
 use Stu\Module\Tick\Ship\ManagerComponent\NpcShipHandling;
+use Stu\Module\Tick\Ship\ManagerComponent\PirateActions;
 use Stu\Module\Tick\Ship\ManagerComponent\RepairActions;
 use Stu\Module\Tick\Ship\ShipTick;
 use Stu\Module\Tick\Ship\ShipTickInterface;
@@ -57,6 +58,7 @@ return [
                 autowire(RepairActions::class),
                 autowire(ShipTick::class),
                 autowire(NpcShipHandling::class),
+                autowire(PirateActions::class),
                 autowire(LowerHull::class),
 
                 autowire(AnomalyCreationCheck::class),
