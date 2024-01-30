@@ -57,5 +57,10 @@ final class FactionEnum
     /**
      * @var int
      */
+    public const FACTION_KAZON = 7;
+
+    /**
+     * @var int
+     */
     public const FACTION_BORG = 8;
 }
