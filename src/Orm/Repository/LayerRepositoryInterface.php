@@ -28,4 +28,6 @@ interface LayerRepositoryInterface extends ObjectRepository
      * @return array<int, LayerInterface>
      */
     public function getKnownByUser(int $userId): array;
+
+    public function getDefaultLayer(): LayerInterface;
 }

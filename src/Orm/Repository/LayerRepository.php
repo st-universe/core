@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use RuntimeException;
+use Stu\Component\Map\MapEnum;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\UserLayer;
@@ -64,5 +66,16 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
             )
             ->setParameter('userId', $userId)
             ->getResult();
+    }
+
+    public function getDefaultLayer(): LayerInterface
+    {
+        $layer = $this->find(MapEnum::DEFAULT_LAYER);
+
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return $layer;
     }
 }
