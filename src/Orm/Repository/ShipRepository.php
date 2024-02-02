@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -764,11 +765,19 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT * FROM %s s
+                'SELECT s FROM %s s
+                JOIN %s u
+                WITH s.user_id = u.id
                 WHERE s.cx BETWEEN :minX AND :maxX
                 AND s.cy BETWEEN :minY AND :maxY
-                AND m.layer = :layer',
-                Ship::class
+                AND s.layer_id = :layerId
+                AND s.type = :shipType
+                AND u.id >= :firstUserId
+                AND u.state >= :stateActive
+                AND u.creation < :fourMonthEarlier
+                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
+                Ship::class,
+                User::class
             )
         )
             ->setParameters([
@@ -776,7 +785,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'maxX' => $ship->getCx() + $range,
                 'minY' => $ship->getCY() - $range,
                 'maxY' => $ship->getCY() + $range,
-                'layer' => $layer
+                'layerId' => $layer->getId(),
+                'shipType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP,
+                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'stateActive' => UserEnum::USER_STATE_ACTIVE,
+                'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
+                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
             ])
             ->getResult();
     }

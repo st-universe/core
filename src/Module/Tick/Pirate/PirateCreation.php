@@ -114,6 +114,7 @@ class PirateCreation implements PirateCreationInterface
         }
 
         $this->fleetRepository->save($fleet);
+        $this->entityManager->flush();
 
         return $fleet;
     }

@@ -117,13 +117,13 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         // move to colony and rub
         if ($systemMap->getColony() !== $closestColony) {
-            if ($this->navigateToColony($leadWrapper, $closestColony)) {
-                $this->logger->log('reached colony');
-                $this->rubColony($fleet, $closestColony);
-            } else {
+            if (!$this->navigateToColony($leadWrapper, $closestColony)) {
                 $this->logger->log('did not reach colony');
+                return;
             }
         }
+
+        $this->rubColony($fleet, $closestColony);
     }
 
     private function navigateToSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): void
