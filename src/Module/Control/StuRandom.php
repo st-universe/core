@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Control;
 
+use RuntimeException;
+
 /**
  * This class adds the possibility to inject a random generator
  */
@@ -19,6 +21,24 @@ class StuRandom
     public function array_rand(array $array): string|int
     {
         return array_rand($array);
+    }
+
+    /** @param array<int, int> $probabilities */
+    public function randomOfProbabilities(array $probabilities): int
+    {
+        $totalProbability = array_sum($probabilities);
+
+        $randomNumber = random_int(1, $totalProbability);
+        $cumulativeProbability = 0;
+
+        foreach ($probabilities as $key => $prob) {
+            $cumulativeProbability += $prob;
+            if ($randomNumber <= $cumulativeProbability) {
+                return $key;
+            }
+        }
+
+        throw new RuntimeException('this should not happen');
     }
 
     private function generateRandomValueStandardNormalDistribution(int $min, int $max, ?int $mean): int

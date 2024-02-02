@@ -24,8 +24,6 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
-use function DI\value;
-
 //TODO unit tests
 final class StationUtility implements StationUtilityInterface
 {
@@ -190,8 +188,10 @@ final class StationUtility implements StationUtilityInterface
         $rump = $ship->getRump();
 
         // transform ship
-        $wrapper = $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
-        $station = $wrapper->get();
+        $station = $this->shipCreator
+            ->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress)
+            ->finishConfiguration()
+            ->get();
 
         // set influence area
         if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE) {

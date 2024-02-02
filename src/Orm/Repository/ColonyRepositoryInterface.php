@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -32,7 +33,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
     public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface;
 
     /**
-     * @return list<ColonyInterface>
+     * @return array<ColonyInterface>
      */
     public function getForeignColoniesInBroadcastRange(
         StarSystemMapInterface $systemMap,
@@ -48,6 +49,11 @@ interface ColonyRepositoryInterface extends ObjectRepository
      * @return iterable<ColonyInterface>
      */
     public function getColonized(): iterable;
+
+    /**
+     * @return array<ColonyInterface>
+     */
+    public function getPirateTargets(ShipInterface $ship): array;
 
     /**
      * @return array<array{user_id: int, commodity_id: int, sum: int}>

@@ -78,6 +78,7 @@ use Stu\Orm\Entity\News;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\OpenedAdventDoor;
 use Stu\Orm\Entity\PartnerSite;
+use Stu\Orm\Entity\PirateSetup;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -517,6 +518,11 @@ return [
         ContainerInterface $c
     ): ColonyClassResearchRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ColonyClassResearch::class);
+    },
+    PirateSetupRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PirateSetupRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PirateSetup::class);
     },
     PrestigeLogRepositoryInterface::class => function (
         ContainerInterface $c

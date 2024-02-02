@@ -275,15 +275,14 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     }
 
     public function setAlertState(
-        int $shipId,
+        ShipWrapperInterface|int $shipId,
         ShipAlertStateEnum $alertState,
         GameControllerInterface $game
     ): void {
-        $userId = $game->getUser()->getId();
-
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->getTargetWrapper(
             $shipId,
-            $userId
+            $game,
+            false
         );
 
         if (!$this->setAlertStateShip($wrapper, $alertState, $game)) {

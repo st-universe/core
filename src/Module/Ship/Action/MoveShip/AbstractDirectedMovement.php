@@ -11,6 +11,7 @@ use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
+use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -23,7 +24,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
     protected FlightRouteFactoryInterface $flightRouteFactory;
 
-    protected StarSystemMapRepositoryInterface $starSystemMapRepository;
+    protected RandomSystemEntryInterface $randomSystemEntry;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -36,14 +37,14 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         ShipMoverInterface $shipMover,
         FlightRouteFactoryInterface $flightRouteFactory,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        RandomSystemEntryInterface $randomSystemEntry,
         DistributedMessageSenderInterface $distributedMessageSender
     ) {
         $this->moveShipRequest = $moveShipRequest;
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
         $this->flightRouteFactory = $flightRouteFactory;
-        $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->randomSystemEntry = $randomSystemEntry;
         $this->distributedMessageSender = $distributedMessageSender;
     }
 

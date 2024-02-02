@@ -21,6 +21,18 @@ use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactory;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
+use Stu\Module\Tick\Pirate\Behaviour\AttackShipBehaviour;
+use Stu\Module\Tick\Pirate\Behaviour\FlyBehaviour;
+use Stu\Module\Tick\Pirate\Behaviour\HideBehaviour;
+use Stu\Module\Tick\Pirate\Behaviour\RubColonyBehaviour;
+use Stu\Module\Tick\Pirate\Component\PirateFlight;
+use Stu\Module\Tick\Pirate\Component\PirateFlightInterface;
+use Stu\Module\Tick\Pirate\PirateBehaviourEnum;
+use Stu\Module\Tick\Pirate\PirateCreation;
+use Stu\Module\Tick\Pirate\PirateCreationInterface;
+use Stu\Module\Tick\Pirate\PirateTick;
+use Stu\Module\Tick\Pirate\PirateTickInterface;
+use Stu\Module\Tick\Pirate\PirateTickRunner;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Ship\ManagerComponent\AnomalyCreationCheck;
 use Stu\Module\Tick\Ship\ManagerComponent\AnomalyProcessing;
@@ -28,7 +40,6 @@ use Stu\Module\Tick\Ship\ManagerComponent\CrewLimitations;
 use Stu\Module\Tick\Ship\ManagerComponent\EscapePodHandling;
 use Stu\Module\Tick\Ship\ManagerComponent\LowerHull;
 use Stu\Module\Tick\Ship\ManagerComponent\NpcShipHandling;
-use Stu\Module\Tick\Ship\ManagerComponent\PirateActions;
 use Stu\Module\Tick\Ship\ManagerComponent\RepairActions;
 use Stu\Module\Tick\Ship\ShipTick;
 use Stu\Module\Tick\Ship\ShipTickInterface;
@@ -58,7 +69,6 @@ return [
                 autowire(RepairActions::class),
                 autowire(ShipTick::class),
                 autowire(NpcShipHandling::class),
-                autowire(PirateActions::class),
                 autowire(LowerHull::class),
 
                 autowire(AnomalyCreationCheck::class),
@@ -84,5 +94,17 @@ return [
             get(TransactionTickRunnerInterface::class),
             get('process_tick_handler')
         ),
-    ShipTickRunner::class => autowire()
+    ShipTickRunner::class => autowire(),
+    PirateTickInterface::class => autowire(PirateTick::class)->constructorParameter(
+        'behaviours',
+        [
+            PirateBehaviourEnum::FLY->value => autowire(FlyBehaviour::class),
+            PirateBehaviourEnum::RUB_COLONY->value => autowire(RubColonyBehaviour::class),
+            PirateBehaviourEnum::ATTACK_SHIP->value => autowire(AttackShipBehaviour::class),
+            PirateBehaviourEnum::HIDE->value => autowire(HideBehaviour::class)
+        ]
+    ),
+    PirateCreationInterface::class => autowire(PirateCreation::class),
+    PirateFlightInterface::class => autowire(PirateFlight::class),
+    PirateTickRunner::class => autowire(),
 ];

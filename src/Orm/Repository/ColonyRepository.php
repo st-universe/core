@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Colony;
@@ -13,8 +14,11 @@ use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -247,6 +251,54 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameters([
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'lifeStandard' => CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD
+            ])
+            ->getResult();
+    }
+
+    public function getPirateTargets(ShipInterface $ship): array
+    {
+        $layer = $ship->getLayer();
+        if ($layer === null) {
+            return [];
+        }
+
+        $range = $ship->getSensorRange() * 2;
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT c FROM %s c
+                JOIN %s sm
+                WITH c.starsystem_map_id = sm.id
+                JOIN %s s
+                WITH sm.systems_id = s.id
+                JOIN %s m
+                WITH s.id = m.systems_id
+                JOIN %s u
+                WITH c.user_id = u.id
+                WHERE s.cx BETWEEN :minX AND :maxX
+                AND s.cy BETWEEN :minY AND :maxY
+                AND m.layer_id = :layer
+                AND u.id >= :firstUserId
+                AND u.state >= :stateActive
+                AND u.creation < :fourMonthEarlier
+                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
+                Colony::class,
+                StarSystemMap::class,
+                StarSystem::class,
+                Map::class,
+                User::class
+            )
+        )
+            ->setParameters([
+                'minX' => $ship->getCx() - $range,
+                'maxX' => $ship->getCx() + $range,
+                'minY' => $ship->getCY() - $range,
+                'maxY' => $ship->getCY() + $range,
+                'layer' => $layer,
+                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'stateActive' => UserEnum::USER_STATE_ACTIVE,
+                'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
+                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
             ])
             ->getResult();
     }

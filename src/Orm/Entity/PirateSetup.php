@@ -28,6 +28,9 @@ class PirateSetup implements PirateSetupInterface
     #[Column(type: 'integer')]
     private int $probability_weight;
 
+    /**
+     * @var ArrayCollection<int, PirateSetupBuildplanInterface>
+     */
     #[OneToMany(targetEntity: 'PirateSetupBuildplan', mappedBy: 'setup')]
     private Collection $setupBuildplans;
 

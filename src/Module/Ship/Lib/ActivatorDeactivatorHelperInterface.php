@@ -43,7 +43,7 @@ interface ActivatorDeactivatorHelperInterface
     ): void;
 
     public function setAlertState(
-        int $shipId,
+        ShipWrapperInterface|int $shipId,
         ShipAlertStateEnum $alertState,
         GameControllerInterface $game
     ): void;

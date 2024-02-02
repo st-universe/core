@@ -258,6 +258,10 @@ use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughEpsConditio
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\EnoughWarpdriveCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheck;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
+use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntry;
+use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
+use Stu\Module\Ship\Lib\ShipConfiguratorFactory;
+use Stu\Module\Ship\Lib\ShipConfiguratorFactoryInterface;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
@@ -312,6 +316,7 @@ return [
     DockPrivilegeUtilityInterface::class => autowire(DockPrivilegeUtility::class),
     CancelColonyBlockOrDefendInterface::class => autowire(CancelColonyBlockOrDefend::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
+    ShipConfiguratorFactoryInterface::class => autowire(ShipConfiguratorFactory::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     ShipUndockingInterface::class => autowire(ShipUndocking::class),
     ShipShutdownInterface::class => autowire(ShipShutdown::class),
@@ -340,6 +345,7 @@ return [
     CheckDestinationInterface::class => autowire(CheckDestination::class),
     LoadWaypointsInterface::class => autowire(LoadWaypoints::class),
     UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
+    RandomSystemEntryInterface::class => autowire(RandomSystemEntry::class),
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
     'preFlightConditions' => [
         autowire(BlockedCondition::class),

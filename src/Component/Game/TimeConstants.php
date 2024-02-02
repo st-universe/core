@@ -16,4 +16,5 @@ final class TimeConstants
 
     //weeks
     public const TWO_WEEKS_IN_SECONDS = 1_209_600;
+    public const EIGHT_WEEKS_IN_SECONDS = 4_838_400;
 }

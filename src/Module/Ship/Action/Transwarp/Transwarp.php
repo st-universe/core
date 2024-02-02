@@ -12,12 +12,12 @@ use Stu\Module\Ship\Action\MoveShip\AbstractDirectedMovement;
 use Stu\Module\Ship\Action\MoveShip\MoveShipRequestInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
+use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class Transwarp extends AbstractDirectedMovement
 {
@@ -32,7 +32,7 @@ final class Transwarp extends AbstractDirectedMovement
         ShipLoaderInterface $shipLoader,
         ShipMoverInterface $shipMover,
         FlightRouteFactoryInterface $flightRouteFactory,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        RandomSystemEntryInterface $randomSystemEntry,
         DistributedMessageSenderInterface $distributedMessageSender,
         MapRepositoryInterface $mapRepository
     ) {
@@ -41,7 +41,7 @@ final class Transwarp extends AbstractDirectedMovement
             $shipLoader,
             $shipMover,
             $flightRouteFactory,
-            $starSystemMapRepository,
+            $randomSystemEntry,
             $distributedMessageSender
         );
 
