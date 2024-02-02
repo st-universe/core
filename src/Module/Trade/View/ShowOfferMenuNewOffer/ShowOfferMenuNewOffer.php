@@ -40,6 +40,11 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
             throw new AccessViolation();
         }
 
+        $tradepost = $storage->getTradePost();
+        if ($tradepost === null) {
+            throw new AccessViolation();
+        }
+
         $commodityList = $this->commodityRepository->getTradeable();
 
         $game->showMacro('html/trademacros.xhtml/newoffermenu_newoffer');
@@ -49,7 +54,7 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
         ));
         $game->setTemplateVar('STOR', $storage);
         $game->setTemplateVar('IS_LATINUM', $storage->getCommodityId() === CommodityTypeEnum::COMMODITY_LATINUM);
-        $game->setTemplateVar('IS_NPC_POST', $storage->getTradePost()->getId() < 18);
+        $game->setTemplateVar('IS_NPC_POST', $tradepost->getUser()->isNpc());
         $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
     }
 }
