@@ -113,25 +113,10 @@ final class ResearchState implements ResearchStateInterface
         $userId = $state->getUser()->getId();
         $plan = $state->getResearch()->getRewardBuildplan();
         $colony = current($userColonies);
-        $wrapper = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId(), $colony);
+        $wrapper = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId(), $colony)
+            ->maxOutSystems()
+            ->finishConfiguration();
         $ship = $wrapper->get();
-
-        $reactor = $wrapper->getReactorWrapper();
-        if ($reactor !== null) {
-            $reactor->setLoad($reactor->getCapacity());
-        }
-
-        $eps = $wrapper->getEpsSystemData();
-
-        if ($eps !== null) {
-            $eps->setEps($eps->getTheoreticalMaxEps())
-                ->setBattery($eps->getMaxBattery())->update();
-        }
-
-        $warpdrive = $wrapper->getWarpDriveSystemData();
-        if ($warpdrive !== null) {
-            $warpdrive->setWarpDrive($warpdrive->getMaxWarpdrive())->update();
-        }
 
         if ($plan->getCrew() > 0) {
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);

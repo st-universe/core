@@ -262,19 +262,21 @@ final class BuildConstruction implements ActionControllerInterface
             $ship->getUser()->getId(),
             $rump->getId(),
             $plan->getId()
-        );
+        )
+            ->setLocation($ship->getLocation())
+            ->loadEps(100)
+            ->finishConfiguration();
+
         $workbee = $workbeeWrapper->get();
+
         $workbeeEps = $workbeeWrapper->getEpsSystemData();
 
         if ($workbeeEps === null) {
             throw new RuntimeException('workbee has not eps system installed');
         }
 
-        $workbeeEps->setEps($workbeeEps->getMaxEps())->update();
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
-
-        $workbee->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
         $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
@@ -282,8 +284,6 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         $this->shipRepository->save($workbee);
-
-        $epsSystem->lowerEps($workbeeEps->getMaxEps())->update();
         $this->shipRepository->save($ship);
 
         return $workbee;
@@ -307,7 +307,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction->setAlertStateGreen();
         $construction->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
 
-        $construction->updateLocation($ship->getMap(), $ship->getStarsystemMap());
+        $construction->updateLocation($ship->getLocation());
 
         $this->shipRepository->save($construction);
 

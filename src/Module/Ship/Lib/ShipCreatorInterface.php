@@ -13,5 +13,5 @@ interface ShipCreatorInterface
         int $shipBuildplanId,
         ?ColonyInterface $colony = null,
         ?ConstructionProgressInterface $progress = null
-    ): ShipWrapperInterface;
+    ): ShipConfiguratorInterface;
 }

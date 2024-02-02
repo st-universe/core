@@ -60,7 +60,7 @@ final class DoManualShipTick implements ActionControllerInterface
                 throw new ShipDoesNotExistException(_('Ship does not exist!'));
             }
 
-            $this->shipTick->work($wrapper);
+            $this->shipTick->workShip($wrapper);
             $this->entityManager->flush();
 
             $game->addInformation("Der Schiff-Tick für dieses Schiff wurde durchgeführt!");

@@ -61,6 +61,8 @@ final class ShipCreator implements ShipCreatorInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private ShipConfiguratorFactoryInterface $shipConfiguratorFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -73,6 +75,7 @@ final class ShipCreator implements ShipCreatorInterface
         ModuleSpecialRepositoryInterface $moduleSpecialRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        ShipConfiguratorFactoryInterface $shipConfiguratorFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
@@ -84,6 +87,7 @@ final class ShipCreator implements ShipCreatorInterface
         $this->moduleSpecialRepository = $moduleSpecialRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->shipConfiguratorFactory = $shipConfiguratorFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -93,7 +97,7 @@ final class ShipCreator implements ShipCreatorInterface
         int $shipBuildplanId,
         ?ColonyInterface $colony = null,
         ?ConstructionProgressInterface $progress = null
-    ): ShipWrapperInterface {
+    ): ShipConfiguratorInterface {
         $user = $this->userRepository->find($userId);
         if ($user === null) {
             throw new RuntimeException('user not existent');
@@ -177,7 +181,7 @@ final class ShipCreator implements ShipCreatorInterface
             $this->shipRepository->save($ship);
         }
 
-        return $wrapper;
+        return $this->shipConfiguratorFactory->createShipConfigurator($wrapper);
     }
 
     /**
