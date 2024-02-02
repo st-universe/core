@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Orm\Entity\Pirates;
+namespace Stu\Orm\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;

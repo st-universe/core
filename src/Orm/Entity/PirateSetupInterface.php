@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Orm\Entity\Pirates;
+namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
 
@@ -10,8 +10,10 @@ interface PirateSetupInterface
 
     public function getName(): string;
 
+    public function getProbabilityWeight(): int;
+
     /**
-     * @return Collection<PirateSetupBuildplanInterface>
+     * @return Collection<int, PirateSetupBuildplanInterface>
      */
     public function getSetupBuildplans(): Collection;
 }
