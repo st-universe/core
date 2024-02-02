@@ -157,7 +157,10 @@ final class StartShuttle implements ActionControllerInterface
             $ship->getUser()->getId(),
             $rump->getId(),
             $plan->getId()
-        );
+        )
+            ->setLocation($ship->getLocation())
+            ->loadWarpdrive(100)
+            ->finishConfiguration();
 
         $shuttleEps = $shuttleWrapper->getEpsSystemData();
         if ($shuttleEps !== null) {
@@ -165,15 +168,8 @@ final class StartShuttle implements ActionControllerInterface
             $epsSystem->lowerEps($shuttleEps->getMaxEps())->update();
         }
 
-        $shuttleWarpDrive = $shuttleWrapper->getWarpDriveSystemData();
-        if ($shuttleWarpDrive !== null) {
-            $shuttleWarpDrive->setWarpDrive($shuttleWarpDrive->getMaxWarpdrive())->update();
-        }
-
         $shuttle = $shuttleWrapper->get();
         $shuttle->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
-
-        $shuttle->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
         $shipCrewArray = $ship->getCrewAssignments()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {

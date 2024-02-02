@@ -135,12 +135,18 @@ final class StartAirfieldShip implements ActionControllerInterface
             1
         );
 
-        $wrapper = $this->shipCreator->createBy(
+        $shipConfigurator = $this->shipCreator->createBy(
             $userId,
             $rump_id,
             $hangar->getBuildplanId(),
             $colony
         );
+
+        if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
+            $shipConfigurator->maxOutSystems();
+        }
+
+        $wrapper = $shipConfigurator->finishConfiguration();
         $ship = $wrapper->get();
 
         $this->crewCreator->createShipCrew($ship, $colony);
@@ -160,23 +166,6 @@ final class StartAirfieldShip implements ActionControllerInterface
             $this->shipRepository->save($ship);
         }
 
-        if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
-            $eps = $wrapper->getEpsSystemData();
-            if ($eps !== null) {
-                $eps->setEps($eps->getTheoreticalMaxEps())->update();
-            }
-
-            $warpdrive = $wrapper->getWarpDriveSystemData();
-            if ($warpdrive != null) {
-                $warpdrive->setWarpDrive($warpdrive->getMaxWarpDrive())->update();
-            }
-
-            $reactor = $wrapper->getReactorWrapper();
-            if ($reactor !== null) {
-                $reactor->setLoad($reactor->getCapacity());
-            }
-            $this->shipRepository->save($ship);
-        }
         $colony->lowerEps($hangar->getStartEnergyCosts());
 
         $this->colonyRepository->save($colony);

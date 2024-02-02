@@ -6,13 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -31,11 +27,7 @@ Init::run(function (ContainerInterface $dic): void {
     $torpedoTypeRepo = $dic->get(TorpedoTypeRepositoryInterface::class);
     $userRepo = $dic->get(UserRepositoryInterface::class);
     $shipCreator = $dic->get(ShipCreatorInterface::class);
-    $shipRepo = $dic->get(ShipRepositoryInterface::class);
-    $crewCreator = $dic->get(CrewCreatorInterface::class);
-    $shipCrewRepo = $dic->get(ShipCrewRepositoryInterface::class);
     $mapRepo = $dic->get(MapRepositoryInterface::class);
-    $torpedoManager = $dic->get(ShipTorpedoManagerInterface::class);
 
     $userId = request::indInt('userId');
     $buildplanId = request::indInt('buildplanId');
@@ -49,41 +41,14 @@ Init::run(function (ContainerInterface $dic): void {
         $cy = request::postIntFatal('cy');
         $shipcount = request::postIntFatal('shipcount');
         for ($i = 0; $i < $shipcount; $i++) {
-            $wrapper = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
-            $ship = $wrapper->get();
+            $shipCreator
+                ->createBy($userId, $plan->getRump()->getId(), $plan->getId())
+                ->setLocation($mapRepo->getByCoordinates($layerId, $cx, $cy))
+                ->maxOutSystems()
+                ->createCrew()
+                ->setTorpedo($torptypeId)
+                ->finishConfiguration();
 
-            $ship->setMap($mapRepo->getByCoordinates($layerId, $cx, $cy));
-
-            $reactor = $wrapper->getReactorWrapper();
-            if ($reactor !== null) {
-                $reactor->setLoad($reactor->getCapacity());
-            }
-
-            $ship->setShield($ship->getMaxShield());
-
-            $epsSystem = $wrapper->getEpsSystemData();
-            $epsSystem
-                ->setEps($epsSystem->getMaxEps())
-                ->setBattery($epsSystem->getMaxBattery())
-                ->update();
-            $warpdrive = $wrapper->getWarpDriveSystemData();
-            if ($warpdrive !== null) {
-                $warpdrive->setWarpDrive($warpdrive->getMaxWarpdrive())->update();
-            }
-
-            if ($torptypeId > 0) {
-                $torp_obj = $torpedoTypeRepo->find($torptypeId);
-                $torpedoManager->changeTorpedo($wrapper, $ship->getMaxTorpedos(), $torp_obj);
-            }
-
-            $shipRepo->save($ship);
-            $db->flush();
-
-            for ($j = 1; $j <= $plan->getCrew(); $j++) {
-                $crewAssignment = $crewCreator->create($userId);
-                $crewAssignment->setShip($ship);
-                $shipCrewRepo->save($crewAssignment);
-            }
             $db->flush();
         }
         echo $shipcount . ' Schiff(e) erstellt, mit Wurstblinkern!';

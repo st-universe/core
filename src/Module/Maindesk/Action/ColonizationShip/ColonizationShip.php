@@ -40,15 +40,21 @@ final class ColonizationShip implements ActionControllerInterface
 
         $faction = $user->getFaction();
 
+        $startMap = $faction->getStartMap();
+        if ($startMap === null) {
+            throw new RuntimeException('faction has no start map');
+        }
+
         $wrapper = $this->shipCreator->createBy(
             $user->getId(),
             $this->getRumpId($faction->getId()),
             $this->getBuildplanId($faction->getId())
-        );
+        )
+            ->setLocation($startMap)
+            ->finishConfiguration();
 
         $ship = $wrapper->get();
 
-        $ship->updateLocation($faction->getStartMap(), null);
         $ship->setSensorRange(5);
 
         $reactor = $wrapper->getReactorWrapper();

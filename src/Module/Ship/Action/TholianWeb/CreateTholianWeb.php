@@ -131,8 +131,11 @@ final class CreateTholianWeb implements ActionControllerInterface
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_WEB_SPINNING);
 
         //create web ship
-        $webShip = $this->shipCreator->createBy($userId, 9, 1840)->get();
-        $webShip->updateLocation($ship->getMap(), $ship->getStarsystemMap());
+        $webShip = $this->shipCreator->createBy($userId, 9, 1840)
+            ->setLocation($ship->getLocation())
+            ->finishConfiguration()
+            ->get();
+
         $webShip->setSpacecraftType(SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER);
         $this->shipRepository->save($webShip);
 
