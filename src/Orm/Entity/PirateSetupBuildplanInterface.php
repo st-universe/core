@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Orm\Entity\Pirates;
+namespace Stu\Orm\Entity;
 
 use Stu\Orm\Entity\ShipBuildplanInterface;
 

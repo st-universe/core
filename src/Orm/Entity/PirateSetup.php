@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Orm\Entity\Pirates;
+namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_pirate_setup')]
-#[Entity()]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\PirateSetupRepository')]
 class PirateSetup implements PirateSetupInterface
 {
     #[Id]
@@ -23,7 +23,10 @@ class PirateSetup implements PirateSetupInterface
     private int $id;
 
     #[Column(type: 'string', length: 200)]
-    private string $name = '';
+    private string $name;
+
+    #[Column(type: 'integer')]
+    private int $probability_weight;
 
     #[OneToMany(targetEntity: 'PirateSetupBuildplan', mappedBy: 'setup')]
     private Collection $setupBuildplans;
@@ -41,6 +44,11 @@ class PirateSetup implements PirateSetupInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getProbabilityWeight(): int
+    {
+        return $this->probability_weight;
     }
 
     public function getSetupBuildplans(): Collection
