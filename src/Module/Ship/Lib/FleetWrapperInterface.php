@@ -8,6 +8,8 @@ interface FleetWrapperInterface
 {
     public function get(): FleetInterface;
 
+    public function getLeadWrapper(): ShipWrapperInterface;
+
     /**
      * @return ShipWrapperInterface[]
      */

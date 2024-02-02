@@ -21,7 +21,6 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -45,8 +44,6 @@ final class DealsTakeAuction implements ActionControllerInterface
 
     private ShipCreatorInterface $shipCreator;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private CreatePrestigeLogInterface $createPrestigeLog;
 
     private StuTime $stuTime;
@@ -60,7 +57,6 @@ final class DealsTakeAuction implements ActionControllerInterface
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipCreatorInterface $shipCreator,
-        ShipRepositoryInterface $shipRepository,
         CreatePrestigeLogInterface $createPrestigeLog,
         StuTime $stuTime
     ) {
@@ -72,7 +68,6 @@ final class DealsTakeAuction implements ActionControllerInterface
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->shipRepository = $shipRepository;
         $this->shipCreator = $shipCreator;
         $this->stuTime = $stuTime;
     }
@@ -201,23 +196,12 @@ final class DealsTakeAuction implements ActionControllerInterface
 
     private function createShip(ShipBuildplanInterface $buildplan, TradePostInterface $tradePost, int $userId): void
     {
-        $wrapper = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
-        $ship = $wrapper->get();
-
-        $reactor = $wrapper->getReactorWrapper();
-        if ($reactor !== null) {
-            $reactor->setLoad((int)floor($reactor->getCapacity() / 4));
-        }
-
-        $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
-
-        $eps = $wrapper->getEpsSystemData();
-        $eps->setEps((int)floor($eps->getTheoreticalMaxEps() / 4))->update();
-        $warpdrive = $wrapper->getWarpDriveSystemData();
-        if ($warpdrive !== null) {
-            $warpdrive->setWarpDrive((int)floor($warpdrive->getMaxWarpdrive() / 4))->update();
-        }
-        $this->shipRepository->save($ship);
+        $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId())
+            ->setLocation($tradePost->getShip()->getLocation())
+            ->loadEps(25)
+            ->loadReactor(25)
+            ->loadWarpdrive(25)
+            ->finishConfiguration();
     }
 
     public function performSessionCheck(): bool

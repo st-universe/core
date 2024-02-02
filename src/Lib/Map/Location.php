@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ReadableCollection;
 use InvalidArgumentException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -74,5 +75,19 @@ class Location
     public function getId(): int
     {
         return $this->location->getId();
+    }
+
+    public function getLayer(): ?LayerInterface
+    {
+        if ($this->location instanceof MapInterface) {
+            return $this->location->getLayer();
+        }
+
+        $parentMap = $this->location->getSystem()->getMapField();
+        if ($parentMap === null) {
+            return null;
+        }
+
+        return $parentMap->getLayer();
     }
 }

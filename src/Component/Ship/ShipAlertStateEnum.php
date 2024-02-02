@@ -18,4 +18,12 @@ enum ShipAlertStateEnum: int
             ShipAlertStateEnum::ALERT_RED => _("Alarm Rot")
         };
     }
+
+    public static function getRandomAlertLevel(): ShipAlertStateEnum
+    {
+        /** @var array<int> */
+        $values = array_map(fn (ShipAlertStateEnum $alertState) => $alertState->value, self::cases());
+
+        return self::from($values[array_rand($values)]);
+    }
 }

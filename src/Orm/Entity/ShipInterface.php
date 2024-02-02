@@ -267,7 +267,7 @@ interface ShipInterface
      */
     public function getBeamableStorage(): array;
 
-    public function updateLocation(?MapInterface $map, ?StarSystemMapInterface $starsystem_map): ShipInterface;
+    public function updateLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface;
 
     public function getTradePost(): ?TradePostInterface;
 

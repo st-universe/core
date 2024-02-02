@@ -55,6 +55,9 @@ class Fleet implements FleetInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    /**
+     * @var ArrayCollection<int, ShipInterface>
+     */
     #[OneToMany(targetEntity: 'Ship', mappedBy: 'fleet', indexBy: 'id')]
     #[OrderBy(['is_fleet_leader' => 'DESC', 'name' => 'ASC'])]
     private Collection $shiplist;
@@ -178,7 +181,7 @@ class Fleet implements FleetInterface
     {
         return array_reduce(
             $this->shiplist->toArray(),
-            fn(int $sum, ShipInterface $ship): int => $sum + ($ship->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
+            fn (int $sum, ShipInterface $ship): int => $sum + ($ship->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
             0
         );
     }

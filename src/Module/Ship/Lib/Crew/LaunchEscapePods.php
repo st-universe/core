@@ -61,7 +61,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $pods->setMaxHuell(1);
         $pods->setAlertStateGreen();
 
-        $pods->updateLocation($ship->getMap(), $ship->getStarsystemMap());
+        $pods->updateLocation($ship->getLocation());
 
         //return to save place
         $this->returnToSafety($pods, $ship);

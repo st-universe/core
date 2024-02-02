@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type;
 
-use RuntimeException;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
@@ -19,16 +19,20 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private LayerRepositoryInterface $layerRepository;
+
     private AnomalyCreationInterface $anomalyCreation;
 
     private StorageRepositoryInterface $storageRepository;
 
     public function __construct(
         MapRepositoryInterface $mapRepository,
+        LayerRepositoryInterface $layerRepository,
         AnomalyCreationInterface $anomalyCreation,
         StorageRepositoryInterface $storageRepository
     ) {
         $this->mapRepository = $mapRepository;
+        $this->layerRepository = $layerRepository;
         $this->anomalyCreation = $anomalyCreation;
         $this->storageRepository = $storageRepository;
     }
@@ -67,13 +71,9 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
 
     private function getRandomMap(): MapInterface
     {
-        $randomMapId = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage();
-        $map = $this->mapRepository->find($randomMapId);
-        if ($map === null) {
-            throw new RuntimeException('this should not happen');
-        }
+        $layer = $this->layerRepository->getDefaultLayer();
 
-        return $map;
+        return $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($layer);
     }
 
     public function letAnomalyDisappear(AnomalyInterface $anomaly): void

@@ -13,6 +13,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
+use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -21,7 +22,6 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\StuTestCase;
 
 class DirectedMovementTest extends StuTestCase
@@ -38,8 +38,8 @@ class DirectedMovementTest extends StuTestCase
     /** @var MockInterface&FlightRouteFactoryInterface */
     private FlightRouteFactoryInterface $flightRouteFactory;
 
-    /** @var MockInterface&StarSystemMapRepositoryInterface */
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
+    /** @var MockInterface&RandomSystemEntryInterface */
+    private RandomSystemEntryInterface $randomSystemEntry;
 
     /** @var MockInterface&DistributedMessageSenderInterface */
     private DistributedMessageSenderInterface $distributedMessageSender;
@@ -50,7 +50,7 @@ class DirectedMovementTest extends StuTestCase
         $this->shipLoader = $this->mock(ShipLoaderInterface::class);
         $this->shipMover = $this->mock(ShipMoverInterface::class);
         $this->flightRouteFactory = $this->mock(FlightRouteFactoryInterface::class);
-        $this->starSystemMapRepository = $this->mock(StarSystemMapRepositoryInterface::class);
+        $this->randomSystemEntry = $this->mock(RandomSystemEntryInterface::class);
         $this->distributedMessageSender = $this->mock(DistributedMessageSenderInterface::class);
     }
 
@@ -96,7 +96,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 
@@ -204,7 +204,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 
@@ -252,7 +252,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 
@@ -308,7 +308,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 
@@ -373,7 +373,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 
@@ -441,7 +441,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 
@@ -520,7 +520,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 
@@ -638,7 +638,7 @@ class DirectedMovementTest extends StuTestCase
             $this->shipLoader,
             $this->shipMover,
             $this->flightRouteFactory,
-            $this->starSystemMapRepository,
+            $this->randomSystemEntry,
             $this->distributedMessageSender
         );
 

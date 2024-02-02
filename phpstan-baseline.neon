@@ -2074,16 +2074,6 @@ parameters:
 			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
 
 		-
-			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
-
-		-
 			message: "#^Parameter \\#1 \\$buildplan of method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuction\\:\\:copyBuildplan\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface, Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
@@ -2109,17 +2099,7 @@ parameters:
 			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
 
 		-
-			message: "#^Cannot call method getTheoreticalMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
-
-		-
 			message: "#^Cannot call method getgiveCommodityId\\(\\) on Stu\\\\Orm\\\\Entity\\\\DealsInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
 
@@ -2202,16 +2182,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/TradeLibFactoryInterface.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferMenu/ShowOfferMenu.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferMenuNewOffer/ShowOfferMenuNewOffer.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$topics type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\>\\.$#"
@@ -2299,16 +2269,6 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$shiplist type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$shiplist with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPost.php
@@ -2375,11 +2335,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -2582,22 +2537,7 @@ parameters:
 			path: src/Public/admin/help/createBuildplan.php
 
 		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createShip.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createShip.php
-
-		-
-			message: "#^Cannot call method getMaxBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createShip.php
-
-		-
-			message: "#^Cannot call method getMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Public/admin/help/createShip.php
 
@@ -2607,7 +2547,7 @@ parameters:
 			path: src/Public/admin/help/createShip.php
 
 		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$location of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipConfiguratorInterface\\:\\:setLocation\\(\\) expects Stu\\\\Lib\\\\Map\\\\Location\\|Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null given\\.$#"
 			count: 1
 			path: src/Public/admin/help/createShip.php
 

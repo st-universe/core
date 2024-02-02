@@ -302,12 +302,7 @@ class Ship implements ShipInterface
 
     public function getLayer(): ?LayerInterface
     {
-        $map = $this->getMap();
-        if ($map !== null) {
-            return $map->getLayer();
-        }
-
-        return $this->getSystem()->getLayer();
+        return $this->getLocation()->getLayer();
     }
 
     public function getLayerId(): int
@@ -1075,10 +1070,17 @@ class Ship implements ShipInterface
         return $map->getMapRegion();
     }
 
-    public function updateLocation(?MapInterface $map, ?StarSystemMapInterface $starsystem_map): ShipInterface
+    public function updateLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface
     {
-        $this->setMap($map);
-        $this->setStarsystemMap($starsystem_map);
+        if ($location instanceof MapInterface) {
+            $this->setMap($location);
+            $this->setStarsystemMap(null);
+        } elseif ($location instanceof StarSystemMapInterface) {
+            $this->setMap(null);
+            $this->setStarsystemMap($location);
+        } else {
+            $this->updateLocation($location->get());
+        }
 
         return $this;
     }

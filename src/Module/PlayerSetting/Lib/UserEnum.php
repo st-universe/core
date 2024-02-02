@@ -9,6 +9,7 @@ final class UserEnum
     //NPC IDs
     public const USER_NOONE = 1;
     public const USER_NPC_FERG = 14;
+    public const USER_NPC_KAZON = 17;
 
     // first user id (below are NPCs)
     public const USER_FIRST_ID = 100;

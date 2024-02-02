@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use RuntimeException;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
@@ -613,26 +614,44 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return array_map(fn (array $data) => $data['id'], $subset);
     }
 
-    public function getRandomPassableUnoccupiedWithoutDamage(): int
+    public function getRandomPassableUnoccupiedWithoutDamage(LayerInterface $layer, bool $isAtBorder = false): MapInterface
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
 
-        return (int)$this->getEntityManager()
+        $borderCriteria = $isAtBorder ?
+            sprintf(
+                'AND m.cx in (1, %d) OR m.cy in (1, %d)',
+                $layer->getWidth(),
+                $layer->getHeight()
+            ) : '';
+
+        $randomMapId =  (int)$this->getEntityManager()
             ->createNativeQuery(
-                'SELECT m.id
-                FROM stu_map m
-                JOIN stu_map_ftypes mft
-                ON m.field_id = mft.id
-                WHERE NOT EXISTS (SELECT s.id FROM stu_ships s WHERE s.map_id = m.id)
-                AND m.layer_id = :layerId
-                AND mft.x_damage = 0
-                AND mft.passable = true
-                ORDER BY RANDOM()
-                LIMIT 1',
+                sprintf(
+                    'SELECT m.id
+                    FROM stu_map m
+                    JOIN stu_map_ftypes mft
+                    ON m.field_id = mft.id
+                    WHERE NOT EXISTS (SELECT s.id FROM stu_ships s WHERE s.map_id = m.id)
+                    AND m.layer_id = :layerId
+                    AND mft.x_damage = 0
+                    AND mft.passable = true
+                    %s
+                    ORDER BY RANDOM()
+                    LIMIT 1',
+                    $borderCriteria
+                ),
                 $rsm
             )
             ->setParameter('layerId', MapEnum::DEFAULT_LAYER)
             ->getSingleScalarResult();
+
+        $map = $this->find($randomMapId);
+        if ($map === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return $map;
     }
 }

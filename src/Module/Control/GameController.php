@@ -175,7 +175,6 @@ final class GameController implements GameControllerInterface
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->gameRequestRepository = $gameRequestRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->gameTalRenderer = $gameTalRenderer;
         $this->gameTwigRenderer = $gameTwigRenderer;
         $this->uuidGenerator = $uuidGenerator;
@@ -183,6 +182,7 @@ final class GameController implements GameControllerInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->gameSetup = $gameSetup;
 
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         //$this->loggerUtil->init('game', LoggerEnum::LEVEL_ERROR);
     }
 
@@ -302,6 +302,8 @@ final class GameController implements GameControllerInterface
 
     public function addInformation(string $msg, bool $override = false): void
     {
+        $this->loggerUtil->log(sprintf('addInformation: %s', $msg));
+
         if ($override) {
             $this->gameInformations = [];
         }

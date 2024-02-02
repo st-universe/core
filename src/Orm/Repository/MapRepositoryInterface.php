@@ -106,5 +106,5 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage): array;
 
 
-    public function getRandomPassableUnoccupiedWithoutDamage(): int;
+    public function getRandomPassableUnoccupiedWithoutDamage(LayerInterface $layer, bool $isAtBorder = false): MapInterface;
 }
