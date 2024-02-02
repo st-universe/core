@@ -7,7 +7,9 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Tick\Pirate\Component\PirateFlightInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 
 class FlyBehaviour implements PirateBehaviourInterface
 {
@@ -37,23 +39,49 @@ class FlyBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $lastPosition = $leadShip->getCurrentMapField();
+        $currentLocation = $leadShip->getCurrentMapField();
 
-        $this->logger->log(sprintf('currentPosition: %s', $lastPosition->getSectorString()));
+        if (
+            $currentLocation instanceof StarSystemMapInterface
+            && $this->stuRandom->rand(1, 4) === 1
+        ) {
+            $this->leaveStarSystem($leadWrapper, $currentLocation);
+
+            $mapField = $currentLocation->getSystem()->getMapField();
+            $this->logger->log(sprintf('left star system: %s', $mapField !== null ? $mapField->getSectorString() : $currentLocation->getSectorString()));
+        }
+
+        $currentLocation = $leadShip->getCurrentMapField();
+
+        $this->logger->log(sprintf('currentPosition: %s', $currentLocation->getSectorString()));
 
         $isInXDirection = $this->stuRandom->rand(0, 1) === 0;
         $maxFields = $leadShip->getSensorRange() * 2;
 
         $flightRoute = $this->flightRouteFactory->getRouteForCoordinateDestination(
             $leadShip,
-            $isInXDirection ? $lastPosition->getX() + $this->stuRandom->rand(-$maxFields, $maxFields) : $lastPosition->getX(),
-            $isInXDirection ? $lastPosition->getY() : $lastPosition->getY() + $this->stuRandom->rand(-$maxFields, $maxFields)
+            $isInXDirection ? $currentLocation->getX() + $this->stuRandom->rand(-$maxFields, $maxFields) : $currentLocation->getX(),
+            $isInXDirection ? $currentLocation->getY() : $currentLocation->getY() + $this->stuRandom->rand(-$maxFields, $maxFields)
         );
 
         $this->pirateFlight->movePirate($leadWrapper, $flightRoute);
 
-        $newPosition = $leadShip->getCurrentMapField();
+        $newLocation = $leadShip->getCurrentMapField();
 
-        $this->logger->log(sprintf('newPosition: %s', $newPosition->getSectorString()));
+        $this->logger->log(sprintf('newLocation: %s', $newLocation->getSectorString()));
+    }
+
+    private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemMapInterface $currentLocation): void
+    {
+        $mapField = $currentLocation->getSystem()->getMapField();
+        if ($mapField === null) {
+            return;
+        }
+
+        $flightRoute = $this->flightRouteFactory->getRouteForMapDestination(
+            $mapField
+        );
+
+        $this->pirateFlight->movePirate($wrapper, $flightRoute);
     }
 }
