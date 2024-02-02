@@ -165,6 +165,8 @@ use Stu\Module\Ship\Lib\Battle\FightLib;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactory;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCore;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycle;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhase;
@@ -305,6 +307,7 @@ return [
     FightLibInterface::class => autowire(FightLib::class),
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
     TholianWebWeaponPhaseInterface::class => autowire(TholianWebWeaponPhase::class),
+    ShipAttackCoreInterface::class => autowire(ShipAttackCore::class),
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     AlertRedHelperInterface::class => autowire(AlertRedHelper::class),

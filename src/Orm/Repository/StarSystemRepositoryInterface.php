@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemNameInterface;
@@ -39,4 +40,9 @@ interface StarSystemRepositoryInterface extends ObjectRepository
     public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface;
 
     public function getNextStarSystem(StarSystemInterface $current): ?StarSystemInterface;
+
+    /**
+     * @return array<StarSystemInterface>
+     */
+    public function getPirateHides(ShipInterface $ship): array;
 }

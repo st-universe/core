@@ -9,10 +9,10 @@ use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemName;
-use Stu\Orm\Entity\StarSystemNameInterface;
 
 /**
  * @extends EntityRepository<StarSystem>
@@ -143,5 +143,36 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->setParameters(['layer' => $current->getLayer(), 'currentId' => $current->getId()])
             ->setMaxResults(1)
             ->getOneOrNullResult();
+    }
+
+    public function getPirateHides(ShipInterface $ship): array
+    {
+        $layer = $ship->getLayer();
+        if ($layer === null) {
+            return [];
+        }
+
+        $range = $ship->getSensorRange() * 4;
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ss FROM %s ss
+                JOIN %s m
+                WITH ss.id = m.systems_id
+                WHERE ss.cx BETWEEN :minX AND :maxX
+                AND ss.cy BETWEEN :minY AND :maxY
+                AND m.layer_id = :layerId',
+                StarSystem::class,
+                Map::class
+            )
+        )
+            ->setParameters([
+                'minX' => $ship->getCx() - $range,
+                'maxX' => $ship->getCx() + $range,
+                'minY' => $ship->getCY() - $range,
+                'maxY' => $ship->getCY() + $range,
+                'layerId' => $layer->getId()
+            ])
+            ->getResult();
     }
 }
