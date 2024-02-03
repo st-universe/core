@@ -766,17 +766,21 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
+                JOIN %s r
+                WITH s.rumps_id = r.id
                 JOIN %s u
                 WITH s.user_id = u.id
                 WHERE s.cx BETWEEN :minX AND :maxX
                 AND s.cy BETWEEN :minY AND :maxY
                 AND s.layer_id = :layerId
                 AND s.type = :shipType
+                AND r.prestige > 0
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND u.creation < :fourMonthEarlier
                 AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
                 Ship::class,
+                ShipRump::class,
                 User::class
             )
         )
