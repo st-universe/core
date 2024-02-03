@@ -78,7 +78,7 @@ final class PirateTick implements PirateTickInterface
                 $epsSystem !== null
                 && $epsSystem->getEpsPercentage() < 20
             ) {
-                $epsSystem->setEps((int)($epsSystem->getMaxEps()))->update();
+                $epsSystem->setEps((int)($epsSystem->getMaxEps() * 0.2))->update();
             }
         }
     }
