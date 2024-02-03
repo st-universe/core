@@ -5,6 +5,7 @@ namespace Stu\Module\Tick\Pirate;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Tick\Pirate\Behaviour\PirateBehaviourInterface;
 
@@ -54,11 +55,30 @@ final class PirateTick implements PirateTickInterface
         foreach ($pirateFleets as $fleet) {
             $behaviourType = $this->getRandomBehaviourType();
 
-            if ($behaviourType !== PirateBehaviourEnum::DO_NOTHING) {
-                $this->logger->log(sprintf('pirateFleetId %d does %s', $fleet->getId(), $behaviourType->getDescription()));
+            if ($behaviourType === PirateBehaviourEnum::DO_NOTHING) {
+                continue;
+            }
 
-                $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
-                $this->behaviours[$behaviourType->value]->action($fleetWrapper);
+            $this->logger->log(sprintf('pirateFleetId %d does %s', $fleet->getId(), $behaviourType->getDescription()));
+
+            $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
+
+            $this->behaviours[$behaviourType->value]->action($fleetWrapper);
+
+            $this->reloadMinimalEps($fleetWrapper);
+        }
+    }
+
+    private function reloadMinimalEps(FleetWrapperInterface $fleetWrapper): void
+    {
+        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+            $epsSystem = $wrapper->getEpsSystemData();
+
+            if (
+                $epsSystem !== null
+                && $epsSystem->getEpsPercentage() < 20
+            ) {
+                $epsSystem->setEps((int)($epsSystem->getMaxEps()))->update();
             }
         }
     }

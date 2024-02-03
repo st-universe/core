@@ -121,6 +121,11 @@ class EpsSystemData extends AbstractSystemData
         return $this->batteryCooldown < time();
     }
 
+    public function getEpsPercentage(): int
+    {
+        return (int)floor($this->getEps() / $this->getMaxEps() * 100);
+    }
+
     public function getEpsStatusBar(): string
     {
         return $this->getTalStatusBar(
