@@ -2,13 +2,17 @@
 
 namespace Stu\Module\Tick\Pirate\Behaviour;
 
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
@@ -34,6 +38,8 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private ShipSystemManagerInterface $shipSystemManager;
+
     private BeamUtilInterface $beamUtil;
 
     private GameControllerInterface $game;
@@ -49,6 +55,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         PirateFlightInterface $pirateFlight,
         RandomSystemEntryInterface $randomSystemEntry,
         ColonyLibFactoryInterface $colonyLibFactory,
+        ShipSystemManagerInterface $shipSystemManager,
         BeamUtilInterface $beamUtil,
         GameControllerInterface $game,
         StuRandom $stuRandom,
@@ -60,6 +67,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->pirateFlight = $pirateFlight;
         $this->randomSystemEntry = $randomSystemEntry;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipSystemManager = $shipSystemManager;
         $this->beamUtil = $beamUtil;
         $this->game = $game;
         $this->stuRandom = $stuRandom;
@@ -247,6 +255,8 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                 return;
             }
 
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
+
             $ship = $wrapper->get();
             $randomCommodityId = array_rand($colonyStorage->toArray());
 
@@ -265,5 +275,16 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                 $this->game
             );
         }
+
+        $this->game->sendInformation(
+            $colony->getUser()->getId(),
+            $fleetWrapper->get()->getUser()->getId(),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            sprintf(
+                'colony.php?%s=1&id=%d',
+                ShowColony::VIEW_IDENTIFIER,
+                $colony->getId()
+            )
+        );
     }
 }
