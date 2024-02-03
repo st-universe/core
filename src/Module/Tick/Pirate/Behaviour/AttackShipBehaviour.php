@@ -159,6 +159,10 @@ class AttackShipBehaviour implements PirateBehaviourInterface
             $xDistance = $target->getX() - $lastPosition->getX();
             $yDistance = $target->getY() - $lastPosition->getY();
 
+            if ($xDistance === 0 && $yDistance === 0) {
+                break;
+            }
+
             $isInXDirection = $this->moveInXDirection($xDistance, $yDistance);
 
             $flightRoute = $this->flightRouteFactory->getRouteForCoordinateDestination(
@@ -174,7 +178,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
             $this->logger->log(sprintf('newPosition: %s', $newPosition->getSectorString()));
 
             if ($newPosition === $lastPosition) {
-                return;
+                break;
             }
         }
     }
