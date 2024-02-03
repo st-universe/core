@@ -377,6 +377,8 @@ final class GameController implements GameControllerInterface
             $category_id,
             $href
         );
+
+        $this->gameInformations = [];
     }
 
     public function setTemplateVar(string $key, $variable): void
