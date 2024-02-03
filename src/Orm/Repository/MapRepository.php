@@ -621,7 +621,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         $borderCriteria = $isAtBorder ?
             sprintf(
-                'AND m.cx in (1, %d) OR m.cy in (1, %d)',
+                'AND (m.cx in (1, %d) OR m.cy in (1, %d))',
                 $layer->getWidth(),
                 $layer->getHeight()
             ) : '';
@@ -644,7 +644,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 ),
                 $rsm
             )
-            ->setParameter('layerId', MapEnum::DEFAULT_LAYER)
+            ->setParameter('layerId', $layer->getId())
             ->getSingleScalarResult();
 
         $map = $this->find($randomMapId);
