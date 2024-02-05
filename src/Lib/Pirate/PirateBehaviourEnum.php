@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Tick\Pirate;
+namespace Stu\Lib\Pirate;
 
 enum PirateBehaviourEnum: int
 {

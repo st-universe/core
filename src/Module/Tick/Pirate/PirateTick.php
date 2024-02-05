@@ -7,7 +7,9 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Tick\Pirate\Behaviour\PirateBehaviourInterface;
+use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
+use Stu\Lib\Pirate\PirateBehaviourEnum;
+use Stu\Lib\Pirate\PirateCreationInterface;
 
 final class PirateTick implements PirateTickInterface
 {
