@@ -11,6 +11,7 @@ use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -63,13 +64,23 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
     public function send(
         int $senderId,
         int $recipientId,
-        string $text,
+        string|InformationWrapper $information,
         int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
         string $href = null
     ): void {
         if ($senderId === $recipientId) {
             return;
         }
+
+        if (
+            $information instanceof InformationWrapper
+            && $information->isEmpty()
+        ) {
+            return;
+        }
+
+        $text = $information instanceof InformationWrapper ? $information->getInformationsAsString() : $information;
+
         $recipient = $this->userRepository->find($recipientId);
         $sender = $this->userRepository->find($senderId);
 
