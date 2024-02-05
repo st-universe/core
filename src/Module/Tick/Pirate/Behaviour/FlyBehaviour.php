@@ -48,12 +48,12 @@ class FlyBehaviour implements PirateBehaviourInterface
             $this->leaveStarSystem($leadWrapper, $currentLocation);
 
             $mapField = $currentLocation->getSystem()->getMapField();
-            $this->logger->log(sprintf('left star system: %s', $mapField !== null ? $mapField->getSectorString() : $currentLocation->getSectorString()));
+            $this->logger->log(sprintf('    left star system: %s', $mapField !== null ? $mapField->getSectorString() : $currentLocation->getSectorString()));
         }
 
         $currentLocation = $leadShip->getCurrentMapField();
 
-        $this->logger->log(sprintf('currentPosition: %s', $currentLocation->getSectorString()));
+        $this->logger->log(sprintf('    currentPosition: %s', $currentLocation->getSectorString()));
 
         $isInXDirection = $this->stuRandom->rand(0, 1) === 0;
         $maxFields = $leadShip->getSensorRange() * 2;
@@ -68,7 +68,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
         $newLocation = $leadShip->getCurrentMapField();
 
-        $this->logger->log(sprintf('newLocation: %s', $newLocation->getSectorString()));
+        $this->logger->log(sprintf('    newLocation: %s', $newLocation->getSectorString()));
     }
 
     private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemMapInterface $currentLocation): void

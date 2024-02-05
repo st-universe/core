@@ -82,7 +82,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         $targets = $this->colonyRepository->getPirateTargets($leadShip);
         if (empty($targets)) {
-            $this->logger->log('no colony targets in reach');
+            $this->logger->log('    no colony targets in reach');
             return;
         }
 
@@ -106,27 +106,27 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             $leadShip->isOverSystem() !== $colonySystem
             && $leadShip->getSystem() !== $colonySystem
         ) {
-            $this->logger->log('did not reach system');
+            $this->logger->log('    did not reach system');
             return;
         }
 
         // enter system ?
         if ($leadShip->isOverSystem() === $colonySystem) {
-            $this->logger->log('try to enter system');
+            $this->logger->log('    try to enter system');
             $this->enterSystem($leadWrapper, $colonySystem);
         }
 
         // entered system ?
         $systemMap = $leadShip->getStarsystemMap();
         if ($systemMap === null || $systemMap->getSystem() !== $colonySystem) {
-            $this->logger->log('did not enter system');
+            $this->logger->log('    did not enter system');
             return;
         }
 
         // move to colony and rub
         if ($systemMap->getColony() !== $closestColony) {
             if (!$this->navigateToColony($leadWrapper, $closestColony)) {
-                $this->logger->log('did not reach colony');
+                $this->logger->log('    did not reach colony');
                 return;
             }
         }
@@ -147,13 +147,13 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         $ship = $wrapper->get();
 
-        $this->logger->log(sprintf('navigateToTarget: %s', $target->getSectorString()));
+        $this->logger->log(sprintf('    navigateToTarget: %s', $target->getSectorString()));
 
         while ($ship->getCurrentMapField() !== $target) {
 
             $lastPosition = $ship->getCurrentMapField();
 
-            $this->logger->log(sprintf('currentPosition: %s', $lastPosition->getSectorString()));
+            $this->logger->log(sprintf('    currentPosition: %s', $lastPosition->getSectorString()));
 
             $xDistance = $target->getX() - $lastPosition->getX();
             $yDistance = $target->getY() - $lastPosition->getY();
@@ -170,7 +170,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
             $newPosition = $ship->getCurrentMapField();
 
-            $this->logger->log(sprintf('newPosition: %s', $newPosition->getSectorString()));
+            $this->logger->log(sprintf('    newPosition: %s', $newPosition->getSectorString()));
 
             if ($newPosition === $lastPosition) {
                 return;
@@ -184,7 +184,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             return $currentX;
         }
 
-        $this->logger->log(sprintf('getTargetX with isInXDirection: %b, currentX: %d, xDistance: %d', $isInXDirection, $currentX, $xDistance));
+        $this->logger->log(sprintf('    getTargetX with isInXDirection: %b, currentX: %d, xDistance: %d', $isInXDirection, $currentX, $xDistance));
 
         return $currentX + $this->stuRandom->rand(
             $xDistance > 0 ? 1 : $xDistance,
@@ -198,7 +198,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             return $currentY;
         }
 
-        $this->logger->log(sprintf('getTargetY with isInXDirection: %b, currentY: %d, yDistance: %d', $isInXDirection, $currentY, $yDistance));
+        $this->logger->log(sprintf('    getTargetY with isInXDirection: %b, currentY: %d, yDistance: %d', $isInXDirection, $currentY, $yDistance));
 
         return $currentY + $this->stuRandom->rand(
             $yDistance > 0 ? 1 : $yDistance,
@@ -216,7 +216,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             return false;
         }
 
-        $this->logger->log(sprintf('moveInXDirection with xDistance: %d, yDistance: %d', $xDistance, $yDistance));
+        $this->logger->log(sprintf('    moveInXDirection with xDistance: %d, yDistance: %d', $xDistance, $yDistance));
 
         return $this->stuRandom->rand(1, abs($xDistance) + abs($yDistance)) <= abs($xDistance);
     }
@@ -242,7 +242,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
     private function rubColony(FleetWrapperInterface $fleetWrapper, ColonyInterface $colony): void
     {
         if ($this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
-            $this->logger->log('colony has shield on');
+            $this->logger->log('    colony has shield on');
             return;
         }
 
@@ -251,7 +251,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
 
             if ($colonyStorage->isEmpty()) {
-                $this->logger->log('colony storage is empty');
+                $this->logger->log('    colony storage is empty');
                 return;
             }
 

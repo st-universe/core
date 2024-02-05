@@ -53,7 +53,7 @@ class HideBehaviour implements PirateBehaviourInterface
 
         $hideSystems = $this->starSystemRepository->getPirateHides($leadShip);
         if (empty($hideSystems)) {
-            $this->logger->log('no hide system in reach');
+            $this->logger->log('    no hide system in reach');
             return;
         }
 
@@ -73,20 +73,20 @@ class HideBehaviour implements PirateBehaviourInterface
             $leadShip->isOverSystem() !== $closestHideSystem
             && $leadShip->getSystem() !== $closestHideSystem
         ) {
-            $this->logger->log('did not reach system');
+            $this->logger->log('    did not reach system');
             return;
         }
 
         // enter system ?
         if ($leadShip->isOverSystem() === $closestHideSystem) {
-            $this->logger->log('try to enter system');
+            $this->logger->log('    try to enter system');
             $this->enterSystem($leadWrapper, $closestHideSystem);
         }
 
         // entered system ?
         $systemMap = $leadShip->getStarsystemMap();
         if ($systemMap === null || $systemMap->getSystem() !== $closestHideSystem) {
-            $this->logger->log('did not enter system');
+            $this->logger->log('    did not enter system');
         }
     }
 
@@ -103,13 +103,13 @@ class HideBehaviour implements PirateBehaviourInterface
 
         $ship = $wrapper->get();
 
-        $this->logger->log(sprintf('navigateToTarget: %s', $target->getSectorString()));
+        $this->logger->log(sprintf('    navigateToTarget: %s', $target->getSectorString()));
 
         while ($ship->getCurrentMapField() !== $target) {
 
             $lastPosition = $ship->getCurrentMapField();
 
-            $this->logger->log(sprintf('currentPosition: %s', $lastPosition->getSectorString()));
+            $this->logger->log(sprintf('    currentPosition: %s', $lastPosition->getSectorString()));
 
             $xDistance = $target->getX() - $lastPosition->getX();
             $yDistance = $target->getY() - $lastPosition->getY();
@@ -126,7 +126,7 @@ class HideBehaviour implements PirateBehaviourInterface
 
             $newPosition = $ship->getCurrentMapField();
 
-            $this->logger->log(sprintf('newPosition: %s', $newPosition->getSectorString()));
+            $this->logger->log(sprintf('    newPosition: %s', $newPosition->getSectorString()));
 
             if ($newPosition === $lastPosition) {
                 return;
@@ -140,7 +140,7 @@ class HideBehaviour implements PirateBehaviourInterface
             return $currentX;
         }
 
-        $this->logger->log(sprintf('getTargetX with isInXDirection: %b, currentX: %d, xDistance: %d', $isInXDirection, $currentX, $xDistance));
+        $this->logger->log(sprintf('    getTargetX with isInXDirection: %b, currentX: %d, xDistance: %d', $isInXDirection, $currentX, $xDistance));
 
         return $currentX + $this->stuRandom->rand(
             $xDistance > 0 ? 1 : $xDistance,
@@ -154,7 +154,7 @@ class HideBehaviour implements PirateBehaviourInterface
             return $currentY;
         }
 
-        $this->logger->log(sprintf('getTargetY with isInXDirection: %b, currentY: %d, yDistance: %d', $isInXDirection, $currentY, $yDistance));
+        $this->logger->log(sprintf('    getTargetY with isInXDirection: %b, currentY: %d, yDistance: %d', $isInXDirection, $currentY, $yDistance));
 
         return $currentY + $this->stuRandom->rand(
             $yDistance > 0 ? 1 : $yDistance,
@@ -172,7 +172,7 @@ class HideBehaviour implements PirateBehaviourInterface
             return false;
         }
 
-        $this->logger->log(sprintf('moveInXDirection with xDistance: %d, yDistance: %d', $xDistance, $yDistance));
+        $this->logger->log(sprintf('    moveInXDirection with xDistance: %d, yDistance: %d', $xDistance, $yDistance));
 
         return $this->stuRandom->rand(1, abs($xDistance) + abs($yDistance)) <= abs($xDistance);
     }
