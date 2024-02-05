@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -32,7 +33,7 @@ class BeamUtilTest extends StuTestCase
 
     private BeamUtilInterface $subject;
 
-    private GameControllerInterface $game;
+    private InformationWrapper $informations;
 
     protected function setUp(): void
     {
@@ -40,7 +41,7 @@ class BeamUtilTest extends StuTestCase
         $this->colonyStorageManager = $this->mock(ColonyStorageManagerInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
 
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->informations = $this->mock(InformationWrapper::class);
 
         $this->subject = new BeamUtil(
             $this->shipStorageManager,
@@ -64,7 +65,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $colony,
-            $this->game
+            $this->informations
         );
     }
 
@@ -97,7 +98,7 @@ class BeamUtilTest extends StuTestCase
             ->once()
             ->andReturn('COMMODITY');
 
-        $this->game->shouldReceive('addInformationf')
+        $this->informations->shouldReceive('addInformationf')
             ->with('%s ist nicht beambar', 'COMMODITY')
             ->once();
 
@@ -107,7 +108,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $colony,
-            $this->game
+            $this->informations
         );
     }
 
@@ -145,7 +146,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $colony,
-            $this->game
+            $this->informations
         );
     }
 
@@ -183,7 +184,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $colony,
-            $this->game
+            $this->informations
         );
     }
 
@@ -221,7 +222,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $colony,
-            $this->game
+            $this->informations
         );
     }
 
@@ -265,7 +266,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $colony,
-            $this->game
+            $this->informations
         );
     }
 
@@ -338,7 +339,7 @@ class BeamUtilTest extends StuTestCase
             ->with($colony)
             ->once();
 
-        $this->game->shouldReceive('addInformationf')
+        $this->informations->shouldReceive('addInformationf')
             ->with('%d %s (Energieverbrauch: %d)', 55, 'COMMODITY', 6)
             ->once();
 
@@ -348,7 +349,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $ship,
-            $this->game
+            $this->informations
         );
     }
 
@@ -420,7 +421,7 @@ class BeamUtilTest extends StuTestCase
             ->with($colony)
             ->once();
 
-        $this->game->shouldReceive('addInformationf')
+        $this->informations->shouldReceive('addInformationf')
             ->with('%d %s (Energieverbrauch: %d)', 99, 'COMMODITY', 10)
             ->once();
 
@@ -430,7 +431,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $ship,
-            $this->game
+            $this->informations
         );
     }
 
@@ -503,7 +504,7 @@ class BeamUtilTest extends StuTestCase
             ->with($colony)
             ->once();
 
-        $this->game->shouldReceive('addInformationf')
+        $this->informations->shouldReceive('addInformationf')
             ->with('%d %s (Energieverbrauch: %d)', 50, 'COMMODITY', 5)
             ->once();
 
@@ -513,7 +514,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $ship,
-            $this->game
+            $this->informations
         );
     }
 
@@ -596,7 +597,7 @@ class BeamUtilTest extends StuTestCase
             ->with($ship, $commodity, 50)
             ->once();
 
-        $this->game->shouldReceive('addInformationf')
+        $this->informations->shouldReceive('addInformationf')
             ->with('%d %s (Energieverbrauch: %d)', 50, 'COMMODITY', 5)
             ->once();
 
@@ -606,7 +607,7 @@ class BeamUtilTest extends StuTestCase
             $wrapper,
             $ship,
             $colony,
-            $this->game
+            $this->informations
         );
     }
 
@@ -679,7 +680,7 @@ class BeamUtilTest extends StuTestCase
             ->with($colony)
             ->once();
 
-        $this->game->shouldReceive('addInformationf')
+        $this->informations->shouldReceive('addInformationf')
             ->with('%d %s (Energieverbrauch: %d)', 10, 'COMMODITY', 1)
             ->once();
 
@@ -689,7 +690,7 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $colony,
             $ship,
-            $this->game
+            $this->informations
         );
     }
 }

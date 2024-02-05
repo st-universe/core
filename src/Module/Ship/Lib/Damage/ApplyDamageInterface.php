@@ -3,7 +3,7 @@
 namespace Stu\Module\Ship\Lib\Damage;
 
 use Stu\Lib\DamageWrapper;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipSystemInterface;

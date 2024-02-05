@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface AlertLevelBasedReactionInterface

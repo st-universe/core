@@ -7,7 +7,7 @@ namespace Stu\Lib\Transfer;
 use RuntimeException;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -38,7 +38,7 @@ final class BeamUtil implements BeamUtilInterface
         ShipWrapperInterface|ColonyInterface $subject,
         ShipInterface|ColonyInterface $source,
         ShipInterface|ColonyInterface $target,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): void {
 
         $sourceStorage =  $source->getStorage()[$commodityId] ?? null;
@@ -48,7 +48,7 @@ final class BeamUtil implements BeamUtilInterface
 
         $commodity = $sourceStorage->getCommodity();
         if (!$commodity->isBeamable($source->getUser(), $target->getUser())) {
-            $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
+            $informations->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
             return;
         }
 
@@ -88,7 +88,7 @@ final class BeamUtil implements BeamUtilInterface
 
         $epsUsage = (int)ceil($amount / $transferAmount);
 
-        $game->addInformationf(
+        $informations->addInformationf(
             _('%d %s (Energieverbrauch: %d)'),
             $amount,
             $commodity->getName(),

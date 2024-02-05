@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Message;
 
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 
 interface MessageCollectionInterface
 {

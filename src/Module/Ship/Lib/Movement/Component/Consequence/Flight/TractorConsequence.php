@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;

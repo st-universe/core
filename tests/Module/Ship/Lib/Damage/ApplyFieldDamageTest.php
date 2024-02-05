@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Damage;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\DamageWrapper;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;

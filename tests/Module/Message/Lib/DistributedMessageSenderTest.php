@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\StuTestCase;
 

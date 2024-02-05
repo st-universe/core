@@ -1019,11 +1019,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationf\\(\\) has parameter \\$args with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationfWithLink\\(\\) has parameter \\$args with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -1059,21 +1054,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:sendInformation\\(\\) has parameter \\$category_id with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:sendInformation\\(\\) has parameter \\$recipient_id with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:sendInformation\\(\\) has parameter \\$sender_id with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -1090,11 +1070,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationMergeDown\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationf\\(\\) has parameter \\$args with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 
@@ -1140,26 +1115,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getViewContext\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has parameter \\$category_id with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has parameter \\$recipient_id with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:sendInformation\\(\\) has parameter \\$sender_id with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 

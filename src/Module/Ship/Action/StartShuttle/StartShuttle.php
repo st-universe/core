@@ -113,7 +113,7 @@ final class StartShuttle implements ActionControllerInterface
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
-                $rumpCommodity
+                $rumpCommodity->getName()
             );
             return;
         }

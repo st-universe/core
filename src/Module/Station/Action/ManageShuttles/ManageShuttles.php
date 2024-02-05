@@ -6,7 +6,7 @@ namespace Stu\Module\Station\Action\ManageShuttles;
 
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

@@ -13,6 +13,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\UplinkShipSystem;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -149,34 +150,34 @@ class TroopTransferStrategy implements TransferStrategyInterface
         bool $isUnload,
         ShipWrapperInterface $wrapper,
         ShipInterface|ColonyInterface $target,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): void {
 
-        $user = $game->getUser();
         $ship = $wrapper->get();
+        $user = $ship->getUser();
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
             if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-                $game->addInformation(_("Die Truppenquartiere sind zerstört"));
+                $informations->addInformation(_("Die Truppenquartiere sind zerstört"));
                 return;
             }
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() == 0) {
-            $game->addInformation(_("Keine Energie vorhanden"));
+            $informations->addInformation(_("Keine Energie vorhanden"));
             return;
         }
         if ($ship->getCloakState()) {
-            $game->addInformation(_("Die Tarnung ist aktiviert"));
+            $informations->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($ship->getWarpState()) {
-            $game->addInformation(_("Der Warpantrieb ist aktiviert"));
+            $informations->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
         if ($ship->getShieldState()) {
-            $game->addInformation(_("Die Schilde sind aktiviert"));
+            $informations->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
 
@@ -189,7 +190,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
                 if ($isUnload) {
                     $amount = $this->transferToColony($requestedTransferCount, $ship, $target);
                 } else {
-                    $amount = $this->transferFromColony($requestedTransferCount, $wrapper, $target, $game);
+                    $amount = $this->transferFromColony($requestedTransferCount, $wrapper, $target, $informations);
                 }
             } else {
                 $isUplinkSituation = false;
@@ -206,29 +207,29 @@ class TroopTransferStrategy implements TransferStrategyInterface
                 if ($isUnload) {
                     if ($isUplinkSituation) {
                         if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $user)) {
-                            $game->addInformation(_("Benötigte Andockerlaubnis wurde verweigert"));
+                            $informations->addInformation(_("Benötigte Andockerlaubnis wurde verweigert"));
                             return;
                         }
                         if (!$target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_UPLINK)) {
-                            $game->addInformation(_("Das Ziel verfügt über keinen intakten Uplink"));
+                            $informations->addInformation(_("Das Ziel verfügt über keinen intakten Uplink"));
                             return;
                         }
 
                         if ($this->transferUtility->foreignerCount($target) >= UplinkShipSystem::MAX_FOREIGNERS) {
-                            $game->addInformation(_("Maximale Anzahl an fremden Crewman ist bereits erreicht"));
+                            $informations->addInformation(_("Maximale Anzahl an fremden Crewman ist bereits erreicht"));
                         }
                     }
 
-                    $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownCrewOnTarget, $game);
+                    $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownCrewOnTarget, $informations);
                 } else {
-                    $amount = $this->transferFromShip($requestedTransferCount, $wrapper, $target, $isUplinkSituation, $ownCrewOnTarget, $game);
+                    $amount = $this->transferFromShip($requestedTransferCount, $wrapper, $target, $isUplinkSituation, $ownCrewOnTarget, $informations);
                 }
             }
         } catch (ShipSystemException $e) {
             return;
         }
 
-        $game->addInformation(
+        $informations->addInformation(
             sprintf(
                 _('Die %s hat %d Crewman %s der %s transferiert'),
                 $ship->getName(),
@@ -243,7 +244,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             && $ship->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $ship->getBuildplan() !== null && $ship->getCrewCount() <= $ship->getBuildplan()->getCrew()
         ) {
-            $this->helper->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
+            $this->helper->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations);
         }
     }
 
@@ -270,8 +271,12 @@ class TroopTransferStrategy implements TransferStrategyInterface
         return $amount;
     }
 
-    private function transferFromColony(int $requestedTransferCount, ShipWrapperInterface $wrapper, ColonyInterface $colony, GameControllerInterface $game): int
-    {
+    private function transferFromColony(
+        int $requestedTransferCount,
+        ShipWrapperInterface $wrapper,
+        ColonyInterface $colony,
+        InformationWrapper $informations
+    ): int {
         $ship = $wrapper->get();
 
         $amount = min(
@@ -284,7 +289,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             if (
                 $amount > 0
                 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
+                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)
             ) {
                 throw new SystemNotActivatableException();
             }
@@ -308,10 +313,10 @@ class TroopTransferStrategy implements TransferStrategyInterface
         ShipInterface $target,
         bool $isUplinkSituation,
         int $ownCrewOnTarget,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): int {
         if (!$target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
-            $game->addInformation(sprintf(_('Die %s hat keine Lebenserhaltungssysteme'), $target->getName()));
+            $informations->addInformation(sprintf(_('Die %s hat keine Lebenserhaltungssysteme'), $target->getName()));
 
             throw new SystemNotFoundException();
         }
@@ -359,7 +364,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         ShipInterface $target,
         bool $isUplinkSituation,
         int $ownCrewOnTarget,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): int {
         $ship = $wrapper->get();
 
@@ -373,7 +378,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             if (
                 $amount > 0
                 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)
+                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)
             ) {
                 throw new SystemNotActivatableException();
             }
@@ -416,7 +421,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $target->getBuildplan() !== null && $target->getCrewCount() <= $target->getBuildplan()->getCrew()
         ) {
-            $this->helper->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
+            $this->helper->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations);
         }
 
         return $amount;

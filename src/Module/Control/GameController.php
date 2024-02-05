@@ -22,7 +22,8 @@ use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\TickGameStateException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Lib\UserLockedException;
@@ -36,8 +37,6 @@ use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Twig\TwigPageInterface;
@@ -78,8 +77,6 @@ final class GameController implements GameControllerInterface
     private GameConfigRepositoryInterface $gameConfigRepository;
 
     private EntityManagerInterface $entityManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
 
     private UserRepositoryInterface $userRepository;
 
@@ -148,7 +145,6 @@ final class GameController implements GameControllerInterface
         GameTurnRepositoryInterface $gameTurnRepository,
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
-        PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
@@ -170,7 +166,6 @@ final class GameController implements GameControllerInterface
         $this->gameTurnRepository = $gameTurnRepository;
         $this->gameConfigRepository = $gameConfigRepository;
         $this->entityManager = $entityManager;
-        $this->privateMessageSender = $privateMessageSender;
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
@@ -280,37 +275,37 @@ final class GameController implements GameControllerInterface
         ), $link);
     }
 
-    public function addInformationf(string $text, ...$args): void
+    public function addInformationf(string $text, ...$args): InformationInterface
     {
         $this->addInformation(vsprintf(
             $text,
             $args
         ));
+
+        return $this;
     }
 
-    public function addInformationWithLink(string $msg, string $link, bool $override = false): void
+    public function addInformationWithLink(string $information, string $link): void
     {
-        if ($override) {
-            $this->gameInformations = [];
-        }
         $notification = new Notification();
-        $notification->setText($msg);
+        $notification->setText($information);
         $notification->setLink($link);
 
         $this->gameInformations[] = $notification;
     }
 
-    public function addInformation(string $msg, bool $override = false): void
+    public function addInformation(?string $information): InformationInterface
     {
-        $this->loggerUtil->log(sprintf('addInformation: %s', $msg));
+        if ($information !== null) {
+            $this->loggerUtil->log(sprintf('addInformation: %s', $information));
 
-        if ($override) {
-            $this->gameInformations = [];
+            $notification = new Notification();
+            $notification->setText($information);
+
+            $this->gameInformations[] = $notification;
         }
-        $notification = new Notification();
-        $notification->setText($msg);
 
-        $this->gameInformations[] = $notification;
+        return $this;
     }
 
     public function addInformationMerge(array $info): void
@@ -353,32 +348,6 @@ final class GameController implements GameControllerInterface
     public function getInformation(): array
     {
         return $this->gameInformations;
-    }
-
-    public function sendInformation(
-        $recipient_id,
-        $sender_id = UserEnum::USER_NOONE,
-        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
-        ?string $href = null
-    ): void {
-        if ($sender_id === $recipient_id) {
-            return;
-        }
-
-        $textOnlyArray = [];
-        foreach ($this->getInformation() as $value) {
-            $textOnlyArray[] = $value->getText();
-        }
-
-        $this->privateMessageSender->send(
-            (int) $sender_id,
-            (int) $recipient_id,
-            implode('<br />', $textOnlyArray),
-            $category_id,
-            $href
-        );
-
-        $this->gameInformations = [];
     }
 
     public function setTemplateVar(string $key, $variable): void

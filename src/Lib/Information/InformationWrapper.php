@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib;
+namespace Stu\Lib\Information;
 
-class InformationWrapper
+class InformationWrapper implements InformationInterface
 {
     /** @var array<string> */
     private array $informations;
@@ -17,11 +17,21 @@ class InformationWrapper
         $this->informations = $informations;
     }
 
-    public function addInformation(?string $information): InformationWrapper
+    public function addInformation(?string $information): InformationInterface
     {
         if ($information !== null) {
             $this->informations[] = $information;
         }
+
+        return $this;
+    }
+
+    public function addInformationf(string $information, ...$args): InformationInterface
+    {
+        $this->addInformation(vsprintf(
+            $information,
+            $args
+        ));
 
         return $this;
     }

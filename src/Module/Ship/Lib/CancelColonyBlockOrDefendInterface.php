@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Orm\Entity\ShipInterface;
 
 interface CancelColonyBlockOrDefendInterface

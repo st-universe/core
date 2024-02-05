@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Mockery\MockInterface;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
