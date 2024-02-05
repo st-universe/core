@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;

@@ -7,12 +7,10 @@ namespace Stu\Lib\Transfer\Strategy;
 use request;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -25,19 +23,15 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     private LoggerUtilInterface $logger;
 
     public function __construct(
         ShipTorpedoManagerInterface $shipTorpedoManager,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->privateMessageSender = $privateMessageSender;
 
         $this->logger = $loggerUtilFactory->getLoggerUtil();
         //$this->logger->init('TORP', LoggerEnum::LEVEL_ERROR);
@@ -73,7 +67,7 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         bool $isUnload,
         ShipWrapperInterface $wrapper,
         ShipInterface|ColonyInterface $target,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): void {
 
         if ($target instanceof ColonyInterface) {
@@ -85,14 +79,14 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         $ship = $wrapper->get();
 
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
-            $game->addInformation(_("Das Torpedolager ist zerstört"));
+            $informations->addInformation(_("Das Torpedolager ist zerstört"));
             $this->logger->log('B');
             return;
         }
         $this->logger->log('C');
 
         if ($ship->getTorpedoCount() > 0 && $target->getTorpedoCount() > 0 && $ship->getTorpedo() !== $target->getTorpedo()) {
-            $game->addInformation(_("Die Schiffe haben unterschiedliche Torpedos geladen"));
+            $informations->addInformation(_("Die Schiffe haben unterschiedliche Torpedos geladen"));
             $this->logger->log('D');
             return;
         }
@@ -121,7 +115,7 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
                     !$target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
                     && $target->getRump()->getTorpedoLevel() !== $torpedo->getLevel()
                 ) {
-                    $game->addInformation(sprintf(_('Die %s kann den Torpedotyp nicht ausrüsten'), $target->getName()));
+                    $informations->addInformation(sprintf(_('Die %s kann den Torpedotyp nicht ausrüsten'), $target->getName()));
                     return;
                 }
 
@@ -141,19 +135,7 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
             }
         }
 
-        $game->addInformation(
-            sprintf(
-                _('Die %s hat %d Torpedos %s der %s transferiert'),
-                $ship->getName(),
-                $amount,
-                $isUnload ? 'zu' : 'von',
-                $target->getName()
-            )
-        );
-
-        $this->privateMessageSender->send(
-            $game->getUser()->getId(),
-            $target->getUser()->getId(),
+        $informations->addInformation(
             sprintf(
                 'Die %s hat in Sektor %s %d Torpedos %s %s transferiert',
                 $ship->getName(),
@@ -162,7 +144,6 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
                 $isUnload ? 'zur' : 'von der',
                 $target->getName()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
     }
 }

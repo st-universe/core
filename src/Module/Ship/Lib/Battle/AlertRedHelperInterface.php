@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 

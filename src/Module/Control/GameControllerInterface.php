@@ -4,14 +4,13 @@ namespace Stu\Module\Control;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Lib\InformationWrapper;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
 
-interface GameControllerInterface
+interface GameControllerInterface extends InformationInterface
 {
     public function setView(ModuleViewEnum|string $view, array $viewContext = []): void;
 
@@ -33,11 +32,7 @@ interface GameControllerInterface
 
     public function addInformationfWithLink(string $text, string $link, ...$args): void;
 
-    public function addInformationf(string $text, ...$args): void;
-
-    public function addInformationWithLink(string $msg, string $link, bool $override = false): void;
-
-    public function addInformation(string $msg, bool $override = false): void;
+    public function addInformationWithLink(string $msg, string $link): void;
 
     public function addInformationMerge(array $info): void;
 
@@ -46,13 +41,6 @@ interface GameControllerInterface
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
 
     public function getInformation(): array;
-
-    public function sendInformation(
-        $recipient_id,
-        $sender_id = UserEnum::USER_NOONE,
-        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
-        ?string $href = null
-    );
 
     public function setTemplateVar(string $key, $variable);
 

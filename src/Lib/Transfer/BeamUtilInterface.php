@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -17,7 +17,7 @@ interface BeamUtilInterface
         ShipWrapperInterface|ColonyInterface $subject,
         ShipInterface|ColonyInterface $source,
         ShipInterface|ColonyInterface $target,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): void;
 
     public function isDockTransfer(

@@ -3,7 +3,7 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\TimeConstants;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;

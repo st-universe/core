@@ -6,12 +6,14 @@ namespace Stu\Module\Colony\Action\BeamFrom;
 
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -28,16 +30,20 @@ final class BeamFrom implements ActionControllerInterface
 
     private InteractionCheckerInterface $interactionChecker;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BeamUtilInterface $beamUtil,
         ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker
+        InteractionCheckerInterface $interactionChecker,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->beamUtil = $beamUtil;
         $this->shipLoader = $shipLoader;
         $this->interactionChecker = $interactionChecker;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -119,6 +125,9 @@ final class BeamFrom implements ActionControllerInterface
                 $ship->getName()
             );
         }
+
+        $informations = new InformationWrapper();
+
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
 
@@ -132,16 +141,19 @@ final class BeamFrom implements ActionControllerInterface
                 $colony,
                 $ship,
                 $colony,
-                $game
+                $informations
             );
         }
 
-        $game->sendInformation(
-            $ship->getUser()->getId(),
+        $this->privateMessageSender->send(
             $userId,
+            $ship->getUser()->getId(),
+            $informations->getInformationsAsString(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId())
         );
+
+        $game->addInformationWrapper($informations);
     }
 
     public function performSessionCheck(): bool

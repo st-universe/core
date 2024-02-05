@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShuttles;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;

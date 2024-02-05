@@ -8,7 +8,7 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -69,7 +69,7 @@ final class FightLib implements FightLibInterface
 
         $informations->addInformationWrapper($this->alertLevelBasedReaction->react($wrapper));
 
-        if ($informations->getInformations() !== []) {
+        if (!$informations->isEmpty()) {
             $informations->addInformationArray([sprintf(_('Aktionen der %s'), $ship->getName())], true);
         }
 

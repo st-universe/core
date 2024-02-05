@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Strategy;
 
 use request;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -53,17 +51,17 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         bool $isUnload,
         ShipWrapperInterface $wrapper,
         ShipInterface|ColonyInterface $target,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): void {
 
         $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
         if (count($commodities) == 0 || count($gcount) == 0) {
-            $game->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
+            $informations->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
             return;
         }
 
-        $user = $game->getUser();
+        $user = $wrapper->get()->getUser();
 
         if (
             $target instanceof ColonyInterface
@@ -73,7 +71,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         ) {
             $frequency = request::postInt('frequency');
             if ($frequency !== $target->getShieldFrequency()) {
-                $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
+                $informations->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
                 return;
             }
         }
@@ -86,11 +84,11 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                     $isUnload,
                     $wrapper,
                     $target,
-                    $game
+                    $informations
                 );
             }
         } else {
-            $this->transferPerShip($isUnload, $wrapper, $target, $game);
+            $this->transferPerShip($isUnload, $wrapper, $target, $informations);
         }
     }
 
@@ -98,34 +96,33 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         bool $isUnload,
         ShipWrapperInterface $wrapper,
         ShipInterface|ColonyInterface $target,
-        GameControllerInterface $game
+        InformationWrapper $informations
     ): void {
         $ship = $wrapper->get();
         $epsSystem = $wrapper->getEpsSystemData();
 
-
         //sanity checks
         $isDockTransfer = $this->beamUtil->isDockTransfer($ship, $target);
         if (!$isDockTransfer && ($epsSystem === null || $epsSystem->getEps() === 0)) {
-            $game->addInformation(_("Keine Energie vorhanden"));
+            $informations->addInformation(_("Keine Energie vorhanden"));
             return;
         }
         if ($ship->getCloakState()) {
-            $game->addInformation(_("Die Tarnung ist aktiviert"));
+            $informations->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($ship->getWarpState()) {
-            $game->addInformation(_("Der Warpantrieb ist aktiviert"));
+            $informations->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
         if ($target instanceof ShipInterface && $target->getWarpState()) {
-            $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
+            $informations->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
         }
 
         $transferTarget = $isUnload ? $target : $ship;
         if ($transferTarget->getMaxStorage() <= $transferTarget->getStorageSum()) {
-            $game->addInformation(sprintf(_('%s: Der Lagerraum ist voll'), $transferTarget->getName()));
+            $informations->addInformation(sprintf(_('%s: Der Lagerraum ist voll'), $transferTarget->getName()));
             return;
         }
 
@@ -135,14 +132,14 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         $storage = $isUnload ? $ship->getStorage() : $target->getStorage();
 
         if ($storage->isEmpty()) {
-            $game->addInformation(_("Keine Waren zum Beamen vorhanden"));
+            $informations->addInformation(_("Keine Waren zum Beamen vorhanden"));
             return;
         }
         if (count($commodities) == 0 || count($gcount) == 0) {
-            $game->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
+            $informations->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
             return;
         }
-        $game->addInformation(sprintf(
+        $informations->addInformation(sprintf(
             _('Die %s hat folgende Waren %s %s %s transferiert'),
             $ship->getName(),
             $isUnload ? 'zur' : 'von der',
@@ -162,20 +159,8 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 $wrapper,
                 $isUnload ? $ship : $target,
                 $transferTarget,
-                $game
+                $informations
             );
         }
-
-        $game->sendInformation(
-            $target->getUser()->getId(),
-            $ship->getUser()->getId(),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            sprintf(
-                '%s.php?%s=1&id=%d',
-                $target instanceof ShipInterface ? 'ship' : 'colony',
-                $target instanceof ShipInterface ? ShowShip::VIEW_IDENTIFIER : ShowColony::VIEW_IDENTIFIER,
-                $target->getId()
-            )
-        );
     }
 }

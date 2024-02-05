@@ -8,15 +8,18 @@ use request;
 use RuntimeException;
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferTargetLoaderInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -32,6 +35,8 @@ final class Transfer implements ActionControllerInterface
 
     private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     private LoggerUtilInterface $logger;
 
     /** @var array<TransferStrategyInterface> */
@@ -43,12 +48,14 @@ final class Transfer implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         TransferTargetLoaderInterface $transferTargetLoader,
         PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         array $transferStrategies
     ) {
         $this->shipLoader = $shipLoader;
         $this->transferTargetLoader = $transferTargetLoader;
         $this->playerRelationDeterminator = $playerRelationDeterminator;
+        $this->privateMessageSender = $privateMessageSender;
         $this->transferStrategies = $transferStrategies;
 
         $this->logger = $loggerUtilFactory->getLoggerUtil();
@@ -134,7 +141,25 @@ final class Transfer implements ActionControllerInterface
         $this->logger->log('T10');
 
         $strategy = $this->getTransferStrategy($transferType);
-        $strategy->transfer($isUnload, $wrapper, $target, $game);
+
+        $informations = new InformationWrapper();
+
+        $strategy->transfer($isUnload, $wrapper, $target, $informations);
+
+        $this->privateMessageSender->send(
+            $ship->getUser()->getId(),
+            $target->getUser()->getId(),
+            $informations->getInformationsAsString(),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            sprintf(
+                '%s.php?%s=1&id=%d',
+                $target instanceof ShipInterface ? 'ship' : 'colony',
+                $target instanceof ShipInterface ? ShowShip::VIEW_IDENTIFIER : ShowColony::VIEW_IDENTIFIER,
+                $target->getId()
+            )
+        );
+
+        $game->addInformationWrapper($informations);
     }
 
     private function sanityCheck(TransferInformation $transferInformation): void

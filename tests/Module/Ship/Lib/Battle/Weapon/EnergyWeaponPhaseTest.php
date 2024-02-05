@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Lib\InformationWrapper;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;

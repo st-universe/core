@@ -4,6 +4,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 
@@ -12,7 +13,7 @@ interface ActivatorDeactivatorHelperInterface
     public function activate(
         ShipWrapperInterface|int $shipId,
         ShipSystemTypeEnum $type,
-        ConditionCheckResult|GameControllerInterface $logger,
+        ConditionCheckResult|InformationInterface $logger,
         bool $allowUplink = false,
         bool $isDryRun = false
     ): bool;
@@ -26,7 +27,7 @@ interface ActivatorDeactivatorHelperInterface
     public function deactivate(
         ShipWrapperInterface|int $shipId,
         shipSystemTypeEnum $type,
-        GameControllerInterface $game,
+        InformationInterface $informations,
         bool $allowUplink = false
     ): bool;
 
