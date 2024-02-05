@@ -4,15 +4,16 @@ namespace Stu\Module\Tick\Pirate\Behaviour;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
@@ -22,6 +23,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 class RubColonyBehaviour implements PirateBehaviourInterface
@@ -42,7 +44,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
     private BeamUtilInterface $beamUtil;
 
-    private GameControllerInterface $game;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     private StuRandom $stuRandom;
 
@@ -57,7 +59,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         ShipSystemManagerInterface $shipSystemManager,
         BeamUtilInterface $beamUtil,
-        GameControllerInterface $game,
+        PrivateMessageSenderInterface $privateMessageSender,
         StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -69,7 +71,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipSystemManager = $shipSystemManager;
         $this->beamUtil = $beamUtil;
-        $this->game = $game;
+        $this->privateMessageSender = $privateMessageSender;
         $this->stuRandom = $stuRandom;
 
         $this->logger = $loggerUtilFactory->getLoggerUtil(true);
@@ -246,21 +248,28 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             return;
         }
 
-        $colonyStorage = $colony->getStorage();
+        $pirateUser = $fleetWrapper->get()->getUser();
+
+        $filteredColonyStorage = array_filter(
+            $colony->getStorage()->toArray(),
+            fn (StorageInterface $storage) => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
+        );
+
+        $informations = new InformationWrapper();
 
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
 
-            if ($colonyStorage->isEmpty()) {
-                $this->logger->log('    colony storage is empty');
+            if (empty($filteredColonyStorage)) {
+                $this->logger->log('    no beamable storage on colony');
                 return;
             }
 
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
 
             $ship = $wrapper->get();
-            $randomCommodityId = array_rand($colonyStorage->toArray());
+            $randomCommodityId = array_rand($filteredColonyStorage);
 
-            $this->game->addInformation(sprintf(
+            $informations->addInformation(sprintf(
                 _('Die %s hat folgende Waren von der Kolonie %s gestohlen'),
                 $ship->getName(),
                 $colony->getName()
@@ -272,13 +281,14 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                 $wrapper,
                 $colony,
                 $wrapper->get(),
-                $this->game
+                $informations
             );
         }
 
-        $this->game->sendInformation(
+        $this->privateMessageSender->send(
+            $pirateUser->getId(),
             $colony->getUser()->getId(),
-            $fleetWrapper->get()->getUser()->getId(),
+            $informations->getInformationsAsString(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             sprintf(
                 'colony.php?%s=1&id=%d',
