@@ -8,6 +8,8 @@ use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -16,7 +18,6 @@ use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
 
 //TODO unit tests and request class
 final class AttackShip implements ActionControllerInterface
@@ -33,18 +34,22 @@ final class AttackShip implements ActionControllerInterface
 
     private ShipAttackCoreInterface $shipAttackCore;
 
+    private PirateReactionInterface $pirateReaction;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         InteractionCheckerInterface $interactionChecker,
         NbsUtilityInterface $nbsUtility,
         FightLibInterface $fightLib,
-        ShipAttackCoreInterface $shipAttackCore
+        ShipAttackCoreInterface $shipAttackCore,
+        PirateReactionInterface $pirateReaction
     ) {
         $this->shipLoader = $shipLoader;
         $this->interactionChecker = $interactionChecker;
         $this->nbsUtility = $nbsUtility;
         $this->fightLib = $fightLib;
         $this->shipAttackCore = $shipAttackCore;
+        $this->pirateReaction = $pirateReaction;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -112,11 +117,15 @@ final class AttackShip implements ActionControllerInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
-        $target = $target->getFleet() ?? $target;
+        $targetFleet = $target->getFleet();
 
         $this->shipAttackCore->attack($wrapper, $targetWrapper, $isFleetFight, $informations);
 
-        if ($target->getUser()->getId() === UserEnum::USER_NPC_KAZON) {
+        if (
+            $targetFleet !== null
+            && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
+        ) {
+            $this->pirateReaction->react($targetFleet, PirateReactionTriggerEnum::ON_ATTACK);
         }
 
         if ($ship->isDestroyed()) {

@@ -31,6 +31,8 @@ use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
+use Stu\Lib\Pirate\PirateReaction;
+use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\ShipManagement\HandleManagers;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Manager\ManageBattery;
@@ -50,6 +52,7 @@ use Stu\Lib\Transfer\TransferTypeEnum;
 
 use function DI\autowire;
 use function DI\create;
+use function DI\get;
 
 return [
     UuidGeneratorInterface::class => autowire(UuidGenerator::class),
@@ -91,5 +94,9 @@ return [
         PirateBehaviourEnum::HIDE->value => autowire(HideBehaviour::class)
     ],
     PirateCreationInterface::class => autowire(PirateCreation::class),
+    PirateReactionInterface::class => autowire(PirateReaction::class)->constructorParameter(
+        'behaviours',
+        get('pirateBehaviours')
+    ),
     PirateFlightInterface::class => autowire(PirateFlight::class)
 ];
