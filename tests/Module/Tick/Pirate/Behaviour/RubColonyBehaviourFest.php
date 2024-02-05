@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Tick\Pirate\Behaviour;
+namespace Stu\Lib\Pirate\Behaviour;
 
 use Mockery\MockInterface;
 use Stu\Lib\Map\DistanceCalculationInterface;

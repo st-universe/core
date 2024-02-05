@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Tick\Pirate\Component;
+namespace Stu\Lib\Pirate\Component;
 
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;

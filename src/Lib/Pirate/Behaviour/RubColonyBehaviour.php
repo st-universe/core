@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Tick\Pirate\Behaviour;
+namespace Stu\Lib\Pirate\Behaviour;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -18,7 +18,7 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Tick\Pirate\Component\PirateFlightInterface;
+use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;

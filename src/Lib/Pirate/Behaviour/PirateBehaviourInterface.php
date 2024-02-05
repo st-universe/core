@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Tick\Pirate\Behaviour;
+namespace Stu\Lib\Pirate\Behaviour;
 
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 

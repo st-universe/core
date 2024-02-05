@@ -10,6 +10,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
@@ -80,7 +81,7 @@ final class AttackShip implements ActionControllerInterface
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
-        if ($this->isTargetDestroyed($target)) {
+        if ($target->isDestroyed()) {
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             $game->addInformation(_('Das Ziel ist bereits zerstört'));
             return;
@@ -111,7 +112,12 @@ final class AttackShip implements ActionControllerInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
+        $target = $target->getFleet() ?? $target;
+
         $this->shipAttackCore->attack($wrapper, $targetWrapper, $isFleetFight, $informations);
+
+        if ($target->getUser()->getId() === UserEnum::USER_NPC_KAZON) {
+        }
 
         if ($ship->isDestroyed()) {
             $game->addInformationWrapper($informations);
@@ -125,11 +131,6 @@ final class AttackShip implements ActionControllerInterface
         } else {
             $game->addInformationWrapper($informations);
         }
-    }
-
-    private function isTargetDestroyed(ShipInterface $ship): bool
-    {
-        return $ship->isDestroyed();
     }
 
     public function performSessionCheck(): bool

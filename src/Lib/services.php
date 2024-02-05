@@ -22,6 +22,15 @@ use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\GradientColor;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
+use Stu\Lib\Pirate\Behaviour\AttackShipBehaviour;
+use Stu\Lib\Pirate\Behaviour\FlyBehaviour;
+use Stu\Lib\Pirate\Behaviour\HideBehaviour;
+use Stu\Lib\Pirate\Behaviour\RubColonyBehaviour;
+use Stu\Lib\Pirate\Component\PirateFlight;
+use Stu\Lib\Pirate\Component\PirateFlightInterface;
+use Stu\Lib\Pirate\PirateBehaviourEnum;
+use Stu\Lib\Pirate\PirateCreation;
+use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Lib\ShipManagement\HandleManagers;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Manager\ManageBattery;
@@ -74,5 +83,13 @@ return [
         TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
         TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class),
         TransferTypeEnum::TORPEDOS->value => autowire(TorpedoTransferStrategy::class)
-    ]
+    ],
+    'pirateBehaviours' => [
+        PirateBehaviourEnum::FLY->value => autowire(FlyBehaviour::class),
+        PirateBehaviourEnum::RUB_COLONY->value => autowire(RubColonyBehaviour::class),
+        PirateBehaviourEnum::ATTACK_SHIP->value => autowire(AttackShipBehaviour::class),
+        PirateBehaviourEnum::HIDE->value => autowire(HideBehaviour::class)
+    ],
+    PirateCreationInterface::class => autowire(PirateCreation::class),
+    PirateFlightInterface::class => autowire(PirateFlight::class)
 ];

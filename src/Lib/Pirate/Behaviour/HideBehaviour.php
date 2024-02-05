@@ -1,31 +1,23 @@
 <?php
 
-namespace Stu\Module\Tick\Pirate\Behaviour;
+namespace Stu\Lib\Pirate\Behaviour;
 
-use Stu\Lib\Information\InformationWrapper;
-use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Tick\Pirate\Component\PirateFlightInterface;
+use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
-class AttackShipBehaviour implements PirateBehaviourInterface
+class HideBehaviour implements PirateBehaviourInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private DistanceCalculationInterface $distanceCalculation;
+    private StarSystemRepositoryInterface $starSystemRepository;
 
     private FlightRouteFactoryInterface $flightRouteFactory;
 
@@ -33,36 +25,22 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
     private RandomSystemEntryInterface $randomSystemEntry;
 
-    private FightLibInterface $fightLib;
-
-    private ShipAttackCoreInterface $shipAttackCore;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private StuRandom $stuRandom;
 
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        DistanceCalculationInterface $distanceCalculation,
+        StarSystemRepositoryInterface $starSystemRepository,
         FlightRouteFactoryInterface $flightRouteFactory,
         PirateFlightInterface $pirateFlight,
         RandomSystemEntryInterface $randomSystemEntry,
-        FightLibInterface $fightLib,
-        ShipAttackCoreInterface $shipAttackCore,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
         StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->distanceCalculation = $distanceCalculation;
+        $this->starSystemRepository = $starSystemRepository;
         $this->flightRouteFactory = $flightRouteFactory;
         $this->pirateFlight = $pirateFlight;
         $this->randomSystemEntry = $randomSystemEntry;
-        $this->fightLib = $fightLib;
-        $this->shipAttackCore = $shipAttackCore;
-        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->stuRandom = $stuRandom;
 
         $this->logger = $loggerUtilFactory->getLoggerUtil(true);
@@ -73,104 +51,43 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $piratePrestige = $this->prestigeOfShipOrFleet($leadShip);
-
-        $this->logger->log(sprintf('    piratePrestige %d', $piratePrestige));
-
-        $targets = $this->shipRepository->getPirateTargets($leadShip);
-
-        $this->logger->log(sprintf('    %d targets in reach', count($targets)));
-
-        $filteredTargets = array_filter(
-            $targets,
-            fn (ShipInterface $target) => $this->targetHasEnoughPrestige($piratePrestige, $target)
-        );
-
-        $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
-
-        if (empty($filteredTargets)) {
+        $hideSystems = $this->starSystemRepository->getPirateHides($leadShip);
+        if (empty($hideSystems)) {
+            $this->logger->log('    no hide system in reach');
             return;
         }
 
-        usort(
-            $filteredTargets,
-            fn (ShipInterface $a, ShipInterface $b) =>
-            $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
-        );
-
-        $closestShip = current($filteredTargets);
-
-        $system = $closestShip->getSystem();
+        shuffle($hideSystems);
+        $closestHideSystem = current($hideSystems);
 
         // move to system
         if (
-            $system !== null
-            && $leadShip->getSystem() === null
-            && $leadShip->isOverSystem() !== $system
+            $leadShip->getSystem() === null
+            && $leadShip->isOverSystem() !== $closestHideSystem
         ) {
-            $this->navigateToSystem($leadWrapper, $system);
+            $this->navigateToSystem($leadWrapper, $closestHideSystem);
         }
 
         // reached system?
         if (
-            $system !== null
-            && $leadShip->isOverSystem() !== $system
-            && $leadShip->getSystem() !== $system
+            $leadShip->isOverSystem() !== $closestHideSystem
+            && $leadShip->getSystem() !== $closestHideSystem
         ) {
             $this->logger->log('    did not reach system');
             return;
         }
 
         // enter system ?
-        if (
-            $system !== null
-            && $leadShip->isOverSystem() === $system
-        ) {
+        if ($leadShip->isOverSystem() === $closestHideSystem) {
             $this->logger->log('    try to enter system');
-            $this->enterSystem($leadWrapper, $system);
+            $this->enterSystem($leadWrapper, $closestHideSystem);
         }
 
         // entered system ?
         $systemMap = $leadShip->getStarsystemMap();
-        if (
-            $system !== null
-            && ($systemMap === null || $systemMap->getSystem() !== $system)
-        ) {
+        if ($systemMap === null || $systemMap->getSystem() !== $closestHideSystem) {
             $this->logger->log('    did not enter system');
-            return;
         }
-
-        // move to ship and rub
-        if ($this->navigateToShip($leadWrapper, $closestShip)) {
-            $this->logger->log('    reached closestShip');
-        } else {
-            $this->logger->log('    did not reach ship');
-            return;
-        }
-
-        $this->attackShip($fleet, $closestShip);
-    }
-
-    private function targetHasEnoughPrestige(int $piratePrestige, ShipInterface $target): bool
-    {
-        $targetPrestige = $this->prestigeOfShipOrFleet($target);
-        $this->logger->log(sprintf('      targetPrestige %d', $targetPrestige));
-
-        return $targetPrestige >= 0.5 * $piratePrestige;
-    }
-
-    private function prestigeOfShipOrFleet(ShipInterface $ship): int
-    {
-        $fleet = $ship->getFleet();
-        if ($fleet !== null) {
-            return array_reduce(
-                $fleet->getShips()->toArray(),
-                fn (int $value, ShipInterface $fleetShip) => $value + $fleetShip->getRump()->getPrestige(),
-                0
-            );
-        }
-
-        return $ship->getRump()->getPrestige();
     }
 
     private function navigateToSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): void
@@ -197,10 +114,6 @@ class AttackShipBehaviour implements PirateBehaviourInterface
             $xDistance = $target->getX() - $lastPosition->getX();
             $yDistance = $target->getY() - $lastPosition->getY();
 
-            if ($xDistance === 0 && $yDistance === 0) {
-                break;
-            }
-
             $isInXDirection = $this->moveInXDirection($xDistance, $yDistance);
 
             $flightRoute = $this->flightRouteFactory->getRouteForCoordinateDestination(
@@ -216,7 +129,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
             $this->logger->log(sprintf('    newPosition: %s', $newPosition->getSectorString()));
 
             if ($newPosition === $lastPosition) {
-                break;
+                return;
             }
         }
     }
@@ -273,33 +186,5 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         );
 
         $this->pirateFlight->movePirate($wrapper, $flightRoute);
-    }
-
-    private function navigateToShip(ShipWrapperInterface $wrapper, ShipInterface $ship): bool
-    {
-        $this->navigateToTarget($wrapper, $ship->getCurrentMapField());
-
-        return $wrapper->get()->getCurrentMapField() === $ship->getCurrentMapField();
-    }
-
-    private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
-    {
-        $leadWrapper = $fleetWrapper->getLeadWrapper();
-        $ship = $fleetWrapper->getLeadWrapper()->get();
-
-        if (!$this->fightLib->canAttackTarget($ship, $target, false)) {
-            $this->logger->log('    can not attack target');
-            return;
-        }
-
-        $isFleetFight = false;
-        $informations = new InformationWrapper();
-
-        $this->shipAttackCore->attack(
-            $leadWrapper,
-            $this->shipWrapperFactory->wrapShip($target),
-            $isFleetFight,
-            $informations
-        );
     }
 }

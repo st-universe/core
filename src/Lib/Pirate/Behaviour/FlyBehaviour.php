@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Tick\Pirate\Behaviour;
+namespace Stu\Lib\Pirate\Behaviour;
 
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -8,7 +8,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Tick\Pirate\Component\PirateFlightInterface;
+use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
 class FlyBehaviour implements PirateBehaviourInterface
