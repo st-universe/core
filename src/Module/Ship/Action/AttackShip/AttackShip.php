@@ -111,7 +111,7 @@ final class AttackShip implements ActionControllerInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
-        $this->shipAttackCore->foo($wrapper, $targetWrapper, $isFleetFight, $informations);
+        $this->shipAttackCore->attack($wrapper, $targetWrapper, $isFleetFight, $informations);
 
         if ($ship->isDestroyed()) {
             $game->addInformationWrapper($informations);

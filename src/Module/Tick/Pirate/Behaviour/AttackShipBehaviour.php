@@ -295,7 +295,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
-        $this->shipAttackCore->foo(
+        $this->shipAttackCore->attack(
             $leadWrapper,
             $this->shipWrapperFactory->wrapShip($target),
             $isFleetFight,

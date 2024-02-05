@@ -42,7 +42,7 @@ final class ShipAttackCore implements ShipAttackCoreInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
-    public function foo(
+    public function attack(
         ShipWrapperInterface $wrapper,
         ShipWrapperInterface $targetWrapper,
         bool &$isFleetFight,
