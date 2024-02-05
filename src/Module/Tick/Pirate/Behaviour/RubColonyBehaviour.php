@@ -255,7 +255,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             fn (StorageInterface $storage) => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
         );
 
-        $informations = new InformationWrapper();
+        $allInformations = new InformationWrapper();
 
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
 
@@ -269,11 +269,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             $ship = $wrapper->get();
             $randomCommodityId = array_rand($filteredColonyStorage);
 
-            $informations->addInformation(sprintf(
-                _('Die %s hat folgende Waren von der Kolonie %s gestohlen'),
-                $ship->getName(),
-                $colony->getName()
-            ));
+            $informations = new InformationWrapper();
 
             $this->beamUtil->transferCommodity(
                 $randomCommodityId,
@@ -283,12 +279,22 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                 $wrapper->get(),
                 $informations
             );
+
+            if (!$informations->isEmpty()) {
+                $informations->addInformationArray([sprintf(
+                    _('Die %s hat folgende Waren von der Kolonie %s gestohlen'),
+                    $ship->getName(),
+                    $colony->getName()
+                )], true);
+            }
+
+            $allInformations->addInformationWrapper($informations);
         }
 
         $this->privateMessageSender->send(
             $pirateUser->getId(),
             $colony->getUser()->getId(),
-            $informations->getInformationsAsString(),
+            $allInformations,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             sprintf(
                 'colony.php?%s=1&id=%d',
