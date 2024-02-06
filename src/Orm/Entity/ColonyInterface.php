@@ -103,7 +103,7 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function isInSystem(): bool;
 
-    public function getStarsystemMap(): ?StarSystemMapInterface;
+    public function getStarsystemMap(): StarSystemMapInterface;
 
     public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface;
 
