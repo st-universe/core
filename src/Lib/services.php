@@ -26,8 +26,12 @@ use Stu\Lib\Pirate\Behaviour\AttackShipBehaviour;
 use Stu\Lib\Pirate\Behaviour\FlyBehaviour;
 use Stu\Lib\Pirate\Behaviour\HideBehaviour;
 use Stu\Lib\Pirate\Behaviour\RubColonyBehaviour;
+use Stu\Lib\Pirate\Component\MoveOnLayer;
+use Stu\Lib\Pirate\Component\MoveOnLayerInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
+use Stu\Lib\Pirate\Component\PirateNavigation;
+use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
@@ -98,5 +102,7 @@ return [
         'behaviours',
         get('pirateBehaviours')
     ),
-    PirateFlightInterface::class => autowire(PirateFlight::class)
+    PirateFlightInterface::class => autowire(PirateFlight::class),
+    MoveOnLayerInterface::class => autowire(MoveOnLayer::class),
+    PirateNavigationInterface::class => autowire(PirateNavigation::class)
 ];

@@ -58,4 +58,12 @@ final class LoggerUtil implements LoggerUtilInterface
             $this->logger->$method($message);
         }
     }
+
+    public function logf(string $information, ...$args): void
+    {
+        $this->log(vsprintf(
+            $information,
+            $args
+        ));
+    }
 }
