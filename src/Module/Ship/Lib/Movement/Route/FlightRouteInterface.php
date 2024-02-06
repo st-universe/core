@@ -53,4 +53,6 @@ interface FlightRouteInterface
     public function isWarpDriveNeeded(): bool;
 
     public function isTranswarpCoilNeeded(): bool;
+
+    public function isRouteDangerous(): bool;
 }

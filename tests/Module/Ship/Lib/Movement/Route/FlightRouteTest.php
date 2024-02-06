@@ -376,4 +376,86 @@ class FlightRouteTest extends StuTestCase
 
         $this->assertEquals(5, count(get('postFlightConsequences')->resolve($container)));
     }
+
+    public function testIsRouteDangerousExpectFalseIfWaypointsWithoutSpecialDamage(): void
+    {
+        $start = $this->mock(MapInterface::class);
+        $destination = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $waypoints = new ArrayCollection();
+
+        $waypoints->add($destination);
+
+        $ship->shouldReceive('getCurrentMapField')
+            ->withNoArgs()
+            ->andReturn($start);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $destination->shouldReceive('getFieldType->getSpecialDamage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(0);
+
+        $this->checkDestination->shouldReceive('validate')
+            ->with($ship, 42, 5)
+            ->once()
+            ->andReturn($destination);
+
+        $this->loadWaypoints->shouldReceive('load')
+            ->with($start, $destination)
+            ->once()
+            ->andReturn($waypoints);
+
+        $this->subject->setDestinationViaCoordinates($ship, 42, 5);
+
+        $result = $this->subject->isRouteDangerous();
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsRouteDangerousExpectTrueIfWaypointWithSpecialDamage(): void
+    {
+        $start = $this->mock(MapInterface::class);
+        $first = $this->mock(MapInterface::class);
+        $destination = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $waypoints = new ArrayCollection();
+
+        $waypoints->add($first);
+        $waypoints->add($destination);
+
+        $ship->shouldReceive('getCurrentMapField')
+            ->withNoArgs()
+            ->andReturn($start);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $first->shouldReceive('getFieldType->getSpecialDamage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
+        $this->checkDestination->shouldReceive('validate')
+            ->with($ship, 42, 5)
+            ->once()
+            ->andReturn($destination);
+
+        $this->loadWaypoints->shouldReceive('load')
+            ->with($start, $destination)
+            ->once()
+            ->andReturn($waypoints);
+
+        $this->subject->setDestinationViaCoordinates($ship, 42, 5);
+
+        $result = $this->subject->isRouteDangerous();
+
+        $this->assertTrue($result);
+    }
 }

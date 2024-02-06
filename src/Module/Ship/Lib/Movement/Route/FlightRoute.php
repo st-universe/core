@@ -225,4 +225,15 @@ final class FlightRoute implements FlightRouteInterface
     {
         return $this->getRouteMode() === RouteModeEnum::ROUTE_MODE_TRANSWARP;
     }
+
+    public function isRouteDangerous(): bool
+    {
+        foreach ($this->waypoints as $waypoint) {
+            if ($waypoint->getFieldType()->getSpecialDamage() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
