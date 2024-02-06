@@ -42,7 +42,7 @@ class Colony implements ColonyInterface
     private int $user_id = 0;
 
     #[Column(type: 'integer')]
-    private int $starsystem_map_id = null;
+    private int $starsystem_map_id = 0;
 
     #[Column(type: 'string')]
     private string $name = '';
@@ -515,11 +515,6 @@ class Colony implements ColonyInterface
         return $this->getMaxStorage() > $this->getStorageSum();
     }
 
-    public function isInSystem(): bool
-    {
-        return $this->getStarsystemMap() !== null;
-    }
-
     public function getStarsystemMap(): StarSystemMapInterface
     {
         return $this->starsystem_map;
@@ -649,12 +644,7 @@ class Colony implements ColonyInterface
 
     public function getSectorString(): string
     {
-        $systemMap = $this->getStarsystemMap();
-        if ($systemMap === null) {
-            return '';
-        }
-
-        return $systemMap->getSectorString();
+        return $this->getStarsystemMap()->getSectorString();
     }
 
     public function getDepositMinings(): Collection
