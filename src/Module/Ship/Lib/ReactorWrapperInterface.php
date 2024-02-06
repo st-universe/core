@@ -20,11 +20,11 @@ interface ReactorWrapperInterface
         CommodityTypeEnum::COMMODITY_DEUTERIUM => 2
     ];
 
-    public const SINGULARITY_CORE_LOAD = 35;
+    public const SINGULARITY_CORE_LOAD = 85;
     public const SINGULARITY_CORE_LOAD_COST = [
-        CommodityTypeEnum::COMMODITY_DILITHIUM => 1,
-        CommodityTypeEnum::COMMODITY_ANTIMATTER => 2,
-        CommodityTypeEnum::COMMODITY_PLASMA => 1
+        CommodityTypeEnum::COMMODITY_DILITHIUM => 2,
+        CommodityTypeEnum::COMMODITY_ANTIMATTER => 3,
+        CommodityTypeEnum::COMMODITY_PLASMA => 2
     ];
 
     public const FUSION_REACTOR_LOAD = 2;
