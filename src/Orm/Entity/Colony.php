@@ -41,8 +41,8 @@ class Colony implements ColonyInterface
     #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $starsystem_map_id = null;
+    #[Column(type: 'integer')]
+    private int $starsystem_map_id = null;
 
     #[Column(type: 'string')]
     private string $name = '';
@@ -101,7 +101,7 @@ class Colony implements ColonyInterface
 
     #[OneToOne(targetEntity: 'StarSystemMap', inversedBy: 'colony')]
     #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?StarSystemMapInterface $starsystem_map = null;
+    private StarSystemMapInterface $starsystem_map;
 
     #[ManyToOne(targetEntity: 'User')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
@@ -520,7 +520,7 @@ class Colony implements ColonyInterface
         return $this->getStarsystemMap() !== null;
     }
 
-    public function getStarsystemMap(): ?StarSystemMapInterface
+    public function getStarsystemMap(): StarSystemMapInterface
     {
         return $this->starsystem_map;
     }
