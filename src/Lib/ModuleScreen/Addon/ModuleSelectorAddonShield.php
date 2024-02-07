@@ -25,7 +25,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
     }
 
     /**
-     * @return array<int, array{factionId: int, gradientColor: string}>
+     * @return array<int, array{factionId: int, gradientColor: string, modificator: int}>
      */
     public function getWeaponEffects(ModuleInterface $shieldModule): array
     {
@@ -34,7 +34,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 
         foreach ($shieldModule->getWeaponShield() as $weaponShield) {
             $factionId = $weaponShield->getFactionId();
-
+            
             if ($factionId === null) {
                 continue;
             }
@@ -64,7 +64,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 
             $gradientColor = $this->gradientColor->calculateGradientColor((int)round($sum / count($modificators)), $lowest, $highest);
 
-            $result[] = ['factionId' => $factionId, 'gradientColor' => $gradientColor];
+            $result[] = ['factionId' => $factionId, 'gradientColor' => $gradientColor, 'modificator' => $modificator];
         }
 
         return $result;
