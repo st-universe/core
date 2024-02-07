@@ -257,7 +257,7 @@
           <div style="display: table-cell; padding-left: 4px;">
             <img src="assets/commodities/${data/getTorpedoType}.png"
               tal:define="color php:modSel.getAddon().calculateGradientColor(data.getModificator())"
-              style="border: 2px solid ${color}" tal:attributes="title data/getTorpedo/getName" />
+              style="border: 2px solid ${color}" title="${data/getTorpedo/getName} | Modifikator: ${data/getModificator}%" />
           </div>
         </tal:block>
       </div>
@@ -273,7 +273,8 @@
       <div style="float: left;">
         <tal:block tal:repeat="data php:modSel.getAddon().getWeaponEffects(module.getModule())">
           <div style="display: table-cell; padding-left: 4px;">
-            <img src="assets/rassen/${data/factionId}_s.png" style="border: 2px solid ${data/gradientColor}" />
+            <img src="assets/rassen/${data/factionId}_s.png" style="border: 2px solid ${data/gradientColor}"
+              title="Modifikator: ${data/modificator}%" />
           </div>
         </tal:block>
       </div>
