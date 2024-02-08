@@ -5,7 +5,6 @@ namespace Stu\Lib\Pirate\Component;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -13,24 +12,14 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 
 class MoveOnLayer implements MoveOnLayerInterface
 {
-    private FlightRouteFactoryInterface $flightRouteFactory;
-
-    private PirateFlightInterface $pirateFlight;
-
-    private StuRandom $stuRandom;
-
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        FlightRouteFactoryInterface $flightRouteFactory,
-        PirateFlightInterface $pirateFlight,
-        StuRandom $stuRandom,
+        private SafeFlightRouteInterface $safeFlightRoute,
+        private PirateFlightInterface $pirateFlight,
+        private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->flightRouteFactory = $flightRouteFactory;
-        $this->pirateFlight = $pirateFlight;
-        $this->stuRandom = $stuRandom;
-
         $this->logger = $loggerUtilFactory->getLoggerUtil(true);
     }
 
@@ -55,11 +44,17 @@ class MoveOnLayer implements MoveOnLayerInterface
 
             $isInXDirection = $this->moveInXDirection($xDistance, $yDistance);
 
-            $flightRoute = $this->flightRouteFactory->getRouteForCoordinateDestination(
+            $flightRoute = $this->safeFlightRoute->getSafeFlightRoute(
                 $ship,
-                $this->getTargetX($isInXDirection, $lastPosition->getX(), $xDistance),
-                $this->getTargetY($isInXDirection, $lastPosition->getY(), $yDistance)
+                fn () => new Coordinate(
+                    $this->getTargetX($isInXDirection, $lastPosition->getX(), $xDistance),
+                    $this->getTargetY($isInXDirection, $lastPosition->getY(), $yDistance)
+                )
             );
+            if ($flightRoute === null) {
+                $this->logger->log('    no safe flight route found');
+                return false;
+            }
 
             $this->pirateFlight->movePirate($wrapper, $flightRoute);
 
