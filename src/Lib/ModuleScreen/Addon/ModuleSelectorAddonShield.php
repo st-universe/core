@@ -34,7 +34,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 
         foreach ($shieldModule->getWeaponShield() as $weaponShield) {
             $factionId = $weaponShield->getFactionId();
-            
+
             if ($factionId === null) {
                 continue;
             }
@@ -62,9 +62,11 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
                 $sum += $modificator;
             }
 
-            $gradientColor = $this->gradientColor->calculateGradientColor((int)round($sum / count($modificators)), $lowest, $highest);
+            $modificatorAverage = (int)round($sum / count($modificators));
 
-            $result[] = ['factionId' => $factionId, 'gradientColor' => $gradientColor, 'modificator' => $modificator];
+            $gradientColor = $this->gradientColor->calculateGradientColor($modificatorAverage, $lowest, $highest);
+
+            $result[] = ['factionId' => $factionId, 'gradientColor' => $gradientColor, 'modificator' => $modificatorAverage];
         }
 
         return $result;
