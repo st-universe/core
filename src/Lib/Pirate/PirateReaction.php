@@ -38,8 +38,12 @@ class PirateReaction implements PirateReactionInterface
 
     public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger): void
     {
-        $behaviourType = $this->getRandomBehaviourType($reactionTrigger);
+        // check if fleet already defeated
+        if ($fleet->getShips()->isEmpty()) {
+            return;
+        }
 
+        $behaviourType = $this->getRandomBehaviourType($reactionTrigger);
         if ($behaviourType === PirateBehaviourEnum::DO_NOTHING) {
             return;
         }
