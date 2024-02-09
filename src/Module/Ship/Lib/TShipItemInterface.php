@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\SpacecraftTypeEnum;
 
 interface TShipItemInterface
 {
@@ -25,7 +26,7 @@ interface TShipItemInterface
 
     public function isDestroyed(): bool;
 
-    public function getSpacecraftType(): int;
+    public function getSpacecraftType(): SpacecraftTypeEnum;
 
     public function getShipName(): string;
 

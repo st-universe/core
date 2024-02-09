@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 
 #[Entity]
 class TShipItem implements TShipItemInterface
@@ -126,9 +127,9 @@ class TShipItem implements TShipItemInterface
         return $this->is_destroyed;
     }
 
-    public function getSpacecraftType(): int
+    public function getSpacecraftType(): SpacecraftTypeEnum
     {
-        return $this->spacecraft_type;
+        return SpacecraftTypeEnum::from($this->spacecraft_type);
     }
 
     public function getShipName(): string
