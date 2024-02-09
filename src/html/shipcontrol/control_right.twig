@@ -113,7 +113,9 @@
             {% endif %}
         </td>
         <td style="width: 15%;">
+            {% if not cooldown %}
             <input type="submit" class="button" name="B_TRANSWARP" value="Start" id="transwarpButton" />
+            {% endif %}
         </td>
     </tr>
     {% endif %}
