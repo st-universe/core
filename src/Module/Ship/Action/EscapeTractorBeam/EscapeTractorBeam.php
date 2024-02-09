@@ -202,6 +202,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         if ($ship->isDestroyed()) {
             $this->entryCreator->addShipEntry(
                 'Die ' . $shipName . ' (' . $ship->getRump()->getName() . ') wurde bei einem Fluchtversuch in Sektor ' . $ship->getSectorString() . ' zerstört',
+                $otherUserId,
                 $ship->getUser()->getId()
             );
 

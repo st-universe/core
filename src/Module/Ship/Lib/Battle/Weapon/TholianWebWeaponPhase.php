@@ -8,6 +8,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 //TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
@@ -46,11 +47,13 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
             if ($ship->isBase()) {
                 $this->entryCreator->addStationEntry(
                     $entryMsg,
+                    UserEnum::USER_NOONE,
                     $userId
                 );
             } else {
                 $this->entryCreator->addShipEntry(
                     $entryMsg,
+                    UserEnum::USER_NOONE,
                     $userId
                 );
             }

@@ -74,6 +74,7 @@ class LowerHull implements ManagerComponentInterface
 
                 $this->entryCreator->addStationEntry(
                     'Der verlassene Handelsposten in Sektor ' . $ship->getSectorString() . ' ist zerfallen',
+                    UserEnum::USER_NOONE,
                     $ship->getUser()->getId()
                 );
                 continue;

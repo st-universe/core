@@ -307,7 +307,10 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             $targetUser->getName(),
             $targetShip->getSectorString(),
             $sourceUser->getName()
-        ));
+            ),
+            $sourceUser->getId(),
+            $targetUser->getId()
+        );
 
         $this->changeShipOwner($targetShip, $sourceUser);
 

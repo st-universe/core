@@ -8,26 +8,31 @@ interface EntryCreatorInterface
 {
     public function addShipEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void;
 
     public function addStationEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void;
 
     public function addColonyEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void;
 
     public function addAllianceEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void;
 
     public function addOtherEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void;
 }

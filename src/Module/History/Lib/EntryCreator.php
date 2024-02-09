@@ -20,47 +20,54 @@ final class EntryCreator implements EntryCreatorInterface
 
     public function addShipEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::SHIP, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::SHIP, $text, $sourceUserId, $targetUserId);
     }
 
     public function addStationEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::STATION, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::STATION, $text, $sourceUserId, $targetUserId);
     }
 
     public function addColonyEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::COLONY, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::COLONY, $text, $sourceUserId, $targetUserId);
     }
 
     public function addAllianceEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::ALLIANCE, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::ALLIANCE, $text, $sourceUserId, $targetUserId);
     }
 
     public function addOtherEntry(
         string $text,
-        int $userId = UserEnum::USER_NOONE
+        int $sourceUserId = UserEnum::USER_NOONE,
+        int $targetUserId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(HistoryTypeEnum::OTHER, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::OTHER, $text, $sourceUserId, $targetUserId);
     }
 
     private function addEntry(
         HistoryTypeEnum $type,
         string $text,
-        int $userId
+        int $sourceUserId,
+        int $targetUserId
     ): void {
         $entry = $this->historyRepository->prototype();
         $entry->setText($text);
-        $entry->setUserId($userId);
+        $entry->setSourceUserId($sourceUserId);
+        $entry->setTargetUserId($targetUserId);
         $entry->setDate(time());
         $entry->setType($type);
 
