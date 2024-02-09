@@ -261,7 +261,7 @@
 				{% set host = SHIP %}
 				{% include 'html/ship/repairProgress.twig' %}
 				{% if SHIP.getRump.isShipyard and SHIP.getConstructionHubState %}
-				{% include 'html/ship/buildprogress.twig' %}
+				{% include 'html/ship/buildProgress.twig' %}
 				{% set station = SHIP %}
 				{% set availableBuildplans = AVAILABLE_BUILDPLANS %}
 				{% include 'html/station/shipyardOptions.twig' %}
