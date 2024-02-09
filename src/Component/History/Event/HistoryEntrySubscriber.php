@@ -32,7 +32,8 @@ final class HistoryEntrySubscriber
                 $event->getAlliance()->getName(),
                 $event->getCounterpart()->getName()
             ),
-            $event->getResponsibleUser()->getId()
+            $event->getResponsibleUser()->getId(),
+            $event->getCounterpart()->getFounder()->getId()
         );
     }
 }

@@ -88,7 +88,8 @@ final class AcceptOffer implements ActionControllerInterface
                     $relation->getOpponent()->getName(),
                     AllianceEnum::relationTypeToDescription($relation->getType())
                 ),
-                $userId
+                $userId,
+                $relation->getOpponent()->getFounder()->getId()
             );
         }
 
@@ -100,7 +101,8 @@ final class AcceptOffer implements ActionControllerInterface
                     AllianceEnum::relationTypeToDescription($relation->getType()),
                     $relation->getAlliance()->getName()
                 ),
-                $userId
+                $userId,
+                $relation->getOpponent()->getFounder()->getId()
             );
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Damage;
 
 use Stu\Lib\DamageWrapper;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Message\Message;
@@ -95,7 +96,10 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
                 $shipName,
                 $rumpName,
                 $ship->getSectorString()
-            ));
+                ),
+                UserEnum::USER_NOONE,
+                $ship->getUser()->getId()
+            );
 
             $this->shipRemover->destroy($wrapper);
         }

@@ -90,7 +90,8 @@ final class CancelContract implements ActionControllerInterface
                     $relation->getAlliance()->getName(),
                     $relation->getOpponent()->getName()
                 ),
-                $user->getId()
+                $user->getId(),
+                $relation->getOpponent()->getFounder()->getId()
             );
         }
 
@@ -102,7 +103,8 @@ final class CancelContract implements ActionControllerInterface
                     AllianceEnum::relationTypeToDescription($relation->getType()),
                     $relation->getAlliance()->getName()
                 ),
-                $user->getId()
+                $user->getId(),
+                $relation->getOpponent()->getFounder()->getId()
             );
         }
 

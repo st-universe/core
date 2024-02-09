@@ -23,4 +23,12 @@ interface HistoryInterface
     public function getUserId(): int;
 
     public function setUserId(int $userId): HistoryInterface;
+
+    public function getSourceUserId(): int;
+
+    public function setSourceUserId(int $userId): HistoryInterface;
+
+    public function getTargetUserId(): int;
+
+    public function setTargetUserId(int $userId): HistoryInterface;
 }

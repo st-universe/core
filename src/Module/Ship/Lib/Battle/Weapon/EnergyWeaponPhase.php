@@ -78,7 +78,8 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 if ($isAlertRed) {
                     $this->entryCreator->addShipEntry(
                         '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
-                        $attacker->getUser()->getId()
+                        $attacker->getUser()->getId(),
+                        $target->getUser()->getId()
                     );
                 } else {
                     $entryMsg = sprintf(
@@ -91,12 +92,14 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                     if ($target->isBase()) {
                         $this->entryCreator->addStationEntry(
                             $entryMsg,
-                            $attacker->getUser()->getId()
+                            $attacker->getUser()->getId(),
+                            $target->getUser()->getId()
                         );
                     } else {
                         $this->entryCreator->addShipEntry(
                             $entryMsg,
-                            $attacker->getUser()->getId()
+                            $attacker->getUser()->getId(),
+                            $target->getUser()->getId()
                         );
                     }
                 }
@@ -173,7 +176,9 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                         $building->getName(),
                         $target->getHost()->getName(),
                         $attacker->getName()
-                    )
+                    ),
+                    $attacker->getUser()->getId(),
+                    $target->getHost()->getUser()->getId()
                 );
 
                 $this->buildingManager->remove($target);

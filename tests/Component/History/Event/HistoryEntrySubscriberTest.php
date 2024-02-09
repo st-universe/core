@@ -37,6 +37,7 @@ class HistoryEntrySubscriberTest extends StuTestCase
         $allianceName = 'some-name';
         $counterpartName = 'some-other-name';
         $userId = 666;
+        $counterpartFounderId = 42;
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -73,7 +74,8 @@ class HistoryEntrySubscriberTest extends StuTestCase
                     $allianceName,
                     $counterpartName
                 ),
-                $userId
+            $userId,
+            $counterpartFounderId 
             )
             ->once();
 

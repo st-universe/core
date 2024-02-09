@@ -34,6 +34,12 @@ class History implements HistoryInterface
     #[Column(type: 'integer')]
     private int $user_id = 0;
 
+    #[Column(type: 'integer', nullable: true)]
+    private int $source_user_id = 0;
+
+    #[Column(type: 'integer', nullable: true)]
+    private int $target_user_id = 0;
+
     public function getId(): int
     {
         return $this->id;
@@ -83,6 +89,30 @@ class History implements HistoryInterface
     public function setUserId(int $userId): HistoryInterface
     {
         $this->user_id = $userId;
+
+        return $this;
+    }
+
+    public function getSourceUserId(): int
+    {
+        return $this->source_user_id;
+    }
+
+    public function setSourceUserId(int $sourceuserId): HistoryInterface
+    {
+        $this->source_user_id = $sourceuserId;
+
+        return $this;
+    }
+
+    public function getTargetUserId(): int
+    {
+        return $this->target_user_id;
+    }
+
+    public function setTargetUserId(int $targetuserId): HistoryInterface
+    {
+        $this->target_user_id = $targetuserId;
 
         return $this;
     }
