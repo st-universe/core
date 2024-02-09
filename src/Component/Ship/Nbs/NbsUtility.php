@@ -43,7 +43,7 @@ final class NbsUtility implements NbsUtilityInterface
         if ($ship->getNbs() || $mapId !== null || $sysMapId !== null) {
             $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
-                [SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION],
+                [SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION->value],
                 $tachyonActive,
                 $mapId,
                 $sysMapId
@@ -51,7 +51,7 @@ final class NbsUtility implements NbsUtilityInterface
 
             $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
-                [SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP, SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER],
+                [SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value, SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER->value],
                 $tachyonActive,
                 $mapId,
                 $sysMapId

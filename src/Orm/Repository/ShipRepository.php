@@ -130,7 +130,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'userId' => $fleetLeader->getUser()->getId(),
-            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP,
+            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value,
             'mapId' => $isSystem ? $fleetLeader->getStarsystemMap()->getId() : $fleetLeader->getMap()->getId()
         ])->getResult();
     }
@@ -209,7 +209,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
             ->setParameters([
                 'ignoreIds' => [$ship->getUser()->getId(), UserEnum::USER_NOONE],
-                'spacecraftType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION,
+                'spacecraftType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION->value,
                 'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
                 'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
                 'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
@@ -269,13 +269,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->getResult();
     }
 
-    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): array
+    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, SpacecraftTypeEnum $type): array
     {
         return $this->findBy(
             [
                 'user_id' => $userId,
                 'fleets_id' => $fleetId,
-                'type' => $type,
+                'type' => $type->value,
             ],
             $type === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION ? ['max_huelle' => 'desc', 'id' => 'asc'] : ['id' => 'asc']
         );
@@ -704,7 +704,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
-            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION
+            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION->value
         ]);
 
         return $query->getSingleScalarResult() > 0;
@@ -787,7 +787,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'minY' => $ship->getCY() - $range,
                 'maxY' => $ship->getCY() + $range,
                 'layerId' => $layer->getId(),
-                'shipType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP,
+                'shipType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'stateActive' => UserEnum::USER_STATE_ACTIVE,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,

@@ -111,8 +111,8 @@ class Ship implements ShipInterface
     #[Column(type: 'integer')]
     private int $former_rumps_id = 0;
 
-    #[Column(type: 'smallint', length: 1, nullable: true)]
-    private ?int $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
+    #[Column(type: 'smallint', length: 1, enumType: SpacecraftTypeEnum::class)]
+    private SpacecraftTypeEnum $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
 
     #[Column(type: 'integer')]
     private int $database_id = 0;
@@ -593,12 +593,12 @@ class Ship implements ShipInterface
         return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION;
     }
 
-    public function getSpacecraftType(): int
+    public function getSpacecraftType(): SpacecraftTypeEnum
     {
         return $this->type;
     }
 
-    public function setSpacecraftType(int $type): ShipInterface
+    public function setSpacecraftType(SpacecraftTypeEnum $type): ShipInterface
     {
         $this->type = $type;
         return $this;

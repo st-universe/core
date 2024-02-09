@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Module\Ship\Lib\TShipItemInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -84,7 +85,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return array<ShipInterface>
      */
-    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): array;
+    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, SpacecraftTypeEnum $type): array;
 
     /**
      * @return array<ShipInterface>

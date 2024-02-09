@@ -5,6 +5,7 @@ namespace Stu\Orm\Entity;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
@@ -127,9 +128,9 @@ interface ShipInterface
 
     public function isConstruction(): bool;
 
-    public function getSpacecraftType(): int;
+    public function getSpacecraftType(): SpacecraftTypeEnum;
 
-    public function setSpacecraftType(int $type): ShipInterface;
+    public function setSpacecraftType(SpacecraftTypeEnum $type): ShipInterface;
 
     public function getDatabaseId(): int;
 
