@@ -35,10 +35,10 @@ class History implements HistoryInterface
     private int $user_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
-    private int $source_user_id = 0;
+    private ?int $source_user_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
-    private int $target_user_id = 0;
+    private ?int $target_user_id = 0;
 
     public function getId(): int
     {
@@ -93,7 +93,7 @@ class History implements HistoryInterface
         return $this;
     }
 
-    public function getSourceUserId(): int
+    public function getSourceUserId(): ?int
     {
         return $this->source_user_id;
     }
@@ -105,7 +105,7 @@ class History implements HistoryInterface
         return $this;
     }
 
-    public function getTargetUserId(): int
+    public function getTargetUserId(): ?int
     {
         return $this->target_user_id;
     }
