@@ -13,7 +13,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 //TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
 {
-    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): InformationWrapper
+    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game, $webUser): InformationWrapper
     {
         $informations = new InformationWrapper();
 
@@ -47,13 +47,13 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
             if ($ship->isBase()) {
                 $this->entryCreator->addStationEntry(
                     $entryMsg,
-                    UserEnum::USER_NOONE,
+                    $webUser,
                     $userId
                 );
             } else {
                 $this->entryCreator->addShipEntry(
                     $entryMsg,
-                    UserEnum::USER_NOONE,
+                    $webUser,
                     $userId
                 );
             }
