@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Station\View\ShowDockingPrivilegesConfig;
+namespace Stu\Module\Station\View\ShowDockingControl;
 
 use request;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,9 +13,9 @@ use Stu\Module\Station\Lib\StationUiFactoryInterface;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
-final class ShowDockingPrivilegesConfig implements ViewControllerInterface
+final class ShowDockingControl implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_DOCKPRIVILEGE_CONFIG';
+    public const VIEW_IDENTIFIER = 'SHOW_DOCK_CONTROL';
 
     private ShipLoaderInterface $shipLoader;
 
@@ -44,8 +44,8 @@ final class ShowDockingPrivilegesConfig implements ViewControllerInterface
             false
         );
 
-        $game->setPageTitle(_('Dockrechte'));
-        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/dockprivileges');
+        $game->setPageTitle(_('Dockkontrolle'));
+        $game->setMacroInAjaxWindow('html/station/dockControl.twig');
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(
