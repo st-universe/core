@@ -33,6 +33,7 @@ class HistoryEntrySubscriberTest extends StuTestCase
         $alliance = $this->mock(AllianceInterface::class);
         $counterpart = $this->mock(AllianceInterface::class);
         $user = $this->mock(UserInterface::class);
+        $counterpartFounderuser = $this->mock(UserInterface::class);
 
         $allianceName = 'some-name';
         $counterpartName = 'some-other-name';
@@ -43,6 +44,11 @@ class HistoryEntrySubscriberTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
+
+        $counterpartFounderuser->shouldReceive('getFounder')
+        ->withNoArgs()
+            ->once()
+            ->andReturn($counterpartFounderId);
 
         $alliance->shouldReceive('getName')
             ->withNoArgs()

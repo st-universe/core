@@ -10,5 +10,5 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface TholianWebWeaponPhaseInterface
 {
-    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): InformationWrapper;
+    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game, $webUser): InformationWrapper;
 }
