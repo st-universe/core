@@ -39,7 +39,7 @@ final class ShowDockingPrivileges implements ViewControllerInterface
             false
         );
 
-        $game->showMacro('html/stationmacros.xhtml/dockprivilegelist');
+        $game->showMacro('html/station/dockPrivileges.twig');
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(

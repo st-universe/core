@@ -26,7 +26,7 @@ use Stu\Module\Station\Action\UndockStationShip\UndockStationShip;
 use Stu\Module\Station\Lib\StationUiFactory;
 use Stu\Module\Station\Lib\StationUiFactoryInterface;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
-use Stu\Module\Station\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
+use Stu\Module\Station\View\ShowDockingControl\ShowDockingControl;
 use Stu\Module\Station\View\ShowScrapping\ShowScrapping;
 use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
@@ -77,7 +77,7 @@ return [
         ShowStationShiplist::VIEW_IDENTIFIER => autowire(ShowStationShiplist::class),
         ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
         ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
-        ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class),
+        ShowDockingControl::VIEW_IDENTIFIER => autowire(ShowDockingControl::class),
         ShowSystemSensorScan::VIEW_IDENTIFIER => autowire(ShowSystemSensorScan::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
         ShowScrapping::VIEW_IDENTIFIER => autowire(ShowScrapping::class)

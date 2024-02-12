@@ -1,0 +1,52 @@
+<br /><br />
+<div id="dockprivilegelist">
+    {% include 'html/station/dockPrivileges.twig' %}
+</div>
+<br />
+<table class="tcal">
+    <tr>
+        <th colspan="2">Neuer Eintrag</th>
+    </tr>
+    <tr>
+        <td>
+            <select id="docktype"
+                onchange="$('dock_opt1').hide();$('dock_opt2').hide();$('dock_opt3').hide();$('dock_opt'+this.value).show();">
+                <option value="1">Siedler</option>
+                <option value="2">Allianz</option>
+                <option value="3">Rasse</option>
+            </select>
+        </td>
+        <td>
+            <span id="dock_opt1">
+                Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1" />
+            </span>
+            <span id="dock_opt2" style="display: none;">
+                Allianz: <select name="docktarget" id="docktarget_2">
+                    {% for data in ALLIANCE_LIST %}
+                    <option value="{{ data.getId }}">
+                        {{ data.getName|bbcode2txt }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </span>
+            <span id="dock_opt3" style="display: none;">
+                Rasse: <select name="docktarget" id="docktarget_3">
+                    <option value="1">Föderation</option>
+                    <option value="2">Romulaner</option>
+                    <option value="3">Klingonen</option>
+                    <option value="4">Cardassianer</option>
+                    <option value="5">Ferengi</option>
+                </select>
+            </span>
+            <select id="dockmode">
+                <option value="1">Erlauben</option>
+                <option value="2">Verbieten</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            <input class="button" type="button" value="Erstellen" onclick="addDockPrivilege();" />
+        </td>
+    </tr>
+</table>

@@ -1,7 +1,7 @@
-function editDockPrivileges() {
-	elt = 'dockprivileges';
+function showDockControl() {
+	elt = 'dockcontrol';
 	openPJsWin(elt, 1);
-	ajax_update(elt, 'station.php?SHOW_DOCKPRIVILEGE_CONFIG=1&id=' + shipid);
+	ajax_update(elt, 'station.php?SHOW_DOCK_CONTROL=1&id=' + shipid);
 }
 function addDockPrivilege() {
 	var value = $('docktype').value;

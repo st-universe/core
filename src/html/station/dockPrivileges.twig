@@ -1,0 +1,24 @@
+<input type="hidden" id="dock_sstr" value="{{ SESSIONSTRING }}" />
+<table class="tcal" style="width: 400px;">
+    <tr>
+        <th>Ziel</th>
+        <th>Modus</th>
+        <th></th>
+    </tr>
+    {% for data in DOCKING_PRIVILEGES %}
+    <tr>
+        <td>{{ data.getTargetName|bbcode }}</td>
+        {% set class = data.isDockingAllowed ? 'positive' : 'negative' %}
+        <td class="{{ class }}">
+            {{ data.getPrivilegeModeString }}
+        </td>
+        <td>
+            <div style="cursor: pointer;" onclick="deleteDockPrivilege({{ data.getId }},'{{ SESSIONSTRING }}')"
+                onmouseover="cp('dcfg_{{ loop.index }}','buttons/x2');"
+                onmouseout="cp('dcfg_{{ loop.index }}','buttons/x1');">
+                <img src="assets/buttons/x1.png" title="Einstellung löschen" name="dcfg_{{ loop.index }}" />
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
