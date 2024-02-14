@@ -8,10 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use JBBCode\Parser;
 use Laminas\Mail\Exception\RuntimeException;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -29,6 +28,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private PrivateMessageRepositoryInterface $privateMessageRepository;
 
+    private MailFactoryInterface $mailFactory;
+
     private UserRepositoryInterface $userRepository;
 
     private ConfigInterface $config;
@@ -45,6 +46,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         UserRepositoryInterface $userRepository,
+        MailFactoryInterface $mailFactory,
         ConfigInterface $config,
         Parser $bbcodeParser,
         StuTime $stuTime,
@@ -54,6 +56,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->userRepository = $userRepository;
+        $this->mailFactory = $mailFactory;
         $this->config = $config;
         $this->bbcodeParser = $bbcodeParser;
         $this->stuTime = $stuTime;
@@ -66,7 +69,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $recipientId,
         string|InformationWrapper $information,
         int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
-        string $href = null
+        string $href = null,
+        bool $isRead = false
     ): void {
         if ($senderId === $recipientId) {
             return;
@@ -93,9 +97,20 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         $time = $this->stuTime->time();
 
-        $pm = $this->createPrivateMessage($sender, $recipient, $time, $category, $text, $href, true, null);
+        $pm = $this->createPrivateMessage(
+            $sender,
+            $recipient,
+            $time,
+            $category,
+            $text,
+            $href,
+            !$isRead
+        );
 
-        if ($category === PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN && $recipient->isEmailNotification()) {
+        if (
+            $category === PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+            && $recipient->isEmailNotification()
+        ) {
             $this->sendEmailNotification($sender->getName(), $text, $recipient);
         }
 
@@ -135,8 +150,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
                 $text,
                 null,
-                true,
-                null
+                true
             );
         }
 
@@ -148,8 +162,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT,
             $text,
             null,
-            false,
-            null
+            false
         );
     }
 
@@ -161,7 +174,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         string $text,
         ?string $href,
         bool $new,
-        ?int $inboxPmId
+        int $inboxPmId = null
     ): PrivateMessageInterface {
         $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $category);
 
@@ -186,7 +199,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private function sendEmailNotification(string $senderName, string $message, UserInterface $user): void
     {
-        $mail = new Message();
+        $mail = $this->mailFactory->createMessage();
+
         $mail->addTo($user->getEmail());
         $senderNameAsText = $this->bbcodeParser->parse($senderName)->getAsText();
         $mail->setSubject(sprintf(_('Neue Privatnachricht von Spieler %s'), $senderNameAsText));
@@ -194,7 +208,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $mail->setBody($message);
 
         try {
-            $transport = new Sendmail();
+            $transport = $this->mailFactory->createSendmail();
             $transport->send($mail);
         } catch (RuntimeException $e) {
             $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);

@@ -12,7 +12,8 @@ interface PrivateMessageSenderInterface
         int $recipientId,
         string|InformationWrapper $information,
         int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
-        string $href = null
+        string $href = null,
+        bool $isRead = false
     ): void;
 
     /**
