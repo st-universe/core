@@ -91,14 +91,15 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
         )->getInformations());
 
         if ($ship->isDestroyed()) {
-            $this->entryCreator->addShipEntry(sprintf(
-                _('Die %s (%s) wurde beim Einflug in Sektor %s zerstört'),
-                $shipName,
-                $rumpName,
-                $ship->getSectorString()
+            $this->entryCreator->addEntry(
+                sprintf(
+                    _('Die %s (%s) wurde beim Einflug in Sektor %s zerstört'),
+                    $shipName,
+                    $rumpName,
+                    $ship->getSectorString()
                 ),
                 UserEnum::USER_NOONE,
-                $ship->getUser()->getId()
+                $ship
             );
 
             $this->shipRemover->destroy($wrapper);

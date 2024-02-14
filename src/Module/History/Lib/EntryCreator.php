@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\History\Lib;
 
 use Stu\Component\History\HistoryTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EntryCreator implements EntryCreatorInterface
@@ -18,47 +20,27 @@ final class EntryCreator implements EntryCreatorInterface
         $this->historyRepository = $historyRepository;
     }
 
-    public function addShipEntry(
+    public function addEntry(
         string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
+        int $sourceUserId,
+        ShipInterface|ColonyInterface|AllianceInterface $target
     ): void {
-        $this->addEntry(HistoryTypeEnum::SHIP, $text, $sourceUserId, $targetUserId);
+
+        if ($target instanceof ShipInterface) {
+            $type = $target->isBase() ? HistoryTypeEnum::STATION : HistoryTypeEnum::SHIP;
+            $targetUser = $target->getUser();
+        } elseif ($target instanceof ColonyInterface) {
+            $type = HistoryTypeEnum::COLONY;
+            $targetUser = $target->getUser();
+        } else {
+            $type = HistoryTypeEnum::ALLIANCE;
+            $targetUser = $target->getFounder()->getUser();
+        }
+
+        $this->createEntry($type, $text, $sourceUserId, $targetUser->getId());
     }
 
-    public function addStationEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void {
-        $this->addEntry(HistoryTypeEnum::STATION, $text, $sourceUserId, $targetUserId);
-    }
-
-    public function addColonyEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void {
-        $this->addEntry(HistoryTypeEnum::COLONY, $text, $sourceUserId, $targetUserId);
-    }
-
-    public function addAllianceEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void {
-        $this->addEntry(HistoryTypeEnum::ALLIANCE, $text, $sourceUserId, $targetUserId);
-    }
-
-    public function addOtherEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void {
-        $this->addEntry(HistoryTypeEnum::OTHER, $text, $sourceUserId, $targetUserId);
-    }
-
-    private function addEntry(
+    private function createEntry(
         HistoryTypeEnum $type,
         string $text,
         int $sourceUserId,

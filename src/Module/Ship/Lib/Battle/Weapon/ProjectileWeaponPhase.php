@@ -74,10 +74,10 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 unset($targetPool[$target->getId()]);
 
                 if ($isAlertRed) {
-                    $this->entryCreator->addShipEntry(
+                    $this->entryCreator->addEntry(
                         '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
                         $attacker->getUser()->getId(),
-                        $target->getUser()->getId()
+                        $target
                     );
                 } else {
                     $entryMsg = sprintf(
@@ -87,19 +87,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                         $target->getSectorString(),
                         $attacker->getName()
                     );
-                    if ($target->isBase()) {
-                        $this->entryCreator->addStationEntry(
-                            $entryMsg,
-                            $attacker->getUser()->getId(),
-                            $target->getUser()->getId()
-                        );
-                    } else {
-                        $this->entryCreator->addShipEntry(
-                            $entryMsg,
-                            $attacker->getUser()->getId(),
-                            $target->getUser()->getId()
-                        );
-                    }
+                    $this->entryCreator->addEntry(
+                        $entryMsg,
+                        $attacker->getUser()->getId(),
+                        $target
+                    );
                 }
                 $this->checkForPrestige($attacker->getUser(), $target);
                 $message->add($this->shipRemover->destroy($targetWrapper));
@@ -166,7 +158,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $informations->addInformationWrapper($this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
-                $this->entryCreator->addColonyEntry(
+                $this->entryCreator->addEntry(
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
                         $building->getName(),
@@ -174,7 +166,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                         $attacker->getName()
                     ),
                     $attacker->getUser()->getId(),
-                    $target->getHost()->getUser()->getId()
+                    $target->getHost()
                 );
 
                 $this->buildingManager->remove($target);

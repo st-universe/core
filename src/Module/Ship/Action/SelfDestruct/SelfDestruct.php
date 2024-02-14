@@ -98,19 +98,12 @@ final class SelfDestruct implements ActionControllerInterface
             $ship->getRump()->getName(),
             $ship->getSectorString()
         );
-        if ($ship->isBase()) {
-            $this->entryCreator->addStationEntry(
-                $msg,
-                UserEnum::USER_NOONE,
-                $userId
-            );
-        } else {
-            $this->entryCreator->addShipEntry(
-                $msg,
-                UserEnum::USER_NOONE,
-                $userId
-            );
-        }
+
+        $this->entryCreator->addEntry(
+            $msg,
+            UserEnum::USER_NOONE,
+            $ship
+        );
 
         $prestigeAmount = $ship->getRump()->getPrestige();
         $rumpName = $ship->getRump()->getName();

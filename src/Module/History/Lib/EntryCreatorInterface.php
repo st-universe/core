@@ -3,36 +3,15 @@
 namespace Stu\Module\History\Lib;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 interface EntryCreatorInterface
 {
-    public function addShipEntry(
+    public function addEntry(
         string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void;
-
-    public function addStationEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void;
-
-    public function addColonyEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void;
-
-    public function addAllianceEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
-    ): void;
-
-    public function addOtherEntry(
-        string $text,
-        int $sourceUserId = UserEnum::USER_NOONE,
-        int $targetUserId = UserEnum::USER_NOONE
+        int $sourceUserId,
+        ShipInterface|ColonyInterface|AllianceInterface $target
     ): void;
 }

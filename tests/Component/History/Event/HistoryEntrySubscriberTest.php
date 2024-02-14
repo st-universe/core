@@ -38,7 +38,6 @@ class HistoryEntrySubscriberTest extends StuTestCase
         $allianceName = 'some-name';
         $counterpartName = 'some-other-name';
         $userId = 666;
-        $counterpartFounderId = 42;
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -66,22 +65,22 @@ class HistoryEntrySubscriberTest extends StuTestCase
             ->andReturn($alliance);
         $event->shouldReceive('getCounterpart')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn($counterpart);
         $event->shouldReceive('getResponsibleUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
 
-        $this->entryCreator->shouldReceive('addAllianceEntry')
+        $this->entryCreator->shouldReceive('addEntry')
             ->with(
                 sprintf(
                     'Die Allianz %s hat der Allianz %s den Krieg erklärt',
                     $allianceName,
                     $counterpartName
                 ),
-            $userId,
-            $counterpartFounderId 
+                $userId,
+                $counterpart
             )
             ->once();
 

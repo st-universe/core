@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
@@ -253,8 +254,12 @@ class ApplyFieldDamageTest extends StuTestCase
                 return $m->getRecipientId() === 666;
             }));
 
-        $this->entryCreator->shouldReceive('addShipEntry')
-            ->with('Die SHIP (RUMP) wurde beim Einflug in Sektor SECTOR zerstört')
+        $this->entryCreator->shouldReceive('addEntry')
+            ->with(
+                'Die SHIP (RUMP) wurde beim Einflug in Sektor SECTOR zerstört',
+                UserEnum::USER_NOONE,
+                $this->ship
+            )
             ->once();
 
         $this->shipRemover->shouldReceive('destroy')

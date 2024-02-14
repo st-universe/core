@@ -200,10 +200,10 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
         if ($ship->isDestroyed()) {
-            $this->entryCreator->addShipEntry(
+            $this->entryCreator->addEntry(
                 'Die ' . $shipName . ' (' . $ship->getRump()->getName() . ') wurde bei einem Fluchtversuch in Sektor ' . $ship->getSectorString() . ' zerstört',
                 $otherUserId,
-                $ship->getUser()->getId()
+                $ship
             );
 
             $destroyMsg = $this->shipRemover->destroy($wrapper);

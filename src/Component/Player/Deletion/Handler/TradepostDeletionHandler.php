@@ -66,10 +66,10 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             }
 
             //create history entry
-            $this->entryCreator->addStationEntry(
+            $this->entryCreator->addEntry(
                 'Der Handelsposten in Sektor ' . $ship->getSectorString() . ' wurde verlassen.',
-                $ship->getUser()->getId(),
-                UserEnum::USER_NOONE
+                UserEnum::USER_NOONE,
+                $ship
             );
 
             //transfer tradepost to noone user
