@@ -54,6 +54,9 @@ class TradePost implements TradePostInterface
     #[Column(type: 'integer')]
     private int $storage = 0;
 
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $is_dock_pm_auto_read = null;
+
     #[ManyToOne(targetEntity: 'User')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private UserInterface $user;
@@ -183,6 +186,18 @@ class TradePost implements TradePostInterface
     public function setStorage(int $storage): TradePostInterface
     {
         $this->storage = $storage;
+
+        return $this;
+    }
+
+    public function isDockPmAutoRead(): bool
+    {
+        return $this->is_dock_pm_auto_read ?? false;
+    }
+
+    public function setIsDockPmAutoRead(bool $value): TradePostInterface
+    {
+        $this->is_dock_pm_auto_read = $value;
 
         return $this;
     }

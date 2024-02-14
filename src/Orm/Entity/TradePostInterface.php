@@ -42,6 +42,10 @@ interface TradePostInterface
 
     public function setStorage(int $storage): TradePostInterface;
 
+    public function isDockPmAutoRead(): bool;
+
+    public function setIsDockPmAutoRead(bool $value): TradePostInterface;
+
     public function getLatestLicenseInfo(): ?TradeLicenseInfoInterface;
 
     public function getShip(): ShipInterface;
