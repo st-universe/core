@@ -26,14 +26,14 @@ final class HistoryEntrySubscriber
     public function onWarDeclaration(
         WarDeclaredEvent $event
     ): void {
-        $this->entryCreator->addAllianceEntry(
+        $this->entryCreator->addEntry(
             sprintf(
                 'Die Allianz %s hat der Allianz %s den Krieg erklärt',
                 $event->getAlliance()->getName(),
                 $event->getCounterpart()->getName()
             ),
             $event->getResponsibleUser()->getId(),
-            $event->getCounterpart()->getFounder()->getId()
+            $event->getCounterpart()
         );
     }
 }

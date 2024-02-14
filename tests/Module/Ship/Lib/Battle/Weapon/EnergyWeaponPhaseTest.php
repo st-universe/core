@@ -216,8 +216,8 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->with(Mockery::any(), $targetWrapper)
             ->andReturn($informations);
 
-        $this->entryCreator->shouldReceive('addShipEntry')
-            ->with(Mockery::any(), Mockery::any())
+        $this->entryCreator->shouldReceive('addEntry')
+            ->with(Mockery::any(), 888, $target)
             ->once();
 
         $this->shipRemover->shouldReceive('destroy')

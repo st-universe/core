@@ -83,7 +83,7 @@ final class CancelContract implements ActionControllerInterface
         }
 
         if ($relation->getType() != AllianceEnum::ALLIANCE_RELATION_VASSAL) {
-            $this->entryCreator->addAllianceEntry(
+            $this->entryCreator->addEntry(
                 sprintf(
                     'Das %s zwischen den Allianzen %s und %s wurde aufgelöst',
                     AllianceEnum::relationTypeToDescription($relation->getType()),
@@ -91,12 +91,12 @@ final class CancelContract implements ActionControllerInterface
                     $relation->getOpponent()->getName()
                 ),
                 $user->getId(),
-                $relation->getOpponent()->getFounder()->getId()
+                $relation->getOpponent()
             );
         }
 
         if ($relation->getType() == AllianceEnum::ALLIANCE_RELATION_VASSAL) {
-            $this->entryCreator->addAllianceEntry(
+            $this->entryCreator->addEntry(
                 sprintf(
                     'Die Allianz %s ist nicht mehr %s der Allianz %s',
                     $relation->getOpponent()->getName(),
@@ -104,7 +104,7 @@ final class CancelContract implements ActionControllerInterface
                     $relation->getAlliance()->getName()
                 ),
                 $user->getId(),
-                $relation->getOpponent()->getFounder()->getId()
+                $relation->getOpponent()
             );
         }
 

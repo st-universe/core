@@ -72,10 +72,10 @@ class LowerHull implements ManagerComponentInterface
             if ($ship->getHull() <= $lower) {
                 $this->shipRemover->destroy($this->shipWrapperFactory->wrapShip($ship));
 
-                $this->entryCreator->addStationEntry(
+                $this->entryCreator->addEntry(
                     'Der verlassene Handelsposten in Sektor ' . $ship->getSectorString() . ' ist zerfallen',
                     UserEnum::USER_NOONE,
-                    $ship->getUser()->getId()
+                    $ship
                 );
                 continue;
             }

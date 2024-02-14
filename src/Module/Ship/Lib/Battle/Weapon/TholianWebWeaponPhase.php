@@ -8,7 +8,6 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 //TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
@@ -44,19 +43,12 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
                 $ship->getRump()->getName(),
                 $ship->getSectorString()
             );
-            if ($ship->isBase()) {
-                $this->entryCreator->addStationEntry(
-                    $entryMsg,
-                    $webUser,
-                    $userId
-                );
-            } else {
-                $this->entryCreator->addShipEntry(
-                    $entryMsg,
-                    $webUser,
-                    $userId
-                );
-            }
+
+            $this->entryCreator->addEntry(
+                $entryMsg,
+                $user->getId(),
+                $ship
+            );
 
             $this->checkForPrestige($user, $ship);
 

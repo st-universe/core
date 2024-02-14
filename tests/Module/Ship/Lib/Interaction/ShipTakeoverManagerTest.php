@@ -691,8 +691,12 @@ class ShipTakeoverManagerTest extends StuTestCase
             )
             ->once();
 
-        $this->entryCreator->shouldReceive('addShipEntry')
-            ->with('Die TARGET (RUMP) von Spieler TARGETUSER wurde in Sektor SECTOR durch USER übernommen')
+        $this->entryCreator->shouldReceive('addEntry')
+            ->with(
+                'Die TARGET (RUMP) von Spieler TARGETUSER wurde in Sektor SECTOR durch USER übernommen',
+                666,
+                $this->target
+            )
             ->once();
 
         $this->subject->finishTakeover($takeover);

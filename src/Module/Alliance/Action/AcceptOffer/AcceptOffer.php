@@ -81,7 +81,7 @@ final class AcceptOffer implements ActionControllerInterface
         );
 
         if ($relation->getType() != AllianceEnum::ALLIANCE_RELATION_VASSAL) {
-            $this->entryCreator->addAllianceEntry(
+            $this->entryCreator->addEntry(
                 sprintf(
                     _('Die Allianzen %s und %s sind ein %s eingegangen'),
                     $relation->getAlliance()->getName(),
@@ -89,12 +89,12 @@ final class AcceptOffer implements ActionControllerInterface
                     AllianceEnum::relationTypeToDescription($relation->getType())
                 ),
                 $userId,
-                $relation->getOpponent()->getFounder()->getId()
+                $relation->getOpponent()
             );
         }
 
         if ($relation->getType() == AllianceEnum::ALLIANCE_RELATION_VASSAL) {
-            $this->entryCreator->addAllianceEntry(
+            $this->entryCreator->addEntry(
                 sprintf(
                     _('Die Allianz %s ist nun %s der Allianz %s'),
                     $relation->getOpponent()->getName(),
@@ -102,7 +102,7 @@ final class AcceptOffer implements ActionControllerInterface
                     $relation->getAlliance()->getName()
                 ),
                 $userId,
-                $relation->getOpponent()->getFounder()->getId()
+                $relation->getOpponent()
             );
         }
 

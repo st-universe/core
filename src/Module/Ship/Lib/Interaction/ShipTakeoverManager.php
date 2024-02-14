@@ -300,16 +300,17 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             true
         );
 
-        $this->entryCreator->addShipEntry(sprintf(
-            _('Die %s (%s) von Spieler %s wurde in Sektor %s durch %s übernommen'),
-            $targetShip->getName(),
-            $targetShip->getRump()->getName(),
-            $targetUser->getName(),
-            $targetShip->getSectorString(),
-            $sourceUser->getName()
+        $this->entryCreator->addEntry(
+            sprintf(
+                _('Die %s (%s) von Spieler %s wurde in Sektor %s durch %s übernommen'),
+                $targetShip->getName(),
+                $targetShip->getRump()->getName(),
+                $targetUser->getName(),
+                $targetShip->getSectorString(),
+                $sourceUser->getName()
             ),
             $sourceUser->getId(),
-            $targetUser->getId()
+            $targetShip
         );
 
         $this->changeShipOwner($targetShip, $sourceUser);
