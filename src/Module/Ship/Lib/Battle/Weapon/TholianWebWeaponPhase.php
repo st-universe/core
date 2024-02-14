@@ -12,7 +12,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 //TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
 {
-    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game, $webUser): InformationWrapper
+    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): InformationWrapper
     {
         $informations = new InformationWrapper();
 
