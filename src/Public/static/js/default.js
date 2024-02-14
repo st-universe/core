@@ -542,7 +542,8 @@ function loadImages(panel) {
                 image.removeAttribute("data-src");
         });
 }
-document.addEventListener("DOMContentLoaded", function () {
+
+function initTranslations() {
         let translatableSpans = document.querySelectorAll(".translatable-content");
 
         function replaceTranslateContent(spanElement) {
@@ -575,7 +576,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                 });
         });
-});
+};
 
 let allTranslated = false;
 

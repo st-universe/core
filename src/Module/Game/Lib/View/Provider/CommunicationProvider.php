@@ -94,5 +94,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
         $game->setTemplateVar('USER_KN_MARK', $userKnMark);
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
+
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }
