@@ -17,7 +17,6 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         $informations = new InformationWrapper();
 
         $user = $game->getUser();
-        $userId = $user->getId();
         $ship = $wrapper->get();
 
         $informations->addInformation(sprintf(
