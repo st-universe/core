@@ -6,6 +6,8 @@ namespace Stu\Lib;
 
 use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Lib\Mail\MailFactory;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Map\DistanceCalculation;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\BorderDataProvider;
@@ -67,6 +69,7 @@ return [
     GradientColorInterface::class => autowire(GradientColor::class),
     DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
     BeamUtilInterface::class => autowire(BeamUtil::class),
+    MailFactoryInterface::class => autowire(MailFactory::class),
     PlanetFieldHostProviderInterface::class => autowire(PlanetFieldHostProvider::class),
     TransferTargetLoaderInterface::class => autowire(TransferTargetLoader::class),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
