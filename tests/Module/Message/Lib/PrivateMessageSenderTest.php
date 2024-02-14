@@ -6,8 +6,11 @@ namespace Stu\Module\Message\Lib;
 
 use Doctrine\ORM\EntityManager;
 use JBBCode\Parser;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Sendmail;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -33,6 +36,9 @@ class PrivateMessageSenderTest extends StuTestCase
 
     private UserRepositoryInterface $userRepository;
 
+    /** @var MockInterface|MailFactoryInterface */
+    private $mailFactory;
+
     private ConfigInterface $config;
 
     private Parser $parser;
@@ -48,6 +54,7 @@ class PrivateMessageSenderTest extends StuTestCase
         $this->messageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);
         $this->messageRepository = $this->mock(PrivateMessageRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->mailFactory = $this->mock(MailFactoryInterface::class);
         $this->config = $this->mock(ConfigInterface::class);
         $this->parser = $this->mock(Parser::class);
         $this->stuTime = $this->mock(StuTime::class);
@@ -68,6 +75,7 @@ class PrivateMessageSenderTest extends StuTestCase
             $this->messageFolderRepository,
             $this->messageRepository,
             $this->userRepository,
+            $this->mailFactory,
             $this->config,
             $this->parser,
             $this->stuTime,
@@ -195,6 +203,183 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once();
 
         $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION, 'href');
+    }
+
+    public function testSendWithEmailNotificationAndAlreadyRead(): void
+    {
+        $sender = $this->mock(UserInterface::class);
+        $recipient = $this->mock(UserInterface::class);
+
+        $recipientfolder = $this->mock(PrivateMessageFolderInterface::class);
+        $senderOutboxFolder = $this->mock(PrivateMessageFolderInterface::class);
+
+        $recipientpm = $this->mock(PrivateMessageInterface::class);
+        $outboxPm = $this->mock(PrivateMessageInterface::class);
+
+        $sender->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+        $sender->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("[b]SENDER[/b]");
+
+        $recipient->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(3);
+        $recipient->shouldReceive('isEmailNotification')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $recipient->shouldReceive('getEmail')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("e@mail.de");
+
+        $this->userRepository->shouldReceive('find')
+            ->with(2)
+            ->once()
+            ->andReturn($sender);
+        $this->userRepository->shouldReceive('find')
+            ->with(3)
+            ->once()
+            ->andReturn($recipient);
+
+        $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
+            ->with(3, PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN)
+            ->once()
+            ->andReturn($recipientfolder);
+        $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
+            ->with(2, PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT)
+            ->once()
+            ->andReturn($senderOutboxFolder);
+
+        $this->messageRepository->shouldReceive('prototype')
+            ->withNoArgs()
+            ->times(2)
+            ->andReturn($recipientpm, $outboxPm);
+
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $recipientpm->shouldReceive('setDate')
+            ->with(42)
+            ->once();
+        $outboxPm->shouldReceive('setDate')
+            ->with(42)
+            ->once();
+
+        $recipientpm->shouldReceive('setCategory')
+            ->with($recipientfolder)
+            ->once();
+        $outboxPm->shouldReceive('setCategory')
+            ->with($senderOutboxFolder)
+            ->once();
+
+        $recipientpm->shouldReceive('setText')
+            ->with('foobar')
+            ->once();
+        $outboxPm->shouldReceive('setText')
+            ->with('foobar')
+            ->once();
+
+        $recipientpm->shouldReceive('setHref')
+            ->with('href')
+            ->once();
+        $outboxPm->shouldReceive('setHref')
+            ->with(null)
+            ->once();
+
+        $recipientpm->shouldReceive('setRecipient')
+            ->with($recipient)
+            ->once();
+        $outboxPm->shouldReceive('setRecipient')
+            ->with($sender)
+            ->once();
+
+        $recipientpm->shouldReceive('setSender')
+            ->with($sender)
+            ->once();
+        $outboxPm->shouldReceive('setSender')
+            ->with($recipient)
+            ->once();
+
+        $recipientpm->shouldReceive('setNew')
+            ->with(false)
+            ->once();
+        $outboxPm->shouldReceive('setNew')
+            ->with(false)
+            ->once();
+
+        $recipientpm->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()->andReturn(123);
+        $recipientpm->shouldReceive('setInboxPmId')
+            ->with(null)
+            ->once();
+        $outboxPm->shouldReceive('setInboxPmId')
+            ->with(123)
+            ->once();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
+            ->once();
+
+        $parser = $this->mock(Parser::class);
+        $this->parser->shouldReceive('parse')
+            ->with('[b]SENDER[/b]')
+            ->once()
+            ->andReturn($parser);
+        $parser->shouldReceive('getAsText')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('Sender');
+
+        $this->config->shouldReceive('get')
+            ->with('game.email_sender_address')
+            ->once()
+            ->andReturn('emai@sender.adress');
+
+        $message = $this->mock(Message::class);
+        $this->mailFactory->shouldReceive('createMessage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($message);
+        $sendmail = $this->mock(Sendmail::class);
+        $this->mailFactory->shouldReceive('createSendmail')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($sendmail);
+
+        $sendmail->shouldReceive('send')
+            ->with($message)
+            ->once();
+
+        $message->shouldReceive('addTo')
+            ->with('e@mail.de')
+            ->once();
+        $message->shouldReceive('setSubject')
+            ->with('Neue Privatnachricht von Spieler Sender')
+            ->once();
+        $message->shouldReceive('setFrom')
+            ->with('emai@sender.adress')
+            ->once();
+        $message->shouldReceive('setBody')
+            ->with('foobar')
+            ->once();
+
+        $this->messageRepository->shouldReceive('save')
+            ->with($recipientpm)
+            ->once();
+        $this->messageRepository->shouldReceive('save')
+            ->with($outboxPm)
+            ->once();
+
+        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN, 'href', true);
     }
 
     public function testSendBroadcastWithEmptyRecipients(): void

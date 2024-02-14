@@ -10,6 +10,9 @@ function addDockPrivilege() {
 function deleteDockPrivilege(id, sstr) {
 	ajax_update('dockprivilegelist', 'station.php?B_DELETE_DOCKPRIVILEGE=1&id=' + shipid + "&privilegeid=" + id + "&sstr=" + sstr);
 }
+function toggleDockPmAutoRead(sstr) {
+	ajaxrequest(`station.php?B_DOCK_PM_AUTO_READ=1&id=${shipid}&sstr=${sstr}`);
+}
 function showStationCosts(obj, planid) {
 	closeAjaxWindow();
 

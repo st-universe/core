@@ -161,7 +161,8 @@ final class DockShip implements ActionControllerInterface
             $target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
-            $href
+            $href,
+            $this->isAutoReadOnDock($target)
         );
         $game->addInformation('Andockvorgang abgeschlossen');
     }
@@ -226,9 +227,20 @@ final class DockShip implements ActionControllerInterface
             $target->getUser()->getId(),
             'Die Flotte ' . $fleetWrapper->get()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
-            $href
+            $href,
+            $this->isAutoReadOnDock($target)
         );
         $game->addInformationMerge($msg);
+    }
+
+    private function isAutoReadOnDock(ShipInterface $target): bool
+    {
+        $tradePost = $target->getTradePost();
+        if ($tradePost === null) {
+            return false;
+        }
+
+        return $tradePost->isDockPmAutoRead();
     }
 
     public function performSessionCheck(): bool
