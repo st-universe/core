@@ -31,7 +31,7 @@ class History implements HistoryInterface
     #[Column(type: 'smallint', length: 1, enumType: HistoryTypeEnum::class)]
     private HistoryTypeEnum $type = HistoryTypeEnum::OTHER;
 
-    #[Column(type: 'integer')]
+    #[Column(type: 'integer', nullable: true)]
     private int $user_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
@@ -81,7 +81,7 @@ class History implements HistoryInterface
         return $this;
     }
 
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->user_id;
     }
