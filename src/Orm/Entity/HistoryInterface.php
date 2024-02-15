@@ -20,7 +20,7 @@ interface HistoryInterface
 
     public function setType(HistoryTypeEnum $type): HistoryInterface;
 
-    public function getUserId(): int;
+    public function getUserId(): ?int;
 
     public function setUserId(int $userId): HistoryInterface;
 
