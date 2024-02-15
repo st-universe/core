@@ -53,9 +53,10 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
             $this->shipRepository->save($newLeader);
 
             $fleet->setLeadShip($newLeader);
-            $fleet->getShips()->removeElement($oldLeader);
             $this->fleetRepository->save($fleet);
         }
+
+        $fleet->getShips()->removeElement($oldLeader);
 
         $oldLeader->setFleet(null);
         $oldLeader->setIsFleetLeader(false);

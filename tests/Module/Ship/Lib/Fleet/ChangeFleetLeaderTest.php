@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Fleet;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -50,7 +51,7 @@ class ChangeFleetLeaderTest extends StuTestCase
     public function testChangeExpectFleetDeletionIfSingleShip(): void
     {
         $fleet = $this->mock(FleetInterface::class);
-        $fleetShips = [$this->ship];
+        $fleetShips = new ArrayCollection([$this->ship]);
 
         $this->ship->shouldReceive('getFleet')
             ->withNoArgs()
@@ -63,9 +64,8 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->with(false)
             ->once();
 
-        $fleet->shouldReceive('getShips->toArray')
+        $fleet->shouldReceive('getShips')
             ->withNoArgs()
-            ->once()
             ->andReturn($fleetShips);
 
         $this->cancelColonyBlockOrDefend->shouldReceive('work')
@@ -81,6 +81,8 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->once();
 
         $this->subject->change($this->ship);
+
+        $this->assertTrue($fleetShips->isEmpty());
     }
 
     public function testChangeExpectLeaderChangeIfNotSingleShip(): void
