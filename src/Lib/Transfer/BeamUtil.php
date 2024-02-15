@@ -86,7 +86,7 @@ final class BeamUtil implements BeamUtilInterface
             $amount = $target->getMaxStorage() - $target->getStorageSum();
         }
 
-        $epsUsage = (int)ceil($amount / $transferAmount);
+        $epsUsage = $isDockTransfer ? 0 : (int)ceil($amount / $transferAmount);
 
         $informations->addInformationf(
             _('%d %s (Energieverbrauch: %d)'),
@@ -97,9 +97,7 @@ final class BeamUtil implements BeamUtilInterface
 
         $this->lowerSourceStorage($amount, $commodity, $source);
         $this->upperTargetStorage($amount, $commodity, $target);
-        if (!$isDockTransfer) {
-            $this->consumeEps($epsUsage, $subject);
-        }
+        $this->consumeEps($epsUsage, $subject);
     }
 
     public function isDockTransfer(
