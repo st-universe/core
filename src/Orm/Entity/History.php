@@ -32,7 +32,7 @@ class History implements HistoryInterface
     private HistoryTypeEnum $type = HistoryTypeEnum::OTHER;
 
     #[Column(type: 'integer', nullable: true)]
-    private int $user_id = 0;
+    private ?int $user_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $source_user_id = 0;
