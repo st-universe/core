@@ -32,9 +32,6 @@ class History implements HistoryInterface
     private HistoryTypeEnum $type = HistoryTypeEnum::OTHER;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $user_id = 0;
-
-    #[Column(type: 'integer', nullable: true)]
     private ?int $source_user_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
@@ -77,18 +74,6 @@ class History implements HistoryInterface
     public function setType(HistoryTypeEnum $type): HistoryInterface
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $userId): HistoryInterface
-    {
-        $this->user_id = $userId;
 
         return $this;
     }
