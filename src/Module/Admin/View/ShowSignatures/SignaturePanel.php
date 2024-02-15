@@ -15,6 +15,7 @@ use Stu\Orm\Entity\LayerInterface;
 
 class SignaturePanel extends AbstractVisualPanel
 {
+    private int $shipId;
     private int $userId;
     private int $allyId;
 
@@ -28,6 +29,7 @@ class SignaturePanel extends AbstractVisualPanel
         array $data,
         PanelLayerCreationInterface $panelLayerCreation,
         LayerInterface $layer,
+        int $shipId,
         int $userId,
         int $allyId,
         LoggerUtilInterface $loggerUtil
@@ -36,6 +38,7 @@ class SignaturePanel extends AbstractVisualPanel
 
         $this->data = $data;
         $this->layer = $layer;
+        $this->shipId = $shipId;
         $this->userId = $userId;
         $this->allyId = $allyId;
     }
@@ -53,7 +56,10 @@ class SignaturePanel extends AbstractVisualPanel
 
         $panelLayerCreation->addMapLayer($this->layer);
 
-        if ($this->userId !== 0) {
+        if ($this->shipId !== 0) {
+            $panelLayerCreation->addShipCountLayer(true, null, ShipcountLayerTypeEnum::SHIP_ONLY, $this->shipId);
+            $panelLayerCreation->addSubspaceLayer($this->shipId, SubspaceLayerTypeEnum::SHIP_ONLY);
+        } elseif ($this->userId !== 0) {
             $panelLayerCreation->addShipCountLayer(true, null, ShipcountLayerTypeEnum::USER_ONLY, $this->userId);
             $panelLayerCreation->addSubspaceLayer($this->userId, SubspaceLayerTypeEnum::USER_ONLY);
         } elseif ($this->allyId !== 0) {

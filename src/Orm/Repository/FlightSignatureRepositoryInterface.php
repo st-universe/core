@@ -34,6 +34,11 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     /**
      * @return array<array{minx: int, maxx: int, miny: int, maxy: int}>
      */
+    public function getSignatureRangeForShip(int $shipId): array;
+
+    /**
+     * @return array<array{minx: int, maxx: int, miny: int, maxy: int}>
+     */
     public function getSignatureRangeForUser(int $userId): array;
 
     /**

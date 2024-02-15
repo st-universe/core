@@ -67,6 +67,9 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getUserShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
+    public function getShipShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
     public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
@@ -77,6 +80,9 @@ interface MapRepositoryInterface extends ObjectRepository
 
     /** @return array<CellDataInterface> */
     public function getUserSubspaceLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array;
 
     /**
      * @return array<ExploreableStarMapInterface>

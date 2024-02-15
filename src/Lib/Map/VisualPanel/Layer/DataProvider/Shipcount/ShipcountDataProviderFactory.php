@@ -32,6 +32,8 @@ final class ShipcountDataProviderFactory implements ShipcountDataProviderFactory
                 return new AllianceShipcountDataProvider($id, $this->mapRepository, $this->starSystemMapRepository);
             case ShipcountLayerTypeEnum::USER_ONLY:
                 return new UserShipcountDataProvider($id, $this->mapRepository, $this->starSystemMapRepository);
+            case ShipcountLayerTypeEnum::SHIP_ONLY:
+                return new ShipShipcountDataProvider($id, $this->mapRepository, $this->starSystemMapRepository);
         }
 
         throw new RuntimeException(sprintf('Shipcount layer type %d is not supported', $type->value));

@@ -34,6 +34,8 @@ final class SubspaceDataProviderFactory implements SubspaceDataProviderFactoryIn
                 return new AllianceSubspaceDataProvider($id, $this->mapRepository, $this->starSystemMapRepository);
             case SubspaceLayerTypeEnum::USER_ONLY:
                 return new UserSubspaceDataProvider($id, $this->mapRepository, $this->starSystemMapRepository);
+            case SubspaceLayerTypeEnum::SHIP_ONLY:
+                return new ShipSubspaceDataProvider($id, $this->mapRepository, $this->starSystemMapRepository);
         }
 
         throw new RuntimeException(sprintf('subspace layer type %d is not supported', $type->value));

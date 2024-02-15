@@ -118,6 +118,20 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
+    public function getSignatureRangeForShip(int $shipId): array
+    {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                FROM stu_flight_sig fs
+                JOIN stu_map m ON m.id = fs.map_id
+                WHERE fs.ship_id = :shipId',
+                $this->createSignatureRangeResultMapping()
+            )
+            ->setParameter('shipId', $shipId)
+            ->getResult();
+    }
+
     public function getSignatureRangeForUser(int $userId): array
     {
         return $this->getEntityManager()
