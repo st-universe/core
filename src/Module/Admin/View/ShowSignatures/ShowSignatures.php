@@ -59,8 +59,7 @@ final class ShowSignatures implements ViewControllerInterface
         }
 
         if ($shipId !== 0) {
-            $game->addInformation(_('Aktion noch nicht möglich für Einzelschiff'));
-            return;
+            $signatureRange = $this->flightSignatureRepository->getSignatureRangeForShip($shipId);
         } elseif ($userId !== 0) {
             $signatureRange = $this->flightSignatureRepository->getSignatureRangeForUser($userId);
         } elseif ($allyId !== 0) {
@@ -77,6 +76,7 @@ final class ShowSignatures implements ViewControllerInterface
             current($signatureRange),
             $this->panelLayerCreation,
             $layer,
+            $shipId,
             $userId,
             $allyId,
             $this->loggerUtilFactory->getLoggerUtil()

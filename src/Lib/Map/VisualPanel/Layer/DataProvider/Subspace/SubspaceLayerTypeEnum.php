@@ -8,6 +8,7 @@ enum SubspaceLayerTypeEnum: int
 {
     case ALL = 0;
     case IGNORE_USER = 1;
-    case USER_ONLY = 2;
-    case ALLIANCE_ONLY = 3;
+    case SHIP_ONLY = 2;
+    case USER_ONLY = 3;
+    case ALLIANCE_ONLY = 4;
 }
