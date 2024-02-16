@@ -1,8 +1,10 @@
 <br />
+{% if SHIP.getTradePost %}
 {% set checked = SHIP.getTradePost.isDockPmAutoRead ? 'checked="true"' : '' %}
 <input type="checkbox" {{ checked }} onchange="toggleDockPmAutoRead('{{ SESSIONSTRING }}');" />
 Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert"
     src="/assets/buttons/info2.png" style="height:16px;" />
+{% endif %}
 <br />
 <div id="dockprivilegelist">
     {% include 'html/station/dockPrivileges.twig' %}
