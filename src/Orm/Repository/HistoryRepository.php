@@ -30,9 +30,9 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             ->createQuery(
                 sprintf(
                     'SELECT h FROM %s h
-                WHERE h.source_user_id != :pirateId
-                AND h.target_user_id != :pirateId
-                ORDER BY h.id DESC',
+                    WHERE COALESCE(h.source_user_id, 0) != :pirateId
+                    AND COALESCE(h.target_user_id, 0) != :pirateId
+                    ORDER BY h.id DESC',
                     History::class
                 )
             )
@@ -44,19 +44,17 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
 
     public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array
     {
+        $searchCriteria = $search ? 'AND UPPER(h.text) like UPPER(:search)' : '';
+
         return $this->getEntityManager()
             ->createQuery(
-                $search ? sprintf(
+                sprintf(
                     'SELECT h FROM %s h
-                WHERE h.type = :typeId
-                AND UPPER(h.text) like UPPER(:search)
-                ORDER BY h.id desc',
-                    History::class
-                ) : sprintf(
-                    'SELECT h FROM %s h
-                WHERE h.type = :typeId
-                ORDER BY h.id desc',
-                    History::class
+                    WHERE h.type = :typeId
+                    %s
+                    ORDER BY h.id desc',
+                    History::class,
+                    $searchCriteria
                 )
             )->setParameters(
                 $search ? [
@@ -70,23 +68,19 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
 
     public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit, $search): array
     {
+        $searchCriteria = $search ? 'AND UPPER(h.text) like UPPER(:search)' : '';
+
         return $this->getEntityManager()
             ->createQuery(
-                $search ? sprintf(
+                sprintf(
                     'SELECT h FROM %s h
-                WHERE h.type = :typeId
-                AND UPPER(h.text) like UPPER(:search)
-                AND h.source_user_id != :pirateId 
-                AND h.target_user_id != :pirateId
-                ORDER BY h.id desc',
-                    History::class
-                ) : sprintf(
-                    'SELECT h FROM %s h
-                WHERE h.type = :typeId
-                AND h.source_user_id != :pirateId
-                AND h.target_user_id != :pirateId
-                ORDER BY h.id desc',
-                    History::class
+                    WHERE h.type = :typeId
+                    %s
+                    AND COALESCE(h.source_user_id, 0) != :pirateId 
+                    AND COALESCE(h.target_user_id, 0) != :pirateId
+                    ORDER BY h.id desc',
+                    History::class,
+                    $searchCriteria
                 )
             )->setParameters(
                 $search ? [
