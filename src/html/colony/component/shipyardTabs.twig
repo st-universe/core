@@ -1,26 +1,21 @@
 <table class="tcal" style="width: auto;">
     {% set fieldId = FIELD.getId %}
     <tr>
-        <td class="colonymenu">
-            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(0);">
-                &lt;&lt; Zurück zum Koloniemenü
-            </a>
-        </td>
         <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 9) }}">
             <a class="colmenubutton" href="javascript:void(0);"
-                onclick="switchColonyMenu(8, {{ FUNC.getId }}, {{ fieldId }});">
+                onclick="switchColonySubmenu(8, null, {{ FUNC.getId }}, {{ fieldId }});">
                 <span>Schiffbau</span>
             </a>
         </td>
         <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 18) }}">
             <a class="colmenubutton" href="javascript:void(0);"
-                onclick="switchColonyMenu(18, {{ FUNC.getId }}, {{ fieldId }});">
+                onclick="switchColonySubmenu(18, null, {{ FUNC.getId }}, {{ fieldId }});">
                 <span>Schiffsreparatur</span>
             </a>
         </td>
         <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 17) }}">
             <a class="colmenubutton" href="javascript:void(0);"
-                onclick="switchColonyMenu(17, {{ FUNC.getId }}, {{ fieldId }});">
+                onclick="switchColonySubmenu(17, null, {{ FUNC.getId }}, {{ fieldId }});">
                 <span>Schiffsdemontage</span>
             </a>
         </td>

@@ -21,7 +21,7 @@
 							tal:content="structure data/getTitle">TITLE</a>
 					</td>
 					<td style="text-align: center;" tal:content="datetime:data/getDate">DATE</td>
-					<td style="width:20px;">
+					<td style="width: 20px;">
 						<a href="notes.php?B_DELETE_NOTES=1&delnotes=${data/getId}&sstr=${THIS/getSessionString}"
 							onmouseover="cp('note${data/getId}','buttons/x2')"
 							onmouseout="cp('note${data/getId}','buttons/x1')">

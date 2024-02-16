@@ -30,16 +30,16 @@ function buildMenuScroll(menu, offset) {
 	ajax_update('buildmenu' + menu, createHostUri('B_SCROLL_BUILDMENU', '&menu=' + menu + '&offset=' + offset));
 }
 
-function switchColonyMenu(menu, func, fid) {
-	switchMenu(menu, 'colonymenu', func, fid);
-}
-
-function switchColonySubmenu(menu, params) {
+function switchColonySubmenu(menu, params, func, fid) {
 	document.querySelectorAll('.colmenubutton').forEach(function (elem) {
 		Element.removeClassName(elem, 'selected');
 	});
-	switchMenu(menu, 'submenu', null, null, params, true);
-	$('colmenubutton_' + menu).addClassName('selected');
+	switchMenu(menu, 'submenu', func, fid, params, true);
+
+	var menuButton = $('colmenubutton_' + menu);
+	if (menuButton) {
+		menuButton.addClassName('selected');
+	}
 
 	colonySubMenu = menu;
 }

@@ -38,12 +38,12 @@
     <td>
         <a {{ onClickShip(ship) }}>
             {% if ship.getDockedTo %}
-            <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height:20px;" />
+            <img src="/assets/buttons/dock2.png" title="Schiff ist angedockt" style="height: 20px;" />
             {% endif %}
             {% set stateIconAndTitle = wrapper.getStateIconAndTitle %}
             {% if stateIconAndTitle %}
             <img src="/assets/buttons/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
-                style="height:20px;" />
+                style="height: 20px;" />
             {% endif %}
             <span>{{ ship.getName|bbcode }}</span>
         </a>
