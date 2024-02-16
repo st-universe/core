@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\HistoryInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 /**
  * @extends EntityRepository<History>
@@ -22,6 +23,24 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             10
         );
     }
+
+    public function getRecentWithoutPirate(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT h FROM %s h
+                WHERE h.source_user_id != :pirateId
+                AND h.target_user_id != :pirateId
+                ORDER BY h.id DESC',
+                    History::class
+                )
+            )
+            ->setParameter('pirateId', UserEnum::USER_NPC_KAZON)
+            ->setMaxResults(10)
+            ->getResult();
+    }
+
 
     public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array
     {
@@ -44,6 +63,37 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
                     'typeId' => $type->value,
                     'search' => sprintf('%%%s%%', $search)
                 ] : ['typeId' => $type->value]
+            )
+            ->setMaxResults($limit)
+            ->getResult();
+    }
+
+    public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit, $search): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                $search ? sprintf(
+                    'SELECT h FROM %s h
+                WHERE h.type = :typeId
+                AND UPPER(h.text) like UPPER(:search)
+                AND h.source_user_id != :pirateId 
+                AND h.target_user_id != :pirateId
+                ORDER BY h.id desc',
+                    History::class
+                ) : sprintf(
+                    'SELECT h FROM %s h
+                WHERE h.type = :typeId
+                AND h.source_user_id != :pirateId
+                AND h.target_user_id != :pirateId
+                ORDER BY h.id desc',
+                    History::class
+                )
+            )->setParameters(
+                $search ? [
+                    'typeId' => $type->value,
+                    'pirateId' => UserEnum::USER_NPC_KAZON,
+                    'search' => sprintf('%%%s%%', $search)
+                ] : ['typeId' => $type->value, 'pirateId' => UserEnum::USER_NPC_KAZON]
             )
             ->setMaxResults($limit)
             ->getResult();

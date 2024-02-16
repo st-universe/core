@@ -173,4 +173,6 @@ interface UserInterface
     public function getUserLock(): ?UserLockInterface;
 
     public function hasTranslation(): bool;
+
+    public function isShowPirateHistoryEntrys(): bool;
 }

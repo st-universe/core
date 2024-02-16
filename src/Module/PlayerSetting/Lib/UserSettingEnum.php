@@ -16,6 +16,7 @@ enum UserSettingEnum: string
     case WARPSPLIT_AUTO_CARRYOVER_DEFAULT = 'warpsplit_auto_carryover_default';
     case RPG_BEHAVIOR = 'rpg_behavior';
     case CSS_COLOR_SHEET = 'css_color_sheet';
+    case SHOW_PIRATE_HISTORY_ENTRYS = 'show_pirate_history_entrys';
 
     /**
      * returns true, if the setting has it's own action controller

@@ -657,4 +657,14 @@ class User implements UserInterface
         $text = $this->getDescription();
         return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
     }
+
+    public function isShowPirateHistoryEntrys(): bool
+    {
+        $setting = $this->getSettings()->get(UserSettingEnum::SHOW_PIRATE_HISTORY_ENTRYS->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
+
+        return false;
+    }
 }
