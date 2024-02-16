@@ -1,39 +1,47 @@
-<div id="colmenubutton_2" class="colonymenu colmenubutton selected"
-    onclick="clearAjaxCallbacks(); switchColonySubmenu(2);">
-    <img src="/assets/buttons/lupe2.png" /> <span>Informationen</span>
-</div>
-<div id="colmenubutton_1" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(1);">
-    <img src="/assets/buttons/menu_planets1.png" /> <span>Baumenü</span>
-</div>
-<div id="colmenubutton_4" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(4)">
-    <img src="/assets/buttons/bar2.png" /> <span>Soziales</span>
-</div>
-<div id="colmenubutton_5" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(5)">
-    <img src="/assets/buttons/gebact2.png" /> <span>Gebäudeschaltung</span>
-</div>
-<div id="colmenubutton_3" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(3)">
-    <img src="/assets/buttons/menu_option1.png" /> <span>Einstellungen</span>
-</div>
-<br />
-<div style="display: inline-block">
-    <div id="colonyeps">
-        {% include 'html/colony/component/colonyEps.twig' %}
+<div style="display: flex; flex-direction: column; width: 100%;">
+    <div style="width: 100%;">
+        <div id="colmenubutton_2" class="colonymenu colmenubutton selected"
+            onclick="clearAjaxCallbacks(); switchColonySubmenu(2);">
+            <img src="/assets/buttons/lupe2.png" /> <span>Informationen</span>
+        </div>
+        <div id="colmenubutton_1" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(1);">
+            <img src="/assets/buttons/menu_planets1.png" /> <span>Baumenü</span>
+        </div>
+        <div id="colmenubutton_4" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(4)">
+            <img src="/assets/buttons/bar2.png" /> <span>Soziales</span>
+        </div>
+        <div id="colmenubutton_5" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(5);">
+            <img src="/assets/buttons/gebact2.png" /> <span>Gebäudeschaltung</span>
+        </div>
+        <div id="colmenubutton_3" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(3);">
+            <img src="/assets/buttons/menu_option1.png" /> <span>Einstellungen</span>
+        </div>
+        <br />
     </div>
-    <br />
-    {% if SHIELDING_MANAGER.hasShielding %}
-    <div id="colonyshields">
-        {% include 'html/colony/component/colonyShields.twig' %}
-    </div>
-    <br />
-    {% endif %}
-    <div id="colsurface">
-        {% include 'html/colony/component/colonySurface.twig' %}
-    </div>
-    <br />
-    {% if STORAGE %}
-    <div id="colonystorage">
-        {% include 'html/colony/component/colonyStorage.twig' %}
-    </div>
-    {% endif %}
-</div>
-{% include SELECTED_COLONY_SUB_MENU_TEMPLATE %}
+    <div style="display: flex; width: 100%;">
+        <div style="width: 433px; margin-right: 4px;">
+            <div id="colonyeps">
+                {% include 'html/colony/component/colonyEps.twig' %}
+            </div>
+            <br />
+            {% if SHIELDING_MANAGER.hasShielding %}
+            <div id="colonyshields">
+                {% include 'html/colony/component/colonyShields.twig' %}
+            </div>
+            <br />
+            {% endif %}
+            <div id="colsurface" style="max-width: 433px;">
+                {% include 'html/colony/component/colonySurface.twig' %}
+            </div>
+            <br />
+            {% if STORAGE %}
+            <div id="colonystorage" style="max-width: 433px;">
+                {% include 'html/colony/component/colonyStorage.twig' %}
+            </div>
+            {% endif %}
+            </div>
+        <div style="flex-grow: 1;">
+            {% include SELECTED_COLONY_SUB_MENU_TEMPLATE %}
+        </div>
+        </div>
+    
