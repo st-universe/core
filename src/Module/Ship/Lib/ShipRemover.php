@@ -227,6 +227,12 @@ final class ShipRemover implements ShipRemoverInterface
 
         //leave 50% of all intact modules
         $leaveCount = (int) ceil(count($intactModules) / 2);
+
+        //maximum of 1 if ship is pirate
+        if ($ship->getUser()->getId() === UserEnum::USER_NPC_KAZON) {
+            $leaveCount = min(1, $leaveCount);
+        }
+
         for ($i = 1; $i <= $leaveCount; $i++) {
             $module = $intactModules[array_rand($intactModules)];
             unset($intactModules[$module->getId()]);
