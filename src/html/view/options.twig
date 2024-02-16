@@ -218,6 +218,19 @@
             </tr>
             <tr>
                 <td>
+                    {% if REAL_USER.isShowPirateHistoryEntrys %}
+                    <input type="checkbox" name="show_pirate_history_entrys" value="1" checked="true" />
+                    {% else %}
+                    <input type="checkbox" name="show_pirate_history_entrys" value="1" />
+                    {% endif %}
+                    </td>
+                    <td>
+                        Zeigt einträge in der History an die durch Interaktion mit dem
+                        Piraten NPC entstanden sind.
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>
                     {% set defaultView = REAL_USER.getDefaultView %}
                     <select name="default_view">
                         <option value="0">----------------------</option>

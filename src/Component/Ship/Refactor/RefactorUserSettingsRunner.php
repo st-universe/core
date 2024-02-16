@@ -37,6 +37,7 @@ final class RefactorUserSettingsRunner
             $this->createUserSetting($user, UserSettingEnum::FLEET_FIXED_DEFAULT, $user->getFleetFixedDefault());
             $this->createUserSetting($user, UserSettingEnum::RPG_BEHAVIOR, $user->getRpgBehavior()->value);
             $this->createUserSetting($user, UserSettingEnum::CSS_COLOR_SHEET, $user->getCss());
+            $this->createUserSetting($user, UserSettingEnum::SHOW_PIRATE_HISTORY_ENTRYS, $user->isShowPirateHistoryEntrys());
         }
     }
 

@@ -162,7 +162,11 @@ final class MaindeskProvider implements ViewComponentProviderInterface
             );
         }
 
-        $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
+        if ($user->isShowPirateHistoryEntrys()) {
+            $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
+        } else {
+            $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecentWithoutPirate());
+        }
 
         //emergencies
         $this->setPotentialEmergencies($game);

@@ -25,6 +25,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
 
     public function setTemplateVariables(GameControllerInterface $game): void
     {
+        $user = $game->getUser();
         $type = HistoryTypeEnum::tryFrom(request::indInt('htype')) ?? HistoryTypeEnum::SHIP;
         $count = request::indInt('hcount');
         if (!$count) {
@@ -64,9 +65,19 @@ final class HistoryProvider implements ViewComponentProviderInterface
             'HISTORY_SEARCH',
             $search ?: ''
         );
-        $game->setTemplateVar(
-            'HISTORY',
-            $this->historyRepository->getByTypeAndSearch($type, $count, $search)
-        );
+
+        if ($user->isShowPirateHistoryEntrys()) {
+            $game->setTemplateVar(
+                'HISTORY',
+                $this->historyRepository->getByTypeAndSearch($type, $count, $search)
+            );
+            return;
+        } else {
+            $game->setTemplateVar(
+                'HISTORY',
+                $this->historyRepository->getByTypeAndSearchWithoutPirate($type, $count, $search)
+            );
+            return;
+        }
     }
 }
