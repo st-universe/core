@@ -20,6 +20,9 @@ interface HistoryRepositoryInterface extends ObjectRepository
      */
     public function getRecent(): array;
 
+    /**
+     * @return array<HistoryInterface>
+     */
     public function getRecentWithoutPirate(): array;
 
     /**
@@ -29,6 +32,11 @@ interface HistoryRepositoryInterface extends ObjectRepository
      */
     public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array;
 
+    /**
+     * @param false|string $search
+     *
+     * @return array<HistoryInterface>
+     */
     public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit, $search): array;
 
     public function getAmountByType(int $typeId): int;
