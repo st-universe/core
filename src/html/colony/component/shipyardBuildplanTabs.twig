@@ -1,15 +1,18 @@
 <div>
     <table class="tcal" style="width: auto;">
         <tr>
+            <td class="colonymenu">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(0);">
+                    &lt;&lt; Zurück zum Koloniemenü
+                </a>
+            </td>
             <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 8) }}">
-                <a class="colmenubutton" href="javascript:void(0);"
-                    onclick="switchColonySubmenu(8, null, {{ FUNC.getId }});">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(8,{{ FUNC.getId }});">
                     <span>Neuer Bauplan</span>
                 </a>
             </td>
             <td class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 9) }}">
-                <a class="colmenubutton" href="javascript:void(0);"
-                    onclick="switchColonySubmenu(9, null, {{ FUNC.getId }});">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(9,{{ FUNC.getId }});">
                     <span>Gespeicherte Baupläne</span>
                 </a>
             </td>
