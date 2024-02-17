@@ -2,7 +2,7 @@
 
 {% embed "html/colony/menu/container.twig" %}
 {% block containment %}
-<div style="width: 40vw;">
+<div>
     <br />
     <table class="tcal">
         <tr>
@@ -18,13 +18,9 @@
                         <img src="/assets/ships/{{ rump.getId }}.png" title="{{ rump.getName }}"
                             style="padding-top: 5px;" /><br />
                         {{ rump.getName }}<br /><br />
-                        <span>Typ: {{ rump.getCategoryName }}</span><br />
-                        <img src="/assets/buttons/warp1.png" title="Im Einsatz"
-                            style="height: 25px; padding-top: 5px;" />
-                        {{ rump.getActiveShipCount }}
-                        <img src="/assets/buttons/bauplan.png" title="Baupläne"
-                            style="height: 25px; padding-top: 5px;" />
-                        {{ rump.getBuildplanCount }}
+                        <span>Typ</span>: {{ rump.getCategoryName }}<br />
+                        <span>Im Einsatz</span>: {{ rump.getActiveShipCount }}<br />
+                        <span>Baupläne</span>: {{ rump.getBuildplanCount }}
                     </a>
                 </div>
                 {% endfor %}

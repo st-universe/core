@@ -1,9 +1,24 @@
 {% embed "html/colony/menu/container.twig" %}
 {% block containment %}
-<div style="width: 40vw;">
+<div>
     <table class="tcal">
         <tr>
-            <th colspan="2">Torpedoherstellung</th>
+            <td style="width: 50%;" class="colonymenu">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(0);">
+                    &lt;&lt; Zurück zum Koloniemenü
+                </a>
+            </td>
+            <td style="width: 50%;" class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 11) }}">
+                <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(11);">
+                    <span>Torpedoherstellung</span>
+                </a>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th colspan="2">Herstellung</th>
         </tr>
         {% if BUILDABLE_TORPEDO_TYPES %}
         <tr>

@@ -27,11 +27,11 @@
 			{% set system = colony.getSystem %}
 			<a {{ onClickColony(colony) }} style="font-size: 120%">
 				{% if colony.isBlocked %}
-				<img src="assets/buttons/block2.png" title="Kolonie wird blockiert" style="height: 20px;" /><span>
+				<img src="assets/buttons/block2.png" title="Kolonie wird blockiert" style="height:20px;" /><span>
 				</span>
 				{% endif %}
 				{% if colony.isDefended %}
-				<img src="assets/buttons/defend1.png" title="Kolonie wird verteidigt" style="height: 20px;" /><span>
+				<img src="assets/buttons/defend1.png" title="Kolonie wird verteidigt" style="height:20px;" /><span>
 				</span>
 				{% endif %}
 				{{ colony.getName|bbcode }}

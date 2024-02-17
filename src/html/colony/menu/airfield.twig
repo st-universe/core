@@ -1,6 +1,21 @@
 {% embed "html/colony/menu/container.twig" %}
 {% block containment %}
-<div style="width: 40vw;">
+<div>
+  <table class="tcal">
+    <tr>
+      <td style="width: 50%;" class="colonymenu">
+        <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(0);">
+          &lt;&lt; Zurück zum Koloniemenü
+        </a>
+      </td>
+      <td style="width: 50%;" class="colonymenu {{ getColonyMenuClass(CURRENT_MENU, 6) }}">
+        <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(6);">
+          <span>Hangar</span>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <br />
   <table class="tcal">
     <tr>
       <th colspan="3">Schiff starten</th>
