@@ -45,17 +45,16 @@ final class ShowSectorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
+        $game->setPageTitle("Sektor Scan");
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/sectorscan');
+        $game->setTemplateVar('ERROR', true);
+
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
         );
         $ship = $wrapper->get();
-
-        $game->setPageTitle("Sektor Scan");
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/sectorscan');
-
-        $game->setTemplateVar('ERROR', true);
 
         if (!$ship->getNbs()) {
             $game->addInformation("Die Nahbereichssensoren sind nicht aktiv");
