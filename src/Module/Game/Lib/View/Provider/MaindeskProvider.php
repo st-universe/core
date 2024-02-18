@@ -145,7 +145,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         );
         $game->setTemplateVar(
             'RANDOM_ONLINE_USER',
-            $this->userRepository->getOrderedByLastaction(15, $userId, time() - GameEnum::USER_ONLINE_PERIOD)
+            $this->userRepository->getOrderedByLastaction(35, $userId, time() - GameEnum::USER_ONLINE_PERIOD)
         );
         $game->setTemplateVar(
             'SHIP_BUILD_PROGRESS',
