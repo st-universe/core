@@ -661,7 +661,14 @@ function actionToInnerContent(action, params, title, page) {
         switchInnerContent(action, title, params, page);
 }
 
+var isUpdateInProgress = false;
 function switchInnerContent(identifier, title, params, page, stateUrl) {
+        if (isUpdateInProgress) {
+                return;
+        }
+
+        isUpdateInProgress = true;
+
         closeAjaxWindow();
 
         url = `?${identifier}=1`;
@@ -677,6 +684,8 @@ function switchInnerContent(identifier, title, params, page, stateUrl) {
 
         new Ajax.Updater('innerContent', switchUrl, {
                 onComplete: function (response) {
+                        isUpdateInProgress = false;
+
                         if (400 == response.status) {
                                 window.location.href = '/index.php'
                                 return;
