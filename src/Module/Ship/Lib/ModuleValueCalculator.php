@@ -11,7 +11,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 final class ModuleValueCalculator implements ModuleValueCalculatorInterface
 {
     public function calculateModuleValue(
-        $rump,
+        ShipRumpInterface $rump,
         ModuleInterface $module,
         $callback = 'aggi',
         bool|int $value = false
@@ -19,7 +19,7 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         if ($value === false) {
             $value = $rump->$callback();
         }
-        if ($module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SENSOR) {
+        if ($module->getType() === ShipModuleTypeEnum::SENSOR) {
             if ($rump->getModuleLevel() > $module->getLevel()) {
                 return (int) round($value -  $module->getDowngradeFactor());
             }

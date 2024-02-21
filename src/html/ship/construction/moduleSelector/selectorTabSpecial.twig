@@ -1,0 +1,26 @@
+{% set tab = moduleSelector.getScreenTab %}
+{% set moduleType = moduleSelector.getModuleType.value %}
+<div id="module_tab_{{ moduleType }}" class="border_box {{ tab.getCssClass  }}"
+    onclick="showModuleSelector(this, {{ moduleType }});">
+
+    {% set display = moduleSelector.hasSelectedModule ? 'none' : 'block' %}
+    <img src="/assets/buttons/modul_screen_{{ moduleType }}.png" id="tab_image_mod_{{ moduleType }}"
+        style="display: {{ display }};" />
+
+    <div>
+        {% for moduleSelectorEntry in moduleSelector.getAvailableModules %}
+        {% set commodityId = moduleSelectorEntry.getModule.getCommodityId %}
+        {% set moduleId = moduleSelectorEntry.getModule.getId %}
+        {% set display = moduleSelectorEntry.isChosen ? 'block' : 'none' %}
+        <div style="float: left; padding-left: 5px;">
+            <img src="/assets/commodities/{{ commodityId }}.png" id="tab_image_special_mod_{{ moduleId }}"
+                style="display: {{ display }};" />
+        </div>
+        {% endfor %}
+    </div>
+
+    <span>{{ tab.getTabTitle }}</span>
+    <span id="module_tab_info_{{ moduleType }}">
+        {{ moduleSelector.getSelectedModuleCount }} / {{ RUMP.getSpecialSlots }}
+    </span>
+</div>

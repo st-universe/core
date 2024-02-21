@@ -221,10 +221,9 @@ function showRepairOptions(shipid) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_REPAIR_OPTIONS=1');
 }
-function toggleSpecialModuleDisplay(type, module_id, module_crew) {
-}
+
 currentTab = false;
-function showModuleSelectTab(tabId) {
+function showStationModuleSelector(id) {
 	if (currentTab) {
 		currentTab.hide();
 
@@ -232,9 +231,10 @@ function showModuleSelectTab(tabId) {
 			elem.checked = false;
 		});
 	}
-	$('selector_' + tabId).show();
-	currentTab = $('selector_' + tabId);
+	$('selector_' + id).show();
+	currentTab = $('selector_' + id);
 }
+
 function hideFleet(fleetid) {
 	$('nbstab').select('.fleet' + fleetid).each(function (obj) {
 		obj.hide();

@@ -10,7 +10,6 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
-use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -66,19 +65,19 @@ Init::run(function (ContainerInterface $dic): void {
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB
         ];
         $moduleTypes = [
-            ShipModuleTypeEnum::MODULE_TYPE_HULL,
-            ShipModuleTypeEnum::MODULE_TYPE_SHIELDS,
-            ShipModuleTypeEnum::MODULE_TYPE_EPS,
-            ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE,
-            ShipModuleTypeEnum::MODULE_TYPE_REACTOR,
-            ShipModuleTypeEnum::MODULE_TYPE_COMPUTER,
-            ShipModuleTypeEnum::MODULE_TYPE_PHASER,
-            ShipModuleTypeEnum::MODULE_TYPE_TORPEDO,
-            ShipModuleTypeEnum::MODULE_TYPE_SENSOR
+            ShipModuleTypeEnum::HULL,
+            ShipModuleTypeEnum::SHIELDS,
+            ShipModuleTypeEnum::EPS,
+            ShipModuleTypeEnum::IMPULSEDRIVE,
+            ShipModuleTypeEnum::REACTOR,
+            ShipModuleTypeEnum::COMPUTER,
+            ShipModuleTypeEnum::PHASER,
+            ShipModuleTypeEnum::TORPEDO,
+            ShipModuleTypeEnum::SENSOR
         ];
 
         if ($rump->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_STATION) {
-            $moduleTypes[] = ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE;
+            $moduleTypes[] = ShipModuleTypeEnum::WARPDRIVE;
         }
 
         $moduleList = request::postArray('mod');
@@ -159,10 +158,12 @@ Init::run(function (ContainerInterface $dic): void {
                 $userId
             );
 
-            foreach ($moduleTypes as $moduleTypeId) {
+            foreach ($moduleTypes as $moduleType) {
                 $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
                     $rump->getId()
                 );
+
+                $moduleTypeId = $moduleType->value;
 
                 if (
                     $mod_level->{'getModuleLevel' . $moduleTypeId}() === 0
@@ -173,7 +174,7 @@ Init::run(function (ContainerInterface $dic): void {
 
                 printf(
                     '<div>Modul: %s</div>',
-                    ModuleTypeDescriptionMapper::getDescription($moduleTypeId)
+                    $moduleType->getDescription()
                 );
 
                 $min_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Min'}();

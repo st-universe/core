@@ -1,0 +1,17 @@
+<div>
+    <div style="float: left;"><img src=" assets/buttons/modul_screen_2.png" title="{{ module.getDescription }}" />
+        <span>Schildkapazität</span>: {{ moduleSelectorEntry.getValue }}
+    </div>
+    {% set data = moduleSelectorEntry.getAddonValues %}
+    {% if data %}
+    <div style="float: left;">
+        {% for addonValue in data %}
+        <div style="display: table-cell; padding-left: 4px;">
+            <img src="assets/rassen/{{ addonValue.factionId }}_s.png"
+                style="border: 2px solid {{ addonValue.gradientColor }};"
+                title="Modifikator: {{ addonValue.modificator }}%" />
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

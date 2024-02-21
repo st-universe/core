@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
+
 interface BuildplanModuleInterface
 {
     public function getId(): int;
@@ -10,9 +12,9 @@ interface BuildplanModuleInterface
 
     public function setBuildplan(ShipBuildplanInterface $buildplan): BuildplanModuleInterface;
 
-    public function getModuleType(): int;
+    public function getModuleType(): ShipModuleTypeEnum;
 
-    public function setModuleType(int $moduleType): BuildplanModuleInterface;
+    public function setModuleType(ShipModuleTypeEnum $type): BuildplanModuleInterface;
 
     public function getModuleCount(): int;
 

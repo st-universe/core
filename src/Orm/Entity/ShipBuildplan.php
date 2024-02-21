@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 
 #[Table(name: 'stu_buildplans')]
 #[Entity(repositoryClass: 'Stu\Orm\Repository\ShipBuildplanRepository')]
@@ -180,7 +180,7 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
-    public function getModulesByType(int $type): array
+    public function getModulesByType(ShipModuleTypeEnum $type): array
     {
         return $this->getModules()
             ->filter(
@@ -192,10 +192,5 @@ class ShipBuildplan implements ShipBuildplanInterface
     public function getModules(): Collection
     {
         return $this->modules;
-    }
-
-    public function getModule(): ModuleSelectWrapper
-    {
-        return new ModuleSelectWrapper($this);
     }
 }

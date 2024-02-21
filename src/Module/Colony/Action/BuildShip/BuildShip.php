@@ -16,7 +16,6 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
-use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -143,21 +142,23 @@ final class BuildShip implements ActionControllerInterface
         $modules = [];
         $sigmod = [];
 
-        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
+        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
 
-            $module = request::postArray('mod_' . $i);
+            $value = $moduleType->value;
+            $module = request::postArray('mod_' . $value);
+
             if (
-                $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
-                && $moduleLevels->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
+                $moduleType != ShipModuleTypeEnum::SPECIAL
+                && $moduleLevels->{'getModuleMandatory' . $value}()
                 && count($module) == 0
             ) {
                 $game->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
-                    ModuleTypeDescriptionMapper::getDescription($i)
+                    $moduleType->getDescription()
                 );
                 return;
             }
-            if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
+            if ($moduleType === ShipModuleTypeEnum::SPECIAL) {
                 $specialCount = 0;
                 foreach ($module as $id) {
                     $specialMod = $this->moduleRepository->find((int) $id);
@@ -177,7 +178,7 @@ final class BuildShip implements ActionControllerInterface
                 continue;
             }
             if (count($module) == 0 || current($module) == 0) {
-                $sigmod[$i] = 0;
+                $sigmod[$value] = 0;
                 continue;
             }
             if (current($module) > 0) {
@@ -186,14 +187,14 @@ final class BuildShip implements ActionControllerInterface
                 if ($mod === null) {
                     throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                 }
-            } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
+            } elseif (!$moduleLevels->{'getModuleLevel' . $value}()) {
                 return;
             }
             if ($mod === null) {
                 throw new RuntimeException(sprintf('moduleId %d does not exist', (int)current($module)));
             }
             $modules[current($module)] = $mod;
-            $sigmod[$i] = $mod->getId();
+            $sigmod[$value] = $mod->getId();
         }
 
         $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
@@ -210,7 +211,6 @@ final class BuildShip implements ActionControllerInterface
             $selector = $this->colonyLibFactory->createModuleSelector(
                 $module->getType(),
                 $colony,
-                null,
                 $rump,
                 $user
             );

@@ -17,8 +17,8 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 
 #[Table(name: 'stu_modules')]
 #[Index(name: 'ship_rump_role_type_idx', columns: ['rumps_role_id', 'type'])]
@@ -48,8 +48,8 @@ class Module implements ModuleInterface
     #[Column(type: 'smallint')]
     private int $crew = 0;
 
-    #[Column(type: 'integer')]
-    private int $type = 0;
+    #[Column(type: 'integer', enumType: ShipModuleTypeEnum::class)]
+    private ShipModuleTypeEnum $type = ShipModuleTypeEnum::HULL;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $research_id = 0;
@@ -233,12 +233,12 @@ class Module implements ModuleInterface
         return $this;
     }
 
-    public function getType(): int
+    public function getType(): ShipModuleTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(int $type): ModuleInterface
+    public function setType(ShipModuleTypeEnum $type): ModuleInterface
     {
         $this->type = $type;
 
@@ -367,7 +367,7 @@ class Module implements ModuleInterface
 
     public function getDescription(): string
     {
-        return ModuleTypeDescriptionMapper::getDescription($this->getType());
+        return $this->getType()->getDescription();
     }
 
     public function getTorpedoHull(): Collection

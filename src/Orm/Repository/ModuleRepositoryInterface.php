@@ -3,9 +3,11 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipRumpRoleInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 /**
  * @extends ObjectRepository<Module>
@@ -17,21 +19,11 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @return array<ModuleInterface>
      */
-    public function getBySpecialTypeColonyAndRump(
-        int $colonyId,
-        int $moduleTypeId,
+    public function getBySpecialTypeAndRump(
+        ColonyInterface|ShipInterface $host,
+        ShipModuleTypeEnum $moduleType,
         int $shipRumpId,
         int $shipRumpRoleId
-    ): array;
-
-    /**
-     * @return array<ModuleInterface>
-     */
-    public function getBySpecialTypeShipAndRump(
-        int $shipId,
-        int $moduleTypeId, // 1 bis 9: ShipModuleTypeEnum
-        int $shipRumpId,
-        ShipRumpRoleInterface $shipRumpRole
     ): array;
 
     /**
@@ -41,7 +33,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
      */
     public function getByTypeColonyAndLevel(
         int $colonyId,
-        int $moduleTypeId,
+        ShipModuleTypeEnum $moduleType,
         int $shipRumpRoleId,
         array $moduleLevel
     ): array;

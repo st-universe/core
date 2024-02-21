@@ -19,7 +19,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
-use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -105,23 +104,25 @@ final class CreateBuildplan implements ActionControllerInterface
         $sigmod = [];
 
         $error = false;
-        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
-            $this->loggerUtil->log(sprintf('%d', $i));
-            $module = request::postArray('mod_' . $i);
+        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+
+            $value = $moduleType->value;
+            $this->loggerUtil->log(sprintf('%d', $value));
+            $module = request::postArray('mod_' . $value);
             if (
-                $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
-                && $moduleLevels->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
+                $moduleType != ShipModuleTypeEnum::SPECIAL
+                && $moduleLevels->{'getModuleMandatory' . $value}()
                 && count($module) == 0
             ) {
                 $game->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
-                    ModuleTypeDescriptionMapper::getDescription($i)
+                    $moduleType->getDescription()
                 );
                 $this->loggerUtil->log('C');
                 $this->exitOnError($game);
                 $error = true;
             }
-            if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
+            if ($moduleType === ShipModuleTypeEnum::SPECIAL) {
                 $specialCount = 0;
                 foreach ($module as $id) {
                     $specialMod = $this->moduleRepository->find((int) $id);
@@ -144,7 +145,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 continue;
             }
             if (count($module) == 0 || current($module) == 0) {
-                $sigmod[$i] = 0;
+                $sigmod[$value] = 0;
                 continue;
             }
             $mod = null;
@@ -154,13 +155,13 @@ final class CreateBuildplan implements ActionControllerInterface
                 if ($mod === null) {
                     throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                 }
-            } elseif (!$moduleLevels->{'getModuleLevel' . $i}()) {
+            } elseif (!$moduleLevels->{'getModuleLevel' . $value}()) {
                 $this->exitOnError($game);
                 return;
             }
             if ($mod !== null) {
                 $modules[current($module)] = $mod;
-                $sigmod[$i] = $mod->getId();
+                $sigmod[$value] = $mod->getId();
             }
         }
 

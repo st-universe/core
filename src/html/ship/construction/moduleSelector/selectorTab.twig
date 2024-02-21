@@ -1,0 +1,15 @@
+{% set tab = moduleSelector.getScreenTab %}
+{% set moduleType = moduleSelector.getModuleType.value %}
+<div id="module_tab_{{ moduleType }}" class="border_box {{ tab.getCssClass }}"
+    onclick="showModuleSelector(this, {{ moduleType }});">
+
+    {% if moduleSelector.hasSelectedModule %}
+    {% for mod in moduleSelector.getSelectedModules %}
+    <img src="/assets/commodities/{{ mod.getModule.getCommodityId }}.png" id="tab_image_mod_{{ moduleType }}" />
+    {% endfor %}
+    {% else %}
+    <img src="/assets/buttons/modul_screen_{{ moduleType }}.png" id="tab_image_mod_{{ moduleType }}" />
+    {% endif %}
+
+    <span>{{ tab.getTabTitle }}</span>
+</div>

@@ -14,14 +14,14 @@ use Stu\Component\Colony\Commodity\ColonyProductionSumReducer;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\ModuleSelector;
-use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -69,7 +69,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
 
-    private TalPageInterface $talPage;
+    private TwigPageInterface $twigPage;
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
@@ -95,7 +95,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         BuildingCommodityRepositoryInterface $buildingCommodityRepository,
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        TalPageInterface $talPage,
+        TwigPageInterface $twigPage,
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory,
@@ -115,7 +115,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->buildingCommodityRepository = $buildingCommodityRepository;
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-        $this->talPage = $talPage;
+        $this->twigPage = $twigPage;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->moduleSelectorAddonFactory = $moduleSelectorAddonFactory;
@@ -196,9 +196,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     public function createModuleSelector(
-        int $moduleType,
-        ?ColonyInterface $colony,
-        ?ShipInterface $station,
+        ShipModuleTypeEnum $moduleType,
+        ColonyInterface|ShipInterface $host,
         ShipRumpInterface $rump,
         UserInterface $user,
         ?ShipBuildplanInterface $buildplan = null
@@ -209,35 +208,12 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         return new ModuleSelector(
             $this->moduleRepository,
             $this->shipRumpModuleLevelRepository,
-            $this->talPage,
+            $this->twigPage,
             $moduleType,
-            $colony,
-            $station,
+            $host,
             $rump,
             $user,
             $addon,
-            $buildplan
-        );
-    }
-
-    public function createModuleSelectorSpecial(
-        int $moduleType,
-        ?ColonyInterface $colony,
-        ?ShipInterface $station,
-        ShipRumpInterface $rump,
-        UserInterface $user,
-        ?ShipBuildplanInterface $buildplan = null
-    ): ModuleSelectorSpecial {
-        return new ModuleSelectorSpecial(
-            $this->moduleRepository,
-            $this->shipRumpModuleLevelRepository,
-            $this->talPage,
-            $moduleType,
-            $colony,
-            $station,
-            $rump,
-            $user,
-            null,
             $buildplan
         );
     }

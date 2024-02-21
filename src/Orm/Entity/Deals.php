@@ -267,7 +267,7 @@ class Deals implements DealsInterface
 
         foreach ($this->getBuildplan()->getModules() as $obj) {
             $module = $obj->getModule();
-            $index = $module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL ? $module->getId() : $module->getType();
+            $index = $module->getType() === ShipModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
             $modules[$index] = $module;
         }
         return $modules;

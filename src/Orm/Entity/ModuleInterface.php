@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 interface ModuleInterface
@@ -35,9 +36,9 @@ interface ModuleInterface
 
     public function getCrewByFactionAndRumpLvl(FactionInterface $faction, ShipRumpInterface $rump): int;
 
-    public function getType(): int;
+    public function getType(): ShipModuleTypeEnum;
 
-    public function setType(int $type): ModuleInterface;
+    public function setType(ShipModuleTypeEnum $type): ModuleInterface;
 
     public function getResearchId(): int;
 

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 
 #[Table(name: 'stu_buildplans_modules')]
 #[UniqueConstraint(name: 'buildplan_module_type_idx', columns: ['buildplan_id', 'module_type', 'module_special'])]
@@ -26,8 +27,8 @@ class BuildplanModule implements BuildplanModuleInterface
     #[Column(type: 'integer')]
     private int $buildplan_id = 0;
 
-    #[Column(type: 'smallint')]
-    private int $module_type = 0;
+    #[Column(type: 'smallint', enumType: ShipModuleTypeEnum::class)]
+    private ShipModuleTypeEnum $module_type = ShipModuleTypeEnum::HULL;
 
     #[Column(type: 'integer')]
     private int $module_id = 0;
@@ -63,12 +64,12 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
-    public function getModuleType(): int
+    public function getModuleType(): ShipModuleTypeEnum
     {
         return $this->module_type;
     }
 
-    public function setModuleType(int $moduleType): BuildplanModuleInterface
+    public function setModuleType(ShipModuleTypeEnum $moduleType): BuildplanModuleInterface
     {
         $this->module_type = $moduleType;
 

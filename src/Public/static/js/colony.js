@@ -283,20 +283,28 @@ function scrollBuildmenuByMouse(menu, delta) {
 		buildMenuScrollUp(menu, offset);
 	}
 }
+
 currentTab = false;
-function showModuleSelectTab(obj, tabId) {
-	$('module_select_tabs').select('td').each(function (tab) {
+function showModuleSelector(obj, type) {
+	$('module_select_tabs').select('div').each(function (tab) {
 		Element.removeClassName(tab, 'module_select_base_selected');
 	});
 	Element.addClassName(obj, 'module_select_base_selected');
-	if (!currentTab) {
-		$('module_select_tab_0').hide();
-	} else {
+	if (currentTab) {
 		currentTab.hide();
 	}
-	$('module_select_tab_' + tabId).show();
-	currentTab = $('module_select_tab_' + tabId);
+	$('selector_' + type).show();
+	currentTab = $('selector_' + type);
 }
+
+function toggleTorpedoInfo(module_crew) {
+	if (module_crew == 0) {
+		$('torpedo_info').hide();
+	} else {
+		$('torpedo_info').show();
+	}
+}
+
 function replaceTabImage(type, moduleId, commodityId, module_crew) {
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
@@ -309,26 +317,40 @@ function replaceTabImage(type, moduleId, commodityId, module_crew) {
 		$('module_type_' + type).show();
 		updateCrewCount(type, module_crew);
 	}
+
 	enableShipBuildButton();
 }
 var disabledSlots = new Set();
 function toggleSpecialModuleDisplay(type, module_id, module_crew) {
 	let innerHTML = '';
 	let checkedCount = 0;
-	Element.select($('module_select_tab_' + type), '.specialModuleRadio').each(function (elem) {
+
+	//count and set tab images
+	Element.select($('selector_' + type), '.specialModuleRadio').each(function (elem) {
 		if (elem.checked) {
 			innerHTML = innerHTML.concat($(elem.value + '_content').innerHTML);
 			if (elem.value == module_id) {
 				updateCrewCount(elem.value, module_crew);
 			}
 			checkedCount++;
+			$('tab_image_special_mod_' + elem.value).style.display = 'block';
 		} else {
 			updateCrewCount(elem.value, 0);
+			$('tab_image_special_mod_' + elem.value).style.display = 'none';
 		}
 	});
-	$('module_tab_info_' + type).innerHTML = checkedCount + ' von max. ' + specialSlots;
+	$('module_tab_info_' + type).innerHTML = `${checkedCount} / ${specialSlots}`;
+
+	//enable/disable default image
+	if (checkedCount != 0) {
+		$('tab_image_mod_9').style.display = 'none';
+	} else {
+		$('tab_image_mod_9').style.display = 'block';
+	}
+
+	//check for maximum amount
 	if (checkedCount == specialSlots) {
-		Element.select($('module_select_tab_' + type), '.specialModuleRadio').each(function (elem) {
+		Element.select($('selector_' + type), '.specialModuleRadio').each(function (elem) {
 			if (!elem.checked && !elem.disabled) {
 				elem.disabled = true;
 				disabledSlots.add(elem);
@@ -356,6 +378,10 @@ function setFixValues(base_crew, max_crew, special_slots) {
 var crew_type = new Hash();
 function updateCrewCount(type, module_crew) {
 	crew_type.set(type, module_crew);
+
+	if (type == 8) {
+		toggleTorpedoInfo(module_crew);
+	}
 }
 function checkCrewCount() {
 	crewSum = baseCrew;
@@ -383,7 +409,7 @@ function enableShipBuildButton() {
 		return;
 	}
 	mandatory = false;
-	$('module_select_tabs').select('td').each(function (tab) {
+	$('module_select_tabs').select('div').each(function (tab) {
 		if (Element.hasClassName(tab, 'module_select_base_mandatory')) {
 			mandatory = true;
 		}

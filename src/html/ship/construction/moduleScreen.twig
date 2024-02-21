@@ -1,0 +1,167 @@
+{% extends "html/sitedefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+
+{% set baseCrew = RUMP.getBaseCrew %}
+{% set maxCrew = MAX_CREW_COUNT %}
+{% set specialSlots = RUMP.getSpecialSlots %}
+<form action="colony.php" method="post" name="colmanform">
+  <script>
+      setFixValues({{ baseCrew }}, {{ maxCrew }}, {{ specialSlots }});
+  </script>
+  <input type="hidden" name="id" value="{{ COLONY.getId }}" />
+  <input type="hidden" name="rump" value="{{ RUMP.getId }}" />
+  <div class="moduleScreenGrid">
+    <div>
+      <div class="box">
+        <div class="box_title" style="margin: 0; padding: 0">Modultyp-Auswahl</div>
+        <div class="box_body">
+          <div id="module_select_tabs" style="display: grid; grid-template-columns: 12vw 12vw 12vw 12vw 12vw 12vw;">
+            {% for moduleSelector in MODULE_SELECTORS %}
+            {% if moduleSelector.isSpecial %}
+            {% include 'html/ship/construction/moduleSelector/selectorTabSpecial.twig' %}
+            {% else %}
+            {% include 'html/ship/construction/moduleSelector/selectorTab.twig' %}
+            {% endif %}
+            {% endfor %}
+          </div>
+          <br />
+          {% for selector in MODULE_SELECTORS %}
+          <div id="selector_{{ selector.getModuleType.value }}" style="display: none;">
+            {% autoescape false %}
+            {{ selector.render }}
+            {% endautoescape %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div style="margin-left: 10px">
+      <div class="box">
+        <div class="box_title">{{ RUMP.getName }}</div>
+        <div class="box_body">
+          <div class="center">
+            <img src="assets/ships/{{ RUMP.getId }}.png" />
+          </div>
+          <br />
+          <div style="text-align: center; width: 100%;">
+            <input type="submit" class="button" name="B_BUILD_SHIP" value="Schiff bauen" id="buildbutton"
+              disabled="disabled" />
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="box" style="float: left;">
+        <div class="box_title">Bauplan</div>
+        <div class="box_body">
+          <input type="hidden" name="planid" value="{{ PLAN.getId }}" />
+          {% if PLAN %}
+          <input type="text" name="buildplanname" value="{{ PLAN.getName }}" />
+          <button type="submit" name="B_BUILDPLAN_CHANGE_NAME" value="Name ändern" title="Name ändern">
+            <img src="assets/buttons/knedit2.png" alt="Name ändern" />
+          </button>
+          {% else %}
+          <input type="text" name="buildplanname" value="Bauplanname" />
+          <button type="submit" name="B_BUILDPLAN_SAVE" value="Bauplan speichern" title="nur den Bauplan speichern">
+            <img src="assets/buttons/knedit2.png" alt="Bauplan speichern" />
+          </button>
+          {% endif %}
+        </div>
+      </div>
+      <br />
+      <div class="box" style="float: left;">
+        <div class="box_title">Beschreibung</div>
+        <div class="box_body">
+          <div>
+            <div>
+              Die {{ RUMP.getName }}-Klasse ist vom Typ {{ RUMP.getShipRumpCategory.getName }} und
+              dient in erster Linie als {{ RUMP.getShipRumpRole.getName }}.
+            </div>
+          </div>
+          <br />
+          <div>
+            <div>Lagerraum: {{ RUMP.getStorage }} Einheiten</div>
+            <div>Flugkosten: {{ RUMP.getFlightEcost }} pro Feld</div>
+            <div>Beamfaktor: {{ RUMP.getBeamFactor }}x Multiplikator</div>
+            <div>Energiewaffensalven: {{ RUMP.getPhaserVolleys }} pro Kampfrunde</div>
+            <div id="torpedo_info" style="display: none;">
+              <div>Torpedolevel: {{ RUMP.getTorpedoLevel }}</div>
+              <div>Torpedosalven: {{ RUMP.getTorpedoVolleys }} pro Kampfrunde</div>
+              <div>Torpedokapazität: {{ RUMP.getBaseTorpedoStorage }} Projektile</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="box" style="float: left;">
+        <div class="box_title">Modulauswirkungen</div>
+        <div class="box_body">
+          <div style="width: 100%;">
+            <div id="crewdisplay">
+              <div id="crewSum">Benötigte Crew: {{ baseCrew }}</div>
+              <div id="crewMax">Maximale Crew: {{ maxCrew }}</div>
+              <div id="crewerr" style="display: none; color:tomato">Crewbedarf &gt; {{ maxCrew }} - Nicht baubar</div>
+            </div>
+          </div>
+          <br />
+          <div>
+            {% set rump = RUMP %}
+            {% for moduleSelector in MODULE_SELECTORS %}
+            {% set type = moduleSelector.getModuleType.value %}
+            {% set id = 'module_type_' ~ type %}
+            {% if PLAN %}
+
+            {% if moduleSelector.hasSelectedModule %}
+            <div id="{{ id }}" style="float: left;">
+              {% for moduleSelectorEntry in moduleSelector.getSelectedModules %}
+              {% set module = moduleSelectorEntry.getModule %}
+              {% set crewIdentifier = moduleSelector.isSpecial ? module.getId : type %}
+              {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' %}
+              <script>
+                  updateCrewCount({{ crewIdentifier }}, {{ moduleSelectorEntry.getNeededCrew }});
+              </script>
+              <br />
+              {% endfor %}
+            </div>
+            {% else %}
+            <div id="{{ id }}" style="display: none;">
+            </div>
+            {% endif %}
+
+            {% else %}
+            <div id="{{ id }}" style="display: none;">
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="box" style="float: left;">
+        <div class="box_title">Baukosten</div>
+        <div class="box_body">
+          <div>
+            <img src="assets/commodities/0.png" /> {{ RUMP.getEpsCost }} Energie
+          </div>
+          {% for cost in RUMP.getBuildingCosts %}
+          <div>
+            <img src="assets/commodities/{{ cost.getCommodity.getId }}.png" title="{{ cost.getCommodity.getName }}" />
+            {{ cost.getAmount }}
+          </div>
+          {% endfor %}
+          <div>
+            <img src="assets/buttons/time.png" title="Bauzeit" />
+            {{ RUMP.getBuildtime|formatSeconds }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if PLAN %}
+  <script defer="defer">
+      enableShipBuildButton();
+  </script>
+  {% endif %}
+</form>
+{% endblock %}

@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use InvalidArgumentException;
+use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Module\Ship\Lib\ModuleValueCalculator;
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
-use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
-use Stu\Module\Tal\TalPageInterface;
+use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -22,32 +21,30 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 class ModuleSelector implements ModuleSelectorInterface
 {
-    private const MACRO = 'html/modulescreen.xhtml/moduleselector';
-    private const TEMPLATE = 'html/ajaxempty.xhtml';
+    private const MACRO = 'html/ship/construction/moduleSelector/selector.twig';
+    private const TEMPLATE = 'html/ajaxempty.twig';
 
-    /** @var ModuleSelectorWrapperInterface[]|null */
-    private ?array $moduleSelectorWrappers = null;
-    private int $moduleType;
+    /** @var ModuleSelectorEntryInterface[]|null */
+    private ?array $moduleSelectorEntries = null;
+    private ShipModuleTypeEnum $moduleType;
     private ShipRumpInterface $rump;
     private UserInterface $user;
-    private ?ColonyInterface $colony;
-    private ?ShipInterface $station;
+    private ColonyInterface|ShipInterface $host;
     private ?ShipBuildplanInterface $buildplan;
     private ?ModuleSelectorAddonInterface $addon;
+    private ?ShipRumpModuleLevelInterface $shipRumpModuleLevel = null;
 
     private ModuleRepositoryInterface $moduleRepository;
-
     private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
 
-    private TalPageInterface $talPage;
+    private TwigPageInterface $twigPage;
 
     public function __construct(
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        TalPageInterface $talPage,
-        int $moduleType,
-        ?ColonyInterface $colony,
-        ?ShipInterface $station,
+        TwigPageInterface $twigPage,
+        ShipModuleTypeEnum $moduleType,
+        ColonyInterface|ShipInterface $host,
         ShipRumpInterface $rump,
         UserInterface $user,
         ?ModuleSelectorAddonInterface $addon,
@@ -56,45 +53,60 @@ class ModuleSelector implements ModuleSelectorInterface
         $this->moduleType = $moduleType;
         $this->rump = $rump;
         $this->user = $user;
-        $this->colony = $colony;
-        $this->station = $station;
+        $this->host = $host;
         $this->buildplan = $buildplan;
         $this->moduleRepository = $moduleRepository;
         $this->addon = $addon;
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-        $this->talPage = $talPage;
+        $this->twigPage = $twigPage;
+    }
+
+    public function isMandatory(): bool
+    {
+        if ($this->isSpecial()) {
+            return false;
+        }
+        $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump->getId());
+
+        return $moduleLevels->{'getModuleMandatory' . $this->getModuleType()->value}() > 0;
+    }
+
+    public function isSpecial(): bool
+    {
+        return $this->getModuleType() === ShipModuleTypeEnum::SPECIAL;
+    }
+
+    public function getScreenTab(): ModuleScreenTab
+    {
+        return new ModuleScreenTab($this);
     }
 
     public function allowMultiple(): bool
     {
-        return false;
-    }
-
-    public function getMacro(): string
-    {
-        return self::MACRO;
+        return $this->isSpecial();
     }
 
     public function render(): string
     {
-        $this->talPage->setTemplate(self::TEMPLATE);
-        $this->talPage->setVar('THIS', $this);
-        return $this->talPage->parse();
+        $this->twigPage->setTemplate(self::TEMPLATE);
+        $this->twigPage->setVar('THIS', $this);
+        $this->twigPage->setVar('MACRO', self::MACRO);
+        return $this->twigPage->render();
     }
 
-    public function getModuleType(): int
+    public function getModuleType(): ShipModuleTypeEnum
     {
         return $this->moduleType;
     }
 
     public function allowEmptySlot(): bool
     {
-        return $this->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() == ShipModuleTypeEnum::MODULE_OPTIONAL;
+        return !$this->isSpecial() && !$this->isMandatory();
     }
 
     public function getModuleDescription(): string
     {
-        return ModuleTypeDescriptionMapper::getDescription($this->getModuleType());
+        return $this->getModuleType()->getDescription();
     }
 
     public function getUserId(): int
@@ -120,58 +132,67 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function getAvailableModules(): array
     {
-        if ($this->moduleSelectorWrappers === null) {
-            $this->moduleSelectorWrappers = [];
+        if ($this->moduleSelectorEntries === null) {
+            $this->moduleSelectorEntries = [];
             $modules = [];
-            if ($this->getModuleType() == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                if ($this->getColony() !== null) {
-                    $modules = $this->moduleRepository->getBySpecialTypeColonyAndRump(
-                        $this->getColony()->getId(),
-                        $this->getModuleType(),
-                        $this->getRump()->getId(),
-                        $this->getShipRumpRole()->getId()
-                    );
-                } elseif ($this->station !== null) {
-                    $modules = $this->moduleRepository->getBySpecialTypeShipAndRump(
-                        $this->station->getId(),
-                        $this->getModuleType(),
-                        $this->getRump()->getId(),
-                        $this->getShipRumpRole()
-                    );
-                }
-            } elseif ($this->getColony() !== null) {
+
+            $host = $this->getHost();
+            if ($this->getModuleType() === ShipModuleTypeEnum::SPECIAL) {
+                $modules = $this->moduleRepository->getBySpecialTypeAndRump(
+                    $host,
+                    $this->getModuleType(),
+                    $this->getRump()->getId(),
+                    $this->getShipRumpRole()->getId()
+                );
+            } elseif ($this->getHost() instanceof ColonyInterface) {
                 $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
                     $this->getRump()->getId()
                 );
-                $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
-                $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
+                $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType()->value . 'Min'}();
+                $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType()->value . 'Max'}();
                 $modules = $this->moduleRepository->getByTypeColonyAndLevel(
-                    $this->getColony()->getId(),
+                    $host->getId(),
                     $this->getModuleType(),
                     $this->getShipRumpRole()->getId(),
                     range($min_level, $max_level)
                 );
             }
             foreach ($modules as $obj) {
-                $this->moduleSelectorWrappers[$obj->getId()] = new ModuleSelectorWrapper(
+                $this->moduleSelectorEntries[$obj->getId()] = new ModuleSelectorEntry(
+                    $this,
                     $obj,
                     $this->getRump(),
+                    $this->getShipRumpModuleLevel(),
+                    $this->getHost(),
                     $this->user,
                     $this->getBuildplan()
                 );
             }
         }
-        return $this->moduleSelectorWrappers;
+        return $this->moduleSelectorEntries;
     }
 
-    public function hasModuleSelected(): ModuleSelectWrapper
+    public function hasSelectedModule(): bool
     {
-        return new ModuleSelectWrapper($this->buildplan);
+        return !empty($this->getSelectedModules());
     }
 
-    public function getColony(): ?ColonyInterface
+    public function getSelectedModuleCount(): int
     {
-        return $this->colony;
+        return count($this->getSelectedModules());
+    }
+
+    public function getSelectedModules(): array
+    {
+        return array_filter(
+            $this->getAvailableModules(),
+            fn (ModuleSelectorEntryInterface $entry) => $entry->isChosen()
+        );
+    }
+
+    public function getHost(): ColonyInterface|ShipInterface
+    {
+        return $this->host;
     }
 
     public function getBuildplan(): ?ShipBuildplanInterface
@@ -179,27 +200,27 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->buildplan;
     }
 
-    public function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module): string
+    private function getShipRumpModuleLevel(): ShipRumpModuleLevelInterface
     {
-        $moduleLevels = $this->getModuleLevels();
+        if ($this->shipRumpModuleLevel === null) {
+            $this->shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump->getId());
+        }
 
-        if ($moduleLevels->{'getModuleLevel' . $module->getModule()->getType()}() > $module->getModule()->getLevel()) {
-            return 'module_positive';
+        if ($this->shipRumpModuleLevel === null) {
+            throw new RuntimeException(sprintf('no shipRumpModuleLevel found for rumpId %d', $this->rump->getId()));
         }
-        if ($moduleLevels->{'getModuleLevel' . $module->getModule()->getType()}() < $module->getModule()->getLevel()) {
-            return 'module_negative';
-        }
-        return '';
+
+        return $this->shipRumpModuleLevel;
     }
 
-    public function getModuleValueCalculator(): ModuleValueCalculatorInterface
+    public function getModuleTypeLevel(): int
     {
-        return new ModuleValueCalculator();
-    }
+        if ($this->isSpecial()) {
+            return 0;
+        }
 
-    public function getModuleLevels(): ?ShipRumpModuleLevelInterface
-    {
-        return $this->shipRumpModuleLevelRepository->getByShipRump($this->rump->getId());
+        return $this->getShipRumpModuleLevel()
+            ->{'getModuleLevel' . $this->getModuleType()->value}();
     }
 
     public function getAddon(): ?ModuleSelectorAddonInterface

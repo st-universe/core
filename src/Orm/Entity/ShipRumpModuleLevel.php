@@ -173,9 +173,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory1(): int
+    public function getModuleMandatory1(): bool
     {
-        return $this->module_mandatory_1;
+        return $this->module_mandatory_1 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory1(int $moduleMandatory1): ShipRumpModuleLevelInterface
@@ -221,9 +221,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory2(): int
+    public function getModuleMandatory2(): bool
     {
-        return $this->module_mandatory_2;
+        return $this->module_mandatory_2 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory2(int $moduleMandatory2): ShipRumpModuleLevelInterface
@@ -269,9 +269,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory3(): int
+    public function getModuleMandatory3(): bool
     {
-        return $this->module_mandatory_3;
+        return $this->module_mandatory_3 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory3(int $moduleMandatory3): ShipRumpModuleLevelInterface
@@ -317,9 +317,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory4(): int
+    public function getModuleMandatory4(): bool
     {
-        return $this->module_mandatory_4;
+        return $this->module_mandatory_4 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory4(int $moduleMandatory4): ShipRumpModuleLevelInterface
@@ -365,9 +365,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory5(): int
+    public function getModuleMandatory5(): bool
     {
-        return $this->module_mandatory_5;
+        return $this->module_mandatory_5 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory5(int $moduleMandatory5): ShipRumpModuleLevelInterface
@@ -413,9 +413,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory6(): int
+    public function getModuleMandatory6(): bool
     {
-        return $this->module_mandatory_6;
+        return $this->module_mandatory_6 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory6(int $moduleMandatory6): ShipRumpModuleLevelInterface
@@ -461,9 +461,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory7(): int
+    public function getModuleMandatory7(): bool
     {
-        return $this->module_mandatory_7;
+        return $this->module_mandatory_7 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory7(int $moduleMandatory7): ShipRumpModuleLevelInterface
@@ -509,9 +509,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory8(): int
+    public function getModuleMandatory8(): bool
     {
-        return $this->module_mandatory_8;
+        return $this->module_mandatory_8 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory8(int $moduleMandatory8): ShipRumpModuleLevelInterface
@@ -557,9 +557,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory10(): int
+    public function getModuleMandatory10(): bool
     {
-        return $this->module_mandatory_10;
+        return $this->module_mandatory_10 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory10(int $moduleMandatory10): ShipRumpModuleLevelInterface
@@ -605,9 +605,9 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
         return $this;
     }
 
-    public function getModuleMandatory11(): int
+    public function getModuleMandatory11(): bool
     {
-        return $this->module_mandatory_11;
+        return $this->module_mandatory_11 === self::MODULE_MANDATORY;
     }
 
     public function setModuleMandatory11(int $moduleMandatory11): ShipRumpModuleLevelInterface
@@ -644,15 +644,15 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
 
     public function getMandatoryModulesCount(): int
     {
-        return $this->getModuleMandatory1() +
-            $this->getModuleMandatory2() +
-            $this->getModuleMandatory3() +
-            $this->getModuleMandatory4() +
-            $this->getModuleMandatory5() +
-            $this->getModuleMandatory6() +
-            $this->getModuleMandatory7() +
-            $this->getModuleMandatory8() +
-            $this->getModuleMandatory10() +
-            $this->getModuleMandatory11();
+        return ($this->getModuleMandatory1() ? 1 : 0) +
+            ($this->getModuleMandatory2() ? 1 : 0) +
+            ($this->getModuleMandatory3() ? 1 : 0) +
+            ($this->getModuleMandatory4() ? 1 : 0) +
+            ($this->getModuleMandatory5() ? 1 : 0) +
+            ($this->getModuleMandatory6() ? 1 : 0) +
+            ($this->getModuleMandatory7() ? 1 : 0) +
+            ($this->getModuleMandatory8() ? 1 : 0) +
+            ($this->getModuleMandatory10() ? 1 : 0) +
+            ($this->getModuleMandatory11() ? 1 : 0);
     }
 }

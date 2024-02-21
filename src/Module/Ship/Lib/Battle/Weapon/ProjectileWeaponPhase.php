@@ -199,7 +199,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         DamageWrapper $damageWrapper
     ): void {
 
-        $targetHullModule = $this->getModule($target, ShipModuleTypeEnum::MODULE_TYPE_HULL);
+        $targetHullModule = $this->getModule($target, ShipModuleTypeEnum::HULL);
         if ($targetHullModule === null) {
             return;
         }

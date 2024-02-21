@@ -44,6 +44,11 @@ parameters:
 			path: src/Component/Ship/Repair/RepairUtilInterface.php
 
 		-
+			message: "#^Match expression does not handle remaining values\\: Stu\\\\Component\\\\Ship\\\\ShipModuleTypeEnum\\:\\:HULL\\|Stu\\\\Component\\\\Ship\\\\ShipModuleTypeEnum\\:\\:SPECIAL$#"
+			count: 1
+			path: src/Component/Ship/ShipModuleTypeEnum.php
+
+		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\AbstractShipSystemType\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
@@ -147,41 +152,6 @@ parameters:
 			message: "#^Cannot call method getModulesByType\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Lib/ModuleScreen/ModuleScreenTab.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:__get\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:__get\\(\\) has parameter \\$moduleType with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:register\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:register\\(\\) has parameter \\$tab with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
-
-		-
-			message: "#^Offset mixed might not exist on array\\|null\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\ModuleScreen\\\\ModuleScreenTabWrapper\\:\\:\\$tabs type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleScreenTabWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\ModuleSelectWrapper\\:\\:__get\\(\\) has parameter \\$type with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleSelectWrapper.php
 
 		-
 			message: "#^Method NavPanel\\:\\:getShip\\(\\) has no return type specified\\.$#"
@@ -1744,11 +1714,6 @@ parameters:
 			path: src/Module/Ship/Lib/ModuleValueCalculator.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$rump with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ModuleValueCalculator.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
@@ -1822,11 +1787,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\ShipModule\\\\ModuleSpecialAbilityEnum\\:\\:getHash\\(\\) should return int\\|null but returns float\\|int\\|null\\.$#"
 			count: 1
 			path: src/Module/ShipModule/ModuleSpecialAbilityEnum.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\ShipModule\\\\ModuleTypeDescriptionMapper\\:\\:getDescription\\(\\) has parameter \\$type with no type specified\\.$#"
-			count: 1
-			path: src/Module/ShipModule/ModuleTypeDescriptionMapper.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:getFieldId\\(\\) should return int but returns int\\|null\\.$#"

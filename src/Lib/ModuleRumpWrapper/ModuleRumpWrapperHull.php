@@ -4,30 +4,37 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    public function getValue(): int
+    public function getValue(ModuleInterface $module = null): int
     {
-        $module = current($this->modules);
+        $module = $module ?? current($this->getModule());
         if ($module === false) {
             return 0;
         }
 
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
-            $module->getModule(),
+            $module,
             null,
             $this->rump->getBaseHull()
         );
     }
 
-    public function apply(ShipInterface $ship): void
+    public function getModuleType(): ShipModuleTypeEnum
+    {
+        return ShipModuleTypeEnum::HULL;
+    }
+
+    public function apply(ShipWrapperInterface $wrapper): void
     {
         $value = $this->getValue();
-        $ship->setMaxHuell($value);
-        $ship->setHuell($value);
+        $wrapper->get()->setMaxHuell($value);
+        $wrapper->get()->setHuell($value);
     }
 }

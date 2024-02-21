@@ -3,7 +3,6 @@
 namespace Stu\Lib\ModuleScreen\Addon;
 
 use Stu\Lib\ModuleScreen\GradientColorInterface;
-use Stu\Lib\ModuleScreen\ModuleSelectorAddonInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
@@ -25,14 +24,14 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
     }
 
     /**
-     * @return array<int, array{factionId: int, gradientColor: string, modificator: int}>
+     * return array<int, array{factionId: int, gradientColor: string, modificator: int}>
      */
-    public function getWeaponEffects(ModuleInterface $shieldModule): array
+    public function getModificators(ModuleInterface $module): array
     {
         /** @var array<int, int[]> */
         $modificatorsPerFaction = [];
 
-        foreach ($shieldModule->getWeaponShield() as $weaponShield) {
+        foreach ($module->getWeaponShield() as $weaponShield) {
             $factionId = $weaponShield->getFactionId();
 
             if ($factionId === null) {
@@ -66,7 +65,11 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 
             $gradientColor = $this->gradientColor->calculateGradientColor($modificatorAverage, $lowest, $highest);
 
-            $result[] = ['factionId' => $factionId, 'gradientColor' => $gradientColor, 'modificator' => $modificatorAverage];
+            $result[] = [
+                'factionId' => $factionId,
+                'gradientColor' => $gradientColor,
+                'modificator' => $modificatorAverage
+            ];
         }
 
         return $result;
