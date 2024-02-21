@@ -425,7 +425,7 @@ function cancelModuleQueueEntries(module_id) {
 		'module_' + module_id + '_action',
 		'colony.php', 'B_CANCEL_MODULECREATION=1&id=' + colonyid + '&module=' + module_id + '&func=' + $('func').value + '&count=' + $('module_' + module_id + '_count').value
 	);
-	setTimeout('refreshHost()', 250);
+	//setTimeout('refreshHost()', 250); reactivate when module production in colony sub menu
 }
 function showGiveUpWindow(target) {
 	elt = 'giveup';
