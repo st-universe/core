@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -33,6 +34,11 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
 
     public function apply(ShipWrapperInterface $wrapper): void
     {
+        $epsSystem = $wrapper->getEpsSystemData();
+        if ($epsSystem === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $wrapper->getEpsSystemData()->setMaxEps($this->getValue())->update();
     }
 }
