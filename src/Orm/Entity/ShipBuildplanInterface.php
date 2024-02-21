@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 
 interface ShipBuildplanInterface
 {
@@ -51,12 +51,10 @@ interface ShipBuildplanInterface
     /**
      * @return array<int, BuildplanModuleInterface>
      */
-    public function getModulesByType(int $type): array;
+    public function getModulesByType(ShipModuleTypeEnum $type): array;
 
     /**
      * @return Collection<int, BuildplanModuleInterface>
      */
     public function getModules(): Collection;
-
-    public function getModule(): ModuleSelectWrapper;
 }

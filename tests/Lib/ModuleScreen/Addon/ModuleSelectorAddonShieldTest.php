@@ -33,7 +33,7 @@ class ModuleSelectorAddonShieldTest extends StuTestCase
         );
     }
 
-    public function testGetWeaponEffects(): void
+    public function testgetModificators(): void
     {
         $shieldModule = $this->mock(ModuleInterface::class);
 
@@ -86,8 +86,8 @@ class ModuleSelectorAddonShieldTest extends StuTestCase
             ->with(42, 222, 444)
             ->andReturn('colorB');
 
-        $this->subject->getWeaponEffects($shieldModule);
-        $result = $this->subject->getWeaponEffects($shieldModule);
+        $this->subject->getModificators($shieldModule);
+        $result = $this->subject->getModificators($shieldModule);
 
         $this->assertEquals(2, count($result));
         $this->assertEquals('colorA', $result[0]['gradientColor']);

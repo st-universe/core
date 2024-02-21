@@ -1,0 +1,60 @@
+<table class="tcal">
+    {% set rump = THIS.getRump %}
+    {% set type = THIS.getModuleType.value %}
+    {% set allowMultiple = THIS.allowMultiple %}
+    <input type="hidden" name="module_level_{{ type }}" value="{{ THIS.getModuleTypeLevel }}" />
+    {% if THIS.getAvailableModules %}
+    <tr>
+        {% set colspan = allowMultiple ? 2 : 3 %}
+        <th colspan="{{ colspan }}">Modulbezeichnung</th>
+        <th>benötigte Crew</th>
+        <th>lagernd</th>
+        <th>Auswirkungen</th>
+    </tr>
+    {% if THIS.allowEmptySlot %}
+    <tr>
+        <td></td>
+        {% set colspan = allowMultiple ? 4 : 5 %}
+        <td colspan="{{ colspan }}">
+            <input type="radio" name="mod_{{ type }}[]" value="0" onchange="replaceTabImage({{ type }}, 0);" />
+            <span>Keine Auswahl</span>
+        </td>
+    </tr>
+    {% endif %}
+    {% for moduleSelectorEntry in THIS.getAvailableModules %}
+    {% set module = moduleSelectorEntry.getModule %}
+    {% set moduleId = module.getId %}
+    {% set commodityId = module.getCommodityId %}
+    {% set checked = moduleSelectorEntry.isChosen ? 'checked="true"' : '' %}
+    {% set disabled = moduleSelectorEntry.isDisabled ? 'disabled="true"' : '' %}
+    <tr>
+        {% if not allowMultiple %}
+        <td style="width: 3px;" class="{{ moduleSelectorEntry.getModuleLevelClass }}"></td>
+        {% endif %}
+        <td style="width: 50px;">
+            {% if allowMultiple %}
+            <input class="specialModuleRadio" type="checkbox" {{ checked }} {{ disabled }} name="mod_{{ type }}[]"
+                value="{{ moduleId }}"
+                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ module.getCrew }});" />
+            {% else %}
+            <input type="radio" {{ checked }} {{ disabled }} name="mod_{{ type }}[]" value="{{ moduleId }}"
+                onchange="replaceTabImage({{ type }}, {{ moduleId }}, {{ commodityId }}, {{ moduleSelectorEntry.getNeededCrew }});" />
+            {% endif %}
+            <img src="assets/commodities/{{ commodityId }}.png" />
+        </td>
+        <td style="width: 300px;">{{ module.getName }}</td>
+        <td style="width: 30px; text-align: center;">{{ moduleSelectorEntry.getNeededCrew }}</td>
+        <td style="width: 30px; text-align: center;">
+            {{ moduleSelectorEntry.getStoredAmount }}
+        </td>
+        <td id="{{ moduleId }}_content">
+            {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' %}
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td>Keine Module dieses Typs installierbar</td>
+    </tr>
+    {% endif %}
+</table>

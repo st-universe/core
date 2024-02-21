@@ -2,21 +2,24 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
+use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
-use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 
 interface ModuleSelectorInterface
 {
-    public function allowMultiple(): bool;
+    public function isMandatory(): bool;
 
-    public function getMacro(): string;
+    public function isSpecial(): bool;
+
+    public function allowMultiple(): bool;
 
     public function render(): string;
 
-    public function getModuleType(): int;
+    public function getModuleType(): ShipModuleTypeEnum;
 
     public function allowEmptySlot(): bool;
 
@@ -24,24 +27,27 @@ interface ModuleSelectorInterface
 
     public function getUserId(): int;
 
+    public function getHost(): ColonyInterface|ShipInterface;
+
     public function getRump(): ShipRumpInterface;
 
     /**
-     * @return ModuleSelectorWrapperInterface[]
+     * @return ModuleSelectorEntryInterface[]
      */
     public function getAvailableModules(): array;
 
-    public function hasModuleSelected(): ModuleSelectWrapper;
+    public function hasSelectedModule(): bool;
 
-    public function getColony(): ?ColonyInterface;
+    public function getSelectedModuleCount(): int;
+
+    /**
+     * @return array<int, ModuleSelectorEntryInterface>
+     */
+    public function getSelectedModules();
+
+    public function getModuleTypeLevel(): int;
 
     public function getBuildplan(): ?ShipBuildplanInterface;
-
-    public function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module): string;
-
-    public function getModuleValueCalculator(): ModuleValueCalculatorInterface;
-
-    public function getModuleLevels(): ?ShipRumpModuleLevelInterface;
 
     public function getAddon(): ?ModuleSelectorAddonInterface;
 }

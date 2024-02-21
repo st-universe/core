@@ -39,21 +39,21 @@ class ModuleSelectorAddonFactoryTest extends StuTestCase
 
     public function testCeateModuleSelectorAddonExpectNullWhenTypeUnknown(): void
     {
-        $result = $this->subject->createModuleSelectorAddon(-1);
+        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::EPS);
 
         $this->assertNull($result);
     }
 
     public function testCeateModuleSelectorAddonExpectAddonHullWhenTypeHull(): void
     {
-        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::MODULE_TYPE_HULL);
+        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::HULL);
 
         $this->assertTrue($result instanceof ModuleSelectorAddonHull);
     }
 
     public function testCeateModuleSelectorAddonExpectAddonShieldWhenTypeShield(): void
     {
-        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::MODULE_TYPE_SHIELDS);
+        $result = $this->subject->createModuleSelectorAddon(ShipModuleTypeEnum::SHIELDS);
 
         $this->assertTrue($result instanceof ModuleSelectorAddonShield);
     }

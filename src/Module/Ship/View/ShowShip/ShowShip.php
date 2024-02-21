@@ -14,7 +14,6 @@ use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Station\StationUtilityInterface;
-use Stu\Lib\ColonyStorageCommodityWrapper\ColonyStorageCommodityWrapper;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -367,20 +366,17 @@ final class ShowShip implements ViewControllerInterface
 
             $moduleSelectors = [];
             foreach ($plans as $plan) {
-                $ms = $this->colonyLibFactory->createModuleSelectorSpecial(
-                    ShipModuleTypeEnum::MODULE_TYPE_SPECIAL,
-                    null,
+                $ms = $this->colonyLibFactory->createModuleSelector(
+                    ShipModuleTypeEnum::SPECIAL,
                     $ship,
                     $plan->getRump(),
                     $game->getUser()
                 );
 
-                $ms->setDummyId($plan->getId());
                 $moduleSelectors[] = $ms;
             }
 
             $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
-            $game->setTemplateVar('HAS_STORAGE', new ColonyStorageCommodityWrapper($ship->getStorage()));
         }
     }
 

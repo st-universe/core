@@ -2,9 +2,9 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Stu\Lib\ModuleScreen\ModuleSelectorAddonInterface;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 
 interface ModuleSelectorAddonFactoryInterface
 {
-    public function createModuleSelectorAddon(int $moduleType): ?ModuleSelectorAddonInterface;
+    public function createModuleSelectorAddon(ShipModuleTypeEnum $moduleType): ?ModuleSelectorAddonInterface;
 }

@@ -4,28 +4,35 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    public function getValue(): int
+    public function getValue(ModuleInterface $module = null): int
     {
-        $module = current($this->modules);
+        $module = $module ?? current($this->getModule());
         if ($module === false) {
             return 0;
         }
 
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
-            $module->getModule(),
+            $module,
             null,
             $this->rump->getBaseEps()
         );
     }
 
-    public function apply(ShipInterface $ship): void
+    public function getModuleType(): ShipModuleTypeEnum
     {
-        $this->wrapper->getEpsSystemData()->setMaxEps($this->getValue())->update();
+        return ShipModuleTypeEnum::EPS;
+    }
+
+    public function apply(ShipWrapperInterface $wrapper): void
+    {
+        $wrapper->getEpsSystemData()->setMaxEps($this->getValue())->update();
     }
 }

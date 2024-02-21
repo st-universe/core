@@ -32,8 +32,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function addInformationfWithLink(string $text, string $link, ...$args): void;
 
-    public function addInformationWithLink(string $msg, string $link): void;
-
     public function addInformationMerge(array $info): void;
 
     public function addInformationMergeDown(array $info): void;

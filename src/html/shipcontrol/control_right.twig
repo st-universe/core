@@ -208,7 +208,7 @@
         <td style="width: 10%;">
             <div class="radio">
                 <input type="radio" value="{{ data.getId }}" name="plan_select"
-                    onchange="showModuleSelectTab({{ data.getId }})" />
+                    onchange="showStationModuleSelector({{ data.getRumpId }});" />
             </div>
         </td>
     </tr>
@@ -219,7 +219,8 @@
     <tr>
         <td colspan="4">
             {% for selector in moduleSelectors %}
-            <div id="selector_{{ selector.getDummyId }}" style="display: none;">
+            {% set id = selector.getRump.getId %}
+            <div id="selector_{{ id }}" style="display: none;">
                 {% autoescape false %}
                 {{ selector.render }}
                 {% endautoescape %}

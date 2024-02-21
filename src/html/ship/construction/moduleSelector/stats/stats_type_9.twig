@@ -1,0 +1,6 @@
+{% for special in module.getSpecials %}
+<div>
+    <img src="assets/buttons/modul_special_{{ special.getId }}.png" title="{{ special.getName }}" />
+    {{ special.getName }}
+</div>
+{% endfor %}

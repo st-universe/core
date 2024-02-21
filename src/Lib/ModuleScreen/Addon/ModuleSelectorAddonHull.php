@@ -3,7 +3,7 @@
 namespace Stu\Lib\ModuleScreen\Addon;
 
 use Stu\Lib\ModuleScreen\GradientColorInterface;
-use Stu\Lib\ModuleScreen\ModuleSelectorAddonInterface;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 
 final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
@@ -23,7 +23,8 @@ final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
         $this->gradientColor = $gradientColor;
     }
 
-    public function calculateGradientColor(int $modificator): string
+    //public function calculateGradientColor(int $modificator): string
+    public function getModificators(ModuleInterface $module): array
     {
         if ($this->interval === null) {
             $this->interval = $this->torpedoHullRepository->getModificatorMinAndMax();
@@ -31,6 +32,21 @@ final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
 
         [$lowest, $highest] = $this->interval;
 
-        return $this->gradientColor->calculateGradientColor($modificator, $lowest, $highest);
+        $result = [];
+        foreach ($module->getTorpedoHull() as $torpedoHull) {
+
+            $modificator = $torpedoHull->getModificator();
+            $result[] = [
+                'torpedoType' => $torpedoHull->getTorpedo(),
+                'gradientColor' => $this->gradientColor->calculateGradientColor(
+                    $modificator,
+                    $lowest,
+                    $highest
+                ),
+                'modificator' => $modificator
+            ];
+        }
+
+        return $result;
     }
 }

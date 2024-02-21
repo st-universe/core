@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Component\Building\BuildingManagerInterface;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -112,7 +113,7 @@ abstract class AbstractWeaponPhase
         );
     }
 
-    protected function getModule(ShipInterface $ship, int $moduleType): ?ModuleInterface
+    protected function getModule(ShipInterface $ship, ShipModuleTypeEnum $moduleType): ?ModuleInterface
     {
         $buildplan = $ship->getBuildplan();
         if ($buildplan === null) {

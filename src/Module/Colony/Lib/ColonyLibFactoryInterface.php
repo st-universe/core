@@ -6,10 +6,10 @@ use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
-use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -50,22 +50,12 @@ interface ColonyLibFactoryInterface
     ): ColonyEpsProductionPreviewWrapper;
 
     public function createModuleSelector(
-        int $moduleType,
-        ?ColonyInterface $colony,
-        ?ShipInterface $station,
+        ShipModuleTypeEnum $type,
+        ColonyInterface|ShipInterface $host,
         ShipRumpInterface $rump,
         UserInterface $user,
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelector;
-
-    public function createModuleSelectorSpecial(
-        int $moduleType,
-        ?ColonyInterface $colony,
-        ?ShipInterface $station,
-        ShipRumpInterface $rump,
-        UserInterface $user,
-        ?ShipBuildplanInterface $buildplan = null
-    ): ModuleSelectorSpecial;
 
     public function createColonyProduction(
         CommodityInterface $commodity,

@@ -11,18 +11,6 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperComputer;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperEnergyWeapon;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperEps;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperHull;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperImpulseDrive;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperInterface;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperProjectileWeapon;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperReactor;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpDrive;
-use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSensor;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
@@ -30,7 +18,6 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ModuleInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
@@ -132,36 +119,22 @@ final class ShipCreator implements ShipCreatorInterface
             $progress
         );
 
-        $moduleTypeList = [
-            ShipModuleTypeEnum::MODULE_TYPE_HULL => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperHull($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_HULL)),
-            ShipModuleTypeEnum::MODULE_TYPE_SHIELDS => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperShield($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SHIELDS)),
-            ShipModuleTypeEnum::MODULE_TYPE_EPS => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_EPS)),
-            ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE)),
-            ShipModuleTypeEnum::MODULE_TYPE_REACTOR => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_REACTOR)),
-            ShipModuleTypeEnum::MODULE_TYPE_COMPUTER => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_COMPUTER)),
-            ShipModuleTypeEnum::MODULE_TYPE_PHASER => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_PHASER)),
-            ShipModuleTypeEnum::MODULE_TYPE_TORPEDO => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_TORPEDO)),
-            ShipModuleTypeEnum::MODULE_TYPE_SENSOR => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SENSOR)),
-            ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE => fn (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($wrapper, $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_WARPDRIVE)),
-            ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipBuildplanInterface $buildplan, ShipWrapperInterface $wrapper): ModuleRumpWrapperInterface {
-                $specialMods = $buildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL);
-                return new ModuleRumpWrapperSpecial($wrapper, $specialMods);
-            },
-        ];
-
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
 
-        foreach ($moduleTypeList as $moduleTypeId => $wrapperCallable) {
+        foreach (ShipModuleTypeEnum::cases() as $moduleType) {
+
+            $moduleTypeId = $moduleType->value;
+
             if ($this->loggerUtil->doLog()) {
                 $this->loggerUtil->log(sprintf("moduleTypeId: %d", $moduleTypeId));
             }
-            $buildplanModules = $buildplan->getModulesByType($moduleTypeId);
+            $buildplanModules = $buildplan->getModulesByType($moduleType);
             if ($buildplanModules !== []) {
                 if ($this->loggerUtil->doLog()) {
                     $this->loggerUtil->log("wrapperCallable!");
                 }
-                $moduleRumpWrapper = $wrapperCallable($buildplan, $wrapper);
-                $moduleRumpWrapper->apply($ship);
+                $moduleRumpWrapper = $moduleType->getModuleRumpWrapperCallable()($rump, $buildplan);
+                $moduleRumpWrapper->apply($wrapper);
             }
         }
 
@@ -220,9 +193,9 @@ final class ShipCreator implements ShipCreatorInterface
             $systemType = $module->getSystemType();
             if (
                 $systemType === null
-                && array_key_exists($module->getType(), ShipModuleTypeEnum::MODULE_TYPE_TO_SYSTEM_TYPE)
+                && $module->getType()->hasCorrespondingSystemType()
             ) {
-                $systemType = ShipModuleTypeEnum::MODULE_TYPE_TO_SYSTEM_TYPE[$module->getType()];
+                $systemType = $module->getType()->getSystemType();
             }
 
             if ($systemType !== null) {
@@ -230,10 +203,10 @@ final class ShipCreator implements ShipCreatorInterface
             }
 
             switch ($module->getType()) {
-                case ShipModuleTypeEnum::MODULE_TYPE_SENSOR:
+                case ShipModuleTypeEnum::SENSOR:
                     $systems[ShipSystemTypeEnum::SYSTEM_NBS->value] = 0;
                     break;
-                case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
+                case ShipModuleTypeEnum::SPECIAL:
                     $this->addSpecialSystems($module, $systems);
                     break;
             }

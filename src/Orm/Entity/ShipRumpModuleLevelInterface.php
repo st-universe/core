@@ -6,6 +6,8 @@ namespace Stu\Orm\Entity;
 
 interface ShipRumpModuleLevelInterface
 {
+    public const MODULE_MANDATORY = 1;
+
     public function getId(): int;
 
     public function getRumpId(): int;
@@ -16,7 +18,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel1(int $moduleLevel1): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory1(): int;
+    public function getModuleMandatory1(): bool;
 
     public function setModuleMandatory1(int $moduleMandatory1): ShipRumpModuleLevelInterface;
 
@@ -32,7 +34,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel2(int $moduleLevel2): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory2(): int;
+    public function getModuleMandatory2(): bool;
 
     public function setModuleMandatory2(int $moduleMandatory2): ShipRumpModuleLevelInterface;
 
@@ -48,7 +50,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel3(int $moduleLevel3): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory3(): int;
+    public function getModuleMandatory3(): bool;
 
     public function setModuleMandatory3(int $moduleMandatory3): ShipRumpModuleLevelInterface;
 
@@ -64,7 +66,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel4(int $moduleLevel4): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory4(): int;
+    public function getModuleMandatory4(): bool;
 
     public function setModuleMandatory4(int $moduleMandatory4): ShipRumpModuleLevelInterface;
 
@@ -80,7 +82,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel5(int $moduleLevel5): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory5(): int;
+    public function getModuleMandatory5(): bool;
 
     public function setModuleMandatory5(int $moduleMandatory5): ShipRumpModuleLevelInterface;
 
@@ -96,7 +98,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel6(int $moduleLevel6): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory6(): int;
+    public function getModuleMandatory6(): bool;
 
     public function setModuleMandatory6(int $moduleMandatory6): ShipRumpModuleLevelInterface;
 
@@ -112,7 +114,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel7(int $moduleLevel7): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory7(): int;
+    public function getModuleMandatory7(): bool;
 
     public function setModuleMandatory7(int $moduleMandatory7): ShipRumpModuleLevelInterface;
 
@@ -128,7 +130,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel8(int $moduleLevel8): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory8(): int;
+    public function getModuleMandatory8(): bool;
 
     public function setModuleMandatory8(int $moduleMandatory8): ShipRumpModuleLevelInterface;
 
@@ -144,7 +146,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel10(int $moduleLevel10): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory10(): int;
+    public function getModuleMandatory10(): bool;
 
     public function setModuleMandatory10(int $moduleMandatory10): ShipRumpModuleLevelInterface;
 
@@ -160,7 +162,7 @@ interface ShipRumpModuleLevelInterface
 
     public function setModuleLevel11(int $moduleLevel11): ShipRumpModuleLevelInterface;
 
-    public function getModuleMandatory11(): int;
+    public function getModuleMandatory11(): bool;
 
     public function setModuleMandatory11(int $moduleMandatory11): ShipRumpModuleLevelInterface;
 

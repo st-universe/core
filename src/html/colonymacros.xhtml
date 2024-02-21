@@ -425,17 +425,5 @@
     </tal:block>
   </form>
 </metal:macro>
-<metal:macro metal:define-macro="module_select_tab">
-  <td id="module_tab_${moduleType}" tal:define="tab MODULE_SCREEN_TABS/${moduleType}"
-    tal:attributes="class tab/getCssClass" onclick="showModuleSelectTab(this,${moduleType});">
-    <img src="/assets/buttons/modul_screen_${moduleType}.png" tal:condition="not:tab/hasSelectedModule"
-      id="tab_image_mod_${moduleType}" />
-    <tal:block tal:condition="tab/hasSelectedModule" tal:repeat="mod tab/getSelectedModule">
-      <img src="/assets/commodities/${mod/getModule/getCommodityId}.png" id="tab_image_mod_${moduleType}" />
-    </tal:block>
-    <span tal:replace="tab/getTabTitle">DESCRIPTION</span>
-    <span tal:condition="tab/isSpecial" id="module_tab_info_${moduleType}">0 von max. ${RUMP/getSpecialSlots}</span>
-  </td>
-</metal:macro>
 
 </html>

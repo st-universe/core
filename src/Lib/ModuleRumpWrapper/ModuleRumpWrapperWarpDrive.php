@@ -5,29 +5,38 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use RuntimeException;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    public function getValue(): int
+    public function getValue(ModuleInterface $module = null): int
     {
-        $module = current($this->modules);
+        $module = $module ?? current($this->getModule());
         if ($module === false) {
             return 0;
         }
 
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
-            $module->getModule(),
+            $module,
             null,
             $this->rump->getBaseWarpDrive()
         );
     }
 
-    public function apply(ShipInterface $ship): void
+    public function getModuleType(): ShipModuleTypeEnum
     {
-        $systemData = $this->wrapper->getWarpDriveSystemData();
+        return ShipModuleTypeEnum::WARPDRIVE;
+    }
+
+    public function apply(ShipWrapperInterface $wrapper): void
+    {
+        $ship = $wrapper->get();
+
+        $systemData = $wrapper->getWarpDriveSystemData();
         if ($systemData === null) {
             throw new RuntimeException('this should not happen');
         }

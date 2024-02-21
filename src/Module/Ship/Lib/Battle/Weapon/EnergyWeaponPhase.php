@@ -197,7 +197,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         DamageWrapper $damageWrapper
     ): void {
 
-        $targetShieldModule = $this->getModule($target, ShipModuleTypeEnum::MODULE_TYPE_SHIELDS);
+        $targetShieldModule = $this->getModule($target, ShipModuleTypeEnum::SHIELDS);
         if ($targetShieldModule === null) {
             return;
         }

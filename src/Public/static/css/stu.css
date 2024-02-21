@@ -808,25 +808,20 @@ table.crew_6 {
   background-color: #4a4a4a ! important;
 }
 
-tr.fleetLeader {
-  outline: 1px dashed #ffec00ab ! important;
-}
-
-td.module_select_base {
+div.module_select_base {
   height: 40px;
-  width: 20%;
   cursor: pointer;
+  padding: 3px;
 }
 
-td.module_select_base_selected {
-  width: 20%;
+div.module_select_base_selected {
   background-color: var(--color-28) ! important;
   color: var(--color-30);
   font-weight: bold;
 }
 
-td.module_select_base_mandatory {
-  outline: 1px dashed #652020 ! important;
+div.module_select_base_mandatory {
+  background-color: #FF00003B ! important;
 }
 
 #recaptcha_response_field {
@@ -1164,16 +1159,6 @@ div.list:nth-child(even) {
 
 div.list {
   padding: 3px;
-}
-
-div.planetSurfaceTiles {
-  display: grid;
-  grid-template-columns: 43px 43px 43px 43px 43px 43px 43px 43px 43px 43px;
-}
-
-div.moonSurfaceTiles {
-  display: grid;
-  grid-template-columns: 43px 43px 43px 43px 43px 43px 43px;
 }
 
 div.moduleScreenGrid {

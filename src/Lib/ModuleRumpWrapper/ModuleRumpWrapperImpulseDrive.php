@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    public function getValue(): int
+    public function getValue(ModuleInterface $module = null): int
     {
         $moduleValueCalculator = new ModuleValueCalculator();
 
-        $module = current($this->modules);
+        $module = $module ?? current($this->getModule());
         if ($module === false) {
             return 0;
         }
 
-        return $moduleValueCalculator->calculateEvadeChance($this->rump, $module->getModule());
+        return $moduleValueCalculator->calculateEvadeChance(
+            $this->rump,
+            $module
+        );
     }
 
-    public function apply(ShipInterface $ship): void
+    public function getModuleType(): ShipModuleTypeEnum
     {
-        $ship->setEvadeChance($this->getValue());
+        return ShipModuleTypeEnum::IMPULSEDRIVE;
+    }
+
+    public function apply(ShipWrapperInterface $wrapper): void
+    {
+        $wrapper->get()->setEvadeChance($this->getValue());
     }
 }

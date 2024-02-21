@@ -269,10 +269,11 @@ final class GameController implements GameControllerInterface
 
     public function addInformationfWithLink(string $text, string $link, ...$args): void
     {
-        $this->addInformationWithLink(vsprintf(
-            $text,
-            $args
-        ), $link);
+        $notification = new Notification();
+        $notification->setText($text);
+        $notification->setLink($link);
+
+        $this->gameInformations[] = $notification;
     }
 
     public function addInformationf(string $text, ...$args): InformationInterface
@@ -283,15 +284,6 @@ final class GameController implements GameControllerInterface
         ));
 
         return $this;
-    }
-
-    public function addInformationWithLink(string $information, string $link): void
-    {
-        $notification = new Notification();
-        $notification->setText($information);
-        $notification->setLink($link);
-
-        $this->gameInformations[] = $notification;
     }
 
     public function addInformation(?string $information): InformationInterface

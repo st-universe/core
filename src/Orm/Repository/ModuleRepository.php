@@ -6,9 +6,11 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleSpecial;
-use Stu\Orm\Entity\ShipRumpRoleInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 /**
  * @extends EntityRepository<Module>
@@ -16,9 +18,9 @@ use Stu\Orm\Entity\ShipRumpRoleInterface;
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
     // used for ModuleSelector
-    public function getBySpecialTypeColonyAndRump(
-        int $colonyId,
-        int $moduleTypeId, // 1 bis 9: ShipModuleTypeEnum
+    public function getBySpecialTypeAndRump(
+        ColonyInterface|ShipInterface $host,
+        ShipModuleTypeEnum $moduleType,
         int $shipRumpId,
         int $shipRumpRoleId
     ): array {
@@ -38,7 +40,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                 END)
 					AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
                                                                 FROM stu_storage
-                                                                WHERE colony_id = :colonyId))
+                                                                WHERE :hostIdColumnName = :hostId))
                     AND m.id IN (SELECT module_id
                                 FROM stu_modules_specials
                                 WHERE special_id IN (SELECT module_special_id
@@ -48,51 +50,10 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 $this->getResultSetMapping()
             )
             ->setParameters([
-                'typeId' => $moduleTypeId,
-                'colonyId' => $colonyId,
+                'typeId' => $moduleType->value,
+                'hostIdColumnName' => $host instanceof ColonyInterface ? 'colony_id' : 'ship_id',
+                'hostId' => $host->getId(),
                 'shipRumpRoleId' => $shipRumpRoleId,
-                'shipRumpId' => $shipRumpId,
-                'state' => 1
-            ])
-            ->getResult();
-    }
-
-    // used for ModuleSelector
-    public function getBySpecialTypeShipAndRump(
-        int $shipId,
-        int $moduleTypeId, // 1 bis 9: ShipModuleTypeEnum
-        int $shipRumpId,
-        ShipRumpRoleInterface $shipRumpRole
-    ): array {
-        return $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT
-                        m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor, m.crew,
-                        m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost, m.faction_id
-                    FROM stu_modules m
-                    WHERE m.type = :typeId
-                    AND (SELECT CASE WHEN (SELECT count(id)
-                                            FROM stu_modules
-                                            WHERE type = :typeId
-                                            AND rumps_role_id = :shipRumpRoleId) = 0
-                                    THEN m.rumps_role_id IS NULL
-                                    ELSE m.rumps_role_id = :shipRumpRoleId
-                                END)
-					AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
-                                                                FROM stu_storage
-                                                                WHERE ship_id = :shipId))
-                    AND m.id IN (SELECT module_id
-                                FROM stu_modules_specials
-                                WHERE special_id IN (SELECT module_special_id
-                                                    FROM stu_rumps_module_special
-                                                    WHERE rump_id = :shipRumpId))
-                ',
-                $this->getResultSetMapping()
-            )
-            ->setParameters([
-                'typeId' => $moduleTypeId,
-                'shipId' => $shipId,
-                'shipRumpRoleId' => $shipRumpRole->getId(),
                 'shipRumpId' => $shipRumpId,
                 'state' => 1
             ])
@@ -102,7 +63,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     // used for ModuleSelector
     public function getByTypeColonyAndLevel(
         int $colonyId,
-        int $moduleTypeId,
+        ShipModuleTypeEnum $moduleType,
         int $shipRumpRoleId,
         array $moduleLevel
     ): array {
@@ -129,7 +90,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 $this->getResultSetMapping()
             )
             ->setParameters([
-                'typeId' => $moduleTypeId,
+                'typeId' => $moduleType->value,
                 'colonyId' => $colonyId,
                 'shipRumpRoleId' => $shipRumpRoleId,
                 'levelList' => $moduleLevel,

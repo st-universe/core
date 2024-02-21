@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 interface ModuleRumpWrapperInterface
 {
     /**
-     * @return iterable<BuildplanModuleInterface>
+     * @return iterable<ModuleInterface>
      */
     public function getModule(): iterable;
 
-    public function getValue(): int;
+    public function getValue(ModuleInterface $module = null): int;
 
-    public function apply(ShipInterface $ship): void;
+    public function apply(ShipWrapperInterface $wrapper): void;
 }
