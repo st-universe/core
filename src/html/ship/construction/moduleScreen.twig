@@ -49,10 +49,30 @@
             <input type="submit" class="button" name="B_BUILD_SHIP" value="Schiff bauen" id="buildbutton"
               disabled="disabled" />
           </div>
+          <br />
+          <div class="box" style="width: 75%; margin:0 auto;">
+            <div class="box_title">Baukosten</div>
+            <div class="box_body">
+              <div>
+                <img src="assets/commodities/0.png" /> {{ RUMP.getEpsCost }} Energie
+              </div>
+              {% for cost in RUMP.getBuildingCosts %}
+              <div>
+                <img src="assets/commodities/{{ cost.getCommodity.getId }}.png"
+                  title="{{ cost.getCommodity.getName }}" />
+                {{ cost.getAmount }}
+              </div>
+              {% endfor %}
+              <div>
+                <img src="assets/buttons/time.png" title="Bauzeit" />
+                {{ RUMP.getBuildtime|formatSeconds }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <br />
-      <div class="box" style="float: left;">
+      <div class="box">
         <div class="box_title">Bauplan</div>
         <div class="box_body">
           <input type="hidden" name="planid" value="{{ PLAN.getId }}" />
@@ -70,7 +90,7 @@
         </div>
       </div>
       <br />
-      <div class="box" style="float: left;">
+      <div class="box">
         <div class="box_title">Beschreibung</div>
         <div class="box_body">
           <div>
@@ -94,7 +114,7 @@
         </div>
       </div>
       <br />
-      <div class="box" style="float: left;">
+      <div class="box">
         <div class="box_title">Modulauswirkungen</div>
         <div class="box_body">
           <div style="width: 100%;">
@@ -105,7 +125,7 @@
             </div>
           </div>
           <br />
-          <div>
+          <div style="display: grid; grid-template-columns: 100%;">
             {% set rump = RUMP %}
             {% for moduleSelector in MODULE_SELECTORS %}
             {% set type = moduleSelector.getModuleType.value %}
@@ -113,7 +133,7 @@
             {% if PLAN %}
 
             {% if moduleSelector.hasSelectedModule %}
-            <div id="{{ id }}" style="float: left;">
+            <div id="{{ id }}">
               {% for moduleSelectorEntry in moduleSelector.getSelectedModules %}
               {% set module = moduleSelectorEntry.getModule %}
               {% set crewIdentifier = moduleSelector.isSpecial ? module.getId : type %}
@@ -134,25 +154,6 @@
             </div>
             {% endif %}
             {% endfor %}
-          </div>
-        </div>
-      </div>
-      <br />
-      <div class="box" style="float: left;">
-        <div class="box_title">Baukosten</div>
-        <div class="box_body">
-          <div>
-            <img src="assets/commodities/0.png" /> {{ RUMP.getEpsCost }} Energie
-          </div>
-          {% for cost in RUMP.getBuildingCosts %}
-          <div>
-            <img src="assets/commodities/{{ cost.getCommodity.getId }}.png" title="{{ cost.getCommodity.getName }}" />
-            {{ cost.getAmount }}
-          </div>
-          {% endfor %}
-          <div>
-            <img src="assets/buttons/time.png" title="Bauzeit" />
-            {{ RUMP.getBuildtime|formatSeconds }}
           </div>
         </div>
       </div>
