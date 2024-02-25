@@ -45,7 +45,7 @@
 {% set viewTitle = view.getTitle %}
 {% set viewUrl = view.getPhpPage %}
 <div class="navigation_item border_box" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
-    onclick="switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}');cClick();"
+    onclick="switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}');"
     onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
     <a class="navitem_link" href="javascript:void(0)">
         <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
@@ -131,8 +131,7 @@
 {% macro onClickShip(ship) %}
 {% set id = ship.getId %}
 href="javascript:void(0);"
-onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php');
-cClick();"
+onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php');"
 {% endmacro %}
 
 {% macro onClickColony(colony) %}

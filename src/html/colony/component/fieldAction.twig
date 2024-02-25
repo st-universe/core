@@ -89,49 +89,47 @@
                     {% if BUILDING_FUNCTION.isShipyard %}
                     {% if BUILDING_FUNCTION.isFighterShipyard %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="switchColonyMenu(10);cClick();"
-                            class="fabutton">Schiffbau</a>
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(10);" class="fabutton">Schiffbau</a>
                     </div>
                     {% else %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
-                            onclick="switchColonyMenu(8,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }});cClick();"
+                            onclick="switchColonyMenu(8,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }});"
                             class="fabutton">Schiffbau</a>
                     </div>
                     <div class="fabutton">
                         <a href="javascript:void(0)"
-                            onclick="switchColonyMenu(17,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }}, {{ fieldId }});cClick();"
+                            onclick="switchColonyMenu(17,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }}, {{ fieldId }});"
                             class="fabutton">Schiffsdemontage</a>
                     </div>
                     {% endif %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
-                            onclick="switchColonyMenu(18,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }},{{ fieldId }});cClick();"
+                            onclick="switchColonyMenu(18,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }},{{ fieldId }});"
                             class="fabutton">Schiffsreparatur</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isAirfield %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="switchColonyMenu(6);cClick();" class="fabutton">Hangar</a>
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(6);" class="fabutton">Hangar</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isModuleFab %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
-                            onclick="switchColonyMenu(7,{{ BUILDING_FUNCTION.getModuleFabBuildingFunctionId }});cClick();"
+                            onclick="switchColonyMenu(7,{{ BUILDING_FUNCTION.getModuleFabBuildingFunctionId }});"
                             class="fabutton">Modulherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isTorpedoFab %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="switchColonyMenu(11);cClick();"
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(11);"
                             class="fabutton">Torpedoherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isAcademy %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="switchColonyMenu(12);cClick();"
-                            class="fabutton">Akademie</a>
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(12);" class="fabutton">Akademie</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isWarehouse %}
@@ -140,28 +138,28 @@
                             class="fabutton">Warenübersicht</a>
                     </div>
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="switchColonyMenu(13);cClick();"
+                        <a href="javascript:void(0)" onclick="switchColonyMenu(13);"
                             class="fabutton">Müllverbrennung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isFabHall %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
-                            onclick="switchColonyMenu(14, {{ BUILDING_FUNCTION.getFabHallBuildingFunctionId }});cClick();"
+                            onclick="switchColonyMenu(14, {{ BUILDING_FUNCTION.getFabHallBuildingFunctionId }});"
                             class="fabutton">Ersatzteilherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isTechCenter %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
-                            onclick="switchColonyMenu(15, {{ BUILDING_FUNCTION.getTechCenterBuildingFunctionId }});cClick();"
+                            onclick="switchColonyMenu(15, {{ BUILDING_FUNCTION.getTechCenterBuildingFunctionId }});"
                             class="fabutton">Systemkomponentenherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isSubspaceTelescope %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
-                            onclick="switchColonyMenu(16, {{ BUILDING_FUNCTION.getSubspaceTelescopeBuildingFunctionId }});cClick();"
+                            onclick="switchColonyMenu(16, {{ BUILDING_FUNCTION.getSubspaceTelescopeBuildingFunctionId }});"
                             class="fabutton">Subraumteleskop</a>
                     </div>
                     {% endif %}
@@ -250,7 +248,7 @@
                         <tr>
                             <td colspan="4" style="text-align: center;">
                                 <a href="javascript:void(0);"
-                                    onClick="cClick(); buildOnField('B_UPGRADE_BUILDING', {{ fieldId }}, {{ data.getId }});"
+                                    onClick="buildOnField('B_UPGRADE_BUILDING', {{ fieldId }}, {{ data.getId }});"
                                     class="linkbutton">Durchführen</a>
                                 <br />
                                 <strong>Dauer</strong><br />
@@ -329,7 +327,7 @@
                         <tr>
                             <td colspan="3" style="text-align: center">
                                 <a href="javascript:void(0);"
-                                    onClick="cClick(); terraformOnField({{ fieldId }}, {{ data.getId }});"
+                                    onClick="terraformOnField({{ fieldId }}, {{ data.getId }});"
                                     class="linkbutton">Durchführen</a>
                                 <br />
                                 <strong>Dauer</strong><br />
@@ -385,7 +383,7 @@
                     <td style="width: 100px;">
                         {% if building.isRemovable %}
                         <div id="confirm_remove" style="display:none;" class="fabutton_red">
-                            <a href="javascript:void(0);" onClick="cClick(); removeOnField({{ fieldId }});"
+                            <a href="javascript:void(0);" onClick="removeOnField({{ fieldId }});"
                                 class="fabutton_red">bestätigen</a>
                         </div>
                         {% endif %}

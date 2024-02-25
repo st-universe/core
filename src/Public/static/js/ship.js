@@ -123,7 +123,6 @@ function closeStorage() {
 function showShiplistShip(id, title) {
 	clearTimeout(storageTimer);
 	switchInnerContent('SHOW_SHIP', title, `id=${id}`, 'ship.php');
-	cClick();
 }
 function showShipDetails(id) {
 	closeAjaxWindow();
