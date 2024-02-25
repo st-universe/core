@@ -170,6 +170,8 @@ function removeOnField(fieldId) {
 
 function performActionAndUpdateResult(action, params) {
 
+	cClick();
+
 	new Ajax.Updater('result', '/colony.php', {
 		method: 'post',
 		parameters: `${action}=1&${params}`,
