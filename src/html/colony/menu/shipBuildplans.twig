@@ -24,8 +24,10 @@
             <td onclick="toggleTableRowVisible('{{ elementId }}');">
                 {{ data.getBuildtime|formatSeconds }}</td>
             <td style="text-align: center;">
-                <a class="linkbutton" href="?id={{ HOST.getId }}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid={{ id }}">Bauplan
-                    auswählen</a>
+                <a class="linkbutton" href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_MODULE_SCREEN_BUILDPLAN', 'Schiffbau', 'id={{ HOST.getId }}&planid={{ id }}');">
+                    Bauplan auswählen
+                </a>
             </td>
             <td style="text-align: center;">
                 {% if item.deletable %}
