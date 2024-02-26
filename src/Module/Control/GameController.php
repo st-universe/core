@@ -102,8 +102,9 @@ final class GameController implements GameControllerInterface
 
     private bool $isTwig = false;
 
-    /** @var array<Notification> */
-    private array $gameInformations = [];
+    private InformationWrapper $gameInformations;
+
+    private ?TargetLink $targetLink = null;
 
     /** @var array<string, string> */
     private array $siteNavigation = [];
@@ -179,6 +180,7 @@ final class GameController implements GameControllerInterface
 
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         //$this->loggerUtil->init('game', LoggerEnum::LEVEL_ERROR);
+        $this->gameInformations = new InformationWrapper();
     }
 
     /**
@@ -267,15 +269,6 @@ final class GameController implements GameControllerInterface
         return $this->macro;
     }
 
-    public function addInformationfWithLink(string $text, string $link, ...$args): void
-    {
-        $notification = new Notification();
-        $notification->setText($text);
-        $notification->setLink($link);
-
-        $this->gameInformations[] = $notification;
-    }
-
     public function addInformationf(string $text, ...$args): InformationInterface
     {
         $this->addInformation(vsprintf(
@@ -291,10 +284,7 @@ final class GameController implements GameControllerInterface
         if ($information !== null) {
             $this->loggerUtil->log(sprintf('addInformation: %s', $information));
 
-            $notification = new Notification();
-            $notification->setText($information);
-
-            $this->gameInformations[] = $notification;
+            $this->gameInformations->addInformation($information);
         }
 
         return $this;
@@ -302,26 +292,12 @@ final class GameController implements GameControllerInterface
 
     public function addInformationMerge(array $info): void
     {
-        $notificationArray = [];
-        foreach ($info as $value) {
-            $notification = new Notification();
-            $notification->setText($value);
-            $notificationArray[] = $notification;
-        }
-
-        $this->gameInformations = array_merge($notificationArray, $this->getInformation());
+        $this->gameInformations->addInformationArray($info, true);
     }
 
     public function addInformationMergeDown(array $info): void
     {
-        $notificationArray = [];
-        foreach ($info as $value) {
-            $notification = new Notification();
-            $notification->setText($value);
-            $notificationArray[] = $notification;
-        }
-
-        $this->gameInformations = array_merge($this->getInformation(), $notificationArray);
+        $this->gameInformations->addInformationArray($info);
     }
 
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void
@@ -339,7 +315,19 @@ final class GameController implements GameControllerInterface
 
     public function getInformation(): array
     {
-        return $this->gameInformations;
+        return $this->gameInformations->getInformations();
+    }
+
+    public function getTargetLink(): ?TargetLink
+    {
+        return $this->targetLink;
+    }
+
+    public function setTargetLink(TargetLink $targetLink): GameControllerInterface
+    {
+        $this->targetLink = $targetLink;
+
+        return $this;
     }
 
     public function setTemplateVar(string $key, $variable): void

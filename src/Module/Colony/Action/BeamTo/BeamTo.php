@@ -11,6 +11,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
@@ -97,24 +98,6 @@ final class BeamTo implements ActionControllerInterface
             return;
         }
 
-        $isOwnedByCurrentUser = $game->getUser() === $ship->getUser();
-        if ($isOwnedByCurrentUser) {
-            $link = sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $ship->getId());
-
-            $game->addInformationfWithLink(
-                _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
-                $link,
-                $colony->getName(),
-                $ship->getName()
-            );
-        } else {
-            $game->addInformationf(
-                _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
-                $colony->getName(),
-                $ship->getName()
-            );
-        }
-
         $informations = new InformationWrapper();
 
         foreach ($commodities as $key => $value) {
@@ -133,13 +116,33 @@ final class BeamTo implements ActionControllerInterface
             );
         }
 
-        $this->privateMessageSender->send(
-            $userId,
-            $ship->getUser()->getId(),
-            $informations->getInformationsAsString(),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId())
-        );
+
+        if (!$informations->isEmpty()) {
+            $informations->addInformationArray(
+                [sprintf(
+                    _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
+                    $colony->getName(),
+                    $ship->getName()
+                )],
+                true
+            );
+
+            if ($game->getUser() === $ship->getUser()) {
+
+                $game->setTargetLink(new TargetLink(
+                    sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $ship->getId()),
+                    'Zum Schiff wechseln'
+                ));
+            }
+
+            $this->privateMessageSender->send(
+                $userId,
+                $ship->getUser()->getId(),
+                $informations->getInformationsAsString(),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId())
+            );
+        }
 
         $game->addInformationWrapper($informations);
     }

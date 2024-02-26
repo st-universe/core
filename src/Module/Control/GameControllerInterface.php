@@ -30,8 +30,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function getMacro(): string;
 
-    public function addInformationfWithLink(string $text, string $link, ...$args): void;
-
     public function addInformationMerge(array $info): void;
 
     public function addInformationMergeDown(array $info): void;
@@ -39,6 +37,10 @@ interface GameControllerInterface extends InformationInterface
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
 
     public function getInformation(): array;
+
+    public function getTargetLink(): ?TargetLink;
+
+    public function setTargetLink(TargetLink $targetLink): GameControllerInterface;
 
     public function setTemplateVar(string $key, $variable);
 
