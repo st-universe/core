@@ -989,11 +989,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addInformationfWithLink\\(\\) has parameter \\$args with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -1040,11 +1035,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationMergeDown\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addInformationfWithLink\\(\\) has parameter \\$args with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 

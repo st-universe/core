@@ -12,6 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
@@ -108,22 +109,12 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_('Es wurden keine Waren zum Beamen ausgewählt'));
             return;
         }
-        $isOwnedByCurrentUser = $game->getUser() === $ship->getUser();
-        if ($isOwnedByCurrentUser) {
-            $link = sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $ship->getId());
 
-            $game->addInformationfWithLink(
-                _('Die Kolonie %s hat folgende Waren von der %s transferiert'),
-                $link,
-                $colony->getName(),
-                $ship->getName()
-            );
-        } else {
-            $game->addInformationf(
-                _('Die Kolonie %s hat folgende Waren von der %s transferiert'),
-                $colony->getName(),
-                $ship->getName()
-            );
+        if ($game->getUser() === $ship->getUser()) {
+            $game->setTargetLink(new TargetLink(
+                sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $ship->getId()),
+                'Zum Schiff wechseln'
+            ));
         }
 
         $informations = new InformationWrapper();
@@ -145,13 +136,26 @@ final class BeamFrom implements ActionControllerInterface
             );
         }
 
-        $this->privateMessageSender->send(
-            $userId,
-            $ship->getUser()->getId(),
-            $informations->getInformationsAsString(),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId())
-        );
+        if (!$informations->isEmpty()) {
+            $informations->addInformationArray(
+                [sprintf(
+                    _('Die Kolonie %s hat folgende Waren von der %s transferiert'),
+                    $colony->getName(),
+                    $ship->getName()
+                )],
+                true
+            );
+
+            $this->privateMessageSender->send(
+                $userId,
+                $ship->getUser()->getId(),
+                $informations->getInformationsAsString(),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId())
+            );
+        }
+
+
 
         $game->addInformationWrapper($informations);
     }

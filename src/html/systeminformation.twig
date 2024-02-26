@@ -5,18 +5,16 @@
         </tr>
         <tr>
             <td>
-                {% for notification in INFORMATION %}
+                {% for info in INFORMATION %}
                 <div>
-                    {{ notification.getText|bbcode }}
+                    {{ info|bbcode }}
                 </div>
                 {% endfor %}
-                {% for notification in INFORMATION %}
-                {% if notification.getLink %}
-                <a href="{{ notification.getLink }}" class="linkbutton">
-                    Zum Schiff wechseln
+                {% if THIS.getTargetLink %}
+                <a href="{{ THIS.getTargetLink.getUrl }}" class="linkbutton">
+                    {{ THIS.getTargetLink.getTitle }}
                 </a>
                 {% endif %}
-                {% endfor %}
             </td>
         </tr>
     </table>
