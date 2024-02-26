@@ -2229,16 +2229,6 @@ parameters:
 			path: src/Orm/Entity/SessionString.php
 
 		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Cannot call method getModules\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php

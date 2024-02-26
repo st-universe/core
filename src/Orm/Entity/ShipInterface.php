@@ -191,6 +191,8 @@ interface ShipInterface
 
     public function getCrewCount(): int;
 
+    public function getNeededCrewCount(): int;
+
     public function getExcessCrewCount(): int;
 
     public function hasEnoughCrew(?GameControllerInterface $game = null): bool;

@@ -124,7 +124,8 @@
 			<td style="text-align: center;">
 				{% set minCrew = SHIP.getBuildplan ? SHIP.getBuildplan.getCrew : 'kA' %}
 				{% set maxCrew = MAX_CREW_COUNT ? MAX_CREW_COUNT : 'kA' %}
-				{{ SHIP.getCrewCount }}&nbsp;({{ minCrew }},{{ maxCrew }})
+				<span style="{{ WRAPPER.getCrewStyle }}">{{ SHIP.getCrewCount }}</span>
+				({{ minCrew }},{{ maxCrew }})
 			</td>
 			<td style="text-align: center;">
 				<input type="text" name="shipname" size="25" value="{{ SHIP.getName }}"

@@ -14,7 +14,8 @@
         Energie <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
     <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="/assets/buttons/info2.png"
             style="height:16px;" /></th>
-    <th style="width: 90px; text-align: center;">Crew</th>
+    <th style="width: 90px; text-align: center;" title="grün: mehr als ausreichend, rot: zu wenig">Crew <img
+            src="/assets/buttons/info2.png" style="height:16px;" /></th>
     <th style="width: 125px; text-align: center;">Systeme</th>
     <th style="width: 35px;"></th>
 </tr>
@@ -119,7 +120,7 @@
         </div>
         {% endif %}
     </td>
-    <td style="text-align: center;">{{ ship.getCrewCount }}</td>
+    <td style="text-align: center; {{ wrapper.getCrewStyle }}">{{ ship.getCrewCount }}</td>
     <td>
         {% if ship.getNbs %}
         <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert" />
