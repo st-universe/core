@@ -2,7 +2,7 @@
     {% if wrapper.isOwnedByCurrentUser and ship.canMan %}
 
     {% set crewCount = ship.getCrewCount %}
-    {% set neededCrewCount = ship.getBuildplan.getCrew %}
+    {% set neededCrewCount = ship.getNeededCrewCount %}
     {% set isManned = crewCount > 0 %}
     {% set toggleId = 'crewToggle_' ~ shipId %}
     {% set toggleLabel = isManned ? 'Alle runter beamen' : 'Minimalcrew hoch beamen' %}

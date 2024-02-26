@@ -815,27 +815,39 @@ class Ship implements ShipInterface
         return $this->getCrewAssignments()->count();
     }
 
+    public function getNeededCrewCount(): int
+    {
+        $buildplan = $this->getBuildplan();
+        if ($buildplan === null) {
+            return 0;
+        }
+
+        return $buildplan->getCrew();
+    }
+
     public function getExcessCrewCount(): int
     {
-        return $this->getCrewCount() - $this->getBuildplan()->getCrew();
+        return $this->getCrewCount() - $this->getNeededCrewCount();
     }
 
     public function hasEnoughCrew(?GameControllerInterface $game = null): bool
     {
-        if ($this->getBuildplan() === null) {
+        $buildplan = $this->getBuildplan();
+
+        if ($buildplan === null) {
             if ($game !== null) {
                 $game->addInformation(_("Keine Crew vorhanden"));
             }
             return false;
         }
 
-        $result = $this->getBuildplan()->getCrew() <= 0
-            || $this->getCrewCount() >= $this->getBuildplan()->getCrew();
+        $result = $buildplan->getCrew() <= 0
+            || $this->getCrewCount() >= $buildplan->getCrew();
 
         if (!$result && $game !== null) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
-                $this->getBuildplan()->getCrew()
+                $buildplan->getCrew()
             );
         }
 
@@ -878,7 +890,12 @@ class Ship implements ShipInterface
     {
         $modules = [];
 
-        foreach ($this->getBuildplan()->getModules() as $obj) {
+        $buildplan = $this->getBuildplan();
+        if ($buildplan === null) {
+            return $modules;
+        }
+
+        foreach ($buildplan->getModules() as $obj) {
             $module = $obj->getModule();
             $index = $module->getType() === ShipModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
             $modules[$index] = $module;
@@ -1554,8 +1571,10 @@ class Ship implements ShipInterface
 
     public function canMan(): bool
     {
-        return $this->getBuildplan() !== null
-            && $this->getBuildplan()->getCrew() > 0
+        $buildplan = $this->getBuildplan();
+
+        return $buildplan !== null
+            && $buildplan->getCrew() > 0
             && $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
     }
 

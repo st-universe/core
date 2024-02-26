@@ -72,6 +72,8 @@ interface ShipWrapperInterface
 
     public function canBeScrapped(): bool;
 
+    public function getCrewStyle(): string;
+
     public function getHullSystemData(): HullSystemData;
 
     public function getShieldSystemData(): ?ShieldSystemData;

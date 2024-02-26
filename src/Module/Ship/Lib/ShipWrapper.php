@@ -430,6 +430,18 @@ final class ShipWrapper implements ShipWrapperInterface
         return $ship->isBase() && $ship->getState() !== ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING;
     }
 
+    public function getCrewStyle(): string
+    {
+        $ship = $this->get();
+        $excessCrew = $ship->getExcessCrewCount();
+
+        if ($excessCrew === 0) {
+            return "";
+        }
+
+        return $excessCrew > 0 ? "color: green;" : "color: red;";
+    }
+
     public function getHullSystemData(): HullSystemData
     {
         $hullSystemData = $this->getSpecificShipSystem(
