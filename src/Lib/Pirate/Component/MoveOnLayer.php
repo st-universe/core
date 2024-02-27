@@ -20,7 +20,7 @@ class MoveOnLayer implements MoveOnLayerInterface
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function move(ShipWrapperInterface $wrapper, MapInterface|StarSystemMapInterface|null $target): bool

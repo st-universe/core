@@ -37,7 +37,7 @@ class PirateNavigation implements PirateNavigationInterface
         $this->pirateFlight = $pirateFlight;
         $this->randomSystemEntry = $randomSystemEntry;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function navigateToTarget(

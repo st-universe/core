@@ -46,7 +46,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $this->shipAttackCore = $shipAttackCore;
         $this->shipWrapperFactory = $shipWrapperFactory;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function action(FleetWrapperInterface $fleet): void

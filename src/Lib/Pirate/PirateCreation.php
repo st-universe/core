@@ -68,7 +68,7 @@ class PirateCreation implements PirateCreationInterface
         $this->stuRandom = $stuRandom;
         $this->entityManager = $entityManager;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function createPirateFleetsIfNeeded(): array

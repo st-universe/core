@@ -26,7 +26,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function action(FleetWrapperInterface $fleet): void
