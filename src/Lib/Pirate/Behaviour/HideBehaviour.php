@@ -24,7 +24,7 @@ class HideBehaviour implements PirateBehaviourInterface
         $this->starSystemRepository = $starSystemRepository;
         $this->pirateNavigation = $pirateNavigation;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function action(FleetWrapperInterface $fleet): void

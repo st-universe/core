@@ -45,7 +45,7 @@ final class PirateTick implements PirateTickInterface
         $this->stuRandom = $stuRandom;
         $this->behaviours = $behaviours;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(): void

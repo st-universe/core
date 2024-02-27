@@ -33,7 +33,7 @@ class PirateReaction implements PirateReactionInterface
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private array $behaviours
     ) {
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger): void

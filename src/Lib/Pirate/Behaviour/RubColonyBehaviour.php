@@ -60,7 +60,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->stuRandom = $stuRandom;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
+        $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function action(FleetWrapperInterface $fleet): void
