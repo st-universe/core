@@ -99,4 +99,42 @@ class DebugSettingsTest extends StuTestCase
 
         $this->subject->getLogfilePath();
     }
+
+    public function testGetLoglevelExpectConfigValueWhenPresent(): void
+    {
+        $this->config->shouldReceive('get')
+            ->with('debug.loglevel')
+            ->once()
+            ->andReturn(42);
+
+        $level = $this->subject->getLoglevel();
+
+        $this->assertEquals(42, $level);
+    }
+
+    public function testGetLoglevelExpectErrorWhenNotPresent(): void
+    {
+        static::expectExceptionMessage('There is no corresponding config setting on path "debug.loglevel"');
+        static::expectException(StuConfigException::class);
+
+        $this->config->shouldReceive('get')
+            ->with('debug.loglevel')
+            ->once()
+            ->andReturn(null);
+
+        $this->subject->getLoglevel();
+    }
+
+    public function testGetLoglevelExpectErrorWhenWrongType(): void
+    {
+        static::expectExceptionMessage('The value "foo" with path "debug.loglevel" is no valid integer.');
+        static::expectException(StuConfigException::class);
+
+        $this->config->shouldReceive('get')
+            ->with('debug.loglevel')
+            ->once()
+            ->andReturn("foo");
+
+        $this->subject->getLoglevel();
+    }
 }
