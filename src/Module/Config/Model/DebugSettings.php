@@ -8,6 +8,7 @@ final class DebugSettings extends AbstractSettings implements DebugSettingsInter
 
     private const SETTING_DEBUG_MODE = 'debug_mode';
     private const SETTING_LOGFILE_PATH = 'logfile_path';
+    private const SETTING_LOGLEVEL = 'loglevel';
 
     public function isDebugMode(): bool
     {
@@ -17,6 +18,11 @@ final class DebugSettings extends AbstractSettings implements DebugSettingsInter
     public function getLogfilePath(): string
     {
         return $this->getStringConfigValue(self::SETTING_LOGFILE_PATH);
+    }
+
+    public function getLoglevel(): string
+    {
+        return $this->getIntegerConfigValue(self::SETTING_LOGLEVEL);
     }
 
     public function getSqlLoggingSettings(): SqlLoggingSettingsInterface

@@ -6,21 +6,18 @@ namespace Stu\Module\Logging;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Noodlehaus\ConfigInterface;
+use Stu\Module\Config\StuConfigInterface;
 
 final class LoggerUtil implements LoggerUtilInterface
 {
-    private ConfigInterface $config;
-
     private ?Logger $logger = null;
 
     private int $level;
 
     private bool $doLog = false;
 
-    public function __construct(ConfigInterface $config)
+    public function __construct(private StuConfigInterface $stuConfig)
     {
-        $this->config = $config;
     }
 
     public function init(string $channel = 'stu', int $level = LoggerEnum::LEVEL_INFO): void
@@ -31,7 +28,7 @@ final class LoggerUtil implements LoggerUtilInterface
             $this->logger = new Logger($channel);
             $this->logger->pushHandler(
                 new StreamHandler(
-                    $this->config->get('debug.logfile_path')
+                    $this->stuConfig->getDebugSettings()->getLogfilePath()
                 ),
             );
         }
@@ -39,7 +36,7 @@ final class LoggerUtil implements LoggerUtilInterface
 
     private function checkDoLog(): bool
     {
-        $threshold = (int) $this->config->get('debug.loglevel');
+        $threshold = $this->stuConfig->getDebugSettings()->getLoglevel();
 
         $this->doLog = $threshold <= $this->level;
 

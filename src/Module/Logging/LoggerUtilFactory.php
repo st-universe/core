@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
-use Noodlehaus\ConfigInterface;
+use Stu\Module\Config\StuConfigInterface;
 
 final class LoggerUtilFactory implements LoggerUtilFactoryInterface
 {
-    private ConfigInterface $config;
-
     public function __construct(
-        ConfigInterface $config
+        private StuConfigInterface $config
     ) {
-        $this->config = $config;
     }
 
     public function getLoggerUtil(bool $doDefaultInit = false): LoggerUtilInterface
