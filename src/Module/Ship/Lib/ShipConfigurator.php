@@ -191,6 +191,14 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    public function setShipName(string $name): ShipConfiguratorInterface
+    {
+        $ship = $this->wrapper->get();
+        $ship->setName($name);
+
+        return $this;
+    }
+
     public function finishConfiguration(): ShipWrapperInterface
     {
         $this->shipRepository->save($this->wrapper->get());

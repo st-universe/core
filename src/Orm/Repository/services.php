@@ -83,6 +83,7 @@ use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\PrestigeLog;
+use Stu\Orm\Entity\PirateNames;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\RepairTask;
@@ -488,6 +489,11 @@ return [
         ContainerInterface $c
     ): OpenedAdventDoorRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(OpenedAdventDoor::class);
+    },
+    PirateNamesRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PirateNamesRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PirateNames::class);
     },
     PartnerSiteRepositoryInterface::class => function (
         ContainerInterface $c

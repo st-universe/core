@@ -12,12 +12,14 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\PirateNamesInterface;
 use Stu\Orm\Entity\PirateSetupInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\PirateNamesRepositoryInterface;
 use Stu\Orm\Repository\PirateSetupRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -31,6 +33,8 @@ class PirateCreation implements PirateCreationInterface
     private ShipRepositoryInterface $shipRepository;
 
     private UserRepositoryInterface $userRepository;
+
+    private PirateNamesRepositoryInterface $pirateNamesRepository;
 
     private PirateSetupRepositoryInterface $pirateSetupRepository;
 
@@ -56,7 +60,8 @@ class PirateCreation implements PirateCreationInterface
         MapRepositoryInterface $mapRepository,
         StuRandom $stuRandom,
         EntityManagerInterface $entityManager,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        PirateNamesRepositoryInterface $pirateNamesRepository
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
@@ -67,6 +72,7 @@ class PirateCreation implements PirateCreationInterface
         $this->mapRepository = $mapRepository;
         $this->stuRandom = $stuRandom;
         $this->entityManager = $entityManager;
+        $this->pirateNamesRepository = $pirateNamesRepository;
 
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
@@ -135,6 +141,18 @@ class PirateCreation implements PirateCreationInterface
             $rump = $buildplan->getRump();
 
             for ($i = 0; $i < $setupBuildplan->getAmount(); $i++) {
+
+                $mostUnusedNames = $this->pirateNamesRepository->mostUnusedNames();
+                if (count($mostUnusedNames) > 0) {
+                    $selectedNameEntry = $mostUnusedNames[array_rand($mostUnusedNames)];
+                    $shipName = $selectedNameEntry->getName();
+                    $selectedNameEntry->setCount($selectedNameEntry->getCount() + 1);
+                    $this->pirateNamesRepository->save($selectedNameEntry);
+                } else {
+                    $shipName = "Pirate Ship";
+                }
+
+
                 $result[] = $this->shipCreator
                     ->createBy(
                         UserEnum::USER_NPC_KAZON,
@@ -145,6 +163,7 @@ class PirateCreation implements PirateCreationInterface
                     ->maxOutSystems()
                     ->createCrew()
                     ->setTorpedo()
+                    ->setShipName($shipName)
                     ->setAlertState($randomAlertLevel)
                     ->finishConfiguration()
                     ->get();

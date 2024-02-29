@@ -27,5 +27,7 @@ interface ShipConfiguratorInterface
 
     public function maxOutSystems(): ShipConfiguratorInterface;
 
+    public function setShipName(string $name): ShipConfiguratorInterface;
+
     public function finishConfiguration(): ShipWrapperInterface;
 }
