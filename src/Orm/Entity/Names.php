@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-#[Table(name: 'stu_pirate_names')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\PirateNamesRepository')]
-class PirateNames implements PirateNamesInterface
+#[Table(name: 'stu_names')]
+#[Entity(repositoryClass: 'Stu\Orm\Repository\NamesRepository')]
+class Names implements NamesInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -22,8 +22,12 @@ class PirateNames implements PirateNamesInterface
     #[Column(type: 'string', length: 255)]
     private string $name;
 
-    #[Column(type: 'integer')]
+    #[Column(type: 'integer', nullable: true)]
     private int $count;
+
+    #[Column(type: 'integer')]
+    private ?int $type = null;
+
 
     public function getId(): int
     {
@@ -35,7 +39,7 @@ class PirateNames implements PirateNamesInterface
         return $this->name;
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->count;
     }
@@ -43,5 +47,10 @@ class PirateNames implements PirateNamesInterface
     public function setCount(int $count): void
     {
         $this->count = $count;
+    }
+
+    public function getType(): int
+    {
+        return $this->type;
     }
 }

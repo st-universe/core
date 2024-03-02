@@ -26,6 +26,10 @@ final class GameEnum
     //commnet stuff
     public const KN_PER_SITE = 6;
 
+    //name stuff
+    public const SYSTEM_NAME_TYPE = 1;
+    public const KAZON_SHIP_NAME_TYPE = 2;
+
     // javascript execution
     public const JS_EXECUTION_BEFORE_RENDER = 1;
     public const JS_EXECUTION_AFTER_RENDER = 2;
