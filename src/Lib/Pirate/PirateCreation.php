@@ -12,14 +12,14 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\PirateNamesInterface;
+use Stu\Orm\Entity\NamesInterface;
 use Stu\Orm\Entity\PirateSetupInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\PirateNamesRepositoryInterface;
+use Stu\Orm\Repository\NamesRepositoryInterface;
 use Stu\Orm\Repository\PirateSetupRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -34,7 +34,7 @@ class PirateCreation implements PirateCreationInterface
 
     private UserRepositoryInterface $userRepository;
 
-    private PirateNamesRepositoryInterface $pirateNamesRepository;
+    private NamesRepositoryInterface $namesRepository;
 
     private PirateSetupRepositoryInterface $pirateSetupRepository;
 
@@ -61,7 +61,7 @@ class PirateCreation implements PirateCreationInterface
         StuRandom $stuRandom,
         EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        PirateNamesRepositoryInterface $pirateNamesRepository
+        NamesRepositoryInterface $namesRepository
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
@@ -72,7 +72,7 @@ class PirateCreation implements PirateCreationInterface
         $this->mapRepository = $mapRepository;
         $this->stuRandom = $stuRandom;
         $this->entityManager = $entityManager;
-        $this->pirateNamesRepository = $pirateNamesRepository;
+        $this->namesRepository = $namesRepository;
 
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
@@ -142,12 +142,12 @@ class PirateCreation implements PirateCreationInterface
 
             for ($i = 0; $i < $setupBuildplan->getAmount(); $i++) {
 
-                $mostUnusedNames = $this->pirateNamesRepository->mostUnusedNames();
+                $mostUnusedNames = $this->namesRepository->mostUnusedNames();
                 if (count($mostUnusedNames) > 0) {
                     $selectedNameEntry = $mostUnusedNames[array_rand($mostUnusedNames)];
                     $shipName = $selectedNameEntry->getName();
                     $selectedNameEntry->setCount($selectedNameEntry->getCount() + 1);
-                    $this->pirateNamesRepository->save($selectedNameEntry);
+                    $this->namesRepository->save($selectedNameEntry);
                 } else {
                     $shipName = "Pirate Ship";
                 }
