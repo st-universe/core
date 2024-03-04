@@ -10,7 +10,7 @@ use Stu\Orm\Entity\NamesInterface;
 use Stu\Component\Game\GameEnum;
 
 /**
- * @extends EntityRepository<Names>
+ * @extends EntityRepository<NamesInterface>
  */
 final class NamesRepository extends EntityRepository implements NamesRepositoryInterface
 {

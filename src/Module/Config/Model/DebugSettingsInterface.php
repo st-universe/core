@@ -8,7 +8,7 @@ interface DebugSettingsInterface
 
     public function getLogfilePath(): string;
 
-    public function getLoglevel(): string;
+    public function getLoglevel(): int;
 
     public function getSqlLoggingSettings(): SqlLoggingSettingsInterface;
 }
