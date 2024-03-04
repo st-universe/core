@@ -23,10 +23,10 @@ class Names implements NamesInterface
     private string $name;
 
     #[Column(type: 'integer', nullable: true)]
-    private int $count;
+    private ?int $count;
 
     #[Column(type: 'integer')]
-    private ?int $type = null;
+    private int $type = 0;
 
 
     public function getId(): int

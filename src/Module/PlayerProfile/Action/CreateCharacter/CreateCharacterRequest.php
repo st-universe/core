@@ -20,6 +20,9 @@ final class CreateCharacterRequest implements CreateCharacterRequestInterface
         return $this->tidyString($this->queryParameter('description')->string()->required());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAvatar(): array
     {
         return $_FILES['avatar'];

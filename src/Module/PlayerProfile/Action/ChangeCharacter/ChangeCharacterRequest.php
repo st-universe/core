@@ -25,6 +25,9 @@ final class ChangeCharacterRequest implements ChangeCharacterRequestInterface
         return $this->tidyString($this->queryParameter('description')->string()->required());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAvatar(): array
     {
         return $_FILES['avatar'];

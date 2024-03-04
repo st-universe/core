@@ -20,7 +20,7 @@ final class DebugSettings extends AbstractSettings implements DebugSettingsInter
         return $this->getStringConfigValue(self::SETTING_LOGFILE_PATH);
     }
 
-    public function getLoglevel(): string
+    public function getLoglevel(): int
     {
         return $this->getIntegerConfigValue(self::SETTING_LOGLEVEL);
     }

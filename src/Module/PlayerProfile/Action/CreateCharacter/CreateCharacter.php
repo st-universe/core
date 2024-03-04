@@ -8,6 +8,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserCharactersRepositoryInterface;
 use Noodlehaus\ConfigInterface;
+use Laminas\Mail\Exception\RuntimeException;
 
 final class CreateCharacter implements ActionControllerInterface
 {
