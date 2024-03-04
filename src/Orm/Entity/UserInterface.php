@@ -136,6 +136,11 @@ interface UserInterface
      */
     public function getSettings(): Collection;
 
+    /**
+     * @return Collection<int, UserCharactersInterface>
+     */
+    public function getCharacters(): Collection;
+
     public function getSessiondata(): string;
 
     public function setSessiondata(string $sessiondata): UserInterface;
