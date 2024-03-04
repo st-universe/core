@@ -143,3 +143,43 @@
 		</table>
 	</div>
 </div>
+
+<div id="charactersContainer" style="float: left; width: 500px; margin-left: 20px;">
+	<div class="divhead">
+		Spieler Charaktere
+		{% if IS_PROFILE_CURRENT_USER %}
+		<img src="/assets/buttons/fl_join2.png" alt="Neuen Charakter hinzufügen" id="addCharacterButton"
+			style="cursor: pointer; float: right;">
+		{% endif %}
+	</div>
+	{% for character in PROFILE.getCharacters %}
+	<table class="tcal" style="width: 100%; margin-top: 3px;">
+		<tr class="character-bar" data-character-id="{{ character.getId }}" style="cursor: pointer;">
+			<th>
+				{{ character.getName }}
+				{% if IS_PROFILE_CURRENT_USER %}
+				(ID {{ character.getId }})
+				<img src="/assets/buttons/fl_join2.png" alt="Charakter bearbeiten" class="edit-character-button"
+					data-character-id="{{ character.getId }}" style="cursor: pointer; float: right;">
+				<img src="/assets/buttons/act_torp1.png" alt="Charakter löschen" class="delete-character-button"
+					data-character-id="{{ character.getId }}" style="cursor: pointer; float: right; margin-right: 5px;">
+				{% endif %}
+			</th>
+		</tr>
+		<tr id="character-{{ character.getId }}" class="character-content" style="display: none;"
+			data-character-name="{{ character.getName }}" data-character-description="{{ character.getDescription|e }}">
+			<td>
+				<div style="overflow: hidden;">
+					{% if character.getAvatar %}
+					<img src="avatare/characters/{{ character.getAvatar }}.png" alt="Avatar"
+						style="float: left; width: 200px; margin-right: 10px; margin-bottom: 10px;">
+					{% endif %}
+					<p style="margin: 0;">{{ character.getDescription|nl2br|raw }}</p>
+				</div>
+			</td>
+		</tr>
+	</table>
+	{% else %}
+	<p>Keine Charaktere gefunden.</p>
+	{% endfor %}
+</div>

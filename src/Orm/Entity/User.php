@@ -142,6 +142,12 @@ class User implements UserInterface
     #[OneToMany(targetEntity: 'UserSetting', mappedBy: 'user', indexBy: 'setting')]
     private Collection $settings;
 
+    /**
+     * @var ArrayCollection<int, UserCharactersInterface>
+     */
+    #[OneToMany(targetEntity: 'UserCharacters', mappedBy: 'user', cascade: ['persist'])]
+    private Collection $characters;
+
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
@@ -151,6 +157,7 @@ class User implements UserInterface
         $this->colonies = new ArrayCollection();
         $this->userLayers = new ArrayCollection();
         $this->settings = new ArrayCollection();
+        $this->characters = new ArrayCollection();
     }
 
     public function getId(): int
@@ -666,5 +673,10 @@ class User implements UserInterface
         }
 
         return false;
+    }
+
+    public function getCharacters(): Collection
+    {
+        return $this->characters;
     }
 }

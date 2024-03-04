@@ -132,6 +132,7 @@ use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserAward;
+use Stu\Orm\Entity\UserCharacters;
 use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserLayer;
@@ -769,6 +770,11 @@ return [
         ContainerInterface $c
     ): UserAwardRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserAward::class);
+    },
+    UserCharactersRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserCharactersRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserCharacters::class);
     },
     UserLayerRepositoryInterface::class => function (
         ContainerInterface $c
