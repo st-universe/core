@@ -4,6 +4,8 @@ namespace Stu\Component\Communication\Kn;
 
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\KnCharactersInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface KnItemInterface
 {
@@ -24,6 +26,11 @@ interface KnItemInterface
     public function isEditAble(): bool;
 
     public function getPlot(): ?RpgPlotInterface;
+
+    /**
+     * @return Collection<int, KnCharactersInterface>
+     */
+    public function getCharacters(): Collection;
 
     public function getCommentCount(): int;
 

@@ -7,11 +7,18 @@ namespace Stu\Module\Communication\Action\AddKnPost;
 use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\KnCharactersRepositoryInterface;
+use Stu\Orm\Repository\UserCharactersRepositoryInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\KnPostInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {
@@ -29,13 +36,22 @@ final class AddKnPost implements ActionControllerInterface
 
     private NewKnPostNotificatorInterface $newKnPostNotificator;
 
+    private KnCharactersRepositoryInterface $knCharactersRepository;
+
+    private UserCharactersRepositoryInterface $userCharactersRepository;
+
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,
         KnPostRepositoryInterface $knPostRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
         UserRepositoryInterface $userRepository,
-        NewKnPostNotificatorInterface $newKnPostNotificator
+        NewKnPostNotificatorInterface $newKnPostNotificator,
+        KnCharactersRepositoryInterface $knCharactersRepository,
+        UserCharactersRepositoryInterface $userCharactersRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
         $this->knPostRepository = $knPostRepository;
@@ -43,6 +59,9 @@ final class AddKnPost implements ActionControllerInterface
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->userRepository = $userRepository;
         $this->newKnPostNotificator = $newKnPostNotificator;
+        $this->knCharactersRepository = $knCharactersRepository;
+        $this->userCharactersRepository = $userCharactersRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -79,6 +98,8 @@ final class AddKnPost implements ActionControllerInterface
                 return;
             }
         }
+
+
         $post->setTitle($title);
         $post->setText($text);
         $post->setUser($user);
@@ -87,6 +108,32 @@ final class AddKnPost implements ActionControllerInterface
         $post->setDate(time());
 
         $this->knPostRepository->save($post);
+
+
+        $characterIdsInput = $this->addKnPostRequest->getCharacterIds();
+        $idsRaw = explode(',', $characterIdsInput);
+        $validIds = [];
+
+        foreach ($idsRaw as $idRaw) {
+            $idTrimmed = trim($idRaw);
+            if (is_numeric($idTrimmed)) {
+                $validIds[] = (int)$idTrimmed;
+            }
+        }
+
+        foreach ($validIds as $id) {
+            $userCharacter = $this->userCharactersRepository->find($id);
+            if ($userCharacter === null) {
+                $game->addInformation(_("Kein Character mit der ID $id gefunden."));
+                continue;
+            }
+
+            $characters = $this->knCharactersRepository->prototype();
+            $characters->setUserCharacters($userCharacter);
+            $characters->setKnPost($post);
+            $this->knCharactersRepository->save($characters);
+        }
+        $this->notifyCharacterOwners($post, $validIds);
 
         if ($plot !== null) {
             $this->newKnPostNotificator->notify($post, $plot);
@@ -102,6 +149,56 @@ final class AddKnPost implements ActionControllerInterface
 
         $game->setView(GameController::DEFAULT_VIEW);
     }
+
+    /**
+     * @param KnPostInterface $post
+     * @param int[] $characterIds 
+     */
+    private function notifyCharacterOwners(KnPostInterface $post, array $characterIds): void
+    {
+        $userCharactersMap = [];
+
+        foreach ($characterIds as $characterId) {
+            $character = $this->userCharactersRepository->find($characterId);
+            if ($character !== null) {
+                $ownerId = $character->getUser()->getId();
+
+                $characterNameWithId = sprintf('%s (%d)', $character->getName(), $characterId);
+                if (!array_key_exists($ownerId, $userCharactersMap)) {
+                    $userCharactersMap[$ownerId] = [];
+                }
+                $userCharactersMap[$ownerId][] = $characterNameWithId;
+            }
+        }
+
+        foreach ($userCharactersMap as $ownerId => $characterNamesWithIds) {
+            if ($ownerId !== $post->getUser()->getId()) {
+                $charList = implode(', ', $characterNamesWithIds);
+                $text = sprintf(
+                    'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s".',
+                    $charList,
+                    $post->getTitle()
+                );
+
+                $href = sprintf(
+                    'comm.php?%s=1&id=%d',
+                    ShowSingleKn::VIEW_IDENTIFIER,
+                    $post->getId()
+                );
+
+                $this->privateMessageSender->send(
+                    UserEnum::USER_NOONE,
+                    $ownerId,
+                    $text,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                    $href
+                );
+            }
+        }
+    }
+
+
+
 
     public function performSessionCheck(): bool
     {

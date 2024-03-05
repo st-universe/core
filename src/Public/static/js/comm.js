@@ -88,6 +88,7 @@ function updateRecipient() {
 }
 
 function showKnComments(postingId) {
+	closeAjaxWindow();
 	elt = 'kncomments';
 	openWindow(elt, 1, 450);
 	ajax_update(elt, "comm.php?SHOW_KN_COMMENTS=1&posting=" + postingId);
@@ -131,4 +132,12 @@ function searchKn(view) {
 	search = document.knsearchform.search.value;
 
 	switchInnerContent(view, 'KommNet - Suche', `search=${search}`);
+}
+
+function showKnCharacters(characterId) {
+	closeAjaxWindow();
+    var elt = 'kncharacters';
+    openWindow(elt, 1, 450); 
+    ajax_update(elt, "comm.php?SHOW_KN_CHARACTERS=1&character=" + characterId);
+	
 }

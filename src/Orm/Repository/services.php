@@ -60,6 +60,7 @@ use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\IgnoreList;
+use Stu\Orm\Entity\KnCharacters;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostToPlotApplication;
@@ -405,6 +406,11 @@ return [
         ContainerInterface $c
     ): IgnoreListRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(IgnoreList::class);
+    },
+    KnCharactersRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): KnCharactersRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(KnCharacters::class);
     },
     KnCommentRepositoryInterface::class => function (
         ContainerInterface $c

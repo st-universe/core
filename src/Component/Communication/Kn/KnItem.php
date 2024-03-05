@@ -10,8 +10,12 @@ use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\KnCharactersInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 final class KnItem implements KnItemInterface
 {
@@ -83,6 +87,21 @@ final class KnItem implements KnItemInterface
     {
         return $this->post->getRpgPlot();
     }
+
+    /**
+     * @return Collection<int, KnCharactersInterface>
+     */
+    public function getCharacters(): Collection
+    {
+        $characters = $this->post->getKnCharacters();
+
+        if ($characters === null) {
+            return new ArrayCollection();
+        }
+
+        return $characters;
+    }
+
 
     public function getCommentCount(): int
     {

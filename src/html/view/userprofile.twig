@@ -148,8 +148,10 @@
 	<div class="divhead">
 		Spieler Charaktere
 		{% if IS_PROFILE_CURRENT_USER %}
-		<img src="/assets/buttons/fl_join2.png" alt="Neuen Charakter hinzufügen" id="addCharacterButton"
-			style="cursor: pointer; float: right;">
+		<img src="/assets/buttons/char_new1.png" alt="Neuen Charakter hinzufügen" id="addCharacterButton"
+			onmouseover="this.src='/assets/buttons/char_new2.png';" 
+			onmouseout="this.src='/assets/buttons/char_new1.png';" 
+			style="cursor: pointer; float: right;" title="Neuen Charakter hinzufügen">
 		{% endif %}
 	</div>
 	{% for character in PROFILE.getCharacters %}
@@ -159,10 +161,18 @@
 				{{ character.getName }}
 				{% if IS_PROFILE_CURRENT_USER %}
 				(ID {{ character.getId }})
-				<img src="/assets/buttons/fl_join2.png" alt="Charakter bearbeiten" class="edit-character-button"
-					data-character-id="{{ character.getId }}" style="cursor: pointer; float: right;">
-				<img src="/assets/buttons/act_torp1.png" alt="Charakter löschen" class="delete-character-button"
-					data-character-id="{{ character.getId }}" style="cursor: pointer; float: right; margin-right: 5px;">
+				<img src="/assets/buttons/char_edit1.png" alt="Charakter bearbeiten" class="edit-character-button"
+				data-character-id="{{ character.getId }}" style="cursor: pointer; float: right;"
+				onmouseover="this.src='/assets/buttons/char_edit2.png';" 
+				onmouseout="this.src='/assets/buttons/char_edit1.png';" 
+				title="Charakter bearbeiten">
+			
+			<img src="/assets/buttons/char_del1.png" alt="Charakter löschen" class="delete-character-button"
+				data-character-id="{{ character.getId }}" style="cursor: pointer; float: right; margin-right: 5px;"
+				onmouseover="this.src='/assets/buttons/char_del2.png';" 
+				onmouseout="this.src='/assets/buttons/char_del1.png';" 
+				title="Charakter löschen">
+			
 				{% endif %}
 			</th>
 		</tr>
