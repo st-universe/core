@@ -481,13 +481,11 @@
         </tr>
         <tr>
           <td>
-            <div tal:repeat="notification THIS/getInformation" tal:content="structure bbcode:notification/getText">.
+            <div tal:repeat="info THIS/getInformation" tal:content="structure bbcode:info">.
             </div>
-            <tal:block tal:repeat="notification THIS/getInformation">
-              <a tal:condition="notification/getLink" href="${notification/getLink}" class="linkbutton">
-                Zum Schiff wechseln
-              </a>
-            </tal:block>
+            <a tal:condition="THIS/getTargetLink" href="${THIS/getTargetLink/getUrl}" class="linkbutton">
+              ${THIS/getTargetLink/getTitle}
+            </a>
           </td>
         </tr>
       </table>
