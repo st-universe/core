@@ -13,12 +13,6 @@ use Stu\Orm\Entity\NamesInterface;
  */
 interface NamesRepositoryInterface extends ObjectRepository
 {
-    public function prototype(): NamesInterface;
-
-    public function save(NamesInterface $name): void;
-
-    public function delete(NamesInterface $name): void;
-
     /**
      * @return array<NamesInterface>
      */
