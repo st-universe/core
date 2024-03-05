@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Game\NameTypeEnum;
 
 #[Table(name: 'stu_names')]
 #[Entity(repositoryClass: 'Stu\Orm\Repository\NamesRepository')]
@@ -25,9 +26,8 @@ class Names implements NamesInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $count;
 
-    #[Column(type: 'integer')]
-    private int $type = 0;
-
+    #[Column(type: 'integer', enumType: NameTypeEnum::class)]
+    private NameTypeEnum $type;
 
     public function getId(): int
     {
@@ -49,7 +49,7 @@ class Names implements NamesInterface
         $this->count = $count;
     }
 
-    public function getType(): int
+    public function getType(): NameTypeEnum
     {
         return $this->type;
     }

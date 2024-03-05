@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Game\NameTypeEnum;
+
 interface NamesInterface
 {
     public function getId(): int;
@@ -12,5 +14,5 @@ interface NamesInterface
 
     public function setCount(int $count): void;
 
-    public function getType(): int;
+    public function getType(): NameTypeEnum;
 }
