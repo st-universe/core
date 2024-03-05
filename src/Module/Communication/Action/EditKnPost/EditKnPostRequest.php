@@ -33,4 +33,9 @@ final class EditKnPostRequest implements EditKnPostRequestInterface
             $this->queryParameter('title')->string()->trim()->defaultsToIfEmpty('')
         );
     }
+
+    public function getCharacterIds(): string
+    {
+        return $this->queryParameter('characterids')->string()->trim()->required();
+    }
 }

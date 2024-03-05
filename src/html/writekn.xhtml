@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<td>
-						<div style="display: grid; grid-template-columns: 70% 30%">
+						<div style="display: grid; grid-template-columns: 50% 40% 30%">
 							<div>
 								<input type="submit" name="B_WRITE_KN" value="Hinzufügen" />
 								<input type="submit" name="B_PREVIEW_KN" value="Vorschau" />
@@ -85,12 +85,20 @@
 								</tal:block>
 								Lesezeichen bei diesem Beitrag setzen
 							</div>
-							<div style="text-align: right">
-								<a href="https://de.wikipedia.org/wiki/BBCode">BB-Code</a>:
-								<tal:block tal:repeat="char ALLOWED_BBCODE_CHARACTERS">
-									[<span tal:replace="char" />]
-								</tal:block>
+							<div style="display: flex; justify-content: space-between; align-items: center;">
+								<div style="flex-grow: 1;">
+									<span>Character IDs (mit Komma getrennt): </span><input type="text" name="characterids" placeholder="Character ID's" style="width: 150px;" />
+								</div>
+							
+								<div style="flex-grow: 1; text-align: right;">
+									<a href="https://de.wikipedia.org/wiki/BBCode">BB-Code</a>:
+									<tal:block tal:repeat="char ALLOWED_BBCODE_CHARACTERS">
+										[<span tal:replace="char"></span>]
+									</tal:block>
+								</div>
 							</div>
+							
+							
 						</div>
 					</td>
 				</tr>

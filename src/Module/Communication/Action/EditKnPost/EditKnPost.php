@@ -11,6 +11,13 @@ use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
+use Stu\Orm\Repository\KnCharactersRepositoryInterface;
+use Stu\Orm\Repository\UserCharactersRepositoryInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\KnCharactersInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 
 final class EditKnPost implements ActionControllerInterface
 {
@@ -26,16 +33,29 @@ final class EditKnPost implements ActionControllerInterface
 
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 
+    private KnCharactersRepositoryInterface $knCharactersRepository;
+
+    private UserCharactersRepositoryInterface $userCharactersRepository;
+
+    private PrivateMessageSenderInterface $privateMessageSender;
+
+
     public function __construct(
         EditKnPostRequestInterface $editKnPostRequest,
         KnPostRepositoryInterface $knPostRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        KnCharactersRepositoryInterface $knCharactersRepository,
+        UserCharactersRepositoryInterface $userCharactersRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->editKnPostRequest = $editKnPostRequest;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->knCharactersRepository = $knCharactersRepository;
+        $this->userCharactersRepository = $userCharactersRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -71,6 +91,97 @@ final class EditKnPost implements ActionControllerInterface
             $game->addInformation(_('Der Text ist zu kurz'));
             return;
         }
+
+
+        $href = sprintf('comm.php?%s=1&id=%d', ShowSingleKn::VIEW_IDENTIFIER, $post->getId());
+        $currentCharacterEntities = $this->knCharactersRepository->findBy(['knPost' => $post]);
+        $currentCharacterIds = array_map(function (KnCharactersInterface $character) {
+            return $character->getUserCharacters()->getId();
+        }, $currentCharacterEntities);
+
+
+        $newCharacterIdsInput = $this->editKnPostRequest->getCharacterIds();
+        $newCharacterIds = array_filter(array_map('intval', explode(',', $newCharacterIdsInput)));
+
+        $charactersToAdd = array_diff($newCharacterIds, $currentCharacterIds);
+        $charactersToRemove = array_diff($currentCharacterIds, $newCharacterIds);
+
+        $charactersAddedMapping = [];
+        $charactersRemovedMapping = [];
+
+        foreach ($charactersToAdd as $characterId) {
+            $character = $this->userCharactersRepository->find($characterId);
+            if ($character !== null && $character->getUser()->getId() !== $userId) {
+                $ownerId = $character->getUser()->getId();
+                $charactersAddedMapping[$ownerId][] = sprintf('%s (%d)', $character->getName(), $characterId);
+            }
+        }
+
+        foreach ($charactersToRemove as $characterId) {
+            $character = $this->userCharactersRepository->find($characterId);
+            if ($character !== null && $character->getUser()->getId() !== $userId) {
+                $ownerId = $character->getUser()->getId();
+                $charactersRemovedMapping[$ownerId][] = sprintf('%s (%d)', $character->getName(), $characterId);
+            }
+        }
+
+
+        foreach ($charactersAddedMapping as $ownerId => $characterNames) {
+            $charList = implode(', ', $characterNames);
+            $text = sprintf(
+                'Deine Charaktere %s wurden zu einem KN Post hinzugefügt. Titel des Posts: "%s"',
+                $charList,
+                $post->getTitle()
+            );
+            $this->privateMessageSender->send(
+                UserEnum::USER_NOONE,
+                $ownerId,
+                $text,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                $href
+            );
+        }
+
+        foreach ($charactersRemovedMapping as $ownerId => $characterNames) {
+            $charList = implode(', ', $characterNames);
+            $text = sprintf(
+                'Deine Charaktere %s wurden aus einem KN Post entfernt. Titel des Posts: "%s"',
+                $charList,
+                $post->getTitle()
+            );
+            $this->privateMessageSender->send(
+                UserEnum::USER_NOONE,
+                $ownerId,
+                $text,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                $href
+            );
+        }
+
+        foreach ($currentCharacterIds as $currentCharacterId) {
+            if (!in_array($currentCharacterId, $newCharacterIds)) {
+                $entityToRemove = $this->knCharactersRepository->findOneBy([
+                    'knPost' => $post->getId(),
+                    'userCharacters' => $currentCharacterId
+                ]);
+                if ($entityToRemove) {
+                    $this->knCharactersRepository->delete($entityToRemove);
+                }
+            }
+        }
+
+        foreach ($newCharacterIds as $newCharacterId) {
+            if (!in_array($newCharacterId, $currentCharacterIds)) {
+                $userCharacter = $this->userCharactersRepository->find($newCharacterId);
+                if ($userCharacter) {
+                    $newEntity = $this->knCharactersRepository->prototype();
+                    $newEntity->setUserCharacters($userCharacter);
+                    $newEntity->setKnPost($post);
+                    $this->knCharactersRepository->save($newEntity);
+                }
+            }
+        }
+
 
         $post->setEditDate(time());
 

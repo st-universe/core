@@ -84,7 +84,7 @@
                             onmouseover="cp('mark{{ postId }}','buttons/lese2', 'png')"
                             onmouseout="cp('mark{{ postId }}','buttons/lese1', 'png')">
                             <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark{{ postId }}" />
-                        </a>
+                    </a>                        
                         {% if post.isEditAble %}
                         <a href="?EDIT_KN=1&knid={{ postId }}"
                             onmouseover="cp('edit{{ postId }}','buttons/knedit2', 'png')"
@@ -97,6 +97,12 @@
                             <img src="/assets/buttons/x1.png" title="Beitrag löschen" name="x{{ postId }}" />
                         </a>
                         {% endif %}
+                        {% for knCharacter in post.getCharacters %}
+                        {% set character = knCharacter.getUserCharacters %}
+                        <div class="character-name" style="cursor: pointer;" onclick="showKnCharacters({{ character.getId }})">
+                            {{ character.getName }}
+                        </div>
+                    {% endfor %}
                     </div>
                 </div>
                 <div class="knGridRating">

@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
+use Stu\Orm\Entity\KnCharactersInterface;
+
 
 #[Table(name: 'stu_kn')]
 #[Index(name: 'plot_idx', columns: ['plot_id'])]
@@ -67,6 +69,13 @@ class KnPost implements KnPostInterface
     #[OrderBy(['id' => 'ASC'])]
     private Collection $comments;
 
+    /**
+     * @var ArrayCollection<int, KnCharactersInterface>
+     */
+    #[OneToMany(targetEntity: 'KnCharacters', mappedBy: 'knPost')]
+    private Collection $knCharacters;
+
+
     #[ManyToOne(targetEntity: 'RpgPlot', inversedBy: 'posts')]
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'id')]
     private ?RpgPlotInterface $rpgPlot = null;
@@ -75,9 +84,11 @@ class KnPost implements KnPostInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private UserInterface $user;
 
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->knCharacters = new ArrayCollection();
     }
 
     public function getId(): int
@@ -213,5 +224,13 @@ class KnPost implements KnPostInterface
             ShowSingleKn::VIEW_IDENTIFIER,
             $this->getId()
         );
+    }
+
+    /**
+     * @return Collection<int, KnCharactersInterface>
+     */
+    public function getKnCharacters(): Collection
+    {
+        return $this->knCharacters;
     }
 }

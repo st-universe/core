@@ -11,6 +11,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
+use Stu\Orm\Repository\KnCharactersRepositoryInterface;
 
 final class ShowEditKn implements ViewControllerInterface
 {
@@ -22,14 +23,18 @@ final class ShowEditKn implements ViewControllerInterface
 
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 
+    private KnCharactersRepositoryInterface $knCharactersRepository;
+
     public function __construct(
         ShowEditKnRequestInterface $showEditKnRequest,
         KnPostRepositoryInterface $knPostRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        KnCharactersRepositoryInterface $knCharactersRepository
     ) {
         $this->showEditKnRequest = $showEditKnRequest;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->knCharactersRepository = $knCharactersRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,6 +61,14 @@ final class ShowEditKn implements ViewControllerInterface
                 _('Beitrag bearbeiten')
             );
             $game->setPageTitle(_('Beitrag bearbeiten'));
+
+            $characterEntities = $this->knCharactersRepository->findBy(['knPost' => $post->getId()]);
+            $characterIds = array_map(function ($characterEntity) {
+                return $characterEntity->getUserCharacters()->getId();
+            }, $characterEntities);
+            $characterIdsString = implode(',', $characterIds);
+
+            $game->setTemplateVar('CHARACTER_IDS_STRING', $characterIdsString);
 
             $game->setTemplateVar(
                 'ACTIVE_RPG_PLOTS',

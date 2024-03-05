@@ -182,4 +182,19 @@
   </script>
 </metal:macro>
 
+<metal:macro metal:define-macro="kncharacters">
+<table class="tcal" style="width: 100%; margin-top: 3px;">
+  <td>
+    <div style="overflow: hidden;">
+      
+        <img tal:attributes="src string:avatare/characters/${CHARACTER/getAvatar}.png" alt="Avatar" style="float: left; width: 200px; margin-right: 10px; margin-bottom: 10px;"/>
+        <span style="font-size: larger;">Von Spieler: <span tal:replace="structure bbcode:CHARACTER/getUserName">Name</span></span>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <span tal:replace="structure nl2br:CHARACTER/getDescription" style="margin: 0;">Beschreibung</span>
+    </div>
+  </td>
+</table>
+</metal:macro>
+
 </html>

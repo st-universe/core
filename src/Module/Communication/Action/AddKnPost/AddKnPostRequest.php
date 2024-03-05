@@ -33,4 +33,9 @@ final class AddKnPostRequest implements AddKnPostRequestInterface
             $this->queryParameter('title')->string()->trim()->required()
         );
     }
+
+    public function getCharacterIds(): string
+    {
+        return $this->queryParameter('characterids')->string()->defaultsTo('');
+    }
 }

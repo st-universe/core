@@ -63,4 +63,9 @@ interface KnPostInterface
      * Returns the relativ url to this posting
      */
     public function getUrl(): string;
+
+    /**
+     * @return Collection<int, KnCharactersInterface>
+     */
+    public function getKnCharacters(): ?Collection;
 }
