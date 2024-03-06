@@ -10,6 +10,7 @@ use Stu\Component\StarSystem\StarSystemCreationInterface;
 use Stu\Module\Admin\View\Map\ShowSystem\ShowSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\NamesRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class RegenerateSystem implements ActionControllerInterface
@@ -18,13 +19,17 @@ final class RegenerateSystem implements ActionControllerInterface
 
     private StarSystemRepositoryInterface $starSystemRepository;
 
+    private NamesRepositoryInterface $namesRepository;
+
     private StarSystemCreationInterface $starSystemCreation;
 
     public function __construct(
         StarSystemRepositoryInterface $starSystemRepository,
+        NamesRepositoryInterface $namesRepository,
         StarSystemCreationInterface $starSystemCreation
     ) {
         $this->starSystemRepository = $starSystemRepository;
+        $this->namesRepository = $namesRepository;
         $this->starSystemCreation = $starSystemCreation;
     }
 
@@ -49,7 +54,7 @@ final class RegenerateSystem implements ActionControllerInterface
             return;
         }
 
-        $systemName = current($this->starSystemRepository->getRandomFreeSystemNames(1));
+        $systemName = current($this->namesRepository->getRandomFreeSystemNames(1));
         if ($systemName === false) {
             throw new RuntimeException('no free system name available');
         }

@@ -7,7 +7,6 @@ use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemNameInterface;
 
 /**
  * @extends ObjectRepository<StarSystem>
@@ -31,11 +30,6 @@ interface StarSystemRepositoryInterface extends ObjectRepository
     public function getWithoutDatabaseEntry(): array;
 
     public function getNumberOfSystemsToGenerate(LayerInterface $layer): int;
-
-    /**
-     * @return array<StarSystemNameInterface>
-     */
-    public function getRandomFreeSystemNames(int $amount): array;
 
     public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface;
 

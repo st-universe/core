@@ -9,7 +9,7 @@ use Stu\Component\StarSystem\StarSystemCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\StarSystemRepositoryInterface;
+use Stu\Orm\Repository\NamesRepositoryInterface;
 
 final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 {
@@ -19,19 +19,19 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 
     private MapRepositoryInterface $mapRepository;
 
-    private StarSystemRepositoryInterface $starSystemRepository;
+    private NamesRepositoryInterface $namesRepository;
 
     private StarSystemCreationInterface $starSystemCreation;
 
     public function __construct(
         LayerRepositoryInterface $layerRepository,
         MapRepositoryInterface $mapRepository,
-        StarSystemRepositoryInterface $starSystemRepository,
+        NamesRepositoryInterface $namesRepository,
         StarSystemCreationInterface $starSystemCreation
     ) {
         $this->layerRepository = $layerRepository;
         $this->mapRepository = $mapRepository;
-        $this->starSystemRepository = $starSystemRepository;
+        $this->namesRepository = $namesRepository;
         $this->starSystemCreation = $starSystemCreation;
     }
 
@@ -53,7 +53,7 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 
         $count = 0;
 
-        $randomNames = $this->starSystemRepository->getRandomFreeSystemNames(self::BATCH_AMOUNT);
+        $randomNames = $this->namesRepository->getRandomFreeSystemNames(self::BATCH_AMOUNT);
 
         foreach ($mapArray as $map) {
             if ($count === self::BATCH_AMOUNT) {

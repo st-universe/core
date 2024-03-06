@@ -20,4 +20,9 @@ interface NamesRepositoryInterface extends ObjectRepository
      * @return array<NamesInterface>
      */
     public function mostUnusedNames(): array;
+
+    /**
+     * @return array<NamesInterface>
+     */
+    public function getRandomFreeSystemNames(int $amount): array;
 }
