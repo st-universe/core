@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Names;
 use Stu\Component\Game\NameTypeEnum;
 use Stu\Orm\Entity\NamesInterface;
+use Stu\Orm\Entity\StarSystem;
 
 /**
  * @extends EntityRepository<Names>
@@ -41,5 +42,27 @@ final class NamesRepository extends EntityRepository implements NamesRepositoryI
         ]);
 
         return $query->getResult();
+    }
+
+    public function getRandomFreeSystemNames(int $amount): array
+    {
+        $freeNames = $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT n FROM %s n
+                    WHERE n.type = :type
+                    AND NOT EXISTS (SELECT ss.id
+                                        FROM %s ss
+                                        WHERE ss.name = n.name)',
+                    Names::class,
+                    StarSystem::class
+                )
+            )
+            ->setParameter('type', NameTypeEnum::STAR_SYSTEM->value)
+            ->getResult();
+
+        shuffle($freeNames);
+
+        return array_slice($freeNames, 0, $amount);
     }
 }

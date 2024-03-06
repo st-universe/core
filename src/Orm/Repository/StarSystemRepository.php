@@ -85,26 +85,6 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getSingleScalarResult();
     }
 
-    public function getRandomFreeSystemNames(int $amount): array
-    {
-        $freeNames = $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT ssm FROM %s ssm
-                    WHERE NOT EXISTS (SELECT ss.id
-                                        FROM %s ss
-                                        WHERE ss.name = ssm.name)',
-                    StarSystemName::class,
-                    StarSystem::class
-                )
-            )
-            ->getResult();
-
-        shuffle($freeNames);
-
-        return array_slice($freeNames, 0, $amount);
-    }
-
     public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface
     {
         return $this->getEntityManager()
