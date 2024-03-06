@@ -88,20 +88,10 @@ final class KnItem implements KnItemInterface
         return $this->post->getRpgPlot();
     }
 
-    /**
-     * @return Collection<int, KnCharactersInterface>
-     */
     public function getCharacters(): Collection
     {
-        $characters = $this->post->getKnCharacters();
-
-        if ($characters === null) {
-            return new ArrayCollection();
-        }
-
-        return $characters;
+        return $this->post->getKnCharacters();
     }
-
 
     public function getCommentCount(): int
     {
