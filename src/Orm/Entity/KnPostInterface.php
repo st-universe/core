@@ -67,5 +67,5 @@ interface KnPostInterface
     /**
      * @return Collection<int, KnCharactersInterface>
      */
-    public function getKnCharacters(): ?Collection;
+    public function getKnCharacters(): Collection;
 }
