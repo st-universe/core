@@ -12,7 +12,6 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemName;
 
 /**
  * @extends EntityRepository<StarSystem>
