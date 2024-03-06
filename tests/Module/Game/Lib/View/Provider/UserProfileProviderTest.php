@@ -173,6 +173,10 @@ class UserProfileProviderTest extends StuTestCase
             ->once()
             ->andReturn([$friend]);
 
+        $game->shouldReceive('addExecuteJS')
+            ->with("initTranslations();", \Stu\Component\Game\GameEnum::JS_EXECUTION_AFTER_RENDER)
+            ->once();
+
         $this->subject->setTemplateVariables($game);
     }
 }
