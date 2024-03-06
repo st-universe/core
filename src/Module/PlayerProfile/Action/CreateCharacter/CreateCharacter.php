@@ -54,8 +54,8 @@ final class CreateCharacter implements ActionControllerInterface
             $game->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
-        if ($avatarFile['size'] > 200000) {
-            $game->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
+        if ($avatarFile['size'] > 1000000) {
+            $game->addInformation(_('Die maximale Dateigröße liegt bei 1 Megabyte'));
             return;
         }
         if ($avatarFile['size'] === 0) {
