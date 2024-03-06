@@ -68,21 +68,6 @@ final class ChangeAvatar implements ActionControllerInterface
             return;
         }
 
-        if ($alliance->hasAvatar()) {
-            $result = @unlink(
-                sprintf(
-                    '%s/%s/%s.png',
-                    $this->config->get('game.webroot'),
-                    $this->config->get('game.alliance_avatar_path'),
-                    $alliance->getAvatar()
-                )
-            );
-
-            if ($result === false) {
-                throw new RuntimeException('old alliance avatar could not be deleted');
-            }
-        }
-
         $imageName = md5($alliance->getId() . "_" . time());
 
         try {
@@ -111,6 +96,22 @@ final class ChangeAvatar implements ActionControllerInterface
         if ($newImage === false) {
             return;
         }
+
+        if ($alliance->hasAvatar()) {
+            $result = @unlink(
+                sprintf(
+                    '%s/%s/%s.png',
+                    $this->config->get('game.webroot'),
+                    $this->config->get('game.alliance_avatar_path'),
+                    $alliance->getAvatar()
+                )
+            );
+
+            if ($result === false) {
+                throw new RuntimeException('old alliance avatar could not be deleted');
+            }
+        }
+
         imagecopy($newImage, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
         imagepng(
             $newImage,
