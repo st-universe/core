@@ -184,7 +184,7 @@
 					<img src="avatare/characters/{{ character.getAvatar }}.png" alt="Avatar"
 						style="float: left; width: 200px; margin-right: 10px; margin-bottom: 10px;">
 					{% endif %}
-					<p style="margin: 0;">{{ character.getDescription|nl2br|raw }}</p>
+					<p class="translatable-content" style="margin: 0;">{{ character.getDescription|bbcode|nl2br|raw }}</p>
 				</div>
 			</td>
 		</tr>

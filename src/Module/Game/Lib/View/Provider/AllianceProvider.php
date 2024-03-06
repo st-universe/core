@@ -18,6 +18,7 @@ use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
+use Stu\Component\Game\GameEnum;
 
 final class AllianceProvider implements ViewComponentProviderInterface
 {
@@ -69,6 +70,8 @@ final class AllianceProvider implements ViewComponentProviderInterface
         } else {
             $this->setTemplateVariablesForAlliance($alliance, $game);
         }
+
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 
     private function setTemplateVariablesForAlliance(AllianceInterface $alliance, GameControllerInterface $game): void

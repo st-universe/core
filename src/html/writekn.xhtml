@@ -2,7 +2,8 @@
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
 		<script src="${THIS/getJavascriptPath}/js/comm.js"></script>
-		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<script src="${THIS/getJavascriptPath}/js/default.js"></script>
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />	
 		<form action="comm.php" method="post">
 			<input type="hidden" name="WRITE_KN" value="1" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
@@ -21,7 +22,7 @@
 					</tr>
 					<tr>
 						<td>
-							<span id="preview" class="translatable-content"
+							<span id="preview" class="translatable-content" style="overflow-wrap: break-word;"
 								tal:content="structure nl2br:PREVIEW"></span>
 						</td>
 					</tr>

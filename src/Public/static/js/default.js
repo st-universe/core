@@ -710,3 +710,12 @@ function maximizeCommodityAmounts() {
                 elem.value = 'max';
         });
 }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+        var previewElement = document.getElementById("preview");
+        if (previewElement) {
+            initTranslations();
+        }
+    });
+    

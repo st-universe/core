@@ -14,6 +14,7 @@ use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Component\Game\GameEnum;
 
 final class UserProfileProvider implements ViewComponentProviderInterface
 {
@@ -86,5 +87,6 @@ final class UserProfileProvider implements ViewComponentProviderInterface
             )
         );
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }
