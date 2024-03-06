@@ -50,7 +50,6 @@ function toggleEditFormVisibility(characterId) {
 }
 
 function createEditCharacterForm(characterId, characterName, characterDescription) {
-    const characterContent = document.getElementById('character-' + characterId);
     const formHtml = `
         <form class="character-edit-form" data-character-id="${characterId}" enctype="multipart/form-data" method="POST">
         <td>

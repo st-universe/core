@@ -35,6 +35,6 @@ final class ShowKnCharacters implements ViewControllerInterface
 
         $game->setPageTitle(sprintf(_('Details zu Charakter %s'), $character->getName()));
         $game->setMacroInAjaxWindow('html/commmacros.xhtml/kncharacters');
-        $game->setTemplateVar('CHARACTER', new KnCharactersTal($character, $game->getUser()));
+        $game->setTemplateVar('CHARACTER', $character);
     }
 }
