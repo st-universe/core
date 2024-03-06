@@ -20,6 +20,7 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
+use Stu\Component\Game\GameEnum;
 
 final class MessageProvider implements ViewComponentProviderInterface
 {
@@ -140,5 +141,6 @@ final class MessageProvider implements ViewComponentProviderInterface
         );
 
         $this->componentLoader->addComponentUpdate(ComponentEnum::PM_NAVLET);
+        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }
