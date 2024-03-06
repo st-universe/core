@@ -171,7 +171,7 @@ class KnCommentTalTest extends StuTestCase
 
         $this->comment->shouldReceive('getUser->getAvatar')
             ->withNoArgs()
-            ->once()
+            ->times(2)
             ->andReturn($avatarPath);
 
         $this->config->shouldReceive('get')
