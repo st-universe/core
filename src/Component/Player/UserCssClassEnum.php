@@ -12,6 +12,7 @@ enum UserCssClassEnum: string
     case  YELLOW = 'gelb';
     case  RED = 'rot';
     case  LCARS = 'lcars';
+    case ORANGE = 'orange';
 
     public function getTitle(): string
     {
@@ -22,6 +23,7 @@ enum UserCssClassEnum: string
             self::YELLOW => 'Gelb',
             self::RED => 'Rot',
             self::LCARS => 'LCARS',
+            self::ORANGE => 'Orange',
         };
     }
 }
