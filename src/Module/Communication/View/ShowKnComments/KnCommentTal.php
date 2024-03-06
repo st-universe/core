@@ -67,11 +67,19 @@ final class KnCommentTal implements KnCommentTalInterface
             return '';
         }
 
-        return sprintf(
-            '/%s/%s.png',
-            $this->config->get('game.user_avatar_path'),
-            $this->comment->getUser()->getAvatar()
-        );
+        if ($this->comment->getUser()->getAvatar() === '') {
+            return sprintf(
+                'assets/rassen/%skn.png',
+                $this->comment->getUser()->getFactionId()
+            );
+        } else {
+
+            return sprintf(
+                '/%s/%s.png',
+                $this->config->get('game.user_avatar_path'),
+                $this->comment->getUser()->getAvatar()
+            );
+        }
     }
 
     public function isDeleteable(): bool
