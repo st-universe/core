@@ -1,9 +1,9 @@
 {% embed "html/colony/menu/container.twig" %}
 {% block containment %}
 <div>
+    {% set primaryEffectCommodity = FACTION.getPrimaryEffectCommodity %}
+    {% set secondaryEffectCommodity = FACTION.getSecondaryEffectCommodity %}
     <table class="tcal" style="width: 40vw;">
-        {% set primaryEffectCommodity = FACTION.getPrimaryEffectCommodity %}
-        {% set secondaryEffectCommodity = FACTION.getSecondaryEffectCommodity %}
         <tr>
             <th colspan="4">Crewberechnung dieser Kolonie</th>
         </tr>
@@ -31,7 +31,7 @@
             <td style="width: 25%" class="darkbg">
                 Bevölkerungsdichte
             </td>
-            <td style="width: 25%" class="darkbg">Lebensstandard</td>
+            <td style="width: 25%" class="darkbg">Lebensstandard (in Prozent)</td>
         </tr>
         <tr>
             <td>
@@ -39,7 +39,7 @@
                 {{ POPULATION_CALCULATOR.getNegativeEffect }}
             </td>
             <td>
-                <img src="/assets/commodities/1300.png" title="Lebensstandard">
+                <img src="/assets/commodities/1300.png" title="Lebensstandard (in Prozent)">
                 {{ POPULATION_CALCULATOR.getLifeStandardPercentage }}%
             </td>
         </tr>
@@ -92,6 +92,38 @@
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
                 {{ CREW_COUNT_REMAINING }}
             </td>
+        </tr>
+    </table>
+
+    <br />
+    <table class="tcal" style="width: 40vw;">
+        <tr>
+            <th colspan="3">Lokaler Crewrechner <a
+                href="https://wiki.stuniverse.de/index.php?title=Wichtig:Crew" target="_blank">
+                <img src="/assets/buttons/info1.png" name="fieldinfo" width="14" height="14"
+                    title="Wiki-Info über Crewberechnung" /></th>
+        </tr>
+        <tr>
+            <td class="darkbg"><img src="assets/commodities/{{ primaryEffectCommodity.getId }}.png"
+                title="{{ primaryEffectCommodity.getName }}" /> {{ primaryEffectCommodity.getName }}</td>
+            <td class="darkbg"><img src="assets/commodities/{{ secondaryEffectCommodity.getId }}.png"
+                title="{{ secondaryEffectCommodity.getName }}" /> {{ secondaryEffectCommodity.getName }}</td>
+            <td class="darkbg"><img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Bevölkerung</td>
+        </tr>
+        <tr>
+            <td><input type="number" id="primaryPositive" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
+            <td><input type="number" id="secondaryPositive" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
+            <td><input type="number" id="population" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
+        </tr>
+        <tr>
+            <td class="darkbg"><img src="/assets/bev/bev_used_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Arbeiter</td>
+            <td class="darkbg"><img src="/assets/commodities/1300.png" title="Lebensstandard (absoluter Wert)"> Lebensstandard (absoluter Wert)</td>
+            <td class="darkbg"><img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Errechnete Crew</td>
+        </tr>
+        <tr>
+            <td><input type="number" id="workers" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
+            <td><input type="number" id="lifeStandard" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
+            <td id="calculatedCrew">0</td>
         </tr>
     </table>
 </div>

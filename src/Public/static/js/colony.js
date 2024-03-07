@@ -469,3 +469,21 @@ function showTelescopeScan(cx, cy) {
 	//refresh current colony eps
 	ajax_update('current_energy', 'colony.php?REFRESH_COLONY_EPS=1&id=' + colonyid);
 }
+function calculateLocalCrew() {
+    const primaryPositive = Math.max(0, parseInt(document.getElementById('primaryPositive').value) || 0);
+    const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
+    const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
+    const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
+    const lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
+
+    const populationResult = Math.max(0, Math.ceil(population / 70) - secondaryPositive);
+    const term2 = Math.floor(primaryPositive - (4 * populationResult));
+    const term3 = Math.max(0, term2 / 5);
+    const term4 = population > 0 ? Math.min(1, Math.max(0, lifeStandard / population)) : 0;
+    let term6 = Math.floor(term3 * term4) + 10;
+    
+    const term7 = Math.floor(workers / 5);
+    let result = Math.max(10, Math.min(term6, term7));
+
+    document.getElementById('calculatedCrew').innerText = result.toString(); 
+}
