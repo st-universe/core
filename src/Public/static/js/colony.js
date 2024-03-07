@@ -474,16 +474,25 @@ function calculateLocalCrew() {
     const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
     const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
     const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
-    const lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
+    let lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
+	const negativEffect = Math.ceil(population / 70);
 
-    const populationResult = Math.max(0, Math.ceil(population / 70) - secondaryPositive);
-    const term2 = Math.floor(primaryPositive - (4 * populationResult));
-    const term3 = Math.max(0, term2 / 5);
-    const term4 = population > 0 ? Math.min(1, Math.max(0, lifeStandard / population)) : 0;
-    let term6 = Math.floor(term3 * term4) + 10;
-    
-    const term7 = Math.floor(workers / 5);
-    let result = Math.max(10, Math.min(term6, term7));
+    const term1 = Math.max(0, negativEffect - secondaryPositive);
+    const term2 = Math.max(primaryPositive - (4 * term1),0);
+    const term3 = Math.min(term2, workers)/5;
+	
+	if (lifeStandard > population) {
+		lifeStandard = population;
+	}
+
+    let term4;
+    if (population > 0) {
+        term4 = Math.floor(lifeStandard * 100 / population);
+    } else {
+        term4 = 0;
+    }
+    const term5 = Math.floor(10 + term3 * (term4 / 100));
+    let result = term5;
 
     document.getElementById('calculatedCrew').innerText = result.toString(); 
 }
