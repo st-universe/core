@@ -138,7 +138,7 @@ class UserProfileProviderTest extends StuTestCase
 
         $visitor->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn($visitorId);
 
         $player->shouldReceive('getDescription')
