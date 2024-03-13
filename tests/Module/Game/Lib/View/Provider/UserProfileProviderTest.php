@@ -203,6 +203,10 @@ class UserProfileProviderTest extends StuTestCase
             ->once()
             ->andReturn([$colonyScan]);
 
+        $game->shouldReceive('setTemplateVar')
+            ->with('COLONYSCANLIST', [123 => $colonyScan])
+            ->once();
+
         $this->subject->setTemplateVariables($game);
     }
 }
