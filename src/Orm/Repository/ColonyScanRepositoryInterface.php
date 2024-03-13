@@ -32,6 +32,11 @@ interface ColonyScanRepositoryInterface extends ObjectRepository
      */
     public function getEntryByUserAndSystem(int $user, int $systemId): array;
 
+    /**
+     * @return array<ColonyScanInterface>
+     */
+    public function getEntryByUserAndVisitor(int $user, int $visiteduser): array;
+
     public function getSurfaceArray(int $id): string;
 
     public function getSurfaceWidth(int $id): int;

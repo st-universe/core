@@ -15,6 +15,9 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ColonyScanRepositoryInterface;
+use Stu\Orm\Entity\ColonyScanInterface;
 
 final class UserProfileProvider implements ViewComponentProviderInterface
 {
@@ -26,16 +29,20 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
     private ParserWithImageInterface $parserWithImage;
 
+    private ColonyScanRepositoryInterface $colonyScanRepository;
+
     private ProfileVisitorRegistrationInterface $profileVisitorRegistration;
 
     public function __construct(
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        ColonyScanRepositoryInterface $colonyScanRepository,
         ContactRepositoryInterface $contactRepository,
         UserRepositoryInterface $userRepository,
         ParserWithImageInterface $parserWithImage,
         ProfileVisitorRegistrationInterface $profileVisitorRegistration
     ) {
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
+        $this->colonyScanRepository = $colonyScanRepository;
         $this->contactRepository = $contactRepository;
         $this->userRepository = $userRepository;
         $this->parserWithImage = $parserWithImage;
@@ -60,6 +67,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $this->profileVisitorRegistration->register($user, $visitor);
 
         $game->setTemplateVar('PROFILE', $user);
+        $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($visitor, $user->getId()));
         $game->setTemplateVar(
             'DESCRIPTION',
             $this->parserWithImage->parse($user->getDescription())->getAsHTML()
@@ -88,5 +96,19 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         );
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+    }
+
+    /**
+     * @return array<ColonyScanInterface>
+     */
+    public function getColonyScanList(UserInterface $visitor, int $user): iterable
+    {
+        $scanlist = [];
+
+        foreach ($this->colonyScanRepository->getEntryByUserAndVisitor($visitor->getId(), $user) as $element) {
+            $i = $element->getColony()->getId();
+            $scanlist[$i] = $element;
+        }
+        return $scanlist;
     }
 }
