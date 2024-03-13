@@ -151,7 +151,7 @@ class UserProfileProviderTest extends StuTestCase
             ->andReturnNull();
         $player->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn($playerId);
 
         $this->profileVisitorRegistration->shouldReceive('register')
