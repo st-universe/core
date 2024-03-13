@@ -105,3 +105,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+function showColonySurface(id) {
+	elt = 'colonysurface';
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'userprofile.php?SHOW_SURFACE=1&id=' + id);
+}

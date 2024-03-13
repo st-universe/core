@@ -15,6 +15,9 @@ use Stu\Module\PlayerProfile\Action\ChangeCharacter\ChangeCharacterRequestInterf
 use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacter;
 use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequest;
 use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequestInterface;
+use Stu\Module\Database\View\ShowColonySurface\ShowColonySurface;
+use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequest;
+use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequestInterface;
 
 
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistration;
@@ -27,6 +30,7 @@ return [
     CreateCharacterRequestInterface::class => autowire(CreateCharacterRequest::class),
     ChangeCharacterRequestInterface::class => autowire(ChangeCharacterRequest::class),
     DeleteCharacterRequestInterface::class => autowire(DeleteCharacterRequest::class),
+    ShowColonySurfaceRequestInterface::class => autowire(ShowColonySurfaceRequest::class),
     'PLAYER_PROFILE_ACTIONS' => [
         CreateCharacter::ACTION_IDENTIFIER => autowire(CreateCharacter::class),
         ChangeCharacter::ACTION_IDENTIFIER => autowire(ChangeCharacter::class),
@@ -34,5 +38,6 @@ return [
     ],
     'PLAYER_PROFILE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
+        ShowColonySurface::VIEW_IDENTIFIER => autowire(ShowColonySurface::class),
     ],
 ];

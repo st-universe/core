@@ -142,6 +142,42 @@
 			</tr>
 		</table>
 	</div>
+	{% if not IS_PROFILE_CURRENT_USER %}
+	<table style="width: 300px; margin-left: 5px; margin-top: 20px;"> 
+	  <tr>
+		<th>Koordinatenliste</th> 
+	  </tr>
+	  <tr>
+		<td> 
+		  <div style="padding-left: 5px; display: table-cell; vertical-align:top;">
+			{% if COLONYSCANLIST is empty %}
+			  <p>Keine Daten gesammelt.</p>
+			{% else %}
+			  <table class="use" style="width: 300px;">
+				  <tr>
+					  <th></th>
+					  <th>Koloniename</th>
+					  <th>Koordinaten</th>
+					  <th>Letzter Scan</th>
+					  <th>Scanner</th>
+				  </tr>
+				  {% for csl in COLONYSCANLIST %}
+				  <tr>
+					  <td><a href="javascript:void(0);" onclick="showColonySurface({{ csl.getId() }})"><img src="assets/planets/{{ csl.getColony.getColonyClassId }}.png" /></a></td>
+					  <td><span>{{ csl.getColonyName | bbcode }}</span></td>
+					  <td>{{ csl.getColony.getSx }}|{{ csl.getColony.getSy }}  ({{ csl.getColony.getSystem.getCx }}|{{ csl.getColony.getSystem.getCy }})</br> {{ csl.getColony.getSystem.getName }}</td>
+					  <td><span>{{ csl.getDate | date('Y-m-d H:i:s') }}</span></td>
+					  <td><span>{{ csl.getUser.getName | bbcode }}</span></td>
+				  </tr>
+				  {% endfor %}
+			  </table>
+			{% endif %}
+		  </div>
+		</td>
+	  </tr>
+	</table>
+	{% endif %}	
+
 </div>
 
 <div id="charactersContainer" style="float: left; width: 500px; margin-left: 20px;">
