@@ -86,6 +86,7 @@ class UserProfileProviderTest extends StuTestCase
     {
         $playerId = 666;
         $visitorId = 42;
+        $colonyid = 123;
         $parsedDescription = 'some-parsed-description';
         $description = 'some-description';
 
@@ -196,7 +197,7 @@ class UserProfileProviderTest extends StuTestCase
         $colony->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(123);
+            ->andReturn($colonyid);
 
         $this->colonyScanRepository->shouldReceive('getEntryByUserAndVisitor')
             ->with($visitorId, $playerId)
