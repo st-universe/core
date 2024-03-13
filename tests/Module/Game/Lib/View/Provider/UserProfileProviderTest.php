@@ -15,11 +15,12 @@ use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ColonyScanInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
-use Stu\Orm\Entity\ColonyScanInterface;
 use Stu\StuTestCase;
 
 class UserProfileProviderTest extends StuTestCase
@@ -96,6 +97,7 @@ class UserProfileProviderTest extends StuTestCase
         $friend = $this->mock(UserInterface::class);
         $bbCodeParser = $this->mock(Parser::class);
         $colonyScan = $this->mock(ColonyScanInterface::class);
+        $colony = $this->mock(ColonyInterface::class);
 
         request::setMockVars(['uid' => $playerId]);
 
@@ -184,6 +186,17 @@ class UserProfileProviderTest extends StuTestCase
         $game->shouldReceive('addExecuteJS')
             ->with("initTranslations();", \Stu\Component\Game\GameEnum::JS_EXECUTION_AFTER_RENDER)
             ->once();
+
+
+        $colonyScan->shouldReceive('getColony')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colony);
+
+        $colony->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(123);
 
         $this->colonyScanRepository->shouldReceive('getEntryByUserAndVisitor')
             ->with($visitorId, $playerId)
