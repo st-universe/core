@@ -61,7 +61,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
     public function getPrestigeForBoardingAttempt(ShipInterface $target): int
     {
-        return (int)ceil($this->getPrestigeForTakeover($target) / 10);
+        return (int)ceil($this->getPrestigeForTakeover($target) / 25);
     }
 
     public function getPrestigeForTakeover(ShipInterface $target): int
