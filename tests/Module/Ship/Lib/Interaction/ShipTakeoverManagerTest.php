@@ -97,7 +97,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $result = $this->subject->getPrestigeForBoardingAttempt($this->target);
 
-        $this->assertEquals(20, $result);
+        $this->assertEquals(8, $result);
     }
 
     public function testGetPrestigeForBoardingAttemptExpectCostBasedOnModules(): void
@@ -127,7 +127,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $result = $this->subject->getPrestigeForBoardingAttempt($this->target);
 
-        $this->assertEquals(69, $result);
+        $this->assertEquals(57, $result);
     }
 
     public static function startTakeoverTestData()
