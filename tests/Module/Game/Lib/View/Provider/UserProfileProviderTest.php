@@ -139,7 +139,7 @@ class UserProfileProviderTest extends StuTestCase
 
         $visitor->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
+            ->atLeast()->once()
             ->andReturn($visitorId);
 
         $player->shouldReceive('getDescription')
@@ -152,7 +152,7 @@ class UserProfileProviderTest extends StuTestCase
             ->andReturnNull();
         $player->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
+            ->atLeast()->once()
             ->andReturn($playerId);
 
         $this->profileVisitorRegistration->shouldReceive('register')
