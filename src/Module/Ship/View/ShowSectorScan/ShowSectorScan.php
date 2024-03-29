@@ -97,9 +97,8 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('MAP_PATH', $this->getMapPath($ship));
-        if ($buoy != null) {
-            $game->setTemplateVar('BUOY', $buoy);
-        }
+        $game->setTemplateVar('BUOY', $buoy);
+
         $game->setTemplateVar('ERROR', false);
     }
 

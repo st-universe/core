@@ -125,7 +125,7 @@ class Commodity implements CommodityInterface
 
     public function isBouy(): bool
     {
-        return $this->getId() === CommodityTypeEnum::BASE_ID_BOUY;
+        return $this->getId() === CommodityTypeEnum::BASE_ID_BUOY;
     }
 
     /**
