@@ -1161,7 +1161,7 @@
         }
         #matchNotification {
           display: none;
-          font-weight: bold;
+          margin-left: 20px;
         }
         .analysisResultCell {
           font-weight: bold;
@@ -1176,12 +1176,12 @@
           <td style="width: 40px;"><img src="assets/buttons/amp_down.png" class="button-img" title="Amplitude verringern" onclick="decreaseDynamicAmplitude()"/></td>
           <td style="width: 40px;"><img src="assets/buttons/amp_up.png" class="button-img" title="Amplitude erhöhen" onclick="increaseDynamicAmplitude()"/></td>
           <td rowspan="2" class="dynamicValueCell">
-            <img src="assets/buttons/amp.png" title="Dynamische Amplitude" /><span id="dynamicAmplitude"></span>µV/m<br/>
-            <img src="assets/buttons/lambda.png" title="Dynamische Wellenlänge" /><span id="dynamicWavelength"></span>nm
+            <img src="assets/buttons/amp.png" title="Dynamische Amplitude" /><span id="dynamicAmplitude"></span> µV/m<br/>
+            <img src="assets/buttons/lambda.png" title="Dynamische Wellenlänge" /><span id="dynamicWavelength"></span> nm
           </td>
           <td rowspan="2" class="analysisResultCell">
             Analyseergebnis:<br/>
-            <div id="matchNotification">Besitzer: <span id="ownerId">${BUOY/getUser/getName}</span></div>
+            <div id="matchNotification">Besitzer: <span id="ownerId" tal:content="structure bbcode:BUOY/getUser/getName">Test</span></div>
           </td>
         </tr>
         <tr>

@@ -76,7 +76,7 @@ final class TakeBuoy implements ActionControllerInterface
             return;
         }
 
-        $commodity = $this->commodityRepository->find(CommodityTypeEnum::BASE_ID_BOUY);
+        $commodity = $this->commodityRepository->find(CommodityTypeEnum::BASE_ID_BUOY);
 
         if ($commodity !== null) {
             $this->shipStorageManager->upperStorage(

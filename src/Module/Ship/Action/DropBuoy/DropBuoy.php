@@ -69,7 +69,7 @@ final class DropBuoy implements ActionControllerInterface
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
-        if (count($this->buoyRepository->findByUserId($userId)) <= 16) {
+        if (count($this->buoyRepository->findByUserId($userId)) >= 16) {
             $game->addInformation(_("Es können nicht mehr als 16 Bojen platziert werden"));
             return;
         }
@@ -82,13 +82,13 @@ final class DropBuoy implements ActionControllerInterface
         }
 
         if (empty($text)) {
-            $game->addInformation(_("Der Text darf nicht leer sein."));
+            $game->addInformation(_("Der Text darf nicht leer sein"));
             return;
         }
 
         $storage = $ship->getStorage();
 
-        $commodity = $this->commodityRepository->find(CommodityTypeEnum::BASE_ID_BOUY);
+        $commodity = $this->commodityRepository->find(CommodityTypeEnum::BASE_ID_BUOY);
         if ($commodity !== null && !$storage->containsKey($commodity->getId())) {
             $game->addInformationf(
                 _('Es wird eine Boje benötigt')
