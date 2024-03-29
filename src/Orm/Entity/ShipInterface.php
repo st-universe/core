@@ -429,6 +429,9 @@ interface ShipInterface
 
     public function getStoredShuttleCount(): int;
 
+    /**
+     * @return CommodityInterface[]
+     */
     public function getStoredBuoy(): array;
 
     public function hasStoredBuoy(): bool;
