@@ -914,16 +914,36 @@
       <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
     <table class="tcal" tal:condition="BUOY">
       <tr>
-        <th colspan="3">Bojen</th>
+        <th colspan="4">Bojen</th>
         <tr tal:repeat="bou BUOY">
-          <td style="width:75%;">
+          <td style="background-image: url('assets/buttons/warp_1.png'); background-position: center; background-repeat: no-repeat;">
+            <img src="assets/ships/buoy/${bou/getUser/getFaction/getId}.png" title="Boje" style="display: block; margin-left: auto; margin-right: auto;" />
+          </td>
+          
+          <td style="width:80%;">
             <span tal:content="structure bbcode:bou/getText">Message</span>
           </td>
           <td>
-            <input type="hidden" name="buoy_id" tal:attributes="value bou/getId" />
-            <input type="submit" class="button" name="B_TAKE_BUOY" value="Boje aufbringen" /></td>
-            <td>    <a href="javascript:void(0);" onclick="analysebuoy(${bou/getId});"
-              title="Boje Analysieren" class="fabutton">Analysieren</a></td>
+            <input type="hidden" name="buoy_id" value="${bou/getId}" />
+            <input type="hidden" name="B_TAKE_BUOY" value="1" />
+            <a href="javascript:void(0)" 
+               onclick="this.closest('form').submit()"
+               onmouseover="document.getElementsByName('takebuoy')[0].src='assets/buttons/take_buoy_2.png';" 
+               onmouseout="document.getElementsByName('takebuoy')[0].src='assets/buttons/take_buoy_1.png';">
+              <img src="assets/buttons/take_buoy_1.png" title="Boje aufbringen" name="takebuoy" />
+            </a>
+          </td>
+          
+          <td>
+            <a href="javascript:void(0);" 
+               onclick="analysebuoy(${bou/getId});"
+               onmouseover="document.getElementById('analyseBuoyImg').src='assets/buttons/analyse_buoy_2.png';" 
+               onmouseout="document.getElementById('analyseBuoyImg').src='assets/buttons/analyse_buoy_1.png';"
+               title="Boje Analysieren" class="fabutton">
+              <img src="assets/buttons/analyse_buoy_1.png" id="analyseBuoyImg" style="cursor: pointer;"/>
+            </a>
+          </td>
+          
         </tr>
       </tr>
     </table>
@@ -1173,20 +1193,18 @@
       <canvas id="buoyAnalysisCanvas" width="800" height="400"></canvas>
       <table class="tcal">
         <tr>
-          <td style="width: 40px;"><img src="assets/buttons/amp_down.png" class="button-img" title="Amplitude verringern" onclick="decreaseDynamicAmplitude()"/></td>
-          <td style="width: 40px;"><img src="assets/buttons/amp_up.png" class="button-img" title="Amplitude erhöhen" onclick="increaseDynamicAmplitude()"/></td>
-          <td rowspan="2" class="dynamicValueCell">
-            <img src="assets/buttons/amp.png" title="Dynamische Amplitude" /><span id="dynamicAmplitude"></span> µV/m<br/>
-            <img src="assets/buttons/lambda.png" title="Dynamische Wellenlänge" /><span id="dynamicWavelength"></span> nm
+          <td style="width: 68px;"><img src="assets/buttons/amp_down.png" class="button-img" style="display: inline-block;" title="Amplitude verringern" onclick="decreaseDynamicAmplitude()"/><img src="assets/buttons/amp_up.png" class="button-img" style="display: inline-block;" title="Amplitude erhöhen" onclick="increaseDynamicAmplitude()"/></td>
+          <td  class="dynamicValueCell">
+            <img src="assets/buttons/amp.png" title="Dynamische Amplitude" /> <span id="dynamicAmplitude"></span> µV/m<br/>
           </td>
-          <td rowspan="2" class="analysisResultCell">
-            Analyseergebnis:<br/>
-            <div id="matchNotification">Besitzer: <span id="ownerId" tal:content="structure bbcode:BUOY/getUser/getName">Test</span></div>
+          <td  class="analysisResultCell">
+            Analyseergebnis:
           </td>
         </tr>
         <tr>
-          <td><img src="assets/buttons/lambda_down.png" class="button-img" title="Wellenlänge verringern" onclick="decreaseDynamicWavelength()"/></td>
-          <td><img src="assets/buttons/lambda_up.png" class="button-img" title="Wellenlänge erhöhen" onclick="increaseDynamicWavelength()"/></td>
+          <td><img src="assets/buttons/lambda_down.png" class="button-img" title="Wellenlänge verringern" style="display: inline-block;" onclick="decreaseDynamicWavelength()"/><img src="assets/buttons/lambda_up.png" class="button-img" style="display: inline-block;" title="Wellenlänge erhöhen" onclick="increaseDynamicWavelength()"/></td>
+        <td><img src="assets/buttons/lambda.png" title="Dynamische Wellenlänge" /> <span id="dynamicWavelength"></span> nm</td>
+        <td><div id="matchNotification">Besitzer: <span id="ownerId" tal:content="structure bbcode:BUOY/getUser/getName">Test</span></div></td>
         </tr>
       </table>
     </div>
