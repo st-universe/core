@@ -34,6 +34,8 @@ interface CommodityInterface
 
     public function isWorkbee(): bool;
 
+    public function isBouy(): bool;
+
     public function isIllegal(int $network): bool;
 
     public function getTransferCount(): int;

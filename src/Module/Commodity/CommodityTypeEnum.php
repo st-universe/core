@@ -36,6 +36,7 @@ final class CommodityTypeEnum
     //base value for e.g. shuttles
     public const BASE_ID_WORKBEE = 20060;
     public const BASE_IDS_SHUTTLE =  [self::BASE_ID_WORKBEE];
+    public const BASE_ID_BOUY = 1;
 
     public const COMMODITY_ADVENT_POINT = 60;
 

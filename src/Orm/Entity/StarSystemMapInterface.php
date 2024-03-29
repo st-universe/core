@@ -60,4 +60,9 @@ interface StarSystemMapInterface
     public function getRandomWormholeEntry(): ?WormholeEntryInterface;
 
     public function getSectorString(): string;
+
+    /**
+     * @return Collection<int, BuoyInterface>
+     */
+    public function getBuoys(): Collection;
 }

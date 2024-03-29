@@ -429,6 +429,10 @@ interface ShipInterface
 
     public function getStoredShuttleCount(): int;
 
+    public function getStoredBuoy(): array;
+
+    public function hasStoredBuoy(): bool;
+
     public function canMan(): bool;
 
     public function canBuildConstruction(): bool;

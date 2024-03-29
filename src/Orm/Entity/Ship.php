@@ -1556,6 +1556,25 @@ class Ship implements ShipInterface
         return $count;
     }
 
+    public function getStoredBuoy(): array
+    {
+        $buoy = [];
+
+        foreach ($this->getStorage() as $stor) {
+            if ($stor->getCommodity()->isBouy()) {
+                $buoy[] = $stor->getCommodity();
+            }
+        }
+
+        return $buoy;
+    }
+
+    public function hasStoredBuoy(): bool
+    {
+        return !empty($this->getStoredBuoy());
+    }
+
+
     public function getDockedWorkbeeCount(): int
     {
         $count = 0;
