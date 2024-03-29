@@ -50,6 +50,8 @@ final class ShowSectorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
+        $buoy = null;
+
         $game->setPageTitle("Sektor Scan");
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/sectorscan');
         $game->setTemplateVar('ERROR', true);
@@ -95,7 +97,9 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('MAP_PATH', $this->getMapPath($ship));
-        $game->setTemplateVar('BUOY', $buoy);
+        if ($buoy != null) {
+            $game->setTemplateVar('BUOY', $buoy);
+        }
         $game->setTemplateVar('ERROR', false);
     }
 

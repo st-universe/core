@@ -53,6 +53,9 @@ class StarSystemMap implements StarSystemMapInterface
     #[JoinColumn(name: 'field_id', referencedColumnName: 'id')]
     private MapFieldTypeInterface $mapFieldType;
 
+    /**
+     * @var ArrayCollection<int, BuoyInterface>
+     */
     #[OneToMany(targetEntity: 'Buoy', mappedBy: 'systemMap')]
     private Collection $buoys;
 
@@ -229,7 +232,7 @@ class StarSystemMap implements StarSystemMapInterface
 
 
     /**
-     * @return Collection<BuoyInterface>
+     * @return Collection<int, BuoyInterface>
      */
     public function getBuoys(): Collection
     {

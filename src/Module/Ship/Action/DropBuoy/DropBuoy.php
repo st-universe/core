@@ -76,8 +76,7 @@ final class DropBuoy implements ActionControllerInterface
 
         $text = request::postString('text');
 
-        if (mb_strlen($text) > 60) {
-
+        if ($text === false || mb_strlen($text) > 60) {
             $game->addInformation(_("Der Text darf nicht länger als 60 Zeichen sein"));
             return;
         }
@@ -112,21 +111,15 @@ final class DropBuoy implements ActionControllerInterface
 
         $buoy = $this->buoyRepository->prototype();
         $buoy->setUser($game->getUser());
-        if ($text != false) {
-            if (mb_strlen($text) > 60) {
+        $buoy->setText($text);
 
-                $game->addInformation(_("Der Text darf nicht länger als 60 Zeichen sein"));
-                return;
-            } else {
-                $buoy->setText($text);
-            }
-        }
 
         if ($ship->getStarsystemMap() !== null) {
             $buoy->setSystemMap($ship->getStarsystemMap());
         } else {
             $buoy->setMap($ship->getMap());
         }
+
 
         $this->buoyRepository->save($buoy);
         $epsSystem->lowerEps(1)->update();

@@ -103,7 +103,7 @@ class Map implements MapInterface
     private ?MapRegionInterface $administratedRegion = null;
 
     /**
-     * @var Collection<int, BuoyInterface>
+     * @var ArrayCollection<int, BuoyInterface>
      */
     #[OneToMany(targetEntity: 'Buoy', mappedBy: 'map')]
     private Collection $buoys;

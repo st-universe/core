@@ -1556,6 +1556,9 @@ class Ship implements ShipInterface
         return $count;
     }
 
+    /**
+     * @return CommodityInterface[]
+     */
     public function getStoredBuoy(): array
     {
         $buoy = [];
@@ -1568,6 +1571,7 @@ class Ship implements ShipInterface
 
         return $buoy;
     }
+
 
     public function hasStoredBuoy(): bool
     {
