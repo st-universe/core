@@ -909,6 +909,25 @@
         </td>
       </tr>
     </table>
+    <form action="ship.php" method="post">
+      <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+      <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
+    <table class="tcal" tal:condition="BUOY">
+      <tr>
+        <th colspan="3">Bojen</th>
+        <tr tal:repeat="bou BUOY">
+          <td style="width:75%;">
+            <span tal:content="structure bbcode:bou/getText">Message</span>
+          </td>
+          <td>
+            <input type="hidden" name="buoy_id" tal:attributes="value bou/getId" />
+            <input type="submit" class="button" name="B_TAKE_BUOY" value="Boje aufbringen" /></td>
+            <td>    <a href="javascript:void(0);" onclick="analysebuoy(${bou/getId});"
+              title="Boje Analysieren" class="fabutton">Analysieren</a></td>
+        </tr>
+      </tr>
+    </table>
+  </form>
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="repairoptions">
@@ -1128,5 +1147,54 @@
     </div>
   </tal:block>
 </metal:macro>
+
+<metal:macro metal:define-macro="analysebuoy">
+    <div>
+      <style>
+        .button-img {
+          cursor: pointer;
+          display: block;
+          margin: auto;
+        }
+        #dynamicValues img, #dynamicValues span {
+          vertical-align: middle;
+        }
+        #matchNotification {
+          display: none;
+          font-weight: bold;
+        }
+        .analysisResultCell {
+          font-weight: bold;
+        }
+        #ownerId {
+          margin-left: 20px;
+        }
+      </style>
+      <canvas id="buoyAnalysisCanvas" width="800" height="400"></canvas>
+      <table class="tcal">
+        <tr>
+          <td style="width: 40px;"><img src="assets/buttons/amp_down.png" class="button-img" title="Amplitude verringern" onclick="decreaseDynamicAmplitude()"/></td>
+          <td style="width: 40px;"><img src="assets/buttons/amp_up.png" class="button-img" title="Amplitude erhöhen" onclick="increaseDynamicAmplitude()"/></td>
+          <td rowspan="2" class="dynamicValueCell">
+            <img src="assets/buttons/amp.png" title="Dynamische Amplitude" /><span id="dynamicAmplitude"></span>µV/m<br/>
+            <img src="assets/buttons/lambda.png" title="Dynamische Wellenlänge" /><span id="dynamicWavelength"></span>nm
+          </td>
+          <td rowspan="2" class="analysisResultCell">
+            Analyseergebnis:<br/>
+            <div id="matchNotification">Besitzer: <span id="ownerId">${BUOY/getUser/getName}</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="assets/buttons/lambda_down.png" class="button-img" title="Wellenlänge verringern" onclick="decreaseDynamicWavelength()"/></td>
+          <td><img src="assets/buttons/lambda_up.png" class="button-img" title="Wellenlänge erhöhen" onclick="increaseDynamicWavelength()"/></td>
+        </tr>
+      </table>
+    </div>
+    <script type="text/javascript">
+        initialiseBuoyAnalysis(${AMPLITUDE}, ${WAVELENGTH});
+    </script>
+</metal:macro>
+
+
 
 </html>

@@ -1,0 +1,42 @@
+
+<table class="tcal" id="shiplist_singles_table" style="width: 500px;">
+    <tr>
+        <td colspan="11">Bojen</td>
+    </tr>
+    <tr>
+        <th style="width: 60px;"></th>
+        <th>Botschaft</th>
+        <th style="width: 30px;"></th>
+        <th style="width: 200px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
+                style="height:16px;" /></th>
+    </tr>
+    {% for buoy in BUOY %}
+<tr>
+    <td style="height:1px; width:1px;" class="shiplistshipimage">
+        <a class="imgOverlayText">
+            {% set factonid = buoy.getUser.getFaction.getId %}
+        
+            {% set imagesrc = 'assets/ships/buoy/' ~ factonid ~ '.png' %}
+            {% set imagestyle = 'z-index: 5;' %}
+            <img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+            <img src="{{ imagesrc }}" class="indexedGraphicsShips" style="{{ imagestyle }}" title="Boje"
+                onload="adjustCellHeight(this); adjustCellWidth(this);" />
+            
+        </a>
+    </td>
+    <td>
+        {{ buoy.getText|bbcode }}
+    </td>
+    <td></td>
+    {% if buoy.getSystemMap %}
+    <td align="center">
+        {{ buoy.getSystemMap.getSectorString }}
+    </td>
+    {% else %}
+    <td align="center">
+        ({{ buoy.getMap.getCx }}|{{ buoy.getMap.getCy }})
+    </td>
+    {% endif %}
+    </tr>
+    {% endfor %}
+</table>

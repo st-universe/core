@@ -61,6 +61,7 @@ use Stu\Module\Ship\Action\DisplayNotOwner\DisplayNotOwner;
 use Stu\Module\Ship\Action\DockShip\DockShip;
 use Stu\Module\Ship\Action\DoTachyonScan\DoTachyonScan;
 use Stu\Module\Ship\Action\DumpForeignCrewman\DumpForeignCrewman;
+use Stu\Module\Ship\Action\DropBuoy\DropBuoy;
 use Stu\Module\Ship\Action\EnterStarSystem\EnterStarSystem;
 use Stu\Module\Ship\Action\EnterWormhole\EnterWormhole;
 use Stu\Module\Ship\Action\EpsTransfer\EpsTransfer;
@@ -133,6 +134,7 @@ use Stu\Module\Ship\Action\StopEmergency\StopEmergency;
 use Stu\Module\Ship\Action\StopEmergency\StopEmergencyRequest;
 use Stu\Module\Ship\Action\StopTakeover\StopTakeover;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
+use Stu\Module\Ship\Action\TakeBuoy\TakeBuoy;
 use Stu\Module\Ship\Action\TholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\CreateTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\ImplodeTholianWeb;
@@ -270,6 +272,8 @@ use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
 use Stu\Module\Ship\View\ShowAvailableShips\ShowAvailableShips;
+use Stu\Module\Ship\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
+use Stu\Module\Ship\View\ShowBuoyList\ShowBuoyList;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
@@ -456,10 +460,12 @@ return [
         InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
         DockShip::ACTION_IDENTIFIER => autowire(DockShip::class),
         DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),
+        DropBuoy::ACTION_IDENTIFIER => autowire(DropBuoy::class),
         UndockShip::ACTION_IDENTIFIER => autowire(UndockShip::class),
         BuyTradeLicense::ACTION_IDENTIFIER => autowire(BuyTradeLicense::class),
         TransferToAccount::ACTION_IDENTIFIER => autowire(TransferToAccount::class),
         TransferFromAccount::ACTION_IDENTIFIER => autowire(TransferFromAccount::class),
+        TakeBuoy::ACTION_IDENTIFIER => autowire(TakeBuoy::class),
         HideFleet::ACTION_IDENTIFIER => autowire(HideFleet::class),
         ShowFleet::ACTION_IDENTIFIER => autowire(ShowFleet::class),
         FleetActivateNbs::ACTION_IDENTIFIER => autowire(FleetActivateNbs::class),
@@ -558,6 +564,8 @@ return [
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
         ShowShiplistSingles::VIEW_IDENTIFIER => autowire(ShowShiplistSingles::class),
         ShowAvailableShips::VIEW_IDENTIFIER => autowire(ShowAvailableShips::class),
+        ShowAnalyseBuoy::VIEW_IDENTIFIER => autowire(ShowAnalyseBuoy::class),
+        ShowBuoyList::VIEW_IDENTIFIER => autowire(ShowBuoyList::class),
         ShowWebEmitter::VIEW_IDENTIFIER => autowire(ShowWebEmitter::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],

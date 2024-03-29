@@ -53,6 +53,9 @@ class StarSystemMap implements StarSystemMapInterface
     #[JoinColumn(name: 'field_id', referencedColumnName: 'id')]
     private MapFieldTypeInterface $mapFieldType;
 
+    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'systemMap')]
+    private Collection $buoys;
+
     /**
      * @var ArrayCollection<int, ShipInterface>
      */
@@ -84,6 +87,7 @@ class StarSystemMap implements StarSystemMapInterface
         $this->signatures = new ArrayCollection();
         $this->anomalies = new ArrayCollection();
         $this->wormholeEntries = new ArrayCollection();
+        $this->buoys = new ArrayCollection();
     }
 
     public function getId(): int
@@ -221,5 +225,14 @@ class StarSystemMap implements StarSystemMapInterface
     public function getSectorString(): string
     {
         return SectorString::getForStarSystemMap($this);
+    }
+
+
+    /**
+     * @return Collection<BuoyInterface>
+     */
+    public function getBuoys(): Collection
+    {
+        return $this->buoys;
     }
 }

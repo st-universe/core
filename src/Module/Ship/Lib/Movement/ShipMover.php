@@ -220,6 +220,16 @@ final class ShipMover implements ShipMoverInterface
         foreach ($leadShipWrapper->get()->getLocation()->getAnomalies() as $anomaly) {
             $this->addInformation(sprintf('[b][color=yellow]In diesem Sektor befindet sich eine %s[/color][/b]', $anomaly->getAnomalyType()->getName()));
         }
+        if ($leadShipWrapper->get()->getMap() != null) {
+            foreach ($leadShipWrapper->get()->getMap()->getBuoys() as $buoy) {
+                $this->addInformation(sprintf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText()));
+            }
+        }
+        if ($leadShipWrapper->get()->getStarsystemMap() != null) {
+            foreach ($leadShipWrapper->get()->getStarsystemMap()->getBuoys() as $buoy) {
+                $this->addInformation(sprintf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText()));
+            }
+        }
 
         return $this->messages;
     }

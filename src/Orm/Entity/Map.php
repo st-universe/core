@@ -103,6 +103,12 @@ class Map implements MapInterface
     private ?MapRegionInterface $administratedRegion = null;
 
     /**
+     * @var Collection<int, BuoyInterface>
+     */
+    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'map')]
+    private Collection $buoys;
+
+    /**
      * @var ArrayCollection<int, ShipInterface>
      */
     #[OneToMany(targetEntity: 'Ship', mappedBy: 'map', fetch: 'EXTRA_LAZY')]
@@ -134,6 +140,7 @@ class Map implements MapInterface
         $this->signatures = new ArrayCollection();
         $this->anomalies = new ArrayCollection();
         $this->wormholeEntries = new ArrayCollection();
+        $this->buoys = new ArrayCollection();
     }
 
     public function getId(): int
@@ -348,5 +355,13 @@ class Map implements MapInterface
     public function getSectorString(): string
     {
         return SectorString::getForMap($this);
+    }
+
+    /**
+     * @return Collection<int, BuoyInterface>
+     */
+    public function getBuoys(): Collection
+    {
+        return $this->buoys;
     }
 }

@@ -28,6 +28,7 @@ use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Buoy;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassDeposit;
@@ -246,6 +247,11 @@ return [
         ContainerInterface $c
     ): BuildplanModuleRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(BuildplanModule::class);
+    },
+    BuoyRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): BuoyRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Buoy::class);
     },
     ColonyRepositoryInterface::class => function (
         ContainerInterface $c

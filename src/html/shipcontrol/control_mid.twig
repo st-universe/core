@@ -237,6 +237,12 @@ canColonize, closestAnomalyDistance) %}
                 <img src="/assets/buttons/lupe1.png" name="sectorScanButton" />
                 <span>Sektor {{ ship.getPosX }}|{{ ship.getPosY }} scannen</span>
             </a>
+            {% if ship.hasStoredBuoy %}
+            <br />
+            <img src="/assets/commodities/1.png" name="shuttle" />
+        <input type="text" name="text" value="bla bla bla" style="width: 125px;" />
+        <input type="submit" class="button" name="B_DROP_BOUY" value="Boje setzen" />
+            {% endif %}
             {{ _self.astroStates(ship, astroStateSystem) }}
             {{ _self.astroStates(ship, astroStateRegion) }}
             {% if isTachyonActive %}

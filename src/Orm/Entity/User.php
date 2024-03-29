@@ -113,6 +113,9 @@ class User implements UserInterface
     #[JoinColumn(name: 'race', referencedColumnName: 'id')]
     private FactionInterface $faction;
 
+    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'user')]
+    private Collection $buoys;
+
     /**
      * @var ArrayCollection<int, UserAwardInterface>
      */
@@ -158,6 +161,7 @@ class User implements UserInterface
         $this->userLayers = new ArrayCollection();
         $this->settings = new ArrayCollection();
         $this->characters = new ArrayCollection();
+        $this->buoys = new ArrayCollection();
     }
 
     public function getId(): int
@@ -678,5 +682,13 @@ class User implements UserInterface
     public function getCharacters(): Collection
     {
         return $this->characters;
+    }
+
+    /**
+     * @return Collection<BuoyInterface>
+     */
+    public function getBuoys(): Collection
+    {
+        return $this->buoys;
     }
 }
