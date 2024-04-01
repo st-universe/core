@@ -927,21 +927,23 @@
             <input type="hidden" name="buoy_id" value="${bou/getId}" />
             <input type="hidden" name="B_TAKE_BUOY" value="1" />
             <a href="javascript:void(0)" 
-               onclick="this.closest('form').submit()"
-               onmouseover="document.getElementsByName('takebuoy')[0].src='assets/buttons/take_buoy_2.png';" 
-               onmouseout="document.getElementsByName('takebuoy')[0].src='assets/buttons/take_buoy_1.png';">
-              <img src="assets/buttons/take_buoy_1.png" title="Boje aufbringen" name="takebuoy" />
-            </a>
+   onclick="this.closest('form').submit()"
+   onmouseover="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_2.png';" 
+   onmouseout="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_1.png';">
+  <img src="assets/buttons/take_buoy_1.png" title="Boje aufbringen" />
+</a>
+
           </td>
           
           <td>
             <a href="javascript:void(0);" 
-               onclick="analysebuoy(${bou/getId});"
-               onmouseover="document.getElementById('analyseBuoyImg').src='assets/buttons/analyse_buoy_2.png';" 
-               onmouseout="document.getElementById('analyseBuoyImg').src='assets/buttons/analyse_buoy_1.png';"
-               title="Boje Analysieren" class="fabutton">
-              <img src="assets/buttons/analyse_buoy_1.png" id="analyseBuoyImg" style="cursor: pointer;"/>
-            </a>
+   onclick="analysebuoy(${bou/getId});"
+   onmouseover="this.getElementsByTagName('img')[0].src='assets/buttons/analyse_buoy_2.png';" 
+   onmouseout="this.getElementsByTagName('img')[0].src='assets/buttons/analyse_buoy_1.png';"
+   title="Boje Analysieren" class="fabutton">
+  <img src="assets/buttons/analyse_buoy_1.png" style="cursor: pointer;"/>
+</a>
+
           </td>
           
         </tr>
