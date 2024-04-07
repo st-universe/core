@@ -4,23 +4,28 @@
     {% for item in USER_COLONIES %}
     {% set colonyClass = item.getColonyClass %}
     {% set colonyClassId = colonyClass.getId %}
-    {% set title = item.getNameAndSectorString|bbcode2txt %}
+    {% set title = item.getName|bbcode2txt %}
+    {% set overlibText = "<table class='tcal'><tr><th>Kolonieinformationen: " ~ title ~ "</th></tr><tr><td>Koordinaten: " ~ item.getSx ~ "|" ~ item.getSy ~ "<br>System: " ~ item.getSystemString|bbcode2txt ~ "<br>EPS: " ~ item.getEps ~ "/" ~ item.getMaxEps ~ "<br>Lager: " ~ item.getStorageSum ~ "/" ~ item.getMaxStorage ~ "</td></tr></table>" %}
 
     {% if colonyClass.isPlanet %}
-    <a {{ onClickColony(item) }} style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
-        <img src="/assets/planets/{{ colonyClassId }}.png" title="{{ title }}" />
+    <a {{ onClickColony(item) }} style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action"
+       onmouseover="return overlib('{{ overlibText|e('js') }}', CAPTION, '', CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+       onmouseout="return nd();">
+        <img src="/assets/planets/{{ colonyClassId }}.png" />
     </a>
     {% elseif colonyClass.isMoon %}
     <a {{ onClickColony(item) }}
-        style="height: 50px; width: 30px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
-        <img src="/assets/planets/{{ colonyClassId }}.png" title="{{ title }}"
-            style="position:relative; margin-top: 10px;" />
+        style="height: 50px; width: 30px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action"
+        onmouseover="return overlib('{{ overlibText|e('js') }}', CAPTION, '', CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+        onmouseout="return nd();">
+        <img src="/assets/planets/{{ colonyClassId }}.png" style="position:relative; margin-top: 10px;" />
     </a>
     {% else %}
     <a {{ onClickColony(item) }}
-        style="height: 50px; width: 40px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
-        <img src="/assets/planets/{{ colonyClassId }}.png" title="{{ title }}"
-            style="position:relative; margin-top: 10px;" />
+        style="height: 50px; width: 40px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action"
+        onmouseover="return overlib('{{ overlibText|e('js') }}', CAPTION, '', CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+        onmouseout="return nd();">
+        <img src="/assets/planets/{{ colonyClassId }}.png" style="position:relative; margin-top: 10px;" />
     </a>
     {% endif %}
     {% endfor %}

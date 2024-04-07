@@ -211,6 +211,11 @@ class Colony implements ColonyInterface
         );
     }
 
+    public function getSystemString(): string
+    {
+        return sprintf('%s-System (%s|%s)', $this->getSystem()->getName(), $this->getSystem()->getCx(), $this->getSystem()->getCy());
+    }
+
     public function setName(string $name): ColonyInterface
     {
         $this->name = $name;
