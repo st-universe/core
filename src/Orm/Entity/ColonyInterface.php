@@ -21,6 +21,8 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function getNameAndSectorString(): string;
 
+    public function getSystemString(): string;
+
     public function setName(string $name): ColonyInterface;
 
     public function getPlanetName(): string;

@@ -1,11 +1,13 @@
 parameters:
   level: 8
   paths:
-    - src
-  excludePaths:
-    - src/OrmProxy
-    - src/html
-    - src/Public/assets
+    - src/admin
+    - src/Component
+    - src/Config
+    - src/Exception
+    - src/Lib
+    - src/Module
+    - src/Orm
   ignoreErrors:
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never written, only read#'
     - '#Parameter \$targetEntity of attribute class Doctrine\\ORM\\Mapping\\(\w+) constructor expects class-string\|null, string given.#'
