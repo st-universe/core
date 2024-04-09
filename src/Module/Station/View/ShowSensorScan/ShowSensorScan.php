@@ -77,15 +77,18 @@ final class ShowSensorScan implements ViewControllerInterface
         $station = $wrapper->get();
 
         $game->setTemplateVar('ERROR', true);
+        $game->setTemplateFile('html/station/sensorScan.twig');
+        $cx = request::getIntFatal('cx');
+        $cy = request::getIntFatal('cy');
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
             $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
+            $game->setTemplateVar('ERROR', true);
+            $game->setPageTitle(sprintf(_('Sensor Scan %d|%d fehlgeschlagen'), $cx, $cy));
             return;
         }
 
-        $cx = request::getIntFatal('cx');
-        $cy = request::getIntFatal('cy');
         $sysid = request::getIntFatal('sysid');
 
         $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
@@ -121,7 +124,6 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $game->setPageTitle(sprintf(_('Sensor Scan %d|%d'), $cx, $cy));
-        $game->setTemplateFile('html/station/sensorScan.twig');
 
         if ($mapField === null) {
             return;
