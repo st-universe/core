@@ -222,19 +222,19 @@
 							{% else %}
 							<li style="text-align: center">Keine Schiffe angedockt</li>
 							{% endif %}
-						</ul>
+						</ul>			
 						<br />
 						<div style="display: flex;">
 							{% if FIRST_MANAGE_SHIP %}
 							<div style="width: 70%; float: left;">
-								<a href="javascript:void(0);" onclick="showBeamFromWindow();"
+								<a href="javascript:void(0);" onclick="showTransfer(document.getElementById('selshipid').value, 1, true, false, false);"
 									onmouseover="cp('beamfrom','buttons/b_down2')"
 									onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
-										name="beamfrom" title="Von Schiff beamen" /></a>
-								<a href="javascript:void(0);" onclick="showBeamToWindow();"
+										name="beamfrom" title="Zu Schiff beamen" /></a>
+								<a href="javascript:void(0);" onclick="showTransfer(document.getElementById('selshipid').value, 1, false, false, false);"
 									onmouseover="cp('beamto','buttons/b_up2')"
 									onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png"
-										name="beamto" title="Zu Schiff beamen" /></a>
+										name="beamto" title="Von Schiff beamen" /></a>
 								<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
 								{% if CAN_MANAGE %}
 								<a href="javascript:void(0);"

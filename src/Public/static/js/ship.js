@@ -582,3 +582,6 @@ function checkForMatch() {
     }
 }
 
+function updateSelectedShipId(shipId) {
+    document.getElementById('selshipid').value = shipId;
+}
