@@ -2,12 +2,18 @@
 
 {# needs following variables: host, REPAIRABLE_SHIP_LIST) #}
 <table class="tcal">
+    {% set RepairoverlibText = "<table class='tcal' style='width:250px'><tr><th style='text-align: left'><img src='/assets/buttons/info2.png'/> Reparatur </th></tr><tr><td>Die Reparatur eines Raumschiffes läuft Tickweise ab und benötigt gewisse Ressourcen.</br>Eine Reparaturstation kann den Prozess beschleunigen und günstiger machen.</br>Klicke auf das <img style='height:16px' src='/assets/buttons/info2.png'/> für mehr Infos.</td></tr></table>" %}
+
+
     <tr>
         <th>Klasse</th>
         <th>Name</th>
         <th>Dauer in Ticks</th>
         <th>Insgesamt benötigte Teile</th>
-        <th></th>
+        <th><a
+            href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank" onmouseover="return overlib('{{ RepairoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+            onmouseout="return nd();"><img src="/assets/buttons/info2.png"
+            style="height:16px;" /></a></th>
     </tr>
     {% for wrapper in REPAIRABLE_SHIP_LIST %}
     {% set ship = wrapper.get %}
