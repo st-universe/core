@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RepairShip;
 
 use request;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Component\Ship\ShipStateEnum;
@@ -22,6 +23,7 @@ use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 
 final class RepairShip implements ActionControllerInterface
 {
@@ -45,6 +47,8 @@ final class RepairShip implements ActionControllerInterface
 
     private InteractionCheckerInterface $interactionChecker;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -54,7 +58,8 @@ final class RepairShip implements ActionControllerInterface
         ShipWrapperFactoryInterface $shipWrapperFactory,
         OrbitShipListRetrieverInterface $orbitShipListRetriever,
         InteractionCheckerInterface $interactionChecker,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ColonyFunctionManagerInterface $colonyFunctionManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
@@ -65,6 +70,7 @@ final class RepairShip implements ActionControllerInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->interactionChecker = $interactionChecker;
         $this->orbitShipListRetriever = $orbitShipListRetriever;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -97,6 +103,7 @@ final class RepairShip implements ActionControllerInterface
             $game->addInformation(_('Es ist keine Werft vorhanden'));
             return;
         }
+
 
         $fieldFunctions = $field->getBuilding()->getFunctions()->toArray();
 
@@ -161,7 +168,13 @@ final class RepairShip implements ActionControllerInterface
         }
 
         $wrapper = $repairableShiplist[$ship->getId()];
+
         $ticks = $wrapper->getRepairDuration();
+        $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+        if ($isRepairStationBonus) {
+            $ticks = ceil($ticks * 0.5);
+        }
+
         $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
 
         $this->privateMessageSender->send(
