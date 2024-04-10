@@ -1464,6 +1464,13 @@ class Ship implements ShipInterface
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
+    public function hasReactor(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE) ||
+            $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR) ||
+            $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR);
+    }
+
     public function hasRPGModule(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_RPG_MODULE);
