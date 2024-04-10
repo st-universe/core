@@ -112,7 +112,11 @@
 			<td style="text-align: center;">
 				{% if epssystem %}
 				{{ epssystem.getEps }}/{{ epssystem.getMaxEps }}
+				{% if SHIP.hasWarpdrive %}
 				<span id="effectiveEps"></span>
+				{% else %}
+				<span>{{ WRAPPER.getReactorWrapper.getEffectiveEpsProduction|addPlusCharacter }}</span>
+				{% endif %}
 				(<span class="neg">{{ WRAPPER.getEpsUsage }}</span>/<span class="neg" id="reactorUsage">0</span>)
 				{% endif %}
 			</td>
