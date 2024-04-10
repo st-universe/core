@@ -141,7 +141,23 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         if ($field->hasBuilding()) {
-            $this->buildingAction->remove($field, $game);
+            if ($host instanceof ColonyInterface) {
+                if (!$this->checkBuildingCosts($host, $building, $field, $game)) {
+                    return;
+                } elseif ($host->getEps() < $building->getEpsCost()) {
+                    $game->addInformationf(
+                        _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
+                        $building->getEpsCost(),
+                        $host->getEps()
+                    );
+                    return;
+                } elseif ($host->getEps() > $host->getMaxEps() - $field->getBuilding()->getEpsStorage() && $host->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()) {
+                    $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
+                    return;
+                } else {
+                    $this->buildingAction->remove($field, $game);
+                }
+            }
         }
 
         if ($host instanceof ColonyInterface) {
@@ -199,13 +215,6 @@ final class BuildOnField implements ActionControllerInterface
                 $colony->getEps()
             );
             return false;
-        }
-
-        if ($field->hasBuilding()) {
-            if ($colony->getEps() > $colony->getMaxEps() - $field->getBuilding()->getEpsStorage() && $colony->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()) {
-                $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
-                return false;
-            }
         }
 
         foreach ($building->getCosts() as $cost) {
