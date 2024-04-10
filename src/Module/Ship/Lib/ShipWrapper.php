@@ -303,6 +303,9 @@ final class ShipWrapper implements ShipWrapperInterface
 
         if ($hull < $maxHull) {
             $ticks = (int) ceil(($this->get()->getMaxHull() - $this->get()->getHull()) / $this->get()->getRepairRate());
+            if ($this->repairUtil->isRepairStationBonus($this)) {
+                $ticks = (int)ceil($ticks * 0.5);
+            }
             $neededSpareParts += ((int)($this->get()->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
         }
 
@@ -310,9 +313,13 @@ final class ShipWrapper implements ShipWrapperInterface
         foreach ($damagedSystems as $system) {
             $systemLvl = $system->determineSystemLevel();
             $healingPercentage = (100 - $system->getStatus()) / 100;
-
-            $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
-            $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
+            if ($this->repairUtil->isRepairStationBonus($this)) {
+                $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY] / 2);
+                $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY] / 2);
+            } else {
+                $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
+                $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
+            }
         }
 
         return [

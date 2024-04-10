@@ -47,6 +47,8 @@ interface RepairUtilInterface
         RepairTaskInterface $repairTask
     ): bool;
 
+    public function isRepairStationBonus(ShipWrapperInterface $wrapper): bool;
+
     public function getRepairDuration(ShipWrapperInterface $wrapper): int;
 
     public function getRepairDurationPreview(ShipWrapperInterface $wrapper): int;
