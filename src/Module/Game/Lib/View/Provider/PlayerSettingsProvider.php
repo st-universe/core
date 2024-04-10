@@ -16,13 +16,29 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
     {
         $user = $game->getUser();
 
+
         $game->appendNavigationPart(
             'options.php',
             _('Optionen')
         );
 
+
+        $filteredViews = array_filter(ModuleViewEnum::cases(), function (ModuleViewEnum $case) use ($game) {
+
+            if (in_array($case, [ModuleViewEnum::GAME, ModuleViewEnum::INDEX, ModuleViewEnum::NOTES])) {
+                return false;
+            }
+
+            if ($case === ModuleViewEnum::ADMIN && !$game->isAdmin()) {
+                return false;
+            }
+            return true;
+        });
+
+
+
         $game->setTemplateVar('REAL_USER', $user);
-        $game->setTemplateVar('VIEWS', ModuleViewEnum::cases());
+        $game->setTemplateVar('VIEWS', $filteredViews);
         $game->setTemplateVar('RPG_BEHAVIOR_VALUES', UserRpgBehaviorEnum::cases());
         $game->setTemplateVar('CSS_VALUES', UserCssClassEnum::cases());
     }
