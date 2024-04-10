@@ -400,6 +400,8 @@ interface ShipInterface
 
     public function hasWarpdrive(): bool;
 
+    public function hasReactor(): bool;
+
     public function hasRPGModule(): bool;
 
     public function hasNbsLss(): bool;
