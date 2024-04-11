@@ -54,6 +54,8 @@ final class CreateModules implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
+        $moduleAdded = false;
+
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $userId
@@ -131,6 +133,7 @@ final class CreateModules implements ActionControllerInterface
                 $queue->setAmount($queue->getAmount() + $count);
 
                 $this->moduleQueueRepository->save($queue);
+                $moduleAdded = true;
             } else {
                 $queue = $this->moduleQueueRepository->prototype();
                 $queue->setColony($colony);
@@ -139,17 +142,22 @@ final class CreateModules implements ActionControllerInterface
                 $queue->setAmount($count);
 
                 $this->moduleQueueRepository->save($queue);
+                $moduleAdded = true;
             }
 
             $prod[] = $count . ' ' . $module->getName();
         }
-        if (count($prod) == 0) {
-            $game->addInformation(_('Es wurden keine Module hergestellt'));
-            return;
-        }
-        $game->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt'));
-        foreach ($prod as $msg) {
-            $game->addInformation($msg);
+        if ($moduleAdded) {
+            $game->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt'));
+            foreach ($prod as $msg) {
+                $game->addInformation($msg);
+            }
+        } elseif (!empty($prod)) {
+            foreach ($prod as $msg) {
+                $game->addInformation($msg);
+            }
+        } else {
+            $game->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
         }
     }
 
