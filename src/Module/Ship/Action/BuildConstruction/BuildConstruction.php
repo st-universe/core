@@ -283,6 +283,9 @@ final class BuildConstruction implements ActionControllerInterface
             $this->troopTransferUtility->assignCrew($shipCrewArray[$i], $workbee);
         }
 
+        //lower ship eps
+        $epsSystem->lowerEps($workbeeEps->getMaxEps())->update();
+
         $this->shipRepository->save($workbee);
         $this->shipRepository->save($ship);
 
