@@ -128,6 +128,12 @@ final class FightLib implements FightLibInterface
             return false;
         }
 
+        //can't attack own target under cloak
+        if (method_exists($target, 'isOwnedByCurrentUser') && $target->isOwnedByCurrentUser() && $target->getCloakState()) {
+            return false;
+        }
+
+
         //can't attack same fleet
         $ownFleetId = $ship->getFleetId();
         $targetFleetId = $target->getFleetId();
