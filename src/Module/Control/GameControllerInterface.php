@@ -52,6 +52,8 @@ interface GameControllerInterface extends InformationInterface
 
     public function getUniqId(): string;
 
+    public function isNPC(): bool;
+
     /**
      * Sets all navigation items at once
      *
@@ -105,7 +107,8 @@ interface GameControllerInterface extends InformationInterface
         array $actions,
         array $views,
         bool $session_check = true,
-        bool $admin_check = false
+        bool $admin_check = false,
+        bool $npc_check = false
     ): void;
 
     public function isAdmin(): bool;

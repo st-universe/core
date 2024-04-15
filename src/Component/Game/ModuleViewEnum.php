@@ -24,6 +24,7 @@ enum ModuleViewEnum: string
     case OPTIONS = 'options';
     case PROFILE = 'userprofile';
     case ADMIN = 'admin';
+    case NPC = 'npc';
 
     public function getPhpPage(): string
     {
@@ -50,7 +51,8 @@ enum ModuleViewEnum: string
             self::NOTES => 'Notizen',
             self::OPTIONS => 'Optionen',
             self::PROFILE => 'Spielerprofil',
-            self::ADMIN => 'Adminbereich'
+            self::ADMIN => 'Adminbereich',
+            self::NPC => 'NPC'
         };
     }
 
@@ -74,7 +76,8 @@ enum ModuleViewEnum: string
             self::NOTES => 'not needed',
             self::OPTIONS => 'html/view/options.twig',
             self::PROFILE => 'html/view/userprofile.twig',
-            self::ADMIN => 'not needed'
+            self::ADMIN => 'not needed',
+            self::NPC => 'not needed'
         };
     }
 }

@@ -63,6 +63,7 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Module/Maintenance/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Message/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Notes/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Module/NPC/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/PlayerProfile/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/PlayerSetting/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Prestige/services.php');
