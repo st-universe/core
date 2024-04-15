@@ -56,7 +56,7 @@
 {% endmacro %}
 
 
-{% macro navigation(hasStationsNavigation, isAdmin) %}
+{% macro navigation(hasStationsNavigation, isAdmin, isNPC) %}
 {{ _self.navigation_item('Kolonien', 'colony', 'planets') }}
 {{ _self.navigation_item('Schiffe', 'ship', 'ships') }}
 {% if hasStationsNavigation %}
@@ -70,6 +70,17 @@
 {{ _self.navigation_item('Datenbank', 'database', 'data') }}
 {{ _self.navigation_item('Ereignisse', 'history', 'history') }}
 {{ _self.navigation_item('Karte', 'starmap', 'map') }}
+{% if isNPC %}
+{% set linkid = 'nav_item_ticks' %}
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc'; }"
+    onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
+    onmouseout="cp('{{ linkid }}','navigation/menu_ticks0', 'png')">
+    <a class="navitem_link" href="/npc">
+        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="{{ linkid }}" title="'NPC'" />
+        <div class="navitem_title">NPC</div>
+    </a>
+</div>
+{% endif %}
 {% if isAdmin %}
 {% set linkid = 'nav_item_ticks' %}
 <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin'; }"
@@ -93,6 +104,22 @@
 {% endmacro %}
 
 {% macro admin_navigation_item(title, url, iconUrl) %}
+{% set linkid = 'nav_item_' ~ iconUrl %}
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='{{ url }}'; }"
+    onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
+    onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
+    <a class="navitem_link" href="{{ url }}">
+        <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
+            title="{{ title }}" />
+        <div class="navitem_title">{{ title }}</div>
+    </a>
+</div>
+{% endmacro %}
+
+{% macro npcnavigation() %}
+{% endmacro %}
+
+{% macro npc_navigation_item(title, url, iconUrl) %}
 {% set linkid = 'nav_item_' ~ iconUrl %}
 <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='{{ url }}'; }"
     onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"

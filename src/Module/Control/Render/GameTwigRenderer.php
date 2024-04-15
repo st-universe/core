@@ -60,6 +60,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
         $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
         $twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
+        $twigPage->setVar('ISNPC', $game->isNPC());
         $twigPage->setVar('ISADMIN', $game->isAdmin());
         $twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
     }

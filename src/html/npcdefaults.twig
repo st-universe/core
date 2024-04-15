@@ -7,18 +7,8 @@
     <meta name="theme-color" content="#121220" />
     <script src="{{ JAVASCRIPTPATH }}/js/prototype.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/scriptaculous.js"></script>
-    <script>
-        var userDeals = {{ USER.showDeals }};
-    </script>
-    <script src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/colony.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/shipmanagement.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/starmap.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/station.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/profile.js"></script>
+    <script src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
     <title>{{ PAGETITLE|bbcode2txt }}</title>
     <script>
         var gfx_path = '/assets';
@@ -46,8 +36,6 @@
             </div>
             <div id="navlet_colonies">
                 {% include 'html/game/component/coloniesNavlet.twig' %}
-            </div>
-            <div id="nagus">
             </div>
             <div class="header_box header_box_logout border_box action" onclick="goToUrl('index.php?B_LOGOUT=1')"
                 onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
@@ -94,8 +82,8 @@
         <div style="margin-top: 80px;">
             <div class="sidebar">
                 <div style="width: 100%; padding-left: 12px; padding-right: 10px">
-                    {% from 'html/macros.twig' import navigation %}
-                    {{ navigation(USER.hasStationsNavigation, ISADMIN, ISNPC) }}
+                    {% from 'html/macros.twig' import npcnavigation %}
+                    {{ npcnavigation() }}
                     <div id="navlet_servertime">
                         {% include 'html/game/component/serverTimeAndVersion.twig' %}
                     </div>
@@ -105,11 +93,6 @@
                 {% block body %}
                 ...
                 {% endblock %}
-                <script>
-                    window.addEventListener("popstate", function (e) {
-                        window.location.reload();
-                    });
-                </script>
             </div>
             <div class="footer">
                 {% set benchmark = BENCHMARK %}
@@ -117,6 +100,7 @@
             </div>
         </div>
     </div>
+    {% include 'html/executeJavascriptAfterRender.twig' %}
 </body>
 
 </html>
