@@ -42,7 +42,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -60,7 +60,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -78,11 +78,11 @@ class EnergyWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        $reason = null;
+        $reason = '';
         $this->assertTrue(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
-        $this->assertNull($reason);
+        $this->assertEmpty($reason);
     }
 
     public function testGetEnergyUsageForActivationReturnsValus(): void

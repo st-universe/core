@@ -72,8 +72,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($isNpc);
 
-        $reason = null;
-
+        $reason = '';
         $result = $this->system->checkActivationConditions($this->wrapper, $reason);
 
         $this->assertEquals($expectedResult, $result);
@@ -87,7 +86,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_RED);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkDeactivationConditions($this->wrapper, $reason)
         );
@@ -112,7 +111,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn($trackerSystemData);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkDeactivationConditions($this->wrapper, $reason)
         );
@@ -130,11 +129,11 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $reason = null;
+        $reason = '';
         $this->assertTrue(
             $this->system->checkDeactivationConditions($this->wrapper, $reason)
         );
-        $this->assertNull($reason);
+        $this->assertEmpty($reason);
     }
 
     public function testGetEnergyUsageForActivationReturnsValue(): void

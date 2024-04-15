@@ -26,7 +26,7 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
         return ShipSystemTypeEnum::SYSTEM_LSS;
     }
 
-    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $trackerData = $wrapper->getTrackerSystemData();
 

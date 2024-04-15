@@ -128,7 +128,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn($trackerSystemData);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkDeactivationConditions($this->wrapper, $reason)
         );

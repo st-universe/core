@@ -17,7 +17,7 @@ class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemType
         return ShipSystemTypeEnum::SYSTEM_TRACKER;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 

@@ -159,7 +159,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new SystemCooldownException($cooldown - $time);
         }
 
-        $reason = null;
+        $reason = '';
         if (!$system->checkActivationConditions($wrapper, $reason)) {
             throw new ActivationConditionsNotMetException($reason);
         }
@@ -188,7 +188,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new AlreadyOffException();
         }
 
-        $reason = null;
+        $reason = '';
         if (!$system->checkDeactivationConditions($wrapper, $reason)) {
             throw new DeactivationConditionsNotMetException($reason);
         }

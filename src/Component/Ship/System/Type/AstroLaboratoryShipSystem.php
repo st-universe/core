@@ -28,7 +28,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 

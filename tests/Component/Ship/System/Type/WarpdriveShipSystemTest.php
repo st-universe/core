@@ -67,7 +67,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -92,7 +92,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -122,7 +122,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -167,7 +167,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipSystemTypeEnum::SYSTEM_WARPCORE);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -209,12 +209,12 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->andReturn(true);
 
 
-        $reason = null;
+        $reason = '';
         $this->assertTrue(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
-        $this->assertNull($reason);
+        $this->assertEmpty($reason);
     }
 
     public function testGetEnergyUsageForActivationReturnsValue(): void

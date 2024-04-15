@@ -18,7 +18,7 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
         return ShipSystemTypeEnum::SYSTEM_WARPCORE;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $reactor = $wrapper->getReactorWrapper();
         if ($reactor === null) {

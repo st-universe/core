@@ -18,7 +18,7 @@ final class UplinkShipSystem extends AbstractShipSystemType implements ShipSyste
         return ShipSystemTypeEnum::SYSTEM_UPLINK;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 
