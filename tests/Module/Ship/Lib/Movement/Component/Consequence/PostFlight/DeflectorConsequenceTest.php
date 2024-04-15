@@ -13,6 +13,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterfac
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapFieldTypeInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
 
@@ -89,6 +90,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $waypoint = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -99,7 +101,11 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->flightRoute->shouldReceive('getNextWaypoint->getFieldType')
+        $this->flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($waypoint);
+        $waypoint->shouldReceive('getFieldType')
             ->withNoArgs()
             ->once()
             ->andReturn($fieldType);
@@ -124,6 +130,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $waypoint = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -142,7 +149,11 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(33);
 
-        $this->flightRoute->shouldReceive('getNextWaypoint->getFieldType')
+        $this->flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($waypoint);
+        $waypoint->shouldReceive('getFieldType')
             ->withNoArgs()
             ->once()
             ->andReturn($fieldType);
@@ -178,6 +189,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $waypoint = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -196,7 +208,11 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(33);
 
-        $this->flightRoute->shouldReceive('getNextWaypoint->getFieldType')
+        $this->flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($waypoint);
+        $waypoint->shouldReceive('getFieldType')
             ->withNoArgs()
             ->once()
             ->andReturn($fieldType);
@@ -236,7 +252,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
-        $epsSystem = $this->mock(EpsSystemData::class);
+        $waypoint = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -251,8 +267,11 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-
-        $this->flightRoute->shouldReceive('getNextWaypoint->getFieldType')
+        $this->flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($waypoint);
+        $waypoint->shouldReceive('getFieldType')
             ->withNoArgs()
             ->once()
             ->andReturn($fieldType);
@@ -293,6 +312,7 @@ class DeflectorConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
+        $waypoint = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -313,7 +333,11 @@ class DeflectorConsequenceTest extends StuTestCase
             ->andReturn(null);
 
 
-        $this->flightRoute->shouldReceive('getNextWaypoint->getFieldType')
+        $this->flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($waypoint);
+        $waypoint->shouldReceive('getFieldType')
             ->withNoArgs()
             ->once()
             ->andReturn($fieldType);
@@ -355,6 +379,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $epsSystem = $this->mock(EpsSystemData::class);
+        $waypoint = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -387,7 +412,11 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once();
 
 
-        $this->flightRoute->shouldReceive('getNextWaypoint->getFieldType')
+        $this->flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($waypoint);
+        $waypoint->shouldReceive('getFieldType')
             ->withNoArgs()
             ->once()
             ->andReturn($fieldType);
@@ -429,6 +458,7 @@ class DeflectorConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $fieldType = $this->mock(MapFieldTypeInterface::class);
         $epsSystem = $this->mock(EpsSystemData::class);
+        $waypoint = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -461,7 +491,11 @@ class DeflectorConsequenceTest extends StuTestCase
             ->once();
 
 
-        $this->flightRoute->shouldReceive('getNextWaypoint->getFieldType')
+        $this->flightRoute->shouldReceive('getNextWaypoint')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($waypoint);
+        $waypoint->shouldReceive('getFieldType')
             ->withNoArgs()
             ->once()
             ->andReturn($fieldType);
