@@ -15,7 +15,7 @@ final class ProjectileWeaponShipSystem extends AbstractShipSystemType implements
         return ShipSystemTypeEnum::SYSTEM_TORPEDO;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 

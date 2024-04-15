@@ -42,7 +42,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -61,7 +61,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -85,11 +85,11 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $reason = null;
+        $reason = '';
         $this->assertTrue(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
-        $this->assertNull($reason);
+        $this->assertEmpty($reason);
     }
 
     public function testCheckActivationConditionsTrueIfActivateable(): void
@@ -109,7 +109,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );

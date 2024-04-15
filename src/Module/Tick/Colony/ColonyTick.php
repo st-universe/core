@@ -245,7 +245,7 @@ final class ColonyTick implements ColonyTickInterface
     }
 
     /**
-     * @param array<ColonyProduction> $production
+     * @param array<int, ColonyProduction> $production
      */
     private function deactivateBuilding(
         PlanetFieldInterface $field,
@@ -540,7 +540,7 @@ final class ColonyTick implements ColonyTickInterface
 
     /**
      * @param Collection<int, BuildingCommodityInterface> $buildingProduction
-     * @param array<ColonyProduction> $production
+     * @param array<int, ColonyProduction> $production
      */
     private function mergeProduction(
         Collection $buildingProduction,

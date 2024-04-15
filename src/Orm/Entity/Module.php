@@ -357,7 +357,7 @@ class Module implements ModuleInterface
             fn (ModuleCostInterface $a, ModuleCostInterface $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
         );
 
-        return array_values($array);
+        return $array;
     }
 
     public function getCommodity(): CommodityInterface

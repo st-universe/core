@@ -53,7 +53,7 @@ class CloakShipSystemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -72,7 +72,7 @@ class CloakShipSystemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -95,7 +95,7 @@ class CloakShipSystemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -122,7 +122,7 @@ class CloakShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_RED);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -149,12 +149,12 @@ class CloakShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
 
-        $reason = null;
+        $reason = '';
         $this->assertTrue(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
 
-        $this->assertNull($reason);
+        $this->assertEmpty($reason);
     }
 
     public function testGetEnergyUserForActivationReturnsValues(): void

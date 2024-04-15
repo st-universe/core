@@ -33,7 +33,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 

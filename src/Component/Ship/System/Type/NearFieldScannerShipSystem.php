@@ -27,7 +27,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         return ShipSystemTypeEnum::SYSTEM_NBS;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 
@@ -39,7 +39,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         return true;
     }
 
-    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         if ($wrapper->get()->getAlertState() === ShipAlertStateEnum::ALERT_RED) {
             $reason = _('die Alarmstufe Rot ist');

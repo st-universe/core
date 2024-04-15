@@ -259,6 +259,16 @@ parameters:
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
 
 		-
+			message: "#^Parameter \\#1 \\$array of method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:shuffle_assoc\\(\\) expects array\\<int, array\\<int, Stu\\\\Orm\\\\Entity\\\\MapInterface\\>\\>, array\\<int, Stu\\\\Orm\\\\Entity\\\\MapInterface\\> given\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
+
+		-
+			message: "#^Parameter \\#1 \\$map of method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:getRandomFreeNeighbour\\(\\) expects Stu\\\\Orm\\\\Entity\\\\MapInterface, array\\<int, Stu\\\\Orm\\\\Entity\\\\MapInterface\\> given\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
+
+		-
 			message: "#^Parameter \\#2 \\$system of method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:setInfluenceArea\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null given\\.$#"
 			count: 2
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
@@ -2405,31 +2415,6 @@ parameters:
 			"""
 			count: 1
 			path: src/Orm/Repository/services.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
-			message: "#^Cannot call method getMandatoryModulesCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevelInterface\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Public/admin/help/createShip.php
-
-		-
-			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 2
-			path: src/Public/admin/help/createShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$location of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipConfiguratorInterface\\:\\:setLocation\\(\\) expects Stu\\\\Lib\\\\Map\\\\Location\\|Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null given\\.$#"
-			count: 1
-			path: src/Public/admin/help/createShip.php
 
 		-
 			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\:\\:save\\(\\)\\.$#"

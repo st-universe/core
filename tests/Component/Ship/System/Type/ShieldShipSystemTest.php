@@ -52,7 +52,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -70,7 +70,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -92,7 +92,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -118,7 +118,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -155,7 +155,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $reason = null;
+        $reason = '';
         $this->assertFalse(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
@@ -192,11 +192,11 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $reason = null;
+        $reason = '';
         $this->assertTrue(
             $this->system->checkActivationConditions($this->wrapper, $reason)
         );
-        $this->assertNull($reason);
+        $this->assertEmpty($reason);
     }
 
     public function testGetEnergyUsageForActivationReturnsValus(): void

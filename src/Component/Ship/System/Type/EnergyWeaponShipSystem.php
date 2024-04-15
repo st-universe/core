@@ -15,7 +15,7 @@ final class EnergyWeaponShipSystem extends AbstractShipSystemType implements Shi
         return ShipSystemTypeEnum::SYSTEM_PHASER;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 

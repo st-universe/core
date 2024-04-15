@@ -15,7 +15,7 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
         return ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 

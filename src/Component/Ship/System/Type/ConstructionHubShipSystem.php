@@ -37,7 +37,7 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
         return 10;
     }
 
-    public function checkActivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
+    public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
 

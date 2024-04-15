@@ -169,22 +169,22 @@ final class ShipCreator implements ShipCreatorInterface
 
         //default systems, that almost every ship should have
         if ($ship->getRump()->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_SHUTTLE) {
-            $systems[ShipSystemTypeEnum::SYSTEM_DEFLECTOR->value] = 0;
-            $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM->value] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_DEFLECTOR->value] = null;
+            $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM->value] = null;
         }
-        $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT->value] = 0;
+        $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT->value] = null;
         //TODO transporter
 
         if ($ship->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_STATION) {
-            $systems[ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER->value] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER->value] = null;
         }
 
         if ($ship->getRump()->isShipyard()) {
-            $systems[ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB->value] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB->value] = null;
         }
 
         if ($ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
-            $systems[ShipSystemTypeEnum::SYSTEM_UPLINK->value] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_UPLINK->value] = null;
         }
 
         foreach ($modules as $buildplanmodule) {
@@ -204,7 +204,7 @@ final class ShipCreator implements ShipCreatorInterface
 
             switch ($module->getType()) {
                 case ShipModuleTypeEnum::SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_NBS->value] = 0;
+                    $systems[ShipSystemTypeEnum::SYSTEM_NBS->value] = null;
                     break;
                 case ShipModuleTypeEnum::SPECIAL:
                     $this->addSpecialSystems($module, $systems);
@@ -221,7 +221,7 @@ final class ShipCreator implements ShipCreatorInterface
             $obj->setShip($ship);
             $ship->getSystems()->set($systemType, $obj);
             $obj->setSystemType(ShipSystemTypeEnum::from($systemType));
-            if ($module !== 0) {
+            if ($module !== null) {
                 $obj->setModule($module);
             }
             $obj->setStatus(100);
@@ -232,7 +232,7 @@ final class ShipCreator implements ShipCreatorInterface
     }
 
     /**
-     * @param array<int, ModuleInterface> $systems
+     * @param array<int, null|ModuleInterface> $systems
      */
     private function addSpecialSystems(ModuleInterface $module, &$systems): void
     {
@@ -274,7 +274,7 @@ final class ShipCreator implements ShipCreatorInterface
                     $systems[ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB->value] = $module;
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG:
-                    $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value] = 0;
+                    $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE->value] = null;
                     break;
             }
         }
