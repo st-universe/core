@@ -117,6 +117,8 @@
 {% endmacro %}
 
 {% macro npcnavigation() %}
+{{ _self.npc_navigation_item('NPC Tools', '/npc/?SHOW_TOOLS=1', 'scripts') }}
+{{ _self.admin_navigation_item('NPC Log', '/npc/?SHOW_NPC_LOG=1', 'history') }}
 {% endmacro %}
 
 {% macro npc_navigation_item(title, url, iconUrl) %}
