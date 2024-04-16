@@ -1,0 +1,27 @@
+{% extends "html/npcdefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<div class="tcal">
+    {% if LIST|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Text</th>
+                    <th style="width:120px">Datum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for listEntry in LIST %}
+                    <tr>
+                        <td>{{ listEntry.getText()|bbcode }}</td>
+                        <td>{{ listEntry.getDate()|stuDateTime }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Keine Logs vorhanden</p>
+    {% endif %}
+</div>
+{% endblock %}

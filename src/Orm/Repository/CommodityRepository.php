@@ -64,6 +64,14 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         ], ['sort' => 'asc']);
     }
 
+    public function getTradeableNPC(): array
+    {
+        return $this->findBy([
+            'view' => true,
+            'type' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD
+        ], ['sort' => 'asc']);
+    }
+
     public function getAll(): array
     {
         return $this->getEntityManager()

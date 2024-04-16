@@ -78,6 +78,7 @@ use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\News;
 use Stu\Orm\Entity\Note;
+use Stu\Orm\Entity\NPCLog;
 use Stu\Orm\Entity\OpenedAdventDoor;
 use Stu\Orm\Entity\PartnerSite;
 use Stu\Orm\Entity\PirateSetup;
@@ -497,6 +498,11 @@ return [
         ContainerInterface $c
     ): NoteRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Note::class);
+    },
+    NPCLogRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): NPCLogRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(NPCLog::class);
     },
     OpenedAdventDoorRepositoryInterface::class => function (
         ContainerInterface $c
