@@ -45,7 +45,7 @@ final class CommodityCheat implements ActionControllerInterface
         $user = $game->getUser();
 
         // only Admins or NPC can trigger
-        if (!$game->isAdmin() && !$game->isNPC()) {
+        if (!$game->isAdmin() && !$game->isNpc()) {
             $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }

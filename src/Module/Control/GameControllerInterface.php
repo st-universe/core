@@ -52,7 +52,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function getUniqId(): string;
 
-    public function isNPC(): bool;
+    public function isNpc(): bool;
 
     /**
      * Sets all navigation items at once

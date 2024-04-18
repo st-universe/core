@@ -20,15 +20,5 @@ interface BuoyRepositoryInterface extends ObjectRepository
     /**
      * @return list<BuoyInterface>
      */
-    public function findByMapId(int $mapId): array;
-
-    /**
-     * @return list<BuoyInterface>
-     */
-    public function findBySysMapId(int $sysMapId): array;
-
-    /**
-     * @return list<BuoyInterface>
-     */
     public function findByUserId(int $userId): array;
 }

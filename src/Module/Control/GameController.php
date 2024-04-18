@@ -502,7 +502,7 @@ final class GameController implements GameControllerInterface
     {
         $this->session->createSession(true);
 
-        if (!$this->isAdmin() || !$this->isNPC()) {
+        if (!$this->isAdmin() || !$this->isNpc()) {
             header('Location: /');
         }
     }
@@ -559,7 +559,7 @@ final class GameController implements GameControllerInterface
 
             if (
                 $npc_check === true
-                && $this->isNPC() === false
+                && $this->isNpc() === false
             ) {
                 header('Location: /');
             }
@@ -723,7 +723,7 @@ final class GameController implements GameControllerInterface
 
     public function isAdmin(): bool
     {
-        if ($this->hasUser() === false) {
+        if (!$this->hasUser()) {
             return false;
         }
 
@@ -734,13 +734,13 @@ final class GameController implements GameControllerInterface
         );
     }
 
-    public function isNPC(): bool
+    public function isNpc(): bool
     {
-        if ($this->getUser()->getId() < UserEnum::USER_FIRST_ID) {
-            return true;
-        } else {
+        if (!$this->hasUser()) {
             return false;
         }
+
+        return $this->getUser()->isNpc();
     }
 
     public function isSemaphoreAlreadyAcquired(int $key): bool

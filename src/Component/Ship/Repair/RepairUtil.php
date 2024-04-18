@@ -71,6 +71,9 @@ final class RepairUtil implements RepairUtilInterface
         $hull = $ship->getHull();
         $maxHull = $ship->getMaxHull();
 
+        // TODO call isRepairStationBonus only once and create methods for determination of $neededSpareParts and $neededSystemComponents
+        // TODO use this method in ShipWrapper->getRepairCosts
+
         if ($hull < $maxHull) {
             if ($this->isRepairStationBonus($wrapper)) {
                 $neededSpareParts += (int)(($ship->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART) / 2);

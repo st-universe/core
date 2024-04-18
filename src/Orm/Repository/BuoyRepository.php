@@ -33,16 +33,6 @@ final class BuoyRepository extends EntityRepository implements BuoyRepositoryInt
         $em->remove($buoy);
     }
 
-    public function findByMapId(int $mapId): array
-    {
-        return $this->findBy(['map_id' => $mapId]);
-    }
-
-    public function findBySysMapId(int $sysMapId): array
-    {
-        return $this->findBy(['sys_map_id' => $sysMapId]);
-    }
-
     public function findByUserId(int $userId): array
     {
         return $this->findBy(['user_id' => $userId]);

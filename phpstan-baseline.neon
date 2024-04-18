@@ -1619,11 +1619,6 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/AlertRedHelper.php
 
 		-
-			message: "#^Call to deprecated method getUserId\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightLib.php
-
-		-
 			message: "#^Parameter \\#3 \\$target of method Stu\\\\Module\\\\History\\\\Lib\\\\EntryCreatorInterface\\:\\:addEntry\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|Stu\\\\Orm\\\\Entity\\\\ColonySandboxInterface given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/Weapon/EnergyWeaponPhase.php
