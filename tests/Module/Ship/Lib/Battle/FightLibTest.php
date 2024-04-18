@@ -537,6 +537,48 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($result);
     }
 
+    public function testCanAttackTargetExpectFalseWhenAttackingOwnCloaked(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
     public function testCanAttackTargetExpectFalseWhenAttackingOwnFleet(): void
     {
         $ship = $this->mock(ShipInterface::class);
@@ -555,6 +597,9 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getFleetId')
             ->withNoArgs()
             ->andReturn(42);
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -566,6 +611,12 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getWarpState')
             ->withNoArgs()
             ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
             ->withNoArgs()
@@ -594,6 +645,9 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getFleetId')
             ->withNoArgs()
             ->andReturn(42);
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -605,6 +659,12 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getWarpState')
             ->withNoArgs()
             ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
             ->withNoArgs()
@@ -633,6 +693,9 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getFleetId')
             ->withNoArgs()
             ->andReturn(null);
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -644,6 +707,12 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getWarpState')
             ->withNoArgs()
             ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
             ->withNoArgs()
@@ -672,6 +741,9 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getFleetId')
             ->withNoArgs()
             ->andReturn(42);
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -683,6 +755,12 @@ class FightLibTest extends StuTestCase
         $target->shouldReceive('getWarpState')
             ->withNoArgs()
             ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
             ->andReturn(false);
         $target->shouldReceive('getFleetId')
             ->withNoArgs()

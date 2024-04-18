@@ -46,7 +46,7 @@ final class ShipListProvider implements ViewComponentProviderInterface
 
         $fleets = $this->fleetRepository->getByUser($userId);
         $ships = $this->shipRepository->getByUserAndFleetAndType($userId, null, SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP);
-        $buoy = $this->buoyRepository->findByUserId($userId);
+        $buoys = $this->buoyRepository->findByUserId($userId);
 
         foreach ($fleets as $fleet) {
             $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleet->getId()) ? 'display: none' : '');
@@ -56,6 +56,6 @@ final class ShipListProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('SHIPS_AVAILABLE', $fleets !== [] || $ships !== []);
         $game->setTemplateVar('FLEET_WRAPPERS', $this->shipWrapperFactory->wrapFleets($fleets));
         $game->setTemplateVar('SINGLESHIPWRAPPERS', $this->shipWrapperFactory->wrapShips($ships));
-        $game->setTemplateVar('BUOY', $buoy);
+        $game->setTemplateVar('BUOYS', $buoys);
     }
 }

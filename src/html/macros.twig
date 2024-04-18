@@ -56,7 +56,7 @@
 {% endmacro %}
 
 
-{% macro navigation(hasStationsNavigation, isAdmin, isNPC) %}
+{% macro navigation(hasStationsNavigation, isAdmin, isNpc) %}
 {{ _self.navigation_item('Kolonien', 'colony', 'planets') }}
 {{ _self.navigation_item('Schiffe', 'ship', 'ships') }}
 {% if hasStationsNavigation %}
@@ -70,7 +70,7 @@
 {{ _self.navigation_item('Datenbank', 'database', 'data') }}
 {{ _self.navigation_item('Ereignisse', 'history', 'history') }}
 {{ _self.navigation_item('Karte', 'starmap', 'map') }}
-{% if isNPC %}
+{% if isNpc %}
 {% set linkid = 'nav_item_ticks' %}
 <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc'; }"
     onmouseover="cp('{{ linkid }}','navigation/menu_ticks1', 'png')"
@@ -160,7 +160,8 @@
 {% macro onClickShip(ship) %}
 {% set id = ship.getId %}
 href="javascript:void(0);"
-onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php'); updateSelectedShipId('{{ id }}');"
+onclick="switchInnerContent('SHOW_SHIP', '{{ ship.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', 'ship.php');
+updateSelectedShipId('{{ id }}');"
 {% endmacro %}
 
 

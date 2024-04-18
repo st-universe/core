@@ -14,7 +14,6 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
-use Stu\Orm\Repository\BuoyRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
 {
@@ -26,8 +25,6 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private EncodedMapInterface $encodedMap;
 
-    private BuoyRepositoryInterface $buoyRepository;
-
     /** @var array<int> */
     private array $fadedSignaturesUncloaked = [];
 
@@ -38,19 +35,15 @@ final class ShowSectorScan implements ViewControllerInterface
         ShipLoaderInterface $shipLoader,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         EncodedMapInterface $encodedMap,
-        BuoyRepositoryInterface $buoyRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->encodedMap = $encodedMap;
-        $this->buoyRepository = $buoyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-
-        $buoy = null;
 
         $game->setPageTitle("Sektor Scan");
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/sectorscan');
@@ -85,19 +78,13 @@ final class ShowSectorScan implements ViewControllerInterface
         if ($mapField->getSystem() !== null && $mapField->getFieldType()->getIsSystem()) {
             $game->checkDatabaseItem($mapField->getSystem()->getSystemType()->getDatabaseEntryId());
         }
-        if ($ship->getStarsystemMap() !== null) {
-            $buoy = $this->buoyRepository->findBySysMapId($ship->getStarsystemMap()->getId());
-        }
-        if ($ship->getMap() !== null) {
-            $buoy = $this->buoyRepository->findByMapId($ship->getMap()->getId());
-        }
 
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $ship->getSystem() !== null, $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('MAP_PATH', $this->getMapPath($ship));
-        $game->setTemplateVar('BUOY', $buoy);
+        $game->setTemplateVar('BUOYS', $ship->getCurrentMapField()->getBuoys());
 
         $game->setTemplateVar('ERROR', false);
     }

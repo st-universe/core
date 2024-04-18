@@ -24,9 +24,9 @@ final class ShowBuoyList implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $buoy = $this->buoyRepository->findByUserId($userId);
+        $buoys = $this->buoyRepository->findByUserId($userId);
 
-        $game->setTemplateVar('BUOY', $buoy);
+        $game->setTemplateVar('BUOYS', $buoys);
         $game->showMacro('html/buoylist.twig');
     }
 }

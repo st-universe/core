@@ -15,9 +15,6 @@ interface ShipInterface
 {
     public function getId(): int;
 
-    /**
-     * @deprecated
-     */
     public function getUserId(): int;
 
     public function getUserName(): string;
