@@ -123,6 +123,16 @@ class EpsSystemData extends AbstractSystemData
 
     public function getEpsPercentage(): int
     {
+        $currentEps = $this->getEps();
+        $maxEps = $this->getMaxEps();
+
+        if ($currentEps === 0) {
+            return 0;
+        }
+        if ($maxEps === 0) {
+            return 100;
+        }
+
         return (int)floor($this->getEps() / $this->getMaxEps() * 100);
     }
 
