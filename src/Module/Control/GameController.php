@@ -502,7 +502,7 @@ final class GameController implements GameControllerInterface
     {
         $this->session->createSession(true);
 
-        if (!$this->isAdmin() || !$this->isNpc()) {
+        if (!$this->isAdmin()) {
             header('Location: /');
         }
     }
