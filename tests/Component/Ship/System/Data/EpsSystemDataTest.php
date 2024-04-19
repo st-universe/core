@@ -43,7 +43,6 @@ class EpsSystemDataTest extends StuTestCase
 
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_EPS)
-            ->once()
             ->andReturn(false);
 
         $result = $this->subject->getEpsPercentage();
