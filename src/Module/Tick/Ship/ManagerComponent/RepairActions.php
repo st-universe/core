@@ -188,7 +188,7 @@ final class RepairActions implements ManagerComponentInterface
         }
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
-        $neededParts = $this->repairUtil->determineSpareParts($wrapper);
+        $neededParts = $this->repairUtil->determineSpareParts($wrapper, true);
 
         // parts stored?
         if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $entity, $ship)) {
