@@ -295,32 +295,10 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getRepairCosts(): array
     {
-        $neededSpareParts = 0;
-        $neededSystemComponents = 0;
+        $neededParts = $this->repairUtil->determineSpareParts($this, false);
 
-        $hull = $this->get()->getHull();
-        $maxHull = $this->get()->getMaxHull();
-
-        if ($hull < $maxHull) {
-            $ticks = (int) ceil(($this->get()->getMaxHull() - $this->get()->getHull()) / $this->get()->getRepairRate());
-            if ($this->repairUtil->isRepairStationBonus($this)) {
-                $ticks = (int)ceil($ticks * 0.5);
-            }
-            $neededSpareParts += ((int)($this->get()->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
-        }
-
-        $damagedSystems = $this->getDamagedSystems();
-        foreach ($damagedSystems as $system) {
-            $systemLvl = $system->determineSystemLevel();
-            $healingPercentage = (100 - $system->getStatus()) / 100;
-            if ($this->repairUtil->isRepairStationBonus($this)) {
-                $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY] / 2);
-                $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY] / 2);
-            } else {
-                $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
-                $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
-            }
-        }
+        $neededSpareParts = $neededParts[CommodityTypeEnum::COMMODITY_SPARE_PART];
+        $neededSystemComponents = $neededParts[CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT];
 
         return [
             new ShipRepairCost($neededSpareParts, CommodityTypeEnum::COMMODITY_SPARE_PART, CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SPARE_PART)),

@@ -365,7 +365,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             return;
         }
 
-        $neededParts = $this->repairUtil->determineSpareParts($wrapper);
+        $neededParts = $this->repairUtil->determineSpareParts($wrapper, true);
 
         // parts stored?
         if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $station, $station)) {

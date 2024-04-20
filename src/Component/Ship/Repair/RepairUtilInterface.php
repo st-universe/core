@@ -14,7 +14,7 @@ interface RepairUtilInterface
     /**
      * @return array<int, int>
      */
-    public function determineSpareParts(ShipWrapperInterface $wrapper): array;
+    public function determineSpareParts(ShipWrapperInterface $wrapper, bool $tickBased): array;
 
     public function enoughSparePartsOnEntity(array $neededParts, ColonyInterface|ShipInterface $entity, ShipInterface $ship): bool;
 

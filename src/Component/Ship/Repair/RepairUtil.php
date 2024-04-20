@@ -61,77 +61,74 @@ final class RepairUtil implements RepairUtilInterface
     }
 
     //REPAIR STUFF
-    public function determineSpareParts(ShipWrapperInterface $wrapper): array
+    public function determineSpareParts(ShipWrapperInterface $wrapper, bool $tickBased): array
     {
-        $neededSpareParts = 0;
-        $neededSystemComponents = 0;
+        $isRepairStationBonus = $this->isRepairStationBonus($wrapper);
 
-        $ship = $wrapper->get();
-
-        $hull = $ship->getHull();
-        $maxHull = $ship->getMaxHull();
-
-        // TODO call isRepairStationBonus only once and create methods for determination of $neededSpareParts and $neededSystemComponents
-        // TODO use this method in ShipWrapper->getRepairCosts
-
-        if ($hull < $maxHull) {
-            if ($this->isRepairStationBonus($wrapper)) {
-                $neededSpareParts += (int)(($ship->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART) / 2);
-            } else {
-                $neededSpareParts += (int)ceil(($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
-            }
-        }
-
-        $damagedSystems = $wrapper->getDamagedSystems();
-        if (!empty($damagedSystems)) {
-            $firstSystem = $damagedSystems[0];
-            $firstSystemLvl = $firstSystem->determineSystemLevel();
-            $healingPercentage = (100 - $firstSystem->getStatus()) / 100;
-
-            if ($this->isRepairStationBonus($wrapper)) {
-                $neededSpareParts += (int)ceil(($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]) / 2);
-                $neededSystemComponents += (int)ceil(($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]) / 2);
-            } else {
-                $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
-                $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
-            }
-            // maximum of two systems get repaired
-            if (count($damagedSystems) > 1) {
-                $secondSystem = $damagedSystems[1];
-                $secondSystemLvl = $secondSystem->determineSystemLevel();
-                $healingPercentage = (100 - $secondSystem->getStatus()) / 100;
-                if ($this->isRepairStationBonus($wrapper)) {
-                    $neededSpareParts += (int)ceil(($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]) / 2);
-                    $neededSystemComponents += (int)ceil(($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]) / 2);
-                } else {
-                    $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
-                    $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
-                }
-            }
-
-            // more systems get repaired if repair station bonus is active
-            if ($this->isRepairStationBonus($wrapper)) {
-                if (count($damagedSystems) > 2) {
-                    $thirdSystem = $damagedSystems[2];
-                    $thirdSystemLvl = $thirdSystem->determineSystemLevel();
-                    $healingPercentage = (100 - $thirdSystem->getStatus()) / 100;
-                    $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$thirdSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY] / 2);
-                    $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$thirdSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY] / 2);
-                }
-                if (count($damagedSystems) > 3) {
-                    $fourthSystem = $damagedSystems[3];
-                    $fourthSystemLvl = $fourthSystem->determineSystemLevel();
-                    $healingPercentage = (100 - $fourthSystem->getStatus()) / 100;
-                    $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$fourthSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY] / 2);
-                    $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$fourthSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY] / 2);
-                }
-            }
-        }
+        $neededSpareParts = $this->calculateNeededSpareParts($wrapper, $isRepairStationBonus, $tickBased);
+        $neededSystemComponents = $this->calculateNeededSystemComponents($wrapper, $isRepairStationBonus, $tickBased);
 
         return [
             CommodityTypeEnum::COMMODITY_SPARE_PART => $neededSpareParts,
             CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT => $neededSystemComponents
         ];
+    }
+
+    private function calculateNeededSpareParts(ShipWrapperInterface $wrapper, bool $isRepairStationBonus, bool $tickBased): int
+    {
+        $neededSpareParts = 0;
+        $ship = $wrapper->get();
+        $hull = $ship->getHull();
+        $maxHull = $ship->getMaxHull();
+
+        if ($hull < $maxHull) {
+            $hullRepairParts = ($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART;
+            if ($isRepairStationBonus) {
+                $neededSpareParts += (int)ceil($hullRepairParts / 2);
+            } else {
+                $neededSpareParts += (int)ceil($hullRepairParts);
+            }
+        }
+
+        $damagedSystems = $wrapper->getDamagedSystems();
+        $maxSystems = $tickBased ? ($isRepairStationBonus ? 4 : 2) : count($damagedSystems);
+        $systemCount = min(count($damagedSystems), $maxSystems);
+
+        for ($i = 0; $i < $systemCount; $i++) {
+            $system = $damagedSystems[$i];
+            $systemLvl = $system->determineSystemLevel();
+            $healingPercentage = (100 - $system->getStatus()) / 100;
+            $systemRepairParts = $healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY];
+            if ($isRepairStationBonus) {
+                $neededSpareParts += (int)ceil($systemRepairParts / 2);
+            } else {
+                $neededSpareParts += (int)ceil($systemRepairParts);
+            }
+        }
+
+        return $neededSpareParts;
+    }
+
+    private function calculateNeededSystemComponents(ShipWrapperInterface $wrapper, bool $isRepairStationBonus, bool $tickBased): int
+    {
+        $neededSystemComponents = 0;
+        $damagedSystems = $wrapper->getDamagedSystems();
+        $maxSystems = $tickBased ? ($isRepairStationBonus ? 4 : 2) : count($damagedSystems);
+        $systemCount = min(count($damagedSystems), $maxSystems);
+
+        for ($i = 0; $i < $systemCount; $i++) {
+            $system = $damagedSystems[$i];
+            $systemLvl = $system->determineSystemLevel();
+            $healingPercentage = (100 - $system->getStatus()) / 100;
+            $systemComponents = $healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY];
+            if ($isRepairStationBonus) {
+                $neededSystemComponents += (int)ceil($systemComponents / 2);
+            } else {
+                $neededSystemComponents += (int)ceil($systemComponents);
+            }
+        }
+
+        return $neededSystemComponents;
     }
 
     public function enoughSparePartsOnEntity(array $neededParts, ColonyInterface|ShipInterface $entity, ShipInterface $ship): bool
