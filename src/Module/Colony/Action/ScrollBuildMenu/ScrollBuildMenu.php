@@ -37,6 +37,11 @@ final class ScrollBuildMenu implements ActionControllerInterface
 
         $menu = request::getIntFatal('menu');
         $offset = request::getInt('offset');
+        $fieldType = request::has('fieldtype') ? request::getIntFatal('fieldtype') : null;
+        if ($fieldType === 0) {
+            $fieldType = null;
+        }
+
         if ($offset < 0) {
             $offset = 0;
         }
@@ -47,7 +52,9 @@ final class ScrollBuildMenu implements ActionControllerInterface
             $host,
             $userId,
             $menu,
-            $offset
+            $offset,
+            null,
+            $fieldType
         );
         if ($ret === []) {
             $offset = max(0, $offset - ColonyEnum::BUILDMENU_SCROLLOFFSET);
@@ -55,7 +62,9 @@ final class ScrollBuildMenu implements ActionControllerInterface
                 $host,
                 $userId,
                 $menu,
-                $offset
+                $offset,
+                null,
+                $fieldType
             );
         }
         $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => BuildMenuEnum::getDescription($menu)]);

@@ -4,6 +4,7 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use request;
 use Stu\Component\Building\BuildMenuEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -30,6 +31,13 @@ final class BuildmenuProvider implements GuiComponentProviderInterface
         GameControllerInterface $game
     ): void {
 
+        $fieldType = $this->getFieldType();
+        if ($fieldType !== null) {
+            $game->addExecuteJS(sprintf('fieldType = %d;', $fieldType), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+        } else {
+            $game->addExecuteJS(sprintf('fieldType = null;'), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+        }
+
         foreach (BuildMenuEnum::BUILDMENU_IDS as $id) {
 
             $menus[$id]['name'] = BuildMenuEnum::getDescription($id);
@@ -39,7 +47,7 @@ final class BuildmenuProvider implements GuiComponentProviderInterface
                 $id,
                 0,
                 request::has('cid') ? request::getIntFatal('cid') : null,
-                $this->getFieldType()
+                $fieldType
             );
         }
 
