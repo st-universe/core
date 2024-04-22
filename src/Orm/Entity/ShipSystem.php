@@ -183,7 +183,7 @@ class ShipSystem implements ShipSystemInterface
         if ($module !== null && $module->getLevel() > 0) {
             return $module->getLevel();
         } else {
-            return $this->getShip()->getRump()->getModuleLevel();
+            return max(1, $this->getShip()->getRump()->getModuleLevel() - 1);
         }
     }
 }
