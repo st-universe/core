@@ -12,6 +12,8 @@ function initializeJsVars(id, type, sessionString) {
 	sstr = sessionString;
 }
 
+var fieldType = 0;
+
 function buildMenuScrollUp(menu, offset) {
 	if (offset - scrollOffset < 0) {
 		var newOffset = 0;
@@ -27,7 +29,7 @@ function buildMenuScrollDown(menu, offset) {
 }
 
 function buildMenuScroll(menu, offset) {
-	ajax_update('buildmenu' + menu, createHostUri('B_SCROLL_BUILDMENU', '&menu=' + menu + '&offset=' + offset));
+	ajax_update('buildmenu' + menu, createHostUri('B_SCROLL_BUILDMENU', `&menu=${menu}&offset=${offset}&fieldtype=${fieldType}`));
 }
 
 function switchColonyMenu(menu, func, fid) {
@@ -470,29 +472,29 @@ function showTelescopeScan(cx, cy) {
 	ajax_update('current_energy', 'colony.php?REFRESH_COLONY_EPS=1&id=' + colonyid);
 }
 function calculateLocalCrew() {
-    const primaryPositive = Math.max(0, parseInt(document.getElementById('primaryPositive').value) || 0);
-    const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
-    const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
-    const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
-    let lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
+	const primaryPositive = Math.max(0, parseInt(document.getElementById('primaryPositive').value) || 0);
+	const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
+	const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
+	const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
+	let lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
 	const negativEffect = Math.ceil(population / 70);
 
-    const term1 = Math.max(0, negativEffect - secondaryPositive);
-    const term2 = Math.max(primaryPositive - (4 * term1),0);
-    const term3 = Math.min(term2, workers)/5;
-	
+	const term1 = Math.max(0, negativEffect - secondaryPositive);
+	const term2 = Math.max(primaryPositive - (4 * term1), 0);
+	const term3 = Math.min(term2, workers) / 5;
+
 	if (lifeStandard > population) {
 		lifeStandard = population;
 	}
 
-    let term4;
-    if (population > 0) {
-        term4 = Math.floor(lifeStandard * 100 / population);
-    } else {
-        term4 = 0;
-    }
-    const term5 = Math.floor(10 + term3 * (term4 / 100));
-    let result = term5;
+	let term4;
+	if (population > 0) {
+		term4 = Math.floor(lifeStandard * 100 / population);
+	} else {
+		term4 = 0;
+	}
+	const term5 = Math.floor(10 + term3 * (term4 / 100));
+	let result = term5;
 
-    document.getElementById('calculatedCrew').innerText = result.toString(); 
+	document.getElementById('calculatedCrew').innerText = result.toString();
 }
