@@ -11,6 +11,7 @@ use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -49,7 +50,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function action(FleetWrapperInterface $fleet): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();

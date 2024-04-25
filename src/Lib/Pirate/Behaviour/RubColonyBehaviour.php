@@ -16,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -63,7 +64,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function action(FleetWrapperInterface $fleet): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
