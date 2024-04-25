@@ -20,8 +20,14 @@ class PirateReaction implements PirateReactionInterface
         ],
         PirateReactionTriggerEnum::ON_SCAN->value => [
             PirateBehaviourEnum::DO_NOTHING->value => 60,
-            PirateBehaviourEnum::RAGE->value => 35,
-            PirateBehaviourEnum::FLY->value => 5
+            PirateBehaviourEnum::RAGE->value => 60,
+            PirateBehaviourEnum::FLY->value => 20,
+            PirateBehaviourEnum::HIDE->value => 20
+        ],
+        PirateReactionTriggerEnum::ON_INTERCEPTION->value => [
+            PirateBehaviourEnum::RAGE->value => 60,
+            PirateBehaviourEnum::DO_NOTHING->value => 30,
+            PirateBehaviourEnum::FLY->value => 15
         ],
     ];
 
