@@ -63,6 +63,7 @@ class MoveOnLayer implements MoveOnLayerInterface
             $this->logger->log(sprintf('    newPosition: %s', $newPosition->getSectorString()));
 
             if ($newPosition === $lastPosition) {
+                $this->logger->log('    can not move');
                 return false;
             }
         }
