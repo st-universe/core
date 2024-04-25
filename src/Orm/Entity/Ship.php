@@ -507,9 +507,9 @@ class Ship implements ShipInterface
     /**
      * proportional to shield system status
      */
-    public function getMaxShield(): int
+    public function getMaxShield(bool $isTheoretical = false): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
+        if ($isTheoretical || !$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
             return $this->max_schilde;
         }
 
@@ -521,6 +521,12 @@ class Ship implements ShipInterface
     {
         $this->max_schilde = $maxShields;
         return $this;
+    }
+
+    public function getHealthPercentage(): float
+    {
+        return ($this->getHull() + $this->getShield())
+            / ($this->getMaxHull() + $this->getMaxShield(true)) * 100;
     }
 
     public function getShieldState(): bool
