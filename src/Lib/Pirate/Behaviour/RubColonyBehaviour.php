@@ -24,33 +24,17 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 class RubColonyBehaviour implements PirateBehaviourInterface
 {
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private DistanceCalculationInterface $distanceCalculation;
-
-    private PirateNavigationInterface $pirateNavigation;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private BeamUtilInterface $beamUtil;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private StuRandom $stuRandom;
-
     private PirateLoggerInterface $logger;
 
     public function __construct(
-        ColonyRepositoryInterface $colonyRepository,
-        DistanceCalculationInterface $distanceCalculation,
-        PirateNavigationInterface $pirateNavigation,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipSystemManagerInterface $shipSystemManager,
-        BeamUtilInterface $beamUtil,
-        PrivateMessageSenderInterface $privateMessageSender,
-        StuRandom $stuRandom,
+        private ColonyRepositoryInterface $colonyRepository,
+        private DistanceCalculationInterface $distanceCalculation,
+        private PirateNavigationInterface $pirateNavigation,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private BeamUtilInterface $beamUtil,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyRepository = $colonyRepository;
@@ -84,6 +68,8 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         if ($this->pirateNavigation->navigateToTarget($fleet, $closestColony->getStarsystemMap())) {
             $this->rubColony($fleet, $closestColony);
         }
+
+        return null;
     }
 
     private function rubColony(FleetWrapperInterface $fleetWrapper, ColonyInterface $colony): void

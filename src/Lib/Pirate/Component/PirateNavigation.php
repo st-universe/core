@@ -15,28 +15,15 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 
 class PirateNavigation implements PirateNavigationInterface
 {
-    private MoveOnLayerInterface $moveOnLayer;
-
-    private FlightRouteFactoryInterface $flightRouteFactory;
-
-    private PirateFlightInterface $pirateFlight;
-
-    private RandomSystemEntryInterface $randomSystemEntry;
-
     private PirateLoggerInterface $logger;
 
     public function __construct(
-        MoveOnLayerInterface $moveOnLayer,
-        FlightRouteFactoryInterface $flightRouteFactory,
-        PirateFlightInterface $pirateFlight,
-        RandomSystemEntryInterface $randomSystemEntry,
+        private MoveOnLayerInterface $moveOnLayer,
+        private FlightRouteFactoryInterface $flightRouteFactory,
+        private PirateFlightInterface $pirateFlight,
+        private RandomSystemEntryInterface $randomSystemEntry,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->moveOnLayer = $moveOnLayer;
-        $this->flightRouteFactory = $flightRouteFactory;
-        $this->pirateFlight = $pirateFlight;
-        $this->randomSystemEntry = $randomSystemEntry;
-
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 

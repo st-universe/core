@@ -11,16 +11,10 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class PirateFlight implements PirateFlightInterface
 {
-    private ShipMoverInterface $shipMover;
-
-    private DistributedMessageSenderInterface $distributedMessageSender;
-
     public function __construct(
-        ShipMoverInterface $shipMover,
-        DistributedMessageSenderInterface $distributedMessageSender
+        private ShipMoverInterface $shipMover,
+        private DistributedMessageSenderInterface $distributedMessageSender
     ) {
-        $this->shipMover = $shipMover;
-        $this->distributedMessageSender = $distributedMessageSender;
     }
 
     public function movePirate(ShipWrapperInterface $wrapper, FlightRouteInterface $flightRoute): void
