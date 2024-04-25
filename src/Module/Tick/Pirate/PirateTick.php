@@ -57,6 +57,8 @@ final class PirateTick implements PirateTickInterface
 
     public function work(): void
     {
+        $this->logger->log('PIRATE TICK:');
+
         // create new pirates (max 5 fleets)
         $pirateFleets = $this->pirateCreation->createPirateFleetsIfNeeded();
 
