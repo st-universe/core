@@ -67,7 +67,12 @@ class PirateReaction implements PirateReactionInterface
             return;
         }
 
-        $this->logger->log(sprintf('pirateFleetId %d reacts %s', $fleet->getId(), $behaviourType->getDescription()));
+        $this->logger->log(sprintf(
+            'pirateFleetId %d reacts on %s with %s',
+            $fleet->getId(),
+            $reactionTrigger->name,
+            $behaviourType->getDescription()
+        ));
 
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
