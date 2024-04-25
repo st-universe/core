@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowScan;
 
 use request;
+use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -23,15 +26,19 @@ final class ShowScan implements ViewControllerInterface
 
     private InteractionCheckerInterface $interactionChecker;
 
+    private PirateReactionInterface $pirateReaction;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         InteractionCheckerInterface $interactionChecker,
+        PirateReactionInterface $pirateReaction,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->interactionChecker = $interactionChecker;
+        $this->pirateReaction = $pirateReaction;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -115,6 +122,14 @@ final class ShowScan implements ViewControllerInterface
             $tradePostCrewCount = $targetTradePost->getCrewCountOfUser($user);
         }
         $game->setTemplateVar('TRADE_POST_CREW_COUNT', $tradePostCrewCount);
+
+        $targetFleet = $target->getFleet();
+        if (
+            $targetFleet !== null
+            && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
+        ) {
+            $this->pirateReaction->react($targetFleet, PirateReactionTriggerEnum::ON_SCAN);
+        }
     }
 
     private function calculateShieldPercentage(ShipInterface $target): int
