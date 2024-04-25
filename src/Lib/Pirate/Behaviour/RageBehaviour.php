@@ -4,6 +4,7 @@ namespace Stu\Lib\Pirate\Behaviour;
 
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
@@ -76,6 +77,11 @@ class RageBehaviour implements PirateBehaviourInterface
         $weakestTarget = current($filteredTargets);
 
         $this->attackShip($fleet, $weakestTarget);
+
+        $pirateReaction->react(
+            $fleet->get(),
+            PirateReactionTriggerEnum::ON_RAGE
+        );
     }
 
     private function calculateHealthPercentage(ShipInterface $target): int

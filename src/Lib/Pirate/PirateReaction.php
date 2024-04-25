@@ -33,6 +33,11 @@ class PirateReaction implements PirateReactionInterface
             PirateBehaviourEnum::RAGE->value => 100,
             PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20
         ],
+        PirateReactionTriggerEnum::ON_RAGE->value => [
+            PirateBehaviourEnum::RAGE->value => 50,
+            PirateBehaviourEnum::DO_NOTHING->value => 40,
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
+        ],
     ];
 
     private LoggerUtilInterface $logger;
