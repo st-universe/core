@@ -7,7 +7,7 @@ use RuntimeException;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\FleetInterface;
@@ -46,7 +46,7 @@ class PirateCreation implements PirateCreationInterface
 
     private EntityManagerInterface $entityManager;
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
@@ -72,7 +72,7 @@ class PirateCreation implements PirateCreationInterface
         $this->entityManager = $entityManager;
         $this->namesRepository = $namesRepository;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function createPirateFleetsIfNeeded(): array

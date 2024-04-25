@@ -6,9 +6,8 @@ namespace Stu\Module\Tick\Pirate;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Throwable;
@@ -29,7 +28,7 @@ final class PirateTickRunner implements TickRunnerInterface
 
     private FailureEmailSenderInterface $failureEmailSender;
 
-    private LoggerUtilInterface $loggerUtil;
+    private PirateLoggerInterface $loggerUtil;
 
     private EntityManagerInterface $entityManager;
 
@@ -43,7 +42,7 @@ final class PirateTickRunner implements TickRunnerInterface
         $this->transactionTickRunner = $transactionTickRunner;
         $this->pirateTick = $pirateTick;
         $this->failureEmailSender = $failureEmailSender;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->loggerUtil = $loggerUtilFactory->getPirateLogger();
         $this->entityManager = $entityManager;
     }
 
@@ -52,8 +51,6 @@ final class PirateTickRunner implements TickRunnerInterface
         if ($this->transactionTickRunner->isGameStateReset()) {
             return;
         }
-
-        $this->loggerUtil->init('mail', LoggerEnum::LEVEL_ERROR);
 
         /**
          * There seems to be some sort of locking-problem. Because of that, the tick gets retried several times
@@ -93,7 +90,7 @@ final class PirateTickRunner implements TickRunnerInterface
         }
     }
 
-    private function execute(LoggerUtilInterface $loggerUtil): ?Throwable
+    private function execute(PirateLoggerInterface $logger): ?Throwable
     {
         try {
             $this->entityManager->beginTransaction();
@@ -105,7 +102,7 @@ final class PirateTickRunner implements TickRunnerInterface
 
             return null;
         } catch (Throwable $e) {
-            $loggerUtil->log('  rollback');
+            $logger->log('  rollback');
             $this->entityManager->rollback();
 
             return $e;

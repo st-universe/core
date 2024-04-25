@@ -25,4 +25,15 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
 
         return $loggerUtil;
     }
+
+    public function getPirateLogger(): PirateLoggerInterface
+    {
+        $loggerUtil = new PirateLogger(
+            $this->config
+        );
+
+        $loggerUtil->initRotating();
+
+        return $loggerUtil;
+    }
 }
