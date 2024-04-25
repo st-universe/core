@@ -13,14 +13,15 @@ class PirateReaction implements PirateReactionInterface
 {
     private const REACTION_PROBABILITIES = [
         PirateReactionTriggerEnum::ON_ATTACK->value => [
-            PirateBehaviourEnum::DO_NOTHING->value => 30,
-            PirateBehaviourEnum::FLY->value => 50,
-            PirateBehaviourEnum::HIDE->value => 20
+            PirateBehaviourEnum::RAGE->value => 50,
+            PirateBehaviourEnum::FLY->value => 20,
+            PirateBehaviourEnum::HIDE->value => 20,
+            PirateBehaviourEnum::DO_NOTHING->value => 10,
         ],
         PirateReactionTriggerEnum::ON_SCAN->value => [
             PirateBehaviourEnum::DO_NOTHING->value => 60,
-            PirateBehaviourEnum::FLY->value => 5,
-            PirateBehaviourEnum::ATTACK_SHIP->value => 35
+            PirateBehaviourEnum::RAGE->value => 35,
+            PirateBehaviourEnum::FLY->value => 5
         ],
     ];
 
@@ -53,6 +54,10 @@ class PirateReaction implements PirateReactionInterface
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
         $this->behaviours[$behaviourType->value]->action($fleetWrapper);
+
+        if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
+            $this->behaviours[PirateBehaviourEnum::GO_ALERT_RED->value]->action($fleetWrapper);
+        }
     }
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum
