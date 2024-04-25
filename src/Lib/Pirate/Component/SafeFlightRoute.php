@@ -10,12 +10,9 @@ class SafeFlightRoute implements SafeFlightRouteInterface
 {
     public const MAX_TRIES = 10;
 
-    private FlightRouteFactoryInterface $flightRouteFactory;
-
     public function __construct(
-        FlightRouteFactoryInterface $flightRouteFactory
+        private FlightRouteFactoryInterface $flightRouteFactory
     ) {
-        $this->flightRouteFactory = $flightRouteFactory;
     }
 
     public function getSafeFlightRoute(

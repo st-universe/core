@@ -18,36 +18,17 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class AttackShipBehaviour implements PirateBehaviourInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private DistanceCalculationInterface $distanceCalculation;
-
-    private PirateNavigationInterface $pirateNavigation;
-
-    private FightLibInterface $fightLib;
-
-    private ShipAttackCoreInterface $shipAttackCore;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private PirateLoggerInterface $logger;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        DistanceCalculationInterface $distanceCalculation,
-        PirateNavigationInterface $pirateNavigation,
-        FightLibInterface $fightLib,
-        ShipAttackCoreInterface $shipAttackCore,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ShipRepositoryInterface $shipRepository,
+        private DistanceCalculationInterface $distanceCalculation,
+        private PirateNavigationInterface $pirateNavigation,
+        private FightLibInterface $fightLib,
+        private ShipAttackCoreInterface $shipAttackCore,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->distanceCalculation = $distanceCalculation;
-        $this->pirateNavigation = $pirateNavigation;
-        $this->fightLib = $fightLib;
-        $this->shipAttackCore = $shipAttackCore;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
@@ -87,6 +68,8 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         if ($this->pirateNavigation->navigateToTarget($fleet, $closestShip->getCurrentMapField())) {
             $this->attackShip($fleet, $closestShip);
         }
+
+        return null;
     }
 
     private function targetHasEnoughPrestige(int $piratePrestige, ShipInterface $target): bool
