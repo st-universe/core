@@ -110,7 +110,7 @@ class PirateCreation implements PirateCreationInterface
         $fleet->setIsFleetFixed(true);
         $fleet->setLeadShip($fleetLeader);
 
-        $this->logger->log(sprintf('shipCount: %d', count($ships)));
+        $this->logger->log(sprintf('    shipCount: %d', count($ships)));
 
         foreach ($ships as $ship) {
             $ship->setFleet($fleet);
@@ -134,7 +134,7 @@ class PirateCreation implements PirateCreationInterface
 
         $randomAlertLevel = ShipAlertStateEnum::getRandomAlertLevel();
 
-        $this->logger->log(sprintf('randomAlertLevel: %d', $randomAlertLevel->value));
+        $this->logger->log(sprintf('    randomAlertLevel: %d', $randomAlertLevel->value));
 
         $result = [];
 
@@ -191,7 +191,7 @@ class PirateCreation implements PirateCreationInterface
 
         $result = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
 
-        $this->logger->log(sprintf('randomMapLocation: %s', $result->getSectorString()));
+        $this->logger->log(sprintf('    randomMapLocation: %s', $result->getSectorString()));
 
         return $result;
     }
