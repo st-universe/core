@@ -14,6 +14,7 @@ class PirateReaction implements PirateReactionInterface
     private const REACTION_PROBABILITIES = [
         PirateReactionTriggerEnum::ON_ATTACK->value => [
             PirateBehaviourEnum::RAGE->value => 50,
+            PirateBehaviourEnum::SEARCH_FRIEND->value => 30,
             PirateBehaviourEnum::FLY->value => 20,
             PirateBehaviourEnum::HIDE->value => 20,
             PirateBehaviourEnum::DO_NOTHING->value => 10,
@@ -25,12 +26,14 @@ class PirateReaction implements PirateReactionInterface
             PirateBehaviourEnum::FLY->value => 20,
             PirateBehaviourEnum::HIDE->value => 20,
             PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10,
+            PirateBehaviourEnum::SEARCH_FRIEND->value => 5,
         ],
         PirateReactionTriggerEnum::ON_INTERCEPTION->value => [
             PirateBehaviourEnum::RAGE->value => 60,
             PirateBehaviourEnum::DO_NOTHING->value => 30,
             PirateBehaviourEnum::FLY->value => 15,
             PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 5,
+            PirateBehaviourEnum::SEARCH_FRIEND->value => 5,
         ],
         PirateReactionTriggerEnum::ON_SUPPORT_CALL->value => [
             PirateBehaviourEnum::RAGE->value => 100,
