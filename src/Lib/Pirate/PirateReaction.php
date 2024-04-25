@@ -29,6 +29,10 @@ class PirateReaction implements PirateReactionInterface
             PirateBehaviourEnum::DO_NOTHING->value => 30,
             PirateBehaviourEnum::FLY->value => 15
         ],
+        PirateReactionTriggerEnum::ON_SUPPORT_CALL->value => [
+            PirateBehaviourEnum::RAGE->value => 100,
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20
+        ],
     ];
 
     private LoggerUtilInterface $logger;
@@ -59,10 +63,10 @@ class PirateReaction implements PirateReactionInterface
 
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-        $this->behaviours[$behaviourType->value]->action($fleetWrapper);
+        $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this);
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
-            $this->behaviours[PirateBehaviourEnum::GO_ALERT_RED->value]->action($fleetWrapper);
+            $this->behaviours[PirateBehaviourEnum::GO_ALERT_RED->value]->action($fleetWrapper, $this);
         }
     }
 

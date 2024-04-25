@@ -14,7 +14,6 @@ use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\PirateSetupInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -81,24 +80,24 @@ class PirateCreation implements PirateCreationInterface
         $pirateFleets = $this->fleetRepository->getByUser(UserEnum::USER_NPC_KAZON);
         $missingFleetAmount = max(0, self::MAX_PIRATE_FLEETS - count($pirateFleets));
 
-        $pirateUser = $this->userRepository->find(UserEnum::USER_NPC_KAZON);
-        if ($pirateUser === null) {
-            throw new RuntimeException('this should not happen');
-        }
-
         for ($i = 0; $i < $missingFleetAmount; $i++) {
-            $pirateFleets[] = $this->createPirateFleet($pirateUser);
+            $pirateFleets[] = $this->createPirateFleet();
         }
 
         return $pirateFleets;
     }
 
-    private function createPirateFleet(UserInterface $user): FleetInterface
+    public function createPirateFleet(ShipInterface $supportCaller = null): FleetInterface
     {
+        $pirateUser = $this->userRepository->find(UserEnum::USER_NPC_KAZON);
+        if ($pirateUser === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $pirateSetup = $this->getRandomPirateSetup();
 
         //create ships
-        $ships = $this->createShips($pirateSetup);
+        $ships = $this->createShips($pirateSetup, $supportCaller);
         $this->entityManager->flush();
 
         $fleetLeader = $ships[array_rand($ships)];
@@ -106,7 +105,7 @@ class PirateCreation implements PirateCreationInterface
 
         //create fleet
         $fleet = $this->fleetRepository->prototype();
-        $fleet->setUser($user);
+        $fleet->setUser($pirateUser);
         $fleet->setName($pirateSetup->getName());
         $fleet->setIsFleetFixed(true);
         $fleet->setLeadShip($fleetLeader);
@@ -125,9 +124,14 @@ class PirateCreation implements PirateCreationInterface
     }
 
     /** @return array<ShipInterface> */
-    private function createShips(PirateSetupInterface $pirateSetup): array
+    private function createShips(PirateSetupInterface $pirateSetup, ?ShipInterface $supportCaller): array
     {
-        $randomLocation = $this->getRandomMapLocation();
+        if ($supportCaller === null) {
+            $randomLocation = $this->getRandomMapLocation();
+        } else {
+            $randomLocation = $supportCaller->getCurrentMapField();
+        }
+
         $randomAlertLevel = ShipAlertStateEnum::getRandomAlertLevel();
 
         $this->logger->log(sprintf('randomAlertLevel: %d', $randomAlertLevel->value));

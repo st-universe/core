@@ -6,6 +6,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 class HideBehaviour implements PirateBehaviourInterface
@@ -27,7 +28,7 @@ class HideBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function action(FleetWrapperInterface $fleet): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();

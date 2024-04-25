@@ -11,6 +11,7 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\SafeFlightRouteInterface;
+use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -29,7 +30,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function action(FleetWrapperInterface $fleet): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
