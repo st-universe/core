@@ -80,7 +80,12 @@ class PirateCreation implements PirateCreationInterface
         $pirateFleets = $this->fleetRepository->getByUser(UserEnum::USER_NPC_KAZON);
         $missingFleetAmount = max(0, self::MAX_PIRATE_FLEETS - count($pirateFleets));
 
+        if ($missingFleetAmount > 0) {
+            $this->logger->logf('    creating %d new needed pirate fleets', $missingFleetAmount);
+        }
+
         for ($i = 0; $i < $missingFleetAmount; $i++) {
+            $this->logger->logf('  fleet nr. %d', $i);
             $pirateFleets[] = $this->createPirateFleet();
         }
 
