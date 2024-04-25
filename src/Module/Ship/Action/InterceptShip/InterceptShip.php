@@ -9,10 +9,13 @@ use request;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -33,6 +36,8 @@ final class InterceptShip implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private PirateReactionInterface $pirateReaction;
+
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     private EntityManagerInterface $entityManager;
@@ -43,6 +48,7 @@ final class InterceptShip implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
+        PirateReactionInterface $pirateReaction,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         EntityManagerInterface $entityManager
     ) {
@@ -51,6 +57,7 @@ final class InterceptShip implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
+        $this->pirateReaction = $pirateReaction;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->entityManager = $entityManager;
     }
@@ -153,6 +160,14 @@ final class InterceptShip implements ActionControllerInterface
         //Alert red check for the interceptor(s)
         if ($interceptorLeftWarp) {
             $this->alertRedHelper->doItAll($ship, $game);
+        }
+
+        $targetFleet = $target->getFleet();
+        if (
+            $targetFleet !== null
+            && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
+        ) {
+            $this->pirateReaction->react($targetFleet, PirateReactionTriggerEnum::ON_INTERCEPTION);
         }
     }
 
