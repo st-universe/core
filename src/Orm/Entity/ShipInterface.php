@@ -95,9 +95,11 @@ interface ShipInterface
 
     public function setShield(int $schilde): ShipInterface;
 
-    public function getMaxShield(): int;
+    public function getMaxShield(bool $isTheoretical = false): int;
 
     public function setMaxShield(int $maxShields): ShipInterface;
+
+    public function getHealthPercentage(): float;
 
     public function getShieldState(): bool;
 
