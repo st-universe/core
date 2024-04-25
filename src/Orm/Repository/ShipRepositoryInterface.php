@@ -194,5 +194,10 @@ interface ShipRepositoryInterface extends ObjectRepository
      */
     public function getPirateTargets(ShipInterface $ship): array;
 
+    /**
+     * @return array<ShipInterface>
+     */
+    public function getPirateFriends(ShipInterface $ship): array;
+
     public function truncateAllShips(): void;
 }

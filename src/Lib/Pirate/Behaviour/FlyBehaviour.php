@@ -10,6 +10,7 @@ use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\SafeFlightRouteInterface;
+use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -30,7 +31,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -56,13 +57,15 @@ class FlyBehaviour implements PirateBehaviourInterface
         );
         if ($flightRoute === null) {
             $this->logger->log('    no safe flight route found');
-            return;
+            return null;
         }
 
         $this->pirateFlight->movePirate($leadWrapper, $flightRoute);
 
         $newLocation = $leadShip->getCurrentMapField();
         $this->logger->logf('    newLocation: %s', $newLocation->getSectorString());
+
+        return null;
     }
 
     private function getCoordinate(

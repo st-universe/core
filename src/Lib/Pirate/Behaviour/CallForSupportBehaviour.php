@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -24,7 +25,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -42,5 +43,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
             $supportFleet,
             PirateReactionTriggerEnum::ON_SUPPORT_CALL
         );
+
+        return null;
     }
 }

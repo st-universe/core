@@ -15,6 +15,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -64,7 +65,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -72,7 +73,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $targets = $this->colonyRepository->getPirateTargets($leadShip);
         if (empty($targets)) {
             $this->logger->log('    no colony targets in reach');
-            return;
+            return PirateBehaviourEnum::FLY;
         }
 
         usort($targets, fn (ColonyInterface $a, ColonyInterface $b) =>

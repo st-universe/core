@@ -35,4 +35,6 @@ interface FightLibInterface
     public function getAttackersAndDefenders(ShipWrapperInterface $wrapper, ShipWrapperInterface $target): array;
 
     public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool;
+
+    public function calculateHealthPercentage(ShipInterface $target): int;
 }

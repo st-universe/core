@@ -12,7 +12,7 @@ enum PirateBehaviourEnum: int
     case RAGE = 5;
     case GO_ALERT_RED = 6;
     case CALL_FOR_SUPPORT = 7;
-    case SEARCH_FRIEND = 8; //TODO
+    case SEARCH_FRIEND = 8;
 
     public function getDescription(): string
     {
