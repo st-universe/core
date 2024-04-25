@@ -12,7 +12,6 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\NamesInterface;
 use Stu\Orm\Entity\PirateSetupInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -186,7 +185,7 @@ class PirateCreation implements PirateCreationInterface
     {
         $defaultLayer = $this->layerRepository->getDefaultLayer();
 
-        $result = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer, true);
+        $result = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
 
         $this->logger->log(sprintf('randomMapLocation: %s', $result->getSectorString()));
 
