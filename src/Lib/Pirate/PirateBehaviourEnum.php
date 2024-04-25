@@ -12,6 +12,7 @@ enum PirateBehaviourEnum: int
     case RAGE = 5;
     case GO_ALERT_RED = 6;
     case CALL_FOR_SUPPORT = 7;
+    case SEARCH_FRIEND = 8; //TODO
 
     public function getDescription(): string
     {
@@ -24,6 +25,7 @@ enum PirateBehaviourEnum: int
             self::RAGE => _("RAGE"),
             self::GO_ALERT_RED => _("GO_ALERT_RED"),
             self::CALL_FOR_SUPPORT => _("CALL_FOR_SUPPORT"),
+            self::SEARCH_FRIEND => _("SEARCH_FRIEND"),
         };
     }
 }
