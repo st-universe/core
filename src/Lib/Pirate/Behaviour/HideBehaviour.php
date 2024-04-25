@@ -3,10 +3,10 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 class HideBehaviour implements PirateBehaviourInterface
@@ -15,7 +15,7 @@ class HideBehaviour implements PirateBehaviourInterface
 
     private PirateNavigationInterface $pirateNavigation;
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         StarSystemRepositoryInterface $starSystemRepository,
@@ -25,7 +25,7 @@ class HideBehaviour implements PirateBehaviourInterface
         $this->starSystemRepository = $starSystemRepository;
         $this->pirateNavigation = $pirateNavigation;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void

@@ -5,20 +5,20 @@ namespace Stu\Lib\Pirate\Behaviour;
 use Stu\Lib\Pirate\Component\Coordinate;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\SafeFlightRouteInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
 class FlyBehaviour implements PirateBehaviourInterface
 {
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         private FlightRouteFactoryInterface $flightRouteFactory,
@@ -27,7 +27,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void

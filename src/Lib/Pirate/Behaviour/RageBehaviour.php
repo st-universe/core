@@ -6,7 +6,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -27,7 +27,7 @@ class RageBehaviour implements PirateBehaviourInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
@@ -43,7 +43,7 @@ class RageBehaviour implements PirateBehaviourInterface
         $this->shipAttackCore = $shipAttackCore;
         $this->shipWrapperFactory = $shipWrapperFactory;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
@@ -75,6 +75,8 @@ class RageBehaviour implements PirateBehaviourInterface
         );
 
         $weakestTarget = current($filteredTargets);
+
+        $this->logger->logf('weakestTarget is shipId: %d', $weakestTarget->getId());
 
         $this->attackShip($fleet, $weakestTarget);
 

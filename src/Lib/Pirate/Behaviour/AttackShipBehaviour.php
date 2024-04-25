@@ -5,13 +5,13 @@ namespace Stu\Lib\Pirate\Behaviour;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -29,7 +29,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
@@ -47,7 +47,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $this->shipAttackCore = $shipAttackCore;
         $this->shipWrapperFactory = $shipWrapperFactory;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void

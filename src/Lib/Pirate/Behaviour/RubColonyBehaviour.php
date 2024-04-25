@@ -11,12 +11,12 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -39,7 +39,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
     private StuRandom $stuRandom;
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,
@@ -61,7 +61,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->stuRandom = $stuRandom;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void

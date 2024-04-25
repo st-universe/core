@@ -154,6 +154,10 @@ class RageBehaviourTest extends StuTestCase
         $target = $this->mock(ShipInterface::class);
         $targetWrapper = $this->mock(ShipWrapperInterface::class);
 
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
+
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
             ->andReturn($wrapper);
         $wrapper->shouldReceive('get')
@@ -221,6 +225,10 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(75);
         $targetFleet3->shouldReceive('getShips')
             ->andReturn(new ArrayCollection([$target3_1, $target3_2]));
+
+        $target2->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
 
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')

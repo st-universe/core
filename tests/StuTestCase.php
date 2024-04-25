@@ -11,6 +11,7 @@ use ReflectionClass;
 use request;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 
 abstract class StuTestCase extends MockeryTestCase
 {
@@ -47,14 +48,28 @@ abstract class StuTestCase extends MockeryTestCase
         $loggerUtil = $this->mock(LoggerUtilInterface::class);
         $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
 
+        $pirateLogger = $this->mock(PirateLoggerInterface::class);
+
         $loggerUtilFactory->shouldReceive('getLoggerUtil')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn($loggerUtil);
+        $loggerUtilFactory->shouldReceive('getPirateLogger')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($pirateLogger);
+
         $loggerUtil->shouldReceive('init')
             ->withSomeOfArgs()
             ->zeroOrMoreTimes();
         $loggerUtil->shouldReceive('log')
+            ->withSomeOfArgs()
+            ->zeroOrMoreTimes();
+
+        $pirateLogger->shouldReceive('log')
+            ->withSomeOfArgs()
+            ->zeroOrMoreTimes();
+        $pirateLogger->shouldReceive('logf')
             ->withSomeOfArgs()
             ->zeroOrMoreTimes();
 
