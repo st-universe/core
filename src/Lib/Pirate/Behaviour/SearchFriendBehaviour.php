@@ -20,7 +20,6 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
     public function __construct(
         private ShipRepositoryInterface $shipRepository,
         private PirateNavigationInterface $pirateNavigation,
-        private PirateReactionInterface $pirateReaction,
         private FightLibInterface $fightLib,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -57,7 +56,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
             $this->logger->log('    reached weakest friend, now raging');
 
-            $this->pirateReaction->react(
+            $pirateReaction->react(
                 $fleet->get(),
                 PirateReactionTriggerEnum::ON_RAGE
             );
