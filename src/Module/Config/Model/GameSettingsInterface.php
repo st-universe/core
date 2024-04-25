@@ -20,4 +20,6 @@ interface GameSettingsInterface
     public function getColonySettings(): ColonySettingsInterface;
 
     public function getMapSettings(): MapSettingsInterface;
+
+    public function getPirateLogfilePath(): string;
 }

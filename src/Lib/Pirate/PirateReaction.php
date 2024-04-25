@@ -5,7 +5,7 @@ namespace Stu\Lib\Pirate;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 
@@ -40,7 +40,7 @@ class PirateReaction implements PirateReactionInterface
         ],
     ];
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     /** @param array<int, PirateBehaviourInterface> $behaviours */
     public function __construct(
@@ -49,7 +49,7 @@ class PirateReaction implements PirateReactionInterface
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private array $behaviours
     ) {
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger): void

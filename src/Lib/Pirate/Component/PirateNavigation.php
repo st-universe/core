@@ -3,12 +3,12 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -23,7 +23,7 @@ class PirateNavigation implements PirateNavigationInterface
 
     private RandomSystemEntryInterface $randomSystemEntry;
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         MoveOnLayerInterface $moveOnLayer,
@@ -37,7 +37,7 @@ class PirateNavigation implements PirateNavigationInterface
         $this->pirateFlight = $pirateFlight;
         $this->randomSystemEntry = $randomSystemEntry;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function navigateToTarget(

@@ -4,13 +4,13 @@ namespace Stu\Module\Tick\Pirate;
 
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 
 final class PirateTick implements PirateTickInterface
 {
@@ -32,7 +32,7 @@ final class PirateTick implements PirateTickInterface
 
     private StuRandom $stuRandom;
 
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     /** @var array<int, PirateBehaviourInterface> */
     private array $behaviours;
@@ -52,7 +52,7 @@ final class PirateTick implements PirateTickInterface
         $this->stuRandom = $stuRandom;
         $this->behaviours = $behaviours;
 
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function work(): void

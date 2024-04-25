@@ -13,6 +13,7 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     private const SETTING_USE_SEMAPHORES = 'useSemaphores';
     private const SETTING_VERSION = 'version';
     private const SETTING_WEBROOT = 'webroot';
+    private const SETTING_PIRATE_LOGFILE_PATH = 'pirate_logfile_path';
 
     public function getAdminIds(): array
     {
@@ -56,6 +57,11 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     public function getWebroot(): string
     {
         return $this->getStringConfigValue(self::SETTING_WEBROOT);
+    }
+
+    public function getPirateLogfilePath(): string
+    {
+        return $this->getStringConfigValue(self::SETTING_PIRATE_LOGFILE_PATH);
     }
 
     public function getConfigPath(): string

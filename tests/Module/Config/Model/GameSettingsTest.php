@@ -202,4 +202,42 @@ class GameSettingsTest extends StuTestCase
 
         $this->subject->getWebroot();
     }
+
+    public function testGetPirateLogfilePathExpectConfigValueWhenPresent(): void
+    {
+        $this->config->shouldReceive('get')
+            ->with('game.pirate_logfile_path')
+            ->once()
+            ->andReturn('/foo/bar');
+
+        $path = $this->subject->getPirateLogfilePath();
+
+        $this->assertEquals('/foo/bar', $path);
+    }
+
+    public function testGetPirateLogfilePathExpectErrorWhenNotPresent(): void
+    {
+        static::expectExceptionMessage('There is no corresponding config setting on path "game.pirate_logfile_path"');
+        static::expectException(StuConfigException::class);
+
+        $this->config->shouldReceive('get')
+            ->with('game.pirate_logfile_path')
+            ->once()
+            ->andReturn(null);
+
+        $this->subject->getPirateLogfilePath();
+    }
+
+    public function testGetPirateLogfilePathExpectErrorWhenWrongType(): void
+    {
+        static::expectExceptionMessage('The value "123" with path "game.pirate_logfile_path" is no valid string.');
+        static::expectException(StuConfigException::class);
+
+        $this->config->shouldReceive('get')
+            ->with('game.pirate_logfile_path')
+            ->once()
+            ->andReturn(123);
+
+        $this->subject->getPirateLogfilePath();
+    }
 }
