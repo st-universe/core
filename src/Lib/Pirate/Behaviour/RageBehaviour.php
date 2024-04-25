@@ -85,6 +85,8 @@ class RageBehaviour implements PirateBehaviourInterface
             $fleet->get(),
             PirateReactionTriggerEnum::ON_RAGE
         );
+
+        return null;
     }
 
     private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void

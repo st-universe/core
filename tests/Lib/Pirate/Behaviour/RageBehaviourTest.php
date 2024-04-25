@@ -211,18 +211,24 @@ class RageBehaviourTest extends StuTestCase
 
         $target->shouldReceive('getFleet')
             ->andReturn(null);
-        $target->shouldReceive('getHealthPercentage')
+
+        $this->fightLib->shouldReceive('calculateHealthPercentage')
+            ->with($target)
             ->andReturn(75);
+        $this->fightLib->shouldReceive('calculateHealthPercentage')
+            ->with($target2)
+            ->andReturn(73);
+        $this->fightLib->shouldReceive('calculateHealthPercentage')
+            ->with($target3_1)
+            ->andReturn(73);
+        $this->fightLib->shouldReceive('calculateHealthPercentage')
+            ->with($target3_2)
+            ->andReturn(75);
+
         $target2->shouldReceive('getFleet')
             ->andReturn(null);
-        $target2->shouldReceive('getHealthPercentage')
-            ->andReturn(73);
         $target3_1->shouldReceive('getFleet')
             ->andReturn($targetFleet3);
-        $target3_1->shouldReceive('getHealthPercentage')
-            ->andReturn(73);
-        $target3_2->shouldReceive('getHealthPercentage')
-            ->andReturn(75);
         $targetFleet3->shouldReceive('getShips')
             ->andReturn(new ArrayCollection([$target3_1, $target3_2]));
 
