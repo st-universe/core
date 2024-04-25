@@ -76,7 +76,7 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $weakestTarget = current($filteredTargets);
 
-        $this->logger->logf('weakestTarget is shipId: %d', $weakestTarget->getId());
+        $this->logger->logf('    weakestTarget is shipId: %d', $weakestTarget->getId());
 
         $this->attackShip($fleet, $weakestTarget);
 

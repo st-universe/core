@@ -31,7 +31,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $supportFleet = $this->pirateCreation->createPirateFleet($leadShip);
 
-        $this->logger->logf('created support fleet "%s" here %s', $supportFleet->getName(), $supportFleet->getLeadShip()->getSectorString());
+        $this->logger->logf('    created support fleet "%s" here %s', $supportFleet->getName(), $supportFleet->getLeadShip()->getSectorString());
 
         $pirateReaction->react(
             $supportFleet,

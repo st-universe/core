@@ -4,15 +4,15 @@ namespace Stu\Lib\Pirate\Component;
 
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
 class MoveOnLayer implements MoveOnLayerInterface
 {
-    private LoggerUtilInterface $logger;
+    private PirateLoggerInterface $logger;
 
     public function __construct(
         private SafeFlightRouteInterface $safeFlightRoute,
@@ -20,7 +20,7 @@ class MoveOnLayer implements MoveOnLayerInterface
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->logger = $loggerUtilFactory->getLoggerUtil();
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function move(ShipWrapperInterface $wrapper, MapInterface|StarSystemMapInterface|null $target): bool
