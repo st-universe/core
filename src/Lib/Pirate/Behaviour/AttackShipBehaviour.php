@@ -65,6 +65,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $filteredTargets = array_filter(
             $targets,
             fn (ShipInterface $target) => $this->targetHasEnoughPrestige($piratePrestige, $target)
+                && $this->fightLib->canAttackTarget($leadShip, $target, false)
         );
 
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
@@ -111,13 +112,6 @@ class AttackShipBehaviour implements PirateBehaviourInterface
     private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
     {
         $leadWrapper = $fleetWrapper->getLeadWrapper();
-        $ship = $fleetWrapper->getLeadWrapper()->get();
-
-        if (!$this->fightLib->canAttackTarget($ship, $target, false)) {
-            $this->logger->log('    can not attack target');
-            return;
-        }
-
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
