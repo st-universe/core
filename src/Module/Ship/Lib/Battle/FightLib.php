@@ -238,4 +238,23 @@ final class FightLib implements FightLibInterface
             || $ship->getShieldState()
             || $ship->getWarpState());
     }
+
+    public function calculateHealthPercentage(ShipInterface $target): int
+    {
+        $shipCount = 0;
+        $healthSum = 0;
+
+        $fleet = $target->getFleet();
+        if ($fleet !== null) {
+            foreach ($fleet->getShips() as $ship) {
+                $shipCount++;
+                $healthSum += $ship->getHealthPercentage();
+            }
+        } else {
+            $shipCount++;
+            $healthSum += $target->getHealthPercentage();
+        }
+
+        return (int)($healthSum / $shipCount);
+    }
 }

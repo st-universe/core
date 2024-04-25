@@ -796,6 +796,35 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    public function getPirateFriends(ShipInterface $ship): array
+    {
+        $layer = $ship->getLayer();
+        if ($layer === null) {
+            return [];
+        }
+
+        $range = $ship->getSensorRange() * 3;
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.cx BETWEEN :minX AND :maxX
+                AND s.cy BETWEEN :minY AND :maxY
+                AND s.layer_id = :layerId
+                AND s.is_fleet_leader = true',
+                Ship::class
+            )
+        )
+            ->setParameters([
+                'minX' => $ship->getCx() - $range,
+                'maxX' => $ship->getCx() + $range,
+                'minY' => $ship->getCY() - $range,
+                'maxY' => $ship->getCY() + $range,
+                'layerId' => $layer->getId()
+            ])
+            ->getResult();
+    }
+
     public function truncateAllShips(): void
     {
         $this->getEntityManager()->createQuery(

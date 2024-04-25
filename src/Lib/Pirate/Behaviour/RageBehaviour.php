@@ -3,6 +3,7 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -46,7 +47,7 @@ class RageBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -65,13 +66,13 @@ class RageBehaviour implements PirateBehaviourInterface
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
 
         if (empty($filteredTargets)) {
-            return;
+            return PirateBehaviourEnum::SEARCH_FRIEND;
         }
 
         usort(
             $filteredTargets,
             fn (ShipInterface $a, ShipInterface $b) =>
-            $this->calculateHealthPercentage($a) -  $this->calculateHealthPercentage($b)
+            $this->fightLib->calculateHealthPercentage($a) -  $this->fightLib->calculateHealthPercentage($b)
         );
 
         $weakestTarget = current($filteredTargets);
@@ -84,25 +85,6 @@ class RageBehaviour implements PirateBehaviourInterface
             $fleet->get(),
             PirateReactionTriggerEnum::ON_RAGE
         );
-    }
-
-    private function calculateHealthPercentage(ShipInterface $target): int
-    {
-        $shipCount = 0;
-        $healthSum = 0;
-
-        $fleet = $target->getFleet();
-        if ($fleet !== null) {
-            foreach ($fleet->getShips() as $ship) {
-                $shipCount++;
-                $healthSum += $ship->getHealthPercentage();
-            }
-        } else {
-            $shipCount++;
-            $healthSum += $target->getHealthPercentage();
-        }
-
-        return (int)($healthSum / $shipCount);
     }
 
     private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void

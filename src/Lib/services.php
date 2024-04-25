@@ -31,6 +31,7 @@ use Stu\Lib\Pirate\Behaviour\FlyBehaviour;
 use Stu\Lib\Pirate\Behaviour\HideBehaviour;
 use Stu\Lib\Pirate\Behaviour\RageBehaviour;
 use Stu\Lib\Pirate\Behaviour\RubColonyBehaviour;
+use Stu\Lib\Pirate\Behaviour\SearchFriendBehaviour;
 use Stu\Lib\Pirate\Component\MoveOnLayer;
 use Stu\Lib\Pirate\Component\MoveOnLayerInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
@@ -106,7 +107,8 @@ return [
         PirateBehaviourEnum::HIDE->value => autowire(HideBehaviour::class),
         PirateBehaviourEnum::RAGE->value => autowire(RageBehaviour::class),
         PirateBehaviourEnum::GO_ALERT_RED->value => autowire(ChangeAlertStateToRed::class),
-        PirateBehaviourEnum::CALL_FOR_SUPPORT->value => autowire(CallForSupportBehaviour::class)
+        PirateBehaviourEnum::CALL_FOR_SUPPORT->value => autowire(CallForSupportBehaviour::class),
+        PirateBehaviourEnum::SEARCH_FRIEND->value => autowire(SearchFriendBehaviour::class)
     ],
     PirateCreationInterface::class => autowire(PirateCreation::class),
     PirateReactionInterface::class => autowire(PirateReaction::class)->constructorParameter(

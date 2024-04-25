@@ -10,6 +10,7 @@ use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -50,7 +51,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): void
+    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
     {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -72,7 +73,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
 
         if (empty($filteredTargets)) {
-            return;
+            return null;
         }
 
         usort(
