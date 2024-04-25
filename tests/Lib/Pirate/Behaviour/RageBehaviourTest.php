@@ -7,6 +7,8 @@ namespace Stu\Lib\Pirate\Behaviour;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -34,6 +36,12 @@ class RageBehaviourTest extends StuTestCase
     /** @var MockInterface|FleetWrapperInterface */
     private $fleetWrapper;
 
+    /** @var MockInterface|FleetWrapperInterface */
+    private $fleet;
+
+    /** @var MockInterface|PirateReactionInterface */
+    private $pirateReaction;
+
     private PirateBehaviourInterface $subject;
 
     protected function setUp(): void
@@ -45,6 +53,12 @@ class RageBehaviourTest extends StuTestCase
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
 
         $this->fleetWrapper = mock(FleetWrapperInterface::class);
+        $this->fleet = mock(FleetInterface::class);
+        $this->pirateReaction = mock(PirateReactionInterface::class);
+
+        $this->fleetWrapper->shouldReceive('get')
+            ->zeroOrMoreTimes()
+            ->andReturn($this->fleet);
 
         $this->subject = new RageBehaviour(
             $this->shipRepository,
@@ -73,7 +87,7 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $this->subject->action($this->fleetWrapper);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
     }
 
     public function testActionExpectNoActionIfTargetNotOnPosition(): void
@@ -99,7 +113,7 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->action($this->fleetWrapper);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
     }
 
     public function testActionExpectNoActionIfCantAttackTarget(): void
@@ -130,7 +144,7 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->action($this->fleetWrapper);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
     }
 
     public function testActionExpectAttackOfSingleTarget(): void
@@ -171,7 +185,11 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->action($this->fleetWrapper);
+        $this->pirateReaction->shouldReceive('react')
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE)
+            ->once();
+
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
     }
 
     public function testActionExpectAttackOfWeakestTarget(): void
@@ -252,6 +270,10 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->action($this->fleetWrapper);
+        $this->pirateReaction->shouldReceive('react')
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE)
+            ->once();
+
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
     }
 }

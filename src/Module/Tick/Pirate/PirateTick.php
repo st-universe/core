@@ -10,6 +10,7 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreationInterface;
+use Stu\Lib\Pirate\PirateReactionInterface;
 
 final class PirateTick implements PirateTickInterface
 {
@@ -18,10 +19,14 @@ final class PirateTick implements PirateTickInterface
         PirateBehaviourEnum::FLY->value => 40,
         PirateBehaviourEnum::RUB_COLONY->value => 5,
         PirateBehaviourEnum::ATTACK_SHIP->value => 5,
-        PirateBehaviourEnum::HIDE->value => 20
+        PirateBehaviourEnum::HIDE->value => 20,
+        PirateBehaviourEnum::RAGE->value => 2,
+        PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 1,
     ];
 
     private PirateCreationInterface $pirateCreation;
+
+    private PirateReactionInterface $pirateReaction;
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
@@ -35,12 +40,14 @@ final class PirateTick implements PirateTickInterface
     /** @param array<int, PirateBehaviourInterface> $behaviours */
     public function __construct(
         PirateCreationInterface $pirateCreation,
+        PirateReactionInterface $pirateReaction,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         array $behaviours
     ) {
         $this->pirateCreation = $pirateCreation;
+        $this->pirateReaction = $pirateReaction;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->stuRandom = $stuRandom;
         $this->behaviours = $behaviours;
@@ -65,7 +72,7 @@ final class PirateTick implements PirateTickInterface
 
             $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-            $this->behaviours[$behaviourType->value]->action($fleetWrapper);
+            $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this->pirateReaction);
 
             $this->reloadMinimalEps($fleetWrapper);
         }
