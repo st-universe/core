@@ -41,7 +41,7 @@ class PirateReaction implements PirateReactionInterface
         ],
         PirateReactionTriggerEnum::ON_RAGE->value => [
             PirateBehaviourEnum::RAGE->value => 50,
-            PirateBehaviourEnum::DO_NOTHING->value => 40,
+            PirateBehaviourEnum::DO_NOTHING->value => 30,
             PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
         ],
     ];
@@ -66,16 +66,16 @@ class PirateReaction implements PirateReactionInterface
         }
 
         $behaviourType = $this->getRandomBehaviourType($reactionTrigger);
-        if ($behaviourType === PirateBehaviourEnum::DO_NOTHING) {
-            return;
-        }
-
         $this->logger->log(sprintf(
             'pirateFleetId %d reacts on %s with %s',
             $fleet->getId(),
             $reactionTrigger->name,
             $behaviourType->getDescription()
         ));
+
+        if ($behaviourType === PirateBehaviourEnum::DO_NOTHING) {
+            return;
+        }
 
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 

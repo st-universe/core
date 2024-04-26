@@ -65,7 +65,6 @@ return [
                 autowire(ShipTick::class),
                 autowire(NpcShipHandling::class),
                 autowire(LowerHull::class),
-
                 autowire(AnomalyCreationCheck::class),
             ]
         ),
