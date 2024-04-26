@@ -50,7 +50,11 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         $weakestFriend = current($friends);
 
-        $this->logger->logf('    navigating to weakest friend at %s', $weakestFriend->getSectorString());
+        $this->logger->logf(
+            '    navigating from %s to weakest friend at %s',
+            $leadShip->getSectorString(),
+            $weakestFriend->getSectorString()
+        );
 
         if ($this->pirateNavigation->navigateToTarget($fleet, $weakestFriend->getCurrentMapField())) {
 
