@@ -79,7 +79,10 @@ class PirateReaction implements PirateReactionInterface
 
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-        $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this);
+        $alternativeBehaviour = $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this);
+        if ($alternativeBehaviour !== null) {
+            $this->behaviours[$alternativeBehaviour->value]->action($fleetWrapper, $this);
+        }
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
             $this->behaviours[PirateBehaviourEnum::GO_ALERT_RED->value]->action($fleetWrapper, $this);
