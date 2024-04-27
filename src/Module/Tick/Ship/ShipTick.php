@@ -272,7 +272,6 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 
         if (
             $endTime - $startTime > 0.01
-            && $wrapper->get()->getId() % 10 === 0
         ) {
             $this->loggerUtil->log(sprintf(
                 "\t\t\t%s of %d, seconds: %F",
