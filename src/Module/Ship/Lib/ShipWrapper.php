@@ -9,7 +9,6 @@ use JsonMapper\JsonMapperInterface;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
-use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AbstractSystemData;
