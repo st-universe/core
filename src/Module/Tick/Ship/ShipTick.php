@@ -277,7 +277,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 
     private function shouldLog(ShipWrapperInterface $wrapper): bool
     {
-        return $wrapper->get()->getId() % 1000 === 0;
+        return $wrapper->get()->getId() % 10 === 0;
     }
 
     private function getAvailableEps(
