@@ -13,6 +13,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -56,6 +58,8 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 
     private ShipTakeoverManagerInterface $shipTakeoverManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     /**
      * @var array<string>
      */
@@ -73,7 +77,8 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         CreateDatabaseEntryInterface $createDatabaseEntry,
         StationUtilityInterface $stationUtility,
         RepairUtilInterface $repairUtil,
-        ShipTakeoverManagerInterface $shipTakeoverManager
+        ShipTakeoverManagerInterface $shipTakeoverManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
@@ -87,6 +92,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $this->stationUtility = $stationUtility;
         $this->repairUtil = $repairUtil;
         $this->shipTakeoverManager = $shipTakeoverManager;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
     }
 
     public function work(): void
@@ -100,12 +106,20 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
     {
         $ship = $wrapper->get();
 
+        $startTime = microtime(true);
+
         // do construction stuff
         if ($this->doConstructionStuff($ship)) {
             $this->shipRepository->save($ship);
             $this->sendMessages($ship);
             return;
         }
+
+        if ($this->shouldLog($wrapper)) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "doConstructionStuff", $endTime - $startTime));
+        }
+
 
         // repair station
         if ($ship->isBase() && $ship->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
@@ -140,6 +154,8 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             }
         }
 
+        $startTime = microtime(true);
+
         $reactorUsageForWarpdrive = $this->loadWarpdrive(
             $wrapper,
             $hasEnoughCrew
@@ -170,6 +186,12 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                 );
             }
         }
+
+        if ($this->shouldLog($wrapper)) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker1", $endTime - $startTime));
+        }
+        $startTime = microtime(true);
 
         //try to save energy by deactivating systems from low to high priority
         if ($wrapper->getEpsUsage() > $availableEps) {
@@ -203,6 +225,12 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             }
         }
 
+        if ($this->shouldLog($wrapper)) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker2", $endTime - $startTime));
+        }
+        $startTime = microtime(true);
+
         $newEps = $availableEps - $wrapper->getEpsUsage();
         $batteryReload = $ship->isBase()
             && $eps->reloadBattery()
@@ -230,6 +258,12 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $reactor->changeLoad(-$usedEnergy);
         }
 
+        if ($this->shouldLog($wrapper)) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker3", $endTime - $startTime));
+        }
+        $startTime = microtime(true);
+
         $this->checkForFinishedTakeover($ship);
         $this->checkForFinishedAstroMapping($ship);
 
@@ -239,6 +273,11 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $this->shipRepository->save($ship);
 
         $this->sendMessages($ship);
+    }
+
+    private function shouldLog(ShipWrapperInterface $wrapper): bool
+    {
+        return $wrapper->get()->getId() % 1000 === 0;
     }
 
     private function getAvailableEps(
