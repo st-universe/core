@@ -3,9 +3,11 @@
 namespace Stu\Lib\Pirate;
 
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
+use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 
@@ -51,6 +53,7 @@ class PirateReaction implements PirateReactionInterface
     /** @param array<int, PirateBehaviourInterface> $behaviours */
     public function __construct(
         private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ReloadMinimalEpsInterface $reloadMinimalEps,
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private array $behaviours
@@ -79,13 +82,13 @@ class PirateReaction implements PirateReactionInterface
 
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-        $alternativeBehaviour = $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this);
+        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper);
         if ($alternativeBehaviour !== null) {
-            $this->behaviours[$alternativeBehaviour->value]->action($fleetWrapper, $this);
+            $this->action($alternativeBehaviour, $fleetWrapper);
         }
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
-            $this->behaviours[PirateBehaviourEnum::GO_ALERT_RED->value]->action($fleetWrapper, $this);
+            $this->action(PirateBehaviourEnum::GO_ALERT_RED, $fleetWrapper);
         }
     }
 
@@ -94,5 +97,14 @@ class PirateReaction implements PirateReactionInterface
         $value = $this->stuRandom->randomOfProbabilities(self::REACTION_PROBABILITIES[$reactionTrigger->value]);
 
         return PirateBehaviourEnum::from($value);
+    }
+
+    private function action(PirateBehaviourEnum $behaviour, FleetWrapperInterface $fleetWrapper): ?PirateBehaviourEnum
+    {
+        $alternativeBehaviour = $this->behaviours[$behaviour->value]->action($fleetWrapper, $this);
+
+        $this->reloadMinimalEps->reload($fleetWrapper);
+
+        return $alternativeBehaviour;
     }
 }
