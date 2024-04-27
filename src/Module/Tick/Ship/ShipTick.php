@@ -115,7 +115,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             return;
         }
 
-        $this->potentialLog($wrapper, "marker0", $startTime);
+        $this->potentialLog($ship, "marker0", $startTime);
 
 
         $startTime = microtime(true);
@@ -123,7 +123,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         if ($ship->isBase() && $ship->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
             $this->doRepairStation($wrapper);
         }
-        $this->potentialLog($wrapper, "marker1", $startTime);
+        $this->potentialLog($ship, "marker1", $startTime);
 
         $startTime = microtime(true);
         // leave ship
@@ -131,7 +131,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
             $this->msg[] = $this->shipLeaver->evacuate($wrapper);
             $this->sendMessages($ship);
-            $this->potentialLog($wrapper, "marker2", $startTime);
+            $this->potentialLog($ship, "marker2", $startTime);
             return;
         }
 
@@ -139,7 +139,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $eps = $wrapper->getEpsSystemData();
         $reactor = $wrapper->getReactorWrapper();
         if ($eps === null) {
-            $this->potentialLog($wrapper, "marker3", $startTime);
+            $this->potentialLog($ship, "marker3", $startTime);
             return;
         }
 
@@ -157,14 +157,14 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                 }
             }
         }
-        $this->potentialLog($wrapper, "marker4", $startTime);
+        $this->potentialLog($ship, "marker4", $startTime);
 
         $startTime = microtime(true);
         $reactorUsageForWarpdrive = $this->loadWarpdrive(
             $wrapper,
             $hasEnoughCrew
         );
-        $this->potentialLog($wrapper, "marker5", $startTime);
+        $this->potentialLog($ship, "marker5", $startTime);
 
         $startTime = microtime(true);
         $availableEps = $this->getAvailableEps(
@@ -174,7 +174,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $hasEnoughCrew,
             $reactorUsageForWarpdrive
         );
-        $this->potentialLog($wrapper, "marker6", $startTime);
+        $this->potentialLog($ship, "marker6", $startTime);
 
         $startTime = microtime(true);
         //try to save energy by reducing alert state
@@ -194,7 +194,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                 );
             }
         }
-        $this->potentialLog($wrapper, "marker7", $startTime);
+        $this->potentialLog($ship, "marker7", $startTime);
 
         $startTime = microtime(true);
         //try to save energy by deactivating systems from low to high priority
@@ -229,7 +229,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             }
         }
 
-        $this->potentialLog($wrapper, "marker8", $startTime);
+        $this->potentialLog($ship, "marker8", $startTime);
         $startTime = microtime(true);
 
         $newEps = $availableEps - $wrapper->getEpsUsage();
@@ -259,31 +259,31 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $reactor->changeLoad(-$usedEnergy);
         }
 
-        $this->potentialLog($wrapper, "marker9", $startTime);
+        $this->potentialLog($ship, "marker9", $startTime);
 
         $startTime = microtime(true);
         $this->checkForFinishedTakeover($ship);
-        $this->potentialLog($wrapper, "marker10", $startTime);
+        $this->potentialLog($ship, "marker10", $startTime);
 
         $startTime = microtime(true);
         $this->checkForFinishedAstroMapping($ship);
-        $this->potentialLog($wrapper, "marker11", $startTime);
+        $this->potentialLog($ship, "marker11", $startTime);
 
         //update tracker status
         $startTime = microtime(true);
         $this->doTrackerDeviceStuff($wrapper);
-        $this->potentialLog($wrapper, "marker12", $startTime);
+        $this->potentialLog($ship, "marker12", $startTime);
 
         $startTime = microtime(true);
         $this->shipRepository->save($ship);
-        $this->potentialLog($wrapper, "marker13", $startTime);
+        $this->potentialLog($ship, "marker13", $startTime);
 
         $startTime = microtime(true);
         $this->sendMessages($ship);
-        $this->potentialLog($wrapper, "marker14", $startTime);
+        $this->potentialLog($ship, "marker14", $startTime);
     }
 
-    private function potentialLog(ShipWrapperInterface $wrapper, string $marker, float $startTime): void
+    private function potentialLog(ShipInterface $ship, string $marker, float $startTime): void
     {
         $endTime = microtime(true);
 
@@ -293,7 +293,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $this->loggerUtil->log(sprintf(
                 "\t\t\t%s of %d, seconds: %F",
                 $marker,
-                $wrapper->get()->getId(),
+                $ship->getId(),
                 $endTime - $startTime
             ));
         }
@@ -482,13 +482,21 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 
     private function checkForFinishedTakeover(ShipInterface $ship): void
     {
+        $startTime = microtime(true);
         $takeover = $ship->getTakeoverActive();
         if ($takeover === null) {
             return;
         }
+        $this->potentialLog($ship, "marker10.1", $startTime);
 
-        if ($this->shipTakeoverManager->isTakeoverReady($takeover)) {
+        $startTime = microtime(true);
+        $isTakeoverReady = $this->shipTakeoverManager->isTakeoverReady($takeover);
+        $this->potentialLog($ship, "marker10.2", $startTime);
+
+        if ($isTakeoverReady) {
+            $startTime = microtime(true);
             $this->shipTakeoverManager->finishTakeover($takeover);
+            $this->potentialLog($ship, "marker10.3", $startTime);
         }
     }
 
