@@ -69,6 +69,10 @@ class RageBehaviour implements PirateBehaviourInterface
             return PirateBehaviourEnum::SEARCH_FRIEND;
         }
 
+        foreach ($filteredTargets as $ship) {
+            $this->logger->log(sprintf('      shipId with %F health', $this->fightLib->calculateHealthPercentage($ship)));
+        }
+
         usort(
             $filteredTargets,
             fn (ShipInterface $a, ShipInterface $b) =>
@@ -77,7 +81,7 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $weakestTarget = current($filteredTargets);
 
-        $this->logger->logf('    weakestTarget is shipId: %d', $weakestTarget->getId());
+        $this->logger->logf('    attacking weakestTarget with shipId: %d', $weakestTarget->getId());
 
         $this->attackShip($fleet, $weakestTarget);
 

@@ -100,6 +100,8 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
+        $this->logger->logf('    attacking target is shipId: %d', $target->getId());
+
         $this->shipAttackCore->attack(
             $leadWrapper,
             $this->shipWrapperFactory->wrapShip($target),
