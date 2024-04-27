@@ -273,6 +273,12 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $this->shipRepository->save($ship);
 
         $this->sendMessages($ship);
+
+        if ($this->shouldLog($wrapper)) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker4", $endTime - $startTime));
+        }
+        $startTime = microtime(true);
     }
 
     private function shouldLog(ShipWrapperInterface $wrapper): bool
