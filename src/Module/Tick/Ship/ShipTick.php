@@ -115,10 +115,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             return;
         }
 
-        if ($this->shouldLog($wrapper)) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "doConstructionStuff", $endTime - $startTime));
-        }
+        $this->potentialLog($wrapper, "marker0", $startTime);
 
 
         // repair station
@@ -187,10 +184,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             }
         }
 
-        if ($this->shouldLog($wrapper)) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker1", $endTime - $startTime));
-        }
+        $this->potentialLog($wrapper, "marker1", $startTime);
         $startTime = microtime(true);
 
         //try to save energy by deactivating systems from low to high priority
@@ -225,10 +219,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             }
         }
 
-        if ($this->shouldLog($wrapper)) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker2", $endTime - $startTime));
-        }
+        $this->potentialLog($wrapper, "marker2", $startTime);
         $startTime = microtime(true);
 
         $newEps = $availableEps - $wrapper->getEpsUsage();
@@ -258,10 +249,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             $reactor->changeLoad(-$usedEnergy);
         }
 
-        if ($this->shouldLog($wrapper)) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker3", $endTime - $startTime));
-        }
+        $this->potentialLog($wrapper, "marker3", $startTime);
         $startTime = microtime(true);
 
         $this->checkForFinishedTakeover($ship);
@@ -274,16 +262,25 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 
         $this->sendMessages($ship);
 
-        if ($this->shouldLog($wrapper)) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\t\t%s, seconds: %F", "marker4", $endTime - $startTime));
-        }
+        $this->potentialLog($wrapper, "marker4", $startTime);
         $startTime = microtime(true);
     }
 
-    private function shouldLog(ShipWrapperInterface $wrapper): bool
+    private function potentialLog(ShipWrapperInterface $wrapper, string $marker, float $startTime): void
     {
-        return $wrapper->get()->getId() % 10 === 0;
+        $endTime = microtime(true);
+
+        if (
+            $endTime - $startTime > 0.01
+            && $wrapper->get()->getId() % 10 === 0
+        ) {
+            $this->loggerUtil->log(sprintf(
+                "\t\t\t%s of %d, seconds: %F",
+                $marker,
+                $wrapper->get()->getId(),
+                $endTime - $startTime
+            ));
+        }
     }
 
     private function getAvailableEps(
