@@ -157,6 +157,9 @@ class RageBehaviourTest extends StuTestCase
         $target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(42);
+        $this->fightLib->shouldReceive('calculateHealthPercentage')
+            ->with($target)
+            ->andReturn(75);
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
             ->andReturn($wrapper);
