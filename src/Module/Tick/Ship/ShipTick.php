@@ -250,20 +250,27 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         }
 
         $this->potentialLog($wrapper, "marker3", $startTime);
-        $startTime = microtime(true);
 
+        $startTime = microtime(true);
         $this->checkForFinishedTakeover($ship);
+        $this->potentialLog($wrapper, "marker4", $startTime);
+
+        $startTime = microtime(true);
         $this->checkForFinishedAstroMapping($ship);
+        $this->potentialLog($wrapper, "marker5", $startTime);
 
         //update tracker status
-        $this->doTrackerDeviceStuff($wrapper);
-
-        $this->shipRepository->save($ship);
-
-        $this->sendMessages($ship);
-
-        $this->potentialLog($wrapper, "marker4", $startTime);
         $startTime = microtime(true);
+        $this->doTrackerDeviceStuff($wrapper);
+        $this->potentialLog($wrapper, "marker6", $startTime);
+
+        $startTime = microtime(true);
+        $this->shipRepository->save($ship);
+        $this->potentialLog($wrapper, "marker7", $startTime);
+
+        $startTime = microtime(true);
+        $this->sendMessages($ship);
+        $this->potentialLog($wrapper, "marker8", $startTime);
     }
 
     private function potentialLog(ShipWrapperInterface $wrapper, string $marker, float $startTime): void
