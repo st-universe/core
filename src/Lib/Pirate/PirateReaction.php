@@ -73,7 +73,7 @@ class PirateReaction implements PirateReactionInterface
             'pirateFleetId %d reacts on %s with %s',
             $fleet->getId(),
             $reactionTrigger->name,
-            $behaviourType->getDescription()
+            $behaviourType->name
         ));
 
         if ($behaviourType === PirateBehaviourEnum::DO_NOTHING) {
@@ -84,6 +84,11 @@ class PirateReaction implements PirateReactionInterface
 
         $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper);
         if ($alternativeBehaviour !== null) {
+            $this->logger->log(sprintf(
+                'pirateFleetId %d does alternative behaviour %s',
+                $fleet->getId(),
+                $alternativeBehaviour->name
+            ));
             $this->action($alternativeBehaviour, $fleetWrapper);
         }
 
