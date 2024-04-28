@@ -54,7 +54,7 @@ final class PirateTick implements PirateTickInterface
                 continue;
             }
 
-            $this->logger->log(sprintf('pirateFleetId %d does %s', $fleet->getId(), $behaviourType->getDescription()));
+            $this->logger->log(sprintf('pirateFleetId %d does %s', $fleet->getId(), $behaviourType->name));
 
             $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
