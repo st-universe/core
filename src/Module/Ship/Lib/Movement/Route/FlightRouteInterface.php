@@ -55,4 +55,7 @@ interface FlightRouteInterface
     public function isTranswarpCoilNeeded(): bool;
 
     public function isRouteDangerous(): bool;
+
+    /** @param array<int> $regionIds */
+    public function isDestinationInAdminRegion(array $regionIds): bool;
 }
