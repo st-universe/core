@@ -6,5 +6,5 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 
 interface ReloadMinimalEpsInterface
 {
-    public function reload(FleetWrapperInterface $fleetWrapper): void;
+    public function reload(FleetWrapperInterface $fleetWrapper, int $minimalPercentage = 20): void;
 }
