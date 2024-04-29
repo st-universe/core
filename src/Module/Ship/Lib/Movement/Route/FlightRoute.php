@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
+use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -235,5 +236,13 @@ final class FlightRoute implements FlightRouteInterface
         }
 
         return false;
+    }
+
+    public function isDestinationInAdminRegion(array $regionIds): bool
+    {
+        $destination = $this->waypoints->last();
+
+        return $destination instanceof MapInterface
+            && in_array($destination->getAdminRegionId(), $regionIds);
     }
 }

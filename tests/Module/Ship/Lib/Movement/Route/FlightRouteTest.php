@@ -458,4 +458,84 @@ class FlightRouteTest extends StuTestCase
 
         $this->assertTrue($result);
     }
+
+    public function testIsDestinationInAdminRegionExpectTrueIfMatch(): void
+    {
+        $start = $this->mock(MapInterface::class);
+        $destination = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $waypoints = new ArrayCollection();
+
+        $waypoints->add($destination);
+
+        $ship->shouldReceive('getCurrentMapField')
+            ->withNoArgs()
+            ->andReturn($start);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $destination->shouldReceive('getAdminRegionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(778899);
+
+        $this->checkDestination->shouldReceive('validate')
+            ->with($ship, 42, 5)
+            ->once()
+            ->andReturn($destination);
+
+        $this->loadWaypoints->shouldReceive('load')
+            ->with($start, $destination)
+            ->once()
+            ->andReturn($waypoints);
+
+        $this->subject->setDestinationViaCoordinates($ship, 42, 5);
+
+        $result = $this->subject->isDestinationInAdminRegion([778899]);
+
+        $this->assertTrue($result);
+    }
+
+    public function testIsDestinationInAdminRegionExpectFalseIfNoMatch(): void
+    {
+        $start = $this->mock(MapInterface::class);
+        $destination = $this->mock(MapInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $waypoints = new ArrayCollection();
+
+        $waypoints->add($destination);
+
+        $ship->shouldReceive('getCurrentMapField')
+            ->withNoArgs()
+            ->andReturn($start);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $destination->shouldReceive('getAdminRegionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $this->checkDestination->shouldReceive('validate')
+            ->with($ship, 42, 5)
+            ->once()
+            ->andReturn($destination);
+
+        $this->loadWaypoints->shouldReceive('load')
+            ->with($start, $destination)
+            ->once()
+            ->andReturn($waypoints);
+
+        $this->subject->setDestinationViaCoordinates($ship, 42, 5);
+
+        $result = $this->subject->isDestinationInAdminRegion([41, 43]);
+
+        $this->assertFalse($result);
+    }
 }

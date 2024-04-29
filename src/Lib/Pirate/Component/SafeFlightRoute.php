@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -35,7 +36,10 @@ class SafeFlightRoute implements SafeFlightRouteInterface
                 $coordinate->getX(),
                 $coordinate->getY()
             );
-        } while ($flightRoute->isRouteDangerous());
+        } while (
+            $flightRoute->isRouteDangerous()
+            || $flightRoute->isDestinationInAdminRegion(PirateCreation::FORBIDDEN_ADMIN_AREAS)
+        );
 
         return $flightRoute;
     }
