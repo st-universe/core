@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Pirate\Component;
 
 use Mockery\MockInterface;
+use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -74,6 +75,10 @@ class SafeFlightRouteTest extends StuTestCase
 
         $flightRoute->shouldReceive('isRouteDangerous')
             ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $flightRoute->shouldReceive('isDestinationInAdminRegion')
+            ->with(PirateCreation::FORBIDDEN_ADMIN_AREAS)
             ->once()
             ->andReturn(false);
 
