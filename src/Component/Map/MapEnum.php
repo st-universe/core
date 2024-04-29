@@ -25,4 +25,8 @@ final class MapEnum
     //OTHER
     public const MAPTYPE_INSERT = 1;
     public const MAPTYPE_LAYER_EXPLORED = 2;
+
+    //MAP REGIONS
+    public const ADMIN_REGION_SUPERPOWER_CENTRAL = 61;
+    public const ADMIN_REGION_SUPERPOWER_PERIPHERAL = 62;
 }

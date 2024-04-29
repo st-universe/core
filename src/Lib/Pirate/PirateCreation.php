@@ -4,6 +4,7 @@ namespace Stu\Lib\Pirate;
 
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
+use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -25,6 +26,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 class PirateCreation implements PirateCreationInterface
 {
     public const MAX_PIRATE_FLEETS = 5;
+
+    public const FORBIDDEN_ADMIN_AREAS = [
+        MapEnum::ADMIN_REGION_SUPERPOWER_CENTRAL,
+        MapEnum::ADMIN_REGION_SUPERPOWER_PERIPHERAL
+    ];
 
     private FleetRepositoryInterface $fleetRepository;
 
@@ -195,7 +201,9 @@ class PirateCreation implements PirateCreationInterface
     {
         $defaultLayer = $this->layerRepository->getDefaultLayer();
 
-        $result = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
+        do {
+            $result = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
+        } while (in_array($result->getAdminRegionId(), self::FORBIDDEN_ADMIN_AREAS));
 
         $this->logger->log(sprintf('    randomMapLocation: %s', $result->getSectorString()));
 
