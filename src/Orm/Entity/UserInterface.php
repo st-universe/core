@@ -184,4 +184,6 @@ interface UserInterface
     public function getPirateWrath(): ?PirateWrathInterface;
 
     public function setPirateWrath(PirateWrathInterface $wrath): UserInterface;
+
+    public function isProtectedAgainstPirates(): bool;
 }

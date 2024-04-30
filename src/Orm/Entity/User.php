@@ -709,4 +709,19 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function isProtectedAgainstPirates(): bool
+    {
+        $pirateWrath = $this->pirateWrath;
+        if ($pirateWrath === null) {
+            return false;
+        }
+
+        $timeout = $pirateWrath->getProtectionTimeout();
+        if ($timeout === null) {
+            return false;
+        }
+
+        return $timeout > time();
+    }
 }
