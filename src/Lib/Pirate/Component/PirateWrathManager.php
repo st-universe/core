@@ -40,9 +40,9 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         if ($wrath->getWrath() >= self::MAX_WRATH) {
             $this->logger->logf(
-                '    user %d already reached MAX_WRATH = %d',
-                $user->getId(),
-                self::MAX_WRATH
+                'MAX_WRATH = %d of user %d already reached',
+                self::MAX_WRATH,
+                $user->getId()
             );
             return;
         }
@@ -54,7 +54,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
             && $timeout > time()
         ) {
             $this->logger->logf(
-                '    reset protection timeout of user %d',
+                'RESET protection timeout of user %d',
                 $user->getId(),
             );
             $wrath->setProtectionTimeout(null);
@@ -66,7 +66,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         $this->pirateWrathRepository->save($wrath);
 
         $this->logger->logf(
-            '    increased wrath of user %d from %d to %d',
+            'INCREASED wrath of user %d from %d to %d',
             $user->getId(),
             $currentWrath,
             $wrath->getWrath()
