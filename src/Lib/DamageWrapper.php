@@ -122,11 +122,11 @@ class DamageWrapper
 
     public function setPirateWrath(UserInterface $attacker, ShipInterface $target): void
     {
-        if ($target->getUser()->getId() !== UserEnum::USER_NPC_KAZON) {
+        if ($attacker->getId() !== UserEnum::USER_NPC_KAZON) {
             return;
         }
 
-        $pirateWrath = $attacker->getPirateWrath();
+        $pirateWrath = $target->getUser()->getPirateWrath();
         if ($pirateWrath === null) {
             return;
         }
