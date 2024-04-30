@@ -13,8 +13,10 @@
 namespace Stu\Lib;
 
 use Stu\Component\Ship\ShipEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
@@ -25,6 +27,7 @@ class DamageWrapper
     private float $netDamage = 0;
     private bool $isCrit = false;
     private int $modificator = 100;
+    private ?int $pirateWrath = null;
 
     public function __construct(int $netDamage)
     {
@@ -117,6 +120,19 @@ class DamageWrapper
         $this->modificator = $value;
     }
 
+    public function setPirateWrath(UserInterface $attacker, ShipInterface $target): void
+    {
+        if ($target->getUser()->getId() !== UserEnum::USER_NPC_KAZON) {
+            return;
+        }
+
+        $pirateWrath = $attacker->getPirateWrath();
+        if ($pirateWrath === null) {
+            return;
+        }
+
+        $this->pirateWrath = $pirateWrath->getWrath();
+    }
 
     public function getDamageRelative(ColonyInterface|ShipInterface $target, int $mode): float
     {
@@ -137,6 +153,8 @@ class DamageWrapper
     private function calculateDamageShields(ShipInterface $target): float
     {
         $netDamage = $this->getNetDamage();
+        $netDamage = $this->mindPirateWrath($netDamage);
+
         $targetShields = $target->getShield();
 
         $grossModificator = round($this->getShieldDamageFactor() / 100);
@@ -173,6 +191,7 @@ class DamageWrapper
     private function calculateDamageHull(): float
     {
         $damage = round($this->getNetDamage() / 100 * $this->getHullDamageFactor());
+        $damage = $this->mindPirateWrath($damage);
 
         if ($this->getIsTorpedoDamage() === true) {
             $damage = round($damage * ($this->getModificator() / 100));
@@ -184,5 +203,14 @@ class DamageWrapper
     private function calculateDamageBuilding(): float
     {
         return round($this->getNetDamage() / 100 * $this->getHullDamageFactor());
+    }
+
+    private function mindPirateWrath(float $damage): float
+    {
+        if ($this->pirateWrath === null) {
+            return $damage;
+        }
+
+        return round($damage / 100 * $this->pirateWrath);
     }
 }

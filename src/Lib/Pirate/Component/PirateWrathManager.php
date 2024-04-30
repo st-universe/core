@@ -11,6 +11,8 @@ use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 
 class PirateWrathManager implements PirateWrathManagerInterface
 {
+    public const MAX_WRATH = 200;
+
     private PirateLoggerInterface $logger;
 
     public function __construct(
@@ -33,6 +35,16 @@ class PirateWrathManager implements PirateWrathManagerInterface
         if ($wrath === null) {
             $wrath = $this->pirateWrathRepository->prototype();
             $wrath->setUser($user);
+            $user->setPirateWrath($wrath);
+        }
+
+        if ($wrath->getWrath() >= self::MAX_WRATH) {
+            $this->logger->logf(
+                '    user %d already reached MAX_WRATH = %d',
+                $user->getId(),
+                self::MAX_WRATH
+            );
+            return;
         }
 
         // reset protection timeout

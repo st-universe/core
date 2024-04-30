@@ -155,7 +155,7 @@ class User implements UserInterface
     private Collection $characters;
 
     #[OneToOne(targetEntity: 'PirateWrath', mappedBy: 'user')]
-    private ?PirateWrath $pirateWrath = null;
+    private ?PirateWrathInterface $pirateWrath = null;
 
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
@@ -701,5 +701,12 @@ class User implements UserInterface
     public function getPirateWrath(): ?PirateWrathInterface
     {
         return $this->pirateWrath;
+    }
+
+    public function setPirateWrath(PirateWrathInterface $wrath): UserInterface
+    {
+        $this->pirateWrath = $wrath;
+
+        return $this;
     }
 }

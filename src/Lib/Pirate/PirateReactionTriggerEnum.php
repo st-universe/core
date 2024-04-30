@@ -13,7 +13,7 @@ enum PirateReactionTriggerEnum: int
     public function getWrath(): int
     {
         return match ($this) {
-            self::ON_ATTACK => 10,
+            self::ON_ATTACK => 5,
             self::ON_SCAN => 1,
             self::ON_INTERCEPTION => 2,
             self::ON_SUPPORT_CALL => 0,
