@@ -182,4 +182,6 @@ interface UserInterface
     public function isShowPirateHistoryEntrys(): bool;
 
     public function getPirateWrath(): ?PirateWrathInterface;
+
+    public function setPirateWrath(PirateWrathInterface $wrath): UserInterface;
 }

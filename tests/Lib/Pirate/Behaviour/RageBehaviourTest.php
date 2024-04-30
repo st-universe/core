@@ -193,7 +193,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->pirateReaction->shouldReceive('react')
-            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE)
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
             ->once();
 
         $this->subject->action($this->fleetWrapper, $this->pirateReaction);
@@ -288,7 +288,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->pirateReaction->shouldReceive('react')
-            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE)
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
             ->once();
 
         $this->subject->action($this->fleetWrapper, $this->pirateReaction);
