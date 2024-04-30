@@ -180,4 +180,6 @@ interface UserInterface
     public function hasTranslation(): bool;
 
     public function isShowPirateHistoryEntrys(): bool;
+
+    public function getPirateWrath(): ?PirateWrathInterface;
 }
