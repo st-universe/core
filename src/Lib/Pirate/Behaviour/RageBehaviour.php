@@ -71,7 +71,11 @@ class RageBehaviour implements PirateBehaviourInterface
         }
 
         foreach ($filteredTargets as $ship) {
-            $this->logger->log(sprintf('      shipId with %F health', $this->fightLib->calculateHealthPercentage($ship)));
+            $this->logger->log(sprintf(
+                '      shipId %d with %F health',
+                $ship->getId(),
+                $this->fightLib->calculateHealthPercentage($ship)
+            ));
         }
 
         usort(
