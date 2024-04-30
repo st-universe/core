@@ -4,6 +4,8 @@ namespace Stu\Orm\Entity;
 
 interface PirateWrathInterface
 {
+    public const DEFAULT_WRATH = 1000;
+
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): PirateWrathInterface;

@@ -123,11 +123,11 @@ abstract class AbstractWeaponPhase
         }
 
         $targetPrestige = $target->getRump()->getPrestige();
-        if ($targetPrestige < 10) {
+        if ($targetPrestige < 1) {
             return;
         }
 
-        $this->pirateWrathManager->decreaseWrath($target->getUser(), (int)($targetPrestige / 10));
+        $this->pirateWrathManager->decreaseWrath($target->getUser(), $targetPrestige);
     }
 
     private function sendSystemMessage(string $description, int $userId): void

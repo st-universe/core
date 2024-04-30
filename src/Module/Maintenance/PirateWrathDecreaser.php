@@ -2,10 +2,13 @@
 
 namespace Stu\Module\Maintenance;
 
+use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 
 final class PirateWrathDecreaser implements MaintenanceHandlerInterface
 {
+    public const DECREASE_AMOUNT_PER_DAY = 10;
+
     public function __construct(
         private PirateWrathRepositoryInterface $pirateWrathRepository
     ) {
@@ -16,12 +19,12 @@ final class PirateWrathDecreaser implements MaintenanceHandlerInterface
         foreach ($this->pirateWrathRepository->findAll() as $pirateWrath) {
 
             $currentWrath = $pirateWrath->getWrath();
-            if ($currentWrath <= 100) {
+            if ($currentWrath <= PirateWrathInterface::DEFAULT_WRATH) {
                 continue;
             }
 
             $pirateWrath->setWrath(
-                $currentWrath - 1
+                $currentWrath - self::DECREASE_AMOUNT_PER_DAY
             );
             $this->pirateWrathRepository->save($pirateWrath);
         }
