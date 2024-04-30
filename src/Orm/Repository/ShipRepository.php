@@ -23,6 +23,7 @@ use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipCrew;
@@ -768,6 +769,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s u
                 WITH s.user_id = u.id
+                LEFT JOIN %s w
+                WITH u.id = w.user_id
                 WHERE s.cx BETWEEN :minX AND :maxX
                 AND s.cy BETWEEN :minY AND :maxY
                 AND s.layer_id = :layerId
@@ -776,9 +779,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND u.creation < :eightWeeksEarlier
-                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
+                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)
+                AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Ship::class,
-                User::class
+                User::class,
+                PirateWrath::class
             )
         )
             ->setParameters([

@@ -14,6 +14,7 @@ use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
+use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
@@ -275,18 +276,22 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 WITH s.id = m.systems_id
                 JOIN %s u
                 WITH c.user_id = u.id
+                LEFT JOIN %s w
+                WITH u.id = w.user_id
                 WHERE s.cx BETWEEN :minX AND :maxX
                 AND s.cy BETWEEN :minY AND :maxY
                 AND m.layer_id = :layer
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND u.creation < :fourMonthEarlier
-                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
+                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)
+                AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Colony::class,
                 StarSystemMap::class,
                 StarSystem::class,
                 Map::class,
-                User::class
+                User::class,
+                PirateWrath::class
             )
         )
             ->setParameters([
@@ -298,7 +303,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'stateActive' => UserEnum::USER_STATE_ACTIVE,
                 'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
-                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
+                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+                'currentTime' => time()
             ])
             ->getResult();
     }
