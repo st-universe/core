@@ -3,6 +3,7 @@
 namespace Stu\Lib\Pirate;
 
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
+use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -10,6 +11,7 @@ use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 class PirateReaction implements PirateReactionInterface
 {
@@ -54,6 +56,7 @@ class PirateReaction implements PirateReactionInterface
     public function __construct(
         private ShipWrapperFactoryInterface $shipWrapperFactory,
         private ReloadMinimalEpsInterface $reloadMinimalEps,
+        private PirateWrathManagerInterface $pirateWrathManager,
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private array $behaviours
@@ -61,12 +64,14 @@ class PirateReaction implements PirateReactionInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger): void
+    public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger, ShipInterface $triggerShip): void
     {
         // check if fleet already defeated
         if ($fleet->getShips()->isEmpty()) {
             return;
         }
+
+        $this->pirateWrathManager->increaseWrath($triggerShip->getUser(), $reactionTrigger);
 
         $behaviourType = $this->getRandomBehaviourType($reactionTrigger);
         $this->logger->log(sprintf(

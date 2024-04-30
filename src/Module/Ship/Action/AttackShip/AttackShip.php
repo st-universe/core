@@ -125,7 +125,11 @@ final class AttackShip implements ActionControllerInterface
             $targetFleet !== null
             && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
         ) {
-            $this->pirateReaction->react($targetFleet, PirateReactionTriggerEnum::ON_ATTACK);
+            $this->pirateReaction->react(
+                $targetFleet,
+                PirateReactionTriggerEnum::ON_ATTACK,
+                $ship
+            );
         }
 
         if ($ship->isDestroyed()) {

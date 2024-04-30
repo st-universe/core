@@ -87,7 +87,8 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $pirateReaction->react(
             $fleet->get(),
-            PirateReactionTriggerEnum::ON_RAGE
+            PirateReactionTriggerEnum::ON_RAGE,
+            $leadShip
         );
 
         return null;

@@ -43,7 +43,8 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $pirateReaction->react(
             $supportFleet,
-            PirateReactionTriggerEnum::ON_SUPPORT_CALL
+            PirateReactionTriggerEnum::ON_SUPPORT_CALL,
+            $leadShip
         );
 
         return null;

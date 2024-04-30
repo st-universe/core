@@ -128,7 +128,11 @@ final class ShowScan implements ViewControllerInterface
             $targetFleet !== null
             && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
         ) {
-            $this->pirateReaction->react($targetFleet, PirateReactionTriggerEnum::ON_SCAN);
+            $this->pirateReaction->react(
+                $targetFleet,
+                PirateReactionTriggerEnum::ON_SCAN,
+                $ship
+            );
         }
     }
 

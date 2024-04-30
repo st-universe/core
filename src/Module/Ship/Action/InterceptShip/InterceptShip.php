@@ -167,7 +167,11 @@ final class InterceptShip implements ActionControllerInterface
             $targetFleet !== null
             && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
         ) {
-            $this->pirateReaction->react($targetFleet, PirateReactionTriggerEnum::ON_INTERCEPTION);
+            $this->pirateReaction->react(
+                $targetFleet,
+                PirateReactionTriggerEnum::ON_INTERCEPTION,
+                $ship
+            );
         }
     }
 

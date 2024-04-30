@@ -5,6 +5,7 @@ namespace Stu\Lib\Pirate\Behaviour;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
@@ -21,6 +22,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         private ShipRepositoryInterface $shipRepository,
         private PirateNavigationInterface $pirateNavigation,
         private FightLibInterface $fightLib,
+        private ReloadMinimalEpsInterface $reloadMinimalEps,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
@@ -56,13 +58,16 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
             $weakestFriend->getSectorString()
         );
 
+        $this->reloadMinimalEps->reload($fleet, 50);
+
         if ($this->pirateNavigation->navigateToTarget($fleet, $weakestFriend->getCurrentMapField())) {
 
             $this->logger->log('    reached weakest friend, now raging');
 
             $pirateReaction->react(
                 $fleet->get(),
-                PirateReactionTriggerEnum::ON_RAGE
+                PirateReactionTriggerEnum::ON_RAGE,
+                $leadShip
             );
         }
 

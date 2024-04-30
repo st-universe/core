@@ -15,4 +15,22 @@ use Stu\Orm\Entity\PirateWrathInterface;
  */
 final class PirateWrathRepository extends EntityRepository implements PirateWrathRepositoryInterface
 {
+    public function save(PirateWrathInterface $wrath): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($wrath);
+    }
+
+    public function delete(PirateWrathInterface $wrath): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->remove($wrath);
+    }
+
+    public function prototype(): PirateWrathInterface
+    {
+        return new PirateWrath();
+    }
 }
