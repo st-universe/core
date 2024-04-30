@@ -811,7 +811,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.cx BETWEEN :minX AND :maxX
                 AND s.cy BETWEEN :minY AND :maxY
                 AND s.layer_id = :layerId
-                AND s.is_fleet_leader = true',
+                AND s.is_fleet_leader = true
+                AND s.id != :shipId',
                 Ship::class
             )
         )
@@ -820,7 +821,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'maxX' => $ship->getCx() + $range,
                 'minY' => $ship->getCY() - $range,
                 'maxY' => $ship->getCY() + $range,
-                'layerId' => $layer->getId()
+                'layerId' => $layer->getId(),
+                'shipId' => $ship->getId()
             ])
             ->getResult();
     }
