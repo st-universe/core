@@ -8,6 +8,8 @@ use Stu\Orm\Entity\PirateWrathInterface;
 
 /**
  * @extends ObjectRepository<PirateWrath>
+ * 
+ * @method PirateWrathInterface[] findAll()
  */
 interface PirateWrathRepositoryInterface extends ObjectRepository
 {
