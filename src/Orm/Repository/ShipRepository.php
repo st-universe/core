@@ -796,7 +796,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'stateActive' => UserEnum::USER_STATE_ACTIVE,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
-                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
+                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+                'currentTime' => time()
             ])
             ->getResult();
     }
