@@ -133,7 +133,7 @@ class EpsSystemData extends AbstractSystemData
             return 100;
         }
 
-        return (int)floor($this->getEps() / $this->getMaxEps() * 100);
+        return (int)floor($currentEps / $maxEps * 100);
     }
 
     public function getEpsStatusBar(): string

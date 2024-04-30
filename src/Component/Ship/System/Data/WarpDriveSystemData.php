@@ -94,6 +94,21 @@ class WarpDriveSystemData extends AbstractSystemData
         return $this;
     }
 
+    public function getWarpdrivePercentage(): int
+    {
+        $currentWarpdrive = $this->getWarpDrive();
+        $maxWarpdrive = $this->getMaxWarpDrive();
+
+        if ($currentWarpdrive === 0) {
+            return 0;
+        }
+        if ($maxWarpdrive === 0) {
+            return 100;
+        }
+
+        return (int)floor($currentWarpdrive / $maxWarpdrive * 100);
+    }
+
     public function getWarpDriveStatusBar(): string
     {
         return $this->getTalStatusBar(
