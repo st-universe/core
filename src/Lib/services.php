@@ -38,6 +38,8 @@ use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\PirateNavigation;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\Component\PirateWrathManager;
+use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEps;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Lib\Pirate\Component\SafeFlightRoute;
@@ -121,5 +123,6 @@ return [
     SafeFlightRouteInterface::class => autowire(SafeFlightRoute::class),
     MoveOnLayerInterface::class => autowire(MoveOnLayer::class),
     PirateNavigationInterface::class => autowire(PirateNavigation::class),
-    ReloadMinimalEpsInterface::class => autowire(ReloadMinimalEps::class)
+    ReloadMinimalEpsInterface::class => autowire(ReloadMinimalEps::class),
+    PirateWrathManagerInterface::class => autowire(PirateWrathManager::class)
 ];
