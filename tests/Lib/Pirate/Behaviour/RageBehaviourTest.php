@@ -147,6 +147,41 @@ class RageBehaviourTest extends StuTestCase
         $this->subject->action($this->fleetWrapper, $this->pirateReaction);
     }
 
+    public function testActionExpectNoActionIfProtectedAgainstPirates(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $this->fleetWrapper->shouldReceive('getLeadWrapper')
+            ->once()
+            ->andReturn($wrapper);
+        $wrapper->shouldReceive('get')
+            ->once()
+            ->andReturn($ship);
+
+        $this->shipRepository->shouldReceive('getPirateTargets')
+            ->with($ship)
+            ->once()
+            ->andReturn([$target]);
+
+        $this->interactionChecker->shouldReceive('checkPosition')
+            ->with($ship, $target)
+            ->once()
+            ->andReturn(true);
+
+        $this->fightLib->shouldReceive('canAttackTarget')
+            ->with($ship, $target, false)
+            ->once()
+            ->andReturn(true);
+
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
+    }
+
     public function testActionExpectAttackOfSingleTarget(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
@@ -157,6 +192,10 @@ class RageBehaviourTest extends StuTestCase
         $target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(42);
+        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(false);
+
         $this->fightLib->shouldReceive('calculateHealthPercentage')
             ->with($target)
             ->andReturn(75);
@@ -276,6 +315,16 @@ class RageBehaviourTest extends StuTestCase
             ->with($ship, $target3_1, false)
             ->once()
             ->andReturn(true);
+
+        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target2->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target3_1->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $this->shipWrapperFactory->shouldReceive('wrapShip')
             ->with($target2)

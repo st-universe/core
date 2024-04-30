@@ -61,6 +61,7 @@ class RageBehaviour implements PirateBehaviourInterface
             fn (ShipInterface $target) =>
             $this->interactionChecker->checkPosition($leadShip, $target)
                 && $this->fightLib->canAttackTarget($leadShip, $target, false)
+                && !$target->getUser()->isProtectedAgainstPirates()
         );
 
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
