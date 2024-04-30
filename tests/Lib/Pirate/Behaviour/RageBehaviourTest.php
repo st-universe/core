@@ -251,8 +251,6 @@ class RageBehaviourTest extends StuTestCase
         $target3_2 = $this->mock(ShipInterface::class);
         $targetFleet3 = $this->mock(FleetInterface::class);
 
-        $target->shouldReceive('getFleet')
-            ->andReturn(null);
 
         $this->fightLib->shouldReceive('calculateHealthPercentage')
             ->with($target)
@@ -267,6 +265,8 @@ class RageBehaviourTest extends StuTestCase
             ->with($target3_2)
             ->andReturn(75);
 
+        $target->shouldReceive('getFleet')
+            ->andReturn(null);
         $target2->shouldReceive('getFleet')
             ->andReturn(null);
         $target3_1->shouldReceive('getFleet')
@@ -274,9 +274,15 @@ class RageBehaviourTest extends StuTestCase
         $targetFleet3->shouldReceive('getShips')
             ->andReturn(new ArrayCollection([$target3_1, $target3_2]));
 
-        $target2->shouldReceive('getId')
+        $target->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(42);
+        $target2->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(43);
+        $target3_1->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(44);
 
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
