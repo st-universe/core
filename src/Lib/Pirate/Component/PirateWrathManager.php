@@ -63,6 +63,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         // increase wrath
         $currentWrath = $wrath->getWrath();
         $wrath->setWrath($currentWrath + $reactionTrigger->getWrath());
+        $this->pirateWrathRepository->save($wrath);
 
         $this->logger->logf(
             '    increased wrath of user %d from %d to %d',
