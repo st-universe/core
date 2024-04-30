@@ -64,17 +64,26 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
             return $this->createSupportFleet($leadShip);
         }
 
-        $friendFleet = $closestFriend->getFleet();
-        if ($friendFleet === null) {
+        $supportFleet = $closestFriend->getFleet();
+        if ($supportFleet === null) {
             throw new RuntimeException('pirate ships should always be in fleet');
         }
 
-        $fleetWrapper = $this->shipWrapperFactory->wrapFleet($friendFleet);
+        $fleetWrapper = $this->shipWrapperFactory->wrapFleet($supportFleet);
 
         $this->reloadMinimalEps->reload($fleetWrapper, 75);
-        $this->pirateNavigation->navigateToTarget($fleetWrapper, $leadShip->getCurrentMapField());
+        if (!$this->pirateNavigation->navigateToTarget($fleetWrapper, $leadShip->getCurrentMapField())) {
+            return $this->createSupportFleet($leadShip);
+        }
 
-        return $friendFleet;
+        $this->logger->logf(
+            '    already existing support fleet (%d) "%s" reached here %s',
+            $supportFleet->getId(),
+            $supportFleet->getName(),
+            $supportFleet->getLeadShip()->getSectorString()
+        );
+
+        return $supportFleet;
     }
 
     private function createSupportFleet(ShipInterface $leadShip): FleetInterface
