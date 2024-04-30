@@ -812,7 +812,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.cy BETWEEN :minY AND :maxY
                 AND s.layer_id = :layerId
                 AND s.is_fleet_leader = true
-                AND s.id != :shipId',
+                AND s.id != :shipId
+                AND s.user_id = :kazonUserId',
                 Ship::class
             )
         )
@@ -822,7 +823,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'minY' => $ship->getCY() - $range,
                 'maxY' => $ship->getCY() + $range,
                 'layerId' => $layer->getId(),
-                'shipId' => $ship->getId()
+                'shipId' => $ship->getId(),
+                'kazonUserId' => UserEnum::USER_NPC_KAZON
             ])
             ->getResult();
     }
