@@ -82,7 +82,7 @@ abstract class AbstractWeaponPhase
         }
 
         $this->checkForPrestige($attacker->getUser(), $target);
-        $this->descreasePirateWrath($attacker->getUser(), $target->getUser());
+        $this->descreasePirateWrath($attacker->getUser(), $target);
     }
 
     public function checkForPrestige(UserInterface $destroyer, ShipInterface $target): void
@@ -116,13 +116,18 @@ abstract class AbstractWeaponPhase
         }
     }
 
-    private function descreasePirateWrath(UserInterface $attacker, UserInterface $targetUser): void
+    private function descreasePirateWrath(UserInterface $attacker, ShipInterface $target): void
     {
         if ($attacker->getId() !== UserEnum::USER_NPC_KAZON) {
             return;
         }
 
-        $this->pirateWrathManager->decreaseWrath($targetUser, 2);
+        $targetPrestige = $target->getRump()->getPrestige();
+        if ($targetPrestige < 10) {
+            return;
+        }
+
+        $this->pirateWrathManager->decreaseWrath($target->getUser(), (int)($targetPrestige / 10));
     }
 
     private function sendSystemMessage(string $description, int $userId): void
