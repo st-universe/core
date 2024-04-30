@@ -37,6 +37,7 @@ class PirateWrath implements PirateWrathInterface
     public function setUser(UserInterface $user): PirateWrathInterface
     {
         $this->user = $user;
+        $this->user_id = $user->getId();
 
         return $this;
     }
