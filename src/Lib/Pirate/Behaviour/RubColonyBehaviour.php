@@ -66,6 +66,11 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $closestColony = current($targets);
 
         if ($this->pirateNavigation->navigateToTarget($fleet, $closestColony->getStarsystemMap())) {
+            $this->logger->logf(
+                '    reached colonyId %d at %s',
+                $closestColony->getId(),
+                $closestColony->getSectorString()
+            );
             $this->rubColony($fleet, $closestColony);
         }
 
