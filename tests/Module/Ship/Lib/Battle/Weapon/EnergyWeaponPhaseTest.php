@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -55,6 +56,9 @@ class EnergyWeaponPhaseTest extends StuTestCase
     /** @var MockInterface|PrivateMessageSenderInterface */
     private MockInterface $privateMessageSender;
 
+    /** @var MockInterface|PirateWrathManagerInterface */
+    private MockInterface $pirateWrathManager;
+
     /** @var MockInterface|StuRandom */
     private MockInterface $stuRandom;
 
@@ -72,6 +76,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
+        $this->pirateWrathManager = $this->mock(PirateWrathManagerInterface::class);
 
         $this->subject = new EnergyWeaponPhase(
             $this->shipSystemManager,
@@ -84,6 +89,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
             $this->createPrestigeLog,
             $this->privateMessageSender,
             $this->stuRandom,
+            $this->pirateWrathManager,
             $this->initLoggerUtil()
         );
     }

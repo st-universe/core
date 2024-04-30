@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -14,6 +15,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\Battle\Provider\AttackerInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -24,40 +26,20 @@ use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 abstract class AbstractWeaponPhase
 {
-    protected ShipSystemManagerInterface $shipSystemManager;
-
-    protected WeaponRepositoryInterface $weaponRepository;
-
-    protected EntryCreatorInterface $entryCreator;
-
-    protected ShipRemoverInterface $shipRemover;
-
-    protected ApplyDamageInterface $applyDamage;
-
-    protected ModuleValueCalculatorInterface $moduleValueCalculator;
-
-    protected BuildingManagerInterface $buildingManager;
-
-    protected StuRandom $stuRandom;
-
     protected LoggerUtilInterface $loggerUtil;
 
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-
     public function __construct(
-        ShipSystemManagerInterface $shipSystemManager,
-        WeaponRepositoryInterface $weaponRepository,
-        EntryCreatorInterface $entryCreator,
-        ShipRemoverInterface $shipRemover,
-        ApplyDamageInterface $applyDamage,
-        ModuleValueCalculatorInterface $moduleValueCalculator,
-        BuildingManagerInterface $buildingManager,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        PrivateMessageSenderInterface $privateMessageSender,
-        StuRandom $stuRandom,
+        protected ShipSystemManagerInterface $shipSystemManager,
+        protected WeaponRepositoryInterface $weaponRepository,
+        protected EntryCreatorInterface $entryCreator,
+        protected ShipRemoverInterface $shipRemover,
+        protected ApplyDamageInterface $applyDamage,
+        protected ModuleValueCalculatorInterface $moduleValueCalculator,
+        protected BuildingManagerInterface $buildingManager,
+        protected CreatePrestigeLogInterface $createPrestigeLog,
+        protected PrivateMessageSenderInterface $privateMessageSender,
+        protected StuRandom $stuRandom,
+        private PirateWrathManagerInterface $pirateWrathManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipSystemManager = $shipSystemManager;
@@ -71,6 +53,36 @@ abstract class AbstractWeaponPhase
         $this->privateMessageSender = $privateMessageSender;
         $this->stuRandom = $stuRandom;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+    }
+
+    public function handleDestruction(
+        AttackerInterface $attacker,
+        ShipInterface $target,
+        bool $isAlertRed
+    ): void {
+        if ($isAlertRed) {
+            $this->entryCreator->addEntry(
+                '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
+                $attacker->getUser()->getId(),
+                $target
+            );
+        } else {
+            $entryMsg = sprintf(
+                'Die %s (%s) wurde in Sektor %s von der %s zerstört',
+                $target->getName(),
+                $target->getRump()->getName(),
+                $target->getSectorString(),
+                $attacker->getName()
+            );
+            $this->entryCreator->addEntry(
+                $entryMsg,
+                $attacker->getUser()->getId(),
+                $target
+            );
+        }
+
+        $this->checkForPrestige($attacker->getUser(), $target);
+        $this->descreasePirateWrath($attacker->getUser(), $target->getUser());
     }
 
     public function checkForPrestige(UserInterface $destroyer, ShipInterface $target): void
@@ -102,6 +114,15 @@ abstract class AbstractWeaponPhase
         if ($amount < 0) {
             $this->sendSystemMessage($description, $destroyer->getId());
         }
+    }
+
+    private function descreasePirateWrath(UserInterface $attacker, UserInterface $targetUser): void
+    {
+        if ($attacker->getId() !== UserEnum::USER_NPC_KAZON) {
+            return;
+        }
+
+        $this->pirateWrathManager->decreaseWrath($targetUser, 2);
     }
 
     private function sendSystemMessage(string $description, int $userId): void

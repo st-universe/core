@@ -11,7 +11,8 @@ use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 
 class PirateWrathManager implements PirateWrathManagerInterface
 {
-    public const MAX_WRATH = 200;
+    public const MINIMUM_WRATH = 50;
+    public const MAXIMUM_WRATH = 200;
 
     private PirateLoggerInterface $logger;
 
@@ -38,10 +39,10 @@ class PirateWrathManager implements PirateWrathManagerInterface
             $user->setPirateWrath($wrath);
         }
 
-        if ($wrath->getWrath() >= self::MAX_WRATH) {
+        if ($wrath->getWrath() >= self::MAXIMUM_WRATH) {
             $this->logger->logf(
-                'MAX_WRATH = %d of user %d already reached',
-                self::MAX_WRATH,
+                'MAXIMUM_WRATH = %d of user %d already reached',
+                self::MAXIMUM_WRATH,
                 $user->getId()
             );
             return;
@@ -67,6 +68,44 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         $this->logger->logf(
             'INCREASED wrath of user %d from %d to %d',
+            $user->getId(),
+            $currentWrath,
+            $wrath->getWrath()
+        );
+    }
+
+    public function decreaseWrath(UserInterface $user, int $amount): void
+    {
+        if (
+            $user->isNpc()
+            || $user->getId() === UserEnum::USER_NPC_KAZON
+        ) {
+            return;
+        }
+
+        $wrath = $user->getPirateWrath();
+        if ($wrath === null) {
+            $wrath = $this->pirateWrathRepository->prototype();
+            $wrath->setUser($user);
+            $user->setPirateWrath($wrath);
+        }
+
+        if ($wrath->getWrath() <= self::MINIMUM_WRATH) {
+            $this->logger->logf(
+                'MINIMUM_WRATH = %d of user %d already reached',
+                self::MINIMUM_WRATH,
+                $user->getId()
+            );
+            return;
+        }
+
+        // decrease wrath
+        $currentWrath = $wrath->getWrath();
+        $wrath->setWrath($currentWrath - $amount);
+        $this->pirateWrathRepository->save($wrath);
+
+        $this->logger->logf(
+            'DECREASED wrath of user %d from %d to %d',
             $user->getId(),
             $currentWrath,
             $wrath->getWrath()

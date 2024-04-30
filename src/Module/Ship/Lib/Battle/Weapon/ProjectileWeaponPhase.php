@@ -74,27 +74,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             if ($target->isDestroyed()) {
                 unset($targetPool[$target->getId()]);
 
-                if ($isAlertRed) {
-                    $this->entryCreator->addEntry(
-                        '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
-                        $attacker->getUser()->getId(),
-                        $target
-                    );
-                } else {
-                    $entryMsg = sprintf(
-                        'Die %s (%s) wurde in Sektor %s von der %s zerstört',
-                        $target->getName(),
-                        $target->getRump()->getName(),
-                        $target->getSectorString(),
-                        $attacker->getName()
-                    );
-                    $this->entryCreator->addEntry(
-                        $entryMsg,
-                        $attacker->getUser()->getId(),
-                        $target
-                    );
-                }
-                $this->checkForPrestige($attacker->getUser(), $target);
+                $this->handleDestruction($attacker, $target, $isAlertRed);
                 $message->add($this->shipRemover->destroy($targetWrapper));
             }
         }
@@ -114,7 +94,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         if ($building === null) {
             return $informations;
         }
-
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
             $torpedo = $attacker->getTorpedo();

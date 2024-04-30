@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Entity\UserInterface;
 
-interface ProjectileAttackerInterface
+interface ProjectileAttackerInterface extends AttackerInterface
 {
     public function getTorpedoVolleys(): int;
 
@@ -22,10 +21,6 @@ interface ProjectileAttackerInterface
     public function getTorpedo(): ?TorpedoTypeInterface;
 
     public function lowerTorpedoCount(int $amount): void;
-
-    public function getUser(): UserInterface;
-
-    public function getName(): string;
 
     public function getHitChance(): int;
 
