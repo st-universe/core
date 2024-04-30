@@ -32,6 +32,7 @@ return [
         get(EmptyPlotDeletion::class),
         get(OldTradeLicenseDeletion::class),
         get(TopFlightsReward::class),
-        get(EndLotteryPeriod::class)
+        get(EndLotteryPeriod::class),
+        get(PirateWrathDecreaser::class)
     ]
 ];
