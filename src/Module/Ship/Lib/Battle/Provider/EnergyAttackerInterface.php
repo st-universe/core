@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\WeaponInterface;
 
-interface EnergyAttackerInterface
+interface EnergyAttackerInterface extends AttackerInterface
 {
     public function getPhaserVolleys(): int;
 
@@ -22,10 +21,6 @@ interface EnergyAttackerInterface
     public function getWeaponDamage(bool $isCritical): int;
 
     public function reduceEps(int $amount): void;
-
-    public function getName(): string;
-
-    public function getUser(): UserInterface;
 
     public function getHitChance(): int;
 
