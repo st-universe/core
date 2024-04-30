@@ -34,13 +34,34 @@ class PirateWrath implements PirateWrathInterface
         return $this->user;
     }
 
+    public function setUser(UserInterface $user): PirateWrathInterface
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     public function getWrath(): int
     {
         return $this->wrath;
     }
 
+    public function setWrath(int $wrath): PirateWrathInterface
+    {
+        $this->wrath = $wrath;
+
+        return $this;
+    }
+
     public function getProtectionTimeout(): ?int
     {
         return $this->protection_timeout;
+    }
+
+    public function setProtectionTimeout(?int $timestamp): PirateWrathInterface
+    {
+        $this->protection_timeout = $timestamp;
+
+        return $this;
     }
 }
