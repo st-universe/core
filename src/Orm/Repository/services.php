@@ -87,6 +87,7 @@ use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\Names;
+use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\RepairTask;
@@ -548,6 +549,11 @@ return [
         ContainerInterface $c
     ): PirateSetupRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(PirateSetup::class);
+    },
+    PirateWrathRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PirateWrathRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PirateWrath::class);
     },
     PrestigeLogRepositoryInterface::class => function (
         ContainerInterface $c

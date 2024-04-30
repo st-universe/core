@@ -154,6 +154,9 @@ class User implements UserInterface
     #[OneToMany(targetEntity: 'UserCharacters', mappedBy: 'user', cascade: ['persist'])]
     private Collection $characters;
 
+    #[OneToOne(targetEntity: 'PirateWrath', mappedBy: 'user')]
+    private ?PirateWrath $pirateWrath = null;
+
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
@@ -693,5 +696,10 @@ class User implements UserInterface
     public function getBuoys(): Collection
     {
         return $this->buoys;
+    }
+
+    public function getPirateWrath(): ?PirateWrathInterface
+    {
+        return $this->pirateWrath;
     }
 }
