@@ -11,8 +11,8 @@ use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 
 class PirateWrathManager implements PirateWrathManagerInterface
 {
-    public const MINIMUM_WRATH = 50;
-    public const MAXIMUM_WRATH = 200;
+    public const MINIMUM_WRATH = 500;
+    public const MAXIMUM_WRATH = 2000;
 
     private PirateLoggerInterface $logger;
 

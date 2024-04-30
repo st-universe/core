@@ -20,7 +20,7 @@ class PirateWrath implements PirateWrathInterface
     private int $user_id;
 
     #[Column(type: 'integer')]
-    private int $wrath = 100;
+    private int $wrath = PirateWrathInterface::DEFAULT_WRATH;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $protection_timeout = null;
