@@ -31,14 +31,6 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         }
     }
 
-    public function delete(PrivateMessageInterface $post): void
-    {
-        $em = $this->getEntityManager();
-
-        $em->remove($post);
-        $em->flush();
-    }
-
     public function getOrderedCorrepondence(
         int $senderUserId,
         int $recipientUserId,

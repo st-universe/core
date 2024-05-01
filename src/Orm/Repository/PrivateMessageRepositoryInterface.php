@@ -20,8 +20,6 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
 
     public function save(PrivateMessageInterface $post, bool $doFlush = false): void;
 
-    public function delete(PrivateMessageInterface $post): void;
-
     /**
      * @param array<int> $specialIds
      *
