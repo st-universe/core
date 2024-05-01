@@ -69,6 +69,8 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
                 PirateReactionTriggerEnum::ON_RAGE,
                 $leadShip
             );
+        } else {
+            return PirateBehaviourEnum::CALL_FOR_SUPPORT;
         }
 
         return null;

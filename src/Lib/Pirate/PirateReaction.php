@@ -18,18 +18,18 @@ class PirateReaction implements PirateReactionInterface
     private const REACTION_PROBABILITIES = [
         PirateReactionTriggerEnum::ON_ATTACK->value => [
             PirateBehaviourEnum::RAGE->value => 50,
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 30,
             PirateBehaviourEnum::SEARCH_FRIEND->value => 30,
             PirateBehaviourEnum::FLY->value => 20,
             PirateBehaviourEnum::HIDE->value => 20,
             PirateBehaviourEnum::DO_NOTHING->value => 10,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
         ],
         PirateReactionTriggerEnum::ON_SCAN->value => [
             PirateBehaviourEnum::DO_NOTHING->value => 60,
             PirateBehaviourEnum::RAGE->value => 60,
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20,
             PirateBehaviourEnum::FLY->value => 20,
             PirateBehaviourEnum::HIDE->value => 20,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10,
             PirateBehaviourEnum::SEARCH_FRIEND->value => 5,
         ],
         PirateReactionTriggerEnum::ON_INTERCEPTION->value => [
@@ -46,7 +46,7 @@ class PirateReaction implements PirateReactionInterface
         PirateReactionTriggerEnum::ON_RAGE->value => [
             PirateBehaviourEnum::RAGE->value => 50,
             PirateBehaviourEnum::DO_NOTHING->value => 30,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20
         ],
     ];
 
@@ -100,6 +100,8 @@ class PirateReaction implements PirateReactionInterface
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
             $this->action(PirateBehaviourEnum::GO_ALERT_RED, $fleetWrapper);
         }
+
+        $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $fleetWrapper);
     }
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum
