@@ -18,4 +18,6 @@ interface PirateWrathRepositoryInterface extends ObjectRepository
     public function delete(PirateWrathInterface $wrath): void;
 
     public function prototype(): PirateWrathInterface;
+
+    public function truncateAllEntries(): void;
 }

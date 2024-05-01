@@ -6,6 +6,8 @@ namespace Stu\Component\Admin\Reset\Communication;
 
 interface PmResetInterface
 {
+    public function unsetAllInboxReferences(): void;
+
     public function resetAllNonNpcPmFolders(): void;
 
     public function resetPms(): void;

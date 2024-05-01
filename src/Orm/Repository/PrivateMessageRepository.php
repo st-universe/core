@@ -120,6 +120,17 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ])->execute();
     }
 
+    public function unsetAllInboxReferences(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'UPDATE %s pm
+                SET pm.inbox_pm_id = null',
+                PrivateMessage::class
+            )
+        )->execute();
+    }
+
     public function truncateAllPrivateMessages(): void
     {
         $this->getEntityManager()->createQuery(
