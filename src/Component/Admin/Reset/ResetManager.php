@@ -138,6 +138,7 @@ final class ResetManager implements ResetManagerInterface
             $this->crewReset->deleteAllCrew();
             $this->fleetReset->deleteAllFleets();
             $this->knReset->resetKn();
+            $this->pmReset->unsetAllInboxReferences();
             $this->pmReset->resetAllNonNpcPmFolders();
             $this->pmReset->resetPms();
             $this->pmReset->deleteAllContacts();
@@ -159,6 +160,7 @@ final class ResetManager implements ResetManagerInterface
             $this->shipReset->undockAllDockedShips();
             $this->shipReset->deleteAllShips();
 
+            $this->userReset->deletePirateWrathEntries();
             $this->userReset->archiveBlockedUsers();
             $this->userReset->deleteAllDatabaseUserEntries();
             $this->userReset->deleteAllNotes();

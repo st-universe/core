@@ -175,6 +175,9 @@ class ResetManagerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
+        $this->pmReset->shouldReceive('unsetAllInboxReferences')
+            ->withNoArgs()
+            ->once();
         $this->pmReset->shouldReceive('resetAllNonNpcPmFolders')
             ->withNoArgs()
             ->once();
@@ -249,6 +252,9 @@ class ResetManagerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
+        $this->userReset->shouldReceive('deletePirateWrathEntries')
+            ->withNoArgs()
+            ->once();
         $this->userReset->shouldReceive('archiveBlockedUsers')
             ->withNoArgs()
             ->once();

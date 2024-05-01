@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
+use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
@@ -17,37 +18,18 @@ use Stu\Orm\Repository\UserSettingRepositoryInterface;
 
 final class UserReset implements UserResetInterface
 {
-    private BlockedUserRepositoryInterface $blockedUserRepository;
-
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private NoteRepositoryInterface $noteRepository;
-
-    private PrestigeLogRepositoryInterface $prestigeLogRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private UserSettingRepositoryInterface $userSettingRepository;
-
-    private UserInvitationRepositoryInterface $userInvitationRepository;
-
-    private UserIpTableRepositoryInterface $userIpTableRepository;
-
-    private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
-
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        BlockedUserRepositoryInterface $blockedUserRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        NoteRepositoryInterface $noteRepository,
-        PrestigeLogRepositoryInterface $prestigeLogRepository,
-        UserRepositoryInterface $userRepository,
-        UserSettingRepositoryInterface $userSettingRepository,
-        UserInvitationRepositoryInterface $userInvitationRepository,
-        UserIpTableRepositoryInterface $userIpTableRepository,
-        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
-        EntityManagerInterface $entityManager
+        private BlockedUserRepositoryInterface $blockedUserRepository,
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private NoteRepositoryInterface $noteRepository,
+        private PrestigeLogRepositoryInterface $prestigeLogRepository,
+        private UserRepositoryInterface $userRepository,
+        private UserSettingRepositoryInterface $userSettingRepository,
+        private UserInvitationRepositoryInterface $userInvitationRepository,
+        private UserIpTableRepositoryInterface $userIpTableRepository,
+        private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
+        private  PirateWrathRepositoryInterface $pirateWrathRepository,
+        private EntityManagerInterface $entityManager
     ) {
         $this->blockedUserRepository = $blockedUserRepository;
         $this->databaseUserRepository = $databaseUserRepository;
@@ -146,6 +128,15 @@ final class UserReset implements UserResetInterface
         echo "  - delete all user ip table entries\n";
 
         $this->userProfileVisitorRepository->truncateAllEntries();
+
+        $this->entityManager->flush();
+    }
+
+    public function deletePirateWrathEntries(): void
+    {
+        echo "  - delete all pirate wrath entries\n";
+
+        $this->pirateWrathRepository->truncateAllEntries();
 
         $this->entityManager->flush();
     }

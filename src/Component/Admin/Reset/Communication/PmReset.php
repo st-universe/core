@@ -31,6 +31,15 @@ final class PmReset implements PmResetInterface
         $this->entityManager = $entityManager;
     }
 
+    public function unsetAllInboxReferences(): void
+    {
+        echo "  - unset all inbox references\n";
+
+        $this->privateMessageRepository->unsetAllInboxReferences();
+
+        $this->entityManager->flush();
+    }
+
     public function resetAllNonNpcPmFolders(): void
     {
         echo "  - deleting all non npc pm folders\n";

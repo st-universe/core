@@ -21,4 +21,6 @@ interface UserResetInterface
     public function deleteAllUserIpTableEntries(): void;
 
     public function deleteAllUserProfileVisitors(): void;
+
+    public function deletePirateWrathEntries(): void;
 }
