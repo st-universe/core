@@ -13,20 +13,11 @@ final class DeletePmCategory implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_PMCATEGORY';
 
-    private DeletePmCategoryRequestInterface $deletePmCategoryRequest;
-
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
     public function __construct(
-        DeletePmCategoryRequestInterface $deletePmCategoryRequest,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository
+        private DeletePmCategoryRequestInterface $deletePmCategoryRequest,
+        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private PrivateMessageRepositoryInterface $privateMessageRepository
     ) {
-        $this->deletePmCategoryRequest = $deletePmCategoryRequest;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
-        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
