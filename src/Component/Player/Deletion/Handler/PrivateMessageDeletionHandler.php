@@ -41,7 +41,7 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
     {
         foreach ($this->privateMessageRepository->getByReceiver($user) as $pm) {
 
-            $pm->setSender($nobody);
+            $pm->setRecipient($nobody);
             $this->privateMessageRepository->save($pm);
 
             $outboxPm = $pm->getOutboxPm();
