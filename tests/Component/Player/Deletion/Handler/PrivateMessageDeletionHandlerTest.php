@@ -87,6 +87,13 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+        $pm->shouldReceive('setRecipient')
+            ->with($fallbackUser)
+            ->once();
+
+        $this->privateMessageRepository->shouldReceive('save')
+            ->with($pm)
+            ->once();
 
         $this->subject->delete($user);
     }
@@ -116,11 +123,17 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($outboxPm);
+        $pm->shouldReceive('setRecipient')
+            ->with($fallbackUser)
+            ->once();
 
         $outboxPm->shouldReceive('setInboxPm')
             ->with(null)
             ->once();
 
+        $this->privateMessageRepository->shouldReceive('save')
+            ->with($pm)
+            ->once();
         $this->privateMessageRepository->shouldReceive('save')
             ->with($outboxPm)
             ->once();
