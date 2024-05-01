@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -13,16 +14,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    private UserRepositoryInterface $userRepository;
-
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository
+        private UserRepositoryInterface $userRepository,
+        private PrivateMessageRepositoryInterface $privateMessageRepository,
+        private EntityManagerInterface $entityManager
     ) {
-        $this->userRepository = $userRepository;
-        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function delete(UserInterface $user): void
@@ -44,13 +40,21 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
 
     private function unsetInboxReferenceonInbox(UserInterface $user): void
     {
+        $updated = false;
+
         foreach ($this->privateMessageRepository->getByReceiver($user) as $pm) {
 
             $outboxPm = $pm->getOutboxPm();
             if ($outboxPm !== null) {
                 $outboxPm->setInboxPm(null);
                 $this->privateMessageRepository->save($outboxPm);
+
+                $updated = true;
             }
+        }
+
+        if ($updated) {
+            $this->entityManager->flush();
         }
     }
 }
