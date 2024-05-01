@@ -67,9 +67,12 @@ class PrivateMessage implements PrivateMessageInterface
     #[JoinColumn(name: 'recip_user', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $receivingUser;
 
-    #[OneToOne(targetEntity: 'PrivateMessage')]
+    #[OneToOne(targetEntity: 'PrivateMessage', inversedBy: 'outboxPm')]
     #[JoinColumn(name: 'inbox_pm_id', referencedColumnName: 'id')]
     private ?PrivateMessageInterface $inboxPm;
+
+    #[OneToOne(targetEntity: 'PrivateMessage', mappedBy: 'inboxPm')]
+    private ?PrivateMessageInterface $outboxPm;
 
     public function getId(): int
     {
@@ -146,10 +149,15 @@ class PrivateMessage implements PrivateMessageInterface
         return $this->inboxPm;
     }
 
-    public function setInboxPm(PrivateMessageInterface $pm): PrivateMessageInterface
+    public function setInboxPm(?PrivateMessageInterface $pm): PrivateMessageInterface
     {
         $this->inboxPm = $pm;
         return $this;
+    }
+
+    public function getOutboxPm(): ?PrivateMessageInterface
+    {
+        return $this->outboxPm;
     }
 
     public function getHref(): ?string

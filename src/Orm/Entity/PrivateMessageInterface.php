@@ -32,7 +32,9 @@ interface PrivateMessageInterface
 
     public function getInboxPm(): ?PrivateMessageInterface;
 
-    public function setInboxPm(PrivateMessageInterface $pm): PrivateMessageInterface;
+    public function setInboxPm(?PrivateMessageInterface $pm): PrivateMessageInterface;
+
+    public function getOutboxPm(): ?PrivateMessageInterface;
 
     public function getHref(): ?string;
 

@@ -9,6 +9,7 @@ use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<PrivateMessage>
@@ -61,10 +62,17 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             ->getResult();
     }
 
-    public function getBySender(int $userId): array
+    public function getBySender(UserInterface $user): array
     {
         return $this->findBy(
-            ['send_user' => $userId]
+            ['send_user' => $user->getId()]
+        );
+    }
+
+    public function getByReceiver(UserInterface $user): array
+    {
+        return $this->findBy(
+            ['recip_user' => $user->getId()]
         );
     }
 

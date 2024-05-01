@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<PrivateMessage>
@@ -35,7 +36,12 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
     /**
      * @return array<PrivateMessageInterface>
      */
-    public function getBySender(int $userId): array;
+    public function getBySender(UserInterface $user): array;
+
+    /**
+     * @return array<PrivateMessageInterface>
+     */
+    public function getByReceiver(UserInterface $user): array;
 
     /**
      * @return array<PrivateMessageInterface>

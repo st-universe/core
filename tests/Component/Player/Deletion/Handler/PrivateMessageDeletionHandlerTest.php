@@ -39,12 +39,35 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
         $fallbackUser = $this->mock(UserInterface::class);
         $pm = $this->mock(PrivateMessageInterface::class);
 
-        $userId = 666;
-
-        $user->shouldReceive('getId')
+        $this->userRepository->shouldReceive('getFallbackUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($userId);
+            ->andReturn($fallbackUser);
+
+        $this->privateMessageRepository->shouldReceive('getBySender')
+            ->with($user)
+            ->once()
+            ->andReturn([$pm]);
+        $this->privateMessageRepository->shouldReceive('getByReceiver')
+            ->with($user)
+            ->once()
+            ->andReturn([]);
+        $this->privateMessageRepository->shouldReceive('save')
+            ->with($pm)
+            ->once();
+
+        $pm->shouldReceive('setSender')
+            ->with($fallbackUser)
+            ->once();
+
+        $this->subject->delete($user);
+    }
+
+    public function testDeleteDoesNothingIfOutboxNotExists(): void
+    {
+        $user = $this->mock(UserInterface::class);
+        $fallbackUser = $this->mock(UserInterface::class);
+        $pm = $this->mock(PrivateMessageInterface::class);
 
         $this->userRepository->shouldReceive('getFallbackUser')
             ->withNoArgs()
@@ -52,15 +75,54 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
             ->andReturn($fallbackUser);
 
         $this->privateMessageRepository->shouldReceive('getBySender')
-            ->with($userId)
+            ->with($user)
+            ->once()
+            ->andReturn([]);
+        $this->privateMessageRepository->shouldReceive('getByReceiver')
+            ->with($user)
             ->once()
             ->andReturn([$pm]);
-        $this->privateMessageRepository->shouldReceive('save')
-            ->with($pm)
+
+        $pm->shouldReceive('getOutboxPm')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $this->subject->delete($user);
+    }
+
+    public function testDeleteUnsetsInboxReferenceIfOutboxExists(): void
+    {
+        $user = $this->mock(UserInterface::class);
+        $fallbackUser = $this->mock(UserInterface::class);
+        $pm = $this->mock(PrivateMessageInterface::class);
+        $outboxPm = $this->mock(PrivateMessageInterface::class);
+
+        $this->userRepository->shouldReceive('getFallbackUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($fallbackUser);
+
+        $this->privateMessageRepository->shouldReceive('getBySender')
+            ->with($user)
+            ->once()
+            ->andReturn([]);
+        $this->privateMessageRepository->shouldReceive('getByReceiver')
+            ->with($user)
+            ->once()
+            ->andReturn([$pm]);
+
+        $pm->shouldReceive('getOutboxPm')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($outboxPm);
+
+        $outboxPm->shouldReceive('setInboxPm')
+            ->with(null)
             ->once();
 
-        $pm->shouldReceive('setSender')
-            ->with($fallbackUser)
+        $this->privateMessageRepository->shouldReceive('save')
+            ->with($outboxPm)
             ->once();
 
         $this->subject->delete($user);
