@@ -17,20 +17,19 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
     public function __construct(
         private UserRepositoryInterface $userRepository,
         private PrivateMessageRepositoryInterface $privateMessageRepository,
-        private EntityManagerInterface $entityManager
     ) {
     }
 
     public function delete(UserInterface $user): void
     {
-        $this->setFallbackUserByDeletedSender($user);
-        $this->unsetInboxReference($user);
-    }
-
-    private function setFallbackUserByDeletedSender(UserInterface $user): void
-    {
         $nobody = $this->userRepository->getFallbackUser();
 
+        $this->setFallbackUserByDeletedSender($user, $nobody);
+        $this->unsetInboxReference($user, $nobody);
+    }
+
+    private function setFallbackUserByDeletedSender(UserInterface $user, UserInterface $nobody): void
+    {
         foreach ($this->privateMessageRepository->getBySender($user) as $pm) {
             $pm->setSender($nobody);
 
@@ -38,9 +37,12 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
         }
     }
 
-    private function unsetInboxReference(UserInterface $user): void
+    private function unsetInboxReference(UserInterface $user, UserInterface $nobody): void
     {
         foreach ($this->privateMessageRepository->getByReceiver($user) as $pm) {
+
+            $pm->setSender($nobody);
+            $this->privateMessageRepository->save($pm);
 
             $outboxPm = $pm->getOutboxPm();
             if ($outboxPm !== null) {
@@ -48,7 +50,5 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
                 $this->privateMessageRepository->save($outboxPm);
             }
         }
-
-        $this->entityManager->flush();
     }
 }
