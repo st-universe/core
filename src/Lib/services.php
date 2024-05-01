@@ -27,6 +27,7 @@ use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Lib\Pirate\Behaviour\AttackShipBehaviour;
 use Stu\Lib\Pirate\Behaviour\CallForSupportBehaviour;
 use Stu\Lib\Pirate\Behaviour\ChangeAlertStateToRed;
+use Stu\Lib\Pirate\Behaviour\DeactivateShieldsBehaviour;
 use Stu\Lib\Pirate\Behaviour\FlyBehaviour;
 use Stu\Lib\Pirate\Behaviour\HideBehaviour;
 use Stu\Lib\Pirate\Behaviour\RageBehaviour;
@@ -112,7 +113,8 @@ return [
         PirateBehaviourEnum::RAGE->value => autowire(RageBehaviour::class),
         PirateBehaviourEnum::GO_ALERT_RED->value => autowire(ChangeAlertStateToRed::class),
         PirateBehaviourEnum::CALL_FOR_SUPPORT->value => autowire(CallForSupportBehaviour::class),
-        PirateBehaviourEnum::SEARCH_FRIEND->value => autowire(SearchFriendBehaviour::class)
+        PirateBehaviourEnum::SEARCH_FRIEND->value => autowire(SearchFriendBehaviour::class),
+        PirateBehaviourEnum::DEACTIVATE_SHIELDS->value => autowire(DeactivateShieldsBehaviour::class)
     ],
     PirateCreationInterface::class => autowire(PirateCreation::class),
     PirateReactionInterface::class => autowire(PirateReaction::class)->constructorParameter(

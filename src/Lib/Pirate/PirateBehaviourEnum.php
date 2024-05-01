@@ -4,13 +4,19 @@ namespace Stu\Lib\Pirate;
 
 enum PirateBehaviourEnum: int
 {
+        // passive
     case DO_NOTHING = 0;
     case FLY = 1;
-    case RUB_COLONY = 2;
-    case ATTACK_SHIP = 3;
-    case HIDE = 4;
-    case RAGE = 5;
-    case GO_ALERT_RED = 6;
+    case HIDE = 2;
+    case SEARCH_FRIEND = 3;
+
+        // aggressive
+    case RUB_COLONY = 4;
+    case ATTACK_SHIP = 5;
+    case RAGE = 6;
     case CALL_FOR_SUPPORT = 7;
-    case SEARCH_FRIEND = 8;
+
+        // auxiliary
+    case GO_ALERT_RED = 8;
+    case DEACTIVATE_SHIELDS = 9;
 }
