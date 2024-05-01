@@ -24,7 +24,7 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
     public function delete(UserInterface $user): void
     {
         $this->setFallbackUserByDeletedSender($user);
-        $this->unsetInboxReferenceonInbox($user);
+        $this->unsetInboxReference($user);
     }
 
     private function setFallbackUserByDeletedSender(UserInterface $user): void
@@ -38,23 +38,17 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
         }
     }
 
-    private function unsetInboxReferenceonInbox(UserInterface $user): void
+    private function unsetInboxReference(UserInterface $user): void
     {
-        $updated = false;
-
         foreach ($this->privateMessageRepository->getByReceiver($user) as $pm) {
 
             $outboxPm = $pm->getOutboxPm();
             if ($outboxPm !== null) {
                 $outboxPm->setInboxPm(null);
                 $this->privateMessageRepository->save($outboxPm);
-
-                $updated = true;
             }
         }
 
-        if ($updated) {
-            $this->entityManager->flush();
-        }
+        $this->entityManager->flush();
     }
 }
