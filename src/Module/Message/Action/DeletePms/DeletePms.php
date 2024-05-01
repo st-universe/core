@@ -12,16 +12,10 @@ final class DeletePms implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_PMS';
 
-    private DeletePmsRequestInterface $deletePmsRequest;
-
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
     public function __construct(
-        DeletePmsRequestInterface $deletePmsRequest,
-        PrivateMessageRepositoryInterface $privateMessageRepository
+        private DeletePmsRequestInterface $deletePmsRequest,
+        private PrivateMessageRepositoryInterface $privateMessageRepository
     ) {
-        $this->deletePmsRequest = $deletePmsRequest;
-        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function handle(GameControllerInterface $game): void

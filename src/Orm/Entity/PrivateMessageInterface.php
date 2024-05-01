@@ -30,9 +30,9 @@ interface PrivateMessageInterface
 
     public function setCategoryId(int $categoryId): PrivateMessageInterface;
 
-    public function getInboxPmId(): ?int;
+    public function getInboxPm(): ?PrivateMessageInterface;
 
-    public function setInboxPmId(?int $pmId): PrivateMessageInterface;
+    public function setInboxPm(PrivateMessageInterface $pm): PrivateMessageInterface;
 
     public function getHref(): ?string;
 
@@ -49,6 +49,8 @@ interface PrivateMessageInterface
     public function setSender(UserInterface $user): PrivateMessageInterface;
 
     public function setRecipient(UserInterface $recipient): PrivateMessageInterface;
+
+    public function isDeleted(): bool;
 
     public function setDeleted(int $timestamp): PrivateMessageInterface;
 

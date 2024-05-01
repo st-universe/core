@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use JBBCode\Parser;
 use Laminas\Mail\Exception\RuntimeException;
@@ -24,43 +23,18 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PrivateMessageSender implements PrivateMessageSenderInterface
 {
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
-    private MailFactoryInterface $mailFactory;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ConfigInterface $config;
-
     private LoggerUtilInterface $loggerUtil;
 
-    private Parser $bbcodeParser;
-
-    private StuTime $stuTime;
-
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository,
-        UserRepositoryInterface $userRepository,
-        MailFactoryInterface $mailFactory,
-        ConfigInterface $config,
-        Parser $bbcodeParser,
-        StuTime $stuTime,
-        EntityManagerInterface $entityManager,
+        private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        private PrivateMessageRepositoryInterface $privateMessageRepository,
+        private UserRepositoryInterface $userRepository,
+        private MailFactoryInterface $mailFactory,
+        private ConfigInterface $config,
+        private Parser $bbcodeParser,
+        private StuTime $stuTime,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
-        $this->privateMessageRepository = $privateMessageRepository;
-        $this->userRepository = $userRepository;
-        $this->mailFactory = $mailFactory;
-        $this->config = $config;
-        $this->bbcodeParser = $bbcodeParser;
-        $this->stuTime = $stuTime;
-        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -115,8 +89,6 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         }
 
         if ($senderId != UserEnum::USER_NOONE) {
-            $this->entityManager->flush();
-
             $this->createPrivateMessage(
                 $recipient,
                 $sender,
@@ -125,7 +97,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
                 $text,
                 null,
                 false,
-                $pm->getId()
+                $pm
             );
         }
     }
@@ -174,7 +146,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         string $text,
         ?string $href,
         bool $new,
-        int $inboxPmId = null
+        PrivateMessageInterface $inboxPm = null
     ): PrivateMessageInterface {
         $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $category);
 
@@ -190,7 +162,9 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $pm->setRecipient($recipient);
         $pm->setSender($sender);
         $pm->setNew($new);
-        $pm->setInboxPmId($inboxPmId);
+        if ($inboxPm !== null) {
+            $pm->setInboxPm($inboxPm);
+        }
 
         $this->privateMessageRepository->save($pm);
 

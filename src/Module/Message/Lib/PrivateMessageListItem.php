@@ -71,17 +71,19 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
 
     public function isMarkableAsReceipt(): bool
     {
-        if ($this->message->getInboxPmId() === null) {
-            return false;
-        }
-
-        if (!$this->message->getSender()->isShowPmReadReceipt() || !$this->message->getRecipient()->isShowPmReadReceipt()) {
-            return false;
-        }
-
-        $inboxPm = $this->privateMessageRepository->find($this->message->getInboxPmId());
-
+        $inboxPm = $this->message->getInboxPm();
         if ($inboxPm === null) {
+            return false;
+        }
+
+        if (
+            !$this->message->getSender()->isShowPmReadReceipt()
+            || !$this->message->getRecipient()->isShowPmReadReceipt()
+        ) {
+            return false;
+        }
+
+        if ($inboxPm->isDeleted()) {
             return true;
         }
 

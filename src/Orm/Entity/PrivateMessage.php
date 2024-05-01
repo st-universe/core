@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_pms')]
@@ -65,6 +66,10 @@ class PrivateMessage implements PrivateMessageInterface
     #[ManyToOne(targetEntity: 'User')]
     #[JoinColumn(name: 'recip_user', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $receivingUser;
+
+    #[OneToOne(targetEntity: 'PrivateMessage')]
+    #[JoinColumn(name: 'inbox_pm_id', referencedColumnName: 'id')]
+    private ?PrivateMessageInterface $inboxPm;
 
     public function getId(): int
     {
@@ -136,14 +141,14 @@ class PrivateMessage implements PrivateMessageInterface
         return $this;
     }
 
-    public function getInboxPmId(): ?int
+    public function getInboxPm(): ?PrivateMessageInterface
     {
-        return $this->inbox_pm_id;
+        return $this->inboxPm;
     }
 
-    public function setInboxPmId(?int $pmId): PrivateMessageInterface
+    public function setInboxPm(PrivateMessageInterface $pm): PrivateMessageInterface
     {
-        $this->inbox_pm_id = $pmId;
+        $this->inboxPm = $pm;
         return $this;
     }
 
@@ -189,6 +194,11 @@ class PrivateMessage implements PrivateMessageInterface
     {
         $this->receivingUser = $recipient;
         return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deleted !== null;
     }
 
     public function setDeleted(int $timestamp): PrivateMessageInterface
