@@ -2,12 +2,17 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Stu\Module\Control\StuRandom;
+use Stu\Module\Control\StuTime;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 class PirateWrathManager implements PirateWrathManagerInterface
 {
@@ -16,11 +21,23 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
     private PirateLoggerInterface $logger;
 
+    private CreatePrestigeLogInterface $createPrestigeLog;
+
+    private StuRandom $stuRandom;
+
+    private StuTime $stuTime;
+
     public function __construct(
         private PirateWrathRepositoryInterface $pirateWrathRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        StuRandom $stuRandom,
+        CreatePrestigeLogInterface $createPrestigeLog,
+        StuTime $stuTime
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
+        $this->createPrestigeLog = $createPrestigeLog;
+        $this->stuRandom = $stuRandom;
+        $this->stuTime = $stuTime;
     }
 
     public function increaseWrath(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void
@@ -110,5 +127,46 @@ class PirateWrathManager implements PirateWrathManagerInterface
             $currentWrath,
             $wrath->getWrath()
         );
+    }
+
+    public function setProtectionTimeoutFromPrestige(UserInterface $user, int $prestige, GameControllerInterface $game): void
+    {
+        $wrath = $user->getPirateWrath();
+        if ($wrath === null) {
+            $wrath = $this->pirateWrathRepository->prototype();
+            $wrath->setUser($user);
+            $user->setPirateWrath($wrath);
+        }
+
+        $userwrath = $wrath->getWrath() / PirateWrathInterface::DEFAULT_WRATH;
+
+        // 1 Prestige = 1.44 Stunden = 5184 Sekunden
+        $defaultTimeout = max(1, ((1 / $userwrath) ** 2) * ($prestige * 5184));
+
+        $randomFactor = $this->stuRandom->rand(95, 105) / 100;
+        $timeout = (int)($defaultTimeout * $randomFactor);
+
+        $currentTimeout = $wrath->getProtectionTimeout();
+        if ($currentTimeout !== null && $currentTimeout > time()) {
+            $timeout += $currentTimeout;
+        } else {
+            $timeout += time();
+        }
+
+        $wrath->setProtectionTimeout($timeout);
+        $this->pirateWrathRepository->save($wrath);
+
+        $this->createPrestigeLog->createLog(
+            -$prestige,
+            sprintf('-%d Prestige: Großer Nagus garantiert Schutz vor Piraten bis zum %s', $prestige, $this->stuTime->transformToStuDate($timeout)),
+            $user,
+            time()
+        );
+
+
+        $game->addInformation(sprintf(
+            _('Der Nagus konnte einen Nichtangriffspakt mit den Kazon bis zum %s Uhr aushandeln'),
+            $this->stuTime->transformToStuDate($timeout)
+        ));
     }
 }

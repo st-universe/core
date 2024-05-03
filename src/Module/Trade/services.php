@@ -27,12 +27,15 @@ use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequestInterface;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuction;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuctionRequest;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuctionRequestInterface;
+use Stu\Module\Trade\Action\PirateProtection\PirateProtectionRequest;
+use Stu\Module\Trade\Action\PirateProtection\PirateProtectionRequestInterface;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuction;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuctionRequest;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuctionRequestInterface;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOffer;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequest;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequestInterface;
+use Stu\Module\Trade\Action\PirateProtection\PirateProtection;
 use Stu\Module\Trade\Action\RenewTradeLicense\RenewTradeLicense;
 use Stu\Module\Trade\Action\SearchOffers\SearchBoth;
 use Stu\Module\Trade\Action\SearchOffers\SearchDemand;
@@ -103,6 +106,8 @@ return [
     DealsTakeOfferRequestInterface::class => autowire(DealsTakeOfferRequest::class),
     DealsBidAuctionRequestInterface::class => autowire(DealsBidAuctionRequest::class),
     DealsTakeAuctionRequestInterface::class => autowire(DealsTakeAuctionRequest::class),
+    PirateProtectionRequestInterface::class => autowire(PirateProtectionRequest::class),
+    PirateProtection::class => autowire(PirateProtection::class),
     TakeOfferRequestInterface::class => autowire(TakeOfferRequest::class),
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     CreateLicenseRequestInterface::class => autowire(CreateLicenseRequest::class),
@@ -127,6 +132,7 @@ return [
         TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class),
         BuyLotteryTickets::ACTION_IDENTIFIER => autowire(BuyLotteryTickets::class),
         RenewTradeLicense::ACTION_IDENTIFIER => autowire(RenewTradeLicense::class),
+        PirateProtection::ACTION_IDENTIFIER => autowire(PirateProtection::class),
         SearchDemand::ACTION_IDENTIFIER => autowire(SearchDemand::class),
         SearchOffer::ACTION_IDENTIFIER => autowire(SearchOffer::class),
         SearchBoth::ACTION_IDENTIFIER => autowire(SearchBoth::class),
