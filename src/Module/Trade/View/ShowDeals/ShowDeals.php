@@ -8,6 +8,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Entity\PirateWrathInterface;
 
 final class ShowDeals implements ViewControllerInterface
 {
@@ -38,16 +39,28 @@ final class ShowDeals implements ViewControllerInterface
             _('Deals')
         );
         $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
-        $game->setTemplateFile('html/deals.xhtml');
+        $game->setTemplateFile('html/trade/deals.twig');
 
-        if ($game->getUser()->getDeals() === true)
-        {$game->getUser()->setDeals(false);}
+        if ($game->getUser()->getDeals() === true) {
+            $game->getUser()->setDeals(false);
+        }
 
         $hasLicense = $this->tradeLicenseRepository->hasFergLicense($userId);
 
         $game->setTemplateVar('HAS_LICENSE', $hasLicense);
         if (!$hasLicense) {
             return;
+        }
+
+        if ($game->getUser()->getPirateWrath() === null) {
+            $game->setTemplateVar('WRATH', PirateWrathInterface::DEFAULT_WRATH);
+        } else {
+            $game->setTemplateVar('WRATH', $game->getUser()->getPirateWrath()->getWrath());
+        }
+        if ($game->getUser()->getPirateWrath() === null || $game->getUser()->getPirateWrath()->getProtectionTimeout() < time()) {
+            $game->setTemplateVar('PROTECTIONTIMEOUT', time());
+        } else {
+            $game->setTemplateVar('PROTECTIONTIMEOUT', $game->getUser()->getPirateWrath()->getProtectionTimeout());
         }
 
         $hasActivedeals = $this->dealsRepository->hasActiveDeals($userId);

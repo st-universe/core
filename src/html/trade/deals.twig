@@ -1,0 +1,874 @@
+{% extends "html/sitedefaults.twig" %}
+
+{% block body %}
+    <script src="{{ THIS.getJavascriptPath }}/js/trade.js"></script>
+    {% include 'html/breadcrumb.twig' %}
+    {% if not HAS_LICENSE %}
+    <div style="display: flex;">
+        <div class="divbody" style="width: 70%; border-style: none!important">
+            <img style="float:right" src="assets/buttons/rom.png" />
+            Willkommen, geschätzer Kunde! Mir ist zu Ohren gekommen, dass dieser Sektor über große Reichtümer
+            verfügt. Und meine Ohren täuschen sich nie. Ich habe daher besondere Angebote speziell für Sie
+            vorbereitet. Hierfür wird allerdings eine Handelslizenz an der goldenen Kugel benötigt!
+            Auf gute Profite!
+            <br />
+            <br />
+            <p style="text-align:center"><b>Großer Nagus Rom </b></p>
+        </div>
+        <div style="width: 30%;">
+            Natürlich würde ich dir für einen ausgesprochen fairen Preis auch helfen, dass dich die Kazon Piraten nicht mehr ärgern. Aber auch hierfür brauchst du eine Handelslizenz an der Goldenen Kugel!
+        </div>
+    </div>    
+    {% endif %}
+    {% if HAS_LICENSE %}
+    <div style="display: flex;">
+        <div class="divbody" style="width: 65%; border-style: none!important">
+            <img style="float:right" src="assets/buttons/rom.png" />
+            Willkommen, geschätzer Kunde! Mir ist zu Ohren gekommen, dass dieser Sektor über große Reichtümer
+            verfügt. Und meine Ohren täuschen sich nie. Ich habe daher besondere Angebote speziell für Sie
+            vorbereitet. Die hier angebotenen Schiffsdesigns wurden von fähigen Ferengi-Ingenieuren modifiziert. Sie
+            machen daher garantiert ein gutes Geschäft. Auf gute Profite!
+            <br />
+            <br />
+            <p style="text-align:center"><b>Großer Nagus Rom </b></p>
+        </div>
+        <div style="width: 33%;">
+            <form method="post" action="trade.php" id="pirateProtectionForm">
+                Du möchtest also dass ich dir dabei helfe die Kazon Piraten vom leib zu halten? Für eine faire Gegenleistung können wir garantiert mit den Kazon eine Vereinbarung für dich treffen. Wieviel Prestige bietest du an?
+                <br />
+                <input type="text" size="7" name="prestige" id="prestigeInput" oninput="calculatePirateProtectionDates({{ WRATH }}, {{ PROTECTIONTIMEOUT }})" />
+                <br />
+                <span id="pirateProtectionDates"></span>
+                <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                
+            </form>
+        </div>
+            
+    </div>
+    
+    <br />
+    <div class="box">
+        <div class="box_title">Deals</div>
+        <div class="box_body">
+            <table class="tcal">
+                {% if not HASACTIVEDEALS %}
+                    <tr>
+                        <td colspan="6">Keine Deals vorhanden</td>
+                    </tr>
+                {% elseif HASACTIVEDEALS %}
+                    <tr>
+                        <th>Dealen</th>
+                        <th>Angebot</th>
+                        <th>Preis</th>
+                        <th>Noch Verfügbar</th>
+                        <th>Endet</th>
+                    </tr>
+                    {% for data in ACTIVEDEALSGOODS %}
+    <tr class="row{{ loop.index is odd }}">
+        <form method="post" action="trade.php">
+            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+            <td>
+                <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                {{ data.getgiveCommodityAmount }}
+            </td>
+            <td>
+                <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                {{ data.getwantCommodityAmount }}
+            </td>
+            {% if data.getAmount %}
+                <td>{{ data.getAmount }}</td>
+            {% else %}
+                <td><b>&infin;</b></td>
+            {% endif %}
+            <td>{{ data.getEnd|stuDateTime }}</td>
+        </form>
+    </tr>
+    {% endfor %}
+    {% for data in ACTIVEDEALSGOODSPRESTIGE %}
+    <tr class="row{{ loop.index is odd }}">
+        <form method="post" action="trade.php">
+            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+            <td>
+                <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                {{ data.getgiveCommodityAmount }}
+            </td>
+            <td>
+                <img src="assets/buttons/prestige.png" title="Prestige" />
+                {{ data.getWantPrestige }}
+            </td>
+            {% if data.getAmount %}
+                <td>{{ data.getAmount }}</td>
+            {% else %}
+                <td><b>&infin;</b></td>
+            {% endif %}
+            <td>{{ data.getEnd|stuDateTime }}</td>
+        </form>
+    </tr>
+    {% endfor %}
+    {% for data in ACTIVEDEALSSHIPS %}
+    <tr class="row{{ loop.index is odd }}">
+        <form method="post" action="trade.php">
+            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+            <td>
+                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                {% if data.getBuildplan %}
+                    {% for mod in data.getModules %}
+                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                    {% endfor %}
+                {% endif %}
+                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+            </td>
+            <td>
+                <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                {{ data.getwantCommodityAmount }}
+            </td>
+            {% if data.getAmount %}
+                <td>{{ data.getAmount }}</td>
+            {% else %}
+                <td><b>&infin;</b></td>
+            {% endif %}
+            <td>{{ data.getEnd|stuDateTime }}</td>
+        </form>
+    </tr>
+{% endfor %}
+
+{% for data in ACTIVEDEALSSHIPSPRESTIGE %}
+    <tr class="row{{ loop.index is odd }}">
+        <form method="post" action="trade.php">
+            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+            <td>
+                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                {% if data.getBuildplan %}
+                    {% for mod in data.getModules %}
+                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                    {% endfor %}
+                {% endif %}
+                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+            </td>
+            <td>
+                <img src="assets/buttons/prestige.png" title="Prestige" />
+                {{ data.getWantPrestige }}
+            </td>
+            {% if data.getAmount %}
+                <td>{{ data.getAmount }}</td>
+            {% else %}
+                <td><b>&infin;</b></td>
+            {% endif %}
+            <td>{{ data.getEnd|stuDateTime }}</td>
+        </form>
+    </tr>
+    {% endfor %}
+    {% for data in ACTIVEDEALSBUILDPLANS %}
+    <tr class="row{{ loop.index is odd }}">
+        <form method="post" action="trade.php">
+            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+            <td>
+                <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                {% if data.getBuildplan %}
+                    {% for mod in data.getModules %}
+                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                    {% endfor %}
+                {% endif %}
+                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+            </td>
+            <td>
+                <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                {{ data.getwantCommodityAmount }}
+            </td>
+            {% if data.getAmount %}
+                <td>{{ data.getAmount }}</td>
+            {% else %}
+                <td><b>&infin;</b></td>
+            {% endif %}
+            <td>{{ data.getEnd|stuDateTime }}</td>
+        </form>
+    </tr>
+{% endfor %}
+
+{% for data in ACTIVEDEALSBUILDPLANSPRESTIGE %}
+    <tr class="row{{ loop.index is odd }}">
+        <form method="post" action="trade.php">
+            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+            <td>
+                <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                {% if data.getBuildplan %}
+                    {% for mod in data.getModules %}
+                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                    {% endfor %}
+                {% endif %}
+                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+            </td>
+            <td>
+                <img src="assets/buttons/prestige.png" title="Prestige" />
+                {{ data.getWantPrestige }}
+            </td>
+            {% if data.getAmount %}
+                <td>{{ data.getAmount }}</td>
+            {% else %}
+                <td><b>&infin;</b></td>
+            {% endif %}
+            <td>{{ data.getEnd|stuDateTime }}</td>
+        </form>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>
+</div>
+</div>
+<br />
+<div class="box">
+    <div class="box_title">Auktionen</div>
+    <div class="box_body">
+        <table class="tcal">
+            {% if not HASACTIVEAUCTIONS %}
+                <tr>
+                    <td colspan="6">Keine Auktionen vorhanden</td>
+                </tr>
+            {% elseif HASACTIVEAUCTIONS %}
+                <tr>
+                    <th>Bieten</th>
+                    <th>Angebot</th>
+                    <th>Höchstgebot</th>
+                    <th>Höchstbietender</th>
+                    <th>Endet</th>
+                </tr>
+                {% for data in ACTIVEAUCTIONSGOODS %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>
+                                <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                                {{ data.getgiveCommodityAmount }}
+                            </td>
+                            {% if data.getAuctionAmount %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>Kein Gebot</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in ACTIVEAUCTIONSGOODSPRESTIGE %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>
+                                <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                                {{ data.getgiveCommodityAmount }}
+                            </td>
+                            {% if data.getWantPrestige %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title="Prestige" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title=" Prestige" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in ACTIVEAUCTIONSSHIPS %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getAuctionAmount %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in ACTIVEAUCTIONSSHIPSPRESTIGE %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getWantPrestige %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title="Prestige" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title=" Prestige" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in ACTIVEAUCTIONSBUILDPLANS %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>
+                                <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getAuctionAmount %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in ACTIVEAUCTIONSBUILDPLANSPRESTIGE %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>
+                                <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getWantPrestige %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title="Prestige" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title=" Prestige" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+</div>
+<br />
+<div class="box">
+    <div class="box_title">Beendete Auktionen</div>
+    <div class="box_body">
+        {% if HASOWNENDEDAUCTIONS %}
+            <table class="tcal">
+                <tr>
+                    <th>Einlösen</th>
+                    <th>Angebot</th>
+                    <th>Höchstgebot</th>
+                    <th>Höchstbietender</th>
+                    <th>Beendet am</th>
+                </tr>
+                {% for data in OWNENDEDAUCTIONSGOODS %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                            <td>
+                                <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                                {{ data.getgiveCommodityAmount }}
+                            </td>
+                            {% if data.getAuctionAmount %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in OWNENDEDAUCTIONSGOODSPRESTIGE %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                            <td>
+                                <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                                {{ data.getgiveCommodityAmount }}
+                            </td>
+                            {% if data.getWantPrestige %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title="Prestige" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title=" Prestige" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in OWNENDEDAUCTIONSSHIPS %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                            <td>
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getAuctionAmount %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in OWNENDEDAUCTIONSSHIPSPRESTIGE %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                            <td>
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getWantPrestige %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title="Prestige" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title=" Prestige" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in OWNENDEDAUCTIONSBUILDPLANS %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                            <td>
+                                <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getAuctionAmount %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                {% for data in OWNENDEDAUCTIONSBUILDPLANSPRESTIGE %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" value="{{ data.getId }}" />
+                            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                            <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                            <td>
+                                <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                                <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                                {% if data.getBuildplan %}
+                                    {% for mod in data.getModules %}
+                                        <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                                    {% endfor %}
+                                {% endif %}
+                                <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                            </td>
+                            {% if data.getWantPrestige %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title="Prestige" />
+                                    {{ data.getAuctionAmount }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <img src="assets/buttons/prestige.png" title=" Prestige" />
+                                    Kein Gebot
+                                </td>
+                            {% endif %}
+                            {% if data.getAuctionUser %}
+                                <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td>{{ data.getEnd|stuDateTime }}</td>
+                        </form>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if HASENDEDAUCTIONS %}
+            <table class="tcal">
+                <tr>
+                    <th>Angebot</th>
+                    <th>Höchstgebot</th>
+                    <th>Höchstbietender</th>
+                    <th>Beendet am</th>
+                </tr>
+                {% for data in ENDEDAUCTIONSGOODS %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <td>
+                            <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                            {{ data.getgiveCommodityAmount }}
+                        </td>
+                        {% if data.getAuctionAmount %}
+                            <td>
+                                <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                {{ data.getAuctionAmount }}
+                            </td>
+                        {% else %}
+                            <td>
+                                <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                                Kein Gebot
+                            </td>
+                        {% endif %}
+                        {% if data.getAuctionUser %}
+                            <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                        <td>{{ data.getEnd|stuDateTime }}</td>
+                    </tr>
+                {% endfor %}
+
+                {% for data in ENDEDAUCTIONSGOODSPRESTIGE %}
+                    <tr class="row{{ loop.index is odd }}">
+                        <td>
+                            <img src="assets/commodities/{{ data.getgiveCommodityId }}.png" title="{{ data.getGiveCommodity.getName }}" />
+                            {{ data.getgiveCommodityAmount }}
+                        </td>
+                        {% if data.getWantPrestige %}
+                            <td>
+                                <img src="assets/buttons/prestige.png" title="Prestige" />
+                                {{ data.getAuctionAmount }}
+                            </td>
+                        {% else %}
+                            <td>
+                                <img src="assets/buttons/prestige.png" title=" Prestige" />
+                                Kein Gebot
+                            </td>
+                        {% endif %}
+                        {% if data.getAuctionUser %}
+                            <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                        <td>{{ data.getEnd|stuDateTime }}</td>
+                    </tr>
+                {% endfor %}
+                {% for data in ENDEDAUCTIONSSHIPS %}
+                <tr class="row{{ loop.index is odd }}">
+                    <td>
+                        <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                        {% if data.getBuildplan %}
+                            {% for mod in data.getModules %}
+                                <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                            {% endfor %}
+                        {% endif %}
+                        <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                    </td>
+                    {% if data.getAuctionAmount %}
+                        <td>
+                            <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                            {{ data.getAuctionAmount }}
+                        </td>
+                    {% else %}
+                        <td>
+                            <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                            Kein Gebot
+                        </td>
+                    {% endif %}
+                    {% if data.getAuctionUser %}
+                        <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    <td>{{ data.getEnd|stuDateTime }}</td>
+                </tr>
+            {% endfor %}
+
+            {% for data in ENDEDAUCTIONSSHIPSPRESTIGE %}
+                <tr class="row{{ loop.index is odd }}">
+                    <td>
+                        <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                        {% if data.getBuildplan %}
+                            {% for mod in data.getModules %}
+                                <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                            {% endfor %}
+                        {% endif %}
+                        <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                    </td>
+                    {% if data.getWantPrestige %}
+                        <td>
+                            <img src="assets/buttons/prestige.png" title="Prestige" />
+                            {{ data.getAuctionAmount }}
+                        </td>
+                    {% else %}
+                        <td>
+                            <img src="assets/buttons/prestige.png" title=" Prestige" />
+                            Kein Gebot
+                        </td>
+                    {% endif %}
+                    {% if data.getAuctionUser %}
+                        <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    <td>{{ data.getEnd|stuDateTime }}</td>
+                </tr>
+            {% endfor %}
+
+            {% for data in ENDEDAUCTIONSBUILDPLANS %}
+                <tr class="row{{ loop.index is odd }}">
+                    <td>
+                        <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                        <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                        {% if data.getBuildplan %}
+                            {% for mod in data.getModules %}
+                                <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                            {% endfor %}
+                        {% endif %}
+                        <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                    </td>
+                    {% if data.getAuctionAmount %}
+                        <td>
+                            <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                            {{ data.getAuctionAmount }}
+                        </td>
+                    {% else %}
+                        <td>
+                            <img src="assets/commodities/{{ data.getwantCommodityId }}.png" title="{{ data.getWantedCommodity.getName }}" />
+                            Kein Gebot
+                        </td>
+                    {% endif %}
+                    {% if data.getAuctionUser %}
+                        <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    <td>{{ data.getEnd|stuDateTime }}</td>
+                </tr>
+            {% endfor %}
+
+            {% for data in ENDEDAUCTIONSBUILDPLANSPRESTIGE %}
+                <tr class="row{{ loop.index is odd }}">
+                    <td>
+                        <img src="assets/buttons/bauplan.png" title="Bauplan" />
+                        <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
+                        {% if data.getBuildplan %}
+                            {% for mod in data.getModules %}
+                                <img style="margin-right: 5px;" src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />
+                            {% endfor %}
+                        {% endif %}
+                        <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
+                    </td>
+                    {% if data.getWantPrestige %}
+                        <td>
+                            <img src="assets/buttons/prestige.png" title="Prestige" />
+                            {{ data.getAuctionAmount }}
+                        </td>
+                    {% else %}
+                        <td>
+                            <img src="assets/buttons/prestige.png" title=" Prestige" />
+                            Kein Gebot
+                        </td>
+                    {% endif %}
+                    {% if data.getAuctionUser %}
+                        <td>{{ data.getAuctionUser.getName|bbcode }}</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    <td>{{ data.getEnd|stuDateTime }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+</div>
+
+{% endif %}
+
+{% endblock %}
