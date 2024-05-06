@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
@@ -32,13 +33,16 @@ class PlayerCreator implements PlayerCreatorInterface
 
     private PasswordGeneratorInterface $passwordGenerator;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         PlayerDefaultsCreatorInterface $playerDefaultsCreator,
         RegistrationEmailSenderInterface $registrationEmailSender,
         SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
         StuHashInterface $stuHash,
-        PasswordGeneratorInterface $passwordGenerator
+        PasswordGeneratorInterface $passwordGenerator,
+        EntityManagerInterface $entityManager
     ) {
         $this->userRepository = $userRepository;
         $this->playerDefaultsCreator = $playerDefaultsCreator;
@@ -46,6 +50,7 @@ class PlayerCreator implements PlayerCreatorInterface
         $this->smsVerificationCodeSender = $smsVerificationCodeSender;
         $this->stuHash = $stuHash;
         $this->passwordGenerator = $passwordGenerator;
+        $this->entityManager = $entityManager;
     }
 
     public function createWithMobileNumber(
@@ -117,6 +122,7 @@ class PlayerCreator implements PlayerCreatorInterface
         $player->setFaction($faction);
 
         $this->userRepository->save($player);
+        $this->entityManager->flush();
 
         $player->setUsername('Siedler ' . $player->getId());
         $player->setTick(1);
