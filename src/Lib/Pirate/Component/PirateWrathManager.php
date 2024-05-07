@@ -148,10 +148,11 @@ class PirateWrathManager implements PirateWrathManagerInterface
         $wrathFactor = $wrath->getWrath() / PirateWrathInterface::DEFAULT_WRATH;
 
         // 1 Prestige = 1.44 Stunden = 5184 Sekunden
-        $timeoutInSeconds = max(1, ((1 / $wrathFactor) ** 2) * ($prestige * 5184));
+        $baseTimeoutInSeconds = max(1, ((1 / $wrathFactor) ** 2) * ($prestige * 5184));
+        $minTimeout = $baseTimeoutInSeconds * 0.95;
+        $maxTimeout = $baseTimeoutInSeconds * 1.05;
 
-        $randomFactor = $this->stuRandom->rand(95, 105) / 100;
-        $timestamp = (int)($timeoutInSeconds * $randomFactor);
+        $timestamp = $this->stuRandom->rand((int)$minTimeout, (int)$maxTimeout);
 
         $currentTimeout = $wrath->getProtectionTimeout();
         if ($currentTimeout !== null && $currentTimeout > time()) {
