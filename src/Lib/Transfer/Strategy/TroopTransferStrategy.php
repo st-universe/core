@@ -414,7 +414,10 @@ class TroopTransferStrategy implements TransferStrategyInterface
         $targetWrapper = $this->shipWrapperFactory->wrapShip($target);
 
         // no crew left
-        if ($amount === $targetCrewCount) {
+        if (
+            $amount > 0
+            && $amount === $targetCrewCount
+        ) {
             $this->shipShutdown->shutdown($targetWrapper);
         } elseif (
             $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
