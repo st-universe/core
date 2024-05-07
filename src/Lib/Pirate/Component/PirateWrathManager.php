@@ -13,6 +13,8 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 
 class PirateWrathManager implements PirateWrathManagerInterface
 {
@@ -21,23 +23,15 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
     private PirateLoggerInterface $logger;
 
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private StuRandom $stuRandom;
-
-    private StuTime $stuTime;
-
     public function __construct(
         private PirateWrathRepositoryInterface $pirateWrathRepository,
+        private StuRandom $stuRandom,
+        private CreatePrestigeLogInterface $createPrestigeLog,
+        private StuTime $stuTime,
+        private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        StuRandom $stuRandom,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        StuTime $stuTime
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->stuRandom = $stuRandom;
-        $this->stuTime = $stuTime;
     }
 
     public function increaseWrath(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void
@@ -70,29 +64,47 @@ class PirateWrathManager implements PirateWrathManagerInterface
             return;
         }
 
+        // increase wrath
+        $currentWrath = $wrath->getWrath();
+        $wrath->setWrath($currentWrath + $reactionTriggerWrath);
+
         // reset protection timeout
         $timeout = $wrath->getProtectionTimeout();
         if (
             $timeout !== null
             && $timeout > time()
         ) {
+            $this->makePiratesReallyAngry($wrath);
+        } else {
+
             $this->logger->logf(
-                'RESET protection timeout of user %d',
+                'INCREASED wrath of user %d from %d to %d',
                 $user->getId(),
+                $currentWrath,
+                $wrath->getWrath()
             );
-            $wrath->setProtectionTimeout(null);
         }
 
-        // increase wrath
-        $currentWrath = $wrath->getWrath();
-        $wrath->setWrath($currentWrath + $reactionTriggerWrath);
         $this->pirateWrathRepository->save($wrath);
+    }
+
+    private function makePiratesReallyAngry(PirateWrathInterface $wrath): void
+    {
+        $user = $wrath->getUser();
 
         $this->logger->logf(
-            'INCREASED wrath of user %d from %d to %d',
+            'RESET protection timeout of user %d and set wrath to MAXIMUM of %d',
             $user->getId(),
-            $currentWrath,
-            $wrath->getWrath()
+            self::MAXIMUM_WRATH
+        );
+        $wrath->setProtectionTimeout(null);
+        $wrath->setWrath(self::MAXIMUM_WRATH);
+
+        $this->privateMessageSender->send(
+            UserEnum::USER_NPC_KAZON,
+            $user->getId(),
+            sprintf('Wie kannst du es wagen? Ich werde meine Horden auf dich hetzen bis du winselnd am Boden liegst! Der Nichtangriffspakt ist hinfällig!'),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
         );
     }
 
