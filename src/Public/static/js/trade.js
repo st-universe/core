@@ -90,46 +90,52 @@ function refreshShoutbox() {
 	setTimeout('refreshShoutbox()', 5000);
 }
 function calculatePirateProtectionDates(currentWrath, currentTimeout) {
-    const prestigeInput = document.getElementById('prestigeInput');
-    const prestigeValue = parseInt(prestigeInput.value);
+	const prestigeInput = document.getElementById('prestigeInput');
+	const prestigeValue = parseInt(prestigeInput.value);
 
-    if (isNaN(prestigeValue) || prestigeValue <= 0) {
-        document.getElementById('pirateProtectionDates').innerHTML = '';
-        return;
-    }
+	if (isNaN(prestigeValue) || prestigeValue <= 0) {
+		document.getElementById('pirateProtectionDates').innerHTML = '';
+		return;
+	}
 
-    const startDate = calculateStartDate(currentWrath, currentTimeout, prestigeValue);
-    const endDate = calculateEndDate(currentWrath, currentTimeout, prestigeValue);
+	const startDate = calculateStartDate(currentWrath, currentTimeout, prestigeValue);
+	const endDate = calculateEndDate(currentWrath, currentTimeout, prestigeValue);
 
-    document.getElementById('pirateProtectionDates').innerHTML = `<br />Ich kann für dich großzügigerweise für diesen Preis eine Vereinbarung mit den Kazon treffen! Der Nichtangriffspakt wird vermutlich bis zwischen ${startDate} Uhr und ${endDate} Uhr halten. <br /> <input type="submit" name="B_PIRATE_PROTECTION" value="Akzeptieren" class="button" />`;
+	document.getElementById('pirateProtectionDates').innerHTML = `<br />Für diesen Preis kann ich großzügigerweise eine Vereinbarung mit den Kazon treffen! Der Nichtangriffspakt wird vermutlich zwischen<br />${startDate} Uhr und<br />${endDate} Uhr auslaufen. <br /> <input type="submit" name="B_PIRATE_PROTECTION" value="Akzeptieren" class="button" />`;
 }
 
 function calculateStartDate(currentWrath, currentTimeout, prestigeValue) {
-    const userwrath = currentWrath / 1000; 
-    const defaultTimeout = Math.max(1, ((1 / userwrath) ** 2) * (prestigeValue * 5184) * 0.95); // 1 Prestige = 1.44 Stunden = 5184 Sekunden
-    let timeout = defaultTimeout;
+	const wrathFactor = currentWrath / 1000;
+	const timeoutInSeconds = Math.max(1, ((1 / wrathFactor) ** 2) * (prestigeValue * 5184) * 0.95); // 1 Prestige = 1.44 Stunden = 5184 Sekunden
+	let timestamp = timeoutInSeconds;
 
-    if (currentTimeout !== null && currentTimeout > Date.now() / 1000) {
-        timeout += currentTimeout;
-    } else {
-        timeout += Date.now() / 1000;
-    }
+	if (currentTimeout !== null && currentTimeout > Date.now() / 1000) {
+		timestamp += currentTimeout;
+	} else {
+		timestamp += Date.now() / 1000;
+	}
 
-    const startDate = new Date((timeout + 370 * 365.25 * 24 * 60 * 60) * 1000); 
-    return startDate.toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+	const endDate = new Date(timestamp * 1000);
+	let stuDate = new Date(endDate);
+	stuDate.setFullYear(stuDate.getFullYear() + 370);
+
+	return stuDate.toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
 
 function calculateEndDate(currentWrath, currentTimeout, prestigeValue) {
-    const userwrath = currentWrath / 1000; 
-    const defaultTimeout = Math.max(1, ((1 / userwrath) ** 2) * (prestigeValue * 5184) * 1.05); 
-    let timeout = defaultTimeout;
+	const wrathFactor = currentWrath / 1000;
+	const timeoutInSeconds = Math.max(1, ((1 / wrathFactor) ** 2) * (prestigeValue * 5184) * 1.05);
+	let timestamp = timeoutInSeconds;
 
-    if (currentTimeout !== null && currentTimeout > Date.now() / 1000) {
-        timeout += currentTimeout;
-    } else {
-        timeout += Date.now() / 1000;
-    }
+	if (currentTimeout !== null && currentTimeout > Date.now() / 1000) {
+		timestamp += currentTimeout;
+	} else {
+		timestamp += Date.now() / 1000;
+	}
 
-    const endDate = new Date((timeout + (prestigeValue * 5184) + 370 * 365.25 * 24 * 60 * 60) * 1000); 
-    return endDate.toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+	const endDate = new Date(timestamp * 1000);
+	let stuDate = new Date(endDate);
+	stuDate.setFullYear(stuDate.getFullYear() + 370);
+
+	return stuDate.toLocaleString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
