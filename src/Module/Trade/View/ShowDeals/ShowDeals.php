@@ -39,7 +39,7 @@ final class ShowDeals implements ViewControllerInterface
             _('Deals')
         );
         $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
-        $game->setTemplateFile('html/trade/deals.twig');
+        $game->setViewTemplate('html/trade/deals.twig');
 
         if ($game->getUser()->getDeals() === true) {
             $game->getUser()->setDeals(false);
