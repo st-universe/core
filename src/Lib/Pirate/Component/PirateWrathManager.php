@@ -49,6 +49,11 @@ class PirateWrathManager implements PirateWrathManagerInterface
             return;
         }
 
+        $reactionTriggerWrath = $reactionTrigger->getWrath();
+        if ($reactionTriggerWrath < 1) {
+            return;
+        }
+
         $wrath = $user->getPirateWrath();
         if ($wrath === null) {
             $wrath = $this->pirateWrathRepository->prototype();
@@ -80,7 +85,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         // increase wrath
         $currentWrath = $wrath->getWrath();
-        $wrath->setWrath($currentWrath + $reactionTrigger->getWrath());
+        $wrath->setWrath($currentWrath + $reactionTriggerWrath);
         $this->pirateWrathRepository->save($wrath);
 
         $this->logger->logf(
