@@ -374,10 +374,13 @@ class TroopTransferStrategy implements TransferStrategyInterface
             $ownCrewOnTarget
         );
 
+        if ($amount === 0) {
+            return 0;
+        }
+
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
             if (
-                $amount > 0
-                && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+                $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
                 && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)
             ) {
                 throw new SystemNotActivatableException();
@@ -401,7 +404,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             }
         }
 
-        if ($amount > 0 && $isUplinkSituation) {
+        if ($isUplinkSituation) {
             //no foreigners left, shut down uplink
             if ($this->transferUtility->foreignerCount($target) === 0) {
                 $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -414,10 +417,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         $targetWrapper = $this->shipWrapperFactory->wrapShip($target);
 
         // no crew left
-        if (
-            $amount > 0
-            && $amount === $targetCrewCount
-        ) {
+        if ($amount === $targetCrewCount) {
             $this->shipShutdown->shutdown($targetWrapper);
         } elseif (
             $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
