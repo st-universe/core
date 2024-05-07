@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowDeals;
 
+use Stu\Module\Control\StuTime;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
@@ -18,11 +19,15 @@ final class ShowDeals implements ViewControllerInterface
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
+    private StuTime $stuTime;
+
     public function __construct(
         DealsRepositoryInterface $dealsRepository,
+        StuTime $stuTime,
         TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->dealsRepository = $dealsRepository;
+        $this->stuTime = $stuTime;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
@@ -61,6 +66,7 @@ final class ShowDeals implements ViewControllerInterface
             $game->setTemplateVar('PROTECTIONTIMEOUT', time());
         } else {
             $game->setTemplateVar('PROTECTIONTIMEOUT', $game->getUser()->getPirateWrath()->getProtectionTimeout());
+            $game->setTemplateVar('PROTECTIONTIME', $this->stuTime->transformToStuDate($game->getUser()->getPirateWrath()->getProtectionTimeout()));
         }
 
         $hasActivedeals = $this->dealsRepository->hasActiveDeals($userId);

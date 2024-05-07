@@ -38,6 +38,11 @@
                 oninput="calculatePirateProtectionDates({{ WRATH }}, {{ PROTECTIONTIMEOUT }})" />
             <br />
             <span id="pirateProtectionDates"></span>
+
+            {% if PROTECTIONTIME %}
+            <br />
+            <span>Aktueller NAP gilt bis: {{ PROTECTIONTIME | date('d.m.Y H:i') }} Uhr</span>
+            {% endif %}
             <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
 
         </form>
