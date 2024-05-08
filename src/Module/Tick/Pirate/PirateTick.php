@@ -58,7 +58,7 @@ final class PirateTick implements PirateTickInterface
 
             $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-            $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this->pirateReaction);
+            $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this->pirateReaction, null);
 
             $this->reloadMinimalEps->reload($fleetWrapper);
         }

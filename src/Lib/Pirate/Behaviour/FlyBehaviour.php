@@ -31,8 +31,11 @@ class FlyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
-    {
+    public function action(
+        FleetWrapperInterface $fleet,
+        PirateReactionInterface $pirateReaction,
+        ?ShipInterface $triggerShip
+    ): ?PirateBehaviourEnum {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 

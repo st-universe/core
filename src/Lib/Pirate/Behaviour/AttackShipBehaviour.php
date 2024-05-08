@@ -32,8 +32,11 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
-    {
+    public function action(
+        FleetWrapperInterface $fleet,
+        PirateReactionInterface $pirateReaction,
+        ?ShipInterface $triggerShip
+    ): ?PirateBehaviourEnum {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
@@ -47,8 +50,10 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn (ShipInterface $target) => $this->targetHasEnoughPrestige($piratePrestige, $target)
-                && $this->fightLib->canAttackTarget($leadShip, $target, false)
+            fn (ShipInterface $target) =>
+            $this->fightLib->canAttackTarget($leadShip, $target, false)
+                && ($target === $triggerShip
+                    || $this->targetHasEnoughPrestige($piratePrestige, $target))
         );
 
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
@@ -77,7 +82,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $targetPrestige = $this->prestigeOfShipOrFleet($target);
         $this->logger->log(sprintf('      targetPrestige %d', $targetPrestige));
 
-        return $targetPrestige >= 0.5 * $piratePrestige;
+        return $targetPrestige >= 0.33 * $piratePrestige;
     }
 
     private function prestigeOfShipOrFleet(ShipInterface $ship): int

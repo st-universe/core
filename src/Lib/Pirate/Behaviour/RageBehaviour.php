@@ -31,8 +31,11 @@ class RageBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
-    {
+    public function action(
+        FleetWrapperInterface $fleet,
+        PirateReactionInterface $pirateReaction,
+        ?ShipInterface $triggerShip
+    ): ?PirateBehaviourEnum {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
@@ -46,7 +49,8 @@ class RageBehaviour implements PirateBehaviourInterface
             $this->interactionChecker->checkPosition($leadShip, $target)
                 && $this->fightLib->canAttackTarget($leadShip, $target, false)
                 && !$target->getUser()->isProtectedAgainstPirates()
-                && $this->targetHasPositivePrestige($target)
+                && ($target === $triggerShip
+                    || $this->targetHasPositivePrestige($target))
         );
 
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));

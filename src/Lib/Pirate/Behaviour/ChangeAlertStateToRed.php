@@ -6,11 +6,15 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 class ChangeAlertStateToRed implements PirateBehaviourInterface
 {
-    public function action(FleetWrapperInterface $fleet, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
-    {
+    public function action(
+        FleetWrapperInterface $fleet,
+        PirateReactionInterface $pirateReaction,
+        ?ShipInterface $triggerShip
+    ): ?PirateBehaviourEnum {
         $fleet = $fleet->get();
 
         foreach ($fleet->getShips() as $ship) {

@@ -7,14 +7,18 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 class DeactivateShieldsBehaviour implements PirateBehaviourInterface
 {
     public function __construct(private ShipSystemManagerInterface $shipSystemManager)
     {
     }
-    public function action(FleetWrapperInterface $fleetWrapper, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
-    {
+    public function action(
+        FleetWrapperInterface $fleetWrapper,
+        PirateReactionInterface $pirateReaction,
+        ?ShipInterface $triggerShip
+    ): ?PirateBehaviourEnum {
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
             $ship = $wrapper->get();
             if ($ship->getShield() === $ship->getMaxShield()) {
