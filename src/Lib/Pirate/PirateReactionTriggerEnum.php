@@ -9,13 +9,17 @@ enum PirateReactionTriggerEnum: int
     case ON_INTERCEPTION = 3;
     case ON_SUPPORT_CALL = 4;
     case ON_RAGE = 5;
+    case ON_TRACTOR = 6; //TODO
+    case ON_BEAM = 6; //TODO
 
     public function getWrath(): int
     {
         return match ($this) {
             self::ON_ATTACK => 30,
-            self::ON_SCAN => 10,
+            self::ON_TRACTOR => 25,
             self::ON_INTERCEPTION => 20,
+            self::ON_BEAM => 15,
+            self::ON_SCAN => 10,
             self::ON_SUPPORT_CALL => 0,
             self::ON_RAGE => 0,
         };
