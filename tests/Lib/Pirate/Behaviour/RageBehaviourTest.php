@@ -87,7 +87,7 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
     }
 
     public function testActionExpectNoActionIfTargetNotOnPosition(): void
@@ -113,7 +113,7 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
     }
 
     public function testActionExpectNoActionIfCantAttackTarget(): void
@@ -144,7 +144,7 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
     }
 
     public function testActionExpectNoActionIfProtectedAgainstPirates(): void
@@ -179,7 +179,48 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+    }
+
+    public function testActionExpectNoActionIfTargetDontHasPositivePrestige(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(true);
+        $target->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target->shouldReceive('getRump->getPrestige')
+            ->withNoArgs()
+            ->andReturn(0);
+
+        $this->fleetWrapper->shouldReceive('getLeadWrapper')
+            ->once()
+            ->andReturn($wrapper);
+        $wrapper->shouldReceive('get')
+            ->once()
+            ->andReturn($ship);
+
+        $this->shipRepository->shouldReceive('getPirateTargets')
+            ->with($ship)
+            ->once()
+            ->andReturn([$target]);
+
+        $this->interactionChecker->shouldReceive('checkPosition')
+            ->with($ship, $target)
+            ->once()
+            ->andReturn(true);
+
+        $this->fightLib->shouldReceive('canAttackTarget')
+            ->with($ship, $target, false)
+            ->once()
+            ->andReturn(true);
+
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
     }
 
     public function testActionExpectAttackOfSingleTarget(): void
@@ -195,6 +236,12 @@ class RageBehaviourTest extends StuTestCase
         $target->shouldReceive('getUser->isProtectedAgainstPirates')
             ->withNoArgs()
             ->andReturn(false);
+        $target->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target->shouldReceive('getRump->getPrestige')
+            ->withNoArgs()
+            ->andReturn(1);
 
         $this->fightLib->shouldReceive('calculateHealthPercentage')
             ->with($target)
@@ -235,7 +282,69 @@ class RageBehaviourTest extends StuTestCase
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
             ->once();
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+    }
+
+    public function testActionExpectAttackOfTriggerTarget(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
+        $target->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target->shouldReceive('getRump->getPrestige')
+            ->withNoArgs()
+            ->andReturn(0);
+
+        $this->fightLib->shouldReceive('calculateHealthPercentage')
+            ->with($target)
+            ->andReturn(75);
+
+        $this->fleetWrapper->shouldReceive('getLeadWrapper')
+            ->andReturn($wrapper);
+        $wrapper->shouldReceive('get')
+            ->once()
+            ->andReturn($ship);
+
+        $this->shipRepository->shouldReceive('getPirateTargets')
+            ->with($ship)
+            ->once()
+            ->andReturn([$target]);
+
+        $this->interactionChecker->shouldReceive('checkPosition')
+            ->with($ship, $target)
+            ->once()
+            ->andReturn(true);
+
+        $this->fightLib->shouldReceive('canAttackTarget')
+            ->with($ship, $target, false)
+            ->once()
+            ->andReturn(true);
+
+        $this->shipWrapperFactory->shouldReceive('wrapShip')
+            ->with($target)
+            ->once()
+            ->andReturn($targetWrapper);
+
+        $this->shipAttackCore->shouldReceive('attack')
+            ->with($wrapper, $targetWrapper, false, Mockery::any())
+            ->once()
+            ->andReturn(true);
+
+        $this->pirateReaction->shouldReceive('react')
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
+            ->once();
+
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $target);
     }
 
     public function testActionExpectAttackOfWeakestTarget(): void
@@ -283,6 +392,16 @@ class RageBehaviourTest extends StuTestCase
         $target3_1->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(44);
+
+        $target->shouldReceive('getRump->getPrestige')
+            ->withNoArgs()
+            ->andReturn(1);
+        $target2->shouldReceive('getRump->getPrestige')
+            ->withNoArgs()
+            ->andReturn(1);
+        $target3_1->shouldReceive('getRump->getPrestige')
+            ->withNoArgs()
+            ->andReturn(1);
 
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
@@ -346,6 +465,6 @@ class RageBehaviourTest extends StuTestCase
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
             ->once();
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
     }
 }

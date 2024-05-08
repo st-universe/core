@@ -123,7 +123,7 @@ class PirateReaction implements PirateReactionInterface
 
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper);
+        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $triggerShip);
         if (
             $reactionTrigger->triggerAlternativeReaction()
             &&  $alternativeBehaviour !== null
@@ -133,14 +133,14 @@ class PirateReaction implements PirateReactionInterface
                 $fleet->getId(),
                 $alternativeBehaviour->name
             ));
-            $this->action($alternativeBehaviour, $fleetWrapper);
+            $this->action($alternativeBehaviour, $fleetWrapper, $triggerShip);
         }
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
-            $this->action(PirateBehaviourEnum::GO_ALERT_RED, $fleetWrapper);
+            $this->action(PirateBehaviourEnum::GO_ALERT_RED, $fleetWrapper, null);
         }
 
-        $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $fleetWrapper);
+        $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $fleetWrapper, null);
     }
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum
@@ -150,9 +150,13 @@ class PirateReaction implements PirateReactionInterface
         return PirateBehaviourEnum::from($value);
     }
 
-    private function action(PirateBehaviourEnum $behaviour, FleetWrapperInterface $fleetWrapper): ?PirateBehaviourEnum
+    private function action(PirateBehaviourEnum $behaviour, FleetWrapperInterface $fleetWrapper, ?ShipInterface $triggerShip): ?PirateBehaviourEnum
     {
-        $alternativeBehaviour = $this->behaviours[$behaviour->value]->action($fleetWrapper, $this);
+        $alternativeBehaviour = $this->behaviours[$behaviour->value]->action(
+            $fleetWrapper,
+            $this,
+            $triggerShip
+        );
 
         $this->reloadMinimalEps->reload($fleetWrapper);
 
