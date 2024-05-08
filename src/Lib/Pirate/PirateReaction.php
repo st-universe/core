@@ -109,9 +109,11 @@ class PirateReaction implements PirateReactionInterface
 
         $behaviourType = $this->getRandomBehaviourType($reactionTrigger);
         $this->logger->log(sprintf(
-            'pirateFleetId %d reacts on %s with %s',
+            'pirateFleetId %d reacts on %s from "%s" (%d) with %s',
             $fleet->getId(),
             $reactionTrigger->name,
+            $triggerShip->getName(),
+            $triggerShip->getId(),
             $behaviourType->name
         ));
 
