@@ -15,7 +15,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -26,40 +25,16 @@ final class InterceptShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_INTERCEPT';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
-    private PirateReactionInterface $pirateReaction;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipSystemManagerInterface $shipSystemManager,
-        InteractionCheckerInterface $interactionChecker,
-        AlertRedHelperInterface $alertRedHelper,
-        PirateReactionInterface $pirateReaction,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        EntityManagerInterface $entityManager
+        private ShipLoaderInterface $shipLoader,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private InteractionCheckerInterface $interactionChecker,
+        private AlertRedHelperInterface $alertRedHelper,
+        private PirateReactionInterface $pirateReaction,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private EntityManagerInterface $entityManager
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->interactionChecker = $interactionChecker;
-        $this->alertRedHelper = $alertRedHelper;
-        $this->pirateReaction = $pirateReaction;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -162,17 +137,11 @@ final class InterceptShip implements ActionControllerInterface
             $this->alertRedHelper->doItAll($ship, $game);
         }
 
-        $targetFleet = $target->getFleet();
-        if (
-            $targetFleet !== null
-            && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
-        ) {
-            $this->pirateReaction->react(
-                $targetFleet,
-                PirateReactionTriggerEnum::ON_INTERCEPTION,
-                $ship
-            );
-        }
+        $this->pirateReaction->checkForPirateReaction(
+            $target,
+            PirateReactionTriggerEnum::ON_INTERCEPTION,
+            $ship
+        );
     }
 
     public function performSessionCheck(): bool

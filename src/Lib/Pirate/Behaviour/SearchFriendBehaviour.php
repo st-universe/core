@@ -25,9 +25,6 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         private ReloadMinimalEpsInterface $reloadMinimalEps,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->pirateNavigation = $pirateNavigation;
-
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 

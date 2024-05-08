@@ -8,6 +8,7 @@ use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
@@ -62,6 +63,29 @@ class PirateReaction implements PirateReactionInterface
         private array $behaviours
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
+    }
+
+    public function checkForPirateReaction(
+        ShipInterface $target,
+        PirateReactionTriggerEnum $reactionTrigger,
+        ShipInterface $triggerShip
+    ): bool {
+
+        $targetFleet = $target->getFleet();
+        if (
+            $targetFleet === null
+            || $targetFleet->getUser()->getId() !== UserEnum::USER_NPC_KAZON
+        ) {
+            return false;
+        }
+
+        $this->react(
+            $targetFleet,
+            PirateReactionTriggerEnum::ON_SCAN,
+            $triggerShip
+        );
+
+        return true;
     }
 
     public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger, ShipInterface $triggerShip): void

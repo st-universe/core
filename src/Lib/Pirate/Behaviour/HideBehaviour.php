@@ -12,20 +12,13 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 class HideBehaviour implements PirateBehaviourInterface
 {
-    private StarSystemRepositoryInterface $starSystemRepository;
-
-    private PirateNavigationInterface $pirateNavigation;
-
     private PirateLoggerInterface $logger;
 
     public function __construct(
-        StarSystemRepositoryInterface $starSystemRepository,
-        PirateNavigationInterface $pirateNavigation,
+        private StarSystemRepositoryInterface $starSystemRepository,
+        private PirateNavigationInterface $pirateNavigation,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->starSystemRepository = $starSystemRepository;
-        $this->pirateNavigation = $pirateNavigation;
-
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 

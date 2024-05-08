@@ -6,6 +6,8 @@ namespace Stu\Lib\Transfer\Strategy;
 
 use request;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,16 +17,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 class CommodityTransferStrategy implements TransferStrategyInterface
 {
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private BeamUtilInterface $beamUtil;
-
     public function __construct(
-        ColonyLibFactoryInterface $colonyLibFactory,
-        BeamUtilInterface $beamUtil
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private BeamUtilInterface $beamUtil,
+        private PirateReactionInterface $pirateReaction
     ) {
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->beamUtil = $beamUtil;
     }
 
     public function setTemplateVariables(
@@ -76,11 +73,13 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             }
         }
 
+        $hasTransfered = false;
+
         // check for fleet option
         $fleetWrapper = $wrapper->getFleetWrapper();
         if (request::postInt('isfleet') && $fleetWrapper !== null) {
             foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-                $this->transferPerShip(
+                $hasTransfered = $hasTransfered ||  $this->transferPerShip(
                     $isUnload,
                     $wrapper,
                     $target,
@@ -88,7 +87,19 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 );
             }
         } else {
-            $this->transferPerShip($isUnload, $wrapper, $target, $informations);
+            $hasTransfered =  $this->transferPerShip($isUnload, $wrapper, $target, $informations);
+        }
+
+        if (
+            !$isUnload
+            && $hasTransfered
+            && $target instanceof ShipInterface
+        ) {
+            $this->pirateReaction->checkForPirateReaction(
+                $target,
+                PirateReactionTriggerEnum::ON_BEAM,
+                $wrapper->get()
+            );
         }
     }
 
@@ -97,7 +108,8 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         ShipWrapperInterface $wrapper,
         ShipInterface|ColonyInterface $target,
         InformationWrapper $informations
-    ): void {
+    ): bool {
+
         $ship = $wrapper->get();
         $epsSystem = $wrapper->getEpsSystemData();
 
@@ -105,25 +117,25 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         $isDockTransfer = $this->beamUtil->isDockTransfer($ship, $target);
         if (!$isDockTransfer && ($epsSystem === null || $epsSystem->getEps() === 0)) {
             $informations->addInformation(_("Keine Energie vorhanden"));
-            return;
+            return false;
         }
         if ($ship->getCloakState()) {
             $informations->addInformation(_("Die Tarnung ist aktiviert"));
-            return;
+            return false;
         }
         if ($ship->getWarpState()) {
             $informations->addInformation(_("Der Warpantrieb ist aktiviert"));
-            return;
+            return false;
         }
         if ($target instanceof ShipInterface && $target->getWarpState()) {
             $informations->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
-            return;
+            return false;
         }
 
         $transferTarget = $isUnload ? $target : $ship;
         if ($transferTarget->getMaxStorage() <= $transferTarget->getStorageSum()) {
             $informations->addInformation(sprintf(_('%s: Der Lagerraum ist voll'), $transferTarget->getName()));
-            return;
+            return false;
         }
 
         $commodities = request::postArray('commodities');
@@ -133,11 +145,11 @@ class CommodityTransferStrategy implements TransferStrategyInterface
 
         if ($storage->isEmpty()) {
             $informations->addInformation(_("Keine Waren zum Beamen vorhanden"));
-            return;
+            return false;
         }
         if (count($commodities) == 0 || count($gcount) == 0) {
             $informations->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
-            return;
+            return false;
         }
         $informations->addInformation(sprintf(
             _('Die %s hat folgende Waren %s %s %s transferiert'),
@@ -146,6 +158,8 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             $target instanceof ColonyInterface ? 'Kolonie' : '',
             $target->getName()
         ));
+
+        $hasTransfered = false;
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
 
@@ -153,7 +167,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 continue;
             }
 
-            $this->beamUtil->transferCommodity(
+            $hasTransfered = $hasTransfered || $this->beamUtil->transferCommodity(
                 $commodityId,
                 $gcount[$key],
                 $wrapper,
@@ -162,5 +176,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 $informations
             );
         }
+
+        return $hasTransfered;
     }
 }

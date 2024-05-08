@@ -18,32 +18,16 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class RageBehaviour implements PirateBehaviourInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private FightLibInterface $fightLib;
-
-    private ShipAttackCoreInterface $shipAttackCore;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private PirateLoggerInterface $logger;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        InteractionCheckerInterface $interactionChecker,
-        FightLibInterface $fightLib,
-        ShipAttackCoreInterface $shipAttackCore,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ShipRepositoryInterface $shipRepository,
+        private InteractionCheckerInterface $interactionChecker,
+        private FightLibInterface $fightLib,
+        private ShipAttackCoreInterface $shipAttackCore,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->interactionChecker = $interactionChecker;
-        $this->fightLib = $fightLib;
-        $this->shipAttackCore = $shipAttackCore;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 

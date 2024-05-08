@@ -12,7 +12,6 @@ use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
@@ -24,32 +23,14 @@ final class AttackShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ATTACK_SHIP';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private NbsUtilityInterface $nbsUtility;
-
-    private FightLibInterface $fightLib;
-
-    private ShipAttackCoreInterface $shipAttackCore;
-
-    private PirateReactionInterface $pirateReaction;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker,
-        NbsUtilityInterface $nbsUtility,
-        FightLibInterface $fightLib,
-        ShipAttackCoreInterface $shipAttackCore,
-        PirateReactionInterface $pirateReaction
+        private ShipLoaderInterface $shipLoader,
+        private InteractionCheckerInterface $interactionChecker,
+        private NbsUtilityInterface $nbsUtility,
+        private FightLibInterface $fightLib,
+        private ShipAttackCoreInterface $shipAttackCore,
+        private PirateReactionInterface $pirateReaction
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
-        $this->nbsUtility = $nbsUtility;
-        $this->fightLib = $fightLib;
-        $this->shipAttackCore = $shipAttackCore;
-        $this->pirateReaction = $pirateReaction;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -117,20 +98,13 @@ final class AttackShip implements ActionControllerInterface
         $isFleetFight = false;
         $informations = new InformationWrapper();
 
-        $targetFleet = $target->getFleet();
-
         $this->shipAttackCore->attack($wrapper, $targetWrapper, $isFleetFight, $informations);
 
-        if (
-            $targetFleet !== null
-            && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
-        ) {
-            $this->pirateReaction->react(
-                $targetFleet,
-                PirateReactionTriggerEnum::ON_ATTACK,
-                $ship
-            );
-        }
+        $this->pirateReaction->checkForPirateReaction(
+            $target,
+            PirateReactionTriggerEnum::ON_ATTACK,
+            $ship
+        );
 
         if ($ship->isDestroyed()) {
             $game->addInformationWrapper($informations);

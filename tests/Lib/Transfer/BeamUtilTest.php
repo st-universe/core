@@ -58,7 +58,7 @@ class BeamUtilTest extends StuTestCase
             ->once()
             ->andReturn(new ArrayCollection());
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             999,
             $colony,
@@ -66,6 +66,8 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $this->informations
         );
+
+        $this->assertFalse($result);
     }
 
     public function testTransferCommodityExpectInfoWhenCommodityNotBeamable(): void
@@ -101,7 +103,7 @@ class BeamUtilTest extends StuTestCase
             ->with('%s ist nicht beambar', 'COMMODITY')
             ->once();
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             999,
             $colony,
@@ -109,6 +111,8 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $this->informations
         );
+
+        $this->assertFalse($result);
     }
 
     public function testTransferCommodityExpectNothingWhenNoEps(): void
@@ -139,7 +143,7 @@ class BeamUtilTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             999,
             $colony,
@@ -147,6 +151,8 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $this->informations
         );
+
+        $this->assertFalse($result);
     }
 
     public function testTransferCommodityExpectNothingWhenAmountNotReadable(): void
@@ -177,7 +183,7 @@ class BeamUtilTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->transferCommodity(
+        $result =  $this->subject->transferCommodity(
             42,
             'FOO',
             $colony,
@@ -185,6 +191,8 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $this->informations
         );
+
+        $this->assertFalse($result);
     }
 
     public function testTransferCommodityExpectNothingWhenAmountSmallerOne(): void
@@ -215,7 +223,7 @@ class BeamUtilTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             0,
             $colony,
@@ -223,6 +231,8 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $this->informations
         );
+
+        $this->assertFalse($result);
     }
 
     public function testTransferCommodityExpectNothingWhenTargetStorageFull(): void
@@ -259,7 +269,7 @@ class BeamUtilTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             1,
             $colony,
@@ -267,6 +277,8 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $this->informations
         );
+
+        $this->assertFalse($result);
     }
 
     public function testTransferCommodityExpectTransferCappedByStorageAmount(): void
@@ -342,7 +354,7 @@ class BeamUtilTest extends StuTestCase
             ->with('%d %s (Energieverbrauch: %d)', 55, 'COMMODITY', 6)
             ->once();
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             56,
             $colony,
@@ -350,6 +362,8 @@ class BeamUtilTest extends StuTestCase
             $ship,
             $this->informations
         );
+
+        $this->assertTrue($result);
     }
 
     public function testTransferCommodityExpectMaximumTransfer(): void
@@ -424,7 +438,7 @@ class BeamUtilTest extends StuTestCase
             ->with('%d %s (Energieverbrauch: %d)', 99, 'COMMODITY', 10)
             ->once();
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             'max',
             $colony,
@@ -432,6 +446,8 @@ class BeamUtilTest extends StuTestCase
             $ship,
             $this->informations
         );
+
+        $this->assertTrue($result);
     }
 
     public function testTransferCommodityExpectTransferCappedByColonyEps(): void
@@ -507,7 +523,7 @@ class BeamUtilTest extends StuTestCase
             ->with('%d %s (Energieverbrauch: %d)', 50, 'COMMODITY', 5)
             ->once();
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             56,
             $colony,
@@ -515,6 +531,8 @@ class BeamUtilTest extends StuTestCase
             $ship,
             $this->informations
         );
+
+        $this->assertTrue($result);
     }
 
     public function testTransferCommodityExpectTransferCappedByShipEps(): void
@@ -600,7 +618,7 @@ class BeamUtilTest extends StuTestCase
             ->with('%d %s (Energieverbrauch: %d)', 50, 'COMMODITY', 5)
             ->once();
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             56,
             $wrapper,
@@ -608,6 +626,8 @@ class BeamUtilTest extends StuTestCase
             $colony,
             $this->informations
         );
+
+        $this->assertTrue($result);
     }
 
     public function testTransferCommodityExpectTransferCappedByFreeStorage(): void
@@ -683,7 +703,7 @@ class BeamUtilTest extends StuTestCase
             ->with('%d %s (Energieverbrauch: %d)', 10, 'COMMODITY', 1)
             ->once();
 
-        $this->subject->transferCommodity(
+        $result = $this->subject->transferCommodity(
             42,
             56,
             $colony,
@@ -691,5 +711,7 @@ class BeamUtilTest extends StuTestCase
             $ship,
             $this->informations
         );
+
+        $this->assertTrue($result);
     }
 }

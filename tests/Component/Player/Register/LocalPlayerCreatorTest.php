@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\MockInterface;
@@ -33,6 +34,9 @@ class LocalPlayerCreatorTest extends StuTestCase
     /** @var MockInterface&PasswordGeneratorInterface */
     private MockInterface $passwordGenerator;
 
+    /** @var MockInterface&EntityManagerInterface */
+    private MockInterface $entityManager;
+
     private LocalPlayerCreator $subject;
 
     protected function setUp(): void
@@ -43,6 +47,7 @@ class LocalPlayerCreatorTest extends StuTestCase
         $this->smsVerificationCodeSender = $this->mock(SmsVerificationCodeSenderInterface::class);
         $this->stuHash = $this->mock(StuHashInterface::class);
         $this->passwordGenerator = $this->mock(PasswordGeneratorInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->subject = new LocalPlayerCreator(
             $this->userRepository,
@@ -50,7 +55,8 @@ class LocalPlayerCreatorTest extends StuTestCase
             $this->registrationEmailSender,
             $this->smsVerificationCodeSender,
             $this->stuHash,
-            $this->passwordGenerator
+            $this->passwordGenerator,
+            $this->entityManager
         );
     }
 
