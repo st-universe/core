@@ -16,7 +16,14 @@ class DeactivateShieldsBehaviour implements PirateBehaviourInterface
     public function action(FleetWrapperInterface $fleetWrapper, PirateReactionInterface $pirateReaction): ?PirateBehaviourEnum
     {
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
+            $ship = $wrapper->get();
+            if ($ship->getShield() === $ship->getMaxShield()) {
+                continue;
+            }
+
+            if ($ship->getStorage()->isEmpty()) {
+                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
+            }
         }
 
         return null;
