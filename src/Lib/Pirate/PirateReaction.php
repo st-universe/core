@@ -49,6 +49,16 @@ class PirateReaction implements PirateReactionInterface
             PirateBehaviourEnum::DO_NOTHING->value => 30,
             PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20
         ],
+        PirateReactionTriggerEnum::ON_TRACTOR->value => [
+            PirateBehaviourEnum::RAGE->value => 50,
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 50,
+            PirateBehaviourEnum::DO_NOTHING->value => 20
+        ],
+        PirateReactionTriggerEnum::ON_BEAM->value => [
+            PirateBehaviourEnum::RAGE->value => 50,
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 50,
+            PirateBehaviourEnum::DO_NOTHING->value => 10
+        ],
     ];
 
     private PirateLoggerInterface $logger;
@@ -81,7 +91,7 @@ class PirateReaction implements PirateReactionInterface
 
         $this->react(
             $targetFleet,
-            PirateReactionTriggerEnum::ON_SCAN,
+            $reactionTrigger,
             $triggerShip
         );
 
@@ -112,7 +122,10 @@ class PirateReaction implements PirateReactionInterface
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
         $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper);
-        if ($alternativeBehaviour !== null) {
+        if (
+            $reactionTrigger->triggerAlternativeReaction()
+            &&  $alternativeBehaviour !== null
+        ) {
             $this->logger->log(sprintf(
                 'pirateFleetId %d does alternative behaviour %s',
                 $fleet->getId(),

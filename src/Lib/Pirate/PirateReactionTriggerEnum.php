@@ -24,4 +24,17 @@ enum PirateReactionTriggerEnum: int
             self::ON_RAGE => 0,
         };
     }
+
+    public function triggerAlternativeReaction(): bool
+    {
+        return match ($this) {
+            self::ON_TRACTOR => false,
+            self::ON_ATTACK => true,
+            self::ON_INTERCEPTION => true,
+            self::ON_BEAM => true,
+            self::ON_SCAN => true,
+            self::ON_SUPPORT_CALL => true,
+            self::ON_RAGE => true
+        };
+    }
 }
