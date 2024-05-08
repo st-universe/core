@@ -150,9 +150,10 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $usersToInformAboutTrojanHorse = [];
 
         foreach ($shipsOnLocation as $shipOnLocation) {
+            $user = $shipOnLocation->getUser();
+
             //ships of friends from tractoring ship dont attack
-            if ($tractoringShip !== null && $this->playerRelationDeterminator->isFriend($shipOnLocation->getUser(), $tractoringShip->getUser())) {
-                $user = $shipOnLocation->getUser();
+            if ($tractoringShip !== null && $this->playerRelationDeterminator->isFriend($user, $tractoringShip->getUser())) {
                 $userId = $user->getId();
 
                 if (
@@ -174,7 +175,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             }
 
             //ships of friends dont attack
-            if ($this->playerRelationDeterminator->isFriend($shipOnLocation->getUser(), $leadShipUser)) {
+            if ($this->playerRelationDeterminator->isFriend($user, $leadShipUser)) {
                 continue;
             }
 
@@ -187,6 +188,16 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $pirateWrath = $leadShipUser->getPirateWrath();
             if (
                 $shipOnLocation->getUserId() === UserEnum::USER_NPC_KAZON
+                && $pirateWrath !== null
+                && $pirateWrath->getProtectionTimeout() > time()
+            ) {
+                continue;
+            }
+
+            //players don't attack pirates if protection is active
+            $pirateWrath = $user->getPirateWrath();
+            if (
+                $leadShipUser->getId() === UserEnum::USER_NPC_KAZON
                 && $pirateWrath !== null
                 && $pirateWrath->getProtectionTimeout() > time()
             ) {
