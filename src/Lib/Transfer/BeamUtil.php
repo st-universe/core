@@ -39,40 +39,40 @@ final class BeamUtil implements BeamUtilInterface
         ShipInterface|ColonyInterface $source,
         ShipInterface|ColonyInterface $target,
         InformationWrapper $informations
-    ): void {
+    ): bool {
 
         $sourceStorage =  $source->getStorage()[$commodityId] ?? null;
         if ($sourceStorage === null) {
-            return;
+            return false;
         }
 
         $commodity = $sourceStorage->getCommodity();
         if (!$commodity->isBeamable($source->getUser(), $target->getUser())) {
             $informations->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
-            return;
+            return false;
         }
 
         $isDockTransfer = $this->isDockTransfer($source, $target);
 
         $availableEps = $this->getAvailableEps($subject);
         if (!$isDockTransfer && $availableEps < 1) {
-            return;
+            return false;
         }
 
         if ($wantedAmount === "max") {
             $amount = $sourceStorage->getAmount();
         } else if (!is_numeric($wantedAmount)) {
-            return;
+            return false;
         } else {
             $amount =  (int)$wantedAmount;
         }
 
         if ($amount < 1) {
-            return;
+            return false;
         }
 
         if ($target->getStorageSum() >= $target->getMaxStorage()) {
-            return;
+            return false;
         }
 
         $amount = min($amount, $sourceStorage->getAmount());
@@ -98,6 +98,8 @@ final class BeamUtil implements BeamUtilInterface
         $this->lowerSourceStorage($amount, $commodity, $source);
         $this->upperTargetStorage($amount, $commodity, $target);
         $this->consumeEps($epsUsage, $subject);
+
+        return true;
     }
 
     public function isDockTransfer(

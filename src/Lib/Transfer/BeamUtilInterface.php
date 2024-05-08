@@ -18,7 +18,7 @@ interface BeamUtilInterface
         ShipInterface|ColonyInterface $source,
         ShipInterface|ColonyInterface $target,
         InformationWrapper $informations
-    ): void;
+    ): bool;
 
     public function isDockTransfer(
         ShipInterface|ColonyInterface $source,

@@ -11,7 +11,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -22,24 +21,12 @@ final class ShowScan implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SCAN';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private PirateReactionInterface $pirateReaction;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker,
-        PirateReactionInterface $pirateReaction,
-        PrivateMessageSenderInterface $privateMessageSender
+        private ShipLoaderInterface $shipLoader,
+        private InteractionCheckerInterface $interactionChecker,
+        private PirateReactionInterface $pirateReaction,
+        private PrivateMessageSenderInterface $privateMessageSender
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
-        $this->pirateReaction = $pirateReaction;
-        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -123,17 +110,11 @@ final class ShowScan implements ViewControllerInterface
         }
         $game->setTemplateVar('TRADE_POST_CREW_COUNT', $tradePostCrewCount);
 
-        $targetFleet = $target->getFleet();
-        if (
-            $targetFleet !== null
-            && $targetFleet->getUser()->getId() === UserEnum::USER_NPC_KAZON
-        ) {
-            $this->pirateReaction->react(
-                $targetFleet,
-                PirateReactionTriggerEnum::ON_SCAN,
-                $ship
-            );
-        }
+        $this->pirateReaction->checkForPirateReaction(
+            $target,
+            PirateReactionTriggerEnum::ON_SCAN,
+            $ship
+        );
     }
 
     private function calculateShieldPercentage(ShipInterface $target): int

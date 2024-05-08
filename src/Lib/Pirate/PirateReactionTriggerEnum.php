@@ -9,8 +9,8 @@ enum PirateReactionTriggerEnum: int
     case ON_INTERCEPTION = 3;
     case ON_SUPPORT_CALL = 4;
     case ON_RAGE = 5;
-    case ON_TRACTOR = 6; //TODO
-    case ON_BEAM = 6; //TODO
+    case ON_TRACTOR = 6;
+    case ON_BEAM = 7;
 
     public function getWrath(): int
     {

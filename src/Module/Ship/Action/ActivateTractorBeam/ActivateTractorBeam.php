@@ -13,6 +13,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -30,45 +32,18 @@ final class ActivateTractorBeam implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ACTIVATE_TRACTOR';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private ThreatReactionInterface $threatReaction;
-
-    private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository,
-        InteractionCheckerInterface $interactionChecker,
-        ActivatorDeactivatorHelperInterface $helper,
-        ShipSystemManagerInterface $shipSystemManager,
-        ShipStateChangerInterface $shipStateChanger,
-        ThreatReactionInterface $threatReaction,
-        TractorMassPayloadUtilInterface $tractorMassPayloadUtil
+        private ShipLoaderInterface $shipLoader,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ShipRepositoryInterface $shipRepository,
+        private InteractionCheckerInterface $interactionChecker,
+        private ActivatorDeactivatorHelperInterface $helper,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private ShipStateChangerInterface $shipStateChanger,
+        private ThreatReactionInterface $threatReaction,
+        private TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        private PirateReactionInterface $pirateReaction
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
-        $this->interactionChecker = $interactionChecker;
-        $this->helper = $helper;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->threatReaction = $threatReaction;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -140,16 +115,23 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
 
-        $this->threatReaction->reactToThreat(
-            $wrapper,
-            $targetWrapper,
-            sprintf(
-                "Die %s versucht die %s in Sektor %s mit dem Traktorstrahl zu erfassen.",
-                $shipName,
-                $targetName,
-                $ship->getSectorString()
-            )
-        );
+        if (!$this->pirateReaction->checkForPirateReaction(
+            $target,
+            PirateReactionTriggerEnum::ON_TRACTOR,
+            $ship
+        )) {
+
+            $this->threatReaction->reactToThreat(
+                $wrapper,
+                $targetWrapper,
+                sprintf(
+                    "Die %s versucht die %s in Sektor %s mit dem Traktorstrahl zu erfassen.",
+                    $shipName,
+                    $targetName,
+                    $ship->getSectorString()
+                )
+            );
+        }
 
         if ($ship->isDestroyed()) {
             return;

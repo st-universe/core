@@ -37,15 +37,6 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->colonyRepository = $colonyRepository;
-        $this->distanceCalculation = $distanceCalculation;
-        $this->pirateNavigation = $pirateNavigation;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->beamUtil = $beamUtil;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->stuRandom = $stuRandom;
-
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
@@ -107,7 +98,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
             $informations = new InformationWrapper();
 
-            $this->beamUtil->transferCommodity(
+            $hasStolen = $this->beamUtil->transferCommodity(
                 $randomCommodityId,
                 $this->stuRandom->rand(1, $wrapper->get()->getMaxStorage()),
                 $wrapper,
@@ -116,7 +107,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                 $informations
             );
 
-            if (!$informations->isEmpty()) {
+            if ($hasStolen) {
                 $informations->addInformationArray([sprintf(
                     _('Die %s hat folgende Waren von der Kolonie %s gestohlen'),
                     $ship->getName(),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -50,6 +51,11 @@ class PlayerCreatorTest extends MockeryTestCase
     private $passwordGenerator;
 
     /**
+     * @var null|MockInterface|EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @var null|PlayerCreator
      */
     private $creator;
@@ -62,6 +68,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->smsVerificationCodeSender = Mockery::mock(SmsVerificationCodeSenderInterface::class);
         $this->stuHash = Mockery::mock(StuHashInterface::class);
         $this->passwordGenerator = Mockery::mock(PasswordGeneratorInterface::class);
+        $this->entityManager = Mockery::mock(EntityManagerInterface::class);
 
         $this->creator = new PlayerCreator(
             $this->userRepository,
@@ -69,7 +76,8 @@ class PlayerCreatorTest extends MockeryTestCase
             $this->registrationEmailSender,
             $this->smsVerificationCodeSender,
             $this->stuHash,
-            $this->passwordGenerator
+            $this->passwordGenerator,
+            $this->entityManager
         );
     }
 
@@ -199,6 +207,10 @@ class PlayerCreatorTest extends MockeryTestCase
 
         $this->registrationEmailSender->shouldReceive('send')
             ->with($user, $password)
+            ->once();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
             ->once();
 
         $this->creator->createPlayer(
