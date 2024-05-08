@@ -46,6 +46,7 @@ class RageBehaviour implements PirateBehaviourInterface
             $this->interactionChecker->checkPosition($leadShip, $target)
                 && $this->fightLib->canAttackTarget($leadShip, $target, false)
                 && !$target->getUser()->isProtectedAgainstPirates()
+                && $this->targetHasPositivePrestige($target)
         );
 
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
@@ -81,6 +82,20 @@ class RageBehaviour implements PirateBehaviourInterface
         );
 
         return null;
+    }
+
+    private function targetHasPositivePrestige(ShipInterface $target): bool
+    {
+        $fleet = $target->getFleet();
+        if ($fleet !== null) {
+            foreach ($fleet->getShips() as $ship) {
+                if ($ship->getRump()->getPrestige() > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return $target->getRump()->getPrestige() > 0;
     }
 
     private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
