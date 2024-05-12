@@ -7,7 +7,7 @@ use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 
 final class PirateWrathDecreaser implements MaintenanceHandlerInterface
 {
-    public const DECREASE_AMOUNT_PER_DAY = 10;
+    public const DECREASE_AMOUNT_PER_DAY = 20;
 
     public function __construct(
         private PirateWrathRepositoryInterface $pirateWrathRepository
