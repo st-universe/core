@@ -147,8 +147,8 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         $wrathFactor = $wrath->getWrath() / PirateWrathInterface::DEFAULT_WRATH;
 
-        // 1 Prestige = 1.44 Stunden = 5184 Sekunden
-        $baseTimeoutInSeconds = max(1, ((1 / $wrathFactor) ** 2) * ($prestige * 5184));
+        // 1 Prestige = 2.88 Stunden = 10368 Sekunden
+        $baseTimeoutInSeconds = max(1, ((1 / $wrathFactor) ** 2) * ($prestige * 10368));
         $minTimeout = $baseTimeoutInSeconds * 0.95;
         $maxTimeout = $baseTimeoutInSeconds * 1.05;
 
