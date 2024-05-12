@@ -15,7 +15,7 @@ final class RateKnPost implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_RATE_KN_POST';
 
-    private const PRESTIGE_PER_POSITIVE_VOTE = 1;
+    private const PRESTIGE_PER_POSITIVE_VOTE = 5;
 
     private KnPostRepositoryInterface $knPostRepository;
 
