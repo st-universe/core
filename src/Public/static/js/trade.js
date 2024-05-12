@@ -106,7 +106,7 @@ function calculatePirateProtectionDates(currentWrath, currentTimeout) {
 
 function calculateStartDate(currentWrath, currentTimeout, prestigeValue) {
 	const wrathFactor = currentWrath / 1000;
-	const timeoutInSeconds = Math.max(1, ((1 / wrathFactor) ** 2) * (prestigeValue * 5184) * 0.95); // 1 Prestige = 1.44 Stunden = 5184 Sekunden
+	const timeoutInSeconds = Math.max(1, ((1 / wrathFactor) ** 2) * (prestigeValue * 10368) * 0.95); // 1 Prestige = 2.88 Stunden = 10368 Sekunden
 	let timestamp = timeoutInSeconds;
 
 	if (currentTimeout !== null && currentTimeout > Date.now() / 1000) {
@@ -124,7 +124,7 @@ function calculateStartDate(currentWrath, currentTimeout, prestigeValue) {
 
 function calculateEndDate(currentWrath, currentTimeout, prestigeValue) {
 	const wrathFactor = currentWrath / 1000;
-	const timeoutInSeconds = Math.max(1, ((1 / wrathFactor) ** 2) * (prestigeValue * 5184) * 1.05);
+	const timeoutInSeconds = Math.max(1, ((1 / wrathFactor) ** 2) * (prestigeValue * 10368) * 1.05);
 	let timestamp = timeoutInSeconds;
 
 	if (currentTimeout !== null && currentTimeout > Date.now() / 1000) {
