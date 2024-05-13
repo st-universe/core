@@ -101,7 +101,8 @@ final class FightLib implements FightLibInterface
     public function canAttackTarget(
         ShipInterface $ship,
         ShipInterface|ShipNfsItem $target,
-        bool $checkActiveWeapons = true
+        bool $checkActiveWeapons = true,
+        bool $checkActiveWarpdrive = true
     ): bool {
         if ($checkActiveWeapons && !$ship->hasActiveWeapon()) {
             return false;
@@ -124,7 +125,7 @@ final class FightLib implements FightLibInterface
         }
 
         //can't attack target under warp
-        if ($target->getWarpState()) {
+        if ($checkActiveWarpdrive && $target->getWarpState()) {
             return false;
         }
 

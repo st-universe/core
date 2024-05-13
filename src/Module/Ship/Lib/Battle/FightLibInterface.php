@@ -23,7 +23,8 @@ interface FightLibInterface
     public function canAttackTarget(
         ShipInterface $ship,
         ShipInterface|ShipNfsItem $nfsItem,
-        bool $checkActiveWeapons = true
+        bool $checkActiveWeapons = true,
+        bool $checkActiveWarpdrive = true
     ): bool;
 
     /** @return array<int, ShipWrapperInterface> */
