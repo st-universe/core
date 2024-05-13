@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate;
 
+use JBBCode\Parser;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
@@ -69,6 +70,7 @@ class PirateReaction implements PirateReactionInterface
         private ReloadMinimalEpsInterface $reloadMinimalEps,
         private PirateWrathManagerInterface $pirateWrathManager,
         private StuRandom $stuRandom,
+        private Parser $bbCodeParser,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         private array $behaviours
     ) {
@@ -104,6 +106,7 @@ class PirateReaction implements PirateReactionInterface
 
         // check if fleet already defeated
         if ($fleet->getShips()->isEmpty()) {
+            $this->logger->logf('pirateFleetId %d has no ships left, no reaction triggered', $fleet->getId());
             return;
         }
 
@@ -112,7 +115,7 @@ class PirateReaction implements PirateReactionInterface
             'pirateFleetId %d reacts on %s from "%s" (%d) with %s',
             $fleet->getId(),
             $reactionTrigger->name,
-            $triggerShip->getName(),
+            $this->bbCodeParser->parse($triggerShip->getName())->getAsText(),
             $triggerShip->getId(),
             $behaviourType->name
         ));
