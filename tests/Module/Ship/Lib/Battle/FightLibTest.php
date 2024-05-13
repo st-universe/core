@@ -771,7 +771,51 @@ class FightLibTest extends StuTestCase
         $this->assertTrue($result);
     }
 
-    public function testgetAttackersAndDefendersExpectSingleVsSingle(): void
+    public function testCanAttackTargetExpectTrueWithoutWarpCheck(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(42);
+        $ship->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(77777);
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(43);
+
+        $result = $this->subject->canAttackTarget($ship, $target, true, false);
+
+        $this->assertTrue($result);
+    }
+
+    public function testGetAttackersAndDefendersExpectSingleVsSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -815,7 +859,7 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($isFleetFight);
     }
 
-    public function testgetAttackersAndDefendersExpectSingleVsSingleWhenDockedToNpc(): void
+    public function testGetAttackersAndDefendersExpectSingleVsSingleWhenDockedToNpc(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -864,7 +908,7 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($isFleetFight);
     }
 
-    public function testgetAttackersAndDefendersExpectSingleVsSingleWhenDockedOffline(): void
+    public function testGetAttackersAndDefendersExpectSingleVsSingleWhenDockedOffline(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -916,7 +960,7 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($isFleetFight);
     }
 
-    public function testgetAttackersAndDefendersExpectSingleVsSingleAndOnlineDocked(): void
+    public function testGetAttackersAndDefendersExpectSingleVsSingleAndOnlineDocked(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -974,7 +1018,7 @@ class FightLibTest extends StuTestCase
         $this->assertTrue($isFleetFight);
     }
 
-    public function testgetAttackersAndDefendersExpectFleetVsSingle(): void
+    public function testGetAttackersAndDefendersExpectFleetVsSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $wrapper2 = $this->mock(ShipWrapperInterface::class);
@@ -1027,7 +1071,7 @@ class FightLibTest extends StuTestCase
         $this->assertTrue($isFleetFight);
     }
 
-    public function testgetAttackersAndDefendersExpectSingleVsPartialCloakedFleet(): void
+    public function testGetAttackersAndDefendersExpectSingleVsPartialCloakedFleet(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -1092,7 +1136,7 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($isFleetFight);
     }
 
-    public function testgetAttackersAndDefendersExpectSingleVsFleetAndOnlineDocked(): void
+    public function testGetAttackersAndDefendersExpectSingleVsFleetAndOnlineDocked(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -1157,7 +1201,7 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($isFleetFight);
     }
 
-    public function testgetAttackersAndDefendersExpectSingleVsCloakedFleet(): void
+    public function testGetAttackersAndDefendersExpectSingleVsCloakedFleet(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
