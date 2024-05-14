@@ -47,10 +47,14 @@ final class AllianceRelationRenderer implements AllianceRelationRendererInterfac
         $graph->setAttribute('graphviz.graph.bgcolor', '#121220');
         $graph->setAttribute('graphviz.graph.tooltip', 'Diplomatische Beziehungen');
         $graph->setAttribute('graphviz.graph.ratio', 'compress');
+
+        $graph->setAttribute('graphviz.graph.scale', 0.5);
+        /**
         $graph->setAttribute(
             'graphviz.graph.size',
             sprintf('%02f,%02f', $width * self::PIXEL_TO_INCH, $height * self::PIXEL_TO_INCH)
         );
+         */
         $vertexes = [];
 
         /** @var AllianceRelationInterface $relation */
