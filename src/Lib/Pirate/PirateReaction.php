@@ -47,8 +47,8 @@ class PirateReaction implements PirateReactionInterface
         ],
         PirateReactionTriggerEnum::ON_RAGE->value => [
             PirateBehaviourEnum::RAGE->value => 50,
-            PirateBehaviourEnum::DO_NOTHING->value => 30,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20
+            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 30,
+            PirateBehaviourEnum::DO_NOTHING->value => 20
         ],
         PirateReactionTriggerEnum::ON_TRACTOR->value => [
             PirateBehaviourEnum::RAGE->value => 50,
