@@ -817,7 +817,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.cx BETWEEN :minX AND :maxX
                 AND s.cy BETWEEN :minY AND :maxY
                 AND s.layer_id = :layerId
-                AND s.is_fleet_leader = true
                 AND s.id != :shipId
                 AND s.user_id = :kazonUserId',
                 Ship::class

@@ -57,13 +57,19 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
     {
         $friends = $this->shipRepository->getPirateFriends($leadShip);
 
-        usort(
+        $filteredFriends = array_filter(
             $friends,
+            fn (ShipInterface $friend) =>
+            !$friend->isDestroyed() && $friend->isFleetLeader()
+        );
+
+        usort(
+            $filteredFriends,
             fn (ShipInterface $a, ShipInterface $b) =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
-        $closestFriend = current($friends);
+        $closestFriend = current($filteredFriends);
         if (!$closestFriend) {
             return $this->createSupportFleet($leadShip);
         }

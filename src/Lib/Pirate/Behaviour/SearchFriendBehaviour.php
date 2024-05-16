@@ -36,21 +36,25 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $friends = $this->shipRepository->getPirateFriends($leadShip);
+        $filteredFriends = array_filter(
+            $this->shipRepository->getPirateFriends($leadShip),
+            fn (ShipInterface $friend) =>
+            !$friend->isDestroyed() && $friend->isFleetLeader()
+        );
 
-        $this->logger->logf('    number of friends in reach: %d', count($friends));
+        $this->logger->logf('    number of friends in reach: %d', count($filteredFriends));
 
-        if (empty($friends)) {
+        if (empty($filteredFriends)) {
             return PirateBehaviourEnum::HIDE;
         }
 
         usort(
-            $friends,
+            $filteredFriends,
             fn (ShipInterface $a, ShipInterface $b) =>
             $this->fightLib->calculateHealthPercentage($a) -  $this->fightLib->calculateHealthPercentage($b)
         );
 
-        $weakestFriend = current($friends);
+        $weakestFriend = current($filteredFriends);
 
         $this->logger->logf(
             '    navigating from %s to weakest friend at %s',
