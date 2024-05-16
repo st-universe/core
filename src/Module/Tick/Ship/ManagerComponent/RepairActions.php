@@ -14,6 +14,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -197,14 +198,38 @@ final class RepairActions implements ManagerComponentInterface
 
         $repairFinished = false;
 
+        $this->repairHull($ship, $isRepairStationBonus);
+        $this->repairShipSystems($wrapper, $isRepairStationBonus);
+
+        // consume spare parts
+        $this->repairUtil->consumeSpareParts($neededParts, $entity);
+
+        if (!$wrapper->canBeRepaired()) {
+            $repairFinished = true;
+
+            $ship->setHuell($ship->getMaxHull());
+            $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+
+            $this->sendPrivateMessages($ship, $entity);
+        }
+        $this->shipRepository->save($ship);
+
+        return $repairFinished;
+    }
+
+    private function repairHull(ShipInterface $ship, bool $isRepairStationBonus): void
+    {
         $hullRepairRate = $isRepairStationBonus ? $ship->getRepairRate() * 2 : $ship->getRepairRate();
         $ship->setHuell($ship->getHull() + $hullRepairRate);
         if ($ship->getHull() > $ship->getMaxHull()) {
             $ship->setHuell($ship->getMaxHull());
         }
+    }
 
+    private function repairShipSystems(ShipWrapperInterface $wrapper, bool $isRepairStationBonus): void
+    {
+        $ship = $wrapper->get();
 
-        //repair ship systems
         $damagedSystems = $wrapper->getDamagedSystems();
         if (!empty($damagedSystems)) {
             $firstSystem = $damagedSystems[0];
@@ -244,63 +269,53 @@ final class RepairActions implements ManagerComponentInterface
                 }
             }
         }
+    }
 
-        // consume spare parts
-        $this->repairUtil->consumeSpareParts($neededParts, $entity);
+    private function sendPrivateMessages(ShipInterface $ship, ColonyInterface|ShipInterface $entity): void
+    {
+        $shipOwnerMessage = $entity instanceof ColonyInterface ? sprintf(
+            "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
+            $ship->getName(),
+            $ship->getSectorString(),
+            $entity->getName(),
+            $entity->getUser()->getName()
+        ) : sprintf(
+            "Die Reparatur der %s wurde in Sektor %s von der %s %s des Spielers %s fertiggestellt",
+            $ship->getName(),
+            $ship->getSectorString(),
+            $entity->getRump()->getName(),
+            $entity->getName(),
+            $entity->getUser()->getName()
+        );
 
-        if (!$wrapper->canBeRepaired()) {
-            $repairFinished = true;
+        $this->privateMessageSender->send(
+            $entity->getUser()->getId(),
+            $ship->getUser()->getId(),
+            $shipOwnerMessage,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
 
-            $ship->setHuell($ship->getMaxHull());
-            $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+        $entityOwnerMessage = $entity instanceof ColonyInterface ? sprintf(
+            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
+            $ship->getName(),
+            $ship->getUser()->getName(),
+            $ship->getSectorString(),
+            $entity->getName()
+        ) : sprintf(
+            "Die Reparatur der %s von Siedler %s wurde in Sektor %s von der %s %s fertiggestellt",
+            $ship->getName(),
+            $ship->getUser()->getName(),
+            $ship->getSectorString(),
+            $entity->getRump()->getName(),
+            $entity->getName()
+        );
 
-            $shipOwnerMessage = $entity instanceof ColonyInterface ? sprintf(
-                "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
-                $ship->getName(),
-                $ship->getSectorString(),
-                $entity->getName(),
-                $entity->getUser()->getName()
-            ) : sprintf(
-                "Die Reparatur der %s wurde in Sektor %s von der %s %s des Spielers %s fertiggestellt",
-                $ship->getName(),
-                $ship->getSectorString(),
-                $entity->getRump()->getName(),
-                $entity->getName(),
-                $entity->getUser()->getName()
-            );
-
-            $this->privateMessageSender->send(
-                $entity->getUser()->getId(),
-                $ship->getUser()->getId(),
-                $shipOwnerMessage,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-
-            $entityOwnerMessage = $entity instanceof ColonyInterface ? sprintf(
-                "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
-                $ship->getName(),
-                $ship->getUser()->getName(),
-                $ship->getSectorString(),
-                $entity->getName()
-            ) : sprintf(
-                "Die Reparatur der %s von Siedler %s wurde in Sektor %s von der %s %s fertiggestellt",
-                $ship->getName(),
-                $ship->getUser()->getName(),
-                $ship->getSectorString(),
-                $entity->getRump()->getName(),
-                $entity->getName()
-            );
-
-            $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
-                $entity->getUser()->getId(),
-                $entityOwnerMessage,
-                $entity instanceof ColonyInterface ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
-            );
-        }
-        $this->shipRepository->save($ship);
-
-        return $repairFinished;
+        $this->privateMessageSender->send(
+            UserEnum::USER_NOONE,
+            $entity->getUser()->getId(),
+            $entityOwnerMessage,
+            $entity instanceof ColonyInterface ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+        );
     }
 }

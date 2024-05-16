@@ -35,9 +35,14 @@ enum ShipModuleTypeEnum: int
     case SENSOR = 10;
     case WARPDRIVE = 11;
 
+    public function isSpecialSystemType(): bool
+    {
+        return $this === self::SPECIAL;
+    }
+
     public function hasCorrespondingSystemType(): bool
     {
-        return $this !== self::HULL && $this !== self::SPECIAL;
+        return $this !== self::HULL && !$this->isSpecialSystemType();
     }
 
     public function getSystemType(): ShipSystemTypeEnum
