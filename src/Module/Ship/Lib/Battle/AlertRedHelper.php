@@ -15,6 +15,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 //TODO create unit tests
@@ -150,57 +151,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $usersToInformAboutTrojanHorse = [];
 
         foreach ($shipsOnLocation as $shipOnLocation) {
-            $user = $shipOnLocation->getUser();
 
-            //ships of friends from tractoring ship dont attack
-            if ($tractoringShip !== null && $this->playerRelationDeterminator->isFriend($user, $tractoringShip->getUser())) {
-                $userId = $user->getId();
-
-                if (
-                    !array_key_exists($userId, $usersToInformAboutTrojanHorse)
-                    && $user !== $leadShipUser
-                    && !$this->playerRelationDeterminator->isFriend($user, $leadShipUser)
-                ) {
-                    $txt = sprintf(
-                        _('Die %s von Spieler %s ist in Sektor %s eingeflogen und hat dabei die %s von Spieler %s gezogen'),
-                        $tractoringShip->getName(),
-                        $tractoringShip->getUser()->getName(),
-                        $tractoringShip->getSectorString(),
-                        $leadShip->getName(),
-                        $leadShipUser->getName()
-                    );
-                    $usersToInformAboutTrojanHorse[$userId] = $txt;
-                }
-                continue;
-            }
-
-            //ships of friends dont attack
-            if ($this->playerRelationDeterminator->isFriend($user, $leadShipUser)) {
-                continue;
-            }
-
-            //ships in finished tholian web dont attack
-            if ($shipOnLocation->getHoldingWeb() !== null && $shipOnLocation->getHoldingWeb()->isFinished()) {
-                continue;
-            }
-
-            //pirates don't attack if user is protected
-            $pirateWrath = $leadShipUser->getPirateWrath();
-            if (
-                $shipOnLocation->getUserId() === UserEnum::USER_NPC_KAZON
-                && $pirateWrath !== null
-                && $pirateWrath->getProtectionTimeout() > time()
-            ) {
-                continue;
-            }
-
-            //players don't attack pirates if protection is active
-            $pirateWrath = $user->getPirateWrath();
-            if (
-                $leadShipUser->getId() === UserEnum::USER_NPC_KAZON
-                && $pirateWrath !== null
-                && $pirateWrath->getProtectionTimeout() > time()
-            ) {
+            if ($this->skipShipOnLocation($leadShip, $shipOnLocation, $tractoringShip, $usersToInformAboutTrojanHorse)) {
                 continue;
             }
 
@@ -220,7 +172,31 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
 
         $this->informAboutTrojanHorse($usersToInformAboutTrojanHorse);
+        $this->addAlertRedInfo($leadShip, $singleShipCount, $fleetCount, $informations);
 
+        return $shipsToShuffle;
+    }
+
+    /**
+     * @param array<int, string> $users
+     */
+    private function informAboutTrojanHorse(array $users): void
+    {
+        foreach ($users as $userId => $txt) {
+            $this->privateMessageSender->send(
+                UserEnum::USER_NOONE,
+                $userId,
+                $txt
+            );
+        }
+    }
+
+    private function addAlertRedInfo(
+        ShipInterface $leadShip,
+        int $singleShipCount,
+        int $fleetCount,
+        InformationWrapper $informations
+    ): void {
         if ($fleetCount == 1) {
             $informations->addInformation(sprintf(
                 _('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n",
@@ -250,22 +226,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
                 $leadShip->getPosY(),
                 $singleShipCount
             ));
-        }
-
-        return $shipsToShuffle;
-    }
-
-    /**
-     * @param array<int, string> $users
-     */
-    private function informAboutTrojanHorse(array $users): void
-    {
-        foreach ($users as $userId => $txt) {
-            $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
-                $userId,
-                $txt
-            );
         }
     }
 
@@ -297,6 +257,84 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
 
         return true;
+    }
+
+    /** @param array<int, string> $usersToInformAboutTrojanHorse */
+    private function skipShipOnLocation(
+        ShipInterface $leadShip,
+        ShipInterface $shipOnLocation,
+        ?ShipInterface $tractoringShip,
+        array &$usersToInformAboutTrojanHorse
+    ): bool {
+        $user = $shipOnLocation->getUser();
+        $leadShipUser = $leadShip->getUser();
+
+        //ships of friends from tractoring ship dont attack
+        if ($tractoringShip !== null && $this->playerRelationDeterminator->isFriend($user, $tractoringShip->getUser())) {
+            $userId = $user->getId();
+
+            if (
+                !array_key_exists($userId, $usersToInformAboutTrojanHorse)
+                && $user !== $leadShipUser
+                && !$this->playerRelationDeterminator->isFriend($user, $leadShipUser)
+            ) {
+                $txt = sprintf(
+                    _('Die %s von Spieler %s ist in Sektor %s eingeflogen und hat dabei die %s von Spieler %s gezogen'),
+                    $tractoringShip->getName(),
+                    $tractoringShip->getUser()->getName(),
+                    $tractoringShip->getSectorString(),
+                    $leadShip->getName(),
+                    $leadShipUser->getName()
+                );
+                $usersToInformAboutTrojanHorse[$userId] = $txt;
+            }
+            return true;
+        }
+
+        //ships of friends dont attack
+        if ($this->playerRelationDeterminator->isFriend($user, $leadShipUser)) {
+            return true;
+        }
+
+        //ships in finished tholian web dont attack
+        if ($shipOnLocation->getHoldingWeb() !== null && $shipOnLocation->getHoldingWeb()->isFinished()) {
+            return true;
+        }
+
+        if ($this->skipDueToPirateProtection(
+            $leadShipUser,
+            $user,
+            $shipOnLocation
+        )) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function skipDueToPirateProtection(UserInterface $leadShipUser, UserInterface $user, ShipInterface $shipOnLocation): bool
+    {
+        //pirates don't attack if user is protected
+        $pirateWrath = $leadShipUser->getPirateWrath();
+        if (
+            $shipOnLocation->getUserId() === UserEnum::USER_NPC_KAZON
+            && $pirateWrath !== null
+            && $pirateWrath->getProtectionTimeout() > time()
+        ) {
+            return true;
+        }
+
+        //players don't attack pirates if protection is active
+        $pirateWrath = $user->getPirateWrath();
+        if (
+            $leadShipUser->getId() === UserEnum::USER_NPC_KAZON
+            && $pirateWrath !== null
+            && $pirateWrath->getProtectionTimeout() > time()
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     public function performAttackCycle(
