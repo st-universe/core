@@ -134,10 +134,7 @@ class AllianceRelationRendererTest extends StuTestCase
             ->with('graphviz.graph.ratio', 'compress')
             ->once();
         $graph->shouldReceive('setAttribute')
-            ->with(
-                'graphviz.graph.size',
-                sprintf('%02f,%02f', $width * self::PIXEL_TO_INCH, $height * self::PIXEL_TO_INCH)
-            )
+            ->with('graphviz.graph.scale', 0.5)
             ->once();
 
         $this->relationItemVertexBuilder->shouldReceive('build')
