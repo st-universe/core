@@ -79,6 +79,13 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
             throw new RuntimeException('pirate ships should always be in fleet');
         }
 
+        $this->logger->logf(
+            '    calling already existing support fleet %s (%d) to %s',
+            $supportFleet->getId(),
+            $supportFleet->getName(),
+            $leadShip->getSectorString()
+        );
+
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($supportFleet);
 
         $this->reloadMinimalEps->reload($fleetWrapper, 75);
