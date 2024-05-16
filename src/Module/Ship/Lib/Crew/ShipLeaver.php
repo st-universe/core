@@ -153,5 +153,7 @@ final class ShipLeaver implements ShipLeaverInterface
         foreach ($crewArray as $crew) {
             $this->crewRepository->delete($crew);
         }
+
+        $ship->getCrewAssignments()->clear();
     }
 }
