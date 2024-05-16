@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 
 #[Table(name: 'stu_rumps_module_level')]
 #[Index(name: 'rump_module_level_ship_rump_idx', columns: ['rump_id'])]
@@ -644,15 +645,14 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
 
     public function getMandatoryModulesCount(): int
     {
-        return ($this->getModuleMandatory1() ? 1 : 0) +
-            ($this->getModuleMandatory2() ? 1 : 0) +
-            ($this->getModuleMandatory3() ? 1 : 0) +
-            ($this->getModuleMandatory4() ? 1 : 0) +
-            ($this->getModuleMandatory5() ? 1 : 0) +
-            ($this->getModuleMandatory6() ? 1 : 0) +
-            ($this->getModuleMandatory7() ? 1 : 0) +
-            ($this->getModuleMandatory8() ? 1 : 0) +
-            ($this->getModuleMandatory10() ? 1 : 0) +
-            ($this->getModuleMandatory11() ? 1 : 0);
+        return array_reduce(
+            array_map(
+                fn (ShipModuleTypeEnum $type) =>
+                sprintf('getModuleMandatory%d', $type->value),
+                array_filter(ShipModuleTypeEnum::cases(), fn (ShipModuleTypeEnum $type) => !$type->isSpecialSystemType())
+            ),
+            fn (int $value, string $method) => $value + $this->$method() ? 1 : 0,
+            0
+        );
     }
 }
