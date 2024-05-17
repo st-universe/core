@@ -33,10 +33,24 @@ class PirateNavigation implements PirateNavigationInterface
     ): bool {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
+        $shipSystem = $leadShip->getSystem();
 
-        $system = $this->getTargetSystem($target);
-        if ($system !== null) {
-            if (!$this->navigateIntoSystem($leadWrapper, $system)) {
+        $targetSystem = $this->getTargetSystem($target);
+
+        // leave system
+        if (
+            $shipSystem !== null
+            && $shipSystem !== $targetSystem
+        ) {
+            $this->logger->logf('    leave current system "%s"', $shipSystem->getName());
+            if (!$this->leaveStarSystem($leadWrapper, $shipSystem)) {
+                $this->logger->log('    could not leave current system');
+                return false;
+            }
+        }
+
+        if ($targetSystem !== null) {
+            if (!$this->navigateIntoSystem($leadWrapper, $targetSystem)) {
                 return false;
             }
         }
@@ -73,19 +87,6 @@ class PirateNavigation implements PirateNavigationInterface
     private function navigateIntoSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): bool
     {
         $leadShip = $wrapper->get();
-        $shipSystem = $leadShip->getSystem();
-
-        // leave system
-        if (
-            $shipSystem !== null
-            && $shipSystem !== $system
-        ) {
-            $this->logger->logf('    leave current system "%s"', $shipSystem->getName());
-            if (!$this->leaveStarSystem($wrapper, $shipSystem)) {
-                $this->logger->log('    could not leave current system');
-                return false;
-            }
-        }
 
         // move to system
         if (
