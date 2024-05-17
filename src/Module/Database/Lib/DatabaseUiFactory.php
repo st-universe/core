@@ -94,4 +94,15 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
             $item
         );
     }
+
+    public function createDatabaseTopListWithColorGradient(
+        int $userId,
+        string $gradientColor
+    ): DatabaseTopListWithColorGradient {
+        return new DatabaseTopListWithColorGradient(
+            $this->userRepository,
+            $userId,
+            $gradientColor
+        );
+    }
 }

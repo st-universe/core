@@ -7,10 +7,11 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\PirateWrathInterface;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<PirateWrath>
- * 
+ *
  * @method PirateWrathInterface[] findAll()
  */
 final class PirateWrathRepository extends EntityRepository implements PirateWrathRepositoryInterface
@@ -42,5 +43,23 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
                 PirateWrath::class
             )
         )->execute();
+    }
+
+    /**
+     * @return PirateWrathInterface[]
+     */
+    public function getPirateWrathTop10(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT pw
+            FROM %s pw
+            ORDER BY pw.wrath DESC',
+                    PirateWrath::class
+                )
+            )
+            ->setMaxResults(10)
+            ->getResult();
     }
 }

@@ -38,4 +38,9 @@ interface DatabaseUiFactoryInterface
     public function createDatabaseTopListFlights(
         array $item
     ): DatabaseTopListFlights;
+
+    public function createDatabaseTopListWithColorGradient(
+        int $userId,
+        string $gradientColor
+    ): DatabaseTopListWithColorGradient;
 }
