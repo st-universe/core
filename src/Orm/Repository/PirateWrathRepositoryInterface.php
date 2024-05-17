@@ -8,7 +8,7 @@ use Stu\Orm\Entity\PirateWrathInterface;
 
 /**
  * @extends ObjectRepository<PirateWrath>
- * 
+ *
  * @method PirateWrathInterface[] findAll()
  */
 interface PirateWrathRepositoryInterface extends ObjectRepository
@@ -20,4 +20,9 @@ interface PirateWrathRepositoryInterface extends ObjectRepository
     public function prototype(): PirateWrathInterface;
 
     public function truncateAllEntries(): void;
+
+    /**
+     * @return PirateWrathInterface[]
+     */
+    public function getPirateWrathTop10(): array;
 }
