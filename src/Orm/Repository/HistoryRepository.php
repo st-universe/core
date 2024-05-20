@@ -93,6 +93,26 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             ->getResult();
     }
 
+    public function getSumDestroyedByUser(int $source_user, int $target_user): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(h.id) FROM %s h
+                    WHERE h.type = 1
+                    AND h.source_user_id = :source_user
+                    AND h.target_user_id = :target_user',
+                    History::class
+                )
+            )
+            ->setParameters([
+                'source_user' => $source_user,
+                'target_user' => $target_user
+            ])
+            ->getSingleScalarResult();
+    }
+
+
     public function getAmountByType(int $typeId): int
     {
         return $this->count([
