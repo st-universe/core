@@ -82,11 +82,15 @@ final class RepairUtil implements RepairUtilInterface
         $maxHull = $ship->getMaxHull();
 
         if ($hull < $maxHull) {
-            $hullRepairParts = ($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART;
-            if ($isRepairStationBonus) {
-                $neededSpareParts += (int)ceil($hullRepairParts / 2);
+            if ($tickBased) {
+                $neededSpareParts += 1;
             } else {
-                $neededSpareParts += (int)ceil($hullRepairParts);
+                $hullRepairParts = ($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART;
+                if ($isRepairStationBonus) {
+                    $neededSpareParts += (int)ceil($hullRepairParts / 2);
+                } else {
+                    $neededSpareParts += (int)ceil($hullRepairParts);
+                }
             }
         }
 
