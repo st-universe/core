@@ -19,4 +19,8 @@ interface GameTurnInterface
     public function setEnd(int $end): GameTurnInterface;
 
     public function getStats(): ?GameTurnStatsInterface;
+
+    public function getPirateFleets(): ?int;
+
+    public function setPirateFleets(int $pirateFleets): GameTurnInterface;
 }
