@@ -4,6 +4,8 @@ var hosttype = null;
 var sstr = null;
 var scrollOffset = 6;
 var colonySubMenu = 2;
+var colonyMapX = null;
+var colonyMapY = null;
 
 function initializeJsVars(id, type, sessionString) {
 	colonyid = id;

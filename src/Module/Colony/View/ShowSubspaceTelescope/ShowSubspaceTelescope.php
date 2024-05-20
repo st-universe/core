@@ -56,9 +56,9 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             return;
         }
 
-        $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_WASTE, $colony, $game);
+        $this->colonyGuiHelper->registerMenuComponents(ColonyMenuEnum::MENU_SUBSPACE_TELESCOPE, $colony, $game);
 
-        $game->showMacro(ColonyMenuEnum::MENU_WASTE->getTemplate());
+        $game->showMacro(ColonyMenuEnum::MENU_SUBSPACE_TELESCOPE->getTemplate());
 
         $mapX =  (int) ceil($colony->getSystem()->getCx() / MapEnum::FIELDS_PER_SECTION);
         $mapY =  (int) ceil($colony->getSystem()->getCy() / MapEnum::FIELDS_PER_SECTION);
