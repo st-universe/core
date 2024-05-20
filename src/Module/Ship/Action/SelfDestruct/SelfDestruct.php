@@ -8,13 +8,13 @@ use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\UserInterface;
@@ -24,36 +24,14 @@ final class SelfDestruct implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SELFDESTRUCT';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        EntryCreatorInterface $entryCreator,
-        ShipRemoverInterface $shipRemover,
-        ShipRepositoryInterface $shipRepository,
-        AlertRedHelperInterface $alertRedHelper,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        PrivateMessageSenderInterface $privateMessageSender
+        private ShipLoaderInterface $shipLoader,
+        private ShipDestructionInterface $shipDestruction,
+        private ShipRepositoryInterface $shipRepository,
+        private AlertRedHelperInterface $alertRedHelper,
+        private CreatePrestigeLogInterface $createPrestigeLog,
+        private PrivateMessageSenderInterface $privateMessageSender
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->entryCreator = $entryCreator;
-        $this->shipRemover = $shipRemover;
-        $this->shipRepository = $shipRepository;
-        $this->alertRedHelper = $alertRedHelper;
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -92,26 +70,16 @@ final class SelfDestruct implements ActionControllerInterface
         $tractoredShipToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpState()) ? $ship->getTractoredShip() : null;
 
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
-        $msg = sprintf(
-            _('Die %s (%s) hat sich in Sektor %s selbst zerstört'),
-            $ship->getName(),
-            $ship->getRump()->getName(),
-            $ship->getSectorString()
-        );
-
-        $this->entryCreator->addEntry(
-            $msg,
-            UserEnum::USER_NOONE,
-            $ship
-        );
 
         $prestigeAmount = $ship->getRump()->getPrestige();
         $rumpName = $ship->getRump()->getName();
 
-        $destroyMsg = $this->shipRemover->destroy($wrapper);
-        if ($destroyMsg !== null) {
-            $game->addInformation($destroyMsg);
-        }
+        $this->shipDestruction->destroy(
+            null,
+            $wrapper,
+            ShipDestructionCauseEnum::SELF_DESTRUCTION,
+            $game
+        );
 
         //Alarm-Rot check for tractor ship
         if ($tractoredShipToTriggerAlertRed !== null) {

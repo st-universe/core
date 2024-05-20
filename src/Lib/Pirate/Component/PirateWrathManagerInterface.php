@@ -8,7 +8,9 @@ use Stu\Module\Control\GameControllerInterface;
 
 interface PirateWrathManagerInterface
 {
-    public function increaseWrath(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void;
+    public function increaseWrathViaTrigger(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void;
+
+    public function increaseWrath(UserInterface $user, int $amount): void;
 
     public function decreaseWrath(UserInterface $user, int $amount): void;
 

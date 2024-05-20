@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
-use Stu\Orm\Entity\UserInterface;
+use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
 
-interface AttackerInterface
+interface AttackerInterface extends ShipDestroyerInterface
 {
-    public function getName(): string;
-
-    public function getUser(): UserInterface;
 }

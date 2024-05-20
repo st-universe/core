@@ -8,12 +8,11 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
@@ -23,11 +22,8 @@ class ApplyFieldDamageTest extends StuTestCase
     /** @var MockInterface&ApplyDamageInterface */
     private MockInterface $applyDamage;
 
-    /** @var MockInterface&EntryCreatorInterface */
-    private MockInterface $entryCreator;
-
-    /** @var MockInterface&ShipRemoverInterface */
-    private MockInterface $shipRemover;
+    /** @var MockInterface&ShipDestructionInterface */
+    private MockInterface $shipDestruction;
 
     private ApplyFieldDamageInterface $subject;
 
@@ -40,8 +36,7 @@ class ApplyFieldDamageTest extends StuTestCase
     protected function setUp(): void
     {
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);
-        $this->entryCreator = $this->mock(EntryCreatorInterface::class);
-        $this->shipRemover = $this->mock(ShipRemoverInterface::class);
+        $this->shipDestruction = $this->mock(ShipDestructionInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -52,8 +47,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
         $this->subject = new ApplyFieldDamage(
             $this->applyDamage,
-            $this->entryCreator,
-            $this->shipRemover
+            $this->shipDestruction
         );
     }
 
@@ -203,10 +197,6 @@ class ApplyFieldDamageTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn("SHIP");
-        $this->ship->shouldReceive('getRump->getName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn("RUMP");
         $this->ship->shouldReceive('getPosX')
             ->withNoArgs()
             ->once()
@@ -223,10 +213,6 @@ class ApplyFieldDamageTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $this->ship->shouldReceive('getSectorString')
-            ->withNoArgs()
-            ->once()
-            ->andReturn("SECTOR");
 
         $this->wrapper->shouldReceive('getTractoredShipWrapper')
             ->withNoArgs()
@@ -254,16 +240,13 @@ class ApplyFieldDamageTest extends StuTestCase
                 return $m->getRecipientId() === 666;
             }));
 
-        $this->entryCreator->shouldReceive('addEntry')
+        $this->shipDestruction->shouldReceive('destroy')
             ->with(
-                'Die SHIP (RUMP) wurde beim Einflug in Sektor SECTOR zerstört',
-                UserEnum::USER_NOONE,
-                $this->ship
+                null,
+                $this->wrapper,
+                ShipDestructionCauseEnum::FIELD_DAMAGE,
+                Mockery::any()
             )
-            ->once();
-
-        $this->shipRemover->shouldReceive('destroy')
-            ->with($this->wrapper)
             ->once();
 
         $this->subject->damage(

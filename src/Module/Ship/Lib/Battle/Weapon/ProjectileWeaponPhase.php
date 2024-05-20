@@ -74,8 +74,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             if ($target->isDestroyed()) {
                 unset($targetPool[$target->getId()]);
 
-                $this->handleDestruction($attacker, $target, $isAlertRed);
-                $message->add($this->shipRemover->destroy($targetWrapper));
+                $this->checkForShipDestruction($attacker, $targetWrapper, $isAlertRed, $message);
             }
         }
 

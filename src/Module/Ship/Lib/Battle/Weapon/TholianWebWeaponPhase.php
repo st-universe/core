@@ -8,15 +8,18 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 //TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
 {
-    public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): InformationWrapper
-    {
+    public function damageCapturedShip(
+        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
+        GameControllerInterface $game
+    ): InformationWrapper {
         $informations = new InformationWrapper();
 
-        $user = $game->getUser();
         $ship = $wrapper->get();
 
         $informations->addInformation(sprintf(
@@ -35,24 +38,12 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
 
         $informations->addInformationWrapper($this->applyDamage->damage($damage_wrapper, $wrapper));
 
-        if ($ship->isDestroyed()) {
-            $entryMsg = sprintf(
-                'Die %s (%s) wurde in Sektor %s durch ein implodierendes Energienetz zerstört',
-                $ship->getName(),
-                $ship->getRump()->getName(),
-                $ship->getSectorString()
-            );
-
-            $this->entryCreator->addEntry(
-                $entryMsg,
-                $user->getId(),
-                $ship
-            );
-
-            $this->checkForPrestige($user, $ship);
-
-            $informations->addInformation($this->shipRemover->destroy($wrapper));
-        }
+        $this->checkForShipDestruction(
+            $ship,
+            $wrapper,
+            false,
+            $informations
+        );
 
         return $informations;
     }
