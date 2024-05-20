@@ -2,7 +2,9 @@
 
 namespace Stu\Module\Ship\Lib\Message;
 
-interface MessageInterface
+use Stu\Lib\Information\InformationInterface;
+
+interface MessageInterface extends InformationInterface
 {
     public function getSenderId(): int;
 

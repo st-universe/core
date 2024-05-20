@@ -99,7 +99,11 @@ final class ImplodeTholianWeb implements ActionControllerInterface
             $targetUserId = $target->getUser()->getId();
             $isTargetBase = $target->isBase();
 
-            $informations = $this->tholianWebWeaponPhase->damageCapturedShip($targetWrapper, $game);
+            $informations = $this->tholianWebWeaponPhase->damageCapturedShip(
+                $ship,
+                $targetWrapper,
+                $game
+            );
 
             //notify target owner
             $this->privateMessageSender->send(

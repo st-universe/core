@@ -102,7 +102,7 @@ class PirateReaction implements PirateReactionInterface
 
     public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger, ShipInterface $triggerShip): void
     {
-        $this->pirateWrathManager->increaseWrath($triggerShip->getUser(), $reactionTrigger);
+        $this->pirateWrathManager->increaseWrathViaTrigger($triggerShip->getUser(), $reactionTrigger);
 
         // check if fleet already defeated
         if ($fleet->getShips()->isEmpty()) {

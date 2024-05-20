@@ -233,6 +233,20 @@ use Stu\Module\Ship\Lib\Crew\TroopTransferUtility;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamage;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamageInterface;
+use Stu\Module\Ship\Lib\Destruction\Handler\CancelTakeover;
+use Stu\Module\Ship\Lib\Destruction\Handler\ClearTractoringBeam;
+use Stu\Module\Ship\Lib\Destruction\Handler\ColonizationShipCheck;
+use Stu\Module\Ship\Lib\Destruction\Handler\CrewEvacuation;
+use Stu\Module\Ship\Lib\Destruction\Handler\HistoryEntryCreation;
+use Stu\Module\Ship\Lib\Destruction\Handler\LeaveIntactModules;
+use Stu\Module\Ship\Lib\Destruction\Handler\OrphanizeStorage;
+use Stu\Module\Ship\Lib\Destruction\Handler\PrestigeGain;
+use Stu\Module\Ship\Lib\Destruction\Handler\ResetTrackerDevices;
+use Stu\Module\Ship\Lib\Destruction\Handler\TradepostDestruction;
+use Stu\Module\Ship\Lib\Destruction\Handler\TransformToTrumfield;
+use Stu\Module\Ship\Lib\Destruction\Handler\UpdatePirateWrath;
+use Stu\Module\Ship\Lib\Destruction\ShipDestruction;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManager;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipUndocking;
@@ -571,4 +585,22 @@ return [
     ],
     ShipUiFactoryInterface::class => autowire(ShipUiFactory::class),
     MoveShipRequestInterface::class => autowire(MoveShipRequest::class),
+    ShipDestructionInterface::class => autowire(ShipDestruction::class)
+        ->constructorParameter(
+            'destructionHandlers',
+            [
+                autowire(CrewEvacuation::class),
+                autowire(HistoryEntryCreation::class),
+                autowire(UpdatePirateWrath::class),
+                autowire(CancelTakeover::class),
+                autowire(LeaveIntactModules::class),
+                autowire(ClearTractoringBeam::class),
+                autowire(ColonizationShipCheck::class),
+                autowire(PrestigeGain::class),
+                autowire(TransformToTrumfield::class),
+                autowire(ResetTrackerDevices::class),
+                autowire(OrphanizeStorage::class),
+                autowire(TradepostDestruction::class),
+            ],
+        ),
 ];

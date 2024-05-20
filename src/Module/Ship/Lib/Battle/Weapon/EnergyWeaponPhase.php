@@ -77,12 +77,14 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             if ($target->isDestroyed()) {
 
-                $this->handleDestruction($attacker, $target, $isAlertRed);
+                $this->checkForShipDestruction(
+                    $attacker,
+                    $targetWrapper,
+                    $isAlertRed,
+                    $message
+                );
 
-                $targetId = $target->getId();
-                $message->add($this->shipRemover->destroy($targetWrapper));
-
-                unset($targetPool[$targetId]);
+                unset($targetPool[$target->getId()]);
 
                 if ($weapon->getFiringMode() === self::FIRINGMODE_FOCUS) {
                     break;

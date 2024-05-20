@@ -34,7 +34,12 @@ class PirateWrathManager implements PirateWrathManagerInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    public function increaseWrath(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void
+    public function increaseWrathViaTrigger(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void
+    {
+        $this->increaseWrath($user, $reactionTrigger->getWrath());
+    }
+
+    public function increaseWrath(UserInterface $user, int $amount): void
     {
         if (
             $user->isNpc()
@@ -43,8 +48,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
             return;
         }
 
-        $reactionTriggerWrath = $reactionTrigger->getWrath();
-        if ($reactionTriggerWrath < 1) {
+        if ($amount < 1) {
             return;
         }
 
@@ -66,7 +70,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         // increase wrath
         $currentWrath = $wrath->getWrath();
-        $wrath->setWrath($currentWrath + $reactionTriggerWrath);
+        $wrath->setWrath($currentWrath + $amount);
 
         // reset protection timeout
         $timeout = $wrath->getProtectionTimeout();

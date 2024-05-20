@@ -10,8 +10,9 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
 
-interface ShipInterface
+interface ShipInterface extends ShipDestroyerInterface
 {
     public function getId(): int;
 

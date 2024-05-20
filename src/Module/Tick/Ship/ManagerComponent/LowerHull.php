@@ -2,10 +2,12 @@
 
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
-use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -13,32 +15,14 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class LowerHull implements ManagerComponentInterface
 {
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private EntryCreatorInterface $entryCreator;
-
     public function __construct(
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipRemoverInterface $shipRemover,
-        ShipRepositoryInterface $shipRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        EntryCreatorInterface $entryCreator
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ShipRemoverInterface $shipRemover,
+        private ShipDestructionInterface $shipDestruction,
+        private ShipRepositoryInterface $shipRepository,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipRemover = $shipRemover;
-        $this->shipRepository = $shipRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->entryCreator = $entryCreator;
     }
 
     public function work(): void
@@ -70,13 +54,13 @@ class LowerHull implements ManagerComponentInterface
             $lower = (int)ceil($ship->getMaxHull() / 100);
 
             if ($ship->getHull() <= $lower) {
-                $this->shipRemover->destroy($this->shipWrapperFactory->wrapShip($ship));
-
-                $this->entryCreator->addEntry(
-                    'Der verlassene Handelsposten in Sektor ' . $ship->getSectorString() . ' ist zerfallen',
-                    UserEnum::USER_NOONE,
-                    $ship
+                $this->shipDestruction->destroy(
+                    null,
+                    $this->shipWrapperFactory->wrapShip($ship),
+                    ShipDestructionCauseEnum::ORPHANIZED_TRADEPOST,
+                    new InformationWrapper()
                 );
+
                 continue;
             }
             $ship->setHuell($ship->getHull() - $lower);

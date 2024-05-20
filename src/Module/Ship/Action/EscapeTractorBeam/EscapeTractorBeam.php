@@ -11,13 +11,13 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -27,40 +27,15 @@ final class EscapeTractorBeam implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ESCAPE_TRAKTOR';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ApplyDamageInterface $applyDamage;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ApplyDamageInterface $applyDamage,
-        ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipRemoverInterface $shipRemover,
-        EntryCreatorInterface $entryCreator,
-        AlertRedHelperInterface $alertRedHelper,
-        ShipSystemManagerInterface $shipSystemManager
+        private ShipLoaderInterface $shipLoader,
+        private ApplyDamageInterface $applyDamage,
+        private ShipRepositoryInterface $shipRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ShipDestructionInterface $shipDestruction,
+        private AlertRedHelperInterface $alertRedHelper,
+        private ShipSystemManagerInterface $shipSystemManager
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->applyDamage = $applyDamage;
-        $this->shipRepository = $shipRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipRemover = $shipRemover;
-        $this->entryCreator = $entryCreator;
-        $this->alertRedHelper = $alertRedHelper;
-        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -195,21 +170,17 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
         $informations = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper);
-        $game->addInformationWrapper($informations);
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
         if ($ship->isDestroyed()) {
-            $this->entryCreator->addEntry(
-                'Die ' . $shipName . ' (' . $ship->getRump()->getName() . ') wurde bei einem Fluchtversuch in Sektor ' . $ship->getSectorString() . ' zerstört',
-                $otherUserId,
-                $ship
-            );
 
-            $destroyMsg = $this->shipRemover->destroy($wrapper);
-            if ($destroyMsg !== null) {
-                $game->addInformation($destroyMsg);
-            }
+            $this->shipDestruction->destroy(
+                $tractoringShip,
+                $wrapper,
+                ShipDestructionCauseEnum::ESCAPE_TRACTOR,
+                $informations
+            );
 
             $this->privateMessageSender->send(
                 $ship->getUser()->getId(),
@@ -226,6 +197,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $href
             );
         }
+
+        $game->addInformationWrapper($informations);
     }
 
     public function performSessionCheck(): bool

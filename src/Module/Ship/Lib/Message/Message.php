@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Message;
 
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class Message implements MessageInterface
@@ -54,6 +55,23 @@ final class Message implements MessageInterface
         }
 
         $this->msg[] = $msg;
+    }
+
+    public function addInformation(?string $information): InformationInterface
+    {
+        $this->add($information);
+
+        return $this;
+    }
+
+    public function addInformationf(string $information, ...$args): InformationInterface
+    {
+        $this->add(vsprintf(
+            $information,
+            $args
+        ));
+
+        return $this;
     }
 
     public function addMessageMerge(array $msg): void
