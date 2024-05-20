@@ -31,6 +31,9 @@ class GameTurn implements GameTurnInterface
     #[Column(type: 'integer')]
     private int $enddate;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $pirate_fleets = 0;
+
     #[OneToOne(targetEntity: 'GameTurnStats', mappedBy: 'turn')]
     private ?GameTurnStatsInterface $stats = null;
 
@@ -78,5 +81,17 @@ class GameTurn implements GameTurnInterface
     public function getStats(): ?GameTurnStatsInterface
     {
         return $this->stats;
+    }
+
+    public function getPirateFleets(): ?int
+    {
+        return $this->pirate_fleets;
+    }
+
+    public function setPirateFleets(int $pirateFleets): GameTurnInterface
+    {
+        $this->pirate_fleets = $pirateFleets;
+
+        return $this;
     }
 }

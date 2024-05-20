@@ -11,6 +11,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\PirateSetupInterface;
@@ -26,6 +27,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 class PirateCreation implements PirateCreationInterface
 {
     public const MAX_PIRATE_FLEETS = 5;
+
+    public const MAX_PIRATE_FLEETS_PER_TICK = 5;
 
     public const FORBIDDEN_ADMIN_AREAS = [
         MapEnum::ADMIN_REGION_SUPERPOWER_CENTRAL,
@@ -48,6 +51,8 @@ class PirateCreation implements PirateCreationInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private GameControllerInterface $game;
+
     private StuRandom $stuRandom;
 
     private EntityManagerInterface $entityManager;
@@ -62,6 +67,7 @@ class PirateCreation implements PirateCreationInterface
         ShipCreatorInterface $shipCreator,
         LayerRepositoryInterface $layerRepository,
         MapRepositoryInterface $mapRepository,
+        GameControllerInterface $game,
         StuRandom $stuRandom,
         EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory,
@@ -74,6 +80,7 @@ class PirateCreation implements PirateCreationInterface
         $this->shipCreator = $shipCreator;
         $this->layerRepository = $layerRepository;
         $this->mapRepository = $mapRepository;
+        $this->game = $game;
         $this->stuRandom = $stuRandom;
         $this->entityManager = $entityManager;
         $this->namesRepository = $namesRepository;
@@ -83,8 +90,13 @@ class PirateCreation implements PirateCreationInterface
 
     public function createPirateFleetsIfNeeded(): array
     {
+
         $pirateFleets = $this->fleetRepository->getByUser(UserEnum::USER_NPC_KAZON);
-        $missingFleetAmount = max(0, self::MAX_PIRATE_FLEETS - count($pirateFleets));
+        if ($this->game->getCurrentRound()->getPirateFleets() < self::MAX_PIRATE_FLEETS_PER_TICK) {
+            $missingFleetAmount = max(0, self::MAX_PIRATE_FLEETS - count($pirateFleets));
+        } else {
+            $missingFleetAmount = 0;
+        }
 
         if ($missingFleetAmount > 0) {
             $this->logger->logf('    creating %d new needed pirate fleets', $missingFleetAmount);
@@ -93,6 +105,7 @@ class PirateCreation implements PirateCreationInterface
         for ($i = 0; $i < $missingFleetAmount; $i++) {
             $this->logger->logf('  fleet nr. %d', $i);
             $pirateFleets[] = $this->createPirateFleet();
+            $this->game->getCurrentRound()->setPirateFleets($this->game->getCurrentRound()->getPirateFleets() + 1);
         }
 
         return $pirateFleets;
