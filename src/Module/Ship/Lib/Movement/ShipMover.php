@@ -17,31 +17,15 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 //TODO unit tests
 final class ShipMover implements ShipMoverInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipMovementInformationAdderInterface $shipMovementInformationAdder;
-
-    private PreFlightConditionsCheckInterface $preFlightConditionsCheck;
-
-    private LeaveFleetInterface $leaveFleet;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
     private MessageCollectionInterface $messages;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipMovementInformationAdderInterface $shipMovementInformationAdder,
-        PreFlightConditionsCheckInterface $preFlightConditionsCheck,
-        LeaveFleetInterface $leaveFleet,
-        AlertRedHelperInterface $alertRedHelper
+        private ShipRepositoryInterface $shipRepository,
+        private ShipMovementInformationAdderInterface $shipMovementInformationAdder,
+        private PreFlightConditionsCheckInterface $preFlightConditionsCheck,
+        private LeaveFleetInterface $leaveFleet,
+        private AlertRedHelperInterface $alertRedHelper
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipMovementInformationAdder = $shipMovementInformationAdder;
-        $this->preFlightConditionsCheck = $preFlightConditionsCheck;
-        $this->leaveFleet = $leaveFleet;
-        $this->alertRedHelper = $alertRedHelper;
-
         $this->messages = new MessageCollection();
     }
 

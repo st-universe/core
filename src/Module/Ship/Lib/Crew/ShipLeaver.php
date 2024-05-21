@@ -143,15 +143,9 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private function letCrewDie(ShipInterface $ship): void
     {
-        $crewArray = [];
         foreach ($ship->getCrewAssignments() as $shipCrew) {
-            $crewArray[] = $shipCrew->getCrew();
-        }
-
-        $this->shipCrewRepository->truncateByShip($ship->getId());
-
-        foreach ($crewArray as $crew) {
-            $this->crewRepository->delete($crew);
+            $this->crewRepository->delete($shipCrew->getCrew());
+            $this->shipCrewRepository->delete($shipCrew);
         }
 
         $ship->getCrewAssignments()->clear();
