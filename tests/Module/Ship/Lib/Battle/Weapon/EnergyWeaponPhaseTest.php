@@ -7,18 +7,14 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -29,35 +25,20 @@ use Stu\StuTestCase;
 
 class EnergyWeaponPhaseTest extends StuTestCase
 {
-    /** @var MockInterface|ShipSystemManagerInterface */
-    protected MockInterface $shipSystemManager;
-
     /** @var MockInterface|WeaponRepositoryInterface */
     protected MockInterface $weaponRepository;
 
     /** @var MockInterface|EntryCreatorInterface */
     protected MockInterface $entryCreator;
 
-    /** @var MockInterface|ShipRemoverInterface */
-    protected MockInterface $shipRemover;
-
     /** @var MockInterface|ApplyDamageInterface */
     protected MockInterface $applyDamage;
-
-    /** @var MockInterface|ModuleValueCalculatorInterface */
-    protected MockInterface $moduleValueCalculator;
 
     /** @var MockInterface|BuildingManagerInterface */
     protected MockInterface $buildingManager;
 
-    /** @var MockInterface|CreatePrestigeLogInterface */
-    private MockInterface $createPrestigeLog;
-
-    /** @var MockInterface|PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
-
-    /** @var MockInterface|PirateWrathManagerInterface */
-    private MockInterface $pirateWrathManager;
+    /** @var MockInterface|ShipDestructionInterface */
+    private MockInterface $shipDestruction;
 
     /** @var MockInterface|StuRandom */
     private MockInterface $stuRandom;
@@ -66,30 +47,19 @@ class EnergyWeaponPhaseTest extends StuTestCase
 
     public function setUp(): void
     {
-        $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->weaponRepository = $this->mock(WeaponRepositoryInterface::class);
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);
-        $this->shipRemover = $this->mock(ShipRemoverInterface::class);
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);
-        $this->moduleValueCalculator = $this->mock(ModuleValueCalculatorInterface::class);
         $this->buildingManager = $this->mock(BuildingManagerInterface::class);
-        $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
-        $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
-        $this->pirateWrathManager = $this->mock(PirateWrathManagerInterface::class);
+        $this->shipDestruction = $this->mock(ShipDestructionInterface::class);
 
         $this->subject = new EnergyWeaponPhase(
-            $this->shipSystemManager,
-            $this->weaponRepository,
             $this->entryCreator,
-            $this->shipRemover,
             $this->applyDamage,
-            $this->moduleValueCalculator,
             $this->buildingManager,
-            $this->createPrestigeLog,
-            $this->privateMessageSender,
             $this->stuRandom,
-            $this->pirateWrathManager,
+            $this->shipDestruction,
             $this->initLoggerUtil()
         );
     }
@@ -222,12 +192,13 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->with(Mockery::any(), $targetWrapper)
             ->andReturn($informations);
 
-        $this->entryCreator->shouldReceive('addEntry')
-            ->with(Mockery::any(), 888, $target)
-            ->once();
-
-        $this->shipRemover->shouldReceive('destroy')
-            ->with($targetWrapper)
+        $this->shipDestruction->shouldReceive('destroy')
+            ->with(
+                $attacker,
+                $targetWrapper,
+                ShipDestructionCauseEnum::SHIP_FIGHT,
+                Mockery::any()
+            )
             ->once();
 
         $this->subject->fire($attacker, $targetPool);
