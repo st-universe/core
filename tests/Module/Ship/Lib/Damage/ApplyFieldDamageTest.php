@@ -68,10 +68,6 @@ class ApplyFieldDamageTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn("SHIP");
-        $this->ship->shouldReceive('getRump->getName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn("RUMP");
         $this->ship->shouldReceive('getPosX')
             ->withNoArgs()
             ->once()
@@ -93,10 +89,6 @@ class ApplyFieldDamageTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn("TSHIP");
-        $tractoredShip->shouldReceive('getRump->getName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn("TRUMP");
         $tractoredShip->shouldReceive('getPosX')
             ->withNoArgs()
             ->once()
