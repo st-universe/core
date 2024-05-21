@@ -4,6 +4,8 @@ namespace Stu\Module\Ship\Lib\Destruction\Handler;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
@@ -11,9 +13,13 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class UpdatePirateWrath
 {
+    private PirateLoggerInterface $logger;
+
     public function __construct(
-        private PirateWrathManagerInterface $pirateWrathManager
+        private PirateWrathManagerInterface $pirateWrathManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
+        $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
     public function handleShipDestruction(
@@ -41,6 +47,16 @@ class UpdatePirateWrath
         }
 
         if ($userOfDestroyed->getId() === UserEnum::USER_NPC_KAZON) {
+
+            $fleet = $ship->getFleet();
+            $this->logger->log(sprintf(
+                '    %s (%s) of fleet %d got destroyed by %s',
+                $ship->getName(),
+                $ship->getRump()->getName(),
+                $fleet === null ? 0 : $fleet->getId(),
+                $destroyer->getName()
+            ));
+
             $this->pirateWrathManager->increaseWrath($userOfDestroyed, $targetPrestige);
         }
     }
