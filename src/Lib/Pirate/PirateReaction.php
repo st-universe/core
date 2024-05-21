@@ -106,7 +106,7 @@ class PirateReaction implements PirateReactionInterface
 
         // check if fleet already defeated
         if ($fleet->getShips()->isEmpty()) {
-            $this->logger->logf('pirateFleetId %d has no ships left, no reaction triggered', $fleet->getId());
+            $this->logger->logf('pirateFleet %s has no ships left, no reaction triggered', $fleet->getName());
             return;
         }
 
