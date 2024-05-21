@@ -11,7 +11,7 @@ use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-class UpdatePirateWrath
+class UpdatePirateWrath implements ShipDestructionHandlerInterface
 {
     private PirateLoggerInterface $logger;
 
