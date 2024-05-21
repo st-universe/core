@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
+use JBBCode\Parser;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Stu\Module\Config\StuConfigInterface;
@@ -12,8 +13,10 @@ final class PirateLogger implements PirateLoggerInterface
 {
     private ?Logger $logger = null;
 
-    public function __construct(private StuConfigInterface $stuConfig)
-    {
+    public function __construct(
+        private StuConfigInterface $stuConfig,
+        private Parser $parser
+    ) {
     }
 
     public function initRotating(): void
@@ -29,7 +32,9 @@ final class PirateLogger implements PirateLoggerInterface
     public function log(string $message): void
     {
         $method = LoggerEnum::LEVEL_METHODS[LoggerEnum::LEVEL_INFO];
-        $this->logger->$method($message);
+        $this->logger->$method(
+            $this->parser->parse($message)->getAsText()
+        );
     }
 
     public function logf(string $information, ...$args): void
