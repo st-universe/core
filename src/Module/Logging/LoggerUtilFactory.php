@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
+use JBBCode\Parser;
 use Stu\Module\Config\StuConfigInterface;
 
 final class LoggerUtilFactory implements LoggerUtilFactoryInterface
 {
     public function __construct(
-        private StuConfigInterface $config
+        private StuConfigInterface $config,
+        private Parser $parser
     ) {
     }
 
@@ -29,7 +31,8 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
     public function getPirateLogger(): PirateLoggerInterface
     {
         $loggerUtil = new PirateLogger(
-            $this->config
+            $this->config,
+            $this->parser
         );
 
         $loggerUtil->initRotating();
