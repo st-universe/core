@@ -60,45 +60,7 @@ final class GameController implements GameControllerInterface
     /** @var string */
     private const GAME_VERSION_DEV = 'dev';
 
-    private SessionInterface $session;
-
-    private SessionStringRepositoryInterface $sessionStringRepository;
-
-    private TalPageInterface $talPage;
-
-    private TwigPageInterface $twigPage;
-
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private StuConfigInterface $stuConfig;
-
-    private GameTurnRepositoryInterface $gameTurnRepository;
-
-    private GameConfigRepositoryInterface $gameConfigRepository;
-
-    private EntityManagerInterface $entityManager;
-
-    private UserRepositoryInterface $userRepository;
-
-    private Ubench $benchmark;
-
-    private CreateDatabaseEntryInterface $createDatabaseEntry;
-
-    private GameRequestRepositoryInterface $gameRequestRepository;
-
     private LoggerUtilInterface $loggerUtil;
-
-    private GameTalRendererInterface $gameTalRenderer;
-
-    private GameTwigRendererInterface $gameTwigRenderer;
-
-    private UuidGeneratorInterface $uuidGenerator;
-
-    private GameRequestSaverInterface $gameRequestSaver;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    private GameSetupInterface $gameSetup;
 
     private bool $isTwig = false;
 
@@ -121,6 +83,8 @@ final class GameController implements GameControllerInterface
     /** @var array<string> */
     private array $achievements = [];
 
+    private ?string $view = null;
+
     /** @var array<string, mixed> $viewContext */
     private array $viewContext = [];
 
@@ -137,47 +101,27 @@ final class GameController implements GameControllerInterface
     private ?GameRequestInterface $gameRequest = null;
 
     public function __construct(
-        SessionInterface $session,
-        SessionStringRepositoryInterface $sessionStringRepository,
-        TalPageInterface $talPage,
-        TwigPageInterface $twigPage,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        StuConfigInterface $stuConfig,
-        GameTurnRepositoryInterface $gameTurnRepository,
-        GameConfigRepositoryInterface $gameConfigRepository,
-        EntityManagerInterface $entityManager,
-        UserRepositoryInterface $userRepository,
-        Ubench $benchmark,
-        CreateDatabaseEntryInterface $createDatabaseEntry,
-        GameRequestRepositoryInterface $gameRequestRepository,
-        GameTalRendererInterface $gameTalRenderer,
-        GameTwigRendererInterface $gameTwigRenderer,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        UuidGeneratorInterface $uuidGenerator,
-        EventDispatcherInterface $eventDispatcher,
-        GameRequestSaverInterface $gameRequestSaver,
-        GameSetupInterface $gameSetup
+        private SessionInterface $session,
+        private SessionStringRepositoryInterface $sessionStringRepository,
+        private TalPageInterface $talPage,
+        private TwigPageInterface $twigPage,
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private StuConfigInterface $stuConfig,
+        private GameTurnRepositoryInterface $gameTurnRepository,
+        private GameConfigRepositoryInterface $gameConfigRepository,
+        private EntityManagerInterface $entityManager,
+        private UserRepositoryInterface $userRepository,
+        private Ubench $benchmark,
+        private CreateDatabaseEntryInterface $createDatabaseEntry,
+        private GameRequestRepositoryInterface $gameRequestRepository,
+        private GameTalRendererInterface $gameTalRenderer,
+        private GameTwigRendererInterface $gameTwigRenderer,
+        private UuidGeneratorInterface $uuidGenerator,
+        private EventDispatcherInterface $eventDispatcher,
+        private GameRequestSaverInterface $gameRequestSaver,
+        private GameSetupInterface $gameSetup,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->session = $session;
-        $this->sessionStringRepository = $sessionStringRepository;
-        $this->talPage = $talPage;
-        $this->twigPage = $twigPage;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->stuConfig = $stuConfig;
-        $this->gameTurnRepository = $gameTurnRepository;
-        $this->gameConfigRepository = $gameConfigRepository;
-        $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
-        $this->benchmark = $benchmark;
-        $this->createDatabaseEntry = $createDatabaseEntry;
-        $this->gameRequestRepository = $gameRequestRepository;
-        $this->gameTalRenderer = $gameTalRenderer;
-        $this->gameTwigRenderer = $gameTwigRenderer;
-        $this->uuidGenerator = $uuidGenerator;
-        $this->gameRequestSaver = $gameRequestSaver;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->gameSetup = $gameSetup;
-
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         //$this->loggerUtil->init('game', LoggerEnum::LEVEL_ERROR);
         $this->gameInformations = new InformationWrapper();
@@ -188,18 +132,17 @@ final class GameController implements GameControllerInterface
      */
     public function setView(ModuleViewEnum|string $view, array $viewContext = []): void
     {
+        $this->view = null;
+
         if ($view instanceof ModuleViewEnum) {
             $this->viewContext = ['VIEW' => $view];
         } else {
-            request::setVar($view, 1);
+            $this->view = $view;
         }
 
         $this->viewContext = array_merge($this->viewContext, $viewContext);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
     public function getViewContext(): array
     {
         return $this->viewContext;
@@ -790,7 +733,10 @@ final class GameController implements GameControllerInterface
     private function executeView(array $views, GameRequestInterface $gameRequest): void
     {
         foreach ($views as $viewIdentifier => $config) {
-            if (request::indString($viewIdentifier) !== false) {
+            if (
+                request::indString($viewIdentifier) !== false
+                || $viewIdentifier === $this->view
+            ) {
                 $gameRequest->setView($viewIdentifier);
 
                 $config->handle($this);

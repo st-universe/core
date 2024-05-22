@@ -14,6 +14,9 @@ interface GameControllerInterface extends InformationInterface
 {
     public function setView(ModuleViewEnum|string $view, array $viewContext = []): void;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getViewContext(): array;
 
     public function getGameState(): int;
