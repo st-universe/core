@@ -12,6 +12,7 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
 use Stu\Orm\Entity\TradeOfferInterface;
@@ -51,7 +52,8 @@ final class SearchDemand implements ActionControllerInterface
         $commodityId = request::postIntFatal('cid');
         $postId = request::postIntFatal('pid') > 0 ? request::postIntFatal('pid') : null;
 
-        $game->setView(ModuleViewEnum::TRADE, ['FILTER_ACTIVE' => true]);
+        $game->setView(ModuleViewEnum::TRADE);
+        $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 
         $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
         $game->setTemplateVar('COMMODITY_ID', $commodityId);

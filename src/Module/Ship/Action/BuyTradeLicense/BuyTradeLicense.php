@@ -11,6 +11,7 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
@@ -72,7 +73,8 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowTradeMenu::VIEW_IDENTIFIER, ['noAjaxTemplate']);
+        $game->setView(ShowTradeMenu::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::NO_AJAX, true);
 
         $user = $game->getUser();
         $userId = $user->getId();

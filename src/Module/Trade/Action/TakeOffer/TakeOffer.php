@@ -8,6 +8,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -168,7 +169,8 @@ final class TakeOffer implements ActionControllerInterface
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 
-        $game->setView(ModuleViewEnum::TRADE, ['FILTER_ACTIVE' => true]);
+        $game->setView(ModuleViewEnum::TRADE);
+        $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 
         $this->privateMessageSender->send(
             $userId,

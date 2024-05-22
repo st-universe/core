@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowKnRating;
 
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowKnRating implements ViewControllerInterface
@@ -24,7 +25,7 @@ final class ShowKnRating implements ViewControllerInterface
     {
         $game->showMacro('html/commmacros.xhtml/knrating');
 
-        $post = $game->getViewContext()['knPost'] ?? null;
+        $post = $game->getViewContext(ViewContextTypeEnum::KN_POST);
 
         if ($post === null) {
             return;

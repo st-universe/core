@@ -11,6 +11,7 @@ use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
 final class DeactivateBuildings implements ActionControllerInterface
@@ -58,7 +59,8 @@ final class DeactivateBuildings implements ActionControllerInterface
             $this->buildingAction->deactivate($field, $game);
         }
 
-        $game->setView($host->getDefaultViewIdentifier(), ['COLONY_MENU' => ColonyMenuEnum::MENU_BUILDINGS]);
+        $game->setView($host->getDefaultViewIdentifier());
+        $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_BUILDINGS);
     }
 
     public function performSessionCheck(): bool

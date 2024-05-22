@@ -10,6 +10,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ChangeFrequency implements ActionControllerInterface
@@ -35,7 +36,8 @@ final class ChangeFrequency implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyMenuEnum::MENU_INFO]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_INFO);
 
         $frequency = request::postStringFatal('frequency');
 

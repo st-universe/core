@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\View\ShowTradeMenu;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -77,10 +78,10 @@ final class ShowTradeMenu implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Handelstransfermenü'));
-        if (!in_array('noAjaxTemplate', $game->getViewContext())) {
-            $game->setMacroInAjaxWindow('html/shipmacros.xhtml/trademenu');
-        } else {
+        if ($game->getViewContext(ViewContextTypeEnum::NO_AJAX) === true) {
             $game->showMacro('html/shipmacros.xhtml/trademenu');
+        } else {
+            $game->setMacroInAjaxWindow('html/shipmacros.xhtml/trademenu');
         }
 
         $databaseEntryId = $tradepost->getShip()->getDatabaseId();

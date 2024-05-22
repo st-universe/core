@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 
 final class SwitchView implements ActionControllerInterface
@@ -16,10 +17,10 @@ final class SwitchView implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(
-            ShowInnerContent::VIEW_IDENTIFIER,
-            ['VIEW' => ModuleViewEnum::from(request::getStringFatal('view'))]
-        );
+        $moduleView = ModuleViewEnum::from(request::getStringFatal('view'));
+
+        $game->setView(ShowInnerContent::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::VIEW, $moduleView);
     }
 
     public function performSessionCheck(): bool

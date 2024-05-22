@@ -6,6 +6,7 @@ namespace Stu\Module\Game\View\ShowInnerContent;
 
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 
@@ -24,7 +25,7 @@ final class ShowInnerContent implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         /** @var ModuleViewEnum  */
-        $view = $game->getViewContext()['VIEW'];
+        $view = $game->getViewContext(ViewContextTypeEnum::VIEW);
 
         $this->viewComponentLoader->registerViewComponents($view, $game);
         $game->setTemplateVar('VIEW_TEMPLATE', $view->getTemplate());

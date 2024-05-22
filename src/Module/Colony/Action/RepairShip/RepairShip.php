@@ -24,6 +24,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 
 final class RepairShip implements ActionControllerInterface
 {
@@ -75,7 +76,8 @@ final class RepairShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyMenuEnum::MENU_SHIP_REPAIR]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_SHIP_REPAIR);
 
         $userId = $game->getUser()->getId();
 

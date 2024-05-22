@@ -83,9 +83,7 @@ final class GameController implements GameControllerInterface
     /** @var array<string> */
     private array $achievements = [];
 
-    private ?string $view = null;
-
-    /** @var array<string, mixed> $viewContext */
+    /** @var array<int, mixed> $viewContext */
     private array $viewContext = [];
 
     private ?array $gameStats = null;
@@ -127,25 +125,23 @@ final class GameController implements GameControllerInterface
         $this->gameInformations = new InformationWrapper();
     }
 
-    /**
-     * @param array<string, mixed> $viewContext
-     */
-    public function setView(ModuleViewEnum|string $view, array $viewContext = []): void
+    public function setView(ModuleViewEnum|string $view): void
     {
-        $this->view = null;
-
-        if ($view instanceof ModuleViewEnum) {
-            $this->viewContext = ['VIEW' => $view];
-        } else {
-            $this->view = $view;
-        }
-
-        $this->viewContext = array_merge($this->viewContext, $viewContext);
+        $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
     }
 
-    public function getViewContext(): array
+    public function getViewContext(ViewContextTypeEnum $type): mixed
     {
-        return $this->viewContext;
+        if (!array_key_exists($type->value, $this->viewContext)) {
+            return null;
+        }
+
+        return $this->viewContext[$type->value];
+    }
+
+    public function setViewContext(ViewContextTypeEnum $type, mixed $value): void
+    {
+        $this->viewContext[$type->value] = $value;
     }
 
     public function getGameState(): int
@@ -482,7 +478,7 @@ final class GameController implements GameControllerInterface
         bool $admin_check = false,
         bool $npc_check = false,
     ): void {
-        $this->viewContext = ['VIEW' => $view];
+        $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
 
         $gameRequest = $this->getGameRequest();
         $gameRequest->setModule($view->value);
@@ -732,10 +728,12 @@ final class GameController implements GameControllerInterface
      */
     private function executeView(array $views, GameRequestInterface $gameRequest): void
     {
+        $viewFromContext = $this->getViewContext(ViewContextTypeEnum::VIEW);
+
         foreach ($views as $viewIdentifier => $config) {
             if (
                 request::indString($viewIdentifier) !== false
-                || $viewIdentifier === $this->view
+                || $viewIdentifier === $viewFromContext
             ) {
                 $gameRequest->setView($viewIdentifier);
 

@@ -9,6 +9,7 @@ use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -65,7 +66,8 @@ final class CancelModuleCreation implements ActionControllerInterface
             return;
         }
 
-        $game->setView('SHOW_MODULE_CANCEL', ['MODULE' => $module]);
+        $game->setView('SHOW_MODULE_CANCEL');
+        $game->setViewContext(ViewContextTypeEnum::MODULE, $module);
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $colony,

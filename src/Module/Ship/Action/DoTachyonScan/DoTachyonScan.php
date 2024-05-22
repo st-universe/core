@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -82,7 +83,8 @@ final class DoTachyonScan implements ActionControllerInterface
         $epsSystem->lowerEps(TachyonScannerShipSystem::SCAN_EPS_COST)->update();
         $this->shipRepository->save($ship);
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER, ['TACHYON_SCAN_JUST_HAPPENED' => true]);
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::TACHYON_SCAN_JUST_HAPPENED, true);
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 

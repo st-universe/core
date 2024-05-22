@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -77,7 +78,8 @@ final class CreateSandbox implements ActionControllerInterface
 
         $game->addInformationf(_('Sandbox %s wurde erstellt'), $sandboxName);
 
-        $game->setView(ShowColonySandbox::VIEW_IDENTIFIER, ['HOST' => $sandbox]);
+        $game->setView(ShowColonySandbox::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::HOST, $sandbox);
     }
 
     public function performSessionCheck(): bool
