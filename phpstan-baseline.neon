@@ -1084,11 +1084,6 @@ parameters:
 			path: src/Module/Control/GameControllerInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getViewContext\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:setTemplateVar\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php

@@ -16,7 +16,6 @@ use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 abstract class AbstractDirectedMovement implements ActionControllerInterface
 {
@@ -85,7 +84,6 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
         if ($ship->isDestroyed()) {
             $game->setView(ModuleViewEnum::SHIP);
-            return;
         }
     }
 
