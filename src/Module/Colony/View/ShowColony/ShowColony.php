@@ -14,6 +14,7 @@ use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -70,7 +71,7 @@ final class ShowColony implements ViewControllerInterface
             false
         );
 
-        $menu = ColonyMenuEnum::getFor($game->getViewContext()['COLONY_MENU'] ?? null);
+        $menu = ColonyMenuEnum::getFor($game->getViewContext(ViewContextTypeEnum::COLONY_MENU));
 
         $this->colonyGuiHelper->registerMenuComponents($menu, $colony, $game);
         $game->setTemplateVar('SELECTED_COLONY_MENU_TEMPLATE', ColonyMenuEnum::MENU_MAINSCREEN->getTemplate());

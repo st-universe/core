@@ -10,6 +10,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 use Stu\StuTestCase;
 use ValueError;
@@ -51,7 +52,10 @@ class SwitchViewTest extends StuTestCase
         request::setMockVars(['view' => ModuleViewEnum::MAINDESK->value]);
 
         $this->game->shouldReceive('setView')
-            ->with(ShowInnerContent::VIEW_IDENTIFIER, ['VIEW' => ModuleViewEnum::MAINDESK])
+            ->with(ShowInnerContent::VIEW_IDENTIFIER)
+            ->once();
+        $this->game->shouldReceive('setViewContext')
+            ->with(ViewContextTypeEnum::VIEW, ModuleViewEnum::MAINDESK)
             ->once();
 
         $this->subject->handle($this->game);

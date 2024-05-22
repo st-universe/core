@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\Action\RateKnPost;
 use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -42,7 +43,8 @@ final class RateKnPost implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowKnRating::VIEW_IDENTIFIER, ['knPost' => $post]);
+        $game->setView(ShowKnRating::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::KN_POST, $post);
 
         $userId = $game->getUser()->getId();
 

@@ -8,6 +8,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -40,7 +41,8 @@ final class CancelOffer implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $viewIdentifier = $this->cancelOfferRequest->getView() ?? ModuleViewEnum::TRADE;
-        $game->setView($viewIdentifier, ['FILTER_ACTIVE' => true]);
+        $game->setView($viewIdentifier);
+        $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 
         $userId = $game->getUser()->getId();
         $offerId = $this->cancelOfferRequest->getOfferId();

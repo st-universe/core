@@ -10,6 +10,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -50,7 +51,8 @@ final class RenewTradeLicense implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowAccounts::VIEW_IDENTIFIER, ['noAjaxTemplate']);
+        $game->setView(ShowAccounts::VIEW_IDENTIFIER);
+        $game->setViewContext(ViewContextTypeEnum::NO_AJAX, true);
 
         $user = $game->getUser();
         $userId = $user->getId();

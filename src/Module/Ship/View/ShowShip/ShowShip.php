@@ -17,6 +17,7 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -133,7 +134,7 @@ final class ShowShip implements ViewControllerInterface
         );
         $ship = $wrapper->get();
 
-        $tachyonFresh = $game->getViewContext()['TACHYON_SCAN_JUST_HAPPENED'] ?? false;
+        $tachyonFresh = $game->getViewContext(ViewContextTypeEnum::TACHYON_SCAN_JUST_HAPPENED) ?? false;
         $tachyonActive = $tachyonFresh;
 
         // check if tachyon scan still active

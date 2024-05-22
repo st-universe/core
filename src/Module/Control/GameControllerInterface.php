@@ -12,12 +12,11 @@ use Stu\Orm\Entity\UserInterface;
 
 interface GameControllerInterface extends InformationInterface
 {
-    public function setView(ModuleViewEnum|string $view, array $viewContext = []): void;
+    public function setView(ModuleViewEnum|string $view): void;
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getViewContext(): array;
+    public function getViewContext(ViewContextTypeEnum $type): mixed;
+
+    public function setViewContext(ViewContextTypeEnum $type, mixed $value): void;
 
     public function getGameState(): int;
 

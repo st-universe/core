@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowModuleCancel;
 
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -41,7 +42,7 @@ final class ShowModuleCancel implements ViewControllerInterface
         );
 
         /** @var ModuleInterface $module */
-        $module = $game->getViewContext()['MODULE'];
+        $module = $game->getViewContext(ViewContextTypeEnum::MODULE);
 
         $queuedAmount = $this->moduleQueueRepository->getAmountByColonyAndModule(
             $colony->getId(),

@@ -11,6 +11,7 @@ use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 
@@ -41,7 +42,7 @@ final class ShowColonySandbox implements ViewControllerInterface
 
         $game->setTemplateVar('SANDBOXES', $this->colonySandboxRepository->getByUser($game->getUser()));
 
-        $sandbox = $game->getViewContext()['HOST'] ?? null;
+        $sandbox = $game->getViewContext(ViewContextTypeEnum::HOST);
         if ($sandbox === null && request::has('id')) {
             $sandbox = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
         }
@@ -65,7 +66,7 @@ final class ShowColonySandbox implements ViewControllerInterface
                 $game->getSessionString()
             ));
 
-            $menu = ColonyMenuEnum::getFor($game->getViewContext()['COLONY_MENU'] ?? null);
+            $menu = ColonyMenuEnum::getFor($game->getViewContext(ViewContextTypeEnum::COLONY_MENU));
 
             $this->colonyGuiHelper->registerMenuComponents($menu, $sandbox, $game);
             $game->setTemplateVar('SELECTED_COLONY_MENU_TEMPLATE', ColonyMenuEnum::MENU_MAINSCREEN->getTemplate());
