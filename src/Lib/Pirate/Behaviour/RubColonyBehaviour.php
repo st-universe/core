@@ -117,6 +117,8 @@ class RubColonyBehaviour implements PirateBehaviourInterface
                     $ship->getName(),
                     $colony->getName()
                 )], true);
+
+                $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS, true);
             }
 
             $allInformations->addInformationWrapper($informations);
