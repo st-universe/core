@@ -22,19 +22,25 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $view = null;
+        $moduleView = $this->getModuleView($game);
+
+        $this->viewComponentLoader->registerViewComponents($moduleView, $game);
+
+        $game->setPageTitle($moduleView->getTitle());
+        $game->setViewTemplate($moduleView->getTemplate());
+    }
+
+    private function getModuleView(GameControllerInterface $game): ModuleViewEnum
+    {
+        $moduleView = null;
         if (request::has('view')) {
-            $view = ModuleViewEnum::tryFrom(request::getStringFatal('view'));
+            $moduleView = ModuleViewEnum::tryFrom(request::getStringFatal('view'));
         }
 
-        if ($view === null) {
-            $view = $game->getViewContext(ViewContextTypeEnum::VIEW) ?? $game->getUser()->getDefaultView();
+        if ($moduleView !== null) {
+            return $moduleView;
         }
 
-        /** @var ModuleViewEnum $view */
-        $this->viewComponentLoader->registerViewComponents($view, $game);
-
-        $game->setPageTitle($view->getTitle());
-        $game->setViewTemplate($view->getTemplate());
+        return $game->getViewContext(ViewContextTypeEnum::MODULE_VIEW) ?? $game->getUser()->getDefaultView();
     }
 }

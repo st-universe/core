@@ -127,7 +127,11 @@ final class GameController implements GameControllerInterface
 
     public function setView(ModuleViewEnum|string $view): void
     {
-        $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
+        if ($view instanceof ModuleViewEnum) {
+            $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $view);
+        } else {
+            $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
+        }
     }
 
     public function getViewContext(ViewContextTypeEnum $type): mixed
@@ -478,7 +482,7 @@ final class GameController implements GameControllerInterface
         bool $admin_check = false,
         bool $npc_check = false,
     ): void {
-        $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
+        $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $view);
 
         $gameRequest = $this->getGameRequest();
         $gameRequest->setModule($view->value);

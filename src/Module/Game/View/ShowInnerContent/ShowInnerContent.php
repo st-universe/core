@@ -25,7 +25,7 @@ final class ShowInnerContent implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         /** @var ModuleViewEnum  */
-        $view = $game->getViewContext(ViewContextTypeEnum::VIEW);
+        $view = $game->getViewContext(ViewContextTypeEnum::MODULE_VIEW);
 
         $this->viewComponentLoader->registerViewComponents($view, $game);
         $game->setTemplateVar('VIEW_TEMPLATE', $view->getTemplate());
