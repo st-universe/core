@@ -55,7 +55,7 @@ class SwitchViewTest extends StuTestCase
             ->with(ShowInnerContent::VIEW_IDENTIFIER)
             ->once();
         $this->game->shouldReceive('setViewContext')
-            ->with(ViewContextTypeEnum::VIEW, ModuleViewEnum::MAINDESK)
+            ->with(ViewContextTypeEnum::MODULE_VIEW, ModuleViewEnum::MAINDESK)
             ->once();
 
         $this->subject->handle($this->game);

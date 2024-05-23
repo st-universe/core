@@ -20,7 +20,7 @@ final class SwitchView implements ActionControllerInterface
         $moduleView = ModuleViewEnum::from(request::getStringFatal('view'));
 
         $game->setView(ShowInnerContent::VIEW_IDENTIFIER);
-        $game->setViewContext(ViewContextTypeEnum::VIEW, $moduleView);
+        $game->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $moduleView);
     }
 
     public function performSessionCheck(): bool
