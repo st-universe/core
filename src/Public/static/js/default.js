@@ -625,7 +625,7 @@ if (typeof userDeals !== 'undefined' && userDeals) {
 
 function showPopup() {
         var popup = document.getElementById('nagus');
-        var popupContent = `<div class="header_box border_box action" style="text-align: center; margin: 5px 0 0 15px; padding: 5px; overflow: hidden; "> <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_DEALS', 'Deals des Großen Nagus');"><img id="romImage" src="/assets/buttons/romblinck.gif" style="width: 65px; clip: rect(0px, 0px, 50px, 0px);" alt="Zu den Deals gehen"></a> </div>`;
+        var popupContent = '<div class="header_box border_box action" style="text-align: center; margin: 5px 0 0 15px; padding: 5px; overflow: hidden; "> <a href="trade.php?SHOW_DEALS=1"><img id="romImage" src="/assets/buttons/romblinck.gif" style="width: 65px; clip: rect(0px, 0px, 50px, 0px);" alt="Zu den Deals gehen"></a> </div>';
         popup.innerHTML = popupContent;
         popup.style.display = 'block';
 
