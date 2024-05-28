@@ -47,7 +47,7 @@ class RageBehaviour implements PirateBehaviourInterface
             $targets,
             fn (ShipInterface $target) =>
             $this->interactionChecker->checkPosition($leadShip, $target)
-                && $this->fightLib->canAttackTarget($leadShip, $target, false)
+                && $this->fightLib->canAttackTarget($leadShip, $target, true, false)
                 && !$target->getUser()->isProtectedAgainstPirates()
                 && ($target === $triggerShip
                     || $this->targetHasPositivePrestige($target))

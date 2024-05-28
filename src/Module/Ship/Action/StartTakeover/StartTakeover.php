@@ -104,7 +104,7 @@ final class StartTakeover implements ActionControllerInterface
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
-        if (!$this->fightLib->canAttackTarget($ship, $target, false)) {
+        if (!$this->fightLib->canAttackTarget($ship, $target, false, false)) {
             throw new SanityCheckException('Target cant be attacked', self::ACTION_IDENTIFIER);
         }
 

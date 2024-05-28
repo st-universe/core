@@ -51,7 +51,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $filteredTargets = array_filter(
             $targets,
             fn (ShipInterface $target) =>
-            $this->fightLib->canAttackTarget($leadShip, $target, false)
+            $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && ($target === $triggerShip
                     || $this->targetHasEnoughPrestige($piratePrestige, $target))
         );
@@ -71,6 +71,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $closestShip = current($filteredTargets);
 
         if ($this->pirateNavigation->navigateToTarget($fleet, $closestShip->getCurrentMapField())) {
+            $this->interceptIfNeccessary();
             $this->attackShip($fleet, $closestShip);
         }
 
@@ -97,6 +98,10 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         }
 
         return $ship->getRump()->getPrestige();
+    }
+
+    private function interceptIfNeccessary(): void
+    {
     }
 
     private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void

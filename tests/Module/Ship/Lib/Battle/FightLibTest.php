@@ -415,6 +415,30 @@ class FightLibTest extends StuTestCase
         $this->assertFalse($result);
     }
 
+    public function testCanAttackTargetExpectFalseWhenAttackingCloakedTarget(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = $this->subject->canAttackTarget($ship, $target, true);
+
+        $this->assertFalse($result);
+    }
+
     public function testCanAttackTargetExpectFalseWhenTractoredAndAttackingOtherTarget(): void
     {
         $ship = $this->mock(ShipInterface::class);
@@ -499,7 +523,7 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $result = $this->subject->canAttackTarget($ship, $target, false);
+        $result = $this->subject->canAttackTarget($ship, $target, false, false);
 
         $this->assertTrue($result);
     }
@@ -810,7 +834,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(43);
 
-        $result = $this->subject->canAttackTarget($ship, $target, true, false);
+        $result = $this->subject->canAttackTarget($ship, $target, false, true, false);
 
         $this->assertTrue($result);
     }
