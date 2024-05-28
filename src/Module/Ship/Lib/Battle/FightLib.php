@@ -101,6 +101,7 @@ final class FightLib implements FightLibInterface
     public function canAttackTarget(
         ShipInterface $ship,
         ShipInterface|ShipNfsItem $target,
+        bool $checkCloaked = false,
         bool $checkActiveWeapons = true,
         bool $checkActiveWarpdrive = true
     ): bool {
@@ -115,6 +116,11 @@ final class FightLib implements FightLibInterface
 
         //can't attack trumfields
         if ($target->isTrumfield()) {
+            return false;
+        }
+
+        //can't attack cloaked target
+        if ($checkCloaked && $target->getCloakState()) {
             return false;
         }
 
