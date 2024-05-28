@@ -72,6 +72,16 @@ class InformationWrapper implements InformationInterface
         return implode(PHP_EOL, $this->getInformations());
     }
 
+    public function dumpTo(InformationInterface $informations): void
+    {
+        array_walk(
+            $this->informations,
+            function (string $info) use ($informations): void {
+                $informations->addInformation($info);
+            }
+        );
+    }
+
     public function isEmpty(): bool
     {
         return empty($this->getInformations());

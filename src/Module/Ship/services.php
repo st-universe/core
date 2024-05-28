@@ -247,6 +247,8 @@ use Stu\Module\Ship\Lib\Destruction\Handler\TransformToTrumfield;
 use Stu\Module\Ship\Lib\Destruction\Handler\UpdatePirateWrath;
 use Stu\Module\Ship\Lib\Destruction\ShipDestruction;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
+use Stu\Module\Ship\Lib\Interaction\InterceptShipCore;
+use Stu\Module\Ship\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManager;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipUndocking;
@@ -368,6 +370,7 @@ return [
     UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
     RandomSystemEntryInterface::class => autowire(RandomSystemEntry::class),
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
+    InterceptShipCoreInterface::class => autowire(InterceptShipCore::class),
     'preFlightConditions' => [
         autowire(BlockedCondition::class),
         autowire(CrewCondition::class),
