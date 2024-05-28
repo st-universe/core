@@ -3,6 +3,7 @@
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -34,7 +35,7 @@ interface FightLibInterface
     /**
      * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool}
      */
-    public function getAttackersAndDefenders(ShipWrapperInterface $wrapper, ShipWrapperInterface $target): array;
+    public function getAttackersAndDefenders(ShipWrapperInterface|FleetWrapperInterface $wrapper, ShipWrapperInterface $target): array;
 
     public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool;
 

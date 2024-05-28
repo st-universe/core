@@ -1095,6 +1095,49 @@ class FightLibTest extends StuTestCase
         $this->assertTrue($isFleetFight);
     }
 
+    public function testGetAttackersAndDefendersExpectRealFleetVsSingle(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $wrapper2 = $this->mock(ShipWrapperInterface::class);
+        $fleetWrapper = $this->mock(FleetWrapperInterface::class);
+
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $fleetWrapper->shouldReceive('getShipWrappers')
+            ->withNoArgs()
+            ->andReturn([
+                12 => $wrapper,
+                34 => $wrapper2
+            ]);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $targetWrapper->shouldReceive('getDockedToShipWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+
+        [
+            $attackers,
+            $defenders,
+            $isFleetFight
+        ] = $this->subject->getAttackersAndDefenders($fleetWrapper, $targetWrapper);
+
+        $this->assertEquals([
+            12 => $wrapper,
+            34 => $wrapper2
+        ], $attackers);
+        $this->assertEquals([456 => $targetWrapper], $defenders);
+        $this->assertTrue($isFleetFight);
+    }
+
     public function testGetAttackersAndDefendersExpectSingleVsPartialCloakedFleet(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
