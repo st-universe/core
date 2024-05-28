@@ -130,12 +130,12 @@ final class AttackTrackedShip implements ActionControllerInterface
 
         //Alarm-Rot check for ship
         if ($isShipWarped && !$ship->isDestroyed()) {
-            $informations->addInformationWrapper($this->alertRedHelper->doItAll($ship));
+            $this->alertRedHelper->doItAll($ship, $informations);
         }
 
         //Alarm-Rot check for traktor ship
         if ($isTargetWarped && !$target->isDestroyed()) {
-            $informations->addInformationWrapper($this->alertRedHelper->doItAll($target));
+            $this->alertRedHelper->doItAll($target, $informations);
         }
 
         if ($ship->isDestroyed()) {

@@ -7,6 +7,7 @@ namespace Stu\Module\Tick\Ship\ManagerComponent;
 use InvalidArgumentException;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -237,7 +238,7 @@ final class CrewLimitations implements ManagerComponentInterface
 
         //do alert red stuff
         if ($doAlertRedCheck) {
-            $this->alertRedHelper->doItAll($randomShip);
+            $this->alertRedHelper->doItAll($randomShip, new InformationWrapper());
         }
 
         return count($crewArray);

@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
-use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -51,12 +50,10 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function doItAll(
         ShipInterface $ship,
-        ?GameControllerInterface $game = null,
+        InformationInterface $informations,
         ?ShipInterface $tractoringShip = null
-    ): ?InformationWrapper {
+    ): void {
         //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
-
-        $informations = new InformationWrapper();
 
         $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations, $tractoringShip);
         shuffle($shipsToShuffle);
@@ -76,13 +73,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
             }
 
             $this->performAttackCycle($alertShip, $leader, $informations);
-        }
-
-        if ($game !== null) {
-            $game->addInformationMergeDown($informations->getInformations());
-            return null;
-        } else {
-            return $informations;
         }
     }
 
@@ -123,9 +113,12 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
     }
 
-    public function checkForAlertRedShips(
+    /**
+     * @return array<ShipInterface>
+     */
+    private function checkForAlertRedShips(
         ShipInterface $leadShip,
-        InformationWrapper $informations,
+        InformationInterface $informations,
         ?ShipInterface $tractoringShip = null
     ): array {
         $leadShipUser = $leadShip->getUser();
@@ -195,7 +188,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         ShipInterface $leadShip,
         int $singleShipCount,
         int $fleetCount,
-        InformationWrapper $informations
+        InformationInterface $informations
     ): void {
         if ($fleetCount == 1) {
             $informations->addInformation(sprintf(
@@ -340,7 +333,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
     public function performAttackCycle(
         ShipInterface $alertShip,
         ShipInterface $leadShip,
-        InformationWrapper $informations,
+        InformationInterface $informations,
         bool $isColonyDefense = false
     ): void {
         $alert_user_id = $alertShip->getUser()->getId();
@@ -393,11 +386,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
         $fightInformations = $messageCollection->getInformationDump();
 
-        if (empty($fightInformations->getInformations())) {
-            //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
-            //$this->loggerUtil->log(sprintf('attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
-        }
-
         $pm = sprintf(
             _("Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s\n%s"),
             $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot',
@@ -426,7 +414,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         );
 
         if ($leadShip->isDestroyed()) {
-            $informations->addInformationWrapper($fightInformations);
+            $fightInformations->dumpTo($informations);
             return;
         }
 
@@ -436,6 +424,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $leadShip->getPosX(),
             $leadShip->getPosY()
         ));
-        $informations->addInformationWrapper($fightInformations);
+        $fightInformations->dumpTo($informations);
     }
 }

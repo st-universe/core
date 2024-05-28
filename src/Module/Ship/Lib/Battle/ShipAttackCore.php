@@ -12,6 +12,7 @@ use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -43,17 +44,21 @@ final class ShipAttackCore implements ShipAttackCoreInterface
     }
 
     public function attack(
-        ShipWrapperInterface $wrapper,
+        ShipWrapperInterface|FleetWrapperInterface $wrapper,
         ShipWrapperInterface $targetWrapper,
         bool &$isFleetFight,
         InformationWrapper $informations
     ): void {
-        $ship = $wrapper->get();
+        $ship = $wrapper instanceof ShipWrapperInterface ?  $wrapper->get() : $wrapper->get()->getLeadShip();
+
         $target = $targetWrapper->get();
         $userId = $ship->getUser()->getId();
         $isTargetBase = $target->isBase();
 
-        [$attacker, $defender, $isFleetFight, $isWebSituation] = $this->getAttackersAndDefenders($wrapper, $targetWrapper);
+        [$attacker, $defender, $isFleetFight, $isWebSituation] = $this->getAttackersAndDefenders(
+            $wrapper,
+            $targetWrapper
+        );
 
         $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender, $isWebSituation);
 
@@ -69,12 +74,12 @@ final class ShipAttackCore implements ShipAttackCoreInterface
         if ($this->isActiveTractorShipWarped($ship, $target)) {
             //Alarm-Rot check for ship
             if (!$ship->isDestroyed()) {
-                $informations->addInformationWrapper($this->alertRedHelper->doItAll($ship));
+                $this->alertRedHelper->doItAll($ship, $informations);
             }
 
             //Alarm-Rot check for traktor ship
             if (!$this->isTargetDestroyed($target)) {
-                $informations->addInformationWrapper($this->alertRedHelper->doItAll($target));
+                $this->alertRedHelper->doItAll($target, $informations);
             }
         }
     }
@@ -121,9 +126,9 @@ final class ShipAttackCore implements ShipAttackCoreInterface
     /**
      * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool, 3: bool}
      */
-    private function getAttackersAndDefenders(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
+    private function getAttackersAndDefenders(ShipWrapperInterface|FleetWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
     {
-        $ship = $wrapper->get();
+        $ship = $wrapper instanceof ShipWrapperInterface ?  $wrapper->get() : $wrapper->get()->getLeadShip();
 
         [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper);
 

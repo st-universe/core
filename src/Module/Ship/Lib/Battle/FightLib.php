@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -153,7 +154,7 @@ final class FightLib implements FightLibInterface
         return $ownFleetId !== $targetFleetId;
     }
 
-    public function getAttackersAndDefenders(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
+    public function getAttackersAndDefenders(ShipWrapperInterface|FleetWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
     {
         $attackers = $this->getAttackers($wrapper);
         $defenders = $this->getDefenders($targetWrapper);
@@ -166,18 +167,20 @@ final class FightLib implements FightLibInterface
     }
 
     /** @return array<int, ShipWrapperInterface> */
-    public function getAttackers(ShipWrapperInterface $wrapper): array
+    public function getAttackers(ShipWrapperInterface|FleetWrapperInterface $wrapper): array
     {
-        $ship = $wrapper->get();
-        $fleet = $wrapper->getFleetWrapper();
-
-        if ($ship->isFleetLeader() && $fleet !== null) {
-            $attackers = $fleet->getShipWrappers();
-        } else {
-            $attackers = [$ship->getId() => $wrapper];
+        if ($wrapper instanceof FleetWrapperInterface) {
+            return $wrapper->getShipWrappers();
         }
 
-        return $attackers;
+        $ship = $wrapper->get();
+        $fleetWrapper = $wrapper->getFleetWrapper();
+
+        if ($ship->isFleetLeader() && $fleetWrapper !== null) {
+            return $fleetWrapper->getShipWrappers();
+        } else {
+            return [$ship->getId() => $wrapper];
+        }
     }
 
     /** @return array<int, ShipWrapperInterface> */

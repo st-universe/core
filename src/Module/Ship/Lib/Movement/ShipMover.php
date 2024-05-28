@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Movement;
 
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
@@ -130,20 +131,24 @@ final class ShipMover implements ShipMoverInterface
             $flightRoute->stepForward();
 
             // alert red check
-            $alertRedInformations =
-                $this->alertRedHelper->doItAll($leadShip);
+            $alertRedInformations = new InformationWrapper();
+            $this->alertRedHelper->doItAll($leadShip, $alertRedInformations);
 
-            if ($alertRedInformations !== null) {
+            if (!$alertRedInformations->isEmpty()) {
                 $this->addInformationMerge($alertRedInformations->getInformations());
             }
 
             // alert red check for tractored ships
             foreach ($movedTractoredShips as [$tractoringShip, $tractoredShip]) {
                 if (!$tractoredShip->isDestroyed()) {
-                    $alertRedInformations =
-                        $this->alertRedHelper->doItAll($tractoredShip, null, $tractoringShip);
+                    $alertRedInformations = new InformationWrapper();
+                    $this->alertRedHelper->doItAll(
+                        $tractoredShip,
+                        $alertRedInformations,
+                        $tractoringShip
+                    );
 
-                    if ($alertRedInformations !== null) {
+                    if (!$alertRedInformations->isEmpty()) {
                         $this->addInformationMerge($alertRedInformations->getInformations());
                     }
                 }
