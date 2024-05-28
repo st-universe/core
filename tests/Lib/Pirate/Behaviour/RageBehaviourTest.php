@@ -7,13 +7,12 @@ namespace Stu\Lib\Pirate\Behaviour;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -28,10 +27,8 @@ class RageBehaviourTest extends StuTestCase
     private $interactionChecker;
     /** @var MockInterface|FightLibInterface */
     private $fightLib;
-    /** @var MockInterface|ShipAttackCoreInterface */
-    private $shipAttackCore;
-    /** @var MockInterface|ShipWrapperFactoryInterface */
-    private $shipWrapperFactory;
+    /** @var MockInterface|PirateAttackInterface */
+    private $pirateAttack;
 
     /** @var MockInterface|FleetWrapperInterface */
     private $fleetWrapper;
@@ -49,8 +46,7 @@ class RageBehaviourTest extends StuTestCase
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->interactionChecker = $this->mock(InteractionCheckerInterface::class);
         $this->fightLib = $this->mock(FightLibInterface::class);
-        $this->shipAttackCore = $this->mock(ShipAttackCoreInterface::class);
-        $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
+        $this->pirateAttack = $this->mock(PirateAttackInterface::class);
 
         $this->fleetWrapper = mock(FleetWrapperInterface::class);
         $this->fleet = mock(FleetInterface::class);
@@ -64,8 +60,7 @@ class RageBehaviourTest extends StuTestCase
             $this->shipRepository,
             $this->interactionChecker,
             $this->fightLib,
-            $this->shipAttackCore,
-            $this->shipWrapperFactory,
+            $this->pirateAttack,
             $this->initLoggerUtil()
         );
     }
@@ -140,7 +135,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target, false)
+            ->with($ship, $target, true, false, false)
             ->once()
             ->andReturn(false);
 
@@ -175,7 +170,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target, false)
+            ->with($ship, $target, true, false, false)
             ->once()
             ->andReturn(true);
 
@@ -216,7 +211,7 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target, false)
+            ->with($ship, $target, true, false, false)
             ->once()
             ->andReturn(true);
 
@@ -264,19 +259,13 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target, false)
+            ->with($ship, $target, true, false, false)
             ->once()
             ->andReturn(true);
 
-        $this->shipWrapperFactory->shouldReceive('wrapShip')
-            ->with($target)
-            ->once()
-            ->andReturn($targetWrapper);
-
-        $this->shipAttackCore->shouldReceive('attack')
-            ->with($wrapper, $targetWrapper, false, Mockery::any())
-            ->once()
-            ->andReturn(true);
+        $this->pirateAttack->shouldReceive('attackShip')
+            ->with($this->fleetWrapper, $target)
+            ->once();
 
         $this->pirateReaction->shouldReceive('react')
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
@@ -326,19 +315,13 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target, false)
+            ->with($ship, $target, true, false, false)
             ->once()
             ->andReturn(true);
 
-        $this->shipWrapperFactory->shouldReceive('wrapShip')
-            ->with($target)
-            ->once()
-            ->andReturn($targetWrapper);
-
-        $this->shipAttackCore->shouldReceive('attack')
-            ->with($wrapper, $targetWrapper, false, Mockery::any())
-            ->once()
-            ->andReturn(true);
+        $this->pirateAttack->shouldReceive('attackShip')
+            ->with($this->fleetWrapper, $target)
+            ->once();
 
         $this->pirateReaction->shouldReceive('react')
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
@@ -354,7 +337,6 @@ class RageBehaviourTest extends StuTestCase
         $target = $this->mock(ShipInterface::class);
 
         $target2 = $this->mock(ShipInterface::class);
-        $targetWrapper2 = $this->mock(ShipWrapperInterface::class);
 
         $target3_1 = $this->mock(ShipInterface::class);
         $target3_2 = $this->mock(ShipInterface::class);
@@ -429,15 +411,15 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
 
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target, false)
+            ->with($ship, $target, true, false, false)
             ->once()
             ->andReturn(true);
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target2, false)
+            ->with($ship, $target2, true, false, false)
             ->once()
             ->andReturn(true);
         $this->fightLib->shouldReceive('canAttackTarget')
-            ->with($ship, $target3_1, false)
+            ->with($ship, $target3_1, true, false, false)
             ->once()
             ->andReturn(true);
 
@@ -451,15 +433,9 @@ class RageBehaviourTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $this->shipWrapperFactory->shouldReceive('wrapShip')
-            ->with($target2)
-            ->once()
-            ->andReturn($targetWrapper2);
-
-        $this->shipAttackCore->shouldReceive('attack')
-            ->with($wrapper, $targetWrapper2, false, Mockery::any())
-            ->once()
-            ->andReturn(true);
+        $this->pirateAttack->shouldReceive('attackShip')
+            ->with($this->fleetWrapper, $target2)
+            ->once();
 
         $this->pirateReaction->shouldReceive('react')
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)

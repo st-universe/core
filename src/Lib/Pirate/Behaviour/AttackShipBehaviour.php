@@ -2,13 +2,11 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Map\DistanceCalculationInterface;
+use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -25,8 +23,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         private DistanceCalculationInterface $distanceCalculation,
         private PirateNavigationInterface $pirateNavigation,
         private FightLibInterface $fightLib,
-        private ShipAttackCoreInterface $shipAttackCore,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private PirateAttackInterface $pirateAttack,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -71,8 +68,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $closestShip = current($filteredTargets);
 
         if ($this->pirateNavigation->navigateToTarget($fleet, $closestShip->getCurrentMapField())) {
-            $this->interceptIfNeccessary();
-            $this->attackShip($fleet, $closestShip);
+            $this->pirateAttack->attackShip($fleet, $closestShip);
         }
 
         return null;
@@ -98,25 +94,5 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         }
 
         return $ship->getRump()->getPrestige();
-    }
-
-    private function interceptIfNeccessary(): void
-    {
-    }
-
-    private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
-    {
-        $leadWrapper = $fleetWrapper->getLeadWrapper();
-        $isFleetFight = false;
-        $informations = new InformationWrapper();
-
-        $this->logger->logf('    attacking target is shipId: %d', $target->getId());
-
-        $this->shipAttackCore->attack(
-            $leadWrapper,
-            $this->shipWrapperFactory->wrapShip($target),
-            $isFleetFight,
-            $informations
-        );
     }
 }
