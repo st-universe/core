@@ -2,16 +2,14 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -24,8 +22,7 @@ class RageBehaviour implements PirateBehaviourInterface
         private ShipRepositoryInterface $shipRepository,
         private InteractionCheckerInterface $interactionChecker,
         private FightLibInterface $fightLib,
-        private ShipAttackCoreInterface $shipAttackCore,
-        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private PirateAttackInterface $pirateAttack,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -47,7 +44,7 @@ class RageBehaviour implements PirateBehaviourInterface
             $targets,
             fn (ShipInterface $target) =>
             $this->interactionChecker->checkPosition($leadShip, $target)
-                && $this->fightLib->canAttackTarget($leadShip, $target, true, false)
+                && $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && !$target->getUser()->isProtectedAgainstPirates()
                 && ($target === $triggerShip
                     || $this->targetHasPositivePrestige($target))
@@ -77,7 +74,7 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $this->logger->logf('    attacking weakestTarget with shipId: %d', $weakestTarget->getId());
 
-        $this->attackShip($fleet, $weakestTarget);
+        $this->pirateAttack->attackShip($fleet, $weakestTarget);
 
         $pirateReaction->react(
             $fleet->get(),
@@ -100,19 +97,5 @@ class RageBehaviour implements PirateBehaviourInterface
         }
 
         return $target->getRump()->getPrestige() > 0;
-    }
-
-    private function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
-    {
-        $leadWrapper = $fleetWrapper->getLeadWrapper();
-        $isFleetFight = false;
-        $informations = new InformationWrapper();
-
-        $this->shipAttackCore->attack(
-            $leadWrapper,
-            $this->shipWrapperFactory->wrapShip($target),
-            $isFleetFight,
-            $informations
-        );
     }
 }

@@ -35,6 +35,8 @@ use Stu\Lib\Pirate\Behaviour\RubColonyBehaviour;
 use Stu\Lib\Pirate\Behaviour\SearchFriendBehaviour;
 use Stu\Lib\Pirate\Component\MoveOnLayer;
 use Stu\Lib\Pirate\Component\MoveOnLayerInterface;
+use Stu\Lib\Pirate\Component\PirateAttack;
+use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\Component\PirateNavigation;
@@ -126,5 +128,6 @@ return [
     MoveOnLayerInterface::class => autowire(MoveOnLayer::class),
     PirateNavigationInterface::class => autowire(PirateNavigation::class),
     ReloadMinimalEpsInterface::class => autowire(ReloadMinimalEps::class),
-    PirateWrathManagerInterface::class => autowire(PirateWrathManager::class)
+    PirateWrathManagerInterface::class => autowire(PirateWrathManager::class),
+    PirateAttackInterface::class => autowire(PirateAttack::class)
 ];
