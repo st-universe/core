@@ -126,7 +126,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         if ($leadShipUser->getId() === UserEnum::USER_NOONE) {
             return [];
         }
-        if ($this->allFleetShipsWarped($leadShip)) {
+        if ($this->allFleetShipsWarped($leadShip, $tractoringShip)) {
             return [];
         }
         if ($this->allFleetShipsCloaked($leadShip)) {
@@ -222,10 +222,15 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
     }
 
-    private function allFleetShipsWarped(ShipInterface $leadShip): bool
+    private function allFleetShipsWarped(ShipInterface $leadShip, ?ShipInterface $tractoringShip): bool
     {
-        if ($leadShip->getFleet() !== null) {
-            foreach ($leadShip->getFleet()->getShips() as $fleetShip) {
+        if ($tractoringShip !== null) {
+            return $tractoringShip->getWarpState();
+        }
+
+        $fleet = $leadShip->getFleet();
+        if ($fleet !== null) {
+            foreach ($fleet->getShips() as $fleetShip) {
                 if (!$fleetShip->getWarpState()) {
                     return false;
                 }
