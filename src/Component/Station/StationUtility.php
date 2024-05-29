@@ -134,6 +134,9 @@ final class StationUtility implements StationUtilityInterface
             if (!$docked->hasEnoughCrew()) {
                 continue;
             }
+            if ($docked->getUser()->isVacationRequestOldEnough()) {
+                continue;
+            }
 
             $commodity = $docked->getRump()->getCommodity();
             if ($commodity !== null && $commodity->isWorkbee()) {
