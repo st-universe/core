@@ -43,7 +43,9 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         $leadShip = $leadWrapper->get();
 
         $supportFleet = $this->getSupportFleet($leadShip);
-
+        if ($supportFleet == null) { // temporary exclusion of support call
+            return null;
+        }
         $pirateReaction->react(
             $supportFleet,
             PirateReactionTriggerEnum::ON_SUPPORT_CALL,
@@ -53,7 +55,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         return null;
     }
 
-    private function getSupportFleet(ShipInterface $leadShip): FleetInterface
+    private function getSupportFleet(ShipInterface $leadShip): ?FleetInterface
     {
         $friends = $this->shipRepository->getPirateFriends($leadShip);
 
@@ -73,7 +75,8 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $closestFriend = current($filteredFriends);
         if (!$closestFriend) {
-            return $this->createSupportFleet($leadShip);
+            //return $this->createSupportFleet($leadShip); // temporary exclusion of support call
+            return null;
         }
 
         $supportFleet = $closestFriend->getFleet();
