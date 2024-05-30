@@ -95,7 +95,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $this->reloadMinimalEps->reload($fleetWrapper, 75);
         if (!$this->pirateNavigation->navigateToTarget($fleetWrapper, $leadShip->getCurrentMapField())) {
-            return $this->createSupportFleet($leadShip);
+            return null; //$this->createSupportFleet($leadShip);
         }
 
         $this->logger->logf(
