@@ -97,6 +97,9 @@ final class ManagementProvider implements GuiComponentProviderInterface
             $particlePhalanx ? $this->torpedoTypeRepository->getForUser($game->getUser()->getId()) : null
         );
 
+        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($host);
+        $game->setTemplateVar('SHIELDING_MANAGER', $shieldingManager);
+
         $game->setTemplateVar('DEPOSIT_MININGS', $this->getUserDepositMinings($host));
     }
 
