@@ -30,8 +30,6 @@ final class ShieldingProvider implements GuiComponentProviderInterface
     ): void {
         $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($host);
 
-        $game->setTemplateVar('SHIELDING_MANAGER', $shieldingManager);
-
         if ($shieldingManager->hasShielding()) {
             $game->setTemplateVar(
                 'SHIELD_STATUS_BAR',
