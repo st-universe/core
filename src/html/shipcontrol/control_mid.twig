@@ -240,13 +240,13 @@ canColonize, closestAnomalyDistance) %}
             {% if ship.hasStoredBuoy %}
             <br />
             <img src="/assets/buttons/set_buoy_1.png" name="setBuoyButton" />
-            <input type="text" name="text" style="width: 125px;" placeholder="Message" 
-            onmouseover="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_2.png';" 
-            onmouseout="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_1.png';" />
-            <input type="submit" class="button" name="B_DROP_BOUY" value="Boje setzen" 
-            onmouseover="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_2.png';" 
-            onmouseout="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_1.png';" />
-            
+            <input type="text" name="text" style="width: 125px;" placeholder="Message"
+                onmouseover="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_2.png';"
+                onmouseout="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_1.png';" />
+            <input type="submit" class="button" name="B_DROP_BOUY" value="Boje setzen"
+                onmouseover="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_2.png';"
+                onmouseout="document.getElementsByName('setBuoyButton')[0].src='/assets/buttons/set_buoy_1.png';" />
+
             {% endif %}
             {{ _self.astroStates(ship, astroStateSystem) }}
             {{ _self.astroStates(ship, astroStateRegion) }}
@@ -377,7 +377,7 @@ canColonize, closestAnomalyDistance) %}
         {% if wormholeEntry %}
         <td>
             {{ wormholeEntry.getSystem.getName }}<br />
-            {% if not ship.getWarpState and not ship.isBase %}
+            {% if not ship.getWarpDriveState and not ship.isBase %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_ENTER_WORMHOLE', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');">
                 <img src="/assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />

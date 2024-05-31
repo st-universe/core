@@ -68,7 +68,7 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function getImpulseState(): bool;
 
-    public function getWarpState(bool $mindTractoringShip = false): bool;
+    public function getWarpDriveState(bool $mindTractoringShip = false): bool;
 
     public function getWebState(): bool;
 

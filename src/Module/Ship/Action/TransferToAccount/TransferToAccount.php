@@ -75,7 +75,7 @@ final class TransferToAccount implements ActionControllerInterface
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
-        if ($ship->getWarpState()) {
+        if ($ship->getWarpDriveState()) {
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }

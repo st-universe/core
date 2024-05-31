@@ -95,7 +95,7 @@ final class StoreShuttle implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getWarpState()) {
+        if ($ship->getWarpDriveState()) {
             $game->addInformation(_("Das Schiff hat den Warpantrieb aktiviert"));
             return;
         }

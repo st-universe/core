@@ -99,7 +99,7 @@ final class ShipAttackCore implements ShipAttackCoreInterface
         if ($tractoringShip !== $target) {
             return false;
         } else {
-            return $target->getWarpState();
+            return $target->getWarpDriveState();
         }
     }
 

@@ -59,9 +59,9 @@ final class ShipNfsItem
 
         return $this->item->getCloakState() > ShipSystemModeEnum::MODE_OFF;
     }
-    public function getWarpState(): bool
+    public function getWarpDriveState(): bool
     {
-        return $this->item->getWarpState() > ShipSystemModeEnum::MODE_OFF;
+        return $this->item->getWarpDriveState() > ShipSystemModeEnum::MODE_OFF;
     }
     public function isTractorbeamPossible(): bool
     {
@@ -73,7 +73,7 @@ final class ShipNfsItem
     }
     public function isInterceptable(): bool
     {
-        return $this->getWarpState();
+        return $this->getWarpDriveState();
     }
     public function isDestroyed(): bool
     {

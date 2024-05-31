@@ -58,7 +58,7 @@ final class InterceptShip implements ActionControllerInterface
             return;
         }
 
-        if (!$target->getWarpState()) {
+        if (!$target->getWarpDriveState()) {
             return;
         }
         if (!$ship->canIntercept()) {

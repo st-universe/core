@@ -107,8 +107,8 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
 
         $isTargetBase = $target->isBase();
-        $isShipWarped = $ship->getWarpState();
-        $isTargetWarped = $target->getWarpState();
+        $isShipWarped = $ship->getWarpDriveState();
+        $isTargetWarped = $target->getWarpDriveState();
 
         [$attacker, $defender, $fleet] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper);
 

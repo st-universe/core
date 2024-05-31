@@ -209,7 +209,7 @@ final class CrewLimitations implements ManagerComponentInterface
         if ($randomShip === null) {
             throw new InvalidArgumentException('randomShipId should exist');
         }
-        $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
+        $doAlertRedCheck = $randomShip->getWarpDriveState() || $randomShip->getCloakState();
         //deactivate ship
         $this->shipSystemManager->deactivateAll($this->shipWrapperFactory->wrapShip($randomShip));
         $randomShip->setAlertStateGreen();

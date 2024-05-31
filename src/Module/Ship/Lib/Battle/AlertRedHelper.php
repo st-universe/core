@@ -227,11 +227,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $fleet = $leadShip->getFleet();
         if ($fleet !== null) {
             foreach ($fleet->getShips() as $fleetShip) {
-                if (!$fleetShip->getWarpState()) {
+                if (!$fleetShip->getWarpDriveState()) {
                     return false;
                 }
             }
-        } elseif (!$leadShip->getWarpState()) {
+        } elseif (!$leadShip->getWarpDriveState()) {
             return false;
         }
 
@@ -346,7 +346,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
             // only uncloaked and unwarped ships enter fight
             foreach ($alertShip->getFleet()->getShips()->toArray() as $fleetShip) {
-                if (!$fleetShip->getCloakState() && !$fleetShip->getWarpState()) {
+                if (!$fleetShip->getCloakState() && !$fleetShip->getWarpDriveState()) {
                     $attacker[$fleetShip->getId()] = $fleetShip;
                 }
             }

@@ -63,7 +63,7 @@ final class ShowShipManagement implements ViewControllerInterface
             if ($ship === $station) {
                 continue;
             }
-            if ($ship->getWarpState()) {
+            if ($ship->getWarpDriveState()) {
                 continue;
             }
             $fleetId = $ship->getFleetId() ?? 0;

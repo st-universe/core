@@ -66,13 +66,13 @@
     {% if ship.isWarpPossible %}
     <tr>
         <td colspan="3">
-            {% if ship.getWarpState %}
+            {% if ship.getWarpDriveState %}
             <img src="/assets/buttons/warp1.png" title="Warpantrieb aktiviert" />
             {% else %}
             <img src="/assets/buttons/warp2.png" title="Warpantrieb deaktiviert" />
             {% endif %}
             Warpantrieb
-            {% if ship.getWarpState %}
+            {% if ship.getWarpDriveState %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_DEACTIVATE_WARP', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');"
                 class="linkbutton">deaktivieren</a>

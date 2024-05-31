@@ -51,7 +51,7 @@ class PirateAttack implements PirateAttackInterface
 
     private function interceptIfNeccessary(ShipInterface $ship, ShipInterface $target): void
     {
-        if (!$target->getWarpState()) {
+        if (!$target->getWarpDriveState()) {
             return;
         }
 

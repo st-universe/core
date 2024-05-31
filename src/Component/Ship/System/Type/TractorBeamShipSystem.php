@@ -67,7 +67,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     public function checkDeactivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
-        if ($wrapper->get()->getWarpState()) {
+        if ($wrapper->get()->getWarpDriveState()) {
             $reason = _('der Warpantrieb aktiviert ist');
             return false;
         }
@@ -124,6 +124,6 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             || $ship->isTrumfield()
             || $ship->getCloakState()
             || $ship->getShieldState()
-            || $ship->getWarpState());
+            || $ship->getWarpDriveState());
     }
 }
