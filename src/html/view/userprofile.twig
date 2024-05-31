@@ -143,40 +143,59 @@
 		</table>
 	</div>
 	{% if not IS_PROFILE_CURRENT_USER %}
-	<table style="width: 300px; margin-left: 5px; margin-top: 20px;"> 
-	  <tr>
-		<th>Koordinatenliste</th> 
-	  </tr>
-	  <tr>
-		<td> 
-		  <div style="padding-left: 5px; display: table-cell; vertical-align:top;">
-			{% if COLONYSCANLIST is empty %}
-			  <p>Keine Daten gesammelt.</p>
-			{% else %}
-			  <table class="use" style="width: 300px;">
-				  <tr>
-					  <th></th>
-					  <th>Koloniename</th>
-					  <th>Koordinaten</th>
-					  <th>Letzter Scan</th>
-					  <th>Scanner</th>
-				  </tr>
-				  {% for csl in COLONYSCANLIST %}
-				  <tr>
-					  <td><a href="javascript:void(0);" onclick="showColonySurface({{ csl.getId() }})"><img src="assets/planets/{{ csl.getColony.getColonyClassId }}.png" /></a></td>
-					  <td><span>{{ csl.getColonyName | bbcode }}</span></td>
-					  <td>{{ csl.getColony.getSx }}|{{ csl.getColony.getSy }}  ({{ csl.getColony.getSystem.getCx }}|{{ csl.getColony.getSystem.getCy }})</br> {{ csl.getColony.getSystem.getName }}</td>
-					  <td><span>{{ csl.getDate | date('Y-m-d H:i:s') }}</span></td>
-					  <td><span>{{ csl.getUser.getName | bbcode }}</span></td>
-				  </tr>
-				  {% endfor %}
-			  </table>
-			{% endif %}
-		  </div>
-		</td>
-	  </tr>
+	<table style="width: 300px; margin-left: 5px; margin-top: 20px;">
+		<tr>
+			<th>Koordinatenliste</th>
+		</tr>
+		<tr>
+			<td>
+				<div style="padding-left: 5px; display: table-cell; vertical-align:top;">
+					{% if COLONYSCANLIST is empty %}
+					<p>Keine Daten gesammelt.</p>
+					{% else %}
+					<table class="use" style="width: 300px;">
+						<tr>
+							<th></th>
+							<th>Koloniename</th>
+							<th>Koordinaten</th>
+							<th>Letzter Scan</th>
+							<th>Scanner</th>
+							<th></th>
+						</tr>
+						{% for csl in COLONYSCANLIST %}
+						<tr id="colonyScan_{{ csl.getId }}">
+							<td><a href="javascript:void(0);" onclick="showColonySurface({{ csl.getId() }})"><img
+										src="assets/planets/{{ csl.getColony.getColonyClassId }}.png" /></a></td>
+							<td><span>{{ csl.getColonyName | bbcode }}</span></td>
+							<td>
+								{{ csl.getColony.getSx }}|{{ csl.getColony.getSy }}
+								({{ csl.getColony.getSystem.getCx }}|{{ csl.getColony.getSystem.getCy }})</br>
+								{{ csl.getColony.getSystem.getName }}</td>
+							<td><span>{{ csl.getDate | date('Y-m-d H:i:s') }}</span></td>
+							<td><span>{{ csl.getUser.getName | bbcode }}</span></td>
+							<td>
+								{% if csl.isAbandoned %}
+								<span style="color: orange;">wurde verlassen</span><br />
+								{% endif %}
+								{% if csl.getUserId == USER.getId %}
+								{% set iconId = delColScan ~ csl.getId %}
+								<a tal:condition="php:  " href="javascript:void(0)"
+									onclick="deleteColonyScan({{ csl.getId }});"
+									onmouseover="cp('{{ iconId }}','buttons/x2')"
+									onmouseout="cp('{{ iconId }}','buttons/x1')">
+									<img src="assets/buttons/x1.png" name="{{ iconId }}" title="Scan Löschen" />
+								</a>
+								{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% endif %}
+				</div>
+			</td>
+		</tr>
 	</table>
-	{% endif %}	
+	{% endif %}
 
 </div>
 
@@ -185,9 +204,9 @@
 		Spieler Charaktere
 		{% if IS_PROFILE_CURRENT_USER %}
 		<img src="/assets/buttons/char_new1.png" alt="Neuen Charakter hinzufügen" id="addCharacterButton"
-			onmouseover="this.src='/assets/buttons/char_new2.png';" 
-			onmouseout="this.src='/assets/buttons/char_new1.png';" 
-			style="cursor: pointer; float: right;" title="Neuen Charakter hinzufügen">
+			onmouseover="this.src='/assets/buttons/char_new2.png';"
+			onmouseout="this.src='/assets/buttons/char_new1.png';" style="cursor: pointer; float: right;"
+			title="Neuen Charakter hinzufügen">
 		{% endif %}
 	</div>
 	{% for character in PROFILE.getCharacters %}
@@ -198,17 +217,15 @@
 				{% if IS_PROFILE_CURRENT_USER %}
 				(ID {{ character.getId }})
 				<img src="/assets/buttons/char_edit1.png" alt="Charakter bearbeiten" class="edit-character-button"
-				data-character-id="{{ character.getId }}" style="cursor: pointer; float: right;"
-				onmouseover="this.src='/assets/buttons/char_edit2.png';" 
-				onmouseout="this.src='/assets/buttons/char_edit1.png';" 
-				title="Charakter bearbeiten">
-			
-			<img src="/assets/buttons/char_del1.png" alt="Charakter löschen" class="delete-character-button"
-				data-character-id="{{ character.getId }}" style="cursor: pointer; float: right; margin-right: 5px;"
-				onmouseover="this.src='/assets/buttons/char_del2.png';" 
-				onmouseout="this.src='/assets/buttons/char_del1.png';" 
-				title="Charakter löschen">
-			
+					data-character-id="{{ character.getId }}" style="cursor: pointer; float: right;"
+					onmouseover="this.src='/assets/buttons/char_edit2.png';"
+					onmouseout="this.src='/assets/buttons/char_edit1.png';" title="Charakter bearbeiten">
+
+				<img src="/assets/buttons/char_del1.png" alt="Charakter löschen" class="delete-character-button"
+					data-character-id="{{ character.getId }}" style="cursor: pointer; float: right; margin-right: 5px;"
+					onmouseover="this.src='/assets/buttons/char_del2.png';"
+					onmouseout="this.src='/assets/buttons/char_del1.png';" title="Charakter löschen">
+
 				{% endif %}
 			</th>
 		</tr>
@@ -220,7 +237,8 @@
 					<img src="avatare/characters/{{ character.getAvatar }}.png" alt="Avatar"
 						style="float: left; width: 200px; margin-right: 10px; margin-bottom: 10px;">
 					{% endif %}
-					<p class="translatable-content" style="margin: 0;">{{ character.getDescription|bbcode|nl2br|raw }}</p>
+					<p class="translatable-content" style="margin: 0;">{{ character.getDescription|bbcode|nl2br|raw }}
+					</p>
 				</div>
 			</td>
 		</tr>

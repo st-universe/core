@@ -7,6 +7,7 @@ use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\ColonyScanInterface;
 
 /**
+ * @method null|ColonyScanInterface find(integer $id)
  * @extends ObjectRepository<ColonyScan>
  */
 interface ColonyScanRepositoryInterface extends ObjectRepository

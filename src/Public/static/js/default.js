@@ -653,6 +653,11 @@ function closeNagusPopup() {
         popup.style.display = 'none';
 }
 
+function deleteColonyScan(id) {
+        ajaxrequest('database.php?B_DELETE_COLONY_SCAN=1&id=' + id);
+        document.getElementById(`colonyScan_${id}`).remove();
+}
+
 function switchView(view, title, url) {
         switchInnerContent('B_SWITCH_VIEW', title, `view=${view}`, '/game.php', url);
 }
