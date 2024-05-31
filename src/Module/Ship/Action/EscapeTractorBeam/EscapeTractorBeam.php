@@ -112,6 +112,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
     ): void {
         $ship = $wrapper->get();
         $tractoringShip = $tractoringShipWrapper->get();
+        $isTractoringShipWarped = $tractoringShip->getWarpDriveState();
 
         $tractoringShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
         $this->shipSystemManager->deactivate($tractoringShipWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); // forced active deactivation
@@ -131,7 +132,9 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $game->addInformation(_('Der Fluchtversuch ist gelungen'));
 
         //Alarm-Rot check
-        $this->alertRedHelper->doItAll($ship, $game);
+        if ($isTractoringShipWarped) {
+            $this->alertRedHelper->doItAll($ship, $game);
+        }
     }
 
     private function sufferDeflectorDamage(

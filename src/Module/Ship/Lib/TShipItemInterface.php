@@ -18,6 +18,8 @@ interface TShipItemInterface
 
     public function getWarpDriveState(): int;
 
+    public function getTractorWarpState(): int;
+
     public function getCloakState(): int;
 
     public function getShieldState(): int;

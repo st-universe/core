@@ -122,8 +122,8 @@ final class Transfer implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getWarpDriveState()) {
-            $game->addInformation(_("Der Warpantrieb ist aktiviert"));
+        if ($ship->isWarped()) {
+            $game->addInformation("Schiff befindet sich im Warp");
             $this->logger->log('T7');
             return;
         }
@@ -133,8 +133,8 @@ final class Transfer implements ActionControllerInterface
             return;
         }
 
-        if ($target instanceof ShipInterface && $target->getWarpDriveState()) {
-            $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
+        if ($target instanceof ShipInterface && $target->isWarped()) {
+            $game->addInformationf('Die %s befindet sich im Warp', $target->getName());
             $this->logger->log('T9');
             return;
         }

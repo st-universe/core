@@ -492,8 +492,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT f.id as fleetid, f.name as fleetname, f.defended_colony_id is not null as isdefending,
                     f.blocked_colony_id is not null as isblocking, s.id as shipid, s.rumps_id as rumpid, s.former_rumps_id as formerrumpid,
-                    ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed,
-                    s.type as spacecrafttype, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime,
+                    ss.mode as warpstate, twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate,
+                    COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.type as spacecrafttype, s.name as shipname,
+                    s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.ship_id = s.id) as hascrew
@@ -501,6 +502,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ship_id
                 AND ss.system_type = :warpdriveType
+                LEFT JOIN stu_ships tractor
+                ON tractor.tractored_ship_id = s.id
+                LEFT JOIN stu_ship_system twd
+                ON tractor.id = twd.ship_id
+                AND twd.system_type = :warpdriveType
                 LEFT JOIN stu_ship_system ss2
                 ON s.id = ss2.ship_id
                 AND ss2.system_type = :cloakType
@@ -551,9 +557,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT s.id as shipid, s.fleets_id as fleetid, s.rumps_id as rumpid , s.former_rumps_id as formerrumpid, ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
-                    ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.type as spacecrafttype, s.name as shipname,
-                    s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
+                'SELECT s.id as shipid, s.fleets_id as fleetid, s.rumps_id as rumpid , s.former_rumps_id as formerrumpid, ss.mode as warpstate,
+                    twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
+                    s.is_destroyed as isdestroyed, s.type as spacecrafttype, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull,
+                    s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.ship_id = s.id) as hascrew
@@ -561,6 +568,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ship_id
                 AND ss.system_type = :warpdriveType
+                LEFT JOIN stu_ships tractor
+                ON tractor.tractored_ship_id = s.id
+                LEFT JOIN stu_ship_system twd
+                ON tractor.id = twd.ship_id
+                AND twd.system_type = :warpdriveType
                 LEFT JOIN stu_ship_system ss2
                 ON s.id = ss2.ship_id
                 AND ss2.system_type = :cloakType
@@ -604,6 +616,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addFieldResult('s', 'rumpid', 'rump_id');
         $rsm->addFieldResult('s', 'formerrumpid', 'former_rump_id');
         $rsm->addFieldResult('s', 'warpstate', 'warp_state');
+        $rsm->addFieldResult('s', 'tractorwarpstate', 'tractor_warp_state');
         $rsm->addFieldResult('s', 'cloakstate', 'cloak_state');
         $rsm->addFieldResult('s', 'shieldstate', 'shield_state');
         $rsm->addFieldResult('s', 'uplinkstate', 'uplink_state');

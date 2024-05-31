@@ -63,6 +63,11 @@ final class ShipNfsItem
     {
         return $this->item->getWarpDriveState() > ShipSystemModeEnum::MODE_OFF;
     }
+    public function isWarped(): bool
+    {
+        return $this->getWarpDriveState()
+            || $this->item->getTractorWarpState() > ShipSystemModeEnum::MODE_OFF;
+    }
     public function isTractorbeamPossible(): bool
     {
         return TractorBeamShipSystem::isTractorBeamPossible($this);
@@ -73,6 +78,7 @@ final class ShipNfsItem
     }
     public function isInterceptable(): bool
     {
+        //TODO can tractored ships be intercepted?!
         return $this->getWarpDriveState();
     }
     public function isDestroyed(): bool

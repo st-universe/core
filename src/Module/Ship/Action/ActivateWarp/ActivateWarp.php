@@ -28,6 +28,8 @@ final class ActivateWarp implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game);
+
+        //TODO tryToTow for tractored ships
     }
 
     public function performSessionCheck(): bool

@@ -15,8 +15,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 
-
-
 final class DropBuoy implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DROP_BOUY';
@@ -61,8 +59,8 @@ final class DropBuoy implements ActionControllerInterface
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
-        if ($ship->getWarpDriveState()) {
-            $game->addInformation(_("Der Warpantrieb ist aktiviert"));
+        if ($ship->isWarped()) {
+            $game->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if ($ship->getShieldState()) {

@@ -18,7 +18,7 @@ interface BuoyRepositoryInterface extends ObjectRepository
     public function delete(BuoyInterface $buoy): void;
 
     /**
-     * @return list<BuoyInterface>
+     * @return array<BuoyInterface>
      */
     public function findByUserId(int $userId): array;
 }

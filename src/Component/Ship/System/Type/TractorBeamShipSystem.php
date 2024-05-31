@@ -124,6 +124,6 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             || $ship->isTrumfield()
             || $ship->getCloakState()
             || $ship->getShieldState()
-            || $ship->getWarpDriveState());
+            || $ship->isWarped());
     }
 }
