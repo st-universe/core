@@ -155,4 +155,9 @@ class ColonyScan implements ColonyScanInterface
         $this->user = $user;
         return $this;
     }
+
+    public function isAbandoned(): bool
+    {
+        return $this->getColony()->getUserId() !== $this->colony_user_id;
+    }
 }

@@ -17,7 +17,6 @@ use Stu\Orm\Entity\ColonyScanInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -31,52 +30,18 @@ final class DatabaseEntry implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ENTRY';
 
-    private ColonyScanRepositoryInterface $colonyScanRepository;
-
-    private DatabaseEntryRequestInterface $databaseEntryRequest;
-
-    private DatabaseCategoryRepositoryInterface $databaseCategoryRepository;
-
-    private DatabaseEntryRepositoryInterface $databaseEntryRepository;
-
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private MapRegionRepositoryInterface $mapRegionRepository;
-
-    private StarSystemRepositoryInterface $starSystemRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    private PlanetGeneratorInterface $planetGenerator;
-
     public function __construct(
-        ColonyScanRepositoryInterface $colonyScanRepository,
-        DatabaseEntryRequestInterface $databaseEntryRequest,
-        DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
-        DatabaseEntryRepositoryInterface $databaseEntryRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        MapRegionRepositoryInterface $mapRegionRepository,
-        StarSystemRepositoryInterface $starSystemRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        ShipRepositoryInterface $shipRepository,
-        PlanetGeneratorInterface $planetGenerator
+        private DatabaseEntryRequestInterface $databaseEntryRequest,
+        private DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
+        private DatabaseEntryRepositoryInterface $databaseEntryRepository,
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private MapRegionRepositoryInterface $mapRegionRepository,
+        private StarSystemRepositoryInterface $starSystemRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private ShipRepositoryInterface $shipRepository,
+        private PlanetGeneratorInterface $planetGenerator
     ) {
-        $this->colonyScanRepository = $colonyScanRepository;
-        $this->databaseEntryRequest = $databaseEntryRequest;
-        $this->databaseCategoryRepository = $databaseCategoryRepository;
-        $this->databaseEntryRepository = $databaseEntryRepository;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->mapRegionRepository = $mapRegionRepository;
-        $this->starSystemRepository = $starSystemRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->shipRepository = $shipRepository;
-        $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->planetGenerator = $planetGenerator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -240,16 +205,32 @@ final class DatabaseEntry implements ViewControllerInterface
     }
 
     /**
-     * @return array<ColonyScanInterface>
+     * @return array<int, ColonyScanInterface>
      */
-    public function getColonyScanList(UserInterface $user, int $systemId): iterable
+    public function getColonyScanList(UserInterface $user, int $systemId): array
     {
-        $scanlist = [];
+        $alliance = $user->getAlliance();
 
-        foreach ($this->colonyScanRepository->getEntryByUserAndSystem($user->getId(), $systemId) as $element) {
-            $i = $element->getColony()->getId();
-            $scanlist[$i] = $element;
+        if ($alliance !== null) {
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn (UserInterface $user) => $user->getColonyScans()->toArray()));
+        } else {
+            $unfilteredScans = $user->getColonyScans()->toArray();
         }
-        return $scanlist;
+
+
+        return $this->filterBySystem($unfilteredScans, $systemId);
+    }
+
+    /**
+     * @param array<int, ColonyScanInterface> $colonyScans
+     * 
+     * @return array<int, ColonyScanInterface>
+     */
+    private function filterBySystem(array $colonyScans, int $systemId): array
+    {
+        return array_filter(
+            $colonyScans,
+            fn (ColonyScanInterface $scan) => $scan->getColony()->getSystemsId() === $systemId
+        );
     }
 }
