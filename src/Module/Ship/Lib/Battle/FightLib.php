@@ -104,7 +104,7 @@ final class FightLib implements FightLibInterface
         ShipInterface|ShipNfsItem $target,
         bool $checkCloaked = false,
         bool $checkActiveWeapons = true,
-        bool $checkActiveWarpdrive = true
+        bool $checkWarped = true
     ): bool {
         if ($checkActiveWeapons && !$ship->hasActiveWeapon()) {
             return false;
@@ -132,7 +132,7 @@ final class FightLib implements FightLibInterface
         }
 
         //can't attack target under warp
-        if ($checkActiveWarpdrive && $target->getWarpDriveState()) {
+        if ($checkWarped && $target->isWarped()) {
             return false;
         }
 
@@ -246,7 +246,7 @@ final class FightLib implements FightLibInterface
             || $ship->isTrumfield()
             || $ship->getCloakState()
             || $ship->getShieldState()
-            || $ship->getWarpDriveState());
+            || $ship->isWarped());
     }
 
     public function calculateHealthPercentage(ShipInterface $target): int

@@ -55,6 +55,8 @@ final class ShipAttackCore implements ShipAttackCoreInterface
         $userId = $ship->getUser()->getId();
         $isTargetBase = $target->isBase();
 
+        $isActiveTractorShipWarped = $this->isActiveTractorShipWarped($ship, $target);
+
         [$attacker, $defender, $isFleetFight, $isWebSituation] = $this->getAttackersAndDefenders(
             $wrapper,
             $targetWrapper
@@ -71,7 +73,7 @@ final class ShipAttackCore implements ShipAttackCoreInterface
 
         $informations->addInformationWrapper($messageCollection->getInformationDump());
 
-        if ($this->isActiveTractorShipWarped($ship, $target)) {
+        if ($isActiveTractorShipWarped) {
             //Alarm-Rot check for ship
             if (!$ship->isDestroyed()) {
                 $this->alertRedHelper->doItAll($ship, $informations);

@@ -29,7 +29,7 @@ final class EnterWormhole extends AbstractDirectedMovement
             return true;
         }
 
-        if ($ship->getWarpDriveState()) {
+        if ($ship->isWarped()) {
             return true;
         }
         return $ship->isBase();

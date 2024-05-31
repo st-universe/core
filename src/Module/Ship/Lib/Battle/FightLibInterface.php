@@ -26,7 +26,7 @@ interface FightLibInterface
         ShipInterface|ShipNfsItem $nfsItem,
         bool $checkCloaked = false,
         bool $checkActiveWeapons = true,
-        bool $checkActiveWarpdrive = true
+        bool $checkWarped = true
     ): bool;
 
     /** @return array<int, ShipWrapperInterface> */

@@ -431,17 +431,20 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
     }
 
-    public function getWarpDriveState(bool $mindTractoringShip = false): bool
+    public function getWarpDriveState(): bool
     {
-        if ($mindTractoringShip) {
-            $tractoringShip = $this->getTractoringShip();
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+    }
 
-            if ($tractoringShip !== null) {
-                return $tractoringShip->getWarpDriveState();
-            }
+    public function isWarped(): bool
+    {
+        $tractoringShip = $this->getTractoringShip();
+
+        if ($tractoringShip !== null) {
+            return $tractoringShip->getWarpDriveState();
         }
 
-        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+        return $this->getWarpDriveState();
     }
 
     public function getWebState(): bool
@@ -1237,7 +1240,8 @@ class Ship implements ShipInterface
 
     public function displayNbsActions(): bool
     {
-        return $this->getCloakState() == 0 && $this->getWarpDriveState() == 0;
+        return !$this->getCloakState()
+            && !$this->isWarped();
     }
 
     public function isTractorbeamPossible(): bool
@@ -1250,8 +1254,9 @@ class Ship implements ShipInterface
         return FightLib::isBoardingPossible($this);
     }
 
-    public function isInterceptAble(): bool
+    public function isInterceptable(): bool
     {
+        //TODO can tractored ships be intercepted?!
         return $this->getWarpDriveState();
     }
 
@@ -1392,7 +1397,8 @@ class Ship implements ShipInterface
 
     public function canIntercept(): bool
     {
-        return !$this->isTractored() && !$this->isTractoring();
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)
+            && !$this->isTractored() && !$this->isTractoring();
     }
 
     public function canMove(): bool

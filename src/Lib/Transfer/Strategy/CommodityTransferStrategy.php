@@ -123,11 +123,11 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             $informations->addInformation(_("Die Tarnung ist aktiviert"));
             return false;
         }
-        if ($ship->getWarpDriveState()) {
-            $informations->addInformation(_("Der Warpantrieb ist aktiviert"));
+        if ($ship->isWarped()) {
+            $informations->addInformation("Schiff befindet sich im Warp");
             return false;
         }
-        if ($target instanceof ShipInterface && $target->getWarpDriveState()) {
+        if ($target instanceof ShipInterface && $target->isWarped()) {
             $informations->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return false;
         }

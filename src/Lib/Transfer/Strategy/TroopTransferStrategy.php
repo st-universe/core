@@ -172,8 +172,8 @@ class TroopTransferStrategy implements TransferStrategyInterface
             $informations->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
-        if ($ship->getWarpDriveState()) {
-            $informations->addInformation(_("Der Warpantrieb ist aktiviert"));
+        if ($ship->isWarped()) {
+            $informations->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if ($ship->getShieldState()) {

@@ -75,8 +75,8 @@ final class TransferToAccount implements ActionControllerInterface
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
-        if ($ship->getWarpDriveState()) {
-            $game->addInformation(_("Der Warpantrieb ist aktiviert"));
+        if ($ship->isWarped()) {
+            $game->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())) {

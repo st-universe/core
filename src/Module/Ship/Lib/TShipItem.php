@@ -29,6 +29,9 @@ class TShipItem implements TShipItemInterface
     private ?int $warp_state = null;
 
     #[Column(type: 'integer', nullable: true)]
+    private ?int $tractor_warp_state = null;
+
+    #[Column(type: 'integer', nullable: true)]
     private ?int $cloak_state = null;
 
     #[Column(type: 'integer', nullable: true)]
@@ -105,6 +108,11 @@ class TShipItem implements TShipItemInterface
     public function getWarpDriveState(): int
     {
         return $this->warp_state ?? 0;
+    }
+
+    public function getTractorWarpState(): int
+    {
+        return $this->tractor_warp_state ?? 0;
     }
 
     public function getCloakState(): int
