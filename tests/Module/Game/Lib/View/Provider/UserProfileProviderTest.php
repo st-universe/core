@@ -20,7 +20,6 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 use Stu\StuTestCase;
 
 class UserProfileProviderTest extends StuTestCase
@@ -40,9 +39,6 @@ class UserProfileProviderTest extends StuTestCase
     /** @var MockInterface&ProfileVisitorRegistrationInterface */
     private MockInterface $profileVisitorRegistration;
 
-    /** @var MockInterface&ColonyScanRepositoryInterface */
-    private MockInterface $colonyScanRepository;
-
     private ViewComponentProviderInterface $subject;
 
     protected function setUp(): void
@@ -52,11 +48,9 @@ class UserProfileProviderTest extends StuTestCase
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->parserWithImage = $this->mock(ParserWithImageInterface::class);
         $this->profileVisitorRegistration = $this->mock(ProfileVisitorRegistrationInterface::class);
-        $this->colonyScanRepository = $this->mock(ColonyScanRepositoryInterface::class);
 
         $this->subject = new UserProfileProvider(
             $this->rpgPlotMemberRepository,
-            $this->colonyScanRepository,
             $this->contactRepository,
             $this->userRepository,
             $this->parserWithImage,
@@ -141,6 +135,14 @@ class UserProfileProviderTest extends StuTestCase
             ->withNoArgs()
             ->atLeast()->once()
             ->andReturn($visitorId);
+        $visitor->shouldReceive('getAlliance')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $visitor->shouldReceive('getColonyScans->toArray')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([123 => $colonyScan]);
 
         $player->shouldReceive('getDescription')
             ->withNoArgs()
@@ -188,21 +190,10 @@ class UserProfileProviderTest extends StuTestCase
             ->with("initTranslations();", \Stu\Component\Game\GameEnum::JS_EXECUTION_AFTER_RENDER)
             ->once();
 
-
-        $colonyScan->shouldReceive('getColony')
+        $colonyScan->shouldReceive('getColonyUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn($colony);
-
-        $colony->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($colonyid);
-
-        $this->colonyScanRepository->shouldReceive('getEntryByUserAndVisitor')
-            ->with($visitorId, $playerId)
-            ->once()
-            ->andReturn([$colonyScan]);
+            ->andReturn($playerId);
 
         $game->shouldReceive('setTemplateVar')
             ->with('COLONYSCANLIST', [123 => $colonyScan])
