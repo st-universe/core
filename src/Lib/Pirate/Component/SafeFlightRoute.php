@@ -39,6 +39,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
         } while (
             $flightRoute->isRouteDangerous()
             || $flightRoute->isDestinationInAdminRegion(PirateCreation::FORBIDDEN_ADMIN_AREAS)
+            || $flightRoute->isDestinationAtTradepost()
         );
 
         return $flightRoute;
