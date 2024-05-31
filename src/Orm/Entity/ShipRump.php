@@ -634,6 +634,13 @@ class ShipRump implements ShipRumpInterface
             && $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD;
     }
 
+    public function isWorkbee(): bool
+    {
+        $commodity = $this->getCommodity();
+
+        return $commodity !== null && $commodity->isWorkbee();
+    }
+
     public function getStartHangar(): Collection
     {
         return $this->startHangar;

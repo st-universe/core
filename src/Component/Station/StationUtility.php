@@ -27,49 +27,23 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 //TODO unit tests
 final class StationUtility implements StationUtilityInterface
 {
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ConstructionProgressRepositoryInterface $constructionProgressRepository;
-
-    private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
     private LoggerUtilInterface $loggerUtil;
 
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
     public function __construct(
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
-        ShipCreatorInterface $shipCreator,
-        ShipRepositoryInterface $shipRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ConstructionProgressRepositoryInterface $constructionProgressRepository,
+        private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
+        private ShipCreatorInterface $shipCreator,
+        private ShipRepositoryInterface $shipRepository,
+        private ShipStorageManagerInterface $shipStorageManager,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->constructionProgressRepository = $constructionProgressRepository;
-        $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
-        $this->shipCreator = $shipCreator;
-        $this->shipRepository = $shipRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->shipRumpRepository = $shipRumpRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->tradePostRepository = $tradePostRepository;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
+
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
         if (!$ship->isShuttleRampHealthy()) {
@@ -129,22 +103,11 @@ final class StationUtility implements StationUtilityInterface
 
     public function getDockedWorkbeeCount(ShipInterface $ship): int
     {
-        $dockedWorkbees = 0;
-        foreach ($ship->getDockedShips() as $docked) {
-            if (!$docked->hasEnoughCrew()) {
-                continue;
-            }
-            if ($docked->getUser()->isVacationRequestOldEnough()) {
-                continue;
-            }
-
-            $commodity = $docked->getRump()->getCommodity();
-            if ($commodity !== null && $commodity->isWorkbee()) {
-                $dockedWorkbees += 1;
-            }
-        }
-
-        return $dockedWorkbees;
+        return $ship->getDockedShips()
+            ->filter(fn (ShipInterface $docked) => $docked->hasEnoughCrew()
+                && !$docked->getUser()->isVacationRequestOldEnough()
+                && $docked->getRump()->isWorkbee())
+            ->count();
     }
 
     public function getNeededWorkbeeCount(ShipInterface $station, ShipRumpInterface $rump): int
