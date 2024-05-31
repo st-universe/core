@@ -132,7 +132,7 @@ final class FightLib implements FightLibInterface
         }
 
         //can't attack target under warp
-        if ($checkActiveWarpdrive && $target->getWarpState()) {
+        if ($checkActiveWarpdrive && $target->getWarpDriveState()) {
             return false;
         }
 
@@ -246,7 +246,7 @@ final class FightLib implements FightLibInterface
             || $ship->isTrumfield()
             || $ship->getCloakState()
             || $ship->getShieldState()
-            || $ship->getWarpState());
+            || $ship->getWarpDriveState());
     }
 
     public function calculateHealthPercentage(ShipInterface $target): int

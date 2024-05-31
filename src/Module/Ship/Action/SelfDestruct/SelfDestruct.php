@@ -67,7 +67,7 @@ final class SelfDestruct implements ActionControllerInterface
 
         $game->setView(ModuleViewEnum::SHIP);
 
-        $tractoredShipToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpState()) ? $ship->getTractoredShip() : null;
+        $tractoredShipToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpDriveState()) ? $ship->getTractoredShip() : null;
 
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
 

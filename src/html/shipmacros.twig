@@ -17,7 +17,7 @@
 <img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
 <img src="{{ imagesrc }}" class="indexedGraphicsShips" style="{{ imagestyle }}" title="{{ rumpname }}"
     onload="adjustCellHeight(this); adjustCellWidth(this);" />
-{% if ship.getWarpState %}
+{% if ship.getWarpDriveState %}
 <img src="/assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
 <img src="/assets/buttons/warp_3.png" class="indexedGraphics" style="z-index: 3;" />
 <img src="/assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 6;" />
@@ -211,7 +211,7 @@
         </a>
     </div>
     {% endif %}
-    {% if nbsItem.getWarpState %}
+    {% if nbsItem.getWarpDriveState %}
     <span style="width: 100%; color: #474791;">Im Warp</span>
     {% else %}
     {% if not nbsItem.getCloakState %}
@@ -328,7 +328,7 @@
 </td>
 {% else %}
 <td colspan="2" style="text-align: center;">
-    {% if SHIP.getWarpState %}
+    {% if SHIP.getWarpDriveState %}
     {% if SHIP.canIntercept and nbsItem.isInterceptable and SHIP.hasWarpdrive %}
     <a href="?B_INTERCEPT=1&id={{ shipId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
         onmouseover="cp('int_{{ targetId }}','buttons/inc2')" onmouseout="cp('int_{{ targetId }}','buttons/inc1')">

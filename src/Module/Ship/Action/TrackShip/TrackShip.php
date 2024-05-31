@@ -83,7 +83,7 @@ final class TrackShip implements ActionControllerInterface
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
-        if ($ship->getWarpState()) {
+        if ($ship->getWarpDriveState()) {
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
@@ -91,7 +91,7 @@ final class TrackShip implements ActionControllerInterface
         if ($target->isDestroyed()) {
             return;
         }
-        if ($target->getWarpState()) {
+        if ($target->getWarpDriveState()) {
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
         }

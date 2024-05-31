@@ -551,7 +551,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $target->shouldReceive('getWarpState')
+        $target->shouldReceive('getWarpDriveState')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -587,7 +587,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $target->shouldReceive('getWarpState')
+        $target->shouldReceive('getWarpDriveState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -632,7 +632,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $target->shouldReceive('getWarpState')
+        $target->shouldReceive('getWarpDriveState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -680,7 +680,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $target->shouldReceive('getWarpState')
+        $target->shouldReceive('getWarpDriveState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -728,7 +728,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $target->shouldReceive('getWarpState')
+        $target->shouldReceive('getWarpDriveState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -776,7 +776,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $target->shouldReceive('getWarpState')
+        $target->shouldReceive('getWarpDriveState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -1576,7 +1576,7 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $ship->shouldReceive('getWarpState')
+        $ship->shouldReceive('getWarpDriveState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

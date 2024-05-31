@@ -77,7 +77,7 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
-        if (!$ship->getWarpState()) {
+        if (!$ship->getWarpDriveState()) {
             $game->addInformation(_('Der Warpantrieb muss aktiviert sein'));
             return true;
         }

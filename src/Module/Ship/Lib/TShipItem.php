@@ -102,7 +102,7 @@ class TShipItem implements TShipItemInterface
         return $this->former_rump_id;
     }
 
-    public function getWarpState(): int
+    public function getWarpDriveState(): int
     {
         return $this->warp_state ?? 0;
     }

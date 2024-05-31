@@ -16,7 +16,7 @@ interface TShipItemInterface
 
     public function getFormerRumpId(): ?int;
 
-    public function getWarpState(): int;
+    public function getWarpDriveState(): int;
 
     public function getCloakState(): int;
 
