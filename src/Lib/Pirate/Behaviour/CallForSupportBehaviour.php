@@ -151,7 +151,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
                 $currentPirateFleetAmount
             );
 
-            return $this->stuRandom->rand(1, max(1, $currentPirateFleetAmount)) == 1;
+            return $this->stuRandom->rand(1, max(1, $currentPirateFleetAmount)) === 1;
         }
 
         return true;
