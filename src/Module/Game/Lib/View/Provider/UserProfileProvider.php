@@ -88,7 +88,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         if ($alliance !== null) {
             $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn (UserInterface $user) => $user->getColonyScans()->toArray()));
         } else {
-            $unfilteredScans = $user->getColonyScans()->toArray();
+            $unfilteredScans = $visitor->getColonyScans()->toArray();
         }
 
 
