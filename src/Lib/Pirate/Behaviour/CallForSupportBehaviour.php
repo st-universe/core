@@ -122,6 +122,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
     private function createSupportFleet(ShipInterface $leadShip, PirateReactionMetadata $reactionMetadata): ?FleetInterface
     {
         if (!$this->isNewSupportEligible($reactionMetadata)) {
+            $this->logger->log('....support creation not eligible');
             return null;
         }
 
@@ -143,6 +144,12 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         if ($supportCallAmount <= 1) {
             $currentPirateFleetAmount = $this->fleetRepository->getCountByUser(UserEnum::USER_NPC_KAZON);
+
+            $this->logger->logf(
+                '....supportCallAmount: %d, currentPirateFleetAmount: %d',
+                $supportCallAmount,
+                $currentPirateFleetAmount
+            );
 
             return $this->stuRandom->rand(1, max(1, $currentPirateFleetAmount)) == 1;
         }
