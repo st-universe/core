@@ -58,4 +58,6 @@ interface FlightRouteInterface
 
     /** @param array<int> $regionIds */
     public function isDestinationInAdminRegion(array $regionIds): bool;
+
+    public function isDestinationAtTradepost(): bool;
 }

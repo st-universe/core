@@ -14,6 +14,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\WormholeEntryInterface;
 use Stu\StuTestCase;
 
@@ -537,5 +538,82 @@ class FlightRouteTest extends StuTestCase
         $result = $this->subject->isDestinationInAdminRegion([41, 43]);
 
         $this->assertFalse($result);
+    }
+
+    public function testIsDestinationAtTradepostExpectFalseWhenNotOnMap(): void
+    {
+        $destination = $this->mock(StarSystemMapInterface::class);
+
+        $this->subject->setDestination($destination, false);
+
+        $result = $this->subject->isDestinationAtTradepost();
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsDestinationAtTradepostExpectFalseWhenNoShipsOnMap(): void
+    {
+        $destination = $this->mock(MapInterface::class);
+
+        $shiplist = new ArrayCollection();
+
+        $destination->shouldReceive('getShips')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shiplist);
+
+        $this->subject->setDestination($destination, false);
+
+        $result = $this->subject->isDestinationAtTradepost();
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsDestinationAtTradepostExpectFalseWhenNoTradepost(): void
+    {
+        $destination = $this->mock(MapInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+
+        $shiplist = new ArrayCollection([$ship]);
+
+        $destination->shouldReceive('getShips')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shiplist);
+
+        $ship->shouldReceive('getTradePost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $this->subject->setDestination($destination, false);
+
+        $result = $this->subject->isDestinationAtTradepost();
+
+        $this->assertFalse($result);
+    }
+
+    public function testIsDestinationAtTradepostExpectTrueeWhenTradepostOnMap(): void
+    {
+        $destination = $this->mock(MapInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+
+        $shiplist = new ArrayCollection([$ship]);
+
+        $destination->shouldReceive('getShips')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shiplist);
+
+        $ship->shouldReceive('getTradePost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(TradePostInterface::class));
+
+        $this->subject->setDestination($destination, false);
+
+        $result = $this->subject->isDestinationAtTradepost();
+
+        $this->assertTrue($result);
     }
 }
