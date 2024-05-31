@@ -141,6 +141,11 @@ interface UserInterface
      */
     public function getCharacters(): Collection;
 
+    /**
+     * @return Collection<int, ColonyScanInterface>
+     */
+    public function getColonyScans(): Collection;
+
     public function getSessiondata(): string;
 
     public function setSessiondata(string $sessiondata): UserInterface;

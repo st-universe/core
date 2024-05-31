@@ -16,37 +16,17 @@ use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 use Stu\Orm\Entity\ColonyScanInterface;
 
 final class UserProfileProvider implements ViewComponentProviderInterface
 {
-    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
-
-    private ContactRepositoryInterface $contactRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ParserWithImageInterface $parserWithImage;
-
-    private ColonyScanRepositoryInterface $colonyScanRepository;
-
-    private ProfileVisitorRegistrationInterface $profileVisitorRegistration;
-
     public function __construct(
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        ColonyScanRepositoryInterface $colonyScanRepository,
-        ContactRepositoryInterface $contactRepository,
-        UserRepositoryInterface $userRepository,
-        ParserWithImageInterface $parserWithImage,
-        ProfileVisitorRegistrationInterface $profileVisitorRegistration
+        private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        private ContactRepositoryInterface $contactRepository,
+        private UserRepositoryInterface $userRepository,
+        private ParserWithImageInterface $parserWithImage,
+        private ProfileVisitorRegistrationInterface $profileVisitorRegistration
     ) {
-        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
-        $this->colonyScanRepository = $colonyScanRepository;
-        $this->contactRepository = $contactRepository;
-        $this->userRepository = $userRepository;
-        $this->parserWithImage = $parserWithImage;
-        $this->profileVisitorRegistration = $profileVisitorRegistration;
     }
 
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -67,7 +47,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $this->profileVisitorRegistration->register($user, $visitor);
 
         $game->setTemplateVar('PROFILE', $user);
-        $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($visitor, $user->getId()));
+        $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($user, $visitor));
         $game->setTemplateVar(
             'DESCRIPTION',
             $this->parserWithImage->parse($user->getDescription())->getAsHTML()
@@ -101,14 +81,30 @@ final class UserProfileProvider implements ViewComponentProviderInterface
     /**
      * @return array<ColonyScanInterface>
      */
-    public function getColonyScanList(UserInterface $visitor, int $user): iterable
+    public function getColonyScanList(UserInterface $user, UserInterface $visitor): iterable
     {
-        $scanlist = [];
+        $alliance = $visitor->getAlliance();
 
-        foreach ($this->colonyScanRepository->getEntryByUserAndVisitor($visitor->getId(), $user) as $element) {
-            $i = $element->getColony()->getId();
-            $scanlist[$i] = $element;
+        if ($alliance !== null) {
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn (UserInterface $user) => $user->getColonyScans()->toArray()));
+        } else {
+            $unfilteredScans = $user->getColonyScans()->toArray();
         }
-        return $scanlist;
+
+
+        return $this->filterByUser($unfilteredScans, $user);
+    }
+
+    /**
+     * @param array<int, ColonyScanInterface> $colonyScans
+     * 
+     * @return array<int, ColonyScanInterface>
+     */
+    private function filterByUser(array $colonyScans, UserInterface $user): array
+    {
+        return array_filter(
+            $colonyScans,
+            fn (ColonyScanInterface $scan) => $scan->getColonyUserId() === $user->getId()
+        );
     }
 }

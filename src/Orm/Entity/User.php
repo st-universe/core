@@ -154,6 +154,13 @@ class User implements UserInterface
     #[OneToMany(targetEntity: 'UserCharacters', mappedBy: 'user', cascade: ['persist'])]
     private Collection $characters;
 
+    /**
+     * @var ArrayCollection<int, ColonyScanInterface>
+     */
+    #[OneToMany(targetEntity: 'ColonyScan', mappedBy: 'user', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OrderBy(['colony_id' => 'ASC', 'date' => 'ASC'])]
+    private Collection $colonyScans;
+
     #[OneToOne(targetEntity: 'PirateWrath', mappedBy: 'user')]
     private ?PirateWrathInterface $pirateWrath = null;
 
@@ -168,6 +175,7 @@ class User implements UserInterface
         $this->settings = new ArrayCollection();
         $this->characters = new ArrayCollection();
         $this->buoys = new ArrayCollection();
+        $this->colonyScans = new ArrayCollection();
     }
 
     public function getId(): int
@@ -688,6 +696,11 @@ class User implements UserInterface
     public function getCharacters(): Collection
     {
         return $this->characters;
+    }
+
+    public function getColonyScans(): Collection
+    {
+        return $this->colonyScans;
     }
 
     /**

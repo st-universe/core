@@ -41,4 +41,6 @@ interface ColonyScanInterface
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): ColonyScanInterface;
+
+    public function isAbandoned(): bool;
 }

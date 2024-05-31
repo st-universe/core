@@ -10,8 +10,6 @@ use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\ColonyScanInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
-use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<ColonyScan>
@@ -76,54 +74,6 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
             ])
             ->getResult();
     }
-
-    public function getEntryByUserAndSystem(int $user, int $systemId): array
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT s
-                    FROM %s s 
-                    JOIN %s c WITH c.id = s.colony_id 
-                    WHERE (s.user_id IN (SELECT u.id FROM %s u WHERE u.allys_id IS NOT NULL AND u.allys_id = (SELECT uu.allys_id FROM %s uu WHERE uu.id = :user)) OR s.user_id = :user) 
-                    AND s.colony_id IN (SELECT co.id FROM %s co JOIN %s sm WITH co.starsystem_map_id = sm.id WHERE sm.systems_id = :systemId) ORDER BY s.colony_id, s.date ASC',
-                    ColonyScan::class,
-                    Colony::class,
-                    User::class,
-                    User::class,
-                    Colony::class,
-                    StarSystemMap::class
-                )
-            )
-            ->setParameters([
-                'user' => $user,
-                'systemId' => $systemId
-            ])
-            ->getResult();
-    }
-
-    public function getEntryByUserAndVisitor(int $user, int $visiteduser): array
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT s
-                    FROM %s s            
-                    WHERE (s.user_id IN (SELECT u.id FROM %s u WHERE u.allys_id IS NOT NULL AND u.allys_id = (SELECT uu.allys_id FROM %s uu WHERE uu.id = :user)) OR s.user_id = :user) 
-                    AND s.colony_user_id IN (SELECT co.colony_user_id FROM %s co WHERE co.colony_user_id = :visiteduser) ORDER BY s.colony_id, s.date ASC',
-                    ColonyScan::class,
-                    User::class,
-                    User::class,
-                    ColonyScan::class
-                )
-            )
-            ->setParameters([
-                'user' => $user,
-                'visiteduser' => $visiteduser
-            ])
-            ->getResult();
-    }
-
 
     public function getSurfaceArray(int $id): string
     {
