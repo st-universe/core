@@ -137,16 +137,27 @@
         <th>Koordinaten</th>
         <th>Letzter Scan</th>
         <th>Scanner</th>
+        <th></th>
       </tr>
-      <tr tal:repeat="csl COLONYSCANLIST">
-        <td><a href="javascript:void(0);" onclick="showColonySurface(${csl/getId})"><img
-              src="assets/planets/${csl/getColony/getColonyClassId}.png" /></a></td>
-        <td><span tal:replace="structure bbcode:csl/getColonyName">KOLONIENAME</span></td>
-        <td><span tal:replace="structure bbcode:csl/getColonyUserName">KOLONIEUSERNAME</span></td>
-        <td>${csl/getColony/getSx}|${csl/getColony/getSy}</td>
-        <td><span tal:replace="datetime:csl/getDate">DATE</span></td>
-        <td><span tal:replace="structure bbcode:csl/getUser/getName">USERNAME</span></td>
-      </tr>
+      <tal:block tal:repeat="csl COLONYSCANLIST">
+        <tr id="colonyScan_${csl/getId}">
+          <td><a href="javascript:void(0);" onclick="showColonySurface(${csl/getId})"><img
+                src="assets/planets/${csl/getColony/getColonyClassId}.png" /></a></td>
+          <td><span tal:replace="structure bbcode:csl/getColonyName">KOLONIENAME</span></td>
+          <td><span tal:replace="structure bbcode:csl/getColonyUserName">KOLONIEUSERNAME</span></td>
+          <td>${csl/getColony/getSx}|${csl/getColony/getSy}</td>
+          <td><span tal:replace="datetime:csl/getDate">DATE</span></td>
+          <td><span tal:replace="structure bbcode:csl/getUser/getName">USERNAME</span></td>
+          <td>
+            <span tal:condition="csl/isAbandoned" style="color: orange;">wurde verlassen</span><br />
+            <a tal:condition="php: csl.getUserId() == USER.getId() " href="javascript:void(0)"
+              onclick="deleteColonyScan(${csl/getId});" onmouseover="cp('delColScan${csl/getId}','buttons/x2')"
+              onmouseout="cp('delColScan${csl/getId}','buttons/x1')">
+              <img src="assets/buttons/x1.png" name="delColScan${csl/getId}" title="Scan Löschen" />
+            </a>
+          </td>
+        </tr>
+      </tal:block>
     </table>
   </div>
 </metal:macro>

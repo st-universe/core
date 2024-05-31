@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Database;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Database\Action\DeleteColonyScan;
 use Stu\Module\Database\Lib\CreateDatabaseEntry;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactory;
@@ -52,7 +53,9 @@ return [
     ShowColonySurfaceRequestInterface::class => autowire(ShowColonySurfaceRequest::class),
     ShowCommoditiesLocationsRequestInterface::class => autowire(ShowCommoditiesLocationsRequest::class),
     UserListRequestInterface::class => autowire(UserListRequest::class),
-    'DATABASE_ACTIONS' => [],
+    'DATABASE_ACTIONS' => [
+        DeleteColonyScan::ACTION_IDENTIFIER => autowire(DeleteColonyScan::class)
+    ],
     'DATABASE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Category::VIEW_IDENTIFIER => autowire(Category::class),
