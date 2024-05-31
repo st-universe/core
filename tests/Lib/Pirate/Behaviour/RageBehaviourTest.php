@@ -9,6 +9,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -67,6 +68,7 @@ class RageBehaviourTest extends StuTestCase
 
     public function testActionExpectNoActionIfNoTargets(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
 
@@ -82,11 +84,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
 
     public function testActionExpectNoActionIfTargetNotOnPosition(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
@@ -108,11 +111,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
 
     public function testActionExpectNoActionIfCantAttackTarget(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
@@ -139,11 +143,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
 
     public function testActionExpectNoActionIfProtectedAgainstPirates(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
@@ -174,11 +179,12 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
 
     public function testActionExpectNoActionIfTargetDontHasPositivePrestige(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
@@ -215,15 +221,15 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
 
     public function testActionExpectAttackOfSingleTarget(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
-        $targetWrapper = $this->mock(ShipWrapperInterface::class);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -268,18 +274,18 @@ class RageBehaviourTest extends StuTestCase
             ->once();
 
         $this->pirateReaction->shouldReceive('react')
-            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship, $reactionMetadata)
             ->once();
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
 
     public function testActionExpectAttackOfTriggerTarget(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
-        $targetWrapper = $this->mock(ShipWrapperInterface::class);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -324,14 +330,15 @@ class RageBehaviourTest extends StuTestCase
             ->once();
 
         $this->pirateReaction->shouldReceive('react')
-            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship, $reactionMetadata)
             ->once();
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $target);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, $target);
     }
 
     public function testActionExpectAttackOfWeakestTarget(): void
     {
+        $reactionMetadata = $this->mock(PirateReactionMetadata::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $target = $this->mock(ShipInterface::class);
@@ -438,9 +445,9 @@ class RageBehaviourTest extends StuTestCase
             ->once();
 
         $this->pirateReaction->shouldReceive('react')
-            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship)
+            ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship, $reactionMetadata)
             ->once();
 
-        $this->subject->action($this->fleetWrapper, $this->pirateReaction, null);
+        $this->subject->action($this->fleetWrapper, $this->pirateReaction, $reactionMetadata, null);
     }
 }

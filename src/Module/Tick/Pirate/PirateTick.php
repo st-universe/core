@@ -10,6 +10,7 @@ use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Logging\PirateLoggerInterface;
 
 final class PirateTick implements PirateTickInterface
@@ -58,7 +59,12 @@ final class PirateTick implements PirateTickInterface
 
             $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-            $this->behaviours[$behaviourType->value]->action($fleetWrapper, $this->pirateReaction, null);
+            $this->behaviours[$behaviourType->value]->action(
+                $fleetWrapper,
+                $this->pirateReaction,
+                new PirateReactionMetadata(),
+                null
+            );
 
             $this->reloadMinimalEps->reload($fleetWrapper);
         }

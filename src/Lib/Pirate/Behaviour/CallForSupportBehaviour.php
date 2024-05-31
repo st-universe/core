@@ -10,12 +10,16 @@ use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class CallForSupportBehaviour implements PirateBehaviourInterface
@@ -29,6 +33,8 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         private ReloadMinimalEpsInterface $reloadMinimalEps,
         private PirateNavigationInterface $pirateNavigation,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private FleetRepositoryInterface $fleetRepository,
+        private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -37,25 +43,30 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
+        PirateReactionMetadata $reactionMetadata,
         ?ShipInterface $triggerShip
     ): ?PirateBehaviourEnum {
+
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $supportFleet = $this->getSupportFleet($leadShip);
-        if ($supportFleet == null) { // temporary exclusion of support call
-            return null;
+        $supportFleet = $this->getSupportFleet($leadShip, $reactionMetadata);
+
+        if ($supportFleet === null) {
+            return PirateBehaviourEnum::SEARCH_FRIEND;
         }
+
         $pirateReaction->react(
             $supportFleet,
             PirateReactionTriggerEnum::ON_SUPPORT_CALL,
-            $leadShip
+            $leadShip,
+            $reactionMetadata
         );
 
         return null;
     }
 
-    private function getSupportFleet(ShipInterface $leadShip): ?FleetInterface
+    private function getSupportFleet(ShipInterface $leadShip, PirateReactionMetadata $reactionMetadata): ?FleetInterface
     {
         $friends = $this->shipRepository->getPirateFriends($leadShip);
 
@@ -73,10 +84,10 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
+
         $closestFriend = current($filteredFriends);
         if (!$closestFriend) {
-            //return $this->createSupportFleet($leadShip); // temporary exclusion of support call
-            return null;
+            return $this->createSupportFleet($leadShip, $reactionMetadata);
         }
 
         $supportFleet = $closestFriend->getFleet();
@@ -95,7 +106,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $this->reloadMinimalEps->reload($fleetWrapper, 75);
         if (!$this->pirateNavigation->navigateToTarget($fleetWrapper, $leadShip->getCurrentMapField())) {
-            return null; //$this->createSupportFleet($leadShip);
+            return $this->createSupportFleet($leadShip, $reactionMetadata);
         }
 
         $this->logger->logf(
@@ -108,8 +119,12 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         return $supportFleet;
     }
 
-    private function createSupportFleet(ShipInterface $leadShip): FleetInterface
+    private function createSupportFleet(ShipInterface $leadShip, PirateReactionMetadata $reactionMetadata): ?FleetInterface
     {
+        if (!$this->isNewSupportEligible($reactionMetadata)) {
+            return null;
+        }
+
         $supportFleet = $this->pirateCreation->createPirateFleet($leadShip);
         $this->logger->logf(
             '    created support fleet %d "%s" here %s',
@@ -119,5 +134,19 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         );
 
         return $supportFleet;
+    }
+
+
+    private function isNewSupportEligible(PirateReactionMetadata $reactionMetadata): bool
+    {
+        $supportCallAmount = $reactionMetadata->getReactionAmount(PirateBehaviourEnum::CALL_FOR_SUPPORT);
+
+        if ($supportCallAmount <= 1) {
+            $currentPirateFleetAmount = $this->fleetRepository->getCountByUser(UserEnum::USER_NPC_KAZON);
+
+            return $this->stuRandom->rand(1, $currentPirateFleetAmount) == 1;
+        }
+
+        return true;
     }
 }

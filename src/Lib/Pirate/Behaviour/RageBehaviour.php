@@ -5,6 +5,7 @@ namespace Stu\Lib\Pirate\Behaviour;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
@@ -31,8 +32,10 @@ class RageBehaviour implements PirateBehaviourInterface
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
+        PirateReactionMetadata $reactionMetadata,
         ?ShipInterface $triggerShip
     ): ?PirateBehaviourEnum {
+
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
@@ -79,7 +82,8 @@ class RageBehaviour implements PirateBehaviourInterface
         $pirateReaction->react(
             $fleet->get(),
             PirateReactionTriggerEnum::ON_RAGE,
-            $leadShip
+            $leadShip,
+            $reactionMetadata
         );
 
         return null;

@@ -16,6 +16,7 @@ interface PirateReactionInterface
     public function react(
         FleetInterface $fleet,
         PirateReactionTriggerEnum $reactionTrigger,
-        ShipInterface $triggerShip
+        ShipInterface $triggerShip,
+        PirateReactionMetadata $reactionMetadata
     ): void;
 }

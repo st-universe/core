@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -44,8 +45,10 @@ class RubColonyBehaviour implements PirateBehaviourInterface
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
+        PirateReactionMetadata $reactionMetadata,
         ?ShipInterface $triggerShip
     ): ?PirateBehaviourEnum {
+
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
