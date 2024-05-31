@@ -8,6 +8,7 @@ use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
+use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
@@ -31,8 +32,10 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,
+        PirateReactionMetadata $reactionMetadata,
         ?ShipInterface $triggerShip
     ): ?PirateBehaviourEnum {
+
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
@@ -71,7 +74,8 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
             $pirateReaction->react(
                 $fleet->get(),
                 PirateReactionTriggerEnum::ON_RAGE,
-                $leadShip
+                $leadShip,
+                $reactionMetadata
             );
         } else {
             return PirateBehaviourEnum::CALL_FOR_SUPPORT;

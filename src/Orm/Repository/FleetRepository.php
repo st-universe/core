@@ -56,6 +56,19 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         );
     }
 
+    public function getCountByUser(int $userId): int
+    {
+        return (int) $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(f)
+                FROM %s f
+                WHERE f.user_id = :userId',
+                Fleet::class
+            )
+        )->setParameter('userId', $userId)
+            ->getSingleScalarResult();
+    }
+
     public function getHighestSortByUser(int $userId): int
     {
         $rsm = new ResultSetMapping();

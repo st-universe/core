@@ -28,6 +28,8 @@ interface FleetRepositoryInterface extends ObjectRepository
      */
     public function getByUser(int $userId): array;
 
+    public function getCountByUser(int $userId): int;
+
     public function getHighestSortByUser(int $userId): int;
 
     /**

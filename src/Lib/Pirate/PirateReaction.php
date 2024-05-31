@@ -91,13 +91,14 @@ class PirateReaction implements PirateReactionInterface
         $this->react(
             $targetFleet,
             $reactionTrigger,
-            $triggerShip
+            $triggerShip,
+            new PirateReactionMetadata()
         );
 
         return true;
     }
 
-    public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger, ShipInterface $triggerShip): void
+    public function react(FleetInterface $fleet, PirateReactionTriggerEnum $reactionTrigger, ShipInterface $triggerShip, PirateReactionMetadata $reactionMetadata): void
     {
         $this->pirateWrathManager->increaseWrathViaTrigger($triggerShip->getUser(), $reactionTrigger);
 
@@ -123,7 +124,7 @@ class PirateReaction implements PirateReactionInterface
 
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($fleet);
 
-        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $triggerShip);
+        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $reactionMetadata, $triggerShip);
         if (
             $reactionTrigger->triggerAlternativeReaction()
             &&  $alternativeBehaviour !== null
@@ -133,14 +134,14 @@ class PirateReaction implements PirateReactionInterface
                 $fleet->getId(),
                 $alternativeBehaviour->name
             ));
-            $this->action($alternativeBehaviour, $fleetWrapper, $triggerShip);
+            $this->action($alternativeBehaviour, $fleetWrapper, $reactionMetadata, $triggerShip);
         }
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
-            $this->action(PirateBehaviourEnum::GO_ALERT_RED, $fleetWrapper, null);
+            $this->action(PirateBehaviourEnum::GO_ALERT_RED, $fleetWrapper, $reactionMetadata, null);
         }
 
-        $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $fleetWrapper, null);
+        $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $fleetWrapper, $reactionMetadata, null);
     }
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum
@@ -150,11 +151,19 @@ class PirateReaction implements PirateReactionInterface
         return PirateBehaviourEnum::from($value);
     }
 
-    private function action(PirateBehaviourEnum $behaviour, FleetWrapperInterface $fleetWrapper, ?ShipInterface $triggerShip): ?PirateBehaviourEnum
-    {
+    private function action(
+        PirateBehaviourEnum $behaviour,
+        FleetWrapperInterface $fleetWrapper,
+        PirateReactionMetadata $reactionMetadata,
+        ?ShipInterface $triggerShip
+    ): ?PirateBehaviourEnum {
+
+        $reactionMetadata->addReaction($behaviour);
+
         $alternativeBehaviour = $this->behaviours[$behaviour->value]->action(
             $fleetWrapper,
             $this,
+            $reactionMetadata,
             $triggerShip
         );
 

@@ -81,6 +81,10 @@ class SafeFlightRouteTest extends StuTestCase
             ->with(PirateCreation::FORBIDDEN_ADMIN_AREAS)
             ->once()
             ->andReturn(false);
+        $flightRoute->shouldReceive('isDestinationAtTradepost')
+            ->with()
+            ->once()
+            ->andReturn(false);
 
         $coordinate->shouldReceive('getX')
             ->withNoArgs()

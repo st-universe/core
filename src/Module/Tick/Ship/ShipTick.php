@@ -34,30 +34,6 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 {
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipLeaverInterface $shipLeaver;
-
-    private GameControllerInterface $game;
-
-    private AstroEntryLibInterface $astroEntryLib;
-
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private CreateDatabaseEntryInterface $createDatabaseEntry;
-
-    private StationUtilityInterface $stationUtility;
-
-    private RepairUtilInterface $repairUtil;
-
-    private ShipTakeoverManagerInterface $shipTakeoverManager;
-
     private LoggerUtilInterface $loggerUtil;
 
     /**
@@ -66,32 +42,20 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
     private array $msg = [];
 
     public function __construct(
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        ShipLeaverInterface $shipLeaver,
-        GameControllerInterface $game,
-        AstroEntryLibInterface $astroEntryLib,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        CreateDatabaseEntryInterface $createDatabaseEntry,
-        StationUtilityInterface $stationUtility,
-        RepairUtilInterface $repairUtil,
-        ShipTakeoverManagerInterface $shipTakeoverManager,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ShipRepositoryInterface $shipRepository,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private ShipLeaverInterface $shipLeaver,
+        private GameControllerInterface $game,
+        private AstroEntryLibInterface $astroEntryLib,
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private CreateDatabaseEntryInterface $createDatabaseEntry,
+        private StationUtilityInterface $stationUtility,
+        private RepairUtilInterface $repairUtil,
+        private ShipTakeoverManagerInterface $shipTakeoverManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->shipLeaver = $shipLeaver;
-        $this->game = $game;
-        $this->astroEntryLib = $astroEntryLib;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->createDatabaseEntry = $createDatabaseEntry;
-        $this->stationUtility = $stationUtility;
-        $this->repairUtil = $repairUtil;
-        $this->shipTakeoverManager = $shipTakeoverManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
     }
 
