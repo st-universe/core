@@ -431,8 +431,16 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
     }
 
-    public function getWarpState(): bool
+    public function getWarpState(bool $mindTractoringShip = false): bool
     {
+        if ($mindTractoringShip) {
+            $tractoringShip = $this->getTractoringShip();
+
+            if ($tractoringShip !== null) {
+                return $tractoringShip->getWarpState();
+            }
+        }
+
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
@@ -1229,7 +1237,7 @@ class Ship implements ShipInterface
 
     public function displayNbsActions(): bool
     {
-        return $this->getCloakState() == 0 && $this->getWarpstate() == 0;
+        return $this->getCloakState() == 0 && $this->getWarpState() == 0;
     }
 
     public function isTractorbeamPossible(): bool
