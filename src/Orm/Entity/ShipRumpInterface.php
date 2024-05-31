@@ -166,6 +166,8 @@ interface ShipRumpInterface
 
     public function isShipyard(): bool;
 
+    public function isWorkbee(): bool;
+
     /**
      * @return Collection<int, ShipRumpCostInterface>
      */
