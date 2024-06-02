@@ -75,6 +75,10 @@ class PirateAttack implements PirateAttackInterface
 
     private function unwarpIfNeccessary(ShipWrapperInterface $wrapper): void
     {
+        if (!$wrapper->get()->getWarpDriveState()) {
+            return;
+        }
+
         $informationWrapper = new InformationWrapper();
 
         if ($this->helper->deactivateFleet(
