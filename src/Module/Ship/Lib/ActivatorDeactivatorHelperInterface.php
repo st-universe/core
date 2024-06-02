@@ -32,10 +32,10 @@ interface ActivatorDeactivatorHelperInterface
     ): bool;
 
     public function deactivateFleet(
-        int $shipId,
+        ShipWrapperInterface|int $target,
         shipSystemTypeEnum $type,
-        GameControllerInterface $game
-    ): void;
+        InformationInterface $informations
+    ): bool;
 
     public function setLSSMode(
         int $shipId,

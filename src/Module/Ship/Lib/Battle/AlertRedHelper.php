@@ -133,11 +133,14 @@ final class AlertRedHelper implements AlertRedHelperInterface
             return [];
         }
 
-        $shipsToShuffle = [];
 
         // get ships inside or outside systems
         $shipsOnLocation = $this->shipRepository->getShipsForAlertRed($leadShip);
+        if (empty($shipsOnLocation)) {
+            return [];
+        }
 
+        $shipsToShuffle = [];
         $fleetIds = [];
         $fleetCount = 0;
         $singleShipCount = 0;

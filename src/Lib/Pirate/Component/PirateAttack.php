@@ -2,13 +2,17 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 class PirateAttack implements PirateAttackInterface
@@ -19,6 +23,8 @@ class PirateAttack implements PirateAttackInterface
         private InterceptShipCoreInterface $interceptShipCore,
         private ShipAttackCoreInterface $shipAttackCore,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ActivatorDeactivatorHelperInterface $helper,
+        private AlertRedHelperInterface $alertRedHelper,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -29,6 +35,13 @@ class PirateAttack implements PirateAttackInterface
         $leadWrapper = $fleetWrapper->getLeadWrapper();
 
         $this->interceptIfNeccessary($leadWrapper->get(), $target);
+
+        if ($fleetWrapper->get()->getShips()->isEmpty()) {
+            $this->logger->log('    cancel attack, no ships left');
+            return;
+        }
+
+        $this->unwarpIfNeccessary($leadWrapper);
 
         if ($fleetWrapper->get()->getShips()->isEmpty()) {
             $this->logger->log('    cancel attack, no ships left');
@@ -58,5 +71,19 @@ class PirateAttack implements PirateAttackInterface
 
         $this->logger->logf('    intercepting target with shipId: %d', $target->getId());
         $this->interceptShipCore->intercept($ship, $target, new InformationWrapper());
+    }
+
+    private function unwarpIfNeccessary(ShipWrapperInterface $wrapper): void
+    {
+        $informationWrapper = new InformationWrapper();
+
+        if ($this->helper->deactivateFleet(
+            $wrapper,
+            ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            $informationWrapper
+        )) {
+            $this->logger->log('    deactivated warp');
+            $this->alertRedHelper->doItAll($wrapper->get(), $informationWrapper);
+        }
     }
 }
