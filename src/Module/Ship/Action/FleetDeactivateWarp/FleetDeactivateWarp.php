@@ -36,27 +36,32 @@ final class FleetDeactivateWarp implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game);
-
-        $userId = $game->getUser()->getId();
-
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $userId
+            $game->getUser()->getId()
         );
 
-        $tractoredShips = $this->getTractoredShips($ship);
+        $success =  $this->helper->deactivateFleet(
+            $wrapper,
+            ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            $game
+        );
 
-        //Alarm-Rot check for fleet
-        $this->alertRedHelper->doItAll($ship, $game);
+        if ($success) {
+            $ship = $wrapper->get();
+            $tractoredShips = $this->getTractoredShips($ship);
 
-        //Alarm-Rot check for tractored ships
-        foreach ($tractoredShips as [$tractoringShip, $tractoredShip]) {
-            $this->alertRedHelper->doItAll($tractoredShip, $game, $tractoringShip);
-        }
+            //Alarm-Rot check for fleet
+            $this->alertRedHelper->doItAll($ship, $game);
 
-        if ($ship->isDestroyed()) {
-            return;
+            //Alarm-Rot check for tractored ships
+            foreach ($tractoredShips as [$tractoringShip, $tractoredShip]) {
+                $this->alertRedHelper->doItAll($tractoredShip, $game, $tractoringShip);
+            }
+
+            if ($ship->isDestroyed()) {
+                return;
+            }
         }
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
