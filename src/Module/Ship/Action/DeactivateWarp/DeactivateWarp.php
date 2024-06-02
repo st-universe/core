@@ -35,27 +35,32 @@ final class DeactivateWarp implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game);
-
-        $userId = $game->getUser()->getId();
-
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $userId
+            $game->getUser()->getId()
         );
 
-        $traktoredShip = $ship->getTractoredShip();
+        $success = $this->helper->deactivate(
+            $wrapper,
+            ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            $game
+        );
 
-        //Alarm-Rot check for ship
-        $this->alertRedHelper->doItAll($ship, $game);
+        if ($success) {
+            $ship = $wrapper->get();
+            $traktoredShip = $ship->getTractoredShip();
 
-        //Alarm-Rot check for traktor ship
-        if ($traktoredShip !== null) {
-            $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
-        }
+            //Alarm-Rot check for ship
+            $this->alertRedHelper->doItAll($ship, $game);
 
-        if ($ship->isDestroyed()) {
-            return;
+            //Alarm-Rot check for traktor ship
+            if ($traktoredShip !== null) {
+                $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
+            }
+
+            if ($ship->isDestroyed()) {
+                return;
+            }
         }
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
