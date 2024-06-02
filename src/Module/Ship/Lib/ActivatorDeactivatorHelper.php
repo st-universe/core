@@ -216,16 +216,23 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     }
 
     public function deactivateFleet(
-        int $shipId,
+        ShipWrapperInterface|int $target,
         shipSystemTypeEnum $type,
-        GameControllerInterface $game
-    ): void {
-        $userId = $game->getUser()->getId();
-
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
-            $shipId,
-            $userId
+        InformationInterface $informations
+    ): bool {
+        $wrapper = $this->getTargetWrapper(
+            $target,
+            false
         );
+
+        return $this->deactivateFleetIntern($wrapper, $type, $informations);
+    }
+
+    private function deactivateFleetIntern(
+        ShipWrapperInterface $wrapper,
+        shipSystemTypeEnum $type,
+        InformationInterface $informations
+    ): bool {
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($fleetWrapper === null) {
@@ -234,20 +241,22 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         $success = false;
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            if ($this->deactivateIntern($wrapper, $type, $game)) {
+            if ($this->deactivateIntern($wrapper, $type, $informations)) {
                 $success = true;
             }
         }
 
         // only show info if at least one ship was able to change
         if (!$success) {
-            return;
+            return false;
         }
 
-        $game->addInformation(sprintf(
-            _('Flottenbefehl ausgeführt: System %s deaktiviert'),
+        $informations->addInformationf(
+            'Flottenbefehl ausgeführt: System %s deaktiviert',
             $type->getDescription()
-        ));
+        );
+
+        return true;
     }
 
     public function setLSSMode(
