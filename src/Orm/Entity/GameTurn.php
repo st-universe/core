@@ -83,9 +83,9 @@ class GameTurn implements GameTurnInterface
         return $this->stats;
     }
 
-    public function getPirateFleets(): ?int
+    public function getPirateFleets(): int
     {
-        return $this->pirate_fleets;
+        return $this->pirate_fleets ?? 0;
     }
 
     public function setPirateFleets(int $pirateFleets): GameTurnInterface

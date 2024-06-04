@@ -20,7 +20,7 @@ interface GameTurnInterface
 
     public function getStats(): ?GameTurnStatsInterface;
 
-    public function getPirateFleets(): ?int;
+    public function getPirateFleets(): int;
 
     public function setPirateFleets(int $pirateFleets): GameTurnInterface;
 }
