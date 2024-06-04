@@ -57,7 +57,7 @@ class UpdatePirateWrath implements ShipDestructionHandlerInterface
                 $destroyer->getName()
             ));
 
-            $this->pirateWrathManager->increaseWrath($userOfDestroyed, $targetPrestige);
+            $this->pirateWrathManager->increaseWrath($destroyerUser, $targetPrestige);
         }
     }
 }
