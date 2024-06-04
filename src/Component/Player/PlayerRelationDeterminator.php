@@ -10,7 +10,7 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 /**
- * Some locations require to determine if a certain user if friendly towards the player
+ * Some locations require to determine if a certain user is friendly towards the player
  */
 final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInterface
 {
@@ -58,5 +58,37 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
         );
 
         return $contact !== null && $contact->isFriendly();
+    }
+
+    public function isEnemy(UserInterface $user, UserInterface $otherUser): bool
+    {
+        $alliance = $user->getAlliance();
+
+        $otherUserAlliance = $otherUser->getAlliance();
+
+        if ($alliance !== null && $otherUserAlliance !== null) {
+            if ($alliance === $otherUserAlliance) {
+                return false;
+            }
+
+            $result = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
+                [
+                    AllianceEnum::ALLIANCE_RELATION_WAR,
+                ],
+                $otherUserAlliance->getId(),
+                $alliance->getId()
+            );
+
+            if ($result !== null) {
+                return true;
+            }
+        }
+
+        $contact = $this->contactRepository->getByUserAndOpponent(
+            $user->getId(),
+            $otherUser->getId()
+        );
+
+        return $contact !== null && $contact->isEnemy();
     }
 }
