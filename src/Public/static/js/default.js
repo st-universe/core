@@ -65,10 +65,14 @@ function closeAjaxWindow() {
                 closeAjaxCallbacks[index]();
         }
 
-        closeAjaxCallbacks = new Array();
+        clearAjaxCallbacks();
 
         closePopup();
         isClosingAjaxWindow = false;
+}
+
+function clearAjaxCallbacks() {
+        closeAjaxCallbacks = new Array();
 }
 
 function ajaxrequest(url) {

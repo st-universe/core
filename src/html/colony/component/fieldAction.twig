@@ -90,78 +90,113 @@
                     {% if BUILDING_FUNCTION.isFighterShipyard %}
                     <div class="fabutton">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <a href="javascript:void(0)" onclick="switchColonyMenu(10);" class="fabutton">Schiffbau</a>
 =======
                         <a href="javascript:void(0)" onclick="switchColonySubmenu(10);" class="fabutton">Schiffbau</a>
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(10);"
+                            class="fabutton">Schiffbau</a>
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                     </div>
                     {% else %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             onclick="switchColonyMenu(8,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }});"
 =======
                             onclick="switchColonySubmenu(8, null, {{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }});"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                            onclick="clearAjaxCallbacks(); switchColonySubmenu(8, null, {{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }});"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Schiffbau</a>
                     </div>
                     <div class="fabutton">
                         <a href="javascript:void(0)"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             onclick="switchColonyMenu(17,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }}, {{ fieldId }});"
 =======
                             onclick="switchColonySubmenu(17, null,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }}, {{ fieldId }});"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                            onclick="clearAjaxCallbacks(); switchColonySubmenu(17, null,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }}, {{ fieldId }});"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Schiffsdemontage</a>
                     </div>
                     {% endif %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             onclick="switchColonyMenu(18,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }},{{ fieldId }});"
 =======
                             onclick="switchColonySubmenu(18, null,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }},{{ fieldId }});"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                            onclick="clearAjaxCallbacks(); switchColonySubmenu(18, null,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }},{{ fieldId }});"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Schiffsreparatur</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isAirfield %}
                     <div class="fabutton">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <a href="javascript:void(0)" onclick="switchColonyMenu(6);" class="fabutton">Hangar</a>
 =======
                         <a href="javascript:void(0)" onclick="switchColonySubmenu(6);" class="fabutton">Hangar</a>
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(6);"
+                            class="fabutton">Hangar</a>
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isModuleFab %}
                     <div class="fabutton">
                         <a href="javascript:void(0)"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             onclick="switchColonyMenu(7,{{ BUILDING_FUNCTION.getModuleFabBuildingFunctionId }});"
 =======
                             onclick="switchColonySubmenu(7, null,{{ BUILDING_FUNCTION.getModuleFabBuildingFunctionId }});"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                            onclick="clearAjaxCallbacks(); switchColonySubmenu(7, null,{{ BUILDING_FUNCTION.getModuleFabBuildingFunctionId }});"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Modulherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isTorpedoFab %}
                     <div class="fabutton">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <a href="javascript:void(0)" onclick="switchColonyMenu(11);"
 =======
                         <a href="javascript:void(0)" onclick="switchColonySubmenu(11);"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(11);"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Torpedoherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isAcademy %}
                     <div class="fabutton">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <a href="javascript:void(0)" onclick="switchColonyMenu(12);" class="fabutton">Akademie</a>
 =======
                         <a href="javascript:void(0)" onclick="switchColonySubmenu(12);" class="fabutton">Akademie</a>
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(12);"
+                            class="fabutton">Akademie</a>
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isWarehouse %}
@@ -171,10 +206,14 @@
                     </div>
                     <div class="fabutton">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <a href="javascript:void(0)" onclick="switchColonyMenu(13);"
 =======
                         <a href="javascript:void(0)" onclick="switchColonySubmenu(13);"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(13);"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Müllverbrennung</a>
                     </div>
                     {% endif %}
@@ -182,10 +221,14 @@
                     <div class="fabutton">
                         <a href="javascript:void(0)"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             onclick="switchColonyMenu(14, {{ BUILDING_FUNCTION.getFabHallBuildingFunctionId }});"
 =======
                             onclick="switchColonySubmenu(14, null, {{ BUILDING_FUNCTION.getFabHallBuildingFunctionId }});"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                            onclick="clearAjaxCallbacks(); switchColonySubmenu(14, null, {{ BUILDING_FUNCTION.getFabHallBuildingFunctionId }});"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Ersatzteilherstellung</a>
                     </div>
                     {% endif %}
@@ -193,10 +236,14 @@
                     <div class="fabutton">
                         <a href="javascript:void(0)"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             onclick="switchColonyMenu(15, {{ BUILDING_FUNCTION.getTechCenterBuildingFunctionId }});"
 =======
                             onclick="switchColonySubmenu(15, null, {{ BUILDING_FUNCTION.getTechCenterBuildingFunctionId }});"
 >>>>>>> parent of ffc73db9 (Revert "colony menu to submenu")
+=======
+                            onclick="clearAjaxCallbacks(); switchColonySubmenu(15, null, {{ BUILDING_FUNCTION.getTechCenterBuildingFunctionId }});"
+>>>>>>> parent of d60feb53 (Revert "avoid double request")
                             class="fabutton">Systemkomponentenherstellung</a>
                     </div>
                     {% endif %}
@@ -249,7 +296,8 @@
                 </div>
                 {% endif %}
                 {% for data in building.getCommodities %}
-                <div class="action" onclick="switchColonySubmenu(1, 'cid={{ data.getCommodityId }}');"
+                <div class="action"
+                    onclick="clearAjaxCallbacks(); switchColonySubmenu(1, 'cid={{ data.getCommodityId }}');"
                     title="Baumenü nach '{{ data.getCommodity.getName }}' filtern">
                     <img src="/assets/commodities/{{ data.getCommodityId }}.png" />
                     {{ data.getAmount|addPlusCharacter }}
