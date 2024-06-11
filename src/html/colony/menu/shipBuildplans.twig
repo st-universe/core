@@ -4,32 +4,32 @@
 {% block containment %}
 <div>
     <br />
-    <table class="tcal">
+    <table class="tcal" >
         <tr>
             <th></th>
             <th>Anzahl Schiffe</th>
-            <th>Bauzeit</th>
-            <th></th>
-            <th style="width: 20px;"></th>
+            <th class="responsive-hide">Bauzeit</th>
+            <th class="responsive-hide"></th>
+            <th class="responsive-hide" style="width: 20px;"></th>
         </tr>
         {% for item in AVAILABLE_BUILDPLANS %}
         {% set data = item.plan %}
         {% set id = data.getId %}
-        {% set elementId = buildplan_ ~ id %}
+        {% set elementId = 'buildplan_' ~ id %}
         <tr class="row" style="cursor: pointer;" title="Details">
             <td class="selectable" onclick="toggleTableRowVisible('{{ elementId }}');">
                 {{ data.getName }}</td>
             <td class="selectable" onclick="toggleTableRowVisible('{{ elementId }}');">
                 {{ data.getShipCount }}</td>
-            <td onclick="toggleTableRowVisible('{{ elementId }}');">
+            <td class="responsive-hide" onclick="toggleTableRowVisible('{{ elementId }}');">
                 {{ data.getBuildtime|formatSeconds }}</td>
-            <td style="text-align: center;">
+            <td class="responsive-hide" style="text-align: center;">
                 <a class="linkbutton" href="javascript:void(0);"
                     onclick="switchInnerContent('SHOW_MODULE_SCREEN_BUILDPLAN', 'Schiffbau', 'id={{ HOST.getId }}&planid={{ id }}');">
                     Bauplan auswählen
                 </a>
             </td>
-            <td style="text-align: center;">
+            <td class="responsive-hide" style="text-align: center;">
                 {% if item.deletable %}
                 <a class="linkbutton linkbutton_red"
                     href="?id={{ HOST.getId }}&B_DEL_BUILDPLAN=1&planid={{ id }}&sstr={{ SESSIONSTRING }}"
@@ -37,10 +37,32 @@
                 {% endif %}
             </td>
         </tr>
+        <tr class="row responsive-show" style="cursor: pointer;" title="Details" onclick="toggleTableRowVisible('{{ elementId }}');">
+            <td colspan="2">
+                <table style="width: 100%;">
+                    <tr>
+                        <td>{{ data.getBuildtime|formatSeconds }}</td>
+                        <td style="text-align: center;">
+                            <a class="linkbutton" href="javascript:void(0);"
+                                onclick="switchInnerContent('SHOW_MODULE_SCREEN_BUILDPLAN', 'Schiffbau', 'id={{ HOST.getId }}&planid={{ id }}');">
+                                Bauplan auswählen
+                            </a>
+                        </td>
+                        <td style="text-align: center;">
+                            {% if item.deletable %}
+                            <a class="linkbutton linkbutton_red"
+                                href="?id={{ HOST.getId }}&B_DEL_BUILDPLAN=1&planid={{ id }}&sstr={{ SESSIONSTRING }}"
+                                title="Löschen">X</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
         <tr title="Details schließen" onclick="toggleTableRowVisible('{{ elementId }}');" id="{{ elementId }}"
             style="cursor: pointer; display: none;" class="row">
-            <td colspan="4">
-                <table style="width: 100%">
+            <td colspan="2">
+                <table style="width: 325px">
                     <tr>
                         <td>Rumpf</td>
                         <td>
@@ -52,13 +74,14 @@
                     </tr>
                     <tr>
                         <td>Module</td>
-                        <td>
+                        <td style="display: flex; flex-wrap: wrap;">
                             {% for module in data.getModules %}
                             <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
-                                title="{{ module.getModule.getName }}" />
+                                title="{{ module.getModule.getName }}" style="margin: 2px;" />
                             {% endfor %}
                         </td>
                     </tr>
+                    
                     <tr>
                         <td>Crewbedarf</td>
                         <td>{{ data.getCrew }}</td>

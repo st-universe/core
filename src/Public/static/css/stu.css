@@ -1895,3 +1895,17 @@ div.userAvatar img {
       display: none;
   }
 }
+
+@media (max-width: 1200px) {
+  .responsive-hide {
+      display: none;
+  }
+  .responsive-show {
+      display: table-row;
+  }
+}
+@media (min-width: 1201px) {
+  .responsive-show {
+      display: none;
+  }
+}

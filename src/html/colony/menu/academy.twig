@@ -2,16 +2,16 @@
 {% block containment %}
 <div style="width: 40vw;">
     <table class="tcal">
-        <tr>
+        <tr class="responsive-hide">
             <th colspan="4">Crewausbildung</th>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td style="width: 25%" class="darkbg">Freie Bevölkerung</td>
             <td style="width: 25%" class="darkbg">Gleichzeitig Ausbildbar</td>
             <td style="width: 25%" class="darkbg">In Ausbildung</td>
             <td style="width: 25%" class="darkbg">Noch Ausbildbar</td>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td>
                 <img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Freie Bevölkerung" />
                 {{ COLONY.getWorkless }}
@@ -20,6 +20,38 @@
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Gleichzeitig Ausbildbar" />
                 {{ CREW_COUNT_TRAINABLE }}
             </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="In Ausbildung" />
+                {{ CREW_COUNT_TRAINING }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Noch Ausbildbar" />
+                {{ CREW_COUNT_REMAINING }}
+            </td>
+        </tr>
+        <!-- Responsive rows -->
+        <tr class="responsive-show">
+            <th colspan="2">Crewausbildung</th>
+        </tr>
+        <tr class="responsive-show">
+            <td style="width: 50%" class="darkbg">Freie Bevölkerung</td>
+            <td style="width: 50%" class="darkbg">Gleichzeitig Ausbildbar</td>
+        </tr>
+        <tr class="responsive-show">
+            <td>
+                <img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Freie Bevölkerung" />
+                {{ COLONY.getWorkless }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Gleichzeitig Ausbildbar" />
+                {{ CREW_COUNT_TRAINABLE }}
+            </td>
+        </tr>
+        <tr class="responsive-show">
+            <td style="width: 50%" class="darkbg">In Ausbildung</td>
+            <td style="width: 50%" class="darkbg">Noch Ausbildbar</td>
+        </tr>
+        <tr class="responsive-show">
             <td>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="In Ausbildung" />
                 {{ CREW_COUNT_TRAINING }}

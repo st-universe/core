@@ -12,7 +12,23 @@
         <img src="/assets/ships/{{ data.getId }}.png" />
       </td>
       <td style="vertical-align: middle;">{{ data.getName }}</td>
-      <td>
+      <td class="responsive-hide">
+        {% for hangar in data.getStartHangar %}
+        <div style="display: inline-block; width: 120px;">
+          <div style="display: inline-block; vertical-align: middle;"><img src="/assets/buttons/e_trans2.png"
+              title="Benötigte Startenergie" />
+          </div>
+          {{ hangar.getStartEnergyCosts }}
+          <div style="display: inline-block; vertical-align: middle;"><img src="/assets/buttons/crew.png"
+              title="Benötigte Startcrew" />
+          </div>
+          {{ hangar.getBuildplan.getCrew }}
+        </div>
+        {% endfor %}
+      </td>
+    </tr>
+    <tr class="responsive-show">
+      <td colspan="3">
         {% for hangar in data.getStartHangar %}
         <div style="display: inline-block; width: 120px;">
           <div style="display: inline-block; vertical-align: middle;"><img src="/assets/buttons/e_trans2.png"
@@ -52,7 +68,7 @@
         <img src="/assets/ships/{{ data.getId }}.png" />
       </td>
       <td style="vertical-align: middle;">{{ data.getName }}</td>
-      <td>
+      <td class="responsive-hide">
         <div style="display: inline-block; width: 50px;">
           <div style="display: inline-block; vertical-align: middle;"><img src="/assets/buttons/e_trans2.png"
               title="Energie" /></div>
@@ -68,6 +84,25 @@
         {% endfor %}
       </td>
     </tr>
+    <tr class="responsive-show">
+      <td colspan="3">
+        <div style="display: inline-block; width: 50px;">
+          <div style="display: inline-block; vertical-align: middle;">
+            <img src="/assets/buttons/e_trans2.png" title="Energie" style="margin-right: 5px;" />
+            {{ data.getEpsCost }}
+          </div>
+        </div>
+        {% for cost in data.getBuildingCosts %}
+        <div style="display: inline-block;">
+          <div style="display: inline-block; vertical-align: middle;">
+            <img src="/assets/commodities/{{ cost.getCommodityId }}.png" title="{{ cost.getCommodity.getName }}" style="margin-right: 5px;" />
+            {{ cost.getAmount }}
+          </div>
+        </div>
+        {% endfor %}
+      </td>
+    </tr>
+    
     {% endfor %}
     {% if not BUILDABLE_SHIPS %}
     <tr>
