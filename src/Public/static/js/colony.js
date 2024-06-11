@@ -500,3 +500,64 @@ function calculateLocalCrew() {
 
 	document.getElementById('calculatedCrew').innerText = result.toString();
 }
+
+
+function filterByRump() {
+    const selectedRump = document.getElementById('rump-select').value;
+    const allRumpModules = document.querySelectorAll('.rump-modules');
+
+    allRumpModules.forEach(rumpModule => {
+        rumpModule.style.display = 'none';
+    });
+
+    if (selectedRump === '0' || selectedRump === '') {
+           const selectedRumpModules = document.getElementById('rump-modules-0');
+        if (selectedRumpModules) {
+            selectedRumpModules.style.display = 'block';
+        }
+    } else {
+        const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
+        if (selectedRumpModules) {
+            selectedRumpModules.style.display = 'block';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    filterByRump();
+});
+
+function toggleModuleType(type, rumpId = 'all') {
+    const levelBox = document.getElementById(`level-box-${type}_${rumpId}`);
+    const moduleLevels = document.querySelectorAll(`.module-level`);
+
+    if (levelBox.style.display === 'none') {
+        levelBox.style.display = 'flex';
+    } else {
+        levelBox.style.display = 'none';
+
+        moduleLevels.forEach(moduleLevel => {
+            if (moduleLevel.id.startsWith(`module-level-${type}-`)) {
+                moduleLevel.style.display = 'none';
+
+                const levelButton = document.querySelector(`#level-box-${type}_${rumpId} button.active`);
+                if (levelButton) {
+                    levelButton.classList.remove('active');
+                }
+            }
+        });
+    }
+}
+
+function toggleModuleLevel(type, level, rumpId = 'all', event) {
+    event.stopPropagation(); 
+    const moduleLevelDiv = document.getElementById(`module-level-${type}-${level}-${rumpId}`);
+    
+    if (moduleLevelDiv.style.display === 'none') {
+        event.target.classList.add('active');
+        moduleLevelDiv.style.display = 'block';
+    } else {
+        event.target.classList.remove('active');
+        moduleLevelDiv.style.display = 'none';
+    }
+}

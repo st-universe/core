@@ -1883,3 +1883,15 @@ div.userAvatar img {
     padding: 0.5vh 0 1vh 0
   }
 }
+
+.responsive-header {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 1200px) {
+  div.responsive-header {
+      display: none;
+  }
+}
