@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
 use Mockery\MockInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
@@ -33,8 +33,8 @@ class ShipMoverTest extends StuTestCase
     /** @var MockInterface&LeaveFleetInterface */
     private MockInterface $leaveFleet;
 
-    /** @var MockInterface&AlertRedHelperInterface */
-    private MockInterface $alertRedHelper;
+    /** @var MockInterface&AlertReactionFacadeInterface */
+    private MockInterface $alertReactionFacade;
 
     private ShipMoverInterface $subject;
 
@@ -44,14 +44,14 @@ class ShipMoverTest extends StuTestCase
         $this->shipMovementInformationAdder = $this->mock(ShipMovementInformationAdderInterface::class);
         $this->preFlightConditionsCheck = $this->mock(PreFlightConditionsCheckInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
-        $this->alertRedHelper = $this->mock(AlertRedHelperInterface::class);
+        $this->alertReactionFacade = $this->mock(AlertReactionFacadeInterface::class);
 
         $this->subject = new ShipMover(
             $this->shipRepository,
             $this->shipMovementInformationAdder,
             $this->preFlightConditionsCheck,
             $this->leaveFleet,
-            $this->alertRedHelper
+            $this->alertReactionFacade
         );
     }
 
@@ -79,6 +79,10 @@ class ShipMoverTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(12345);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -116,7 +120,7 @@ class ShipMoverTest extends StuTestCase
 
 
         $this->preFlightConditionsCheck->shouldReceive('checkPreconditions')
-            ->with($wrapper, [$wrapper], $flightRoute, false)
+            ->with($wrapper, [12345 => $wrapper], $flightRoute, false)
             ->once()
             ->andReturn($conditionCheckResult);
 

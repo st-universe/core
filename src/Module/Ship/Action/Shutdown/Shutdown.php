@@ -10,7 +10,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -22,27 +22,31 @@ final class Shutdown implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private AlertRedHelperInterface $alertRedHelper;
+    private AlertReactionFacadeInterface $alertReactionFacade;
 
     private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ActivatorDeactivatorHelperInterface $helper,
         ShipLoaderInterface $shipLoader,
-        AlertRedHelperInterface $alertRedHelper,
+        AlertReactionFacadeInterface $alertReactionFacade,
         ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->helper = $helper;
         $this->shipLoader = $shipLoader;
-        $this->alertRedHelper = $alertRedHelper;
+        $this->alertReactionFacade = $alertReactionFacade;
         $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $ship = $this->shipLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+            request::indInt('id'),
+            $game->getUser()->getId()
+        );
 
-        $traktoredShip = $ship->getTractoredShip();
+        $ship = $wrapper->get();
+        $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
         $triggerAlertRed = $ship->getWarpDriveState() || $ship->getCloakState();
 
@@ -63,11 +67,11 @@ final class Shutdown implements ActionControllerInterface
 
         if ($triggerAlertRed) {
             //Alarm-Rot check for ship
-            $this->alertRedHelper->doItAll($ship, $game);
+            $this->alertReactionFacade->doItAll($wrapper, $game);
 
             //Alarm-Rot check for traktor ship
-            if ($traktoredShip !== null) {
-                $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
+            if ($traktoredShipWrapper !== null) {
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $ship);
             }
 
             if ($ship->isDestroyed()) {

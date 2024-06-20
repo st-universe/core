@@ -13,7 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
@@ -33,7 +33,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         private ShipRepositoryInterface $shipRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private ShipDestructionInterface $shipDestruction,
-        private AlertRedHelperInterface $alertRedHelper,
+        private AlertReactionFacadeInterface $alertReactionFacade,
         private ShipSystemManagerInterface $shipSystemManager
     ) {
     }
@@ -133,7 +133,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         //Alarm-Rot check
         if ($isTractoringShipWarped) {
-            $this->alertRedHelper->doItAll($ship, $game);
+            $this->alertReactionFacade->doItAll($wrapper, $game);
         }
     }
 

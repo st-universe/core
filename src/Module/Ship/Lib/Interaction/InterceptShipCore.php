@@ -11,7 +11,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -23,7 +23,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
         private ShipRepositoryInterface $shipRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private ShipSystemManagerInterface $shipSystemManager,
-        private AlertRedHelperInterface $alertRedHelper,
+        private AlertReactionFacadeInterface $alertReactionFacade,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
         private EntityManagerInterface $entityManager
     ) {
@@ -90,11 +90,11 @@ final class InterceptShipCore implements InterceptShipCoreInterface
         $this->entityManager->flush();
 
         //Alert red check for the target(s)
-        $this->alertRedHelper->doItAll($target, $informations);
+        $this->alertReactionFacade->doItAll($targetWrapper, $informations);
 
         //Alert red check for the interceptor(s)
         if ($interceptorLeftWarp) {
-            $this->alertRedHelper->doItAll($ship, $informations);
+            $this->alertReactionFacade->doItAll($wrapper, $informations);
         }
     }
 

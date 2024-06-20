@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Destruction;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Destruction\Handler\ShipDestructionHandlerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipDestruction implements ShipDestructionInterface
 {
@@ -15,6 +16,7 @@ final class ShipDestruction implements ShipDestructionInterface
      * @param array<ShipDestructionHandlerInterface> $destructionHandlers
      */
     public function __construct(
+        private ShipRepositoryInterface $shipRepository,
         private array $destructionHandlers
     ) {
     }
@@ -42,5 +44,7 @@ final class ShipDestruction implements ShipDestructionInterface
                 );
             }
         );
+
+        $this->shipRepository->save($destroyedShipWrapper->get());
     }
 }

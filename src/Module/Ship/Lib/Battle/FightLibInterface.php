@@ -3,6 +3,9 @@
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Ship\Lib\Battle\Party\AttackedBattleParty;
+use Stu\Module\Ship\Lib\Battle\Party\AttackingBattleParty;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -12,15 +15,6 @@ interface FightLibInterface
 {
     public function ready(ShipWrapperInterface $wrapper): InformationWrapper;
 
-    /**
-     * @param ShipWrapperInterface[] $base
-     *
-     * @return array<int, ShipWrapperInterface>
-     */
-    public function filterInactiveShips(array $base): array;
-
-    public function canFire(ShipWrapperInterface $wrapper): bool;
-
     public function canAttackTarget(
         ShipInterface $ship,
         ShipInterface|ShipNfsItem $nfsItem,
@@ -29,13 +23,14 @@ interface FightLibInterface
         bool $checkWarped = true
     ): bool;
 
-    /** @return array<int, ShipWrapperInterface> */
-    public function getAttackers(ShipWrapperInterface $wrapper): array;
-
     /**
-     * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool}
+     * @return array{0: AttackingBattleParty, 1: AttackedBattleParty, 2: bool}
      */
-    public function getAttackersAndDefenders(ShipWrapperInterface|FleetWrapperInterface $wrapper, ShipWrapperInterface $target): array;
+    public function getAttackersAndDefenders(
+        ShipWrapperInterface|FleetWrapperInterface $wrapper,
+        ShipWrapperInterface $target,
+        BattlePartyFactoryInterface $battlePartyFactory
+    ): array;
 
     public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool;
 

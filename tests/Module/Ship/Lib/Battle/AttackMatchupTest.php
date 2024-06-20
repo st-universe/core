@@ -6,14 +6,13 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Mockery\MockInterface;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
+use Stu\Module\Ship\Lib\Battle\Party\RoundBasedBattleParty;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\StuTestCase;
 
 class AttackMatchupTest extends StuTestCase
 {
-    /** @var MockInterface|FightLibInterface */
-    private FightLibInterface $fightLib;
-
     /** @var MockInterface|StuRandom */
     private StuRandom $stuRandom;
 
@@ -21,287 +20,137 @@ class AttackMatchupTest extends StuTestCase
 
     public function setUp(): void
     {
-        $this->fightLib = $this->mock(FightLibInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
 
         $this->subject = new AttackMatchup(
-            $this->fightLib,
             $this->stuRandom
         );
     }
 
-    public function testGetMatchupExpectNullWhenAllShipsUsed(): void
+    public function testGetMatchupExpectNullWhenBothPartiesDone(): void
     {
-        $usedShipIds = [1, 2, 3, 4];
+        $attackers = $this->mock(RoundBasedBattleParty::class);
+        $defenders = $this->mock(RoundBasedBattleParty::class);
 
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $attacker2 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
-        $defender2 = $this->mock(ShipWrapperInterface::class);
-
-        $attacker1->shouldReceive('get->getId')
+        $attackers->shouldReceive('isDone')
             ->withNoArgs()
             ->once()
-            ->andReturn(1);
-        $attacker2->shouldReceive('get->getId')
+            ->andReturn(true);
+        $defenders->shouldReceive('isDone')
             ->withNoArgs()
             ->once()
-            ->andReturn(2);
-        $defender1->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(3);
-        $defender2->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(4);
+            ->andReturn(true);
 
-        $attackers = [$attacker1, $attacker2];
-        $defenders = [$defender1, $defender2];
-
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds);
-
-        $this->assertNull($matchup);
-    }
-
-    public function testGetMatchupExpectNullWhenAllShipsInactive(): void
-    {
-        $usedShipIds = [1];
-
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
-
-        $attacker1->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-        $defender1->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(3);
-
-        $attackers = [$attacker1];
-        $defenders = [$defender1];
-
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($attackers)
-            ->once()
-            ->andReturn([]);
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($defenders)
-            ->once()
-            ->andReturn([]);
-
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds);
+        $matchup = $this->subject->getMatchup($attackers, $defenders);
 
         $this->assertNull($matchup);
     }
 
     public function testGetMatchupExpectAttackingAttackerIfFirstStrike(): void
     {
-        $usedShipIds = [];
+        $attackers = $this->mock(RoundBasedBattleParty::class);
+        $defenders = $this->mock(RoundBasedBattleParty::class);
+        $defenderBattleParty = $this->mock(BattlePartyInterface::class);
+        $randomAttacker = $this->mock(ShipWrapperInterface::class);
 
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $attacker2 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
-
-        $attacker1->shouldReceive('get->getId')
+        $attackers->shouldReceive('isDone')
             ->withNoArgs()
-            ->andReturn(1);
-        $attacker2->shouldReceive('get->getId')
+            ->twice()
+            ->andReturn(false);
+        $attackers->shouldReceive('getRandomUnused')
             ->withNoArgs()
-            ->andReturn(2);
-
-        $attackers = [1 => $attacker1, 2 => $attacker2];
-        $defenders = [$defender1];
-
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($attackers)
             ->once()
-            ->andReturn($attackers);
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($defenders)
-            ->once()
-            ->andReturn([$defender1]);
+            ->andReturn($randomAttacker);
 
-        $this->stuRandom->shouldReceive('array_rand')
-            ->with($attackers)
+        $defenders->shouldReceive('get')
+            ->withNoArgs()
             ->once()
-            ->andReturn(2);
+            ->andReturn($defenderBattleParty);
 
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds, true);
+        $matchup = $this->subject->getMatchup($attackers, $defenders, true);
 
         $this->assertNotNull($matchup);
-        $this->assertEquals($attacker2, $matchup->getAttacker());
-        $this->assertEquals([$defender1], $matchup->getDefenders());
-        $this->assertEquals([2], $usedShipIds);
-    }
-
-    public function testGetMatchupExpectNullIfNobodyCanFire(): void
-    {
-        $usedShipIds = [];
-
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
-
-        $attacker1->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->andReturn(1);
-        $defender1->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->andReturn(2);
-
-        $attackers = [1 => $attacker1];
-        $defenders = [2 => $defender1];
-
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($attackers)
-            ->once()
-            ->andReturn($attackers);
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($defenders)
-            ->once()
-            ->andReturn($defenders);
-
-        $this->fightLib->shouldReceive('canFire')
-            ->with($attacker1)
-            ->once()
-            ->andReturn(false);
-        $this->fightLib->shouldReceive('canFire')
-            ->with($defender1)
-            ->once()
-            ->andReturn(false);
-
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds);
-
-        $this->assertNull($matchup);
+        $this->assertEquals($randomAttacker, $matchup->getAttacker());
+        $this->assertEquals($defenderBattleParty, $matchup->getDefenders());
     }
 
     public function testGetMatchupExpectNullIfOnlyDefenderActiveButOneWay(): void
     {
-        $usedShipIds = [1];
+        $attackers = $this->mock(RoundBasedBattleParty::class);
+        $defenders = $this->mock(RoundBasedBattleParty::class);
 
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
-
-        $attacker1->shouldReceive('get->getId')
+        $attackers->shouldReceive('isDone')
             ->withNoArgs()
-            ->andReturn(1);
-        $defender1->shouldReceive('get->getId')
+            ->twice()
+            ->andReturn(true);
+        $defenders->shouldReceive('isDone')
             ->withNoArgs()
-            ->andReturn(2);
-
-        $attackers = [1 => $attacker1];
-        $defenders = [2 => $defender1];
-
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($attackers)
             ->once()
-            ->andReturn($attackers);
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($defenders)
-            ->once()
-            ->andReturn($defenders);
+            ->andReturn(false);
 
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds, false, true);
+        $matchup = $this->subject->getMatchup($attackers, $defenders, false, true);
 
         $this->assertNull($matchup);
     }
 
     public function testGetMatchupExpectAttackingDefenderIfAttackersNotReady(): void
     {
-        $usedShipIds = [];
+        $attackers = $this->mock(RoundBasedBattleParty::class);
+        $attackerBattleParty = $this->mock(BattlePartyInterface::class);
+        $defenders = $this->mock(RoundBasedBattleParty::class);
+        $randomDefender = $this->mock(ShipWrapperInterface::class);
 
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
-
-        $attacker1->shouldReceive('get->getId')
+        $attackers->shouldReceive('isDone')
             ->withNoArgs()
-            ->andReturn(1);
-        $defender1->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->andReturn(2);
-
-        $attackers = [1 => $attacker1];
-        $defenders = [2 => $defender1];
-
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($attackers)
-            ->once()
-            ->andReturn($attackers);
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($defenders)
-            ->once()
-            ->andReturn($defenders);
-
-        $this->fightLib->shouldReceive('canFire')
-            ->with($attacker1)
-            ->once()
-            ->andReturn(false);
-        $this->fightLib->shouldReceive('canFire')
-            ->with($defender1)
-            ->once()
             ->andReturn(true);
-
-        $this->stuRandom->shouldReceive('array_rand')
-            ->with($defenders)
+        $attackers->shouldReceive('get')
+            ->withNoArgs()
             ->once()
-            ->andReturn(2);
+            ->andReturn($attackerBattleParty);
 
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds);
+        $defenders->shouldReceive('isDone')
+            ->withNoArgs()
+            ->andReturn(false);
+        $defenders->shouldReceive('getRandomUnused')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($randomDefender);
+
+        $matchup = $this->subject->getMatchup($attackers, $defenders);
 
         $this->assertNotNull($matchup);
-        $this->assertEquals($defender1, $matchup->getAttacker());
-        $this->assertEquals($attackers, $matchup->getDefenders());
-        $this->assertEquals([2], $usedShipIds);
+        $this->assertEquals($randomDefender, $matchup->getAttacker());
+        $this->assertEquals($attackerBattleParty, $matchup->getDefenders());
     }
 
     public function testGetMatchupExpectAttackingAttackerIfDefendersNotReady(): void
     {
-        $usedShipIds = [];
+        $attackers = $this->mock(RoundBasedBattleParty::class);
+        $randomAttacker = $this->mock(ShipWrapperInterface::class);
+        $defenders = $this->mock(RoundBasedBattleParty::class);
+        $defenderBattleParty = $this->mock(BattlePartyInterface::class);
 
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
-
-        $attacker1->shouldReceive('get->getId')
+        $attackers->shouldReceive('isDone')
             ->withNoArgs()
-            ->andReturn(1);
-        $defender1->shouldReceive('get->getId')
-            ->withNoArgs()
-            ->andReturn(2);
-
-        $attackers = [1 => $attacker1];
-        $defenders = [2 => $defender1];
-
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($attackers)
-            ->once()
-            ->andReturn($attackers);
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($defenders)
-            ->once()
-            ->andReturn($defenders);
-
-        $this->fightLib->shouldReceive('canFire')
-            ->with($attacker1)
-            ->once()
-            ->andReturn(true);
-        $this->fightLib->shouldReceive('canFire')
-            ->with($defender1)
-            ->once()
             ->andReturn(false);
-
-        $this->stuRandom->shouldReceive('array_rand')
-            ->with($attackers)
+        $attackers->shouldReceive('getRandomUnused')
+            ->withNoArgs()
             ->once()
-            ->andReturn(1);
+            ->andReturn($randomAttacker);
 
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds);
+        $defenders->shouldReceive('isDone')
+            ->withNoArgs()
+            ->andReturn(true);
+        $defenders->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($defenderBattleParty);
+
+        $matchup = $this->subject->getMatchup($attackers, $defenders);
 
         $this->assertNotNull($matchup);
-        $this->assertEquals($attacker1, $matchup->getAttacker());
-        $this->assertEquals($defenders, $matchup->getDefenders());
-        $this->assertEquals([1], $usedShipIds);
+        $this->assertEquals($randomAttacker, $matchup->getAttacker());
+        $this->assertEquals($defenderBattleParty, $matchup->getDefenders());
     }
 
     public static function provideGetMatchupExpectRandomShooterIfBothSidesReadyData()
@@ -314,51 +163,53 @@ class AttackMatchupTest extends StuTestCase
      */
     public function testGetMatchupExpectRandomShooterIfBothSidesReady(int $randomNumber): void
     {
-        $usedShipIds = [];
+        $attackers = $this->mock(RoundBasedBattleParty::class);
+        $attackerBattleParty = $this->mock(BattlePartyInterface::class);
 
-        $attacker1 = $this->mock(ShipWrapperInterface::class);
-        $defender1 = $this->mock(ShipWrapperInterface::class);
+        $defenders = $this->mock(RoundBasedBattleParty::class);
+        $defenderBattleParty = $this->mock(BattlePartyInterface::class);
 
-        $attacker1->shouldReceive('get->getId')
+        $randomAttacker = $this->mock(ShipWrapperInterface::class);
+
+        $attackers->shouldReceive('isDone')
             ->withNoArgs()
-            ->andReturn(1);
-        $defender1->shouldReceive('get->getId')
+            ->andReturn(false);
+
+        $defenders->shouldReceive('isDone')
             ->withNoArgs()
-            ->andReturn(2);
+            ->andReturn(false);
 
-        $attackers = [1 => $attacker1];
-        $defenders = [2 => $defender1];
+        if ($randomNumber === 1) {
+            $attackers->shouldReceive('getRandomUnused')
+                ->withNoArgs()
+                ->once()
+                ->andReturn($randomAttacker);
+            $defenders->shouldReceive('get')
+                ->withNoArgs()
+                ->once()
+                ->andReturn($defenderBattleParty);
+        } else {
+            $defenders->shouldReceive('getRandomUnused')
+                ->withNoArgs()
+                ->once()
+                ->andReturn($randomAttacker);
+            $attackers->shouldReceive('get')
+                ->withNoArgs()
+                ->once()
+                ->andReturn($attackerBattleParty);
+        }
 
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($attackers)
-            ->once()
-            ->andReturn($attackers);
-        $this->fightLib->shouldReceive('filterInactiveShips')
-            ->with($defenders)
-            ->once()
-            ->andReturn($defenders);
-
-        $this->fightLib->shouldReceive('canFire')
-            ->with($attacker1)
-            ->once()
-            ->andReturn(true);
-        $this->fightLib->shouldReceive('canFire')
-            ->with($defender1)
-            ->once()
-            ->andReturn(true);
-
-        $this->stuRandom->shouldReceive('array_rand')
-            ->with($randomNumber === 1 ? $attackers : $defenders)
-            ->once()
-            ->andReturn($randomNumber);
         $this->stuRandom->shouldReceive('rand')
             ->with(1, 2)
             ->once()
             ->andReturn($randomNumber);
 
-        $matchup = $this->subject->getMatchup($attackers, $defenders, $usedShipIds);
+        $matchup = $this->subject->getMatchup($attackers, $defenders);
 
         $this->assertNotNull($matchup);
-        $this->assertEquals([$randomNumber], $usedShipIds);
+        $this->assertEquals(
+            $randomNumber === 1 ? $attackerBattleParty : $defenderBattleParty,
+            $matchup->getDefenders()
+        );
     }
 }

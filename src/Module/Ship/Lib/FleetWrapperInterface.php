@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\FleetInterface;
 
 interface FleetWrapperInterface
@@ -11,9 +12,9 @@ interface FleetWrapperInterface
     public function getLeadWrapper(): ShipWrapperInterface;
 
     /**
-     * @return ShipWrapperInterface[]
+     * @return Collection<int, ShipWrapperInterface>
      */
-    public function getShipWrappers(): array;
+    public function getShipWrappers(): Collection;
 
     public function isForeignFleet(): bool;
 }

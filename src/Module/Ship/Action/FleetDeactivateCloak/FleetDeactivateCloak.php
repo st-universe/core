@@ -9,7 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -19,17 +19,17 @@ final class FleetDeactivateCloak implements ActionControllerInterface
 
     private ActivatorDeactivatorHelperInterface $helper;
 
-    private AlertRedHelperInterface $alertRedHelper;
+    private AlertReactionFacadeInterface $alertReactionFacade;
 
     private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ActivatorDeactivatorHelperInterface $helper,
         ShipLoaderInterface $shipLoader,
-        AlertRedHelperInterface $alertRedHelper
+        AlertReactionFacadeInterface $alertReactionFacade
     ) {
         $this->helper = $helper;
-        $this->alertRedHelper = $alertRedHelper;
+        $this->alertReactionFacade = $alertReactionFacade;
         $this->shipLoader = $shipLoader;
     }
 
@@ -39,15 +39,15 @@ final class FleetDeactivateCloak implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
         //Alarm-Rot check
-        $this->alertRedHelper->doItAll($ship, $game);
+        $this->alertReactionFacade->doItAll($wrapper, $game);
 
-        if ($ship->isDestroyed()) {
+        if ($wrapper->get()->isDestroyed()) {
             return;
         }
 

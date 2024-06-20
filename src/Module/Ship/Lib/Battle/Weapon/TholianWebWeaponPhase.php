@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -41,7 +42,7 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         $this->checkForShipDestruction(
             $ship,
             $wrapper,
-            false,
+            ShipDestructionCauseEnum::THOLIAN_WEB_IMPLOSION,
             $informations
         );
 

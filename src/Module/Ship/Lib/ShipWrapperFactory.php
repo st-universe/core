@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use JBBCode\Parser;
-use JsonMapper\JsonMapperInterface;
 use RuntimeException;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
-use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Fleet;
@@ -21,48 +22,18 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    private GameControllerInterface $game;
-
-    private JsonMapperInterface $jsonMapper;
-
-    private ShipSystemDataFactoryInterface $shipSystemDataFactory;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private RepairUtilInterface $repairUtil;
-
-    private UserRepositoryInterface $userRepository;
-
-    private Parser $bbCodeParser;
 
     public function __construct(
-        ShipSystemManagerInterface $shipSystemManager,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        GameControllerInterface $game,
-        JsonMapperInterface $jsonMapper,
-        ShipSystemDataFactoryInterface $shipSystemDataFactory,
-        ShipStateChangerInterface $shipStateChanger,
-        RepairUtilInterface $repairUtil,
-        UserRepositoryInterface $userRepository,
-        Parser $bbCodeParser
+        private ShipSystemManagerInterface $shipSystemManager,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private GameControllerInterface $game,
+        private ShipStateChangerInterface $shipStateChanger,
+        private RepairUtilInterface $repairUtil,
+        private UserRepositoryInterface $userRepository,
+        private Parser $bbCodeParser,
+        private SystemDataDeserializerInterface $systemDataDeserializer
     ) {
-        $this->shipSystemManager = $shipSystemManager;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
-        $this->game = $game;
-        $this->jsonMapper = $jsonMapper;
-        $this->shipSystemDataFactory = $shipSystemDataFactory;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->repairUtil = $repairUtil;
-        $this->userRepository = $userRepository;
-        $this->bbCodeParser = $bbCodeParser;
     }
 
     public function wrapShip(ShipInterface $ship): ShipWrapperInterface
@@ -70,24 +41,23 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         return new ShipWrapper(
             $ship,
             $this->shipSystemManager,
+            $this->systemDataDeserializer,
             $this->colonyLibFactory,
             $this->torpedoTypeRepository,
             $this->game,
-            $this->jsonMapper,
             $this,
-            $this->shipSystemDataFactory,
             $this->shipStateChanger,
             $this->repairUtil,
             $this->bbCodeParser
         );
     }
 
-    public function wrapShips(array $ships): array
+    public function wrapShips(array $ships): Collection
     {
-        $result = [];
+        $result = new ArrayCollection();
 
         foreach ($ships as $key => $ship) {
-            $result[$key] = $this->wrapShip($ship);
+            $result->set($key, $this->wrapShip($ship));
         }
 
         return $result;

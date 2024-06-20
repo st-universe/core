@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use JBBCode\Parser;
-use JsonMapper\JsonMapperFactory;
-use JsonMapper\JsonMapperInterface;
+use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
-use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -36,6 +34,8 @@ class ShipWrapperTest extends StuTestCase
      */
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private SystemDataDeserializerInterface $systemDataDeserializer;
+
     private ColonyLibFactoryInterface $colonyLibFactory;
 
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
@@ -44,17 +44,11 @@ class ShipWrapperTest extends StuTestCase
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private ShipSystemDataFactoryInterface $shipSystemDataFactory;
-
     private ShipStateChangerInterface $shipStateChanger;
 
     private RepairUtilInterface $repairUtil;
 
-    private JsonMapperInterface $jsonMapper;
-
     private ShipWrapper $shipWrapper;
-
-    private ShipSystemInterface $shipSystem;
 
     private Parser $bbCodeParser;
 
@@ -63,26 +57,23 @@ class ShipWrapperTest extends StuTestCase
         //injected
         $this->ship = $this->mock(ShipInterface::class);
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
+        $this->systemDataDeserializer = $this->mock(SystemDataDeserializerInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
-        $this->jsonMapper = (new JsonMapperFactory())->bestFit();
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
-        $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
-        $this->shipSystem = $this->mock(ShipSystemInterface::class);
         $this->repairUtil = $this->mock(RepairUtilInterface::class);
         $this->bbCodeParser = $this->mock(Parser::class);
 
         $this->shipWrapper = new ShipWrapper(
             $this->ship,
             $this->shipSystemManager,
+            $this->systemDataDeserializer,
             $this->colonyLibFactory,
             $this->torpedoTypeRepository,
             $this->game,
-            $this->jsonMapper,
             $this->shipWrapperFactory,
-            $this->shipSystemDataFactory,
             $this->shipStateChanger,
             $this->repairUtil,
             $this->bbCodeParser
@@ -93,100 +84,20 @@ class ShipWrapperTest extends StuTestCase
     {
         $hullSystemData = new HullSystemData();
 
-        $this->shipSystemDataFactory->shouldReceive('createSystemData')
-            ->with(ShipSystemTypeEnum::SYSTEM_HULL, $this->shipWrapperFactory)
+        $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
+            ->with(
+                $this->ship,
+                ShipSystemTypeEnum::SYSTEM_HULL,
+                HullSystemData::class,
+                Mockery::any(),
+                $this->shipWrapperFactory
+            )
             ->once()
             ->andReturn($hullSystemData);
 
         $hull = $this->shipWrapper->getHullSystemData();
 
         $this->assertEquals($hullSystemData, $hull);
-    }
-
-    public function testGetEpsSystemDataReturnNullIfSystemNotFound(): void
-    {
-        $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_EPS)
-            ->once()
-            ->andReturn(false);
-
-        $eps = $this->shipWrapper->getEpsSystemData();
-
-        $this->assertNull($eps);
-    }
-
-    public function testGetEpsSystemDataWithDataEmptyExpectDefaultValues(): void
-    {
-        $shipSystemRepo = $this->mock(ShipSystemRepositoryInterface::class);
-        $epsSystemData = new EpsSystemData($shipSystemRepo);
-
-        $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_EPS)
-            ->once()
-            ->andReturn(true);
-        $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_EPS)
-            ->once()
-            ->andReturn($this->shipSystem);
-        $this->shipSystem->shouldReceive('getData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-        $this->shipSystemDataFactory->shouldReceive('createSystemData')
-            ->with(ShipSystemTypeEnum::SYSTEM_EPS, $this->shipWrapperFactory)
-            ->once()
-            ->andReturn($epsSystemData);
-
-        $eps = $this->shipWrapper->getEpsSystemData();
-
-        $this->assertEquals(0, $eps->getEps());
-        $this->assertEquals(0, $eps->getTheoreticalMaxEps());
-        $this->assertEquals(0, $eps->getBattery());
-        $this->assertEquals(0, $eps->getMaxBattery());
-        $this->assertEquals(0, $eps->getBatteryCooldown());
-        $this->assertEquals(false, $eps->reloadBattery());
-    }
-
-    public function testGetEpsSystemDataWithDataNotEmptyExpectCorrectValues(): void
-    {
-        $shipSystemRepo = $this->mock(ShipSystemRepositoryInterface::class);
-        $epsSystemData = new EpsSystemData($shipSystemRepo);
-
-        $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_EPS)
-            ->twice()
-            ->andReturn(true);
-        $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_EPS)
-            ->once()
-            ->andReturn($this->shipSystem);
-        $this->shipSystemDataFactory->shouldReceive('createSystemData')
-            ->with(ShipSystemTypeEnum::SYSTEM_EPS, $this->shipWrapperFactory)
-            ->once()
-            ->andReturn($epsSystemData);
-        $this->shipSystem->shouldReceive('getData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('{
-                "eps": 13,
-                "maxEps": 27,
-                "battery": 1,
-                "maxBattery": 55,
-                "batteryCooldown": 42,
-                "reloadBattery": true }
-            ');
-
-        // call two times to check if cache works
-        $eps = $this->shipWrapper->getEpsSystemData();
-        $eps = $this->shipWrapper->getEpsSystemData();
-
-        $this->assertEquals($epsSystemData, $eps);
-        $this->assertEquals(13, $eps->getEps());
-        $this->assertEquals(27, $eps->getTheoreticalMaxEps());
-        $this->assertEquals(1, $eps->getBattery());
-        $this->assertEquals(55, $eps->getMaxBattery());
-        $this->assertEquals(42, $eps->getBatteryCooldown());
-        $this->assertEquals(true, $eps->reloadBattery());
     }
 
     public static function getStateIconAndTitleForActiveRepairProvider()
@@ -354,5 +265,95 @@ class ShipWrapperTest extends StuTestCase
 
         $this->assertEquals('untake2', $icon);
         $this->assertEquals('Schiff wird von Spieler "USER" übernommen (noch 9 Runden)', $title);
+    }
+
+
+    public function testCanFireExpectFalseWhenNbsOffline(): void
+    {
+        $this->ship->shouldReceive('getNbs')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->shipWrapper->canFire();
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanFireExpectFalseWhenWeaponsOffline(): void
+    {
+        $this->ship->shouldReceive('getNbs')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $this->ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->shipWrapper->canFire();
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanFireExpectFalseWhenNoEpsInstalled(): void
+    {
+        $this->ship->shouldReceive('getNbs')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $this->ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
+            ->with(
+                $this->ship,
+                ShipSystemTypeEnum::SYSTEM_EPS,
+                EpsSystemData::class,
+                Mockery::any(),
+                $this->shipWrapperFactory
+            )
+            ->once()
+            ->andReturn(null);
+
+        $result = $this->shipWrapper->canFire();
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanFireExpectTrueWhenEverythingIsFine(): void
+    {
+        $epsSystemData = $this->mock(EpsSystemData::class);
+
+        $this->ship->shouldReceive('getNbs')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $this->ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
+            ->with(
+                $this->ship,
+                ShipSystemTypeEnum::SYSTEM_EPS,
+                EpsSystemData::class,
+                Mockery::any(),
+                $this->shipWrapperFactory
+            )
+            ->once()
+            ->andReturn($epsSystemData);
+
+        $epsSystemData->shouldReceive('getEps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
+        $result = $this->shipWrapper->canFire();
+
+        $this->assertTrue($result);
     }
 }

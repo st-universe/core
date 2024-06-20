@@ -10,7 +10,9 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
@@ -64,7 +66,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         );
     }
 
-    public function testFireExpectNoSecondShotIfTargetDestoryedOnFirst(): void
+    public function testFireExpectNoSecondShotIfTargetDestroyedOnFirst(): void
     {
         $attacker = $this->mock(EnergyAttackerInterface::class);
         $target = $this->mock(ShipInterface::class);
@@ -73,11 +75,20 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $targetUser = $this->mock(UserInterface::class);
         $targetRump = $this->mock(ShipRumpInterface::class);
+        $targetPool = $this->mock(BattlePartyInterface::class);
 
         $targetId = 42;
-        $targetPool = [$targetId => $targetWrapper];
 
         $informations = new InformationWrapper();
+
+        $targetPool->shouldReceive('getRandomActiveMember')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($targetWrapper);
+        $targetPool->shouldReceive('isDefeated')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(false, true);
 
         $attacker->shouldReceive('getPhaserVolleys')
             ->withNoArgs()
@@ -201,6 +212,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->fire($attacker, $targetPool);
+        $this->subject->fire($attacker, $targetPool, ShipAttackCauseEnum::SHIP_FIGHT);
     }
 }

@@ -4,45 +4,29 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
-use Stu\Component\Player\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class ThreatReaction implements ThreatReactionInterface
 {
-    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
-
-    private ShipAttackCycleInterface $shipAttackCycle;
-
-    private FightLibInterface $fightLib;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private GameControllerInterface $game;
-
     public function __construct(
-        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        ShipAttackCycleInterface $shipAttackCycle,
-        FightLibInterface $fightLib,
-        PrivateMessageSenderInterface $privateMessageSender,
-        GameControllerInterface $game
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private ShipAttackCycleInterface $shipAttackCycle,
+        private BattlePartyFactoryInterface $battlePartyFactory,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private GameControllerInterface $game
     ) {
-        $this->playerRelationDeterminator = $playerRelationDeterminator;
-        $this->shipAttackCycle = $shipAttackCycle;
-        $this->fightLib = $fightLib;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->game = $game;
     }
 
     public function reactToThreat(
         ShipWrapperInterface $wrapper,
         ShipWrapperInterface $targetWrapper,
-        string $cause
+        ShipInteractionEnum $interaction
     ): bool {
 
         $target = $targetWrapper->get();
@@ -60,11 +44,14 @@ final class ThreatReaction implements ThreatReactionInterface
             return false;
         }
 
+        $cause = $interaction->getInteractionText($wrapper, $targetWrapper);
+
+        $attackingBattleParty = $this->battlePartyFactory->createAttackingBattleParty($targetWrapper);
 
         $messageCollection = $this->shipAttackCycle->cycle(
-            $this->fightLib->getAttackers($targetWrapper),
-            [$wrapper],
-            true
+            $attackingBattleParty,
+            $this->battlePartyFactory->createSingletonBattleParty($wrapper),
+            $interaction->getAttackCause()
         );
 
         if ($messageCollection->isEmpty()) {
@@ -82,7 +69,7 @@ final class ThreatReaction implements ThreatReactionInterface
                 $cause,
                 $informations->getInformationsAsString()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            $attackingBattleParty->getPrivateMessageType()
         );
 
         return true;

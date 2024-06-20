@@ -1539,16 +1539,6 @@ parameters:
 			path: src/Module/Ship/Action/ColonyDefending/StopDefending.php
 
 		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/FleetDeactivateWarp/FleetDeactivateWarp.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\FleetDeactivateWarp\\\\FleetDeactivateWarp\\:\\:getTractoredShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/FleetDeactivateWarp/FleetDeactivateWarp.php
-
-		-
 			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php
@@ -1604,9 +1594,14 @@ parameters:
 			path: src/Module/Ship/Lib/AstroEntryLib.php
 
 		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$p of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\>\\:\\:filter\\(\\) expects Closure\\(Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null, int\\)\\: bool, Closure\\(Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\)\\: bool given\\.$#"
 			count: 1
-			path: src/Module/Ship/Lib/Battle/AlertRedHelper.php
+			path: src/Module/Ship/Lib/Battle/Party/AttackedBattleParty.php
+
+		-
+			message: "#^Parameter \\#1 \\$leader of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\Party\\\\AbstractBattleParty\\:\\:__construct\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|false given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/Party/MixedBattleParty.php
 
 		-
 			message: "#^Parameter \\#3 \\$target of method Stu\\\\Module\\\\History\\\\Lib\\\\EntryCreatorInterface\\:\\:addEntry\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|Stu\\\\Orm\\\\Entity\\\\ColonySandboxInterface given\\.$#"

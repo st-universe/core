@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Interaction;
 
 use Mockery\MockInterface;
-use Stu\Component\Player\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\Party\AttackingBattleParty;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Ship\Lib\Battle\Party\SingletonBattleParty;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -22,29 +24,29 @@ use Stu\StuTestCase;
 class ThreatReactionTest extends StuTestCase
 {
     /** @var MockInterface|PlayerRelationDeterminatorInterface */
-    private MockInterface $playerRelationDeterminator;
+    private $playerRelationDeterminator;
 
     /** @var MockInterface|ShipAttackCycleInterface */
-    private MockInterface $shipAttackCycle;
+    private $shipAttackCycle;
 
-    /** @var MockInterface|FightLibInterface */
-    private MockInterface $fightLib;
+    /** @var MockInterface|BattlePartyFactoryInterface */
+    private $battlePartyFactory;
 
     /** @var MockInterface|PrivateMessageSenderInterface */
-    private MockInterface $privateMessageSender;
+    private $privateMessageSender;
 
     /** @var MockInterface|GameControllerInterface */
-    private MockInterface $game;
+    private $game;
 
     /** @var MockInterface|ShipInterface */
-    private MockInterface $ship;
+    private $ship;
     /** @var MockInterface|ShipInterface */
-    private MockInterface $target;
+    private $target;
 
     /** @var MockInterface|ShipWrapperInterface */
-    private MockInterface $wrapper;
+    private $wrapper;
     /** @var MockInterface|ShipWrapperInterface */
-    private MockInterface $targetWrapper;
+    private $targetWrapper;
 
     private ThreatReactionInterface $subject;
 
@@ -53,7 +55,7 @@ class ThreatReactionTest extends StuTestCase
         //injected
         $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
         $this->shipAttackCycle = $this->mock(ShipAttackCycleInterface::class);
-        $this->fightLib = $this->mock(FightLibInterface::class);
+        $this->battlePartyFactory = $this->mock(BattlePartyFactoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
 
@@ -75,7 +77,7 @@ class ThreatReactionTest extends StuTestCase
         $this->subject = new ThreatReaction(
             $this->playerRelationDeterminator,
             $this->shipAttackCycle,
-            $this->fightLib,
+            $this->battlePartyFactory,
             $this->privateMessageSender,
             $this->game
         );
@@ -91,7 +93,7 @@ class ThreatReactionTest extends StuTestCase
         $result = $this->subject->reactToThreat(
             $this->wrapper,
             $this->targetWrapper,
-            "REASON"
+            ShipInteractionEnum::BOARD_SHIP
         );
 
         $this->assertFalse($result);
@@ -118,7 +120,7 @@ class ThreatReactionTest extends StuTestCase
         $result = $this->subject->reactToThreat(
             $this->wrapper,
             $this->targetWrapper,
-            "REASON"
+            ShipInteractionEnum::BOARD_SHIP
         );
 
         $this->assertFalse($result);
@@ -150,7 +152,7 @@ class ThreatReactionTest extends StuTestCase
         $result = $this->subject->reactToThreat(
             $this->wrapper,
             $this->targetWrapper,
-            "REASON"
+            ShipInteractionEnum::BOARD_SHIP
         );
 
         $this->assertFalse($result);
@@ -161,11 +163,21 @@ class ThreatReactionTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $user2 = $this->mock(UserInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
+        $attackingBattleParty = $this->mock(AttackingBattleParty::class);
+        $attackedBattleParty = $this->mock(SingletonBattleParty::class);
 
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("SHIP");
+        $this->ship->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("SECTOR");
 
         $this->target->shouldReceive('getAlertState')
             ->withNoArgs()
@@ -174,20 +186,27 @@ class ThreatReactionTest extends StuTestCase
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);
+        $this->target->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("TARGET");
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
             ->with($user2, $user)
             ->once()
             ->andReturn(false);
 
-        $attackers = [$this->targetWrapper];
-        $this->fightLib->shouldReceive('getAttackers')
+        $this->battlePartyFactory->shouldReceive('createAttackingBattleParty')
             ->with($this->targetWrapper)
             ->once()
-            ->andReturn($attackers);
+            ->andReturn($attackingBattleParty);
+        $this->battlePartyFactory->shouldReceive('createSingletonBattleParty')
+            ->with($this->wrapper)
+            ->once()
+            ->andReturn($attackedBattleParty);
 
         $this->shipAttackCycle->shouldReceive('cycle')
-            ->with($attackers, [$this->wrapper], true)
+            ->with($attackingBattleParty, $attackedBattleParty, ShipAttackCauseEnum::BOARD_SHIP)
             ->once()
             ->andReturn($messages);
 
@@ -199,7 +218,7 @@ class ThreatReactionTest extends StuTestCase
         $result = $this->subject->reactToThreat(
             $this->wrapper,
             $this->targetWrapper,
-            "REASON"
+            ShipInteractionEnum::BOARD_SHIP
         );
 
         $this->assertFalse($result);
@@ -211,11 +230,21 @@ class ThreatReactionTest extends StuTestCase
         $user2 = $this->mock(UserInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $informations = $this->mock(InformationWrapper::class);
+        $attackingBattleParty = $this->mock(AttackingBattleParty::class);
+        $attackedBattleParty = $this->mock(SingletonBattleParty::class);
 
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("SHIP");
+        $this->ship->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("SECTOR");
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -233,22 +262,34 @@ class ThreatReactionTest extends StuTestCase
         $this->target->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user2);
+        $this->target->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn("TARGET");
 
         $this->playerRelationDeterminator->shouldReceive('isFriend')
             ->with($user2, $user)
             ->once()
             ->andReturn(false);
 
-        $attackers = [$this->targetWrapper];
-        $this->fightLib->shouldReceive('getAttackers')
+        $this->battlePartyFactory->shouldReceive('createAttackingBattleParty')
             ->with($this->targetWrapper)
             ->once()
-            ->andReturn($attackers);
+            ->andReturn($attackingBattleParty);
+        $this->battlePartyFactory->shouldReceive('createSingletonBattleParty')
+            ->with($this->wrapper)
+            ->once()
+            ->andReturn($attackedBattleParty);
 
         $this->shipAttackCycle->shouldReceive('cycle')
-            ->with($attackers, [$this->wrapper], true)
+            ->with($attackingBattleParty, $attackedBattleParty, ShipAttackCauseEnum::BOARD_SHIP)
             ->once()
             ->andReturn($messages);
+
+        $attackingBattleParty->shouldReceive('getPrivateMessageType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(999);
 
         $messages->shouldReceive('isEmpty')
             ->withNoArgs()
@@ -272,8 +313,8 @@ class ThreatReactionTest extends StuTestCase
             ->with(
                 42,
                 666,
-                "CAUSE\nFolgende Aktionen wurden ausgeführt:\nINFOS",
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                "Die SHIP versucht die TARGET in Sektor SECTOR zu entern.\nFolgende Aktionen wurden ausgeführt:\nINFOS",
+                999
             )
             ->once()
             ->andReturn('INFOS');
@@ -281,7 +322,7 @@ class ThreatReactionTest extends StuTestCase
         $result = $this->subject->reactToThreat(
             $this->wrapper,
             $this->targetWrapper,
-            "CAUSE"
+            ShipInteractionEnum::BOARD_SHIP
         );
 
         $this->assertTrue($result);

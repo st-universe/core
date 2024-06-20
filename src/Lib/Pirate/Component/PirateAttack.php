@@ -7,7 +7,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\InterceptShipCoreInterface;
@@ -24,7 +24,7 @@ class PirateAttack implements PirateAttackInterface
         private ShipAttackCoreInterface $shipAttackCore,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
         private ActivatorDeactivatorHelperInterface $helper,
-        private AlertRedHelperInterface $alertRedHelper,
+        private AlertReactionFacadeInterface $alertReactionFacade,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -87,7 +87,7 @@ class PirateAttack implements PirateAttackInterface
             $informationWrapper
         )) {
             $this->logger->log('    deactivated warp');
-            $this->alertRedHelper->doItAll($wrapper->get(), $informationWrapper);
+            $this->alertReactionFacade->doItAll($wrapper, $informationWrapper);
         }
     }
 }

@@ -8,32 +8,34 @@ use Mockery\MockInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Destruction\Handler\ShipDestructionHandlerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipDestructionTest extends StuTestCase
 {
-    /**
-     * @var MockInterface|ShipDestructionHandlerInterface
-     */
+    /** @var MockInterface|ShipRepositoryInterface */
+    private $shipRepository;
+
+    /** @var MockInterface|ShipDestructionHandlerInterface */
     private $deletionHandler1;
 
-    /**
-     * @var MockInterface|ShipDestructionHandlerInterface
-     */
+    /** @var MockInterface|ShipDestructionHandlerInterface */
     private $deletionHandler2;
 
-    /**
-     * @var ShipDestructionInterface
-     */
+    /** @var ShipDestructionInterface */
     private $subject;
 
     public function setUp(): void
     {
+        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+
         $this->subject = $this->mock(ShipDestructionInterface::class);
         $this->deletionHandler1 = $this->mock(ShipDestructionHandlerInterface::class);
         $this->deletionHandler2 = $this->mock(ShipDestructionHandlerInterface::class);
 
         $this->subject = new ShipDestruction(
+            $this->shipRepository,
             [$this->deletionHandler1, $this->deletionHandler2]
         );
     }
@@ -42,6 +44,7 @@ class ShipDestructionTest extends StuTestCase
     {
         $destroyer = $this->mock(ShipDestroyerInterface::class);
         $destroyedShipWrapper = $this->mock(ShipWrapperInterface::class);
+        $destroyedShip = $this->mock(ShipInterface::class);
         $cause = ShipDestructionCauseEnum::ALERT_RED;
         $informations = $this->mock(InformationInterface::class);
 
@@ -60,6 +63,14 @@ class ShipDestructionTest extends StuTestCase
                 $cause,
                 $informations
             )
+            ->once();
+
+        $destroyedShipWrapper->shouldReceive('get')
+            ->withNOArgs()
+            ->once()
+            ->andReturn($destroyedShip);
+        $this->shipRepository->shouldReceive('save')
+            ->with($destroyedShip)
             ->once();
 
         $this->subject->destroy(

@@ -11,6 +11,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
@@ -37,7 +38,7 @@ abstract class AbstractWeaponPhase
     protected function checkForShipDestruction(
         ShipDestroyerInterface $attacker,
         ShipWrapperInterface $targetWrapper,
-        bool $isAlertRed,
+        ShipDestructionCauseEnum $destructionCause,
         InformationInterface $message
     ): void {
 
@@ -48,7 +49,7 @@ abstract class AbstractWeaponPhase
         $this->shipDestruction->destroy(
             $attacker,
             $targetWrapper,
-            $isAlertRed ? ShipDestructionCauseEnum::ALERT_RED : ShipDestructionCauseEnum::SHIP_FIGHT,
+            $destructionCause,
             $message
         );
     }

@@ -11,7 +11,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Tick\Ship\ManagerComponent\ManagerComponentInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -21,44 +21,17 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CrewLimitations implements ManagerComponentInterface
 {
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private CrewRepositoryInterface $crewRepository;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private CrewLimitCalculatorInterface $crewLimitCalculator;
-
     public function __construct(
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository,
-        UserRepositoryInterface $userRepository,
-        CrewRepositoryInterface $crewRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        AlertRedHelperInterface $alertRedHelper,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        CrewLimitCalculatorInterface $crewLimitCalculator
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ShipRepositoryInterface $shipRepository,
+        private UserRepositoryInterface $userRepository,
+        private CrewRepositoryInterface $crewRepository,
+        private ShipCrewRepositoryInterface $shipCrewRepository,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private AlertReactionFacadeInterface $alertReactionFacade,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private CrewLimitCalculatorInterface $crewLimitCalculator
     ) {
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
-        $this->userRepository = $userRepository;
-        $this->crewRepository = $crewRepository;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->alertRedHelper = $alertRedHelper;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->crewLimitCalculator = $crewLimitCalculator;
     }
 
     public function work(): void
@@ -209,9 +182,11 @@ final class CrewLimitations implements ManagerComponentInterface
         if ($randomShip === null) {
             throw new InvalidArgumentException('randomShipId should exist');
         }
+
+        $wrapper = $this->shipWrapperFactory->wrapShip($randomShip);
         $doAlertRedCheck = $randomShip->getWarpDriveState() || $randomShip->getCloakState();
         //deactivate ship
-        $this->shipSystemManager->deactivateAll($this->shipWrapperFactory->wrapShip($randomShip));
+        $this->shipSystemManager->deactivateAll($wrapper);
         $randomShip->setAlertStateGreen();
 
         $this->shipRepository->save($randomShip);
@@ -238,7 +213,7 @@ final class CrewLimitations implements ManagerComponentInterface
 
         //do alert red stuff
         if ($doAlertRedCheck) {
-            $this->alertRedHelper->doItAll($randomShip, new InformationWrapper());
+            $this->alertReactionFacade->doItAll($wrapper, new InformationWrapper());
         }
 
         return count($crewArray);

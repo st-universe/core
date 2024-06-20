@@ -14,14 +14,16 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -30,59 +32,22 @@ final class AttackBuilding implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ATTACK_BUILDING';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private FightLibInterface $fightLib;
-
-    private EnergyWeaponPhaseInterface $energyWeaponPhase;
-
-    private ProjectileWeaponPhaseInterface $projectileWeaponPhase;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
     private InformationWrapper $informations;
 
-    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    private AttackerProviderFactoryInterface $attackerProviderFactory;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        InteractionCheckerInterface $interactionChecker,
-        FightLibInterface $fightLib,
-        EnergyWeaponPhaseInterface $energyWeaponPhase,
-        ProjectileWeaponPhaseInterface $projectileWeaponPhase,
-        PrivateMessageSenderInterface $privateMessageSender,
-        AlertRedHelperInterface $alertRedHelper,
-        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        AttackerProviderFactoryInterface $attackerProviderFactory
+        private ShipLoaderInterface $shipLoader,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ColonyRepositoryInterface $colonyRepository,
+        private InteractionCheckerInterface $interactionChecker,
+        private EnergyWeaponPhaseInterface $energyWeaponPhase,
+        private ProjectileWeaponPhaseInterface $projectileWeaponPhase,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private AlertReactionFacadeInterface $alertReactionFacade,
+        private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private AttackerProviderFactoryInterface $attackerProviderFactory,
+        private BattlePartyFactoryInterface $battlePartyFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->interactionChecker = $interactionChecker;
-        $this->fightLib = $fightLib;
-        $this->energyWeaponPhase = $energyWeaponPhase;
-        $this->projectileWeaponPhase = $projectileWeaponPhase;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->alertRedHelper = $alertRedHelper;
-        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->attackerProviderFactory = $attackerProviderFactory;
-
         $this->informations = new InformationWrapper();
     }
 
@@ -141,22 +106,19 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        $isFleetAttack = false;
-        $fleetWrapper = $wrapper->getFleetWrapper();
-        if ($ship->isFleetLeader() && $fleetWrapper !== null) {
-            $attackers = $fleetWrapper->getShipWrappers();
-            $isFleetAttack = true;
-        } else {
-            $attackers = [$ship->getId() => $wrapper];
-        }
+        $isFleetAttack = $ship->isFleetLeader() && $wrapper->getFleetWrapper() !== null;
 
-        foreach ($attackers as $attackship) {
-            $this->informations->addInformationWrapper($this->fightLib->ready($attackship));
-        }
+        $incomingBattleParty = $this->battlePartyFactory->createIncomingBattleParty($wrapper);
 
         // DEFENDING FLEETS
         foreach ($colony->getDefenders() as $fleet) {
-            $this->alertRedHelper->performAttackCycle($fleet->getLeadShip(), $ship, $this->informations, true);
+            $colonyDefendingBattleParty = $this->battlePartyFactory->createColonyDefendingBattleParty($fleet->getLeadShip());
+
+            $this->alertReactionFacade->performAttackCycle(
+                $colonyDefendingBattleParty,
+                $incomingBattleParty,
+                $this->informations
+            );
         }
 
         // ORBITAL DEFENSE
@@ -168,12 +130,15 @@ final class AttackBuilding implements ActionControllerInterface
         $defendingPhalanx =  $this->attackerProviderFactory->getEnergyPhalanxAttacker($colony);
 
         for ($i = 0; $i < $count; $i++) {
-            $attackerPool = $this->fightLib->filterInactiveShips($attackers);
 
-            if ($attackerPool === []) {
+            if ($incomingBattleParty->isDefeated()) {
                 break;
             }
-            $this->addMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool));
+            $this->addMessageMerge($this->energyWeaponPhase->fire(
+                $defendingPhalanx,
+                $incomingBattleParty,
+                ShipAttackCauseEnum::COLONY_DEFENSE
+            ));
         }
 
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
@@ -184,24 +149,27 @@ final class AttackBuilding implements ActionControllerInterface
         $defendingPhalanx = $this->attackerProviderFactory->getProjectilePhalanxAttacker($colony);
 
         for ($i = 0; $i < $count; $i++) {
-            $attackerPool = $this->fightLib->filterInactiveShips($attackers);
-
-            if ($attackerPool === []) {
+            if ($incomingBattleParty->isDefeated()) {
                 break;
             }
-            $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));
+            $this->addMessageMerge($this->projectileWeaponPhase->fire(
+                $defendingPhalanx,
+                $incomingBattleParty,
+                ShipAttackCauseEnum::COLONY_DEFENSE
+            ));
         }
 
         // OFFENSE OF ATTACKING SHIPS
         $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
-        $attackerPool = $this->fightLib->filterInactiveShips($attackers);
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
             $colony,
             BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
             [ColonyFunctionManager::STATE_ENABLED]
         ) * 6;
 
-        foreach ($attackerPool as $attackerWrapper) {
+
+        /** @var ShipWrapperInterface $attackerWrapper*/
+        foreach ($incomingBattleParty->getActiveMembers(true, true) as $attackerWrapper) {
             $shipAttacker = $this->attackerProviderFactory->getShipAttacker($attackerWrapper);
 
             if ($isOrbitField) {

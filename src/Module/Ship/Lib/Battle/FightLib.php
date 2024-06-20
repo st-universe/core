@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -17,20 +18,11 @@ use Stu\Orm\Entity\User;
 
 final class FightLib implements FightLibInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private CancelRepairInterface $cancelRepair;
-
-    private AlertLevelBasedReactionInterface $alertLevelBasedReaction;
-
     public function __construct(
-        ShipSystemManagerInterface $shipSystemManager,
-        CancelRepairInterface $cancelRepair,
-        AlertLevelBasedReactionInterface $alertLevelBasedReaction
+        private ShipSystemManagerInterface $shipSystemManager,
+        private  CancelRepairInterface $cancelRepair,
+        private AlertLevelBasedReactionInterface $alertLevelBasedReaction
     ) {
-        $this->shipSystemManager = $shipSystemManager;
-        $this->cancelRepair = $cancelRepair;
-        $this->alertLevelBasedReaction = $alertLevelBasedReaction;
     }
 
     public function ready(ShipWrapperInterface $wrapper): InformationWrapper
@@ -75,28 +67,6 @@ final class FightLib implements FightLibInterface
         }
 
         return $informations;
-    }
-
-    public function filterInactiveShips(array $base): array
-    {
-        return array_filter(
-            $base,
-            fn (ShipWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed() && !$wrapper->get()->isDisabled()
-        );
-    }
-
-    public function canFire(ShipWrapperInterface $wrapper): bool
-    {
-        $ship = $wrapper->get();
-        if (!$ship->getNbs()) {
-            return false;
-        }
-        if (!$ship->hasActiveWeapon()) {
-            return false;
-        }
-
-        $epsSystem = $wrapper->getEpsSystemData();
-        return $epsSystem !== null && $epsSystem->getEps() !== 0;
     }
 
     public function canAttackTarget(
@@ -154,79 +124,19 @@ final class FightLib implements FightLibInterface
         return $ownFleetId !== $targetFleetId;
     }
 
-    public function getAttackersAndDefenders(ShipWrapperInterface|FleetWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
-    {
-        $attackers = $this->getAttackers($wrapper);
-        $defenders = $this->getDefenders($targetWrapper);
+    public function getAttackersAndDefenders(
+        ShipWrapperInterface|FleetWrapperInterface $wrapper,
+        ShipWrapperInterface $targetWrapper,
+        BattlePartyFactoryInterface $battlePartyFactory
+    ): array {
+        $attackers = $battlePartyFactory->createAttackingBattleParty($wrapper);
+        $defenders = $battlePartyFactory->createAttackedBattleParty($targetWrapper);
 
         return [
             $attackers,
             $defenders,
             count($attackers) + count($defenders) > 2
         ];
-    }
-
-    /** @return array<int, ShipWrapperInterface> */
-    public function getAttackers(ShipWrapperInterface|FleetWrapperInterface $wrapper): array
-    {
-        if ($wrapper instanceof FleetWrapperInterface) {
-            return $wrapper->getShipWrappers();
-        }
-
-        $ship = $wrapper->get();
-        $fleetWrapper = $wrapper->getFleetWrapper();
-
-        if ($ship->isFleetLeader() && $fleetWrapper !== null) {
-            return $fleetWrapper->getShipWrappers();
-        } else {
-            return [$ship->getId() => $wrapper];
-        }
-    }
-
-    /** @return array<int, ShipWrapperInterface> */
-    private function getDefenders(ShipWrapperInterface $targetWrapper): array
-    {
-        $target = $targetWrapper->get();
-        $targetFleet = $targetWrapper->getFleetWrapper();
-
-        if ($targetFleet !== null) {
-            $defenders = [];
-
-            // only uncloaked defenders fight
-            foreach ($targetFleet->getShipWrappers() as $shipId => $defWrapper) {
-
-                $defShip = $defWrapper->get();
-                if (!$defShip->getCloakState()) {
-                    $defenders[$shipId] = $defWrapper;
-
-                    $this->addDockedToAsDefender($targetWrapper, $defenders);
-                }
-            }
-
-            // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
-            if ($defenders === []) {
-                $defenders = $targetFleet->getShipWrappers();
-            }
-        } else {
-            $defenders = [$target->getId() => $targetWrapper];
-
-            $this->addDockedToAsDefender($targetWrapper, $defenders);
-        }
-
-        return $defenders;
-    }
-
-    /** @param array<int, ShipWrapperInterface> $defenders */
-    private function addDockedToAsDefender(ShipWrapperInterface $targetWrapper, array &$defenders): void
-    {
-        $dockedToWrapper = $targetWrapper->getDockedToShipWrapper();
-        if (
-            $dockedToWrapper !== null
-            && !$dockedToWrapper->get()->getUser()->isNpc()
-            && $dockedToWrapper->get()->hasActiveWeapon()
-        ) {
-            $defenders[$dockedToWrapper->get()->getId()] = $dockedToWrapper;
-        }
     }
 
     public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool

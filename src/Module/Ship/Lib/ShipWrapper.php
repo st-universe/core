@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use JBBCode\Parser;
-use JsonMapper\JsonMapperInterface;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
@@ -16,7 +17,6 @@ use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\FusionCoreSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
-use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\Data\SingularityCoreSystemData;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WarpCoreSystemData;
@@ -25,6 +25,7 @@ use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -37,61 +38,29 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 //TODO increase coverage
 final class ShipWrapper implements ShipWrapperInterface
 {
-    private ShipInterface $ship;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    private GameControllerInterface $game;
-
-    private JsonMapperInterface $jsonMapper;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ShipSystemDataFactoryInterface $shipSystemDataFactory;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private RepairUtilInterface $repairUtil;
-
-    private Parser $bbCodeParser;
-
     /**
-     * @var array<int, AbstractSystemData>
+     * @var Collection<int, AbstractSystemData>
      */
-    private array $shipSystemDataCache = [];
+    private Collection $shipSystemDataCache;
 
     private ?ReactorWrapperInterface $reactorWrapper = null;
 
     private ?int $epsUsage = null;
 
     public function __construct(
-        ShipInterface $ship,
-        ShipSystemManagerInterface $shipSystemManager,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        GameControllerInterface $game,
-        JsonMapperInterface $jsonMapper,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ShipSystemDataFactoryInterface $shipSystemDataFactory,
-        ShipStateChangerInterface $shipStateChanger,
-        RepairUtilInterface $repairUtil,
-        Parser $bbCodeParser,
+        private ShipInterface $ship,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private SystemDataDeserializerInterface $systemDataDeserializer,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        private GameControllerInterface $game,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ShipStateChangerInterface $shipStateChanger,
+        private RepairUtilInterface $repairUtil,
+        private Parser $bbCodeParser
     ) {
-        $this->ship = $ship;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
-        $this->game = $game;
-        $this->jsonMapper = $jsonMapper;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->shipSystemDataFactory = $shipSystemDataFactory;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->repairUtil = $repairUtil;
-        $this->bbCodeParser = $bbCodeParser;
+
+        $this->shipSystemDataCache = new ArrayCollection();
     }
 
     public function get(): ShipInterface
@@ -280,6 +249,20 @@ final class ShipWrapper implements ShipWrapperInterface
         }
 
         return $this->get()->getHull() < $this->get()->getMaxHull();
+    }
+
+    public function canFire(): bool
+    {
+        $ship = $this->get();
+        if (!$ship->getNbs()) {
+            return false;
+        }
+        if (!$ship->hasActiveWeapon()) {
+            return false;
+        }
+
+        $epsSystem = $this->getEpsSystemData();
+        return $epsSystem !== null && $epsSystem->getEps() !== 0;
     }
 
     public function getRepairDuration(): int
@@ -488,37 +471,12 @@ final class ShipWrapper implements ShipWrapperInterface
      */
     private function getSpecificShipSystem(ShipSystemTypeEnum $systemType, string $className)
     {
-        if (
-            $systemType !== ShipSystemTypeEnum::SYSTEM_HULL
-            && !$this->get()->hasShipSystem($systemType)
-        ) {
-            return null;
-        }
-
-        //add system to cache if not already deserialized
-        if (!array_key_exists($systemType->value, $this->shipSystemDataCache)) {
-            $systemData = $this->shipSystemDataFactory->createSystemData($systemType, $this->shipWrapperFactory);
-            $systemData->setShip($this->get());
-
-            $data = $systemType === ShipSystemTypeEnum::SYSTEM_HULL ? null : $this->get()->getShipSystem($systemType)->getData();
-
-            if ($data === null) {
-                $this->shipSystemDataCache[$systemType->value] = $systemData;
-            } else {
-                $this->shipSystemDataCache[$systemType->value] =
-                    $this->jsonMapper->mapObjectFromString(
-                        $data,
-                        $systemData
-                    );
-            }
-        }
-
-        //load deserialized system from cache
-        $cacheItem = $this->shipSystemDataCache[$systemType->value];
-        if (!$cacheItem instanceof $className) {
-            throw new RuntimeException('this should not happen');
-        }
-
-        return $cacheItem;
+        return $this->systemDataDeserializer->getSpecificShipSystem(
+            $this->get(),
+            $systemType,
+            $className,
+            $this->shipSystemDataCache,
+            $this->shipWrapperFactory
+        );
     }
 }

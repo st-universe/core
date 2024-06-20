@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 
@@ -39,7 +40,7 @@ final class FleetWrapper implements FleetWrapperInterface
         return $this->shipWrapperFactory->wrapShip($this->get()->getLeadShip());
     }
 
-    public function getShipWrappers(): array
+    public function getShipWrappers(): Collection
     {
         return $this->shipWrapperFactory->wrapShips($this->get()->getShips()->toArray());
     }

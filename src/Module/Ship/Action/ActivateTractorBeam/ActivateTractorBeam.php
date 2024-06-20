@@ -22,6 +22,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipInteractionEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -124,12 +125,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->threatReaction->reactToThreat(
                 $wrapper,
                 $targetWrapper,
-                sprintf(
-                    "Die %s versucht die %s in Sektor %s mit dem Traktorstrahl zu erfassen.",
-                    $shipName,
-                    $targetName,
-                    $ship->getSectorString()
-                )
+                ShipInteractionEnum::ACTIVATE_TRACTOR
             );
         }
 

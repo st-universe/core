@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use JBBCode\Parser;
-use JsonMapper\JsonMapperFactory;
-use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
-use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
@@ -29,10 +27,6 @@ class ShipWrapperFactoryTest extends StuTestCase
 
     private GameControllerInterface $game;
 
-    private JsonMapperInterface $jsonMapper;
-
-    private ShipSystemDataFactoryInterface $shipSystemDataFactory;
-
     private ShipStateChangerInterface $shipStateChanger;
 
     private RepairUtilInterface $repairUtil;
@@ -43,6 +37,8 @@ class ShipWrapperFactoryTest extends StuTestCase
 
     private Parser $bbCodeParser;
 
+    private SystemDataDeserializerInterface $systemDataDeserializer;
+
     public function setUp(): void
     {
         //injected
@@ -50,24 +46,22 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
-        $this->jsonMapper = (new JsonMapperFactory())->bestFit();
-        $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
         $this->repairUtil = $this->mock(RepairUtilInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->bbCodeParser = $this->mock(Parser::class);
+        $this->systemDataDeserializer = $this->mock(SystemDataDeserializerInterface::class);
 
         $this->shipWrapperFactory = new ShipWrapperFactory(
             $this->shipSystemManager,
             $this->colonyLibFactory,
             $this->torpedoTypeRepository,
             $this->game,
-            $this->jsonMapper,
-            $this->shipSystemDataFactory,
             $this->shipStateChanger,
             $this->repairUtil,
             $this->userRepository,
-            $this->bbCodeParser
+            $this->bbCodeParser,
+            $this->systemDataDeserializer
         );
     }
 
