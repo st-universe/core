@@ -24,7 +24,7 @@ class StuRandom
     }
 
     /** @param array<int, int> $probabilities */
-    public function randomOfProbabilities(array $probabilities): int
+    public function randomKeyOfProbabilities(array $probabilities): int
     {
         $totalProbability = array_sum($probabilities);
 

@@ -16,55 +16,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 class PirateReaction implements PirateReactionInterface
 {
-    private const REACTION_PROBABILITIES = [
-        PirateReactionTriggerEnum::ON_ATTACK->value => [
-            PirateBehaviourEnum::RAGE->value => 50,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 25,
-            PirateBehaviourEnum::SEARCH_FRIEND->value => 30,
-            PirateBehaviourEnum::FLY->value => 20,
-            PirateBehaviourEnum::HIDE->value => 20,
-            PirateBehaviourEnum::DO_NOTHING->value => 10,
-        ],
-        PirateReactionTriggerEnum::ON_SCAN->value => [
-            PirateBehaviourEnum::DO_NOTHING->value => 60,
-            PirateBehaviourEnum::RAGE->value => 60,
-            PirateBehaviourEnum::FLY->value => 20,
-            PirateBehaviourEnum::HIDE->value => 20,
-            PirateBehaviourEnum::SEARCH_FRIEND->value => 5,
-        ],
-        PirateReactionTriggerEnum::ON_INTERCEPTION_BEFORE->value => [
-            PirateBehaviourEnum::FLY->value => 50,
-            PirateBehaviourEnum::HIDE->value => 25,
-            PirateBehaviourEnum::DO_NOTHING->value => 25
-        ],
-        PirateReactionTriggerEnum::ON_INTERCEPTION_AFTER->value => [
-            PirateBehaviourEnum::RAGE->value => 40,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 15,
-            PirateBehaviourEnum::SEARCH_FRIEND->value => 15,
-            PirateBehaviourEnum::DO_NOTHING->value => 10,
-            PirateBehaviourEnum::FLY->value => 10,
-        ],
-        PirateReactionTriggerEnum::ON_SUPPORT_CALL->value => [
-            PirateBehaviourEnum::RAGE->value => 100,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
-        ],
-        PirateReactionTriggerEnum::ON_RAGE->value => [
-            PirateBehaviourEnum::RAGE->value => 50,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20,
-            PirateBehaviourEnum::DO_NOTHING->value => 20
-        ],
-        PirateReactionTriggerEnum::ON_TRACTOR->value => [
-            PirateBehaviourEnum::RAGE->value => 90,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
-
-        ],
-        PirateReactionTriggerEnum::ON_BEAM->value => [
-            PirateBehaviourEnum::RAGE->value => 50,
-            PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 40,
-            PirateBehaviourEnum::DO_NOTHING->value => 10
-        ],
-    ];
-
     private PirateLoggerInterface $logger;
 
     /** @param array<int, PirateBehaviourInterface> $behaviours */
@@ -151,7 +102,7 @@ class PirateReaction implements PirateReactionInterface
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum
     {
-        $value = $this->stuRandom->randomOfProbabilities(self::REACTION_PROBABILITIES[$reactionTrigger->value]);
+        $value = $this->stuRandom->randomKeyOfProbabilities($reactionTrigger->getBehaviourProbabilities());
 
         return PirateBehaviourEnum::from($value);
     }

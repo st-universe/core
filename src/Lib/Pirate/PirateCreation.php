@@ -176,7 +176,7 @@ class PirateCreation implements PirateCreationInterface
 
         $pirateProbabilities = array_map(fn (PirateSetupInterface $setup) => $setup->getProbabilityWeight(), $pirateSetups);
 
-        return $pirateSetups[$this->stuRandom->randomOfProbabilities($pirateProbabilities)];
+        return $pirateSetups[$this->stuRandom->randomKeyOfProbabilities($pirateProbabilities)];
     }
 
     private function getRandomMapLocation(): MapInterface

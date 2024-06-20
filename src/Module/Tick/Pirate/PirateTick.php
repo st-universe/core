@@ -72,7 +72,7 @@ final class PirateTick implements PirateTickInterface
 
     private function getRandomBehaviourType(): PirateBehaviourEnum
     {
-        $value = $this->stuRandom->randomOfProbabilities(self::BEHAVIOUR_PROBABILITIES);
+        $value = $this->stuRandom->randomKeyOfProbabilities(self::BEHAVIOUR_PROBABILITIES);
 
         return PirateBehaviourEnum::from($value);
     }

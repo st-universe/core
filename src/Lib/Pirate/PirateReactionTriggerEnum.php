@@ -40,4 +40,59 @@ enum PirateReactionTriggerEnum: int
             self::ON_RAGE => true
         };
     }
+
+    /**
+     * @return array<int, int>
+     */
+    public function getBehaviourProbabilities(): array
+    {
+        return match ($this) {
+            self::ON_ATTACK => [
+                PirateBehaviourEnum::RAGE->value => 50,
+                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 25,
+                PirateBehaviourEnum::SEARCH_FRIEND->value => 30,
+                PirateBehaviourEnum::FLY->value => 20,
+                PirateBehaviourEnum::HIDE->value => 20,
+                PirateBehaviourEnum::DO_NOTHING->value => 10,
+            ],
+            self::ON_SCAN => [
+                PirateBehaviourEnum::DO_NOTHING->value => 60,
+                PirateBehaviourEnum::RAGE->value => 60,
+                PirateBehaviourEnum::FLY->value => 20,
+                PirateBehaviourEnum::HIDE->value => 20,
+                PirateBehaviourEnum::SEARCH_FRIEND->value => 5,
+            ],
+            self::ON_INTERCEPTION_BEFORE => [
+                PirateBehaviourEnum::FLY->value => 50,
+                PirateBehaviourEnum::HIDE->value => 25,
+                PirateBehaviourEnum::DO_NOTHING->value => 25
+            ],
+            self::ON_INTERCEPTION_AFTER => [
+                PirateBehaviourEnum::RAGE->value => 40,
+                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 15,
+                PirateBehaviourEnum::SEARCH_FRIEND->value => 15,
+                PirateBehaviourEnum::DO_NOTHING->value => 10,
+                PirateBehaviourEnum::FLY->value => 10,
+            ],
+            self::ON_SUPPORT_CALL => [
+                PirateBehaviourEnum::RAGE->value => 100,
+                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
+            ],
+            self::ON_RAGE => [
+                PirateBehaviourEnum::RAGE->value => 50,
+                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 20,
+                PirateBehaviourEnum::DO_NOTHING->value => 20
+            ],
+            self::ON_TRACTOR => [
+                PirateBehaviourEnum::RAGE->value => 90,
+                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 10
+
+            ],
+            self::ON_BEAM => [
+                PirateBehaviourEnum::RAGE->value => 50,
+                PirateBehaviourEnum::CALL_FOR_SUPPORT->value => 40,
+                PirateBehaviourEnum::DO_NOTHING->value => 10
+            ]
+        };
+    }
 }
