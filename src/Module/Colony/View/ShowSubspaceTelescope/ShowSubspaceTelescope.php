@@ -60,9 +60,10 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
         $game->showMacro(ColonyMenuEnum::MENU_SUBSPACE_TELESCOPE->getTemplate());
 
-        $mapX =  (int) ceil($colony->getSystem()->getCx() / MapEnum::FIELDS_PER_SECTION);
-        $mapY =  (int) ceil($colony->getSystem()->getCy() / MapEnum::FIELDS_PER_SECTION);
-        $layer = $colony->getSystem()->getLayer();
+        $system = $colony->getSystem();
+        $mapX =  (int) ceil($system->getCx() / MapEnum::FIELDS_PER_SECTION);
+        $mapY =  (int) ceil($system->getCy() / MapEnum::FIELDS_PER_SECTION);
+        $layer = $system->getLayer();
 
         $game->addExecuteJS(sprintf(
             "registerNavKeys('%s.php', '%s', '%s', false);",
@@ -72,6 +73,14 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
 
         $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS(
+            sprintf(
+                'setColonyMapCoordinates(%d, %d);',
+                $system->getCx(),
+                $system->getCy()
+            ),
+            GameEnum::JS_EXECUTION_AJAX_UPDATE
+        );
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(

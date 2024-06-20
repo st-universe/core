@@ -4,8 +4,6 @@ var hosttype = null;
 var sstr = null;
 var scrollOffset = 6;
 var colonySubMenu = 2;
-var colonyMapX = null;
-var colonyMapY = null;
 
 function initializeJsVars(id, type, sessionString) {
 	colonyid = id;
@@ -443,6 +441,13 @@ function getCommodityLocations(commodityId) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'database.php?commodityId=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1');
+}
+
+var colonyMapX = null;
+var colonyMapY = null;
+function setColonyMapCoordinates(mapX, mapY) {
+	colonyMapX = mapX;
+	colonyMapY = mapY;
 }
 
 function calculateScanCost(cx, cy) {
