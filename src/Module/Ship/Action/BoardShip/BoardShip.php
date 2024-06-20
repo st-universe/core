@@ -20,6 +20,7 @@ use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\CloseCombat\CloseCombatUtilInterface;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\Interaction\ShipInteractionEnum;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollection;
@@ -211,19 +212,13 @@ final class BoardShip implements ActionControllerInterface
             return;
         }
 
-        $shipName = $ship->getName();
         $targetName = $target->getName();
         $targetUserId = $target->getUser()->getId();
 
         $this->threatReaction->reactToThreat(
             $wrapper,
             $targetWrapper,
-            sprintf(
-                "Die %s versucht die %s in Sektor %s zu entern.",
-                $shipName,
-                $targetName,
-                $ship->getSectorString()
-            )
+            ShipInteractionEnum::BOARD_SHIP
         );
 
         if ($ship->isDestroyed()) {

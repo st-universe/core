@@ -7,8 +7,10 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -18,18 +20,18 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 {
     public function fire(
         ProjectileAttackerInterface $attacker,
-        array $targetPool,
-        bool $isAlertRed = false
+        BattlePartyInterface $targetPool,
+        ShipAttackCauseEnum $attackCause
     ): array {
         $messages = [];
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
-            if ($targetPool === []) {
+            if ($targetPool->isDefeated()) {
                 break;
             }
 
             $torpedo = $attacker->getTorpedo();
-            $targetWrapper = $targetPool[array_rand($targetPool)];
+            $targetWrapper = $targetPool->getRandomActiveMember();
             $target = $targetWrapper->get();
 
             if (
@@ -72,9 +74,12 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $message->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
 
             if ($target->isDestroyed()) {
-                unset($targetPool[$target->getId()]);
-
-                $this->checkForShipDestruction($attacker, $targetWrapper, $isAlertRed, $message);
+                $this->checkForShipDestruction(
+                    $attacker,
+                    $targetWrapper,
+                    $attackCause->getDestructionCause(),
+                    $message
+                );
             }
         }
 

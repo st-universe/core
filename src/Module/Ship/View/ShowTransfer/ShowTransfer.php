@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\View\ShowTransfer;
 
 use request;
 use RuntimeException;
-use Stu\Component\Player\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Transfer\BeamUtilInterface;
 use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;

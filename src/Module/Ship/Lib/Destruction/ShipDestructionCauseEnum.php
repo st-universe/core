@@ -8,6 +8,7 @@ enum ShipDestructionCauseEnum
 {
     case FIELD_DAMAGE;
     case SHIP_FIGHT;
+    case ALERT_YELLOW;
     case ALERT_RED;
     case ESCAPE_TRACTOR;
     case SELF_DESTRUCTION;
@@ -37,6 +38,10 @@ enum ShipDestructionCauseEnum
                 $rumpName,
                 $sector,
                 $destroyerName
+            ),
+            self::ALERT_YELLOW => sprintf(
+                '[b][color=yellow]Alarm-Gelb:[/color][/b] %s',
+                self::SHIP_FIGHT->getHistoryEntryText($destroyer, $destroyedShip),
             ),
             self::ALERT_RED => sprintf(
                 '[b][color=red]Alarm-Rot:[/color][/b] %s',

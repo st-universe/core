@@ -10,8 +10,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -21,32 +23,15 @@ final class AttackTrackedShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ATTACK_TRACKED';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipAttackCycleInterface $shipAttackCycle;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
-    private FightLibInterface $fightLib;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipAttackCycleInterface $shipAttackCycle,
-        InteractionCheckerInterface $interactionChecker,
-        AlertRedHelperInterface $alertRedHelper,
-        FightLibInterface $fightLib
+        private ShipLoaderInterface $shipLoader,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ShipAttackCycleInterface $shipAttackCycle,
+        private InteractionCheckerInterface $interactionChecker,
+        private AlertReactionFacadeInterface $alertReactionFacade,
+        private FightLibInterface $fightLib,
+        private BattlePartyFactoryInterface $battlePartyFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipAttackCycle = $shipAttackCycle;
-        $this->interactionChecker = $interactionChecker;
-        $this->alertRedHelper = $alertRedHelper;
-        $this->fightLib = $fightLib;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -110,9 +95,13 @@ final class AttackTrackedShip implements ActionControllerInterface
         $isShipWarped = $ship->getWarpDriveState();
         $isTargetWarped = $target->getWarpDriveState();
 
-        [$attacker, $defender, $fleet] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper);
+        [$attacker, $defender, $fleet] = $this->fightLib->getAttackersAndDefenders(
+            $wrapper,
+            $targetWrapper,
+            $this->battlePartyFactory
+        );
 
-        $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender);
+        $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender, ShipAttackCauseEnum::SHIP_FIGHT);
 
         $informations = $messageCollection->getInformationDump();
 
@@ -130,12 +119,12 @@ final class AttackTrackedShip implements ActionControllerInterface
 
         //Alarm-Rot check for ship
         if ($isShipWarped && !$ship->isDestroyed()) {
-            $this->alertRedHelper->doItAll($ship, $informations);
+            $this->alertReactionFacade->doItAll($wrapper, $informations);
         }
 
         //Alarm-Rot check for traktor ship
         if ($isTargetWarped && !$target->isDestroyed()) {
-            $this->alertRedHelper->doItAll($target, $informations);
+            $this->alertReactionFacade->doItAll($targetWrapper, $informations);
         }
 
         if ($ship->isDestroyed()) {

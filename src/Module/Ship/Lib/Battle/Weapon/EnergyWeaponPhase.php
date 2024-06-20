@@ -7,8 +7,10 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
@@ -21,16 +23,16 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
     public function fire(
         EnergyAttackerInterface $attacker,
-        array $targetPool,
-        bool $isAlertRed = false
+        BattlePartyInterface $targetPool,
+        ShipAttackCauseEnum $attackCause
     ): array {
         $messages = [];
 
-        $targetWrapper = $targetPool[array_rand($targetPool)];
+        $targetWrapper = $targetPool->getRandomActiveMember();
 
         $phaserVolleys = $attacker->getPhaserVolleys();
         for ($i = 1; $i <= $phaserVolleys; $i++) {
-            if (empty($targetPool)) {
+            if ($targetPool->isDefeated()) {
                 break;
             }
             if (!$attacker->getPhaserState() || !$attacker->hasSufficientEnergy($this->getEnergyWeaponEnergyCosts())) {
@@ -41,7 +43,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $attacker->reduceEps($this->getEnergyWeaponEnergyCosts());
             if ($attacker->getFiringMode() === self::FIRINGMODE_RANDOM) {
-                $targetWrapper = $targetPool[array_rand($targetPool)];
+                $targetWrapper = $targetPool->getRandomActiveMember();
             }
 
             $target = $targetWrapper->get();
@@ -80,11 +82,9 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 $this->checkForShipDestruction(
                     $attacker,
                     $targetWrapper,
-                    $isAlertRed,
+                    $attackCause->getDestructionCause(),
                     $message
                 );
-
-                unset($targetPool[$target->getId()]);
 
                 if ($weapon->getFiringMode() === self::FIRINGMODE_FOCUS) {
                     break;

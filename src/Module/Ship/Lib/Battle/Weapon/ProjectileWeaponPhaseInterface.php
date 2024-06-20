@@ -3,22 +3,21 @@
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
 interface ProjectileWeaponPhaseInterface
 {
     /**
-     * @param ShipWrapperInterface[] $targetPool
-     *
      * @return MessageInterface[]
      */
     public function fire(
         ProjectileAttackerInterface $attacker,
-        array $targetPool,
-        bool $isAlertRed = false
+        BattlePartyInterface $targetPool,
+        ShipAttackCauseEnum $attackCause
     ): array;
 
     public function fireAtBuilding(

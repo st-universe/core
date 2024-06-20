@@ -8,8 +8,11 @@ use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\Party\AttackingBattleParty;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -19,37 +22,24 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ShipAttackCore implements ShipAttackCoreInterface
 {
-    private DistributedMessageSenderInterface $distributedMessageSender;
-
-    private ShipAttackCycleInterface $shipAttackCycle;
-
-    private AlertRedHelperInterface $alertRedHelper;
-
-    private FightLibInterface $fightLib;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
-        DistributedMessageSenderInterface $distributedMessageSender,
-        ShipAttackCycleInterface $shipAttackCycle,
-        AlertRedHelperInterface $alertRedHelper,
-        FightLibInterface $fightLib,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        private DistributedMessageSenderInterface $distributedMessageSender,
+        private ShipAttackCycleInterface $shipAttackCycle,
+        private AlertReactionFacadeInterface $alertReactionFacade,
+        private FightLibInterface $fightLib,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private BattlePartyFactoryInterface $battlePartyFactory
     ) {
-        $this->distributedMessageSender = $distributedMessageSender;
-        $this->shipAttackCycle = $shipAttackCycle;
-        $this->alertRedHelper = $alertRedHelper;
-        $this->fightLib = $fightLib;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function attack(
-        ShipWrapperInterface|FleetWrapperInterface $wrapper,
+        ShipWrapperInterface|FleetWrapperInterface $sourceWrapper,
         ShipWrapperInterface $targetWrapper,
         bool &$isFleetFight,
         InformationWrapper $informations
     ): void {
-        $ship = $wrapper instanceof ShipWrapperInterface ?  $wrapper->get() : $wrapper->get()->getLeadShip();
+        $wrapper = $sourceWrapper instanceof ShipWrapperInterface ?  $sourceWrapper : $sourceWrapper->getLeadWrapper();
+        $ship = $wrapper->get();
 
         $target = $targetWrapper->get();
         $userId = $ship->getUser()->getId();
@@ -57,18 +47,18 @@ final class ShipAttackCore implements ShipAttackCoreInterface
 
         $isActiveTractorShipWarped = $this->isActiveTractorShipWarped($ship, $target);
 
-        [$attacker, $defender, $isFleetFight, $isWebSituation] = $this->getAttackersAndDefenders(
+        [$attacker, $defender, $isFleetFight, $attackCause] = $this->getAttackersAndDefenders(
             $wrapper,
             $targetWrapper
         );
 
-        $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender, $isWebSituation);
+        $messageCollection = $this->shipAttackCycle->cycle($attacker, $defender, $attackCause);
 
         $this->sendPms(
             $userId,
             $ship->getSectorString(),
             $messageCollection,
-            !$isWebSituation && $isTargetBase
+            ($attackCause !== ShipAttackCauseEnum::THOLIAN_WEB_REFLECTION) && $isTargetBase
         );
 
         $informations->addInformationWrapper($messageCollection->getInformationDump());
@@ -76,12 +66,12 @@ final class ShipAttackCore implements ShipAttackCoreInterface
         if ($isActiveTractorShipWarped) {
             //Alarm-Rot check for ship
             if (!$ship->isDestroyed()) {
-                $this->alertRedHelper->doItAll($ship, $informations);
+                $this->alertReactionFacade->doItAll($wrapper, $informations);
             }
 
             //Alarm-Rot check for traktor ship
             if (!$this->isTargetDestroyed($target)) {
-                $this->alertRedHelper->doItAll($target, $informations);
+                $this->alertReactionFacade->doItAll($targetWrapper, $informations);
             }
         }
     }
@@ -126,13 +116,13 @@ final class ShipAttackCore implements ShipAttackCoreInterface
     }
 
     /**
-     * @return array{0: array<int, ShipWrapperInterface>, 1: array<int, ShipWrapperInterface>, 2: bool, 3: bool}
+     * @return array{0: AttackingBattleParty, 1: BattlePartyInterface, 2: bool, 3: ShipAttackCauseEnum}
      */
     private function getAttackersAndDefenders(ShipWrapperInterface|FleetWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
     {
         $ship = $wrapper instanceof ShipWrapperInterface ?  $wrapper->get() : $wrapper->get()->getLeadShip();
 
-        [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper);
+        [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper, $this->battlePartyFactory);
 
         $isWebSituation = $this->fightLib->isTargetOutsideFinishedTholianWeb($ship, $targetWrapper->get());
 
@@ -143,14 +133,16 @@ final class ShipAttackCore implements ShipAttackCoreInterface
                 throw new RuntimeException('this should not happen');
             }
 
-            $defender = $this->shipWrapperFactory->wrapShips($holdingWeb->getCapturedShips()->toArray());
+            $defender = $this->battlePartyFactory->createMixedBattleParty(
+                $this->shipWrapperFactory->wrapShips($holdingWeb->getCapturedShips()->toArray())
+            );
         }
 
         return [
             $attacker,
             $defender,
             $isFleetFight,
-            $isWebSituation
+            $isWebSituation ? ShipAttackCauseEnum::THOLIAN_WEB_REFLECTION : ShipAttackCauseEnum::SHIP_FIGHT
         ];
     }
 }

@@ -151,26 +151,40 @@ use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertDetection;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertDetectionInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\SkipDetection;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\SkipDetectionInterface;
 use Stu\Module\Ship\Lib\AstroEntryLib;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdown;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertedShipInformation;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertedShipInformationInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertedShipsDetection;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\TrojanHorseNotifier;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\TrojanHorseNotifierInterface;
 use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReaction;
 use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReactionInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelper;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacade;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyDamage;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Battle\AttackMatchup;
 use Stu\Module\Ship\Lib\Battle\AttackMatchupInterface;
 use Stu\Module\Ship\Lib\Battle\FightLib;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactory;
+use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactory;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCore;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCoreInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycle;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackPreparation;
+use Stu\Module\Ship\Lib\Battle\ShipAttackPreparationInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhase;
@@ -328,9 +342,16 @@ return [
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
     TholianWebWeaponPhaseInterface::class => autowire(TholianWebWeaponPhase::class),
     ShipAttackCoreInterface::class => autowire(ShipAttackCore::class),
+    ShipAttackPreparationInterface::class => autowire(ShipAttackPreparation::class),
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
-    AlertRedHelperInterface::class => autowire(AlertRedHelper::class),
+    BattlePartyFactoryInterface::class => autowire(BattlePartyFactory::class),
+    SkipDetectionInterface::class => autowire(SkipDetection::class),
+    AlertedShipsDetectionInterface::class => autowire(AlertedShipsDetection::class),
+    AlertedShipInformationInterface::class => autowire(AlertedShipInformation::class),
+    TrojanHorseNotifierInterface::class => autowire(TrojanHorseNotifier::class),
+    AlertDetectionInterface::class => autowire(AlertDetection::class),
+    AlertReactionFacadeInterface::class => autowire(AlertReactionFacade::class),
     AstroEntryLibInterface::class => autowire(AstroEntryLib::class),
     ShipLeaverInterface::class => autowire(ShipLeaver::class),
     ChangeFleetLeaderInterface::class => autowire(ChangeFleetLeader::class),

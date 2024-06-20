@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\Transfer;
 
 use request;
 use RuntimeException;
-use Stu\Component\Player\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;

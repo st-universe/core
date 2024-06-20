@@ -9,7 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -19,17 +19,17 @@ final class DeactivateWarp implements ActionControllerInterface
 
     private ActivatorDeactivatorHelperInterface $helper;
 
-    private AlertRedHelperInterface $alertRedHelper;
+    private AlertReactionFacadeInterface $alertReactionFacade;
 
     private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ActivatorDeactivatorHelperInterface $helper,
         ShipLoaderInterface $shipLoader,
-        AlertRedHelperInterface $alertRedHelper
+        AlertReactionFacadeInterface $alertReactionFacade
     ) {
         $this->helper = $helper;
-        $this->alertRedHelper = $alertRedHelper;
+        $this->alertReactionFacade = $alertReactionFacade;
         $this->shipLoader = $shipLoader;
     }
 
@@ -48,14 +48,14 @@ final class DeactivateWarp implements ActionControllerInterface
 
         if ($success) {
             $ship = $wrapper->get();
-            $traktoredShip = $ship->getTractoredShip();
+            $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
             //Alarm-Rot check for ship
-            $this->alertRedHelper->doItAll($ship, $game);
+            $this->alertReactionFacade->doItAll($wrapper, $game);
 
             //Alarm-Rot check for traktor ship
-            if ($traktoredShip !== null) {
-                $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
+            if ($traktoredShipWrapper !== null) {
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $ship);
             }
 
             if ($ship->isDestroyed()) {

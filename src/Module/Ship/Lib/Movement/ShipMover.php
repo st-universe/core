@@ -2,9 +2,11 @@
 
 namespace Stu\Module\Ship\Lib\Movement;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollection;
@@ -25,7 +27,7 @@ final class ShipMover implements ShipMoverInterface
         private ShipMovementInformationAdderInterface $shipMovementInformationAdder,
         private PreFlightConditionsCheckInterface $preFlightConditionsCheck,
         private LeaveFleetInterface $leaveFleet,
-        private AlertRedHelperInterface $alertRedHelper
+        private AlertReactionFacadeInterface $alertReactionFacade
     ) {
         $this->messages = new MessageCollection();
     }
@@ -55,7 +57,9 @@ final class ShipMover implements ShipMoverInterface
         $isFleetMode = $leadShip->isFleetLeader();
         $hasToLeaveFleet = $fleetWrapper !== null && !$isFleetMode;
 
-        $wrappers = $isFleetMode && $fleetWrapper !== null ? $fleetWrapper->getShipWrappers() : [$leadShipWrapper];
+        $wrappers = $isFleetMode && $fleetWrapper !== null
+            ? $fleetWrapper->getShipWrappers()
+            : new ArrayCollection([$leadShipWrapper->get()->getId() => $leadShipWrapper]);
 
         $isFixedFleetMode = $isFleetMode
             && $fleetWrapper !== null
@@ -76,15 +80,12 @@ final class ShipMover implements ShipMoverInterface
                 break;
             }
 
-            $activeWrappers = array_filter(
-                $wrappers,
-                fn (ShipWrapperInterface $wrapper) => !$wrapper->get()->isDestroyed()
-            );
+            $activeWrappers = $wrappers->filter(fn (ShipWrapperInterface $wrapper) => !$wrapper->get()->isDestroyed());
 
             // check all flight pre conditions
             $conditionCheckResult = $this->preFlightConditionsCheck->checkPreconditions(
                 $leadShipWrapper,
-                $activeWrappers,
+                $activeWrappers->toArray(),
                 $flightRoute,
                 $isFixedFleetMode
             );
@@ -98,7 +99,7 @@ final class ShipMover implements ShipMoverInterface
 
             $this->addInformationMerge($conditionCheckResult->getInformations());
 
-            $movedTractoredShips = [];
+            $movedTractoredShipWrappers = [];
 
             // move every ship by one field
             foreach ($activeWrappers as $wrapper) {
@@ -121,7 +122,7 @@ final class ShipMover implements ShipMoverInterface
                             $this->messages
                         );
 
-                        $movedTractoredShips[] = [$wrapper->get(), $tractoredShipWrapper->get()];
+                        $movedTractoredShipWrappers[] = [$wrapper->get(), $tractoredShipWrapper];
                     }
 
                     $hasTravelled = true;
@@ -132,18 +133,18 @@ final class ShipMover implements ShipMoverInterface
 
             // alert red check
             $alertRedInformations = new InformationWrapper();
-            $this->alertRedHelper->doItAll($leadShip, $alertRedInformations);
+            $this->alertReactionFacade->doItAll($leadShipWrapper, $alertRedInformations);
 
             if (!$alertRedInformations->isEmpty()) {
                 $this->addInformationMerge($alertRedInformations->getInformations());
             }
 
             // alert red check for tractored ships
-            foreach ($movedTractoredShips as [$tractoringShip, $tractoredShip]) {
-                if (!$tractoredShip->isDestroyed()) {
+            foreach ($movedTractoredShipWrappers as [$tractoringShip, $tractoredShipWrapper]) {
+                if (!$tractoringShip->isDestroyed()) {
                     $alertRedInformations = new InformationWrapper();
-                    $this->alertRedHelper->doItAll(
-                        $tractoredShip,
+                    $this->alertReactionFacade->doItAll(
+                        $tractoredShipWrapper,
                         $alertRedInformations,
                         $tractoringShip
                     );
@@ -218,11 +219,11 @@ final class ShipMover implements ShipMoverInterface
     }
 
     /**
-     * @param array<ShipWrapperInterface> $wrappers
+     * @param Collection<int, ShipWrapperInterface> $wrappers
      * 
      * @return array<ShipInterface>
      */
-    private function initTractoredShips(array $wrappers): array
+    private function initTractoredShips(Collection $wrappers): array
     {
         $tractoredShips = [];
 
@@ -249,16 +250,10 @@ final class ShipMover implements ShipMoverInterface
     }
 
     /**
-     * @param ShipWrapperInterface[] $wrappers
+     * @param Collection<int, ShipWrapperInterface> $wrappers
      */
-    private function areAllShipsDestroyed(array $wrappers): bool
+    private function areAllShipsDestroyed(Collection $wrappers): bool
     {
-        foreach ($wrappers as $wrapper) {
-            if (!$wrapper->get()->isDestroyed()) {
-                return false;
-            }
-        }
-
-        return true;
+        return !$wrappers->exists(fn (int $key, ShipWrapperInterface $wrapper) => !$wrapper->get()->isDestroyed());
     }
 }

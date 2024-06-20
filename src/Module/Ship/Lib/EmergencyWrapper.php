@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Player\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 use Stu\Orm\Entity\UserInterface;
 

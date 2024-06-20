@@ -20,6 +20,8 @@ use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\SystemDataDeserializer;
+use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
 use Stu\Component\Ship\System\Type\BeamBlockerShipSystem;
 use Stu\Component\Ship\System\Type\CloakShipSystem;
@@ -65,6 +67,7 @@ return [
     CancelRepairInterface::class => autowire(CancelRepair::class),
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemDataFactoryInterface::class => autowire(ShipSystemDataFactory::class),
+    SystemDataDeserializerInterface::class => autowire(SystemDataDeserializer::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [
             ShipSystemTypeEnum::SYSTEM_HULL->value => autowire(HullShipSystem::class),

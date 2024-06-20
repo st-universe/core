@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Component\Player;
+namespace Stu\Component\Player\Relation;
 
 use Stu\Orm\Entity\UserInterface;
 

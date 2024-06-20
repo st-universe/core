@@ -11,7 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -28,7 +28,7 @@ final class SelfDestruct implements ActionControllerInterface
         private ShipLoaderInterface $shipLoader,
         private ShipDestructionInterface $shipDestruction,
         private ShipRepositoryInterface $shipRepository,
-        private AlertRedHelperInterface $alertRedHelper,
+        private AlertReactionFacadeInterface $alertReactionFacade,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {
@@ -67,7 +67,7 @@ final class SelfDestruct implements ActionControllerInterface
 
         $game->setView(ModuleViewEnum::SHIP);
 
-        $tractoredShipToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpDriveState()) ? $ship->getTractoredShip() : null;
+        $tractoredShipWrapperToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpDriveState()) ? $wrapper->getTractoredShipWrapper() : null;
 
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
 
@@ -82,8 +82,8 @@ final class SelfDestruct implements ActionControllerInterface
         );
 
         //Alarm-Rot check for tractor ship
-        if ($tractoredShipToTriggerAlertRed !== null) {
-            $this->alertRedHelper->doItAll($tractoredShipToTriggerAlertRed, $game);
+        if ($tractoredShipWrapperToTriggerAlertRed !== null) {
+            $this->alertReactionFacade->doItAll($tractoredShipWrapperToTriggerAlertRed, $game);
         }
 
         if ($user->getState() == UserEnum::USER_STATE_COLONIZATION_SHIP && $this->shipRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) === 1) {

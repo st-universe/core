@@ -9,6 +9,6 @@ interface ThreatReactionInterface
     public function reactToThreat(
         ShipWrapperInterface $ship,
         ShipWrapperInterface $target,
-        string $cause
+        ShipInteractionEnum $interaction
     ): bool;
 }

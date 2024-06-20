@@ -13,20 +13,12 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        TholianWebRepositoryInterface $tholianWebRepository
+        private ShipRepositoryInterface $shipRepository,
+        private ShipSystemRepositoryInterface $shipSystemRepository,
+        private TholianWebRepositoryInterface $tholianWebRepository
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->tholianWebRepository = $tholianWebRepository;
     }
 
     public function createSystemData(

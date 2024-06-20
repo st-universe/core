@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+//TODO convert to enum
 final class PrivateMessageFolderSpecialEnum
 {
     //default

@@ -11,7 +11,7 @@ use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Component\Player\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\EmergencyWrapper;
