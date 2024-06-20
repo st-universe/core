@@ -115,13 +115,6 @@ final class Transfer implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() == 0) {
-            $game->addInformation(_("Keine Energie vorhanden"));
-            $this->logger->log('T6');
-            return;
-        }
-
         if ($ship->isWarped()) {
             $game->addInformation("Schiff befindet sich im Warp");
             $this->logger->log('T7');
