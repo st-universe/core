@@ -70,7 +70,8 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         // increase wrath
         $currentWrath = $wrath->getWrath();
-        $wrath->setWrath($currentWrath + $amount);
+        $newWrath = min(self::MAXIMUM_WRATH, $currentWrath + $amount);
+        $wrath->setWrath($newWrath);
 
         // reset protection timeout
         $timeout = $wrath->getProtectionTimeout();
@@ -134,7 +135,8 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         // decrease wrath
         $currentWrath = $wrath->getWrath();
-        $wrath->setWrath($currentWrath - $amount);
+        $newWrath = min(self::MINIMUM_WRATH, $currentWrath - $amount);
+        $wrath->setWrath($newWrath);
         $this->pirateWrathRepository->save($wrath);
 
         $this->logger->logf(
