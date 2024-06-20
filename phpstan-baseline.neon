@@ -1539,6 +1539,11 @@ parameters:
 			path: src/Module/Ship/Action/ColonyDefending/StopDefending.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Module/Ship/Action/InterceptShip/InterceptShip.php
+
+		-
 			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php
