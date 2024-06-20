@@ -65,11 +65,23 @@ final class InterceptShip implements ActionControllerInterface
             return;
         }
 
+        $this->pirateReaction->checkForPirateReaction(
+            $target,
+            PirateReactionTriggerEnum::ON_INTERCEPTION_BEFORE,
+            $ship
+        );
+
+        //check if target still on position
+        if (!$this->interactionChecker->checkPosition($target, $ship)) {
+            $game->addInformationf('Das Ziel ist geflüchtet');
+            return;
+        }
+
         $this->interceptShipCore->intercept($ship, $target, $game);
 
         $this->pirateReaction->checkForPirateReaction(
             $target,
-            PirateReactionTriggerEnum::ON_INTERCEPTION,
+            PirateReactionTriggerEnum::ON_INTERCEPTION_AFTER,
             $ship
         );
     }
