@@ -523,7 +523,6 @@ function calculateLocalCrew() {
 	document.getElementById('calculatedCrew').innerText = result.toString();
 }
 
-
 function filterByRump() {
     const selectedRump = document.getElementById('rump-select').value;
     const allRumpModules = document.querySelectorAll('.rump-modules');
@@ -537,7 +536,7 @@ function filterByRump() {
         buildplanModule.style.display = 'none';
     });
 
-    if (selectedRump === '0' || selectedRump === '') {
+    if (selectedRump === '0' || selectedRump === '' ) {
         const selectedRumpModules = document.getElementById('rump-modules-0');
         if (selectedRumpModules) {
             selectedRumpModules.style.display = 'block';
@@ -600,10 +599,6 @@ function filterByBuildplan() {
         }
     }
 }
-
-
-
-
 
 
 function toggleModuleType(type, rumpId = 'all') {
@@ -690,4 +685,3 @@ function collectModuleData() {
     document.body.appendChild(form);
     form.submit();
 }
-

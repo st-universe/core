@@ -1,21 +1,23 @@
 {% embed "html/colony/menu/container.twig" %}
 {% block containment %}
-<div style="width: 40vw;">
+
+<div class="box" style="width: 40vw;">
     <input type="hidden" name="func" id="func" value="{{ FUNC.getFunction }}" />
     <input type="hidden" id="colony-id" value="{{ HOST.getId }}" />
-
+    <div class="box_title">Modulbaumenü</div>
+</br>
     <div id="ship-rumps">
-        <select id="rump-select" onchange="filterByRump()">
-            <option value="0" selected>Alle Module</option>
+        <select style="width:40%" id="rump-select" onchange="filterByRump()">
+            <option value="0" >Alle Rümpfe</option>
             {% for rump in SHIP_RUMPS %}
             <option value="{{ rump.getId }}">{{ rump.getName }}</option>
             {% endfor %}
         </select>
-        <select id="buildplan-select" onchange="filterByBuildplan()">
+        <select style="width:55%" id="buildplan-select" onchange="filterByBuildplan()">
             <option value="0" selected>Alle Baupläne</option>
             {% for rumpId, plans in BUILDPLANS %}
                 {% for plan in plans %}
-                <option value="{{ plan.getId }}" data-rump-id="{{ rumpId }}">{{ plan.getName }}</option>
+                <option style="display: none;" value="{{ plan.getId }}" data-rump-id="{{ rumpId }}">{{ plan.getName }}</option>
                 {% endfor %}
             {% endfor %}
         </select>
@@ -23,7 +25,7 @@
     
     <div id="module-container">
         {% for rumpId, modulesByType in COMBINED_MODULES %}
-            <div class="rump-modules" id="rump-modules-{{ rumpId }}" style="display: none;">
+        <div class="rump-modules" id="rump-modules-{{ rumpId }}" style="display: {% if rumpId == 0 %}block{% else %}none{% endif %};">
                 {% for type, levels in modulesByType.no_buildplan %}
                     {% set moduleType = type %}
                     <div id="module_tab_{{ moduleType }}_{{ rumpId }}" class="border_box {{ MODULE_TYPES[type].cssClass }}" style="margin-top: 5px" onclick="toggleModuleType({{ moduleType }}, {{ rumpId }});">
