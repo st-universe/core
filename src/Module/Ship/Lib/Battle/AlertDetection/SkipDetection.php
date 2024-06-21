@@ -42,13 +42,11 @@ class SkipDetection implements SkipDetectionInterface
             $tractoringShip !== null
             && $this->playerRelationDeterminator->isFriend($alertUser, $tractoringShip->getUser())
         ) {
-            $alertUserId = $alertUser->getId();
-
             if (
-                $usersToInformAboutTrojanHorse->containsKey($alertUserId)
+                !$usersToInformAboutTrojanHorse->contains($alertUser)
                 && !$this->playerRelationDeterminator->isFriend($alertUser, $incomingShipUser)
             ) {
-                $usersToInformAboutTrojanHorse->set($alertUserId, $alertUser);
+                $usersToInformAboutTrojanHorse->add($alertUser);
             }
             return true;
         }

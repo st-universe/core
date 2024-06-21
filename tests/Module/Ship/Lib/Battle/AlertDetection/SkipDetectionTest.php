@@ -80,6 +80,99 @@ class SkipDetectionTest extends StuTestCase
         $this->assertEmpty($usersToInformAboutTrojanHorse);
     }
 
+    public function testIsSkippedExpectTrueAndTrojanNoticeWhenTractoredByFriend(): void
+    {
+        $usersToInformAboutTrojanHorse = new ArrayCollection();
+        $alertUser = $this->mock(UserInterface::class);
+        $incomingShipUser = $this->mock(UserInterface::class);
+
+        $tractoringShip = $this->mock(ShipInterface::class);
+        $tractoringShipUser = $this->mock(UserInterface::class);
+
+        $this->incomingShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($incomingShipUser);
+
+        $this->alertedShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($alertUser);
+        $this->alertedShip->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipAlertStateEnum::ALERT_RED);
+
+        $tractoringShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($tractoringShipUser);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($alertUser, $tractoringShipUser)
+            ->once()
+            ->andReturn(true);
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($alertUser, $incomingShipUser)
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->subject->isSkipped(
+            $this->incomingShip,
+            $this->alertedShip,
+            $tractoringShip,
+            $usersToInformAboutTrojanHorse
+        );
+
+        $this->assertTrue($result);
+        $this->assertFalse($usersToInformAboutTrojanHorse->isEmpty());
+        $this->assertTrue($usersToInformAboutTrojanHorse->contains($alertUser));
+    }
+
+    public function testIsSkippedExpectTrueAndNoTrojanNoticeWhenTractoredByFriendButAlreadyNoticed(): void
+    {
+        $alertUser = $this->mock(UserInterface::class);
+        $usersToInformAboutTrojanHorse = new ArrayCollection([$alertUser]);
+        $incomingShipUser = $this->mock(UserInterface::class);
+
+        $tractoringShip = $this->mock(ShipInterface::class);
+        $tractoringShipUser = $this->mock(UserInterface::class);
+
+        $this->incomingShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($incomingShipUser);
+
+        $this->alertedShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($alertUser);
+        $this->alertedShip->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipAlertStateEnum::ALERT_RED);
+
+        $tractoringShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($tractoringShipUser);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($alertUser, $tractoringShipUser)
+            ->once()
+            ->andReturn(true);
+
+        $result = $this->subject->isSkipped(
+            $this->incomingShip,
+            $this->alertedShip,
+            $tractoringShip,
+            $usersToInformAboutTrojanHorse
+        );
+
+        $this->assertTrue($result);
+        $this->assertEquals(1, $usersToInformAboutTrojanHorse->count());
+    }
+
     public function testIsSkippedExpectTrueWhenIsFriend(): void
     {
         $usersToInformAboutTrojanHorse = new ArrayCollection();
