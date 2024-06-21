@@ -23,7 +23,7 @@ class FriendDeterminator
         $this->contactRepository = $contactRepository;
     }
 
-    public function isFriend(UserInterface $user, UserInterface $otherUser): bool
+    public function isFriend(UserInterface $user, UserInterface $otherUser): PlayerRelationTypeEnum
     {
         $alliance = $user->getAlliance();
 
@@ -31,7 +31,7 @@ class FriendDeterminator
 
         if ($alliance !== null && $otherUserAlliance !== null) {
             if ($alliance === $otherUserAlliance) {
-                return true;
+                return PlayerRelationTypeEnum::ALLY;
             }
 
             $result = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
@@ -45,7 +45,7 @@ class FriendDeterminator
             );
 
             if ($result !== null) {
-                return true;
+                return PlayerRelationTypeEnum::ALLY;
             }
         }
 
@@ -54,6 +54,10 @@ class FriendDeterminator
             $otherUser->getId()
         );
 
-        return $contact !== null && $contact->isFriendly();
+        if ($contact !== null && $contact->isFriendly()) {
+            return PlayerRelationTypeEnum::USER;
+        }
+
+        return PlayerRelationTypeEnum::NONE;
     }
 }
