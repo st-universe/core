@@ -3,7 +3,6 @@
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
-use RuntimeException;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipInterface;
@@ -22,7 +21,7 @@ class TrojanHorseNotifier implements TrojanHorseNotifierInterface
     ): void {
 
         if ($tractoringShip === null) {
-            throw new RuntimeException('this should not happen');
+            return;
         }
 
         $txt = sprintf(
