@@ -173,4 +173,12 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ])
             ->execute();
     }
+
+    public function getByUserAndRump(int $userId, int $rumpId): array
+    {
+        return $this->findBy([
+            'user_id' => $userId,
+            'rump_id' => $rumpId,
+        ]);
+    }
 }

@@ -15,6 +15,8 @@ use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
 {
@@ -27,6 +29,8 @@ final class ShowModuleFab implements ViewControllerInterface
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
     private ShipRumpRepositoryInterface $shipRumpRepository;
     private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
+    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -35,7 +39,9 @@ final class ShowModuleFab implements ViewControllerInterface
         BuildingFunctionRepositoryInterface $buildingFunctionRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository
+        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        BuildplanModuleRepositoryInterface $buildplanModuleRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleFabRequest = $showModuleFabRequest;
@@ -44,6 +50,8 @@ final class ShowModuleFab implements ViewControllerInterface
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->buildplanModuleRepository = $buildplanModuleRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -125,6 +133,78 @@ final class ShowModuleFab implements ViewControllerInterface
             }
         }
 
+        $buildplans = [];
+        $buildplanModules = [];
+        foreach ($shipRumps as $rump) {
+            $rumpId = $rump->getId();
+            $buildplans[$rumpId] = $this->shipBuildplanRepository->getByUserAndRump($userId, $rumpId);
+
+            foreach ($buildplans[$rumpId] as $buildplan) {
+                $buildplanId = $buildplan->getId();
+                $buildplanModules[$buildplanId] = [];
+
+                foreach ($this->buildplanModuleRepository->getByBuildplan($buildplanId) as $buildplanModule) {
+                    $moduleType = $buildplanModule->getModuleType()->value;
+                    $moduleLevel = $buildplanModule->getModule()->getLevel();
+                    $moduleId = $buildplanModule->getModule()->getId();
+
+                    if (!isset($buildplanModules[$buildplanId][$moduleType])) {
+                        $buildplanModules[$buildplanId][$moduleType] = [];
+                    }
+                    if (!isset($buildplanModules[$buildplanId][$moduleType][$moduleLevel])) {
+                        $buildplanModules[$buildplanId][$moduleType][$moduleLevel] = [];
+                    }
+
+                    if (isset($sortedModules[$moduleType][$moduleLevel])) {
+                        foreach ($sortedModules[$moduleType][$moduleLevel] as $module) {
+                            if ($module->getModuleId() === $moduleId) {
+                                $buildplanModules[$buildplanId][$moduleType][$moduleLevel][] = $module;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        foreach ($buildplanModules as $buildplanId => $modulesByType) {
+            foreach ($modulesByType as $type => $levels) {
+                foreach ($levels as $level => $modules) {
+                    if (empty($modules)) {
+                        unset($buildplanModules[$buildplanId][$type][$level]);
+                    }
+                }
+                if (empty($buildplanModules[$buildplanId][$type])) {
+                    unset($buildplanModules[$buildplanId][$type]);
+                }
+            }
+            if (empty($buildplanModules[$buildplanId])) {
+                unset($buildplanModules[$buildplanId]);
+            }
+        }
+
+        $combinedModules = [];
+        $combinedModules[0] = [
+            'no_buildplan' => $sortedModules,
+            'buildplans' => []
+        ];
+        foreach ($shipRumps as $rump) {
+            $rumpId = $rump->getId();
+            $combinedModules[$rumpId] = [
+                'no_buildplan' => $rumpModules[$rumpId] ?? [],
+                'buildplans' => []
+            ];
+
+            if (isset($buildplans[$rumpId])) {
+                foreach ($buildplans[$rumpId] as $buildplan) {
+                    $buildplanId = $buildplan->getId();
+                    if (isset($buildplanModules[$buildplanId])) {
+                        $combinedModules[$rumpId]['buildplans'][$buildplanId] = $buildplanModules[$buildplanId];
+                    }
+                }
+            }
+        }
+
         $game->showMacro(ColonyMenuEnum::MENU_MODULEFAB->getTemplate());
         $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_MODULEFAB);
 
@@ -134,5 +214,8 @@ final class ShowModuleFab implements ViewControllerInterface
         $game->setTemplateVar('SHIP_RUMPS', $shipRumps);
         $game->setTemplateVar('MODULE_TYPES', $moduleTypes);
         $game->setTemplateVar('RUMP_MODULES', $rumpModules);
+        $game->setTemplateVar('BUILDPLANS', $buildplans);
+        $game->setTemplateVar('BUILDPLAN_MODULES', $buildplanModules);
+        $game->setTemplateVar('COMBINED_MODULES', $combinedModules);
     }
 }

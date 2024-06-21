@@ -527,13 +527,18 @@ function calculateLocalCrew() {
 function filterByRump() {
     const selectedRump = document.getElementById('rump-select').value;
     const allRumpModules = document.querySelectorAll('.rump-modules');
+    const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
 
     allRumpModules.forEach(rumpModule => {
         rumpModule.style.display = 'none';
     });
 
+    allBuildplanModules.forEach(buildplanModule => {
+        buildplanModule.style.display = 'none';
+    });
+
     if (selectedRump === '0' || selectedRump === '') {
-           const selectedRumpModules = document.getElementById('rump-modules-0');
+        const selectedRumpModules = document.getElementById('rump-modules-0');
         if (selectedRumpModules) {
             selectedRumpModules.style.display = 'block';
         }
@@ -543,7 +548,63 @@ function filterByRump() {
             selectedRumpModules.style.display = 'block';
         }
     }
+
+    updateBuildplanDropdown(selectedRump);
 }
+
+function updateBuildplanDropdown(rumpId) {
+    const buildplanSelect = document.getElementById('buildplan-select');
+    const allOptions = buildplanSelect.querySelectorAll('option');
+
+    allOptions.forEach(option => {
+        if (option.getAttribute('data-rump-id') === rumpId || option.value === '0') {
+            option.style.display = 'block';
+        } else {
+            option.style.display = 'none';
+        }
+    });
+
+    buildplanSelect.value = '0';
+}
+
+function filterByBuildplan() {
+    const selectedRump = document.getElementById('rump-select').value;
+    const selectedBuildplan = document.getElementById('buildplan-select').value;
+    const allRumpModules = document.querySelectorAll('.rump-modules');
+    const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
+
+    allRumpModules.forEach(rumpModule => {
+        rumpModule.style.display = 'none';
+    });
+
+    allBuildplanModules.forEach(buildplanModule => {
+        buildplanModule.style.display = 'none';
+    });
+
+    if (selectedRump === '0' || selectedRump === '') {
+        const selectedRumpModules = document.getElementById('rump-modules-0');
+        if (selectedRumpModules) {
+            selectedRumpModules.style.display = 'block';
+        }
+    } else {
+        if (selectedBuildplan === '0') {
+            const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
+            if (selectedRumpModules) {
+                selectedRumpModules.style.display = 'block';
+            }
+        } else {
+            const selectedBuildplanModules = document.getElementById(`buildplan-modules-${selectedBuildplan}`);
+            if (selectedBuildplanModules) {
+                selectedBuildplanModules.style.display = 'block';
+            }
+        }
+    }
+}
+
+
+
+
+
 
 function toggleModuleType(type, rumpId = 'all') {
     const levelBox = document.getElementById(`level-box-${type}_${rumpId}`);
