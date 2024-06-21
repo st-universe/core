@@ -51,17 +51,13 @@ class RoundBasedBattlePartyTest extends StuTestCase
         $wrapper2 = $this->mock(ShipWrapperInterface::class);
 
         $this->battleParty->shouldReceive('getActiveMembers')
-            ->withNoArgs()
-            ->once()
+            ->with(true)
+            ->twice()
             ->andReturn(new ArrayCollection([
                 0 => $wrapper0,
                 1 => $wrapper1,
                 2 => $wrapper2
-            ]));
-        $this->battleParty->shouldReceive('getActiveMembers')
-            ->with(true)
-            ->once()
-            ->andReturn(new ArrayCollection([
+            ]), new ArrayCollection([
                 1 => $wrapper1,
                 2 => $wrapper2
             ]));
@@ -89,7 +85,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
     public function testIsDoneExpectTrueWhenNoUnusedIdsLeft(): void
     {
         $this->battleParty->shouldReceive('getActiveMembers')
-            ->withNoArgs()
+            ->with(true)
             ->once()
             ->andReturn(new ArrayCollection([]));
 
@@ -108,7 +104,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
         $wrapper0 = $this->mock(ShipWrapperInterface::class);
 
         $this->battleParty->shouldReceive('getActiveMembers')
-            ->withNoArgs()
+            ->with(true)
             ->once()
             ->andReturn(new ArrayCollection([
                 0 => $wrapper0
@@ -127,14 +123,6 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
     public function testIsDoneExpectTrueWhenNoOneCanFire(): void
     {
-        $wrapper0 = $this->mock(ShipWrapperInterface::class);
-
-        $this->battleParty->shouldReceive('getActiveMembers')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([
-                0 => $wrapper0
-            ]));
         $this->battleParty->shouldReceive('getActiveMembers')
             ->with(true)
             ->once()
@@ -155,14 +143,8 @@ class RoundBasedBattlePartyTest extends StuTestCase
         $wrapper0 = $this->mock(ShipWrapperInterface::class);
 
         $this->battleParty->shouldReceive('getActiveMembers')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([
-                0 => $wrapper0
-            ]));
-        $this->battleParty->shouldReceive('getActiveMembers')
             ->with(true)
-            ->once()
+            ->twice()
             ->andReturn(new ArrayCollection([
                 0 => $wrapper0
             ]));
@@ -191,7 +173,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
         $ship1 = $this->mock(ShipInterface::class);
 
         $this->battleParty->shouldReceive('getActiveMembers')
-            ->withNoArgs()
+            ->with(true)
             ->once()
             ->andReturn(new ArrayCollection([
                 0 => $wrapper0,
