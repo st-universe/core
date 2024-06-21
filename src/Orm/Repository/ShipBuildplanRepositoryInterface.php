@@ -49,4 +49,9 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
     public function findByUserAndName(int $userId, string $name): ?ShipBuildplanInterface;
 
     public function truncateAllBuildplansExceptNoOne(): void;
+
+    /**
+     * @return ShipBuildplanInterface[]
+     */
+    public function getByUserAndRump(int $userId, int $rumpId): array;
 }
