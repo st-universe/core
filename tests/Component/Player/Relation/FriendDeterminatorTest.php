@@ -44,7 +44,7 @@ class FriendDeterminatorTest extends StuTestCase
         $this->opponent = $this->mock(UserInterface::class);
     }
 
-    public function testIsFriendReturnsTrueIfAlliancesMatch(): void
+    public function testIsFriendReturnsAllyIfAlliancesMatch(): void
     {
         $alliance = $this->mock(AllianceInterface::class);
 
@@ -58,12 +58,13 @@ class FriendDeterminatorTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
-        static::assertTrue(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::ALLY,
             $this->subject->isFriend($this->user, $this->opponent)
         );
     }
 
-    public function testIsFriendReturnsTrueIfAlliancesHaveFriendlyRelation(): void
+    public function testIsFriendReturnsAllyIfAlliancesHaveFriendlyRelation(): void
     {
         $allianceUser = $this->mock(AllianceInterface::class);
         $allianceOpponent = $this->mock(AllianceInterface::class);
@@ -104,12 +105,13 @@ class FriendDeterminatorTest extends StuTestCase
             ->once()
             ->andReturn($this->mock(AllianceRelationInterface::class));
 
-        static::assertTrue(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::ALLY,
             $this->subject->isFriend($this->user, $this->opponent)
         );
     }
 
-    public function testIsFriendReturnsFalseIfAlliancesHaveNoFriendlyRelationAndUserHasNoContact(): void
+    public function testIsFriendReturnsNoneIfAlliancesHaveNoFriendlyRelationAndUserHasNoContact(): void
     {
         $allianceUser = $this->mock(AllianceInterface::class);
         $allianceOpponent = $this->mock(AllianceInterface::class);
@@ -167,12 +169,13 @@ class FriendDeterminatorTest extends StuTestCase
             ->once()
             ->andReturnNull();
 
-        static::assertFalse(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::NONE,
             $this->subject->isFriend($this->user, $this->opponent)
         );
     }
 
-    public function testIsFriendReturnsTrueIfContactIsFriendly(): void
+    public function testIsFriendReturnsUserIfContactIsFriendly(): void
     {
         $userId = 33;
         $opponentId = 21;
@@ -209,7 +212,8 @@ class FriendDeterminatorTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        static::assertTrue(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::USER,
             $this->subject->isFriend($this->user, $this->opponent)
         );
     }

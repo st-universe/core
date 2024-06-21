@@ -19,13 +19,31 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
 
     public function isFriend(UserInterface $user, UserInterface $otherUser): bool
     {
-        return $this->friendDeterminator->isFriend($user, $otherUser)
-            && !$this->enemyDeterminator->isEnemy($user, $otherUser);
+        $friendRelation = $this->friendDeterminator->isFriend($user, $otherUser);
+        if ($friendRelation->isDominant()) {
+            return true;
+        }
+
+        $enemyRelation = $this->enemyDeterminator->isEnemy($user, $otherUser);
+        if ($enemyRelation->isDominant()) {
+            return false;
+        }
+
+        return $friendRelation !== PlayerRelationTypeEnum::NONE;
     }
 
     public function isEnemy(UserInterface $user, UserInterface $otherUser): bool
     {
-        return $this->enemyDeterminator->isEnemy($user, $otherUser)
-            && !$this->friendDeterminator->isFriend($user, $otherUser);
+        $enemyRelation = $this->enemyDeterminator->isEnemy($user, $otherUser);
+        if ($enemyRelation->isDominant()) {
+            return true;
+        }
+
+        $friendRelation = $this->friendDeterminator->isFriend($user, $otherUser);
+        if ($friendRelation->isDominant()) {
+            return false;
+        }
+
+        return $enemyRelation !== PlayerRelationTypeEnum::NONE;
     }
 }

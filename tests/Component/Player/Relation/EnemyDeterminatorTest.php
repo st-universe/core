@@ -44,7 +44,7 @@ class EnemyDeterminatorTest extends StuTestCase
         $this->opponent = $this->mock(UserInterface::class);
     }
 
-    public function testIsEnemyReturnsFalseIfAlliancesMatch(): void
+    public function testIsEnemyReturnsNoneIfAlliancesMatch(): void
     {
         $alliance = $this->mock(AllianceInterface::class);
 
@@ -58,12 +58,13 @@ class EnemyDeterminatorTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
-        static::assertFalse(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::NONE,
             $this->subject->isEnemy($this->user, $this->opponent)
         );
     }
 
-    public function testIsEnemyReturnsTrueIfAlliancesHaveWarRelation(): void
+    public function testIsEnemyReturnsAllyIfAlliancesHaveWarRelation(): void
     {
         $allianceUser = $this->mock(AllianceInterface::class);
         $allianceOpponent = $this->mock(AllianceInterface::class);
@@ -102,12 +103,13 @@ class EnemyDeterminatorTest extends StuTestCase
             ->once()
             ->andReturn($this->mock(AllianceRelationInterface::class));
 
-        static::assertTrue(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::ALLY,
             $this->subject->isEnemy($this->user, $this->opponent)
         );
     }
 
-    public function testIsEnemyReturnsFalseIfAlliancesHaveNoEnemyRelationAndUserHasNoContact(): void
+    public function testIsEnemyReturnsNoneIfAlliancesHaveNoEnemyRelationAndUserHasNoContact(): void
     {
         $allianceUser = $this->mock(AllianceInterface::class);
         $allianceOpponent = $this->mock(AllianceInterface::class);
@@ -163,12 +165,13 @@ class EnemyDeterminatorTest extends StuTestCase
             ->once()
             ->andReturnNull();
 
-        static::assertFalse(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::NONE,
             $this->subject->isEnemy($this->user, $this->opponent)
         );
     }
 
-    public function testIsEnemyReturnsTrueIfContactIsEnemy(): void
+    public function testIsEnemyReturnsUserIfContactIsEnemy(): void
     {
         $userId = 33;
         $opponentId = 21;
@@ -205,7 +208,8 @@ class EnemyDeterminatorTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        static::assertTrue(
+        $this->assertEquals(
+            PlayerRelationTypeEnum::USER,
             $this->subject->isEnemy($this->user, $this->opponent)
         );
     }

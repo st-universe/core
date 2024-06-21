@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Relation;
 
 use Mockery\MockInterface;
-use Stu\Component\Alliance\AllianceEnum;
-use Stu\Orm\Entity\AllianceInterface;
-use Stu\Orm\Entity\AllianceRelationInterface;
-use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
@@ -42,90 +38,74 @@ class PlayerRelationDeterminatorTest extends StuTestCase
         $this->opponent = $this->mock(UserInterface::class);
     }
 
-    public function testIsFriendExpectFalseWhenNotFriend(): void
+    public static function provideIsFriendData()
     {
+        return [
+            [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::NONE, false],
+            [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::USER, false],
+            [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::ALLY, false],
+            [PlayerRelationTypeEnum::USER, PlayerRelationTypeEnum::NONE, true],
+            [PlayerRelationTypeEnum::USER, PlayerRelationTypeEnum::ALLY, true],
+            [PlayerRelationTypeEnum::ALLY, PlayerRelationTypeEnum::NONE, true],
+            [PlayerRelationTypeEnum::ALLY, PlayerRelationTypeEnum::USER, false]
+        ];
+    }
+
+    /**
+     * @dataProvider provideIsFriendData
+     */
+    public function testIsFriend(
+        PlayerRelationTypeEnum $friendRelation,
+        PlayerRelationTypeEnum $enemyRelation,
+        bool $expectedResult
+    ): void {
         $this->friendDeterminator->shouldReceive('isFriend')
             ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn($friendRelation);
+        $this->enemyDeterminator->shouldReceive('isEnemy')
+            ->with($this->user, $this->opponent)
+            ->zeroOrMoreTimes()
+            ->andReturn($enemyRelation);
 
-        static::assertFalse(
+        $this->assertEquals(
+            $expectedResult,
             $this->subject->isFriend($this->user, $this->opponent)
         );
     }
 
-    public function testIsFriendExpectFalseWhenFriendButEnemy(): void
+    public static function provideIsEnemyData()
     {
-        $this->friendDeterminator->shouldReceive('isFriend')
-            ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(true);
-        $this->enemyDeterminator->shouldReceive('isEnemy')
-            ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(true);
-
-        static::assertFalse(
-            $this->subject->isFriend($this->user, $this->opponent)
-        );
+        return [
+            [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::NONE, false],
+            [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::USER, true],
+            [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::ALLY, true],
+            [PlayerRelationTypeEnum::USER, PlayerRelationTypeEnum::NONE, false],
+            [PlayerRelationTypeEnum::USER, PlayerRelationTypeEnum::ALLY, false],
+            [PlayerRelationTypeEnum::ALLY, PlayerRelationTypeEnum::NONE, false],
+            [PlayerRelationTypeEnum::ALLY, PlayerRelationTypeEnum::USER, true]
+        ];
     }
 
-    public function testIsFriendExpectTrueWhenFriendAndNotEnemy(): void
-    {
+    /**
+     * @dataProvider provideIsEnemyData
+     */
+    public function testIsEnemy(
+        PlayerRelationTypeEnum $friendRelation,
+        PlayerRelationTypeEnum $enemyRelation,
+        bool $expectedResult
+    ): void {
         $this->friendDeterminator->shouldReceive('isFriend')
             ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(true);
+            ->zeroOrMoreTimes()
+            ->andReturn($friendRelation);
         $this->enemyDeterminator->shouldReceive('isEnemy')
             ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(false);
+            ->zeroOrMoreTimes()
+            ->andReturn($enemyRelation);
 
-        static::assertTrue(
-            $this->subject->isFriend($this->user, $this->opponent)
-        );
-    }
-
-    public function testIsEnemyExpectFalseWhenNotEnemy(): void
-    {
-        $this->enemyDeterminator->shouldReceive('isEnemy')
-            ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(false);
-
-        static::assertFalse(
-            $this->subject->isEnemy($this->user, $this->opponent)
-        );
-    }
-
-    public function testIsEnemyExpectFalseWhenEnemyButFriend(): void
-    {
-        $this->enemyDeterminator->shouldReceive('isEnemy')
-            ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(true);
-        $this->friendDeterminator->shouldReceive('isFriend')
-            ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(true);
-
-        static::assertFalse(
-            $this->subject->isEnemy($this->user, $this->opponent)
-        );
-    }
-
-    public function testIsEnemyExpectTrueWhenEnemyAndNotFriend(): void
-    {
-        $this->enemyDeterminator->shouldReceive('isEnemy')
-            ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(true);
-        $this->friendDeterminator->shouldReceive('isFriend')
-            ->with($this->user, $this->opponent)
-            ->once()
-            ->andReturn(false);
-
-        static::assertTrue(
+        $this->assertEquals(
+            $expectedResult,
             $this->subject->isEnemy($this->user, $this->opponent)
         );
     }

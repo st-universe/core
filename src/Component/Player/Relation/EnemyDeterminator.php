@@ -23,7 +23,7 @@ class EnemyDeterminator
         $this->contactRepository = $contactRepository;
     }
 
-    public function isEnemy(UserInterface $user, UserInterface $otherUser): bool
+    public function isEnemy(UserInterface $user, UserInterface $otherUser): PlayerRelationTypeEnum
     {
         $alliance = $user->getAlliance();
 
@@ -31,7 +31,7 @@ class EnemyDeterminator
 
         if ($alliance !== null && $otherUserAlliance !== null) {
             if ($alliance === $otherUserAlliance) {
-                return false;
+                return PlayerRelationTypeEnum::NONE;
             }
 
             $result = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
@@ -43,7 +43,7 @@ class EnemyDeterminator
             );
 
             if ($result !== null) {
-                return true;
+                return PlayerRelationTypeEnum::ALLY;
             }
         }
 
@@ -52,6 +52,10 @@ class EnemyDeterminator
             $otherUser->getId()
         );
 
-        return $contact !== null && $contact->isEnemy();
+        if ($contact !== null && $contact->isEnemy()) {
+            return PlayerRelationTypeEnum::USER;
+        }
+
+        return PlayerRelationTypeEnum::NONE;
     }
 }
