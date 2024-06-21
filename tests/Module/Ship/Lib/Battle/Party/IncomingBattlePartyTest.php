@@ -56,7 +56,53 @@ class IncomingBattlePartyTest extends StuTestCase
         $this->assertTrue($members->isEmpty());
     }
 
-    public function testGetActiveMembersExpectSingleWhenUncloaked(): void
+    public function testGetActiveMembersExpectEmptyWhenWarped(): void
+    {
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $user = $this->mock(UserInterface::class);
+
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->andReturn(null);
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->andReturn(false);
+        $ship->shouldReceive('isBase')
+            ->withNoArgs()
+            ->andReturn(false);
+        $ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($user);
+        $ship->shouldReceive('isDestroyed')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
+        $ship->shouldReceive('isDisabled')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
+        $ship->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(false);
+        $ship->shouldReceive('isWarped')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $subject = new IncomingBattleParty($wrapper);
+
+        $members = $subject->getActiveMembers();
+
+        $this->assertTrue($members->isEmpty());
+    }
+
+    public function testGetActiveMembersExpectSingleWhenUncloakedAndUnwarped(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -92,6 +138,9 @@ class IncomingBattlePartyTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(false);
         $ship->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->andReturn(false);
+        $ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
 
