@@ -87,6 +87,9 @@ final class CreateModules implements ActionControllerInterface
                 continue;
             }
             $count = (int)$count;
+            if ($count <= 0) {
+                continue;
+            }
             $module = $modules_av[$module_id]->getModule();
             if ($module->getEcost() * $count > $colony->getEps()) {
                 $count = (int) floor($colony->getEps() / $module->getEcost());

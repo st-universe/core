@@ -281,7 +281,7 @@ class Module implements ModuleInterface
         return $this;
     }
 
-    public function getShipRumpRoleId(): int
+    public function getShipRumpRoleId(): ?int
     {
         return $this->rumps_role_id;
     }

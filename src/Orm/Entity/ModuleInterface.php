@@ -52,7 +52,7 @@ interface ModuleInterface
 
     public function setViewable(bool $viewable): ModuleInterface;
 
-    public function getShipRumpRoleId(): int;
+    public function getShipRumpRoleId(): ?int;
 
     public function setShipRumpRoleId(int $shipRumpRoleId): ModuleInterface;
 
