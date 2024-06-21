@@ -424,13 +424,30 @@ function enableShipBuildButton() {
 	Form.Element.enable('buildbutton');
 	new Effect.Highlight($('buildbutton'));
 }
-function cancelModuleQueueEntries(module_id) {
-	ajaxPostUpdate(
-		'module_' + module_id + '_action',
-		'colony.php', 'B_CANCEL_MODULECREATION=1&id=' + colonyid + '&module=' + module_id + '&func=' + $('func').value + '&count=' + $('module_' + module_id + '_count').value
-	);
-	//setTimeout('refreshHost()', 250); reactivate when module production in colony sub menu
+function cancelModuleQueueEntries(module_id, rump_id) {
+    ajaxPostUpdate(
+        `module_${module_id}_action_${rump_id}`,
+        'colony.php', `B_CANCEL_MODULECREATION=1&id=${colonyid}&module=${module_id}&func=${$('func').value}&count=${$('module_' + module_id + '_count_' + rump_id).value}`
+    );
+    document.querySelectorAll(`[id^="module_${module_id}_action"]`).forEach(function (element) {
+        element.innerHTML = '<div>-</div>'; 
+    });
+
+    document.querySelectorAll(`[id^="module_${module_id}_count"]`).forEach(function (input) {
+        input.value = 0; 
+    });
+
+    document.querySelectorAll(`[name^="cancelModuleList${module_id}"]`).forEach(function (img) {
+        img.src = '/assets/buttons/x1.png'; 
+    });
 }
+
+function cp(elementName, imageName) {
+    document.getElementsByName(elementName).forEach(function (element) {
+        element.src = `/assets/${imageName}.png`;
+    });
+}
+
 function showGiveUpWindow(target) {
 	elt = 'giveup';
 	openWindow(elt, 1, 300);
@@ -528,10 +545,6 @@ function filterByRump() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    filterByRump();
-});
-
 function toggleModuleType(type, rumpId = 'all') {
     const levelBox = document.getElementById(`level-box-${type}_${rumpId}`);
     const moduleLevels = document.querySelectorAll(`.module-level`);
@@ -566,3 +579,54 @@ function toggleModuleLevel(type, level, rumpId = 'all', event) {
         moduleLevelDiv.style.display = 'none';
     }
 }
+
+function syncAllInputFields(input) {
+    const moduleId = input.getAttribute('data-module-id');
+    const value = input.value;
+
+    const inputs = document.querySelectorAll(`input[data-module-id="${moduleId}"]`);
+    inputs.forEach(inp => {
+        inp.value = value;
+    });
+}
+
+function collectModuleData() {
+    const moduleData = {};
+
+    const inputs = document.querySelectorAll('input[data-module-id]');
+    inputs.forEach(input => {
+        const value = input.value;
+        if (value) {
+            const moduleId = input.getAttribute('data-module-id');
+            moduleData[moduleId] = value;
+        }
+    });
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'colony.php';
+
+    const funcInput = document.createElement('input');
+    funcInput.type = 'hidden';
+    funcInput.name = 'func';
+    funcInput.value = document.getElementById('func').value;
+    form.appendChild(funcInput);
+
+    const colonyIdInput = document.createElement('input');
+    colonyIdInput.type = 'hidden';
+    colonyIdInput.name = 'id';
+    colonyIdInput.value = document.getElementById('colony-id').value;
+    form.appendChild(colonyIdInput);
+
+    for (const moduleId in moduleData) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = `module[${moduleId}]`;
+        input.value = moduleData[moduleId];
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+

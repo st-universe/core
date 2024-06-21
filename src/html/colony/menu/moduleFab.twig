@@ -11,7 +11,6 @@
             <option value="{{ rump.getId }}">{{ rump.getName }}</option>
             {% endfor %}
         </select>
-        
     </div>
     
     <div id="module-container">
@@ -61,18 +60,17 @@
                             </div>
                             {% endfor %}
                         </td>
-                        <td id="module_{{ moduleId }}_action" class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                        <td id="module_{{ moduleId }}_action_{{ rumpId }}" class="responsive-hide" style="vertical-align: middle; text-align: center;">
                             {% if data.getAmountQueued %}
                             <div>
                                 <div style="display: table-cell; vertical-align:middle;">
-                                    <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
-                                        id="module_{{ moduleId }}_count" value="{{ data.getAmountQueued }}" />
+                                    <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ rumpId }}" value="{{ data.getAmountQueued }}" />
                                 </div>
                                 <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }});"
-                                        onmouseover="cp('cancelModuleList{{ moduleId }}','buttons/x2')"
-                                        onmouseout="cp('cancelModuleList{{ moduleId }}','buttons/x1')">
-                                        <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}"
+                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
+                                        onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
+                                        onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
+                                        <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
                                             title="Anzahl löschen" />
                                     </a>
                                 </div>
@@ -85,8 +83,7 @@
                             {{ data.getAmountInStock }}
                         </td>
                         <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                            <input type="text" size="2" name="module[{{ moduleId }}]"
-                                onkeydown="event.key == 'Enter' && $('producebutton').click()" />
+                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
                         </td>
                     </tr>
                     <tr class="responsive-show">
@@ -98,18 +95,17 @@
                                     <th>Anzahl</th>
                                 </tr>
                                 <tr>
-                                    <td id="module_{{ moduleId }}_action" style="vertical-align: middle; text-align: center;">
+                                    <td id="module_{{ moduleId }}_action_{{ rumpId }}" style="vertical-align: middle; text-align: center;">
                                         {% if data.getAmountQueued %}
                                         <div>
                                             <div style="display: table-cell; vertical-align:middle;">
-                                                <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
-                                                    id="module_{{ moduleId }}_count" value="{{ data.getAmountQueued }}" />
+                                                <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ rumpId }}" value="{{ data.getAmountQueued }}" />
                                             </div>
                                             <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                <a href="Javascript:cancelModuleQueueEntries({{ moduleId }});"
-                                                    onmouseover="cp('cancelModuleList{{ moduleId }}','buttons/x2')"
-                                                    onmouseout="cp('cancelModuleList{{ moduleId }}','buttons/x1')">
-                                                    <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}"
+                                                <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
+                                                    onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
+                                                    onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
+                                                    <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
                                                         title="Anzahl löschen" />
                                                 </a>
                                             </div>
@@ -122,8 +118,7 @@
                                         {{ data.getAmountInStock }}
                                     </td>
                                     <td style="vertical-align: middle; text-align: center;">
-                                        <input type="text" size="2" name="module[{{ moduleId }}]"
-                                            onkeydown="event.key == 'Enter' && $('producebutton').click()" />
+                                        <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
                                     </td>
                                 </tr>
                             </table>
@@ -139,7 +134,7 @@
     </div>
     
     <div style="text-align: center; margin-top: 10px;">
-        <input type="submit" style="cursor: pointer;" id="producebutton" name="B_CREATE_MODULES" value="Herstellen" />
+        <input type="submit" style="cursor: pointer;" id="producebutton" name="B_CREATE_MODULES" value="Herstellen" onclick="collectModuleData()" />
     </div>
 
 </div>
