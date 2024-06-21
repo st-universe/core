@@ -17,19 +17,16 @@ class IncomingBattleParty extends AbstractBattleParty
     public function initMembers(): Collection
     {
         $fleet = $this->leader->getFleetWrapper();
+
         if ($fleet === null) {
-
-            // if flying ship is cloaked, nothing happens
-            if ($this->leader->get()->getCloakState()) {
-                return  new ArrayCollection();
-            }
-
-            return $this->createSingleton($this->leader);
+            $result = $this->createSingleton($this->leader);
+        } else {
+            $result = $fleet->getShipWrappers();
         }
 
         // filter warped and cloaked
-        return $fleet->getShipWrappers()
-            ->filter(fn (ShipWrapperInterface $wrapper) => !$wrapper->get()->getCloakState()
-                && !$wrapper->get()->isWarped());
+        return $result
+            ->filter(fn (ShipWrapperInterface $wrapper) =>
+            !$wrapper->get()->getCloakState() && !$wrapper->get()->isWarped());
     }
 }
