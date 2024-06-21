@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -9,14 +10,14 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class RoundBasedBattleParty
 {
-    /** @var array<int> */
-    private array $unUsedIds;
+    /** @var Collection<int, int> */
+    private Collection $unUsedIds;
 
     public function __construct(
         private BattlePartyInterface $battleParty,
         private ShipRepositoryInterface $shipRepository
     ) {
-        $this->unUsedIds = $battleParty->getActiveMembers()->getKeys();
+        $this->unUsedIds = new ArrayCollection($battleParty->getActiveMembers(true)->getKeys());
     }
 
     public function get(): BattlePartyInterface
@@ -26,7 +27,7 @@ class RoundBasedBattleParty
 
     public function use(int $spacecraftId): void
     {
-        unset($this->unUsedIds[$spacecraftId]);
+        $this->unUsedIds->removeElement($spacecraftId);
     }
 
     public function isDone(): bool
@@ -36,7 +37,7 @@ class RoundBasedBattleParty
 
     private function isUsed(): bool
     {
-        return empty($this->unUsedIds);
+        return $this->unUsedIds->isEmpty();
     }
 
     /** @return Collection<int, ShipWrapperInterface> */
@@ -44,7 +45,7 @@ class RoundBasedBattleParty
     {
         return $this->get()
             ->getActiveMembers(true)
-            ->filter(fn (ShipWrapperInterface $wrapper) => in_array($wrapper->get()->getId(), $this->unUsedIds));
+            ->filter(fn (ShipWrapperInterface $wrapper) => $this->unUsedIds->contains($wrapper->get()->getId()));
     }
 
     public function getRandomUnused(): ShipWrapperInterface
@@ -57,7 +58,7 @@ class RoundBasedBattleParty
             throw new RuntimeException('isDone shoule be called first!');
         }
 
-        unset($this->unUsedIds[$random->get()->getId()]);
+        $this->use($random->get()->getId());
 
         return $random;
     }
