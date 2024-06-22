@@ -7,29 +7,29 @@
 
 {% include 'html/colony/component/shipyardTabs.twig' %}
 <br />
-<table class="tcal">
-	<tr>
-		<th>Klasse</th>
-		<th>Name</th>
-		<th></th>
-	</tr>
-	{% for ship in SHIP_LIST %}
-	<tr class="row">
-		<td>
-			<input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-			{{ shipimagewithoutwarp(ship) }}
-		</td>
-		<td>{{ ship.getName|bbcode }}</td>
-		<td>
-			<div>
-				<a href="javascript:void(0);"
-					onClick="actionToInnerContent('B_DISASSEMBLE_SHIP', 'id={{ COLONY.getId }}&ship_id={{ ship.getId }}&fid={{ FIELD.getId }}&sstr={{ SESSIONSTRING }}');">
-					Demontieren
-				</a>
-			</div>
-		</td>
-	</tr>
-	{% endfor %}
+<table class="tcal" style="width: 40vw;">
+    <tr>
+        <th>Klasse</th>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    {% for ship in SHIP_LIST %}
+    <tr class="row">
+        <td>
+            <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
+            {{ shipimagewithoutwarp(ship) }}
+        </td>
+        <td class="break-word">{{ ship.getName|bbcode }}</td>
+        <td>
+            <div>
+                <a href="javascript:void(0);"
+                    onClick="actionToInnerContent('B_DISASSEMBLE_SHIP', 'id={{ COLONY.getId }}&ship_id={{ ship.getId }}&fid={{ FIELD.getId }}&sstr={{ SESSIONSTRING }}');">
+                    Demontieren
+                </a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
 </table>
 <br />
 {% endblock %}

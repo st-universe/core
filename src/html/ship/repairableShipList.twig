@@ -1,11 +1,10 @@
 {% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
 
 {# needs following variables: host, REPAIRABLE_SHIP_LIST) #}
-<table class="tcal">
+<table class="tcal" style="width: 40vw;">
     {% set RepairoverlibText = "<table class='tcal' style='width:250px'><tr><th style='text-align: left'><img src='/assets/buttons/info2.png'/> Reparatur </th></tr><tr><td>Die Reparatur eines Raumschiffes läuft Tickweise ab und benötigt gewisse Ressourcen.</br>Eine Reparaturstation kann den Prozess beschleunigen und günstiger machen.</br>Klicke auf das <img style='height:16px' src='/assets/buttons/info2.png'/> für mehr Infos.</td></tr></table>" %}
 
-
-    <tr>
+    <tr class="responsive-hide">
         <th>Klasse</th>
         <th>Name</th>
         <th>Dauer in Ticks</th>
@@ -17,12 +16,54 @@
     </tr>
     {% for wrapper in REPAIRABLE_SHIP_LIST %}
     {% set ship = wrapper.get %}
-    <tr class="row">
+    <tr class="row responsive-hide">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
             {{ shipimagewithoutwarp(ship) }}
         </td>
-        <td>{{ ship.getName|bbcode }}</td>
+        <td class="break-word">{{ ship.getName|bbcode }}</td>
+        <td>{{ wrapper.getRepairDurationPreview|bbcode }}</td>
+        <td>
+            <table class="tcal">
+                {% for cost in wrapper.getRepairCosts %}
+                <tr>
+                    <td>{{ cost.getAmount }}</td>
+                    <td><img src="assets/commodities/{{ cost.getCommodityId }}.png"
+                            title="{{ cost.getCommodityName }}" /></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </td>
+        <td>
+            {% if wrapper.canBeRepaired %}
+            <div>
+                <a
+                    href="?id={{ host.getId }}&B_REPAIR_SHIP=1&ship_id={{ ship.getId }}&fid={{ FIELD.getId }}">Reparieren</a>
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+    <!-- Responsive rows -->
+    <tr class="responsive-show">
+        <th>Klasse</th>
+        <th colspan="2">Name</th>
+    </tr>
+    <tr class="responsive-show">
+        <td>
+            <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
+            {{ shipimagewithoutwarp(ship) }}
+        </td>
+        <td class="break-word" colspan="2">{{ ship.getName|bbcode }}</td>
+    </tr>
+    <tr class="responsive-show">
+        <th>Dauer in Ticks</th>
+        <th>Insgesamt benötigte Teile</th>
+        <th><a
+            href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank" onmouseover="return overlib('{{ RepairoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+            onmouseout="return nd();"><img src="/assets/buttons/info2.png"
+            style="height:16px;" /></a></th>
+    </tr>
+    <tr class="responsive-show">
         <td>{{ wrapper.getRepairDurationPreview|bbcode }}</td>
         <td>
             <table class="tcal">
