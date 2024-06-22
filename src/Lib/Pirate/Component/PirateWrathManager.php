@@ -135,7 +135,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
         // decrease wrath
         $currentWrath = $wrath->getWrath();
-        $newWrath = min(self::MINIMUM_WRATH, $currentWrath - $amount);
+        $newWrath = max(self::MINIMUM_WRATH, $currentWrath - $amount);
         $wrath->setWrath($newWrath);
         $this->pirateWrathRepository->save($wrath);
 
