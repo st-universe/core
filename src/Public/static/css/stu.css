@@ -1909,3 +1909,15 @@ div.userAvatar img {
       display: none;
   }
 }
+
+.break-word {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 1200px) {
+  .break-word {
+      white-space: normal;
+  }
+}
