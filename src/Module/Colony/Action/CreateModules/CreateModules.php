@@ -50,10 +50,6 @@ final class CreateModules implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        // Debugging: Ausgabe der übergebenen Variablen
-        error_log(print_r($_POST, true));
-        error_log('Number of POST variables: ' . count($_POST));
-
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -167,7 +163,6 @@ final class CreateModules implements ActionControllerInterface
             $game->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
         }
     }
-
 
     public function performSessionCheck(): bool
     {
