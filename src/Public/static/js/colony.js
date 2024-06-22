@@ -32,6 +32,10 @@ function buildMenuScroll(menu, offset) {
 	ajax_update('buildmenu' + menu, createHostUri('B_SCROLL_BUILDMENU', `&menu=${menu}&offset=${offset}&fieldtype=${fieldType}`));
 }
 
+function switchColonyMenu(menu, func, fid) {
+	switchMenu(menu, 'colonymenu', func, fid);
+}
+
 function switchColonySubmenu(menu, params, func, fid) {
 	document.querySelectorAll('.colmenubutton').forEach(function (elem) {
 		Element.removeClassName(elem, 'selected');
