@@ -55,15 +55,15 @@
     </table>
     <br />
     <table class="tcal" style="width: 40vw;">
-        <tr>
+        <tr class="responsive-hide">
             <th colspan="5">Globale Crewübersicht</th>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td style="width: 20%" class="darkbg">globales Crewlimit</td>
             <td style="width: 20%" class="darkbg">Crew auf Schiffen</td>
             <td style="width: 20%" class="darkbg">Verfügbare Crew auf Kolonie</td>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
                 {{ GLOBAL_CREW_LIMIT }}
@@ -79,11 +79,11 @@
                 {{ COLONY.getCrewAssignmentAmount }}
             </td>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td style="width: 20%" class="darkbg">Crew in Ausbildung</td>
             <td colspan="2" style="width: 20%" class="darkbg">Noch Ausbildbar</td>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td>
                 <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
                 {{ CREW_COUNT_TRAINING }}
@@ -93,37 +93,114 @@
                 {{ CREW_COUNT_REMAINING }}
             </td>
         </tr>
+        <tr class="responsive-show">
+            <th colspan="2">Globale Crewübersicht</th>
+        </tr>
+        <tr class="responsive-show">
+            <td style="width: 50%" class="darkbg">globales Crewlimit</td>
+            <td style="width: 50%" class="darkbg">Crew auf Schiffen</td>
+        </tr>
+        <tr class="responsive-show">
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ GLOBAL_CREW_LIMIT }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ CREW_COUNT_SHIPS }}
+                (<a href="javascript:void(0);" onclick="showPodLocationWindow();"><span title="Verschollene Crew">{{
+                        CREW_COUNT_DEBRIS_AND_TRADE_POSTS }}</span></a>)
+            </td>
+        </tr>
+        <tr class="responsive-show">
+            <td style="width: 50%" class="darkbg">Verfügbare Crew auf Kolonie</td>
+            <td style="width: 50%" class="darkbg">Crew in Ausbildung</td>
+        </tr>
+        <tr class="responsive-show">
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ COLONY.getCrewAssignmentAmount }}
+            </td>
+            <td>
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ CREW_COUNT_TRAINING }}
+            </td>
+        </tr>
+        <tr class="responsive-show">
+            <td colspan="2" style="width: 50%" class="darkbg">Noch Ausbildbar</td>
+        </tr>
+        <tr class="responsive-show">
+            <td colspan="2">
+                <img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" />
+                {{ CREW_COUNT_REMAINING }}
+            </td>
+        </tr>
     </table>
 
     <br />
     <table class="tcal" style="width: 40vw;">
-        <tr>
+        <tr class="responsive-hide">
             <th colspan="3">Lokaler Crewrechner <a
                 href="https://wiki.stuniverse.de/index.php?title=Wichtig:Crew" target="_blank">
                 <img src="/assets/buttons/info1.png" name="fieldinfo" width="14" height="14"
                     title="Wiki-Info über Crewberechnung" /></th>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td class="darkbg"><img src="assets/commodities/{{ primaryEffectCommodity.getId }}.png"
                 title="{{ primaryEffectCommodity.getName }}" /> {{ primaryEffectCommodity.getName }}</td>
             <td class="darkbg"><img src="assets/commodities/{{ secondaryEffectCommodity.getId }}.png"
                 title="{{ secondaryEffectCommodity.getName }}" /> {{ secondaryEffectCommodity.getName }}</td>
             <td class="darkbg"><img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Bevölkerung</td>
         </tr>
-        <tr>
-            <td><input type="number" id="primaryPositive" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
-            <td><input type="number" id="secondaryPositive" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
-            <td><input type="number" id="population" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
+        <tr class="responsive-hide">
+            <td><input type="number" id="primaryPositive" class="crew-calc-input" oninput="syncInputs('primaryPositive', 'primaryPositiveResponsive'); calculateLocalCrew()" /></td>
+            <td><input type="number" id="secondaryPositive" class="crew-calc-input" oninput="syncInputs('secondaryPositive', 'secondaryPositiveResponsive'); calculateLocalCrew()" /></td>
+            <td><input type="number" id="population" class="crew-calc-input" oninput="syncInputs('population', 'populationResponsive'); calculateLocalCrew()" /></td>
         </tr>
-        <tr>
+        <tr class="responsive-hide">
             <td class="darkbg"><img src="/assets/bev/bev_used_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Arbeiter</td>
             <td class="darkbg"><img src="/assets/commodities/1300.png" title="Lebensstandard (absoluter Wert)"> Lebensstandard (absoluter Wert)</td>
             <td class="darkbg"><img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Errechnete Crew</td>
         </tr>
-        <tr>
-            <td><input type="number" id="workers" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
-            <td><input type="number" id="lifeStandard" class="crew-calc-input" oninput="calculateLocalCrew()" /></td>
+        <tr class="responsive-hide">
+            <td><input type="number" id="workers" class="crew-calc-input" oninput="syncInputs('workers', 'workersResponsive'); calculateLocalCrew()" /></td>
+            <td><input type="number" id="lifeStandard" class="crew-calc-input" oninput="syncInputs('lifeStandard', 'lifeStandardResponsive'); calculateLocalCrew()" /></td>
             <td id="calculatedCrew">0</td>
+        </tr>
+        <tr class="responsive-show">
+            <th colspan="2">Lokaler Crewrechner <a
+                href="https://wiki.stuniverse.de/index.php?title=Wichtig:Crew" target="_blank">
+                <img src="/assets/buttons/info1.png" name="fieldinfo" width="14" height="14"
+                    title="Wiki-Info über Crewberechnung" /></th>
+        </tr>
+        <tr class="responsive-show">
+            <td class="darkbg"><img src="assets/commodities/{{ primaryEffectCommodity.getId }}.png"
+                title="{{ primaryEffectCommodity.getName }}" /> {{ primaryEffectCommodity.getName }}</td>
+            <td class="darkbg"><img src="assets/commodities/{{ secondaryEffectCommodity.getId }}.png"
+                title="{{ secondaryEffectCommodity.getName }}" /> {{ secondaryEffectCommodity.getName }}</td>
+        </tr>
+        <tr class="responsive-show">
+            <td><input type="number" id="primaryPositiveResponsive" class="crew-calc-input" oninput="syncInputs('primaryPositiveResponsive', 'primaryPositive'); calculateLocalCrew()" /></td>
+            <td><input type="number" id="secondaryPositiveResponsive" class="crew-calc-input" oninput="syncInputs('secondaryPositiveResponsive', 'secondaryPositive'); calculateLocalCrew()" /></td>
+        </tr>
+        <tr class="responsive-show">
+            <td class="darkbg"><img src="/assets/bev/bev_free_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Bevölkerung</td>
+            <td class="darkbg"><img src="/assets/bev/bev_used_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Arbeiter</td>
+        </tr>
+        <tr class="responsive-show">
+            <td><input type="number" id="populationResponsive" class="crew-calc-input" oninput="syncInputs('populationResponsive', 'population'); calculateLocalCrew()" /></td>
+            <td><input type="number" id="workersResponsive" class="crew-calc-input" oninput="syncInputs('workersResponsive', 'workers'); calculateLocalCrew()" /></td>
+        </tr>
+        <tr class="responsive-show">
+            <td class="darkbg">
+                <img src="/assets/commodities/1300.png" title="Lebensstandard (absoluter Wert)">
+                <span style="white-space: normal;">Lebensstandard (absoluter Wert)</span>
+            </td>            
+            <td class="darkbg"><img src="/assets/bev/bev_unused_5_{{ USER.getFactionId }}.png" title="Bevölkerung" /> Errechnete Crew</td>
+        </tr>
+        <tr class="responsive-show">
+            <td><input type="number" id="lifeStandardResponsive" class="crew-calc-input" oninput="syncInputs('lifeStandardResponsive', 'lifeStandard'); calculateLocalCrew()" /></td>
+            <td id="calculatedCrewResponsive">0</td>
         </tr>
     </table>
 </div>
