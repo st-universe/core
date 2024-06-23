@@ -499,34 +499,38 @@ function showTelescopeScan(cx, cy) {
 	//refresh current colony eps
 	ajax_update('current_energy', 'colony.php?REFRESH_COLONY_EPS=1&id=' + colonyid);
 }
-function calculateLocalCrew() {
-	const primaryPositive = Math.max(0, parseInt(document.getElementById('primaryPositive').value) || 0);
-	const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
-	const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
-	const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
-	let lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
-	const negativEffect = Math.ceil(population / 70);
-
-	const term1 = Math.max(0, negativEffect - secondaryPositive);
-	const term2 = Math.max(primaryPositive - (4 * term1), 0);
-	const term3 = Math.min(term2, workers) / 5;
-
-	if (lifeStandard > population) {
-		lifeStandard = population;
-	}
-
-	let term4;
-	if (population > 0) {
-		term4 = Math.floor(lifeStandard * 100 / population);
-	} else {
-		term4 = 0;
-	}
-	const term5 = Math.floor(10 + term3 * (term4 / 100));
-	let result = term5;
-
-	document.getElementById('calculatedCrew').innerText = result.toString();
+function syncInputs(id1, id2) {
+    const value = document.getElementById(id1).value;
+    document.getElementById(id2).value = value;
 }
+function calculateLocalCrew() {
+    const primaryPositive = Math.max(0, parseInt(document.getElementById('primaryPositive').value) || 0);
+    const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
+    const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
+    const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
+    let lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
+    const negativEffect = Math.ceil(population / 70);
 
+    const term1 = Math.max(0, negativEffect - secondaryPositive);
+    const term2 = Math.max(primaryPositive - (4 * term1), 0);
+    const term3 = Math.min(term2, workers) / 5;
+
+    if (lifeStandard > population) {
+        lifeStandard = population;
+    }
+
+    let term4;
+    if (population > 0) {
+        term4 = Math.floor(lifeStandard * 100 / population);
+    } else {
+        term4 = 0;
+    }
+    const term5 = Math.floor(10 + term3 * (term4 / 100));
+    let result = term5;
+
+    document.getElementById('calculatedCrew').innerText = result.toString();
+    document.getElementById('calculatedCrewResponsive').innerText = result.toString();
+}
 function filterByRump() {
     const selectedRump = document.getElementById('rump-select').value;
     const allRumpModules = document.querySelectorAll('.rump-modules');
