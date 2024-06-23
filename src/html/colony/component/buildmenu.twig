@@ -10,12 +10,14 @@
         </tr>
     </table>
 </div>
-<ul class="menu" style="width: 11.1vw;">
+<ul class="menu" style="width: 10vw;">
     {% for building in menu.buildings %}
     <li>
         <div onclick="openBuildingInfo({{ building.getId }})">
             <img src="/assets/generated/buildings/{{ building.getId }}/{{ building.getBuildingType }}at.png" /><br />
-            {{ building.getName }}
+            <span style="word-wrap: break-word; white-space: normal;">
+                {{ building.getName }}
+            </span>
         </div>
     </li>
     {% endfor %}

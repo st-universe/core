@@ -201,17 +201,19 @@
                 <div class="colonyEffectGrid">
                     {% for data in EFFECTS %}
                     <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/{{ data.commodity.getId }}.png"
-                            title="{{ data.commodity.getName }}" />
-                        <span>{{ data.commodity.getName }}</span>
+                        <img src="/assets/commodities/{{ data.commodity.getId }}.png" title="{{ data.commodity.getName }}" />
+                        <span style="word-wrap: break-word; white-space: normal;">
+                            {{ data.commodity.getName }}
+                        </span>
                     </div>
                     <div class="colonyEffectProduction {{ data.production.getCssClass }}">
-                        {{ data.production.getProductionDisplay }}</div>
+                        {{ data.production.getProductionDisplay }}
+                    </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
     {% endif %}
 </div>
 {% endblock %}
