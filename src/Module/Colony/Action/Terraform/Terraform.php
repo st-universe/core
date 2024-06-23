@@ -122,6 +122,10 @@ final class Terraform implements ActionControllerInterface
         $storage = $colony->getStorage();
 
         foreach ($terraforming->getCosts() as $obj) {
+            if ($obj->getAmount() < 0) {
+                continue;
+            }
+
             $commodityId = $obj->getCommodityId();
             if (!$storage->containsKey($commodityId)) {
                 $game->addInformationf(
@@ -131,6 +135,7 @@ final class Terraform implements ActionControllerInterface
                 );
                 return false;
             }
+
             if ($obj->getAmount() > $storage[$commodityId]->getAmount()) {
                 $game->addInformationf(
                     _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
@@ -142,7 +147,16 @@ final class Terraform implements ActionControllerInterface
             }
         }
         foreach ($terraforming->getCosts() as $obj) {
-            $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
+            $amount = $obj->getAmount();
+            $commodity = $obj->getCommodity();
+
+            if ($amount < 0) {
+
+                $this->colonyStorageManager->upperStorage($colony, $commodity, abs($amount));
+            } else {
+
+                $this->colonyStorageManager->lowerStorage($colony, $commodity, $amount);
+            }
         }
 
         $colony->lowerEps($terraforming->getEnergyCosts());
