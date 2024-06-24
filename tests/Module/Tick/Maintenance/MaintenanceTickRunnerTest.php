@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Maintenance;
 
+use Doctrine\DBAL\Connection;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
@@ -21,6 +22,9 @@ class MaintenanceTickRunnerTest extends StuTestCase
     /** @var MockInterface&TransactionTickRunnerInterface */
     private MockInterface $transactionTickRunner;
 
+    /** @var MockInterface&TransactionTickRunnerInterface */
+    private MockInterface $connection;
+
     /** @var MockInterface&MaintenanceHandlerInterface */
     private MockInterface $maintenanceHandler;
 
@@ -30,12 +34,14 @@ class MaintenanceTickRunnerTest extends StuTestCase
     {
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);
         $this->transactionTickRunner = $this->mock(TransactionTickRunnerInterface::class);
+        $this->connection = $this->mock(Connection::class);
 
         $this->maintenanceHandler = $this->mock(MaintenanceHandlerInterface::class);
 
         $this->subject = new MaintenanceTickRunner(
             $this->gameConfigRepository,
             $this->transactionTickRunner,
+            $this->connection,
             [
                 $this->maintenanceHandler,
             ]
@@ -51,7 +57,7 @@ class MaintenanceTickRunnerTest extends StuTestCase
         static::expectExceptionMessage($errorMessage);
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE)
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE, $this->connection)
             ->once();
 
         $this->transactionTickRunner->shouldReceive('runWithResetCheck')
@@ -67,10 +73,10 @@ class MaintenanceTickRunnerTest extends StuTestCase
         $batchGroupCount = 5;
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE)
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE, $this->connection)
             ->once();
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE)
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE, $this->connection)
             ->once();
 
         $this->maintenanceHandler->shouldReceive('handle')

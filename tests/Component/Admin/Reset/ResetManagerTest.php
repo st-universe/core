@@ -94,6 +94,9 @@ class ResetManagerTest extends StuTestCase
     /** @var MockInterface&EntityManagerInterface */
     private MockInterface $entityManager;
 
+    /** @var MockInterface&Connection */
+    private MockInterface $connection;
+
     private Interactor $interactor;
 
     private ResetManager $manager;
@@ -122,6 +125,7 @@ class ResetManagerTest extends StuTestCase
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
+        $this->connection = $this->mock(Connection::class);
 
         $this->interactor = new Interactor(null, vfsStream::url('tmpDir') . '/foo');
 
@@ -144,7 +148,8 @@ class ResetManagerTest extends StuTestCase
             $this->gameTurnRepository,
             $this->planetFieldRepository,
             $this->stuConfig,
-            $this->entityManager
+            $this->entityManager,
+            $this->connection
         );
     }
 
@@ -366,7 +371,7 @@ class ResetManagerTest extends StuTestCase
             ->andReturnSelf();
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET)
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET, $this->connection)
             ->once();
 
         $this->manager->performReset($this->interactor);
@@ -398,7 +403,7 @@ class ResetManagerTest extends StuTestCase
             ->once();
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET)
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET, $this->connection)
             ->once();
 
         $this->manager->performReset($this->interactor);
