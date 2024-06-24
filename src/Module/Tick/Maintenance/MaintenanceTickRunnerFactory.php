@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Maintenance;
 
+use Doctrine\DBAL\Connection;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
@@ -14,16 +15,11 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
  */
 final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactoryInterface
 {
-    private GameConfigRepositoryInterface $gameConfigRepository;
-
-    private TransactionTickRunnerInterface $transactionTickRunner;
-
     public function __construct(
-        GameConfigRepositoryInterface $gameConfigRepository,
-        TransactionTickRunnerInterface $transactionTickRunner
+        private GameConfigRepositoryInterface $gameConfigRepository,
+        private TransactionTickRunnerInterface $transactionTickRunner,
+        private Connection $connection
     ) {
-        $this->gameConfigRepository = $gameConfigRepository;
-        $this->transactionTickRunner = $transactionTickRunner;
     }
 
     /**
@@ -35,6 +31,7 @@ final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactory
         return new MaintenanceTickRunner(
             $this->gameConfigRepository,
             $this->transactionTickRunner,
+            $this->connection,
             $handlerList
         );
     }

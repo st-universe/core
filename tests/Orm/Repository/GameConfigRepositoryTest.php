@@ -111,11 +111,6 @@ class GameConfigRepositoryTest extends StuTestCase
             )
             ->once();
 
-        $this->entityManager->shouldReceive('getConnection')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($database);
-
-        $this->subject->updateGameState($state);
+        $this->subject->updateGameState($state, $database);
     }
 }

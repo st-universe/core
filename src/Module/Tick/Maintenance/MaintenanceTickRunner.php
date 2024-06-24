@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Maintenance;
 
+use Doctrine\DBAL\Connection;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
@@ -15,24 +16,15 @@ final class MaintenanceTickRunner implements TickRunnerInterface
 {
     private const TICK_DESCRIPTION = "maintenancetick";
 
-    private GameConfigRepositoryInterface $gameConfigRepository;
-
-    private TransactionTickRunnerInterface $transactionTickRunner;
-
-    /** @var array<MaintenanceHandlerInterface> */
-    private array $handlerList;
-
     /**
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
     public function __construct(
-        GameConfigRepositoryInterface $gameConfigRepository,
-        TransactionTickRunnerInterface $transactionTickRunner,
-        array $handlerList
+        private GameConfigRepositoryInterface $gameConfigRepository,
+        private TransactionTickRunnerInterface $transactionTickRunner,
+        private Connection $connection,
+        private array $handlerList
     ) {
-        $this->gameConfigRepository = $gameConfigRepository;
-        $this->transactionTickRunner = $transactionTickRunner;
-        $this->handlerList = $handlerList;
     }
 
     public function run(int $batchGroup, int $batchGroupCount): void
@@ -55,6 +47,6 @@ final class MaintenanceTickRunner implements TickRunnerInterface
 
     private function setGameState(int $stateId): void
     {
-        $this->gameConfigRepository->updateGameState($stateId);
+        $this->gameConfigRepository->updateGameState($stateId, $this->connection);
     }
 }

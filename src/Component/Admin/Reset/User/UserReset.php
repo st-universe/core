@@ -125,7 +125,7 @@ final class UserReset implements UserResetInterface
 
     public function deleteAllUserProfileVisitors(): void
     {
-        echo "  - delete all user ip table entries\n";
+        echo "  - delete all user profile visitor entries\n";
 
         $this->userProfileVisitorRepository->truncateAllEntries();
 

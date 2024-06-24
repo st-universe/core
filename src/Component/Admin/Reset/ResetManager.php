@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset;
 
 use Ahc\Cli\IO\Interactor;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Reset\Alliance\AllianceResetInterface;
 use Stu\Component\Admin\Reset\Communication\KnResetInterface;
@@ -30,86 +31,28 @@ use Throwable;
 
 final class ResetManager implements ResetManagerInterface
 {
-    private KnResetInterface $knReset;
-
-    private PmResetInterface $pmReset;
-
-    private AllianceResetInterface $allianceReset;
-
-    private FleetResetInterface $fleetReset;
-
-    private CrewResetInterface $crewReset;
-
-    private ShipResetInterface $shipReset;
-
-    private StorageResetInterface $storageReset;
-
-    private MapResetInterface $mapReset;
-
-    private TradeResetInterface $tradeReset;
-
-    private UserResetInterface $userReset;
-
-    private GameRequestRepositoryInterface $gameRequestRepository;
-
-    private GameConfigRepositoryInterface $gameConfigRepository;
-
-    private PlayerDeletionInterface $playerDeletion;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private HistoryRepositoryInterface $historyRepository;
-
-    private GameTurnRepositoryInterface $gameTurnRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private StuConfigInterface $stuConfig;
-
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        KnResetInterface $knReset,
-        PmResetInterface $pmReset,
-        AllianceResetInterface $allianceReset,
-        FleetResetInterface $fleetReset,
-        CrewResetInterface $crewReset,
-        ShipResetInterface $shipReset,
-        StorageResetInterface $storageReset,
-        MapResetInterface $mapReset,
-        TradeResetInterface $tradeReset,
-        UserResetInterface $userReset,
-        GameRequestRepositoryInterface $gameRequestRepository,
-        GameConfigRepositoryInterface $gameConfigRepository,
-        PlayerDeletionInterface $playerDeletion,
-        ColonyRepositoryInterface $colonyRepository,
-        HistoryRepositoryInterface $historyRepository,
-        GameTurnRepositoryInterface $gameTurnRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        StuConfigInterface $stuConfig,
-        EntityManagerInterface $entityManager
+        private KnResetInterface $knReset,
+        private PmResetInterface $pmReset,
+        private AllianceResetInterface $allianceReset,
+        private FleetResetInterface $fleetReset,
+        private CrewResetInterface $crewReset,
+        private ShipResetInterface $shipReset,
+        private StorageResetInterface $storageReset,
+        private MapResetInterface $mapReset,
+        private TradeResetInterface $tradeReset,
+        private UserResetInterface $userReset,
+        private GameRequestRepositoryInterface $gameRequestRepository,
+        private GameConfigRepositoryInterface $gameConfigRepository,
+        private PlayerDeletionInterface $playerDeletion,
+        private ColonyRepositoryInterface $colonyRepository,
+        private HistoryRepositoryInterface $historyRepository,
+        private GameTurnRepositoryInterface $gameTurnRepository,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private StuConfigInterface $stuConfig,
+        private EntityManagerInterface $entityManager,
+        private Connection $connection
     ) {
-        $this->knReset = $knReset;
-        $this->pmReset = $pmReset;
-        $this->allianceReset = $allianceReset;
-        $this->fleetReset = $fleetReset;
-        $this->crewReset = $crewReset;
-        $this->shipReset = $shipReset;
-        $this->storageReset = $storageReset;
-        $this->mapReset = $mapReset;
-        $this->tradeReset = $tradeReset;
-        $this->userReset = $userReset;
-
-        $this->gameRequestRepository = $gameRequestRepository;
-
-        $this->gameConfigRepository = $gameConfigRepository;
-        $this->playerDeletion = $playerDeletion;
-        $this->colonyRepository = $colonyRepository;
-        $this->historyRepository = $historyRepository;
-        $this->gameTurnRepository = $gameTurnRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->stuConfig = $stuConfig;
-        $this->entityManager = $entityManager;
     }
 
     public function performReset(Interactor $io): void
@@ -205,7 +148,7 @@ final class ResetManager implements ResetManagerInterface
 
     private function setGameState(int $stateId, Interactor $io): void
     {
-        $this->gameConfigRepository->updateGameState($stateId);
+        $this->gameConfigRepository->updateGameState($stateId, $this->connection);
 
         $io->info("  - setting game state to '" . GameEnum::gameStateTypeToDescription($stateId) . " - " . $stateId . "'", true);
     }

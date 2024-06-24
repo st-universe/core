@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\GameEnum;
@@ -30,10 +31,9 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
         ]);
     }
 
-    public function updateGameState(int $state): void
+    public function updateGameState(int $state, Connection $connection): void
     {
-        //TODO wire Connection instead
-        $this->getEntityManager()->getConnection()->update(
+        $connection->update(
             GameConfig::TABLE_NAME,
             [
                 'value' => $state
