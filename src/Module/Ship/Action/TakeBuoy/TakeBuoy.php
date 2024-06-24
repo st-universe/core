@@ -11,7 +11,7 @@ use Stu\Orm\Repository\BuoyRepositoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -102,7 +102,7 @@ final class TakeBuoy implements ActionControllerInterface
                     $ship->getName(),
                     $ship->getSectorString()
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 null
             );
         }

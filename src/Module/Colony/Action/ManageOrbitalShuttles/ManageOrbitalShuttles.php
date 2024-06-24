@@ -13,7 +13,7 @@ use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -179,7 +179,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
                 $userId,
                 $ship->getUser()->getId(),
                 $pm,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 $href
             );
         }

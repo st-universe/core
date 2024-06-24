@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Interaction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -119,7 +119,7 @@ class ShipUndockingTest extends StuTestCase
                 42,
                 666,
                 'Die SHIP1 wurde von der STATION abgedockt',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=66'
             )
             ->once();
@@ -128,7 +128,7 @@ class ShipUndockingTest extends StuTestCase
                 42,
                 777,
                 'Die SHIP2 wurde von der STATION abgedockt',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=77'
             )
             ->once();

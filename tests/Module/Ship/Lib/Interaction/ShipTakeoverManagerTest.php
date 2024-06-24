@@ -10,7 +10,7 @@ use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
@@ -241,7 +241,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 777,
                 $expectedMessage,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=77'
             )
             ->once();
@@ -312,7 +312,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 777,
                 'Die Übernahme der TARGET durch die SHIP erfolgt in 1 Runde(n).',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=2'
             )
             ->once();
@@ -321,7 +321,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 1,
                 666,
                 'Die Übernahme der TARGET durch die SHIP erfolgt in 1 Runde(n).',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=1'
             )
             ->once();
@@ -438,7 +438,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 777,
                 'Die Übernahme der TARGET wurde abgebrochen',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=2'
             )
             ->once();
@@ -447,7 +447,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 1,
                 666,
                 'Die Übernahme der TARGET wurde abgebrochen',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=1'
             )
             ->once();
@@ -538,7 +538,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                     'Die Übernahme der TARGET wurde abgebrochen%s',
                     'CAUSE'
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=2'
             )
             ->once();
@@ -550,7 +550,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                     'Die Übernahme der TARGET wurde abgebrochen%s',
                     'CAUSE'
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=1'
             )
             ->once();
@@ -677,7 +677,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 777,
                 'Die TARGET wurde von Spieler USER übernommen',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 null
             )
             ->once();
@@ -686,7 +686,7 @@ class ShipTakeoverManagerTest extends StuTestCase
                 1,
                 666,
                 'Die TARGET von Spieler TARGETUSER wurde übernommen',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 'ship.php?SHOW_SHIP=1&id=2'
             )
             ->once();

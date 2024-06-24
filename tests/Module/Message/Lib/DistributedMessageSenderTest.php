@@ -54,16 +54,16 @@ class DistributedMessageSenderTest extends StuTestCase
             ->andReturn("INFO_2");
 
         $this->privateMessageSender->shouldReceive('send')
-            ->with(42, 1, "HEADER\n\nINFO_1", 123)
+            ->with(42, 1, "HEADER\n\nINFO_1", PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
         $this->privateMessageSender->shouldReceive('send')
-            ->with(42, 2, "HEADER\n\nINFO_2", 123)
+            ->with(42, 2, "HEADER\n\nINFO_2", PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
 
         $this->subject->distributeMessageCollection(
             $messageCollection,
             42,
-            123,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             "HEADER"
         );
     }

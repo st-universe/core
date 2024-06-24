@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Interaction;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -132,7 +132,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
                 $leftFleet ? 'Die Flotte wurde daher verlassen.' : '',
                 self::TURNS_TO_TAKEOVER
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $href
         );
     }
@@ -180,7 +180,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
                 $takeover->getSourceShip()->getName(),
                 $remainingTurns
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $href
         );
     }
@@ -263,7 +263,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
                 $takeover->getTargetShip()->getName(),
                 $cause ?? ''
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $href
         );
     }
@@ -356,7 +356,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             $fromId,
             $to->getId(),
             $message,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $addHref ? $href : null
         );
     }

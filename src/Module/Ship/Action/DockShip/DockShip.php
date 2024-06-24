@@ -12,7 +12,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -113,7 +113,7 @@ final class DockShip implements ActionControllerInterface
                     $ship->getUser()->getName(),
                     $target->getName()
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+                PrivateMessageFolderTypeEnum::SPECIAL_STATION,
                 $href
             );
 
@@ -160,7 +160,7 @@ final class DockShip implements ActionControllerInterface
             $userId,
             $target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $href,
             $this->isAutoReadOnDock($target)
         );
@@ -226,7 +226,7 @@ final class DockShip implements ActionControllerInterface
             $game->getUser()->getId(),
             $target->getUser()->getId(),
             'Die Flotte ' . $fleetWrapper->get()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $href,
             $this->isAutoReadOnDock($target)
         );

@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipInterface;
@@ -59,7 +59,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                         $fleet->getName(),
                         $colony->getName()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
             }
             $this->privateMessageSender->send(
@@ -71,7 +71,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                     $fleet->getUser()->getName(),
                     $colony->getName()
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
             );
 
             $informations->addInformation(sprintf(
@@ -97,7 +97,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                         $fleet->getName(),
                         $colony->getName()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
             }
 
@@ -110,7 +110,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                     $fleet->getUser()->getName(),
                     $colony->getName()
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
             );
             $informations->addInformation(sprintf(
                 _('Die Flotte der %s hat die Blockade der Kolonie %s abgebrochen'),

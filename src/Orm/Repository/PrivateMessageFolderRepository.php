@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
@@ -44,11 +45,11 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         );
     }
 
-    public function getByUserAndSpecial(int $userId, int $specialId): ?PrivateMessageFolderInterface
+    public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolderInterface
     {
         return $this->findOneBy([
             'user_id' => $userId,
-            'special' => $specialId
+            'special' => $folderType->value
         ]);
     }
 

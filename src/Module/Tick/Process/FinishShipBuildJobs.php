@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -56,7 +56,7 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
                 UserEnum::USER_NOONE,
                 $colony->getUserId(),
                 $txt,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
             );
         }
 
@@ -81,7 +81,7 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
                 UserEnum::USER_NOONE,
                 $shipyard->getUser()->getId(),
                 $txt,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+                PrivateMessageFolderTypeEnum::SPECIAL_STATION
             );
         }
     }

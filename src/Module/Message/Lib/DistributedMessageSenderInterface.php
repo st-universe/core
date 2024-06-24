@@ -10,7 +10,7 @@ interface DistributedMessageSenderInterface
     public function distributeMessageCollection(
         MessageCollectionInterface $messageCollection,
         int $senderId = UserEnum::USER_NOONE,
-        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+        PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         string $header = null
     ): void;
 }

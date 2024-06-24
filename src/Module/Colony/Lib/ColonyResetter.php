@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -169,7 +169,7 @@ final class ColonyResetter implements ColonyResetterInterface
             UserEnum::USER_NOONE,
             $fleet->getUserId(),
             $txt,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
     }
 }

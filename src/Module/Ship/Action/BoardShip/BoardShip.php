@@ -13,7 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
@@ -380,7 +380,7 @@ final class BoardShip implements ActionControllerInterface
         $this->distributedMessageSender->distributeMessageCollection(
             $messageCollection,
             $userId,
-            $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $isTargetBase ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $header
         );
     }

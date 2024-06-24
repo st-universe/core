@@ -20,7 +20,7 @@ final class DistributedMessageSender implements DistributedMessageSenderInterfac
     public function distributeMessageCollection(
         MessageCollectionInterface $messageCollection,
         int $senderId = UserEnum::USER_NOONE,
-        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+        PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         string $header = null
     ): void {
         foreach ($messageCollection->getRecipientIds() as $recipientId) {
@@ -40,7 +40,7 @@ final class DistributedMessageSender implements DistributedMessageSenderInterfac
                 $senderId,
                 $recipientId,
                 $pm,
-                $category
+                $folderType
             );
         }
     }

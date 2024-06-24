@@ -7,7 +7,7 @@ namespace Stu\Module\Control\Render\Fragments;
 use Mockery\MockInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
@@ -46,11 +46,11 @@ class MessageFolderFragmentTest extends StuTestCase
         $userId = 666;
 
         $folderTypeIds = [
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+            PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY,
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
+            PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         ];
 
         foreach ($folderTypeIds as $typeId) {
@@ -78,11 +78,11 @@ class MessageFolderFragmentTest extends StuTestCase
             ->with(
                 'PM_NAVLET',
                 [
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_COLONY->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_TRADE->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM->value => $folderItem,
                 ]
             )
             ->once();
@@ -100,12 +100,12 @@ class MessageFolderFragmentTest extends StuTestCase
         $userId = 666;
 
         $folderTypeIds = [
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+            PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY,
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
+            PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         ];
 
         foreach ($folderTypeIds as $typeId) {
@@ -133,12 +133,12 @@ class MessageFolderFragmentTest extends StuTestCase
             ->with(
                 'PM_NAVLET',
                 [
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE => $folderItem,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_STATION->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_COLONY->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_TRADE->value => $folderItem,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM->value => $folderItem,
                 ]
             )
             ->once();

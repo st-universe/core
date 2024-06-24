@@ -11,7 +11,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
@@ -131,7 +131,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             $pirateUser->getId(),
             $colony->getUser()->getId(),
             $allInformations,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             sprintf(
                 'colony.php?%s=1&id=%d',
                 ShowColony::VIEW_IDENTIFIER,

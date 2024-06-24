@@ -7,7 +7,7 @@ namespace Stu\Module\Tick\Process;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -122,7 +122,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
                 $web->getUser()->getId(),
                 $recipientId,
                 $pm,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             );
         }
     }
@@ -152,7 +152,7 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
                 $ship->getTractoredShip(),
                 $ship->getSectorString()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
         $this->shipSystemManager->deactivate(

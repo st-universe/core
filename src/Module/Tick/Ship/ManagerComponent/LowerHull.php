@@ -3,7 +3,7 @@
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
@@ -79,7 +79,7 @@ class LowerHull implements ManagerComponentInterface
                     UserEnum::USER_NOONE,
                     $ship->getUser()->getId(),
                     $msg,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+                    PrivateMessageFolderTypeEnum::SPECIAL_STATION
                 );
 
                 $this->shipRemover->remove($ship);

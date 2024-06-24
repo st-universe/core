@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\Lib;
 
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
@@ -42,7 +42,7 @@ final class LotteryFacade implements LotteryFacadeInterface
                 UserEnum::USER_NPC_FERG,
                 $user->getId(),
                 'Du hast ein Gratislos für den aktuellen Lotteriezeitraum erhalten. Möge das Glück mit dir sein!',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE
             );
         }
     }

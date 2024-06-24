@@ -7,7 +7,7 @@ namespace Stu\Module\Message\View\ShowWritePm;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
@@ -57,7 +57,7 @@ final class ShowWritePm implements ViewControllerInterface
             $correspondence = $this->privateMessageRepository->getOrderedCorrepondence(
                 $reply->getSenderId(),
                 $reply->getRecipientId(),
-                [PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN, PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN],
+                [PrivateMessageFolderTypeEnum::SPECIAL_MAIN->value, PrivateMessageFolderTypeEnum::DEFAULT_OWN->value],
                 10
             );
         }

@@ -13,7 +13,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tick\AbstractTickManager;
@@ -168,7 +168,7 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
                     "Es wurden erfolgreich %d Crewman ausgebildet.",
                     $count
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
             );
         }
     }

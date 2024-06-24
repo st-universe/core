@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AttackingBattleParty;
@@ -110,7 +110,7 @@ final class ShipAttackCore implements ShipAttackCoreInterface
         $this->distributedMessageSender->distributeMessageCollection(
             $messageCollection,
             $userId,
-            $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $isTargetBase ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $header
         );
     }

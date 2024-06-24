@@ -9,7 +9,7 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -105,7 +105,7 @@ final class StartBlocking implements ActionControllerInterface
             $userId,
             $currentColony->getUser()->getId(),
             $text,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY
         );
     }
 

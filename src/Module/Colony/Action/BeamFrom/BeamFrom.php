@@ -13,7 +13,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\TargetLink;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -150,7 +150,7 @@ final class BeamFrom implements ActionControllerInterface
                 $userId,
                 $ship->getUser()->getId(),
                 $informations->getInformationsAsString(),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId())
             );
         }

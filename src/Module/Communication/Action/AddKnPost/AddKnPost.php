@@ -15,7 +15,7 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\KnCharactersRepositoryInterface;
 use Stu\Orm\Repository\UserCharactersRepositoryInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPostInterface;
@@ -190,7 +190,7 @@ final class AddKnPost implements ActionControllerInterface
                     UserEnum::USER_NOONE,
                     $ownerId,
                     $text,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
                     $href
                 );
             }

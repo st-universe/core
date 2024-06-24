@@ -14,7 +14,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -211,7 +211,7 @@ final class RepairUtil implements RepairUtilInterface
             UserEnum::USER_NOONE,
             $entity->getUser()->getId(),
             $entityOwnerMessage,
-            $isColony ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY : PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+            $isColony ? PrivateMessageFolderTypeEnum::SPECIAL_COLONY : PrivateMessageFolderTypeEnum::SPECIAL_STATION
         );
     }
 

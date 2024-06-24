@@ -18,7 +18,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -143,7 +143,7 @@ final class Transfer implements ActionControllerInterface
             $ship->getUser()->getId(),
             $target->getUser()->getId(),
             $informations->getInformationsAsString(),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             sprintf(
                 '%s.php?%s=1&id=%d',
                 $target instanceof ShipInterface ? 'ship' : 'colony',

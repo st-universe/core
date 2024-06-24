@@ -8,7 +8,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
@@ -78,7 +78,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         $this->distributedMessageSender->distributeMessageCollection(
             $messages,
             $userId,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
 

@@ -17,7 +17,7 @@ use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
@@ -173,7 +173,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $userId,
             $target->getUser()->getId(),
             "Die " . $targetName . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $shipName . " erfasst",
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId())
         );
         $game->addInformationf("Der Traktorstrahl wurde auf die %s gerichtet", $targetName);

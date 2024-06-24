@@ -12,7 +12,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -93,7 +93,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
                     $target->getName(),
                     $target->getSectorString()
                 ),
-                $target->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $target->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             );
         }
     }
@@ -138,7 +138,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
                         $ship->getSectorString(),
                         $this->stuTime->transformToStuDate($web->getFinishedTime())
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
             }
         }
@@ -167,7 +167,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
                         'Das Energienetz in Sektor %s wurde fertiggestellt',
                         $ship->getSectorString()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
             }
         }

@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -494,7 +494,7 @@ class ManageTorpedoTest extends StuTestCase
                 666,
                 777,
                 'Die providername hat in Sektor SECTOR 3 torpedoname auf die name transferiert',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 'ship.php?SHOW_SHIP=1&id=555'
             )
             ->once();
@@ -586,7 +586,7 @@ class ManageTorpedoTest extends StuTestCase
                 666,
                 777,
                 'Die providername hat in Sektor SECTOR 5 torpedoname auf die name transferiert',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 'ship.php?SHOW_SHIP=1&id=555'
             )
             ->once();
