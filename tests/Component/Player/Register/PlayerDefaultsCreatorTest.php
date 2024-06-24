@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Component\Map\MapEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\ResearchedInterface;
@@ -72,7 +72,11 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
         $layer = Mockery::mock(LayerInterface::class);
         $userLayer = Mockery::mock(UserLayerInterface::class);
 
-        $defaultCategoryCount = count(PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES);
+
+        $defaultCategoryCount = count(array_filter(
+            PrivateMessageFolderTypeEnum::cases(),
+            fn (PrivateMessageFolderTypeEnum $case) => $case->isDefault()
+        ));
 
         $this->privateMessageFolderRepository->shouldReceive('prototype')
             ->withNoArgs()
@@ -87,17 +91,24 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
             ->times($defaultCategoryCount)
             ->andReturnSelf();
 
-        foreach (PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES as $specialFolderTypeId => $label) {
+        foreach (PrivateMessageFolderTypeEnum::cases() as $case) {
+
+            if (!$case->isDefault()) {
+                continue;
+            }
+
+            $label = $case->getDescription();
+
             $pmFolder->shouldReceive('setDescription')
                 ->with($label)
                 ->once()
                 ->andReturnSelf();
             $pmFolder->shouldReceive('setSpecial')
-                ->with($specialFolderTypeId)
+                ->with($case)
                 ->once()
                 ->andReturnSelf();
             $pmFolder->shouldReceive('setSort')
-                ->with($specialFolderTypeId)
+                ->with($case->value)
                 ->once()
                 ->andReturnSelf();
         }

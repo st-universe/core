@@ -10,7 +10,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
@@ -205,14 +205,14 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $this->distributedMessageSender->distributeMessageCollection(
             $messageCollectionForShips,
             UserEnum::USER_NOONE,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $header
         );
 
         $this->distributedMessageSender->distributeMessageCollection(
             $messageCollectionForBases,
             UserEnum::USER_NOONE,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $header
         );
     }

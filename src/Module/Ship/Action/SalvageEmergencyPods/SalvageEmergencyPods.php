@@ -8,7 +8,7 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
@@ -168,7 +168,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                         $closestTradepost->getName(),
                         $closestTradepost->getShip()->getSectorString()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
                 );
                 foreach ($target->getCrewAssignments() as $crewAssignment) {
                     if ($crewAssignment->getCrew()->getUser()->getId() === $ownerId) {

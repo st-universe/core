@@ -9,6 +9,7 @@ use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
@@ -289,7 +290,7 @@ class ThreatReactionTest extends StuTestCase
         $attackingBattleParty->shouldReceive('getPrivateMessageType')
             ->withNoArgs()
             ->once()
-            ->andReturn(999);
+            ->andReturn(PrivateMessageFolderTypeEnum::SPECIAL_SHIP);
 
         $messages->shouldReceive('isEmpty')
             ->withNoArgs()
@@ -314,7 +315,7 @@ class ThreatReactionTest extends StuTestCase
                 42,
                 666,
                 "Die SHIP versucht die TARGET in Sektor SECTOR zu entern.\nFolgende Aktionen wurden ausgeführt:\nINFOS",
-                999
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             )
             ->once()
             ->andReturn('INFOS');

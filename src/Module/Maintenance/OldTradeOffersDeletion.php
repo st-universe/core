@@ -4,7 +4,7 @@ namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -99,7 +99,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             UserEnum::USER_NOONE,
             $userId,
             $pm->getInformationsAsString(),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
     }
 }

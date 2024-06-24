@@ -10,7 +10,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -89,7 +89,7 @@ final class ResearchState implements ResearchStateInterface
             UserEnum::USER_NOONE,
             $state->getUser()->getId(),
             "Forschung '" . $state->getResearch()->getName() . "' wurde abgeschlossen",
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY
         );
 
         $this->createRewardShip($state);
@@ -136,7 +136,7 @@ final class ResearchState implements ResearchStateInterface
             UserEnum::USER_NOONE,
             $userId,
             $txt,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
     }
 

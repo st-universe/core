@@ -9,7 +9,7 @@ use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -79,7 +79,7 @@ final class UndockStationShip implements ActionControllerInterface
                     $target->getName(),
                     $station->getSectorString()
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 $href
             );
         }

@@ -15,7 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -438,7 +438,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                 UserEnum::USER_NOONE,
                 $station->getUser()->getId(),
                 $shipOwnerMessage,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+                PrivateMessageFolderTypeEnum::SPECIAL_STATION
             );
         }
         $this->shipRepository->save($station);
@@ -557,7 +557,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                         $target->getName(),
                         $this->getTrackerSource($ship->getUser())
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
 
                 //send pm to tracker owner
@@ -568,7 +568,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
                         'Die %s hat die Verbindung zum Tracker verloren',
                         $ship->getName()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
             }
         }
@@ -604,7 +604,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
             UserEnum::USER_NOONE,
             $ship->getUser()->getId(),
             $text,
-            $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $ship->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $href
         );
 

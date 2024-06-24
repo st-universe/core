@@ -6,7 +6,7 @@ namespace Stu\Module\Tick\Process;
 
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -52,7 +52,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                         $ship->getName(),
                         $repairTask->getSystemType()->getDescription()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                     $href
                 );
 
@@ -83,7 +83,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
                 UserEnum::USER_NOONE,
                 $ship->getUser()->getId(),
                 $msg,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 $href
             );
         }

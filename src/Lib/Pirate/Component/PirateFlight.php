@@ -3,7 +3,7 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
@@ -27,7 +27,7 @@ class PirateFlight implements PirateFlightInterface
         $this->distributedMessageSender->distributeMessageCollection(
             $messages,
             UserEnum::USER_NPC_KAZON,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
     }
 }

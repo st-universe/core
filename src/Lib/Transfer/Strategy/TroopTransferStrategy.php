@@ -18,7 +18,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
@@ -447,7 +447,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             $ship->getUser()->getId(),
             $target->getUser()->getId(),
             $msg,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $href
         );
     }

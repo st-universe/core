@@ -13,7 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -129,7 +129,7 @@ final class SupportTholianWeb implements ActionControllerInterface
                     $ship->getSectorString(),
                     $finishTimeString
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             );
         }
 

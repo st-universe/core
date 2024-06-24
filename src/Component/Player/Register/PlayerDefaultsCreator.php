@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Register;
 
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -44,12 +44,17 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 
     private function createDefaultPmCategories(UserInterface $user): void
     {
-        foreach (PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES as $categoryId => $label) {
+        foreach (PrivateMessageFolderTypeEnum::cases() as $folderType) {
+
+            if (!$folderType->isDefault()) {
+                continue;
+            }
+
             $cat = $this->privateMessageFolderRepository->prototype();
             $cat->setUser($user);
-            $cat->setDescription(gettext($label));
-            $cat->setSpecial($categoryId);
-            $cat->setSort($categoryId);
+            $cat->setDescription(gettext($folderType->getDescription()));
+            $cat->setSpecial($folderType);
+            $cat->setSort($folderType->value);
 
             $this->privateMessageFolderRepository->save($cat);
         }

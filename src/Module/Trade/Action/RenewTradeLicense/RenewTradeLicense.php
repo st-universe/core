@@ -11,7 +11,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
@@ -91,7 +91,7 @@ final class RenewTradeLicense implements ActionControllerInterface
                 'Am %s wurde eine Lizenz gekauft',
                 $tradePost->getName()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
     }
 

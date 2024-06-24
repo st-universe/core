@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -26,7 +27,7 @@ interface PrivateMessageFolderRepositoryInterface extends ObjectRepository
      */
     public function getOrderedByUser(int $userId): array;
 
-    public function getByUserAndSpecial(int $userId, int $specialId): ?PrivateMessageFolderInterface;
+    public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolderInterface;
 
     public function getMaxOrderIdByUser(UserInterface $user): int;
 

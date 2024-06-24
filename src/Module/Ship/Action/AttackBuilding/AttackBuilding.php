@@ -12,7 +12,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
@@ -198,7 +198,7 @@ final class AttackBuilding implements ActionControllerInterface
             $userId,
             $colony->getUserId(),
             $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY
         );
 
         if ($ship->isDestroyed()) {

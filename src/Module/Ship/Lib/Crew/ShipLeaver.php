@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib\Crew;
 
 use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Crew\LaunchEscapePodsInterface;
@@ -137,7 +137,7 @@ final class ShipLeaver implements ShipLeaverInterface
                 $message,
                 $survivalMessage
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+            PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
         );
     }
 

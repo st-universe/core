@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render\Fragments;
 
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Twig\TwigPageInterface;
@@ -38,27 +38,27 @@ final class MessageFolderFragment implements RenderFragmentInterface
         $userId = $user->getId();
 
         $pmFolder = [
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+            PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY,
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
+            PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
         ];
         $folder = [];
 
-        foreach ($pmFolder as $specialId) {
+        foreach ($pmFolder as $folderType) {
             if (
-                $specialId === PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+                $folderType === PrivateMessageFolderTypeEnum::SPECIAL_STATION
                 && !$user->hasStationsNavigation()
             ) {
                 continue;
             }
 
             /** @var PrivateMessageFolderInterface $specialFolder */
-            $specialFolder = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $specialId);
+            $specialFolder = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $folderType);
 
-            $folder[$specialId] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
+            $folder[$folderType->value] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
         }
 
         $page->setVar('PM_NAVLET', $folder);

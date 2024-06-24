@@ -11,7 +11,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
@@ -125,7 +125,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $ship->getUser()->getId(),
             $tractoringShip->getUser()->getId(),
             sprintf(_('Bei dem Fluchtversuch der %s wurde der Traktorstrahl der %s in Sektor %s zerstört'), $ship->getName(), $tractoringShip->getName(), $ship->getSectorString()),
-            $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $tractoringShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $href
         );
 
@@ -156,7 +156,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $ship->getUser()->getId(),
             $tractoringShip->getUser()->getId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
-            $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $tractoringShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $href
         );
     }
@@ -189,14 +189,14 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $ship->getUser()->getId(),
                 $otherUserId,
                 sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $shipName),
-                $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $tractoringShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             );
         } else {
             $this->privateMessageSender->send(
                 $ship->getUser()->getId(),
                 $otherUserId,
                 sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $shipName),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 $href
             );
         }

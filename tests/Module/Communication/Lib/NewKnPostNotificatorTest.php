@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPostInterface;
@@ -86,7 +86,7 @@ class NewKnPostNotificatorTest extends StuTestCase
                 UserEnum::USER_NOONE,
                 $memberUserId,
                 $messageText,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
                 $postUrl
             )
             ->once();

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -104,7 +104,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
                     $ship->getUser()->getId(),
                     $traktor->getUser()->getId(),
                     sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $traktor->getName(), $ship->getSectorString()),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
                 );
             }
         }

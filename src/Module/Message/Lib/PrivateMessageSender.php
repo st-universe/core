@@ -42,7 +42,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $senderId,
         int $recipientId,
         string|InformationWrapper $information,
-        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+        PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         string $href = null,
         bool $isRead = false
     ): void {
@@ -75,14 +75,14 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $sender,
             $recipient,
             $time,
-            $category,
+            $folderType,
             $text,
             $href,
             !$isRead
         );
 
         if (
-            $category === PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+            $folderType === PrivateMessageFolderTypeEnum::SPECIAL_MAIN
             && $recipient->isEmailNotification()
         ) {
             $this->sendEmailNotification($sender->getName(), $text, $recipient);
@@ -93,7 +93,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
                 $recipient,
                 $sender,
                 $time,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT,
+                PrivateMessageFolderTypeEnum::SPECIAL_PMOUT,
                 $text,
                 null,
                 false,
@@ -119,7 +119,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
                 $sender,
                 $recipient,
                 $time,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
+                PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
                 $text,
                 null,
                 true
@@ -131,7 +131,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $this->userRepository->getFallbackUser(),
             $sender,
             $time,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT,
+            PrivateMessageFolderTypeEnum::SPECIAL_PMOUT,
             $text,
             null,
             false
@@ -142,16 +142,16 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         UserInterface $sender,
         UserInterface $recipient,
         int $time,
-        int $category,
+        PrivateMessageFolderTypeEnum $folderType,
         string $text,
         ?string $href,
         bool $new,
         PrivateMessageInterface $inboxPm = null
     ): PrivateMessageInterface {
-        $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $category);
+        $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $folderType);
 
         if ($folder === null) {
-            throw new InvalidArgumentException(sprintf('Folder with user_id %d and category %d does not exist', $recipient->getId(), $category));
+            throw new InvalidArgumentException(sprintf('Folder with user_id %d and category %d does not exist', $recipient->getId(), $folderType->value));
         }
 
         $pm = $this->privateMessageRepository->prototype();

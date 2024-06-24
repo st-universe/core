@@ -15,7 +15,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tick\Colony\Component\ColonyTickComponentInterface;
@@ -531,7 +531,7 @@ final class ColonyTick implements ColonyTickInterface
             UserEnum::USER_NOONE,
             $colony->getUserId(),
             $text,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY,
             $href
         );
 

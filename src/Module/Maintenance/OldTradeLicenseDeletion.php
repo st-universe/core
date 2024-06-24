@@ -3,7 +3,7 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Module\Control\StuTime;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -66,7 +66,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
                         $latestLicenseInfo->getCommodity()->getName()
                     ) : ''
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
             );
         }
     }
@@ -94,7 +94,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
                         $latestLicenseInfo->getAmount(),
                         $latestLicenseInfo->getCommodity()->getName()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
                 );
             }
 

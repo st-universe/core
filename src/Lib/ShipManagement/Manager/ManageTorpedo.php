@@ -7,7 +7,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -227,7 +227,7 @@ class ManageTorpedo implements ManagerInterface
                 $torpedoType->getName(),
                 $ship->getName()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             $href
         );
     }

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use RuntimeException;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -134,7 +134,7 @@ final class ReactorUtil implements ReactorUtilInterface
                     $ship->getName(),
                     $loadUnits
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $ship->getId())
             );
         }

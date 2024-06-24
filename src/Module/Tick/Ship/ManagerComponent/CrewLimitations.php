@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
@@ -88,7 +88,7 @@ final class CrewLimitations implements ManagerComponentInterface
                 UserEnum::USER_NOONE,
                 $userId,
                 $msg,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
             );
         }
 
@@ -114,7 +114,7 @@ final class CrewLimitations implements ManagerComponentInterface
                 UserEnum::USER_NOONE,
                 $userId,
                 $msg,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
             );
         }
 
@@ -140,7 +140,7 @@ final class CrewLimitations implements ManagerComponentInterface
                 UserEnum::USER_NOONE,
                 $userId,
                 $msg,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
             );
         }
 
@@ -208,7 +208,7 @@ final class CrewLimitations implements ManagerComponentInterface
             UserEnum::USER_NOONE,
             $userId,
             $msg,
-            $randomShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            $randomShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
         //do alert red stuff

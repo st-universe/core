@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -233,7 +233,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->managerProviderUserId,
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 37 Einheiten',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 'ship.php?SHOW_SHIP=1&id=555'
             )
             ->once();
@@ -305,7 +305,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->managerProviderUserId,
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 22 Einheiten',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 'ship.php?SHOW_SHIP=1&id=555'
             )
             ->once();
@@ -377,7 +377,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->managerProviderUserId,
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 20 Einheiten',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 'ship.php?SHOW_SHIP=1&id=555'
             )
             ->once();
@@ -449,7 +449,7 @@ class ManageBatteryTest extends StuTestCase
                 $this->managerProviderUserId,
                 $this->shipUserId,
                 'Die providerName lädt in Sektor SECTOR die Batterie der name um 12 Einheiten',
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 'ship.php?SHOW_SHIP=1&id=555'
             )
             ->once();

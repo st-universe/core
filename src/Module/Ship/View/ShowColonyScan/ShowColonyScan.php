@@ -11,7 +11,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -100,7 +100,7 @@ final class ShowColonyScan implements ViewControllerInterface
             UserEnum::USER_NOONE,
             $colony->getUserId(),
             sprintf(_('Der Spieler %s hat die Oberfläche deiner Kolonie %s gescannt.'), $game->getUser()->getName(), $colony->getName()),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            PrivateMessageFolderTypeEnum::SPECIAL_COLONY
         );
 
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony, null, false);

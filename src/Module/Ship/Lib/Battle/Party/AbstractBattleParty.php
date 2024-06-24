@@ -5,7 +5,7 @@ namespace Stu\Module\Ship\Lib\Battle\Party;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -85,10 +85,10 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         return $this->getActiveMembers()->count();
     }
 
-    public function getPrivateMessageType(): int
+    public function getPrivateMessageType(): PrivateMessageFolderTypeEnum
     {
         return $this->isBase()
-            ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
-            : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP;
+            ? PrivateMessageFolderTypeEnum::SPECIAL_STATION
+            : PrivateMessageFolderTypeEnum::SPECIAL_SHIP;
     }
 }

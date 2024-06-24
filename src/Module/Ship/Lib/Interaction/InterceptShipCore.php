@@ -9,7 +9,7 @@ use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -65,7 +65,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
             $userId,
             $target->getUser()->getId(),
             $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $href
         );
         $interceptorLeftWarp = false;

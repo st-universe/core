@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -183,7 +183,7 @@ final class TakeOffer implements ActionControllerInterface
                 $selectedOffer->getWantedCommodityCount() * $amount,
                 $selectedOffer->getWantedCommodity()->getName()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
     }
 

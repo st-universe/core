@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertDetectionInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AlertedBattlePartyInterface;
@@ -91,7 +91,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
             $incomingUserId,
             $alertUserId,
             $pm,
-            $alertedParty->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $alertedParty->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $alertLeader->isDestroyed() ? null : $href
         );
         $pm = sprintf(
@@ -104,7 +104,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
             $alertUserId,
             $incomingUserId,
             $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
         if ($incomingLeader->isDestroyed()) {

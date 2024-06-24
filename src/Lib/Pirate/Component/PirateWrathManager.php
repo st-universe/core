@@ -13,7 +13,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 
 class PirateWrathManager implements PirateWrathManagerInterface
@@ -109,7 +109,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
             UserEnum::USER_NPC_KAZON,
             $user->getId(),
             sprintf('Wie kannst du es wagen? Ich werde meine Horden auf dich hetzen bis du winselnd am Boden liegst! Der Nichtangriffspakt ist hinfällig!'),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+            PrivateMessageFolderTypeEnum::SPECIAL_MAIN
         );
     }
 

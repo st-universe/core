@@ -7,7 +7,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -96,7 +96,7 @@ class ManageBattery implements ManagerInterface
                 $ship->getName(),
                 $load
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             $href
         );
     }

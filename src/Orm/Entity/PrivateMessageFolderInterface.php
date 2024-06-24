@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+
 interface PrivateMessageFolderInterface
 {
     public function getId(): int;
@@ -20,9 +22,9 @@ interface PrivateMessageFolderInterface
 
     public function setSort(int $sort): PrivateMessageFolderInterface;
 
-    public function getSpecial(): int;
+    public function getSpecial(): PrivateMessageFolderTypeEnum;
 
-    public function setSpecial(int $special): PrivateMessageFolderInterface;
+    public function setSpecial(PrivateMessageFolderTypeEnum $special): PrivateMessageFolderInterface;
 
     public function isPMOutDir(): bool;
 

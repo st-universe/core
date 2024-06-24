@@ -3,7 +3,7 @@
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -72,7 +72,7 @@ class EscapePodHandling implements ManagerComponentInterface
                 UserEnum::USER_NOONE,
                 $colony->getUser()->getId(),
                 $msg,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
             );
         }
     }

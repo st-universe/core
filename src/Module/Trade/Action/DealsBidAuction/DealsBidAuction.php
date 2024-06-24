@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -195,7 +195,7 @@ final class DealsBidAuction implements ActionControllerInterface
                     'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d Prestige',
                     $newAmount,
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE
             );
         } else {
             $this->privateMessageSender->send(
@@ -206,7 +206,7 @@ final class DealsBidAuction implements ActionControllerInterface
                     $newAmount,
                     $auction->getWantedCommodity()->getName()
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE
             );
         }
     }
@@ -288,7 +288,7 @@ final class DealsBidAuction implements ActionControllerInterface
                         $currentHighestBid->getMaxAmount(),
                         $currentHighestBid->getMaxAmount() + 1
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                    PrivateMessageFolderTypeEnum::SPECIAL_TRADE
                 );
             } else {
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser());
@@ -309,7 +309,7 @@ final class DealsBidAuction implements ActionControllerInterface
                         $currentHighestBid->getMaxAmount() + 1,
                         $auction->getWantedCommodity()->getName()
                     ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                    PrivateMessageFolderTypeEnum::SPECIAL_TRADE
                 );
             }
         }

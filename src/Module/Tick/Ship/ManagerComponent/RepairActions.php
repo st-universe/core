@@ -10,7 +10,7 @@ use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -107,7 +107,7 @@ final class RepairActions implements ManagerComponentInterface
                             $queue->getAmount(),
                             $queue->getModule()->getName()
                         ),
-                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                        PrivateMessageFolderTypeEnum::SPECIAL_COLONY
                     );
 
                     $this->moduleQueueRepository->delete($queue);
@@ -292,7 +292,7 @@ final class RepairActions implements ManagerComponentInterface
             $entity->getUser()->getId(),
             $ship->getUser()->getId(),
             $shipOwnerMessage,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
 
         $entityOwnerMessage = $entity instanceof ColonyInterface ? sprintf(
@@ -314,8 +314,8 @@ final class RepairActions implements ManagerComponentInterface
             UserEnum::USER_NOONE,
             $entity->getUser()->getId(),
             $entityOwnerMessage,
-            $entity instanceof ColonyInterface ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+            $entity instanceof ColonyInterface ? PrivateMessageFolderTypeEnum::SPECIAL_COLONY :
+                PrivateMessageFolderTypeEnum::SPECIAL_STATION
         );
     }
 }

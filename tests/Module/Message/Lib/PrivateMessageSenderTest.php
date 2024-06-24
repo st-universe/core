@@ -109,11 +109,11 @@ class PrivateMessageSenderTest extends StuTestCase
             ->andReturn($recipient);
 
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(3, PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION)
+            ->with(3, PrivateMessageFolderTypeEnum::SPECIAL_STATION)
             ->once()
             ->andReturn($recipientfolder);
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(2, PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT)
+            ->with(2, PrivateMessageFolderTypeEnum::SPECIAL_PMOUT)
             ->once()
             ->andReturn($senderOutboxFolder);
 
@@ -187,7 +187,7 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with($outboxPm)
             ->once();
 
-        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION, 'href');
+        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderTypeEnum::SPECIAL_STATION, 'href');
     }
 
     public function testSendWithEmailNotificationAndAlreadyRead(): void
@@ -233,11 +233,11 @@ class PrivateMessageSenderTest extends StuTestCase
             ->andReturn($recipient);
 
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(3, PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN)
+            ->with(3, PrivateMessageFolderTypeEnum::SPECIAL_MAIN)
             ->once()
             ->andReturn($recipientfolder);
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(2, PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT)
+            ->with(2, PrivateMessageFolderTypeEnum::SPECIAL_PMOUT)
             ->once()
             ->andReturn($senderOutboxFolder);
 
@@ -354,7 +354,7 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with($outboxPm)
             ->once();
 
-        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN, 'href', true);
+        $this->messageSender->send(2, 3, 'foobar', PrivateMessageFolderTypeEnum::SPECIAL_MAIN, 'href', true);
     }
 
     public function testSendBroadcastWithEmptyRecipients(): void
@@ -396,15 +396,15 @@ class PrivateMessageSenderTest extends StuTestCase
             ->andReturn(2);
 
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(1, PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN)
+            ->with(1, PrivateMessageFolderTypeEnum::SPECIAL_MAIN)
             ->once()
             ->andReturn($recipient1folder);
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(2, PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN)
+            ->with(2, PrivateMessageFolderTypeEnum::SPECIAL_MAIN)
             ->once()
             ->andReturn($recipient2folder);
         $this->messageFolderRepository->shouldReceive('getByUserAndSpecial')
-            ->with(55, PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT)
+            ->with(55, PrivateMessageFolderTypeEnum::SPECIAL_PMOUT)
             ->once()
             ->andReturn($senderOutboxFolder);
 

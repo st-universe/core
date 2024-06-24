@@ -5,7 +5,7 @@ namespace Stu\Module\Ship\Lib\Destruction\Handler;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
@@ -43,7 +43,7 @@ class ClearTractoringBeam implements ShipDestructionHandlerInterface
                     $tractoringShip->getName(),
                     $destroyedShipWrapper->get()->getName()
                 ),
-                $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                $tractoringShip->isBase() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
                 $href
             );
         }

@@ -7,7 +7,7 @@ namespace Stu\Module\Message\Action\WritePm;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
@@ -67,7 +67,7 @@ final class WritePm implements ActionControllerInterface
             return;
         }
 
-        $this->privateMessageSender->send($userId, $recipient->getId(), $text, PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN);
+        $this->privateMessageSender->send($userId, $recipient->getId(), $text, PrivateMessageFolderTypeEnum::SPECIAL_MAIN);
 
         $replyPm = $this->privateMessageRepository->find($this->writePmRequest->getReplyPmId());
 

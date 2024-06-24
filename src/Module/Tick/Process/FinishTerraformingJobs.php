@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonySandboxInterface;
@@ -56,7 +56,7 @@ final class FinishTerraformingJobs implements ProcessTickHandlerInterface
                 UserEnum::USER_NOONE,
                 $host->getUserId(),
                 $txt,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY,
                 $href
             );
         }

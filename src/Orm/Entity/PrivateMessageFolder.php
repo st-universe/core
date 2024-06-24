@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 
 #[Table(name: 'stu_pm_cats')]
 #[Index(name: 'user_special_idx', columns: ['user_id', 'special'])]
@@ -33,8 +33,8 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     #[Column(type: 'smallint')]
     private int $sort = 0;
 
-    #[Column(type: 'smallint')]
-    private int $special = PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN;
+    #[Column(type: 'smallint', length: 1, enumType: PrivateMessageFolderTypeEnum::class)]
+    private PrivateMessageFolderTypeEnum $special = PrivateMessageFolderTypeEnum::DEFAULT_OWN;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
@@ -86,12 +86,12 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
         return $this;
     }
 
-    public function getSpecial(): int
+    public function getSpecial(): PrivateMessageFolderTypeEnum
     {
         return $this->special;
     }
 
-    public function setSpecial(int $special): PrivateMessageFolderInterface
+    public function setSpecial(PrivateMessageFolderTypeEnum $special): PrivateMessageFolderInterface
     {
         $this->special = $special;
         return $this;
@@ -99,7 +99,7 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
 
     public function isPMOutDir(): bool
     {
-        return $this->getSpecial() == PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT;
+        return $this->getSpecial() == PrivateMessageFolderTypeEnum::SPECIAL_PMOUT;
     }
 
     /**
@@ -107,21 +107,12 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
      */
     public function isDropable(): bool
     {
-        switch ($this->getSpecial()) {
-            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP:
-            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION:
-            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY:
-            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE:
-            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM:
-            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT:
-                return false;
-        }
-        return true;
+        return $this->getSpecial()->isDropable();
     }
 
     public function isDeleteAble(): bool
     {
-        return $this->getSpecial() === 0;
+        return $this->getSpecial() === PrivateMessageFolderTypeEnum::DEFAULT_OWN;
     }
 
     public function setDeleted(int $timestamp): PrivateMessageFolderInterface

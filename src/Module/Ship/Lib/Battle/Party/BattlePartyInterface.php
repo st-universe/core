@@ -4,6 +4,7 @@ namespace Stu\Module\Ship\Lib\Battle\Party;
 
 use Countable;
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -22,5 +23,5 @@ interface BattlePartyInterface extends Countable
 
     public function isBase(): bool;
 
-    public function getPrivateMessageType(): int;
+    public function getPrivateMessageType(): PrivateMessageFolderTypeEnum;
 }

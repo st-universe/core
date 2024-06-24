@@ -9,7 +9,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -169,7 +169,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($informationWrapper);
 
         $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
-            ->with($messages, $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP)
+            ->with($messages, $userId, PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
 
         $game->shouldReceive('getUser->getId')
@@ -593,7 +593,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($informationWrapper);
 
         $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
-            ->with($messages, $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP)
+            ->with($messages, $userId, PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
 
         $game->shouldReceive('getUser->getId')
@@ -707,7 +707,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($informationWrapper);
 
         $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
-            ->with($messages, $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP)
+            ->with($messages, $userId, PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
 
         $game->shouldReceive('getUser->getId')

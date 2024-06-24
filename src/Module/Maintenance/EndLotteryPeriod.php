@@ -7,7 +7,7 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -122,7 +122,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
                 $jackpot,
                 $ticketCount
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
 
         //PM to all losers
@@ -141,7 +141,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
                     $jackpot,
                     $ticketCount
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE
             );
         }
 

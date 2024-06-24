@@ -11,7 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
@@ -64,14 +64,14 @@ final class MessageProvider implements ViewComponentProviderInterface
         if ($categoryId === 0) {
             $category = $this->privateMessageFolderRepository->getByUserAndSpecial(
                 $userId,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+                PrivateMessageFolderTypeEnum::SPECIAL_MAIN
             );
         } else {
             $category = $this->privateMessageFolderRepository->find($categoryId);
             if ($category === null || $category->getUserId() !== $userId || $category->isDeleted()) {
                 $category = $this->privateMessageFolderRepository->getByUserAndSpecial(
                     $userId,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+                    PrivateMessageFolderTypeEnum::SPECIAL_MAIN
                 );
             }
         }

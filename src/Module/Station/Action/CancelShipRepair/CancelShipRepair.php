@@ -9,7 +9,7 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
@@ -65,7 +65,7 @@ final class CancelShipRepair implements ActionControllerInterface
             $userId,
             $target->getUser()->getId(),
             sprintf("Die Reparatur der %s in Sektor %s wurde abgebrochen.", $target->getName(), $target->getSectorString()),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
     }
 
