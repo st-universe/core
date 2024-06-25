@@ -85,7 +85,7 @@ function openBuildingInfo(buildingId) {
 	buildmode = 1;
 	selectedbuilding = buildingId;
 
-	closeAjaxCallbacks.push(() => {
+	closeAjaxCallbacksMandatory.push(() => {
 		closeBuildingInfo();
 	});
 }
@@ -429,27 +429,27 @@ function enableShipBuildButton() {
 	new Effect.Highlight($('buildbutton'));
 }
 function cancelModuleQueueEntries(module_id, rump_id) {
-    ajaxPostUpdate(
-        `module_${module_id}_action_${rump_id}`,
-        'colony.php', `B_CANCEL_MODULECREATION=1&id=${colonyid}&module=${module_id}&func=${$('func').value}&count=${$('module_' + module_id + '_count_' + rump_id).value}`
-    );
-    document.querySelectorAll(`[id^="module_${module_id}_action"]`).forEach(function (element) {
-        element.innerHTML = '<div>-</div>'; 
-    });
+	ajaxPostUpdate(
+		`module_${module_id}_action_${rump_id}`,
+		'colony.php', `B_CANCEL_MODULECREATION=1&id=${colonyid}&module=${module_id}&func=${$('func').value}&count=${$('module_' + module_id + '_count_' + rump_id).value}`
+	);
+	document.querySelectorAll(`[id^="module_${module_id}_action"]`).forEach(function (element) {
+		element.innerHTML = '<div>-</div>';
+	});
 
-    document.querySelectorAll(`[id^="module_${module_id}_count"]`).forEach(function (input) {
-        input.value = 0; 
-    });
+	document.querySelectorAll(`[id^="module_${module_id}_count"]`).forEach(function (input) {
+		input.value = 0;
+	});
 
-    document.querySelectorAll(`[name^="cancelModuleList${module_id}"]`).forEach(function (img) {
-        img.src = '/assets/buttons/x1.png'; 
-    });
+	document.querySelectorAll(`[name^="cancelModuleList${module_id}"]`).forEach(function (img) {
+		img.src = '/assets/buttons/x1.png';
+	});
 }
 
 function cp(elementName, imageName) {
-    document.getElementsByName(elementName).forEach(function (element) {
-        element.src = `/assets/${imageName}.png`;
-    });
+	document.getElementsByName(elementName).forEach(function (element) {
+		element.src = `/assets/${imageName}.png`;
+	});
 }
 
 function showGiveUpWindow(target) {
@@ -500,196 +500,196 @@ function showTelescopeScan(cx, cy) {
 	ajax_update('current_energy', 'colony.php?REFRESH_COLONY_EPS=1&id=' + colonyid);
 }
 function syncInputs(id1, id2) {
-    const value = document.getElementById(id1).value;
-    document.getElementById(id2).value = value;
+	const value = document.getElementById(id1).value;
+	document.getElementById(id2).value = value;
 }
 function calculateLocalCrew() {
-    const primaryPositive = Math.max(0, parseInt(document.getElementById('primaryPositive').value) || 0);
-    const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
-    const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
-    const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
-    let lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
-    const negativEffect = Math.ceil(population / 70);
+	const primaryPositive = Math.max(0, parseInt(document.getElementById('primaryPositive').value) || 0);
+	const secondaryPositive = Math.max(0, parseInt(document.getElementById('secondaryPositive').value) || 0);
+	const population = Math.max(0, parseInt(document.getElementById('population').value) || 0);
+	const workers = Math.max(0, parseInt(document.getElementById('workers').value) || 0);
+	let lifeStandard = Math.max(0, parseInt(document.getElementById('lifeStandard').value) || 0);
+	const negativEffect = Math.ceil(population / 70);
 
-    const term1 = Math.max(0, negativEffect - secondaryPositive);
-    const term2 = Math.max(primaryPositive - (4 * term1), 0);
-    const term3 = Math.min(term2, workers) / 5;
+	const term1 = Math.max(0, negativEffect - secondaryPositive);
+	const term2 = Math.max(primaryPositive - (4 * term1), 0);
+	const term3 = Math.min(term2, workers) / 5;
 
-    if (lifeStandard > population) {
-        lifeStandard = population;
-    }
+	if (lifeStandard > population) {
+		lifeStandard = population;
+	}
 
-    let term4;
-    if (population > 0) {
-        term4 = Math.floor(lifeStandard * 100 / population);
-    } else {
-        term4 = 0;
-    }
-    const term5 = Math.floor(10 + term3 * (term4 / 100));
-    let result = term5;
+	let term4;
+	if (population > 0) {
+		term4 = Math.floor(lifeStandard * 100 / population);
+	} else {
+		term4 = 0;
+	}
+	const term5 = Math.floor(10 + term3 * (term4 / 100));
+	let result = term5;
 
-    document.getElementById('calculatedCrew').innerText = result.toString();
-    document.getElementById('calculatedCrewResponsive').innerText = result.toString();
+	document.getElementById('calculatedCrew').innerText = result.toString();
+	document.getElementById('calculatedCrewResponsive').innerText = result.toString();
 }
 function filterByRump() {
-    const selectedRump = document.getElementById('rump-select').value;
-    const allRumpModules = document.querySelectorAll('.rump-modules');
-    const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
+	const selectedRump = document.getElementById('rump-select').value;
+	const allRumpModules = document.querySelectorAll('.rump-modules');
+	const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
 
-    allRumpModules.forEach(rumpModule => {
-        rumpModule.style.display = 'none';
-    });
+	allRumpModules.forEach(rumpModule => {
+		rumpModule.style.display = 'none';
+	});
 
-    allBuildplanModules.forEach(buildplanModule => {
-        buildplanModule.style.display = 'none';
-    });
+	allBuildplanModules.forEach(buildplanModule => {
+		buildplanModule.style.display = 'none';
+	});
 
-    if (selectedRump === '0' || selectedRump === '' ) {
-        const selectedRumpModules = document.getElementById('rump-modules-0');
-        if (selectedRumpModules) {
-            selectedRumpModules.style.display = 'block';
-        }
-    } else {
-        const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
-        if (selectedRumpModules) {
-            selectedRumpModules.style.display = 'block';
-        }
-    }
+	if (selectedRump === '0' || selectedRump === '') {
+		const selectedRumpModules = document.getElementById('rump-modules-0');
+		if (selectedRumpModules) {
+			selectedRumpModules.style.display = 'block';
+		}
+	} else {
+		const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
+		if (selectedRumpModules) {
+			selectedRumpModules.style.display = 'block';
+		}
+	}
 
-    updateBuildplanDropdown(selectedRump);
+	updateBuildplanDropdown(selectedRump);
 }
 
 function updateBuildplanDropdown(rumpId) {
-    const buildplanSelect = document.getElementById('buildplan-select');
-    const allOptions = buildplanSelect.querySelectorAll('option');
+	const buildplanSelect = document.getElementById('buildplan-select');
+	const allOptions = buildplanSelect.querySelectorAll('option');
 
-    allOptions.forEach(option => {
-        if (option.getAttribute('data-rump-id') === rumpId || option.value === '0') {
-            option.style.display = 'block';
-        } else {
-            option.style.display = 'none';
-        }
-    });
+	allOptions.forEach(option => {
+		if (option.getAttribute('data-rump-id') === rumpId || option.value === '0') {
+			option.style.display = 'block';
+		} else {
+			option.style.display = 'none';
+		}
+	});
 
-    buildplanSelect.value = '0';
+	buildplanSelect.value = '0';
 }
 
 function filterByBuildplan() {
-    const selectedRump = document.getElementById('rump-select').value;
-    const selectedBuildplan = document.getElementById('buildplan-select').value;
-    const allRumpModules = document.querySelectorAll('.rump-modules');
-    const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
+	const selectedRump = document.getElementById('rump-select').value;
+	const selectedBuildplan = document.getElementById('buildplan-select').value;
+	const allRumpModules = document.querySelectorAll('.rump-modules');
+	const allBuildplanModules = document.querySelectorAll('.buildplan-modules');
 
-    allRumpModules.forEach(rumpModule => {
-        rumpModule.style.display = 'none';
-    });
+	allRumpModules.forEach(rumpModule => {
+		rumpModule.style.display = 'none';
+	});
 
-    allBuildplanModules.forEach(buildplanModule => {
-        buildplanModule.style.display = 'none';
-    });
+	allBuildplanModules.forEach(buildplanModule => {
+		buildplanModule.style.display = 'none';
+	});
 
-    if (selectedRump === '0' || selectedRump === '') {
-        const selectedRumpModules = document.getElementById('rump-modules-0');
-        if (selectedRumpModules) {
-            selectedRumpModules.style.display = 'block';
-        }
-    } else {
-        if (selectedBuildplan === '0') {
-            const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
-            if (selectedRumpModules) {
-                selectedRumpModules.style.display = 'block';
-            }
-        } else {
-            const selectedBuildplanModules = document.getElementById(`buildplan-modules-${selectedBuildplan}`);
-            if (selectedBuildplanModules) {
-                selectedBuildplanModules.style.display = 'block';
-            }
-        }
-    }
+	if (selectedRump === '0' || selectedRump === '') {
+		const selectedRumpModules = document.getElementById('rump-modules-0');
+		if (selectedRumpModules) {
+			selectedRumpModules.style.display = 'block';
+		}
+	} else {
+		if (selectedBuildplan === '0') {
+			const selectedRumpModules = document.getElementById(`rump-modules-${selectedRump}`);
+			if (selectedRumpModules) {
+				selectedRumpModules.style.display = 'block';
+			}
+		} else {
+			const selectedBuildplanModules = document.getElementById(`buildplan-modules-${selectedBuildplan}`);
+			if (selectedBuildplanModules) {
+				selectedBuildplanModules.style.display = 'block';
+			}
+		}
+	}
 }
 
 
 function toggleModuleType(type, rumpId = 'all') {
-    const levelBox = document.getElementById(`level-box-${type}_${rumpId}`);
-    const moduleLevels = document.querySelectorAll(`.module-level`);
+	const levelBox = document.getElementById(`level-box-${type}_${rumpId}`);
+	const moduleLevels = document.querySelectorAll(`.module-level`);
 
-    if (levelBox.style.display === 'none') {
-        levelBox.style.display = 'flex';
-    } else {
-        levelBox.style.display = 'none';
+	if (levelBox.style.display === 'none') {
+		levelBox.style.display = 'flex';
+	} else {
+		levelBox.style.display = 'none';
 
-        moduleLevels.forEach(moduleLevel => {
-            if (moduleLevel.id.startsWith(`module-level-${type}-`)) {
-                moduleLevel.style.display = 'none';
+		moduleLevels.forEach(moduleLevel => {
+			if (moduleLevel.id.startsWith(`module-level-${type}-`)) {
+				moduleLevel.style.display = 'none';
 
-                const levelButton = document.querySelector(`#level-box-${type}_${rumpId} button.active`);
-                if (levelButton) {
-                    levelButton.classList.remove('active');
-                }
-            }
-        });
-    }
+				const levelButton = document.querySelector(`#level-box-${type}_${rumpId} button.active`);
+				if (levelButton) {
+					levelButton.classList.remove('active');
+				}
+			}
+		});
+	}
 }
 
 function toggleModuleLevel(type, level, rumpId = 'all', event) {
-    event.stopPropagation(); 
-    const moduleLevelDiv = document.getElementById(`module-level-${type}-${level}-${rumpId}`);
-    
-    if (moduleLevelDiv.style.display === 'none') {
-        event.target.classList.add('active');
-        moduleLevelDiv.style.display = 'block';
-    } else {
-        event.target.classList.remove('active');
-        moduleLevelDiv.style.display = 'none';
-    }
+	event.stopPropagation();
+	const moduleLevelDiv = document.getElementById(`module-level-${type}-${level}-${rumpId}`);
+
+	if (moduleLevelDiv.style.display === 'none') {
+		event.target.classList.add('active');
+		moduleLevelDiv.style.display = 'block';
+	} else {
+		event.target.classList.remove('active');
+		moduleLevelDiv.style.display = 'none';
+	}
 }
 
 function syncAllInputFields(input) {
-    const moduleId = input.getAttribute('data-module-id');
-    const value = input.value;
+	const moduleId = input.getAttribute('data-module-id');
+	const value = input.value;
 
-    const inputs = document.querySelectorAll(`input[data-module-id="${moduleId}"]`);
-    inputs.forEach(inp => {
-        inp.value = value;
-    });
+	const inputs = document.querySelectorAll(`input[data-module-id="${moduleId}"]`);
+	inputs.forEach(inp => {
+		inp.value = value;
+	});
 }
 
 function collectModuleData() {
-    const moduleData = {};
+	const moduleData = {};
 
-    const inputs = document.querySelectorAll('input[data-module-id]');
-    inputs.forEach(input => {
-        const value = input.value;
-        if (value) {
-            const moduleId = input.getAttribute('data-module-id');
-            moduleData[moduleId] = value;
-        }
-    });
+	const inputs = document.querySelectorAll('input[data-module-id]');
+	inputs.forEach(input => {
+		const value = input.value;
+		if (value) {
+			const moduleId = input.getAttribute('data-module-id');
+			moduleData[moduleId] = value;
+		}
+	});
 
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'colony.php';
+	const form = document.createElement('form');
+	form.method = 'POST';
+	form.action = 'colony.php';
 
-    const funcInput = document.createElement('input');
-    funcInput.type = 'hidden';
-    funcInput.name = 'func';
-    funcInput.value = document.getElementById('func').value;
-    form.appendChild(funcInput);
+	const funcInput = document.createElement('input');
+	funcInput.type = 'hidden';
+	funcInput.name = 'func';
+	funcInput.value = document.getElementById('func').value;
+	form.appendChild(funcInput);
 
-    const colonyIdInput = document.createElement('input');
-    colonyIdInput.type = 'hidden';
-    colonyIdInput.name = 'id';
-    colonyIdInput.value = document.getElementById('colony-id').value;
-    form.appendChild(colonyIdInput);
+	const colonyIdInput = document.createElement('input');
+	colonyIdInput.type = 'hidden';
+	colonyIdInput.name = 'id';
+	colonyIdInput.value = document.getElementById('colony-id').value;
+	form.appendChild(colonyIdInput);
 
-    for (const moduleId in moduleData) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = `module[${moduleId}]`;
-        input.value = moduleData[moduleId];
-        form.appendChild(input);
-    }
+	for (const moduleId in moduleData) {
+		const input = document.createElement('input');
+		input.type = 'hidden';
+		input.name = `module[${moduleId}]`;
+		input.value = moduleData[moduleId];
+		form.appendChild(input);
+	}
 
-    document.body.appendChild(form);
-    form.submit();
+	document.body.appendChild(form);
+	form.submit();
 }

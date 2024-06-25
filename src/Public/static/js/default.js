@@ -37,6 +37,7 @@ function onmousewheel(element, callback) {
 };
 
 var closeAjaxCallbacks = new Array();
+var closeAjaxCallbacksMandatory = new Array();
 
 function closePopup() {
         if (over) {
@@ -64,8 +65,12 @@ function closeAjaxWindow() {
         for (index = 0; index < closeAjaxCallbacks.length; index++) {
                 closeAjaxCallbacks[index]();
         }
+        for (index = 0; index < closeAjaxCallbacksMandatory.length; index++) {
+                closeAjaxCallbacksMandatory[index]();
+        }
 
         clearAjaxCallbacks();
+        closeAjaxCallbacksMandatory = new Array();
 
         closePopup();
         isClosingAjaxWindow = false;
