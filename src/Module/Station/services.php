@@ -43,8 +43,10 @@ use Stu\Module\Station\View\ShowStationShiplist\ShowStationShiplist;
 use Stu\Module\Station\View\ShowStationShiplist\ShowStationShiplistRequest;
 use Stu\Module\Station\View\ShowStationShiplist\ShowStationShiplistRequestInterface;
 use Stu\Module\Station\View\ShowSystemSensorScan\ShowSystemSensorScan;
+use Stu\Module\Ship\View\ShowTransfer\ShowTransfer;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     ShowShipManagementRequestInterface::class => autowire(ShowShipManagementRequest::class),
@@ -72,6 +74,11 @@ return [
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
+        ShowTransfer::VIEW_IDENTIFIER => autowire(ShowTransfer::class)
+            ->constructorParameter(
+                'transferStrategies',
+                get('transferStrategies')
+            ),
         ShowStationCosts::VIEW_IDENTIFIER => autowire(ShowStationCosts::class),
         ShowSensorScan::VIEW_IDENTIFIER => autowire(ShowSensorScan::class),
         ShowStationInfo::VIEW_IDENTIFIER => autowire(ShowStationInfo::class),
