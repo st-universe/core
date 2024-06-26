@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use Stu\Component\Trade\TradeEnum;
+use Stu\Lib\Map\Location;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Ship;
@@ -107,31 +109,43 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
-    public function getClosestNpcTradePost(int $cx, int $cy): TradePostInterface
+    public function getClosestNpcTradePost(Location $location): ?TradePostInterface
     {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tp
+        $layer = $location->getLayer();
+        if ($layer === null) {
+            return null;
+        }
+
+        try {
+
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT tp
                     FROM %s tp
                     JOIN %s s
                     WITH tp.ship_id = s.id
                     JOIN %s m
                     WITH s.map_id = m.id
                     WHERE tp.user_id < :firstUserId
+                    AND m.layer_id = :layerId
                     ORDER BY abs(m.cx - :cx) + abs(m.cy - :cy) ASC',
-                    TradePost::class,
-                    Ship::class,
-                    Map::class
+                        TradePost::class,
+                        Ship::class,
+                        Map::class
+                    )
                 )
-            )
-            ->setMaxResults(1)
-            ->setParameters([
-                'cx' => $cx,
-                'cy' => $cy,
-                'firstUserId' => UserEnum::USER_FIRST_ID
-            ])
-            ->getSingleResult();
+                ->setMaxResults(1)
+                ->setParameters([
+                    'layerId' => $layer->getId(),
+                    'cx' => $location->getCx(),
+                    'cy' => $location->getCy(),
+                    'firstUserId' => UserEnum::USER_FIRST_ID
+                ])
+                ->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
     }
 
     public function getFergTradePost(

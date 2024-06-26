@@ -101,10 +101,14 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
-    public function getByCoordinates(int $layerId, int $cx, int $cy): ?MapInterface
+    public function getByCoordinates(?LayerInterface $layer, int $cx, int $cy): ?MapInterface
     {
+        if ($layer === null) {
+            return null;
+        }
+
         return $this->findOneBy([
-            'layer_id' => $layerId,
+            'layer_id' => $layer->getId(),
             'cx' => $cx,
             'cy' => $cy
         ]);

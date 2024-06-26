@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -63,7 +64,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     /**
      * @return array<array{category_name: string, amount: int}>
      */
-    public function getRumpCategoryInfo(int $cx, int $cy): array;
+    public function getRumpCategoryInfo(LayerInterface $layer, int $cx, int $cy): array;
 
     public function prototype(): StarSystemMapInterface;
 

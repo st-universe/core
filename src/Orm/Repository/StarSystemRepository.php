@@ -131,6 +131,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             return [];
         }
 
+        $location = $ship->getLocation();
         $range = $ship->getSensorRange() * 4;
 
         return $this->getEntityManager()->createQuery(
@@ -146,10 +147,10 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             )
         )
             ->setParameters([
-                'minX' => $ship->getCx() - $range,
-                'maxX' => $ship->getCx() + $range,
-                'minY' => $ship->getCY() - $range,
-                'maxY' => $ship->getCY() + $range,
+                'minX' => $location->getCx() - $range,
+                'maxX' => $location->getCx() + $range,
+                'minY' => $location->getCY() - $range,
+                'maxY' => $location->getCY() + $range,
                 'layerId' => $layer->getId()
             ])
             ->getResult();

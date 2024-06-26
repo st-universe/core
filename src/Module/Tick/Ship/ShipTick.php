@@ -537,9 +537,12 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         }
 
         $target = $targetWrapper->get();
+        $shipLocation = $ship->getLocation();
+        $targetLocation = $target->getLocation();
         $remainingTicks = $tracker->getRemainingTicks();
 
-        $reduceByTicks = max(1, (int)ceil((abs($ship->getCx() - $target->getCx()) +  abs($ship->getCy() - $target->getCy())) / 50));
+        $reduceByTicks = max(1, (int)ceil((abs($shipLocation->getCx() - $targetLocation->getCx())
+            +  abs($shipLocation->getCy() - $targetLocation->getCy())) / 50));
 
         //reduce remaining ticks
         if ($remainingTicks > $reduceByTicks) {

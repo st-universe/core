@@ -34,23 +34,9 @@ final class EnterWaypoint implements EnterWaypointInterface
 
         $ship->updateLocation($waypoint);
 
-        if ($this->isWormhole($waypoint)) {
-            $ship->setCx(0);
-            $ship->setCy(0);
-        }
-
         if ($wormholeEntry !== null) {
             $wormholeEntry->setLastUsed($this->stuTime->time());
             $this->wormholeEntryRepository->save($wormholeEntry);
         }
-    }
-
-    private function isWormhole(MapInterface|StarSystemMapInterface $waypoint): bool
-    {
-        if ($waypoint instanceof MapInterface) {
-            return false;
-        }
-
-        return $waypoint->getSystem()->isWormhole();
     }
 }

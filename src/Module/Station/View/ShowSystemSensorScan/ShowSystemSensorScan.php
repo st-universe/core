@@ -10,6 +10,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Station\Lib\StationUiFactoryInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowSystemSensorScan implements ViewControllerInterface
@@ -50,16 +51,26 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
 
+
+        $field = $ship->getCurrentMapField();
+        if ($field instanceof MapInterface) {
+            $shipCx = $field->getCx();
+            $shipCy = $field->getCx();
+        } else {
+            $shipCx = $field->getSystem()->getCx();
+            $shipCy = $field->getSystem()->getCy();
+        }
+
         if (
-            $cx < $ship->getCx() - $ship->getSensorRange()
-            || $cx > $ship->getCx() + $ship->getSensorRange()
-            || $cy < $ship->getCy() - $ship->getSensorRange()
-            || $cy > $ship->getCy() + $ship->getSensorRange()
+            $cx < $shipCx - $ship->getSensorRange()
+            || $cx > $shipCx + $ship->getSensorRange()
+            || $cy < $shipCy - $ship->getSensorRange()
+            || $cy > $shipCy + $ship->getSensorRange()
         ) {
             return;
         }
 
-        $mapField = $this->mapRepository->getByCoordinates($ship->getLayerId(), $cx, $cy);
+        $mapField = $this->mapRepository->getByCoordinates($ship->getLayer(), $cx, $cy);
 
         $game->showMacro('html/visualPanel/panel.twig');
 

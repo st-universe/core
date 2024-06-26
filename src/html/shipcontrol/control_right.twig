@@ -99,7 +99,7 @@
             Areal:
             <select name="transwarplayer">
                 {% for userlayer in userLayers %}
-                {% set selected = userlayer.getLayer.getId == ship.getLayerId %}
+                {% set selected = userlayer.getLayer == ship.getLayer %}
                 <option value="{{ userlayer.getLayer.getId }}" selected=" {{ selected }}">
                     {{ userlayer.getLayer.getName }}</option>
                 {% endfor %}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Crew;
 
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -87,8 +88,13 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
                 );
                 $pods->setStarsystemMap($map);
             } else {
+                $layer = $pods->getLayer();
+                if ($layer === null) {
+                    throw new RuntimeException('this should not happen');
+                }
+
                 $map = $this->mapRepository->getByCoordinates(
-                    $pods->getLayerId(),
+                    $layer,
                     $newXY[0],
                     $newXY[1]
                 );

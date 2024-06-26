@@ -16,6 +16,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -100,13 +101,24 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
 
+
+
         $crewmanPerUser = $this->determineCrewmanPerUser($target);
+        if (empty($crewmanPerUser)) {
+            return;
+        }
+
+        $closestTradepost = $this->tradePostRepository->getClosestNpcTradePost($ship->getLocation());
+        if ($closestTradepost === null) {
+            $game->addInformation('Kein Handelposten in der Nähe, an den die Crew überstellt werden könnte');
+            return;
+        }
 
         //send PMs to crew owners
-        $this->sendPMsToCrewOwners($crewmanPerUser, $ship, $target, $game);
+        $this->sendPMsToCrewOwners($crewmanPerUser, $ship, $target, $closestTradepost, $game);
 
         /**
-         *
+         * TODO
          //remove entity if crew was on escape pods
          if ($target->getRump()->isEscapePods())
          {
@@ -149,10 +161,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         array $crewmanPerUser,
         ShipInterface $ship,
         ShipInterface $target,
+        TradePostInterface $closestTradepost,
         GameControllerInterface $game
     ): void {
         $userId = $game->getUser()->getId();
-        $closestTradepost = $this->tradePostRepository->getClosestNpcTradePost($ship->getCx(), $ship->getCy());
 
         $sentGameInfoForForeignCrew = false;
 

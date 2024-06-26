@@ -16,6 +16,7 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -297,7 +298,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return array_map(fn (array $data) => $data['id'], $result);
     }
 
-    public function getRumpCategoryInfo(int $cx, int $cy): array
+    public function getRumpCategoryInfo(LayerInterface $layer, int $cx, int $cy): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('category_name', 'category_name', 'string');
@@ -311,8 +312,20 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 ON s.rumps_id = r.id
                 JOIN stu_rumps_categories rc
                 ON r.category_id = rc.id
-                WHERE s.cx = :cx
-                AND s.cy = :cy
+                LEFT JOIN stu_map m
+                ON s.map_id = m.id
+                LEFT JOIN stu_sys_map sm 
+                ON s.starsystem_map_id = sm.id
+                LEFT JOIN stu_systems sys
+                ON sm.systems_id = sys.id
+                LEFT JOIN stu_map m2
+                ON m2.systems_id = sys.id
+                WHERE (         m.layer_id = :layerId
+                            AND m.cx = :cx
+                            AND m.cy = :cy
+                        OR      m2.layer_id = :layerId
+                            AND m2.cx = :cx
+                            AND m2.cy = :cy)
                 AND NOT EXISTS (SELECT ss.id
                                     FROM stu_ship_system ss
                                     WHERE s.id = ss.ship_id
@@ -323,6 +336,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 $rsm
             )
             ->setParameters([
+                'layerId' => $layer->getId(),
                 'cx' => $cx,
                 'cy' => $cy,
                 'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK

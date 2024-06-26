@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\UserLayerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class Transwarp extends AbstractDirectedMovement
@@ -53,7 +54,9 @@ final class Transwarp extends AbstractDirectedMovement
         $layerId = request::postIntFatal('transwarplayer');
 
         //sanity check if user knows layer
-        if (!$game->getUser()->hasSeen($layerId)) {
+        /** @var null|UserLayerInterface */
+        $userLayer = $game->getUser()->getUserLayers()->get($layerId);
+        if ($userLayer === null) {
             return true;
         }
 
@@ -92,7 +95,7 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
-        $map = $this->mapRepository->getByCoordinates($layerId, $cx, $cy);
+        $map = $this->mapRepository->getByCoordinates($userLayer->getLayer(), $cx, $cy);
         if ($map === null) {
             $game->addInformation(_('Zielkoordinaten existieren nicht'));
             return true;
