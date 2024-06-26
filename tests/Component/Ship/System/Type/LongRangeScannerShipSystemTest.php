@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -31,6 +32,11 @@ class LongRangeScannerShipSystemTest extends StuTestCase
      */
     private $astroEntryLib;
 
+    /**
+     * @var TrackerDeviceManagerInterface|MockInterface
+     */
+    private $trackerDeviceManager;
+
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;
 
@@ -39,8 +45,12 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
+        $this->trackerDeviceManager = Mockery::mock(TrackerDeviceManagerInterface::class);
 
-        $this->system = new LongRangeScannerShipSystem($this->astroEntryLib);
+        $this->system = new LongRangeScannerShipSystem(
+            $this->astroEntryLib,
+            $this->trackerDeviceManager
+        );
     }
 
     public function testGetEnergyUsageForActivationReturnsValue(): void
@@ -139,29 +149,17 @@ class LongRangeScannerShipSystemTest extends StuTestCase
     {
         $systemAstro = $this->mock(ShipSystemInterface::class);
         $systemTracker = $this->mock(ShipSystemInterface::class);
-        $trackerSystemData = $this->mock(TrackerSystemData::class);
 
         //ASTRO STUFF
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
-        $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TRACKER)
-            ->once()
-            ->andReturnTrue();
         $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
-        $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TRACKER)
-            ->once()
-            ->andReturn($systemTracker);
         $systemAstro->shouldReceive('setMode')
-            ->with(ShipSystemModeEnum::MODE_OFF)
-            ->once();
-        $systemTracker->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
         $this->ship->shouldReceive('getState')
@@ -171,22 +169,16 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();
-        $trackerSystemData->shouldReceive('setTarget')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
-        $trackerSystemData->shouldReceive('update')
-            ->withNoArgs()
+
+        $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfExisting')
+            ->with($this->wrapper)
             ->once();
+
         //wrapper
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getTrackerSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($trackerSystemData);
 
         $this->system->handleDestruction($this->wrapper);
     }

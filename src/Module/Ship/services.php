@@ -269,6 +269,8 @@ use Stu\Module\Ship\Lib\Interaction\ShipUndocking;
 use Stu\Module\Ship\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Ship\Lib\Interaction\ThreatReaction;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
+use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManager;
+use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DockConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveActivationConsequence;
@@ -284,6 +286,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeactivateTran
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\DeflectorConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightAstroMappingConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightDirectionConsequence;
+use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightTrackerConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight\PostFlightTractorConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\BlockedCondition;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\CrewCondition;
@@ -392,6 +395,7 @@ return [
     RandomSystemEntryInterface::class => autowire(RandomSystemEntry::class),
     ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
     InterceptShipCoreInterface::class => autowire(InterceptShipCore::class),
+    TrackerDeviceManagerInterface::class => autowire(TrackerDeviceManager::class),
     'preFlightConditions' => [
         autowire(BlockedCondition::class),
         autowire(CrewCondition::class),
@@ -421,6 +425,7 @@ return [
         autowire(PostFlightDirectionConsequence::class),
         autowire(PostFlightAstroMappingConsequence::class),
         autowire(DeactivateTranswarpConsequence::class),
+        autowire(PostFlightTrackerConsequence::class),
         autowire(PostFlightTractorConsequence::class),
         autowire(DeflectorConsequence::class)
     ],

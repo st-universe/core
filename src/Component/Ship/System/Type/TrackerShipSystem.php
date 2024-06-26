@@ -62,6 +62,9 @@ class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemType
 
     private function reset(ShipWrapperInterface $wrapper): void
     {
-        $wrapper->getTrackerSystemData()->setTarget(null)->update();
+        $trackerSystemData = $wrapper->getTrackerSystemData();
+        if ($trackerSystemData !== null) {
+            $trackerSystemData->setTarget(null)->update();
+        }
     }
 }

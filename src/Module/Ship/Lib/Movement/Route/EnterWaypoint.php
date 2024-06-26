@@ -13,16 +13,10 @@ use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
 
 final class EnterWaypoint implements EnterWaypointInterface
 {
-    private WormholeEntryRepositoryInterface $wormholeEntryRepository;
-
-    private StuTime $stuTime;
-
     public function __construct(
-        WormholeEntryRepositoryInterface $wormholeEntryRepository,
-        StuTime $stuTime
+        private WormholeEntryRepositoryInterface $wormholeEntryRepository,
+        private StuTime $stuTime
     ) {
-        $this->wormholeEntryRepository = $wormholeEntryRepository;
-        $this->stuTime = $stuTime;
     }
 
     public function enterNextWaypoint(

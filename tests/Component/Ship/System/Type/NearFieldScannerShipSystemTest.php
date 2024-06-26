@@ -13,6 +13,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -29,9 +30,14 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     private $system;
 
     /**
-     * @var null|AstroEntryLibInterface|MockInterface
+     * @var AstroEntryLibInterface|MockInterface
      */
     private $astroEntryLib;
+
+    /**
+     * @var TrackerDeviceManagerInterface|MockInterface
+     */
+    private $trackerDeviceManager;
 
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;
@@ -47,8 +53,12 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->andReturn($this->ship);
 
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
+        $this->trackerDeviceManager = Mockery::mock(TrackerDeviceManagerInterface::class);
 
-        $this->system = new NearFieldScannerShipSystem($this->astroEntryLib);
+        $this->system = new NearFieldScannerShipSystem(
+            $this->astroEntryLib,
+            $this->trackerDeviceManager
+        );
     }
 
     public static function provideCheckActivationConditionsReturnsFalseIfNoColonyData()
@@ -199,30 +209,17 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     public function testHandleDestruction(): void
     {
         $systemAstro = $this->mock(ShipSystemInterface::class);
-        $systemTracker = $this->mock(ShipSystemInterface::class);
-        $trackerSystemData = $this->mock(TrackerSystemData::class);
 
         //ASTRO STUFF
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
-        $this->ship->shouldReceive('hasShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TRACKER)
-            ->once()
-            ->andReturnTrue();
         $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
-        $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_TRACKER)
-            ->once()
-            ->andReturn($systemTracker);
         $systemAstro->shouldReceive('setMode')
-            ->with(ShipSystemModeEnum::MODE_OFF)
-            ->once();
-        $systemTracker->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
         $this->ship->shouldReceive('getState')
@@ -232,17 +229,10 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();
-        $trackerSystemData->shouldReceive('setTarget')
-            ->with(null)
-            ->once()
-            ->andReturnSelf();
-        $trackerSystemData->shouldReceive('update')
-            ->withNoArgs()
+
+        $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfExisting')
+            ->with($this->wrapper)
             ->once();
-        $this->wrapper->shouldReceive('getTrackerSystemData')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($trackerSystemData);
 
         $this->system->handleDestruction($this->wrapper);
     }

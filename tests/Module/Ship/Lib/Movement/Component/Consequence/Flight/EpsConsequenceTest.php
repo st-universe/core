@@ -96,7 +96,7 @@ class EpsConsequenceTest extends StuTestCase
      * @dataProvider provideTriggerData
      */
     public function testTrigger(
-        int $routeMode,
+        RouteModeEnum $routeMode,
         string $nextWaypointClass = null,
         int $flightCost = null,
         int $tractorCost = null,
