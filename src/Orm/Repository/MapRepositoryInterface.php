@@ -35,7 +35,7 @@ interface MapRepositoryInterface extends ObjectRepository
      */
     public function getAllWithoutSystem(int $layerId): array;
 
-    public function getByCoordinates(int $layerId, int $cx, int $cy): ?MapInterface;
+    public function getByCoordinates(?LayerInterface $layer, int $cx, int $cy): ?MapInterface;
 
     /**
      * @return array<MapInterface>

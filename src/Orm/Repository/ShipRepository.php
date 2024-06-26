@@ -31,6 +31,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipSystem;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Storage;
@@ -775,18 +776,30 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             return [];
         }
 
+        $location = $ship->getLocation();
         $range = $ship->getSensorRange() * 2;
 
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
+                LEFT JOIN %s m
+                WITH s.map_id = m.id
+                LEFT JOIN %s sm 
+                WITH s.starsystem_map_id = sm.id
+                LEFT JOIN %s sys
+                WITH sm.systems_id = sys.id
+                LEFT JOIN %2$s m2
+                WITH m2.systems_id = sys.id
                 JOIN %s u
                 WITH s.user_id = u.id
                 LEFT JOIN %s w
                 WITH u.id = w.user_id
-                WHERE s.cx BETWEEN :minX AND :maxX
-                AND s.cy BETWEEN :minY AND :maxY
-                AND s.layer_id = :layerId
+                WHERE (         m.layer_id = :layerId
+                            AND m.cx BETWEEN :minX AND :maxX
+                            AND m.cy BETWEEN :minY AND :maxY
+                        OR      m2.layer_id = :layerId
+                            AND m2.cx BETWEEN :minX AND :maxX
+                            AND m2.cy BETWEEN :minY AND :maxY)
                 AND s.type = :shipType
                 AND (s.fleets_id IS NULL OR s.is_fleet_leader = true)
                 AND u.id >= :firstUserId
@@ -795,15 +808,18 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Ship::class,
+                Map::class,
+                StarSystemMap::class,
+                StarSystem::class,
                 User::class,
                 PirateWrath::class
             )
         )
             ->setParameters([
-                'minX' => $ship->getCx() - $range,
-                'maxX' => $ship->getCx() + $range,
-                'minY' => $ship->getCY() - $range,
-                'maxY' => $ship->getCY() + $range,
+                'minX' => $location->getCx() - $range,
+                'maxX' => $location->getCx() + $range,
+                'minY' => $location->getCY() - $range,
+                'maxY' => $location->getCY() + $range,
                 'layerId' => $layer->getId(),
                 'shipType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
@@ -822,24 +838,39 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             return [];
         }
 
+        $location = $ship->getLocation();
         $range = $ship->getSensorRange() * 3;
 
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                WHERE s.cx BETWEEN :minX AND :maxX
-                AND s.cy BETWEEN :minY AND :maxY
-                AND s.layer_id = :layerId
+                LEFT JOIN %s m
+                WITH s.map_id = m.id
+                LEFT JOIN %s sm 
+                WITH s.starsystem_map_id = sm.id
+                LEFT JOIN %s sys
+                WITH sm.systems_id = sys.id
+                LEFT JOIN %2$s m2
+                WITH m2.systems_id = sys.id
+                WHERE (         m.layer_id = :layerId
+                            AND m.cx BETWEEN :minX AND :maxX
+                            AND m.cy BETWEEN :minY AND :maxY
+                        OR      m2.layer_id = :layerId
+                            AND m2.cx BETWEEN :minX AND :maxX
+                            AND m2.cy BETWEEN :minY AND :maxY)
                 AND s.id != :shipId
                 AND s.user_id = :kazonUserId',
-                Ship::class
+                Ship::class,
+                Map::class,
+                StarSystemMap::class,
+                StarSystem::class
             )
         )
             ->setParameters([
-                'minX' => $ship->getCx() - $range,
-                'maxX' => $ship->getCx() + $range,
-                'minY' => $ship->getCY() - $range,
-                'maxY' => $ship->getCY() + $range,
+                'minX' => $location->getCx() - $range,
+                'maxX' => $location->getCx() + $range,
+                'minY' => $location->getCY() - $range,
+                'maxY' => $location->getCY() + $range,
                 'layerId' => $layer->getId(),
                 'shipId' => $ship->getId(),
                 'kazonUserId' => UserEnum::USER_NPC_KAZON

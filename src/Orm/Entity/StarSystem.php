@@ -28,6 +28,7 @@ class StarSystem implements StarSystemInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
+    //TODO remove cx and cy, use coords of $map
     #[Column(type: 'smallint')]
     private int $cx = 0;
 

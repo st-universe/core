@@ -69,7 +69,7 @@ class YRow
                 }
 
                 $map = $this->mapRepository->getByCoordinates(
-                    $layer->getId(),
+                    $layer,
                     $i,
                     $this->row
                 );

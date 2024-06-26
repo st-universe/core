@@ -263,6 +263,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             return [];
         }
 
+        $location = $ship->getLocation();
         $range = $ship->getSensorRange() * 2;
 
         return $this->getEntityManager()->createQuery(
@@ -295,10 +296,10 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             )
         )
             ->setParameters([
-                'minX' => $ship->getCx() - $range,
-                'maxX' => $ship->getCx() + $range,
-                'minY' => $ship->getCY() - $range,
-                'maxY' => $ship->getCY() + $range,
+                'minX' => $location->getCx() - $range,
+                'maxX' => $location->getCx() + $range,
+                'minY' => $location->getCY() - $range,
+                'maxY' => $location->getCY() + $range,
                 'layer' => $layer,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'stateActive' => UserEnum::USER_STATE_ACTIVE,

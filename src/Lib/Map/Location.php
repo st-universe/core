@@ -90,4 +90,36 @@ class Location
 
         return $parentMap->getLayer();
     }
+
+    public function getCx(): ?int
+    {
+        $field = $this->get();
+
+        if ($field instanceof MapInterface) {
+            return $field->getCx();
+        }
+
+        $system = $field->getSystem();
+        if ($system->isWormhole()) {
+            return null;
+        }
+
+        return $system->getCx();
+    }
+
+    public function getCy(): ?int
+    {
+        $field = $this->get();
+
+        if ($field instanceof MapInterface) {
+            return $field->getCy();
+        }
+
+        $system = $field->getSystem();
+        if ($system->isWormhole()) {
+            return null;
+        }
+
+        return $system->getCy();
+    }
 }

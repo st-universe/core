@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowSubspaceTelescopeScan;
 
 use request;
+use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -69,7 +70,12 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
             return;
         }
 
-        $game->setTemplateVar('INFOS', $this->starSystemMapRepository->getRumpCategoryInfo($cx, $cy));
+        $layer = $colony->getStarsystemMap()->getSystem()->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        $game->setTemplateVar('INFOS', $this->starSystemMapRepository->getRumpCategoryInfo($layer, $cx, $cy));
 
         $colony->setEps($colony->getEps() - $scanCost);
         $this->colonyRepository->save($colony);

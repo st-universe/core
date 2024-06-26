@@ -14,6 +14,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -93,18 +94,27 @@ final class ShowSensorScan implements ViewControllerInterface
 
         $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
 
+        $field = $station->getCurrentMapField();
+        if ($field instanceof MapInterface) {
+            $stationCx = $field->getCx();
+            $stationCy = $field->getCx();
+        } else {
+            $stationCx = $field->getSystem()->getCx();
+            $stationCy = $field->getSystem()->getCy();
+        }
 
         if ($sysid === 0) {
+
             if (
-                $cx < $station->getCx() - $station->getSensorRange()
-                || $cx > $station->getCx() + $station->getSensorRange()
-                || $cy < $station->getCy() - $station->getSensorRange()
-                || $cy > $station->getCy() + $station->getSensorRange()
+                $cx < $stationCx - $station->getSensorRange()
+                || $cx > $stationCx + $station->getSensorRange()
+                || $cy < $stationCy - $station->getSensorRange()
+                || $cy > $stationCy + $station->getSensorRange()
             ) {
                 return;
             }
 
-            $mapField = $this->mapRepository->getByCoordinates($station->getLayerId(), $cx, $cy);
+            $mapField = $this->mapRepository->getByCoordinates($station->getLayer(), $cx, $cy);
         } else {
             $mapField = $this->starSystemMapRepository->getByCoordinates($sysid, $cx, $cy);
             if ($mapField === null) {
@@ -114,10 +124,10 @@ final class ShowSensorScan implements ViewControllerInterface
             $system = $mapField->getSystem();
 
             if (
-                $system->getCx() < $station->getCx() - $station->getSensorRange()
-                || $system->getCx() > $station->getCx() + $station->getSensorRange()
-                || $system->getCy() < $station->getCy() - $station->getSensorRange()
-                || $system->getCy() > $station->getCy() + $station->getSensorRange()
+                $system->getCx() < $stationCx - $station->getSensorRange()
+                || $system->getCx() > $stationCx + $station->getSensorRange()
+                || $system->getCy() < $stationCy - $station->getSensorRange()
+                || $system->getCy() > $stationCy + $station->getSensorRange()
             ) {
                 return;
             }

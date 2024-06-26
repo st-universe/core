@@ -10,7 +10,6 @@ final class MapEnum
     public const DEFAULT_LAYER = self::LAYER_ID_TULLAMORE;
 
     //LAYERS
-    public const LAYER_ID_WORMHOLES = 0;
     public const LAYER_ID_CRAGGANMORE = 1;
     public const LAYER_ID_TULLAMORE = 2;
 

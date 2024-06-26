@@ -71,7 +71,7 @@ final class CheckDestination implements CheckDestinationInterface
                 $destinationY = $layer->getHeight();
             }
 
-            $result = $this->mapRepository->getByCoordinates($layer->getId(), $destinationX, $destinationY);
+            $result = $this->mapRepository->getByCoordinates($layer, $destinationX, $destinationY);
         }
 
         if ($result === null) {

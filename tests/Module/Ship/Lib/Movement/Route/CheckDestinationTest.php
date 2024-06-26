@@ -108,10 +108,6 @@ class CheckDestinationTest extends StuTestCase
                 ->once()
                 ->andReturn($layer);
 
-            $layer->shouldReceive('getId')
-                ->withNoArgs()
-                ->once()
-                ->andReturn(5);
             $layer->shouldReceive('getWidth')
                 ->withNoArgs()
                 ->andReturn($layerWidth);
@@ -120,7 +116,7 @@ class CheckDestinationTest extends StuTestCase
                 ->andReturn($layerHeight);
 
             $this->mapRepository->shouldReceive('getByCoordinates')
-                ->with(5, $finalX, $finalY)
+                ->with($layer, $finalX, $finalY)
                 ->once()
                 ->andReturn($destination);
 

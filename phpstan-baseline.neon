@@ -69,11 +69,6 @@ parameters:
 			path: src/Component/Ship/System/Type/EpsShipSystem.php
 
 		-
-			message: "#^Cannot call method setTarget\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\TrackerSystemData\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Type/TrackerShipSystem.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/TractorBeamShipSystem.php
@@ -2217,11 +2212,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$date type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTimeInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
-
-		-
-			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
 
 		-
 			message: "#^Cannot call method getSx\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"

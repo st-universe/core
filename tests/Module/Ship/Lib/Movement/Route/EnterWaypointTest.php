@@ -91,39 +91,6 @@ class EnterWaypointTest extends StuTestCase
             ->with($waypoint)
             ->once();
 
-        $waypoint->shouldReceive('getSystem->isWormhole')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $this->subject->enterNextWaypoint(
-            $ship,
-            false,
-            $waypoint,
-            null
-        );
-    }
-
-    public function testEnterNextWaypointExpectSettingCxAndCyToZeroWhenEnteringWormhole()
-    {
-        $ship = $this->mock(ShipInterface::class);
-        $waypoint = $this->mock(StarSystemMapInterface::class);
-
-        $ship->shouldReceive('updateLocation')
-            ->with($waypoint)
-            ->once();
-        $ship->shouldReceive('setCx')
-            ->with(0)
-            ->once();
-        $ship->shouldReceive('setCy')
-            ->with(0)
-            ->once();
-
-        $waypoint->shouldReceive('getSystem->isWormhole')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
         $this->subject->enterNextWaypoint(
             $ship,
             false,
@@ -140,11 +107,6 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('updateLocation')
             ->with($waypoint)
             ->once();
-
-        $waypoint->shouldReceive('getSystem->isWormhole')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
 
         $this->subject->enterNextWaypoint(
             $ship,

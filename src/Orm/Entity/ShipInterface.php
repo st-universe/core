@@ -28,18 +28,6 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function getLayer(): ?LayerInterface;
 
-    public function getLayerId(): int;
-
-    public function setLayerId(int $layerId): ShipInterface;
-
-    public function getCx(): int;
-
-    public function setCx(int $cx): ShipInterface;
-
-    public function getCy(): int;
-
-    public function setCy(int $cy): ShipInterface;
-
     public function getSx(): int;
 
     public function getSy(): int;
@@ -328,10 +316,6 @@ interface ShipInterface extends ShipDestroyerInterface
     public function isBoardingPossible(): bool;
 
     public function isInterceptable(): bool;
-
-    public function getMapCX(): int;
-
-    public function getMapCY(): int;
 
     public function dockedOnTradePost(): bool;
 

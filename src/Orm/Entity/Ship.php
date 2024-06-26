@@ -66,14 +66,14 @@ class Ship implements ShipInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $fleets_id = null;
 
-    #[Column(type: 'integer', length: 5)]
-    private int $layer_id = MapEnum::DEFAULT_LAYER;
+    #[Column(type: 'integer', length: 5, nullable: true)]
+    private ?int $layer_id = null;
 
-    #[Column(type: 'integer', length: 5)]
-    private int $cx = 0;
+    #[Column(type: 'integer', length: 5, nullable: true)]
+    private ?int $cx = null;
 
-    #[Column(type: 'integer', length: 5)]
-    private int $cy = 0;
+    #[Column(type: 'integer', length: 5, nullable: true)]
+    private ?int $cy = null;
 
     #[Column(type: 'smallint', length: 1)]
     private int $direction = 0;
@@ -303,39 +303,6 @@ class Ship implements ShipInterface
     public function getLayer(): ?LayerInterface
     {
         return $this->getLocation()->getLayer();
-    }
-
-    public function getLayerId(): int
-    {
-        return $this->layer_id;
-    }
-
-    public function setLayerId(int $layerId): ShipInterface
-    {
-        $this->layer_id = $layerId;
-        return $this;
-    }
-
-    public function getCx(): int
-    {
-        return $this->cx;
-    }
-
-    public function setCx(int $cx): ShipInterface
-    {
-        $this->cx = $cx;
-        return $this;
-    }
-
-    public function getCy(): int
-    {
-        return $this->cy;
-    }
-
-    public function setCy(int $cy): ShipInterface
-    {
-        $this->cy = $cy;
-        return $this;
     }
 
     public function getSx(): int
@@ -813,18 +780,24 @@ class Ship implements ShipInterface
 
     public function getPosX(): int
     {
-        if ($this->getSystem() !== null) {
-            return $this->getSX();
+        $field = $this->getCurrentMapField();
+
+        if ($field instanceof MapInterface) {
+            return $field->getCx();
         }
-        return $this->getCX();
+
+        return $field->getSx();
     }
 
     public function getPosY(): int
     {
-        if ($this->getSystem() !== null) {
-            return $this->getSY();
+        $field = $this->getCurrentMapField();
+
+        if ($field instanceof MapInterface) {
+            return $field->getCy();
         }
-        return $this->getCY();
+
+        return $field->getSy();
     }
 
     public function getCrewCount(): int
@@ -1123,12 +1096,6 @@ class Ship implements ShipInterface
     {
         $this->map = $map;
 
-        if ($map !== null) {
-            $this->setLayerId($map->getLayer()->getId());
-            $this->setCx($map->getCx());
-            $this->setCy($map->getCy());
-        }
-
         return $this;
     }
 
@@ -1140,18 +1107,6 @@ class Ship implements ShipInterface
     public function setStarsystemMap(?StarSystemMapInterface $systemMap): ShipInterface
     {
         $this->starsystem_map = $systemMap;
-
-        if ($systemMap !== null) {
-            $system = $systemMap->getSystem();
-            $layer = $system->getLayer();
-            if ($layer === null) {
-                $this->setLayerId(MapEnum::LAYER_ID_WORMHOLES);
-            } else {
-                $this->setLayerId($layer->getId());
-            }
-            $this->setCx($systemMap->getSystem()->getCx());
-            $this->setCy($systemMap->getSystem()->getCy());
-        }
 
         return $this;
     }
@@ -1179,11 +1134,7 @@ class Ship implements ShipInterface
 
     public function getSectorString(): string
     {
-        if ($this->getStarsystemMap() !== null) {
-            return $this->getStarsystemMap()->getSectorString();
-        } else {
-            return $this->getMap()->getSectorString();
-        }
+        return $this->getCurrentMapField()->getSectorString();
     }
 
     public function getSectorId(): ?int
@@ -1193,7 +1144,28 @@ class Ship implements ShipInterface
             return null;
         }
 
-        return $layer->getSectorId($this->getMapCX(), $this->getMapCY());
+        $field = $this->getCurrentMapField();
+
+        if ($field instanceof MapInterface) {
+            $cx = $field->getCx();
+            $cy = $field->getCx();
+        } else {
+            $cx = $field->getSystem()->getCx();
+            $cy = $field->getSystem()->getCy();
+        }
+
+        return $layer->getSectorId($this->getMapCX($cx), $this->getMapCY($cy));
+    }
+
+
+    private function getMapCX(int $cx): int
+    {
+        return (int) ceil($cx / MapEnum::FIELDS_PER_SECTION);
+    }
+
+    private function getMapCY(int $cy): int
+    {
+        return (int) ceil($cy / MapEnum::FIELDS_PER_SECTION);
     }
 
     public function getBuildplan(): ?ShipBuildplanInterface
@@ -1258,16 +1230,6 @@ class Ship implements ShipInterface
     {
         //TODO can tractored ships be intercepted?!
         return $this->getWarpDriveState();
-    }
-
-    public function getMapCX(): int
-    {
-        return (int) ceil($this->getCX() / MapEnum::FIELDS_PER_SECTION);
-    }
-
-    public function getMapCY(): int
-    {
-        return (int) ceil($this->getCY() / MapEnum::FIELDS_PER_SECTION);
     }
 
     public function dockedOnTradePost(): bool

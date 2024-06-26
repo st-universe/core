@@ -133,11 +133,16 @@ class VisualNavPanel extends AbstractVisualPanel
 
     private function createUserMapEntries(): void
     {
-        $cx = $this->currentShip->getCX();
-        $cy = $this->currentShip->getCY();
+        $map = $this->currentShip->getMap();
+        if ($map === null) {
+            return;
+        }
+
+        $cx = $map->getCx();
+        $cy = $map->getCy();
+        $layerId = $map->getLayer()->getId();
         $range = $this->currentShip->getSensorRange();
 
-        $layerId = $this->currentShip->getLayerId();
         if ($this->isUserMapActive($layerId)) {
             $this->userMapRepository->insertMapFieldsForUser(
                 $this->user->getId(),
