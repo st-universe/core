@@ -5,6 +5,10 @@
                 {% from 'html/macros.twig' import userAvatar %}
                 {{ userAvatar(USER) }}
             </div>
+            <div class="user_box_avatar_mobile">
+                {% from 'html/macros.twig' import userAvatar %}
+                {{ userAvatar(USER) }}
+            </div>
             <div class="user_box_details">
                 <div class="userBoxDetailName">
                     {{ USER.getName|bbcode }}

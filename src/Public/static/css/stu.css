@@ -1909,15 +1909,26 @@ div.userAvatar img {
       display: none;
   }
 }
-
 .break-word {
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
 }
-
 @media (max-width: 1200px) {
   .break-word {
       white-space: normal;
+  }
+}
+.user_box_avatar_mobile {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .user_box_avatar {
+      display: none;
+  }
+
+  .user_box_avatar_mobile {
+      display: block;
   }
 }
