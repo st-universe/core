@@ -75,7 +75,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn(RouteModeEnum::ROUTE_MODE_FLIGHT);
 
         $this->subject->trigger(
             $this->wrapper,

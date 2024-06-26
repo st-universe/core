@@ -33,7 +33,7 @@ final class FlightRoute implements FlightRouteInterface
     //Members
     private bool $isTraversing = false;
 
-    private int $routeMode = RouteModeEnum::ROUTE_MODE_FLIGHT;
+    private RouteModeEnum $routeMode = RouteModeEnum::ROUTE_MODE_FLIGHT;
 
     private MapInterface|StarSystemMapInterface $current;
 
@@ -181,7 +181,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this->waypoints->isEmpty();
     }
 
-    public function getRouteMode(): int
+    public function getRouteMode(): RouteModeEnum
     {
         return $this->routeMode;
     }

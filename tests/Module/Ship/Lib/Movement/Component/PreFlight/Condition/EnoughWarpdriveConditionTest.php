@@ -64,7 +64,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
      * @dataProvider provideCheckWarpdriveWhenEnoughWarpdriveData
      */
     public function testCheckWarpdriveWhenEnoughWarpdrive(
-        int $routeMode,
+        RouteModeEnum $routeMode,
         string $nextWaypointClass = null,
         bool $hasWarpdrive = null,
         bool $isTractoring = null,
@@ -127,7 +127,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
      * @dataProvider provideCheckWarpdriveWhenNotEnoughWarpdriveData
      */
     public function testCheckWarpdriveWhenNotEnoughWarpdrive(
-        int $routeMode,
+        RouteModeEnum $routeMode,
         string $nextWaypointClass = null,
         bool $hasWarpdrive = null,
         bool $isTractoring = null,

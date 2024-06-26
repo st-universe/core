@@ -375,7 +375,7 @@ class FlightRouteTest extends StuTestCase
 
         Init::run($app, false);
 
-        $this->assertEquals(5, count(get('postFlightConsequences')->resolve($container)));
+        $this->assertEquals(6, count(get('postFlightConsequences')->resolve($container)));
     }
 
     public function testIsRouteDangerousExpectFalseIfWaypointsWithoutSpecialDamage(): void

@@ -97,7 +97,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn($isTranswarpNeeded);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(99999);
+            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -145,7 +145,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn($isTranswarpNeeded);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(99999);
+            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
 
         $this->subject->check($this->wrapper, $this->flightRoute, $this->conditionCheckResult);
     }
@@ -169,7 +169,7 @@ class EnoughEpsConditionTest extends StuTestCase
      * @dataProvider provideCheckFlightCostForRouteModeData
      */
     public function testCheckFlightCostForRouteMode(
-        int $routeMode,
+        RouteModeEnum $routeMode,
         string $nextWaypointClass = null,
         bool $hasImpulse = null,
         int $flightCost = null,
@@ -280,7 +280,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn(false);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(99999);
+            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()
@@ -332,7 +332,7 @@ class EnoughEpsConditionTest extends StuTestCase
             ->andReturn(false);
         $this->flightRoute->shouldReceive('getRouteMode')
             ->withNoArgs()
-            ->andReturn(99999);
+            ->andReturn(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT);
 
         $epsSystemData->shouldReceive('getEps')
             ->withNoArgs()

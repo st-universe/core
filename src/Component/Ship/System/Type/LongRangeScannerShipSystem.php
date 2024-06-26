@@ -9,16 +9,15 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class LongRangeScannerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private AstroEntryLibInterface $astroEntryLib;
-
     public function __construct(
-        AstroEntryLibInterface $astroEntryLib
+        private AstroEntryLibInterface $astroEntryLib,
+        private TrackerDeviceManagerInterface $trackerDeviceManager
     ) {
-        $this->astroEntryLib = $astroEntryLib;
     }
 
     public function getSystemType(): ShipSystemTypeEnum
@@ -64,13 +63,7 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
                 $this->astroEntryLib->cancelAstroFinalizing($ship);
             }
         }
-        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)) {
-            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->setMode(ShipSystemModeEnum::MODE_OFF);
 
-            $trackerSystemData = $wrapper->getTrackerSystemData();
-            if ($trackerSystemData !== null) {
-                $trackerSystemData->setTarget(null)->update();
-            }
-        }
+        $this->trackerDeviceManager->deactivateTrackerIfExisting($wrapper);
     }
 }

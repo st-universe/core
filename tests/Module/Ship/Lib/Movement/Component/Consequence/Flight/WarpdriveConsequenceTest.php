@@ -96,7 +96,7 @@ class WarpdriveConsequenceTest extends StuTestCase
      * @dataProvider provideTriggerData
      */
     public function testTrigger(
-        int $routeMode,
+        RouteModeEnum $routeMode,
         string $nextWaypointClass = null,
         bool $isTractoring = null,
         int $expectedCost = null

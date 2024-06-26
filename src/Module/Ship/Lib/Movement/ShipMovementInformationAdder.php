@@ -14,11 +14,12 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
     public function reachedDestination(
         ShipInterface $ship,
         bool $isFleetMode,
-        int $routeMode,
+        RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void {
 
         $name = $isFleetMode ? 'Flotte' : $ship->getName();
+        $routeModeValue = $routeMode->value;
 
         $message = new Message();
         $messages->add($message);
@@ -35,7 +36,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 $system = $ship->getSystem();
 
                 if ($system === null) {
-                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
+                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeModeValue));
                 }
 
                 $message->add(sprintf(
@@ -54,7 +55,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 $system = $ship->getSystem();
 
                 if ($system === null) {
-                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
+                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeModeValue));
                 }
 
                 $message->add(sprintf(
@@ -82,11 +83,12 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         ShipInterface $ship,
         string $leadShipName,
         bool $isFleetMode,
-        int $routeMode,
+        RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void {
 
         $name = $isFleetMode ? 'gesamte Flotte' : $leadShipName;
+        $routeModeValue = $routeMode->value;
 
         $message = new Message();
         $messages->add($message);
@@ -103,7 +105,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 $system = $ship->getSystem();
 
                 if ($system === null) {
-                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
+                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeModeValue));
                 }
 
                 $message->add(sprintf(
@@ -122,7 +124,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 $system = $ship->getSystem();
 
                 if ($system === null) {
-                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
+                    throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeModeValue));
                 }
                 $message->add(sprintf(
                     _('Beim Einflug in das %s wurde die %s zerstört'),
@@ -147,14 +149,14 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 );
                 break;
             default:
-                throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
+                throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeModeValue));
         }
     }
 
     public function pulledTractoredShip(
         ShipInterface $ship,
         ShipInterface $tractoredShip,
-        int $routeMode,
+        RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void {
         $tractoredShipName = $tractoredShip->getName();
@@ -188,7 +190,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
                 $message->add(sprintf(_('Die %s wurde mit aus dem Wurmloch gezogen'), $tractoredShipName));
                 break;
             default:
-                throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode));
+                throw new InvalidArgumentException(sprintf('route mode %d does not exist', $routeMode->value));
         }
     }
 }

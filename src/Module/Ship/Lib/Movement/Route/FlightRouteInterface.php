@@ -44,7 +44,7 @@ interface FlightRouteInterface
 
     public function isDestinationArrived(): bool;
 
-    public function getRouteMode(): int;
+    public function getRouteMode(): RouteModeEnum;
 
     public function isTraversing(): bool;
 

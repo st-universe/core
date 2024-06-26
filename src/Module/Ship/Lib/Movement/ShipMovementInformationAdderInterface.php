@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Ship\Lib\Movement;
 
-use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Orm\Entity\ShipInterface;
 
 interface ShipMovementInformationAdderInterface
@@ -11,7 +11,7 @@ interface ShipMovementInformationAdderInterface
     public function reachedDestination(
         ShipInterface $ship,
         bool $isFleetMode,
-        int $routeMode,
+        RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void;
 
@@ -19,14 +19,14 @@ interface ShipMovementInformationAdderInterface
         ShipInterface $ship,
         string $leadShipName,
         bool $isFleetMode,
-        int $routeMode,
+        RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void;
 
     public function pulledTractoredShip(
         ShipInterface $ship,
         ShipInterface $tractoredShip,
-        int $routeMode,
+        RouteModeEnum $routeMode,
         MessageCollectionInterface $messages
     ): void;
 }
