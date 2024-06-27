@@ -17,24 +17,12 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
 {
     private const ADVENT_DOOR_AMOUNT = 5;
 
-    private MapRepositoryInterface $mapRepository;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    private AnomalyCreationInterface $anomalyCreation;
-
-    private StorageRepositoryInterface $storageRepository;
-
     public function __construct(
-        MapRepositoryInterface $mapRepository,
-        LayerRepositoryInterface $layerRepository,
-        AnomalyCreationInterface $anomalyCreation,
-        StorageRepositoryInterface $storageRepository
+        private  MapRepositoryInterface $mapRepository,
+        private LayerRepositoryInterface $layerRepository,
+        private AnomalyCreationInterface $anomalyCreation,
+        private StorageRepositoryInterface $storageRepository
     ) {
-        $this->mapRepository = $mapRepository;
-        $this->layerRepository = $layerRepository;
-        $this->anomalyCreation = $anomalyCreation;
-        $this->storageRepository = $storageRepository;
     }
 
     /** create advent door anomalies on first of december */

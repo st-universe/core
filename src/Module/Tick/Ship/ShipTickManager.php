@@ -12,22 +12,14 @@ use Stu\Module\Tick\Ship\ManagerComponent\ManagerComponentInterface;
 
 final class ShipTickManager implements ShipTickManagerInterface
 {
-    private LockManagerInterface $lockManager;
-
     private LoggerUtilInterface $loggerUtil;
-
-    /** @var array<ManagerComponentInterface> */
-    private array $components;
 
     /** @param array<ManagerComponentInterface> $components */
     public function __construct(
-        LockManagerInterface $lockManager,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        array $components
+        private LockManagerInterface $lockManager,
+        private array $components,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->lockManager = $lockManager;
-        $this->components = $components;
-
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
     }
 
