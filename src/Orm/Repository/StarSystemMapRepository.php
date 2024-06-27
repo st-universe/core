@@ -312,20 +312,11 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 ON s.rumps_id = r.id
                 JOIN stu_rumps_categories rc
                 ON r.category_id = rc.id
-                LEFT JOIN stu_map m
+                JOIN stu_map m
                 ON s.map_id = m.id
-                LEFT JOIN stu_sys_map sm 
-                ON s.starsystem_map_id = sm.id
-                LEFT JOIN stu_systems sys
-                ON sm.systems_id = sys.id
-                LEFT JOIN stu_map m2
-                ON m2.systems_id = sys.id
-                WHERE (         m.layer_id = :layerId
-                            AND m.cx = :cx
-                            AND m.cy = :cy
-                        OR      m2.layer_id = :layerId
-                            AND m2.cx = :cx
-                            AND m2.cy = :cy)
+                WHERE m.layer_id = :layerId
+                AND m.cx = :cx
+                AND m.cy = :cy
                 AND NOT EXISTS (SELECT ss.id
                                     FROM stu_ship_system ss
                                     WHERE s.id = ss.ship_id

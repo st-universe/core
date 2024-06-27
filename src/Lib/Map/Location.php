@@ -17,22 +17,47 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 class Location
 {
     private MapInterface|StarSystemMapInterface $location;
+    private ?MapInterface $parentMap;
 
     public function __construct(?MapInterface $map, ?StarSystemMapInterface $sysMap)
     {
         if (
             $map === null && $sysMap === null
-            || $map !== null && $sysMap !== null
         ) {
-            throw new InvalidArgumentException('Either map or systemMap has to be filled');
+            throw new InvalidArgumentException('At least on of Map or systemMap has to be filled');
         }
 
-        $this->location = $map ?? $sysMap;
+        if ($sysMap !== null) {
+
+            if (
+                $map === null
+                && !$sysMap->getSystem()->isWormhole()
+            ) {
+                throw new InvalidArgumentException('Map can only be null in Wormholes');
+            }
+
+            if ($sysMap->getSystem()->getMapField() !== $map) {
+                throw new InvalidArgumentException('System of SystemMap does not belong to current Map Field');
+            }
+        }
+
+        $this->location = $sysMap ?? $map;
+        $this->parentMap = $map;
     }
 
     public function get(): MapInterface|StarSystemMapInterface
     {
         return $this->location;
+    }
+
+    public function getParentMapLocation(): ?Location
+    {
+        $parentMap = $this->parentMap;
+        if ($parentMap === null) {
+            return null;
+        }
+
+        return new Location($parentMap, null);
     }
 
     /**
@@ -93,33 +118,19 @@ class Location
 
     public function getCx(): ?int
     {
-        $field = $this->get();
-
-        if ($field instanceof MapInterface) {
-            return $field->getCx();
-        }
-
-        $system = $field->getSystem();
-        if ($system->isWormhole()) {
+        if ($this->parentMap === null) {
             return null;
         }
 
-        return $system->getCx();
+        return $this->parentMap->getCx();
     }
 
     public function getCy(): ?int
     {
-        $field = $this->get();
-
-        if ($field instanceof MapInterface) {
-            return $field->getCy();
-        }
-
-        $system = $field->getSystem();
-        if ($system->isWormhole()) {
+        if ($this->parentMap === null) {
             return null;
         }
 
-        return $system->getCy();
+        return $this->parentMap->getCy();
     }
 }

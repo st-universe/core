@@ -87,10 +87,7 @@ final class ShowWebEmitter implements ViewControllerInterface
                 $this->loggerUtil->log('C');
                 $possibleTargetList =
                     array_filter(
-                        $this->shipRepository->getByLocation(
-                            $ship->getStarsystemMap(),
-                            $ship->getMap()
-                        ),
+                        $this->shipRepository->getByLocation($ship->getCurrentMapField()),
                         fn (ShipInterface $target): bool => !$target->getCloakState() && !$target->isWarped() && $target !== $ship
                     );
 

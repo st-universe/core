@@ -44,8 +44,7 @@ final class ShowShiplist implements ViewControllerInterface
         $station = $license->getTradePost()->getShip();
 
         $game->setTemplateVar('LIST', $this->shipRepository->getByLocationAndUser(
-            $station->getStarsystemMap(),
-            $station->getMap(),
+            $station->getCurrentMapField(),
             $game->getUser()
         ));
     }

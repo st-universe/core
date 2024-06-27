@@ -30,8 +30,8 @@ class NavPanel
             ];
         }
         return [
-            "cx" => $this->getShip()->getCX(),
-            "cy" => $this->getShip()->getCY()
+            "cx" => $this->getShip()->getMap()->getCx(),
+            "cy" => $this->getShip()->getMap()->getCy()
         ];
     }
 

@@ -59,18 +59,14 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return array<ShipInterface>
      */
     public function getByLocationAndUser(
-        ?StarSystemMapInterface $starSystemMap,
-        ?MapInterface $map,
+        MapInterface|StarSystemMapInterface $field,
         UserInterface $user
     ): array;
 
     /**
      * @return array<ShipInterface>
      */
-    public function getByLocation(
-        ?StarSystemMapInterface $starSystemMap,
-        ?MapInterface $map
-    ): array;
+    public function getByLocation(MapInterface|StarSystemMapInterface $field): array;
 
     /**
      * @return array<ShipInterface>
@@ -143,8 +139,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
-        int $mapId = null,
-        int $sysMapId = null
+        MapInterface|StarSystemMapInterface $field = null
     ): array;
 
     /**
@@ -156,18 +151,11 @@ interface ShipRepositoryInterface extends ObjectRepository
         ShipInterface $ship,
         array $types,
         bool $showCloaked = false,
-        int $mapId = null,
-        int $sysMapId = null
+        MapInterface|StarSystemMapInterface $field = null
     ): array;
 
     public function isCloakedShipAtShipLocation(
         ShipInterface $ship
-    ): bool;
-
-    public function isCloakedShipAtLocation(
-        ?int $sysMapId,
-        ?int $mapId,
-        int $ignoreId
     ): bool;
 
     public function getRandomShipIdWithCrewByUser(int $userId): ?int;

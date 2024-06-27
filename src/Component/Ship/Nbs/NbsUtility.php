@@ -9,7 +9,9 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Fleet\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipNfsIterator;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
@@ -37,32 +39,28 @@ final class NbsUtility implements NbsUtilityInterface
         GameControllerInterface $game,
         ?SessionInterface $session,
         bool $tachyonActive,
-        int $mapId = null,
-        int $sysMapId = null
+        MapInterface|StarSystemMapInterface $field = null
     ): void {
-        if ($ship->getNbs() || $mapId !== null || $sysMapId !== null) {
+        if ($ship->getNbs() || $field !== null) {
             $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
                 [SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION->value],
                 $tachyonActive,
-                $mapId,
-                $sysMapId
+                $field
             ), $game->getUser()->getId());
 
             $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
                 [SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value, SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER->value],
                 $tachyonActive,
-                $mapId,
-                $sysMapId
+                $field
             ), $game->getUser()->getId());
 
             $fleetNbs = new FleetNfsIterator(
                 $this->shipRepository->getFleetShipsScannerResults(
                     $ship,
                     $tachyonActive,
-                    $mapId,
-                    $sysMapId
+                    $field
                 ),
                 $ship,
                 $session,
@@ -91,10 +89,6 @@ final class NbsUtility implements NbsUtilityInterface
     {
         return !$tachyonActive
             && $ship->getTachyonState()
-            && $this->shipRepository->isCloakedShipAtLocation(
-                $ship->getStarsystemMap() !== null ? $ship->getStarsystemMap()->getId() : null,
-                $ship->getMap() !== null ? $ship->getMap()->getId() : null,
-                $ship->getUser()->getId()
-            );
+            && $this->shipRepository->isCloakedShipAtShipLocation($ship);
     }
 }

@@ -2369,16 +2369,6 @@ parameters:
 			path: src/Orm/Repository/RepairTaskRepository.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 7
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 6
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
 			message: """
 				#^Return type of anonymous function has typehint with deprecated class Stu\\\\Orm\\\\Repository\\\\GameRequestRepository\\:
 				Use logfile logging$#

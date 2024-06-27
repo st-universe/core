@@ -47,7 +47,7 @@ class OrbitShipListRetrieverTest extends StuTestCase
             ->andReturn($starSystemMap);
 
         $this->shipRepository->shouldReceive('getByLocation')
-            ->with($starSystemMap, null)
+            ->with($starSystemMap)
             ->once()
             ->andReturn([$ship1, $ship2]);
 

@@ -4,7 +4,9 @@ namespace Stu\Component\Ship\Nbs;
 
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 
 interface NbsUtilityInterface
 {
@@ -15,7 +17,6 @@ interface NbsUtilityInterface
         GameControllerInterface $game,
         ?SessionInterface $session,
         bool $tachyonActive,
-        int $mapId = null,
-        int $sysMapId = null
+        MapInterface|StarSystemMapInterface $field = null
     ): void;
 }
