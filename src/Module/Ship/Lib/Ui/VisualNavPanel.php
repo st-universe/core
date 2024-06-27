@@ -114,21 +114,21 @@ class VisualNavPanel extends AbstractVisualPanel
 
     private function determinePanelCenter(): Location
     {
-        $map = $this->currentShip->getCurrentMapField();
-        if ($map instanceof MapInterface) {
-            return new Location($map, null);
+        $location = $this->currentShip->getLocation();
+        if ($location->isMap()) {
+            return $location;
         }
 
         if (
             $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR
             || $this->currentShip->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE
         ) {
-            $mapOfSystem = $map->getSystem()->getMapField();
+            $parentMapLocation = $location->getParentMapLocation();
 
-            return $mapOfSystem === null ? new Location(null, $map) : new Location($mapOfSystem, null);
+            return $parentMapLocation ?? $location;
         }
 
-        return new Location(null, $map);
+        return $location;
     }
 
     private function createUserMapEntries(): void

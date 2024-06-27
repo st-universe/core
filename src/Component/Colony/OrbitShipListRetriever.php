@@ -25,10 +25,7 @@ final class OrbitShipListRetriever implements OrbitShipListRetrieverInterface
     {
         $result = [];
 
-        $shipList = $this->shipRepository->getByLocation(
-            $colony->getStarsystemMap(),
-            null
-        );
+        $shipList = $this->shipRepository->getByLocation($colony->getStarsystemMap());
 
         foreach ($shipList as $ship) {
             $fleetId = (int) $ship->getFleetId();

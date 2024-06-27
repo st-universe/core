@@ -152,11 +152,11 @@ final class ShowSensorScan implements ViewControllerInterface
         if ($sysid !== 0) {
             $this->loggerUtil->log('system!');
             $game->setTemplateVar('SYSTEM_INTERN', true);
-            $this->nbsUtility->setNbsTemplateVars($station, $game, null, $tachyonActive, null, $mapField->getId());
         } else {
             $this->loggerUtil->log('not:system!');
-            $this->nbsUtility->setNbsTemplateVars($station, $game, null, $tachyonActive, $mapField->getId(), null);
         }
+
+        $this->nbsUtility->setNbsTemplateVars($station, $game, null, $tachyonActive, $mapField);
 
         $game->setTemplateVar('MAPFIELD', $mapField);
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId, $sysid !== 0));

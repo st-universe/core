@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
-use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -211,14 +210,14 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return $this->getEntityManager()->createNativeQuery(
             'SELECT m.cx as x, m.cy AS y,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
-                    WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
+                    WHERE b.map_id = m.id
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
                                         WHERE b.id = ss.ship_id
                                         AND ss.system_type = :cloakSystemId
                                         AND ss.mode > 1)) AS shipcount,
                 (SELECT count(DISTINCT c.id) FROM stu_ships c
-                    WHERE c.cx = m.cx AND c.cy = m.cy AND c.layer_id = m.layer_id
+                    WHERE c.map_id = m.id
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ship_system ss2
                                         WHERE c.id = ss2.ship_id
@@ -242,10 +241,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT m.cx as x, m.cy as y,
-             (SELECT count(distinct b.id)
-                    FROM stu_ships b
-                    JOIN stu_user u ON b.user_id = u.id
-                    WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
+             (SELECT count(distinct s.id)
+                    FROM stu_ships s
+                    JOIN stu_user u ON s.user_id = u.id
+                    WHERE s.map_id = m.id
                     AND u.allys_id = :allyId) as shipcount
             FROM stu_map m
             WHERE m.cx BETWEEN :xStart AND :xEnd
@@ -266,10 +265,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT m.cx as x, m.cy as y,
-            (SELECT count(distinct b.id)
-                FROM stu_ships b
-                WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
-                AND b.id = :shipId) as shipcount
+            (SELECT count(distinct s.id)
+                FROM stu_ships s
+                WHERE s.map_id = m.id
+                AND s.id = :shipId) as shipcount
             FROM stu_map m
             WHERE m.cx BETWEEN :xStart AND :xEnd
             AND m.cy BETWEEN :yStart AND :yEnd
@@ -290,10 +289,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()->createNativeQuery(
             'SELECT m.cx as x, m.cy as y,
-            (SELECT count(distinct b.id)
-                FROM stu_ships b
-                WHERE b.cx = m.cx AND b.cy = m.cy AND b.layer_id = m.layer_id
-                AND b.user_id = :userId) as shipcount
+            (SELECT count(distinct s.id)
+                FROM stu_ships s
+                WHERE s.map_id = m.id
+                AND s.user_id = :userId) as shipcount
             FROM stu_map m
             WHERE m.cx BETWEEN :xStart AND :xEnd
             AND m.cy BETWEEN :yStart AND :yEnd
@@ -590,6 +589,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                         ON s.rumps_id = r2.id
                         AND r2.category_id != :rumpCategory
                         WHERE s.user_id >= :firstUserId
+                        AND s.starsystem_map_id IS NULL
                         AND s.state != :state
                         AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss

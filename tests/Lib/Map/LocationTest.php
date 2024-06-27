@@ -17,19 +17,40 @@ class LocationTest extends StuTestCase
 {
     public function testConstructorExpectExceptionWhenBothNull(): void
     {
-        static::expectExceptionMessage('Either map or systemMap has to be filled');
+        static::expectExceptionMessage('At least on of Map or systemMap has to be filled');
         static::expectException(InvalidArgumentException::class);
 
         new Location(null, null);
     }
 
-    public function testConstructorExpectExceptionWhenBothNotNull(): void
+    public function testConstructorExpectExceptionWhenMapNullButNotWormhole(): void
     {
-        static::expectExceptionMessage('Either map or systemMap has to be filled');
+        static::expectExceptionMessage('Map can only be null in Wormholes');
+        static::expectException(InvalidArgumentException::class);
+
+        $sysMap = $this->mock(StarSystemMapInterface::class);
+
+        $sysMap->shouldReceive('getSystem->isWormhole')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        new Location(null, $sysMap);
+    }
+
+    public function testConstructorExpectExceptionWhenMapNotParentOfSystemMap(): void
+    {
+        static::expectExceptionMessage('System of SystemMap does not belong to current Map Field');
         static::expectException(InvalidArgumentException::class);
 
         $map = $this->mock(MapInterface::class);
+        $otherMap = $this->mock(MapInterface::class);
         $sysMap = $this->mock(StarSystemMapInterface::class);
+
+        $sysMap->shouldReceive('getSystem->getMapField')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($otherMap);
 
         new Location($map, $sysMap);
     }
@@ -58,6 +79,14 @@ class LocationTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($ships);
+        $sysMap->shouldReceive('getSystem->isWormhole')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $sysMap->shouldReceive('getSystem->getMapField')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $location = new Location(null, $sysMap);
 

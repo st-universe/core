@@ -45,10 +45,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
             false
         );
 
-        $shipList = $this->shipRepository->getByLocation(
-            $colony->getStarsystemMap(),
-            null
-        );
+        $shipList = $this->shipRepository->getByLocation($colony->getStarsystemMap());
 
         $groupedList = [];
 

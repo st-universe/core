@@ -11,7 +11,7 @@
 					<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" />
 				</td>
 				<th>Standort</th>
-				<td>${ship/getCX}|${ship/getCY}</td>
+				<td>${ship/getSectorString}</td>
 			</tr>
 			<tr tal:condition="IS_NPC_TRADEPOST">
 				<th>Handelsnetz</th>

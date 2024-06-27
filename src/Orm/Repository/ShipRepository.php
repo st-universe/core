@@ -31,7 +31,6 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipSystem;
-use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Storage;
@@ -117,32 +116,32 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable
     {
-        $isSystem = $fleetLeader->getSystem() !== null;
-
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                WHERE s.%s = :mapId
+                WHERE s.map = :map
+                AND s.starsystem_map = :systemMap
                 AND s.fleets_id IS NULL
                 AND s.user_id = :userId
                 AND s.type = :type
                 ORDER BY s.rumps_id ASC, s.name ASC',
-                Ship::class,
-                $isSystem ? 'starsystem_map_id' : 'map_id'
+                Ship::class
             )
         )->setParameters([
             'userId' => $fleetLeader->getUser()->getId(),
             'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value,
-            'mapId' => $isSystem ? $fleetLeader->getStarsystemMap()->getId() : $fleetLeader->getMap()->getId()
+            'map' => $fleetLeader->getMap(),
+            'systemMap' => $fleetLeader->getStarsystemMap(),
         ])->getResult();
     }
 
-    public function getByLocationAndUser(?StarSystemMapInterface $starSystemMap, ?MapInterface $map, UserInterface $user): array
+    public function getByLocationAndUser(MapInterface|StarSystemMapInterface $field, UserInterface $user): array
     {
         return $this->findBy([
-            'user_id' => $user->getId(),
-            'starsystem_map_id' => $starSystemMap !== null ? $starSystemMap->getId() : null,
-            'map_id' => $map !== null ? $map->getId() : null
+            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP,
+            'user' => $user,
+            'starsystem_map' => $field instanceof MapInterface ? null : $field->getId(),
+            'map' => $field instanceof MapInterface ? $field->getId() : $field->getSystem()->getMapField()
         ], [
             'fleets_id' => 'desc',
             'is_fleet_leader' => 'desc',
@@ -150,10 +149,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
-    public function getByLocation(
-        ?StarSystemMapInterface $starSystemMap,
-        ?MapInterface $map
-    ): array {
+    public function getByLocation(MapInterface|StarSystemMapInterface $field): array
+    {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -162,7 +159,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     WITH s.fleets_id = f.id
                     JOIN %s r
                     WITH s.rumps_id = r.id
-                    WHERE s.%s = :mapId
+                    WHERE s.map = :map
+                    AND s.starsystem_map = :systemMap
                     AND NOT EXISTS (SELECT ss.id
                                         FROM %s ss
                                         WHERE s.id = ss.ship_id
@@ -173,12 +171,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     Ship::class,
                     Fleet::class,
                     ShipRump::class,
-                    $starSystemMap === null ? 'map_id' : 'starsystem_map_id',
                     ShipSystem::class
                 )
             )
             ->setParameters([
-                'mapId' => $starSystemMap === null ? $map->getId() : $starSystemMap->getId(),
+                'map' => $field instanceof MapInterface ? $field : $field->getSystem()->getMapField(),
+                'systemMap' => $field instanceof MapInterface ? null : $field,
                 'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
             ])
             ->getResult();
@@ -199,7 +197,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                      WITH s.starsystem_map_id = sm.id
                      WHERE s.user_id NOT IN (:ignoreIds)
                      AND s.type = :spacecraftType
-                     AND (:cx = 0 OR (m.cx BETWEEN (:cx - 1) AND (:cx + 1)
+                     AND (:layerId = 0 OR (m.layer_id = :layerId
+                        AND m.cx BETWEEN (:cx - 1) AND (:cx + 1)
                         AND m.cy BETWEEN (:cy - 1) AND (:cy + 1)))
                      AND (:systemId = 0 OR (sm.systems_id = :systemId
                         AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
@@ -215,8 +214,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
                 'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
                 'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
-                'cx' => $map === null ? 0 : $map->getCx(),
-                'cy' => $map === null ? 0 : $map->getCy()
+                'layerId' => ($systemMap !== null || $map === null) ? 0 : $map->getLayer()->getId(),
+                'cx' => ($systemMap !== null || $map === null) ? 0 : $map->getCx(),
+                'cy' => ($systemMap !== null || $map === null) ? 0 : $map->getCy()
             ])
             ->getResult();
     }
@@ -224,7 +224,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getShipsForAlertRed(
         ShipInterface $ship
     ): iterable {
-        $isSystem = $ship->getSystem() !== null;
 
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -233,7 +232,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WITH s.user_id = u.id
                 WHERE s.alvl = :alertRed
                 AND s.user_id != :ignoreId
-                AND s.%s = :mapId
+                AND s.map = :map
+                AND s.starsystem_map = :systemMap
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
                                 WHERE s.id = ss.ship_id
@@ -247,13 +247,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
                 Ship::class,
                 User::class,
-                $isSystem ? 'starsystem_map_id' : 'map_id',
                 ShipSystem::class,
                 ShipSystem::class
             )
         )->setParameters([
             'alertRed' => ShipAlertStateEnum::ALERT_RED,
-            'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'map' => $ship->getMap(),
+            'systemMap' => $ship->getStarsystemMap(),
             'ignoreId' => $ship->getUser()->getId(),
             'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
             'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE->value,
@@ -477,10 +477,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
-        int $mapId = null,
-        int $sysMapId = null
+        MapInterface|StarSystemMapInterface $field = null
     ): array {
-        $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(TFleetShipItem::class, 's');
@@ -489,7 +487,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addFieldResult('s', 'isblocking', 'is_blocking');
         $this->addTShipItemFields($rsm);
 
-        return $this->getEntityManager()->createNativeQuery(
+        if ($field !== null) {
+            $map = $field instanceof MapInterface ? $field : $field->getSystem()->getMapField();
+            $systemMap = $field instanceof MapInterface ? null : $field;
+        } else {
+            $map = $ship->getMap();
+            $systemMap = $ship->getStarsystemMap();
+        }
+
+        $query = $this->getEntityManager()->createNativeQuery(
             sprintf(
                 'SELECT f.id as fleetid, f.name as fleetname, f.defended_colony_id is not null as isdefending,
                     f.blocked_colony_id is not null as isblocking, s.id as shipid, s.rumps_id as rumpid, s.former_rumps_id as formerrumpid,
@@ -525,38 +531,55 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ON s.holding_web_id = tw.id
                 JOIN stu_user u
                 ON s.user_id = u.id
-                WHERE s.%s = :fieldId
+                WHERE s.map_id %s
+                AND s.starsystem_map_id %s
                 AND s.id != :ignoreId
                 %s
                 ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
-                $isSystem ? 'starsystem_map_id' : 'map_id',
+                $map === null ? 'IS NULL' :  '= :mapId',
+                $systemMap === null ? 'IS NULL' :  '= :systemMapId',
                 $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
             $rsm
         )->setParameters([
-            'fieldId' => $mapId ?? $sysMapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE->value,
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS->value,
             'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK->value
-        ])->getResult();
+        ]);
+
+        if ($map !== null) {
+            $query->setParameter('mapId', $map->getId());
+        }
+
+        if ($systemMap !== null) {
+            $query->setParameter('systemMapId', $systemMap->getId());
+        }
+
+        return $query->getResult();
     }
 
     public function getSingleShipScannerResults(
         ShipInterface $ship,
         array $types,
         bool $showCloaked = false,
-        int $mapId = null,
-        int $sysMapId = null
+        MapInterface|StarSystemMapInterface $field = null
     ): array {
-        $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(TShipItem::class, 's');
         $this->addTShipItemFields($rsm);
 
-        return $this->getEntityManager()->createNativeQuery(
+        if ($field !== null) {
+            $map = $field instanceof MapInterface ? $field : $field->getSystem()->getMapField();
+            $systemMap = $field instanceof MapInterface ? null : $field;
+        } else {
+            $map = $ship->getMap();
+            $systemMap = $ship->getStarsystemMap();
+        }
+
+        $query = $this->getEntityManager()->createNativeQuery(
             sprintf(
                 'SELECT s.id as shipid, s.fleets_id as fleetid, s.rumps_id as rumpid , s.former_rumps_id as formerrumpid, ss.mode as warpstate,
                     twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
@@ -589,25 +612,36 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ON s.holding_web_id = tw.id
                 JOIN stu_user u
                 ON s.user_id = u.id
-                WHERE s.%s = :fieldId
+                WHERE s.map_id %s
+                AND s.starsystem_map_id %s
                 AND s.id != :ignoreId
                 AND s.fleets_id IS NULL
                 AND s.type IN (:types)
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
-                $isSystem ? 'starsystem_map_id' : 'map_id',
+                $map === null ? 'IS NULL' :  '= :mapId',
+                $systemMap === null ? 'IS NULL' :  '= :systemMapId',
                 $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
             $rsm
         )->setParameters([
-            'fieldId' => $mapId ?? $sysMapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
             'types' => $types,
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE->value,
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS->value,
             'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK->value
-        ])->getResult();
+        ]);
+
+        if ($map !== null) {
+            $query->setParameter('mapId', $map->getId());
+        }
+
+        if ($systemMap !== null) {
+            $query->setParameter('systemMapId', $systemMap->getId());
+        }
+
+        return $query->getResult();
     }
 
     private function addTShipItemFields(ResultSetMapping $rsm): void
@@ -641,18 +675,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function isCloakedShipAtShipLocation(
         ShipInterface $ship
     ): bool {
-        return $this->isCloakedShipAtLocation(
-            $ship->getStarsystemMap()->getId(),
-            $ship->getMap()->getId(),
-            $ship->getUser()->getId()
-        );
-    }
-
-    public function isCloakedShipAtLocation(
-        ?int $sysMapId,
-        ?int $mapId,
-        int $ignoreId
-    ): bool {
         $cloakSql = sprintf(
             ' AND EXISTS (SELECT ss.id
                             FROM %s ss
@@ -663,19 +685,23 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ShipSystemTypeEnum::SYSTEM_CLOAK->value
         );
 
+        $map = $ship->getMap();
+        $systemMap = $ship->getStarsystemMap();
+
         $result = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
-                    WHERE s.%s = :fieldId
+                    WHERE s.map = :map
+                    AND s.starsystem_map = :systemMap
                     %s
                     AND s.user_id != :ignoreId',
                 Ship::class,
-                $sysMapId !== null ? 'starsystem_map_id' : 'map_id',
                 $cloakSql
             )
         )->setParameters([
-            'fieldId' => $mapId ?? $sysMapId,
-            'ignoreId' => $ignoreId
+            'map' => $map,
+            'systemMap' => $systemMap,
+            'ignoreId' => $ship->getUser()->getId()
         ])->getSingleScalarResult();
 
         return $result > 0;
@@ -707,18 +733,17 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function isBaseOnLocation(ShipInterface $ship): bool
     {
-        $isSystem = $ship->getSystem() !== null;
-
         $query = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
-                WHERE s.%s = :mapId
+                WHERE s.map = :map
+                AND s.starsystem_map = :systemMap
                 AND s.type = :type',
-                Ship::class,
-                $isSystem ? 'starsystem_map_id' : 'map_id',
+                Ship::class
             )
         )->setParameters([
-            'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'map' => $ship->getMap(),
+            'systemMap' => $ship->getStarsystemMap(),
             'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION->value
         ]);
 
@@ -782,24 +807,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                LEFT JOIN %s m
+                JOIN %s m
                 WITH s.map_id = m.id
-                LEFT JOIN %s sm 
-                WITH s.starsystem_map_id = sm.id
-                LEFT JOIN %s sys
-                WITH sm.systems_id = sys.id
-                LEFT JOIN %2$s m2
-                WITH m2.systems_id = sys.id
                 JOIN %s u
                 WITH s.user_id = u.id
                 LEFT JOIN %s w
                 WITH u.id = w.user_id
-                WHERE (         m.layer_id = :layerId
-                            AND m.cx BETWEEN :minX AND :maxX
-                            AND m.cy BETWEEN :minY AND :maxY
-                        OR      m2.layer_id = :layerId
-                            AND m2.cx BETWEEN :minX AND :maxX
-                            AND m2.cy BETWEEN :minY AND :maxY)
+                WHERE m.layer_id = :layerId
+                AND m.cx BETWEEN :minX AND :maxX
+                AND m.cy BETWEEN :minY AND :maxY
                 AND s.type = :shipType
                 AND (s.fleets_id IS NULL OR s.is_fleet_leader = true)
                 AND u.id >= :firstUserId
@@ -809,8 +825,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
                 Ship::class,
                 Map::class,
-                StarSystemMap::class,
-                StarSystem::class,
                 User::class,
                 PirateWrath::class
             )
@@ -844,26 +858,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                LEFT JOIN %s m
+                JOIN %s m
                 WITH s.map_id = m.id
-                LEFT JOIN %s sm 
-                WITH s.starsystem_map_id = sm.id
-                LEFT JOIN %s sys
-                WITH sm.systems_id = sys.id
-                LEFT JOIN %2$s m2
-                WITH m2.systems_id = sys.id
-                WHERE (         m.layer_id = :layerId
-                            AND m.cx BETWEEN :minX AND :maxX
-                            AND m.cy BETWEEN :minY AND :maxY
-                        OR      m2.layer_id = :layerId
-                            AND m2.cx BETWEEN :minX AND :maxX
-                            AND m2.cy BETWEEN :minY AND :maxY)
+                WHERE m.layer_id = :layerId
+                AND m.cx BETWEEN :minX AND :maxX
+                AND m.cy BETWEEN :minY AND :maxY
                 AND s.id != :shipId
                 AND s.user_id = :kazonUserId',
                 Ship::class,
-                Map::class,
-                StarSystemMap::class,
-                StarSystem::class
+                Map::class
             )
         )
             ->setParameters([
