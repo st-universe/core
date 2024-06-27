@@ -82,6 +82,6 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
             }
         }
 
-        $this->trackerDeviceManager->deactivateTrackerIfExisting($wrapper);
+        $this->trackerDeviceManager->deactivateTrackerIfActive($wrapper, false);
     }
 }

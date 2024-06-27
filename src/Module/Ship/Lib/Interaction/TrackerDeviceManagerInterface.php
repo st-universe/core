@@ -7,10 +7,14 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface TrackerDeviceManagerInterface
 {
-    public function deactivateTrackerIfExisting(ShipWrapperInterface $wrapper): void;
-
     public function resetTrackersOfTrackedShip(
         ShipWrapperInterface $trackedShipWrapper,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        bool $sendPmToTargetOwner
+    ): void;
+
+    public function deactivateTrackerIfActive(
+        ShipWrapperInterface $wrapper,
+        bool $sendPmToTargetOwner
     ): void;
 }

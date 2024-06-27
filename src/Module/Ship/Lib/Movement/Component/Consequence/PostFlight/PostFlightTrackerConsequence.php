@@ -30,10 +30,11 @@ class PostFlightTrackerConsequence extends AbstractFlightConsequence
             return;
         }
 
-        $this->trackerDeviceManager->deactivateTrackerIfExisting($wrapper);
+        $this->trackerDeviceManager->deactivateTrackerIfActive($wrapper, false);
         $this->trackerDeviceManager->resetTrackersOfTrackedShip(
             $wrapper,
-            $this->shipSystemManager
+            $this->shipSystemManager,
+            false
         );
     }
 }

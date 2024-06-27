@@ -26,7 +26,8 @@ class ResetTrackerDevices implements ShipDestructionHandlerInterface
 
         $this->trackerDeviceManager->resetTrackersOfTrackedShip(
             $destroyedShipWrapper,
-            $this->shipSystemManager
+            $this->shipSystemManager,
+            false
         );
     }
 }

@@ -170,8 +170,8 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfExisting')
-            ->with($this->wrapper)
+        $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfActive')
+            ->with($this->wrapper, false)
             ->once();
 
         //wrapper
