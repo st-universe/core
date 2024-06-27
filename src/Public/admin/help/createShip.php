@@ -11,6 +11,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 
 @session_start();
 
@@ -28,6 +29,7 @@ Init::run(function (ContainerInterface $dic): void {
     $userRepo = $dic->get(UserRepositoryInterface::class);
     $shipCreator = $dic->get(ShipCreatorInterface::class);
     $mapRepo = $dic->get(MapRepositoryInterface::class);
+    $layerRepo = $dic->get(LayerRepositoryInterface::class);
 
     $userId = request::indInt('userId');
     $buildplanId = request::indInt('buildplanId');
@@ -36,14 +38,14 @@ Init::run(function (ContainerInterface $dic): void {
 
     if ($torptypeId > 0 || $noTorps) {
         $plan = $buildplanRepo->find($buildplanId);
-        $layerId = request::postIntFatal('layer');
+        $layer = $layerRepo->find(request::postIntFatal('layer'));
         $cx = request::postIntFatal('cx');
         $cy = request::postIntFatal('cy');
         $shipcount = request::postIntFatal('shipcount');
         for ($i = 0; $i < $shipcount; $i++) {
             $shipCreator
                 ->createBy($userId, $plan->getRump()->getId(), $plan->getId())
-                ->setLocation($mapRepo->getByCoordinates($layerId, $cx, $cy))
+                ->setLocation($mapRepo->getByCoordinates($layer, $cx, $cy))
                 ->maxOutSystems()
                 ->createCrew()
                 ->setTorpedo($torptypeId)
