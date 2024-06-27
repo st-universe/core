@@ -21,6 +21,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
+use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -28,7 +29,6 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Tick\Ship\ManagerComponent\ManagerComponentInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -54,6 +54,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         private StationUtilityInterface $stationUtility,
         private RepairUtilInterface $repairUtil,
         private ShipTakeoverManagerInterface $shipTakeoverManager,
+        private TrackerDeviceManagerInterface $trackerDeviceManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
@@ -548,46 +549,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         if ($remainingTicks > $reduceByTicks) {
             $tracker->setRemainingTicks($remainingTicks - $reduceByTicks)->update();
         } else {
-            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACKER, true);
-
-            if ($target->getUser() !== $ship->getUser()) {
-                //send pm to target owner
-                $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
-                    $target->getUser()->getId(),
-                    sprintf(
-                        'Die Crew der %s hat einen Transponder gefunden und deaktiviert. %s',
-                        $target->getName(),
-                        $this->getTrackerSource($ship->getUser())
-                    ),
-                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
-                );
-
-                //send pm to tracker owner
-                $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
-                    $ship->getUser()->getId(),
-                    sprintf(
-                        'Die %s hat die Verbindung zum Tracker verloren',
-                        $ship->getName()
-                    ),
-                    PrivateMessageFolderTypeEnum::SPECIAL_SHIP
-                );
-            }
-        }
-    }
-
-    private function getTrackerSource(UserInterface $user): string
-    {
-        switch (random_int(0, 2)) {
-            case 0:
-                return _('Der Ursprung kann nicht identifiziert werden');
-            case 1:
-                return sprintf(_('Der Ursprung lässt auf %s schließen'), $user->getName());
-            case 2:
-                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction()->getName());
-            default:
-                return '';
+            $this->trackerDeviceManager->deactivateTrackerIfActive($wrapper, true);
         }
     }
 

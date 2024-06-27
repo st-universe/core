@@ -104,11 +104,11 @@ class PostFlightTrackerConsequenceTest extends StuTestCase
             ->andReturn(RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY);
 
 
-        $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfExisting')
-            ->with($this->wrapper)
+        $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfActive')
+            ->with($this->wrapper, false)
             ->once();
         $this->trackerDeviceManager->shouldReceive('resetTrackersOfTrackedShip')
-            ->with($this->wrapper, $this->shipSystemManager)
+            ->with($this->wrapper, $this->shipSystemManager, false)
             ->once();
 
         $this->subject->trigger(
