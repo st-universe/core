@@ -40,7 +40,6 @@ use Stu\Module\Ship\Lib\Battle\FightLib;
 #[Index(name: 'ship_fleet_idx', columns: ['fleets_id'])]
 #[Index(name: 'ship_map_idx', columns: ['map_id'])]
 #[Index(name: 'ship_starsystem_map_idx', columns: ['starsystem_map_id'])]
-#[Index(name: 'outer_system_location_idx', columns: ['cx', 'cy'])]
 #[Index(name: 'ship_rump_idx', columns: ['rumps_id'])]
 #[Index(name: 'ship_web_idx', columns: ['holding_web_id'])]
 #[Index(name: 'ship_user_idx', columns: ['user_id'])]
@@ -65,15 +64,6 @@ class Ship implements ShipInterface
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $fleets_id = null;
-
-    #[Column(type: 'integer', length: 5, nullable: true)]
-    private ?int $layer_id = null;
-
-    #[Column(type: 'integer', length: 5, nullable: true)]
-    private ?int $cx = null;
-
-    #[Column(type: 'integer', length: 5, nullable: true)]
-    private ?int $cy = null;
 
     #[Column(type: 'smallint', length: 1)]
     private int $direction = 0;
