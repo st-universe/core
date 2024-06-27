@@ -11,20 +11,13 @@ use Stu\Orm\Repository\AnomalyRepositoryInterface;
 
 final class AnomalyHandling implements AnomalyHandlingInterface
 {
-    private AnomalyRepositoryInterface $anomalyRepository;
-
-    /** @var array<int, AnomalyHandlerInterface> */
-    private array $handlerList;
-
     /**
      * @param array<int, AnomalyHandlerInterface> $handlerList
      */
     public function __construct(
-        AnomalyRepositoryInterface $anomalyRepository,
-        array $handlerList
+        private AnomalyRepositoryInterface $anomalyRepository,
+        private array $handlerList
     ) {
-        $this->anomalyRepository = $anomalyRepository;
-        $this->handlerList = $handlerList;
     }
 
     public function processExistingAnomalies(): void
