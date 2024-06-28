@@ -50,7 +50,11 @@ class SystemDataDeserializerTest extends StuTestCase
 
     public function testGetHullSystemData(): void
     {
-        $hullSystemData = new HullSystemData();
+        $hullSystemData = $this->mock(HullSystemData::class);
+
+        $hullSystemData->shouldReceive('setShip')
+            ->with($this->ship)
+            ->once();
 
         $this->shipSystemDataFactory->shouldReceive('createSystemData')
             ->with(ShipSystemTypeEnum::SYSTEM_HULL, $this->shipWrapperFactory)

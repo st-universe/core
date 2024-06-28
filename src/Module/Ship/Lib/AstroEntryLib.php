@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 final class AstroEntryLib implements AstroEntryLibInterface
@@ -19,10 +19,16 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $this->astroEntryRepository = $astroEntryRepository;
     }
 
-    public function cancelAstroFinalizing(ShipInterface $ship): void
+    public function cancelAstroFinalizing(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
+
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
-        $ship->setAstroStartTurn(null);
+        $astroLab = $wrapper->getAstroLaboratorySystemData();
+        if ($astroLab === null) {
+            throw new RuntimeException('this should not happen');
+        }
+        $astroLab->setAstroStartTurn(null)->update();
 
         $entry = $this->astroEntryRepository->getByShipLocation($ship, false);
 
@@ -31,10 +37,17 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $this->astroEntryRepository->save($entry);
     }
 
-    public function finish(ShipInterface $ship): void
+    public function finish(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
+
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
-        $ship->setAstroStartTurn(null);
+
+        $astroLab = $wrapper->getAstroLaboratorySystemData();
+        if ($astroLab === null) {
+            throw new RuntimeException('this should not happen');
+        }
+        $astroLab->setAstroStartTurn(null)->update();
 
         $entry = $this->astroEntryRepository->getByShipLocation($ship, false);
 

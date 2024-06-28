@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AstroMapping;
 
 use request;
+use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
@@ -90,7 +91,12 @@ final class StartAstroMapping implements ActionControllerInterface
 
         $epsSystem->lowerEps(AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST)->update();
         $ship->setState(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
-        $ship->setAstroStartTurn($game->getCurrentRound()->getTurn());
+
+        $astroLab = $wrapper->getAstroLaboratorySystemData();
+        if ($astroLab === null) {
+            throw new RuntimeException('this should not happen');
+        }
+        $astroLab->setAstroStartTurn($game->getCurrentRound()->getTurn())->update();
         $this->shipRepository->save($ship);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);

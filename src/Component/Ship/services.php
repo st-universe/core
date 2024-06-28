@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship;
 
+use Stu\Component\Refactor\RefactorRunner;
 use Stu\Component\Ship\Crew\ShipCrewCalculator;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
-use Stu\Component\Ship\Refactor\RefactorUserSettingsRunner;
 use Stu\Component\Ship\Repair\CancelRepair;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Repair\RepairUtil;
@@ -105,5 +105,5 @@ return [
         autowire(StuTime::class)
     ),
     ShipCrewCalculatorInterface::class => autowire(ShipCrewCalculator::class),
-    RefactorUserSettingsRunner::class => autowire(RefactorUserSettingsRunner::class),
+    RefactorRunner::class => autowire(RefactorRunner::class),
 ];

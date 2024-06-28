@@ -37,7 +37,7 @@ class AstroMappingConsequence extends AbstractFlightConsequence
             );
             $messages->add($message);
 
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
+            $this->astroEntryLib->cancelAstroFinalizing($wrapper);
         }
     }
 }

@@ -119,7 +119,7 @@ class AstroMappingConsequenceTest extends StuTestCase
             }));
 
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
 
         $this->subject->trigger(

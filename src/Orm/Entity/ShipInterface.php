@@ -164,8 +164,6 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function getAstroStartTurn(): ?int;
 
-    public function setAstroStartTurn(?int $turn): ShipInterface;
-
     public function getIsFleetLeader(): bool;
 
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;

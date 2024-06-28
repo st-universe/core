@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
 
 class HullSystemData extends AbstractSystemData
@@ -11,6 +12,11 @@ class HullSystemData extends AbstractSystemData
     public function update(): void
     {
         //nothing to do here
+    }
+
+    function getSystemType(): ShipSystemTypeEnum
+    {
+        return ShipSystemTypeEnum::SYSTEM_HULL;
     }
 
     public function getHullStatusBar(): string

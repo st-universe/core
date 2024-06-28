@@ -54,7 +54,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
     {
         $ship = $wrapper->get();
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
+            $this->astroEntryLib->cancelAstroFinalizing($wrapper);
         }
 
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -64,7 +64,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
     {
         $ship = $wrapper->get();
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
+            $this->astroEntryLib->cancelAstroFinalizing($wrapper);
         }
     }
 }

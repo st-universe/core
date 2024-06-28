@@ -112,7 +112,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
         //wrapper
         $this->wrapper->shouldReceive('get')
@@ -127,8 +127,8 @@ class LongRangeScannerShipSystemTest extends StuTestCase
     {
         $trackerSystemData = new TrackerSystemData(
             $this->mock(ShipRepositoryInterface::class),
-            $this->mock(ShipSystemRepositoryInterface::class),
-            $this->mock(ShipWrapperFactoryInterface::class)
+            $this->mock(ShipWrapperFactoryInterface::class),
+            $this->mock(ShipSystemRepositoryInterface::class)
         );
         $trackerSystemData->setTarget(42);
 
@@ -167,7 +167,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
 
         $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfActive')

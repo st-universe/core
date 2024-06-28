@@ -6,7 +6,6 @@ namespace Stu\Component\Ship\System\Data;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 class EpsSystemData extends AbstractSystemData
 {
@@ -20,20 +19,9 @@ class EpsSystemData extends AbstractSystemData
     public int $batteryCooldown = 0;
     public bool $reloadBattery = false;
 
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    public function __construct(ShipSystemRepositoryInterface $shipSystemRepository)
+    function getSystemType(): ShipSystemTypeEnum
     {
-        $this->shipSystemRepository = $shipSystemRepository;
-    }
-
-    public function update(): void
-    {
-        $this->updateSystemData(
-            ShipSystemTypeEnum::SYSTEM_EPS,
-            $this,
-            $this->shipSystemRepository
-        );
+        return ShipSystemTypeEnum::SYSTEM_EPS;
     }
 
     public function getEps(): int
