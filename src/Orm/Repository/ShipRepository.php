@@ -119,8 +119,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                WHERE ((s.map = :map AND s.starsystem_map IS NULL) OR
-                (s.map = :map AND s.starsystem_map = :systemMap))
+                WHERE ((s.map = :map AND s.starsystem_map IS NULL)
+                OR (s.map = :map AND s.starsystem_map = :systemMap) 
+                OR (s.map IS NULL AND s.starsystem_map = :systemMap))
                 AND s.fleets_id IS NULL
                 AND s.user_id = :userId
                 AND s.type = :type
@@ -159,8 +160,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     WITH s.fleets_id = f.id
                     JOIN %s r
                     WITH s.rumps_id = r.id
-                    WHERE s.map = :map
-                    AND s.starsystem_map = :systemMap
+                    WHERE ((s.map = :map AND s.starsystem_map IS NULL)
+                    OR (s.map = :map AND s.starsystem_map = :systemMap) 
+                    OR (s.map IS NULL AND s.starsystem_map = :systemMap))
                     AND NOT EXISTS (SELECT ss.id
                                         FROM %s ss
                                         WHERE s.id = ss.ship_id
@@ -691,8 +693,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $result = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
-                    WHERE s.map = :map
-                    AND s.starsystem_map = :systemMap
+                    WHERE ((s.map = :map AND s.starsystem_map IS NULL)
+                    OR (s.map = :map AND s.starsystem_map = :systemMap) 
+                    OR (s.map IS NULL AND s.starsystem_map = :systemMap))
                     %s
                     AND s.user_id != :ignoreId',
                 Ship::class,
@@ -736,8 +739,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $query = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
-                WHERE s.map = :map
-                AND s.starsystem_map = :systemMap
+                WHERE ((s.map = :map AND s.starsystem_map IS NULL)
+                OR (s.map = :map AND s.starsystem_map = :systemMap) 
+                OR (s.map IS NULL AND s.starsystem_map = :systemMap))
                 AND s.type = :type',
                 Ship::class
             )
