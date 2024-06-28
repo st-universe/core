@@ -160,9 +160,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     WITH s.fleets_id = f.id
                     JOIN %s r
                     WITH s.rumps_id = r.id
-                    WHERE ((s.map = :map AND s.starsystem_map IS NULL)
-                    OR (s.map = :map AND s.starsystem_map = :systemMap) 
-                    OR (s.map IS NULL AND s.starsystem_map = :systemMap))
+                    WHERE  s.map = :map AND s.starsystem_map = :systemMap
+                    
                     AND NOT EXISTS (SELECT ss.id
                                         FROM %s ss
                                         WHERE s.id = ss.ship_id
