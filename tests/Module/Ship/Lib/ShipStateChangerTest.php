@@ -131,7 +131,7 @@ class ShipStateChangerTest extends StuTestCase
             ->andReturn(false);
 
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
 
         $this->ship->shouldReceive('setState')

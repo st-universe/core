@@ -3,6 +3,7 @@
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
@@ -87,6 +88,8 @@ interface ShipWrapperInterface
     public function getTrackerSystemData(): ?TrackerSystemData;
 
     public function getWebEmitterSystemData(): ?WebEmitterSystemData;
+
+    public function getAstroLaboratorySystemData(): ?AstroLaboratorySystemData;
 
     public function getReactorWrapper(): ?ReactorWrapperInterface;
 }

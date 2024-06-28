@@ -746,12 +746,6 @@ class Ship implements ShipInterface
         return $this->astro_start_turn;
     }
 
-    public function setAstroStartTurn(?int $turn): ShipInterface
-    {
-        $this->astro_start_turn = $turn;
-        return $this;
-    }
-
     public function getIsFleetLeader(): bool
     {
         return $this->getFleet() !== null && $this->is_fleet_leader;

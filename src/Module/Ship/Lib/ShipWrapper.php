@@ -13,6 +13,7 @@ use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AbstractSystemData;
+use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\FusionCoreSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
@@ -345,10 +346,14 @@ final class ShipWrapper implements ShipWrapperInterface
         }
 
         $currentTurn = $this->game->getCurrentRound()->getTurn();
-        if ($state === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        $astroLab = $this->getAstroLaboratorySystemData();
+        if (
+            $state === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING
+            && $astroLab !== null
+        ) {
             return ['map1', sprintf(
                 'Schiff kartographiert (noch %d Runden)',
-                $ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH - $currentTurn
+                $astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH - $currentTurn
             )];
         }
 
@@ -460,6 +465,14 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB,
             WebEmitterSystemData::class
+        );
+    }
+
+    public function getAstroLaboratorySystemData(): ?AstroLaboratorySystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY,
+            AstroLaboratorySystemData::class
         );
     }
 

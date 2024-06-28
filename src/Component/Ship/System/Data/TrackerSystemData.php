@@ -17,29 +17,17 @@ class TrackerSystemData extends AbstractSystemData
     public ?int $targetId = null;
     public int $remainingTicks = 0;
 
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        private ShipRepositoryInterface $shipRepository,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        ShipSystemRepositoryInterface $shipSystemRepository
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+        parent::__construct($shipSystemRepository);
     }
 
-    public function update(): void
+    function getSystemType(): ShipSystemTypeEnum
     {
-        $this->updateSystemData(
-            ShipSystemTypeEnum::SYSTEM_TRACKER,
-            $this,
-            $this->shipSystemRepository
-        );
+        return ShipSystemTypeEnum::SYSTEM_TRACKER;
     }
 
     public function getTargetWrapper(): ?ShipWrapperInterface

@@ -107,8 +107,8 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     {
         $trackerSystemData = new TrackerSystemData(
             $this->mock(ShipRepositoryInterface::class),
-            $this->mock(ShipSystemRepositoryInterface::class),
-            $this->mock(ShipWrapperFactoryInterface::class)
+            $this->mock(ShipWrapperFactoryInterface::class),
+            $this->mock(ShipSystemRepositoryInterface::class)
         );
         $trackerSystemData->setTarget(42);
 
@@ -200,7 +200,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
 
         $this->system->deactivate($this->wrapper);
@@ -227,7 +227,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
 
         $this->trackerDeviceManager->shouldReceive('deactivateTrackerIfActive')

@@ -14,25 +14,16 @@ class WebEmitterSystemData extends AbstractSystemData
     public ?int $webUnderConstructionId = null;
     public ?int $ownedWebId = null;
 
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
-
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
-        TholianWebRepositoryInterface $tholianWebRepository
+        private TholianWebRepositoryInterface $tholianWebRepository
     ) {
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->tholianWebRepository = $tholianWebRepository;
+        parent::__construct($shipSystemRepository);
     }
 
-    public function update(): void
+    function getSystemType(): ShipSystemTypeEnum
     {
-        $this->updateSystemData(
-            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB,
-            $this,
-            $this->shipSystemRepository
-        );
+        return ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB;
     }
 
     public function getWebUnderConstruction(): ?TholianWebInterface

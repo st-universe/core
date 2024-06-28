@@ -6,7 +6,7 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
 use Psr\Container\ContainerInterface;
-use Stu\Component\Ship\Refactor\RefactorUserSettingsRunner;
+use Stu\Component\Refactor\RefactorRunner;
 
 final class RefactorCommand extends Command
 {
@@ -30,7 +30,7 @@ final class RefactorCommand extends Command
 
     public function execute(): void
     {
-        $runner = $this->dic->get(RefactorUserSettingsRunner::class);
+        $runner = $this->dic->get(RefactorRunner::class);
         $runner->refactor();
 
         $this->io()->ok(

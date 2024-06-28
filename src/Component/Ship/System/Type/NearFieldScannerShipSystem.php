@@ -66,7 +66,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
 
             if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-                $this->astroEntryLib->cancelAstroFinalizing($ship);
+                $this->astroEntryLib->cancelAstroFinalizing($wrapper);
             }
         }
     }
@@ -78,7 +78,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
 
             if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-                $this->astroEntryLib->cancelAstroFinalizing($ship);
+                $this->astroEntryLib->cancelAstroFinalizing($wrapper);
             }
         }
 

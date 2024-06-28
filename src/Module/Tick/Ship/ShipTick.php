@@ -231,7 +231,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $this->potentialLog($ship, "marker10", $startTime);
 
         $startTime = microtime(true);
-        $this->checkForFinishedAstroMapping($ship);
+        $this->checkForFinishedAstroMapping($wrapper);
         $this->potentialLog($ship, "marker11", $startTime);
 
         //update tracker status
@@ -465,17 +465,22 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         }
     }
 
-    private function checkForFinishedAstroMapping(ShipInterface $ship): void
+    private function checkForFinishedAstroMapping(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
+
         /** @var null|DatabaseEntryInterface $databaseEntry */
         [$message, $databaseEntry] = $this->getDatabaseEntryForShipLocation($ship);
+
+        $astroLab = $wrapper->getAstroLaboratorySystemData();
 
         if (
             $ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING
             && $databaseEntry !== null
-            && $this->game->getCurrentRound()->getTurn() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
+            && $astroLab !== null
+            && $this->game->getCurrentRound()->getTurn() >= ($astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
-            $this->astroEntryLib->finish($ship);
+            $this->astroEntryLib->finish($wrapper);
 
             $this->msg[] = sprintf(
                 _('Die Kartographierung %s wurde vollendet'),

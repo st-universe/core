@@ -6,7 +6,6 @@ namespace Stu\Component\Ship\System\Data;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 class WarpDriveSystemData extends AbstractSystemData
 {
@@ -16,11 +15,9 @@ class WarpDriveSystemData extends AbstractSystemData
     public int $split = 100;
     public bool $autoCarryOver = false;
 
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    public function __construct(ShipSystemRepositoryInterface $shipSystemRepository)
+    function getSystemType(): ShipSystemTypeEnum
     {
-        $this->shipSystemRepository = $shipSystemRepository;
+        return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }
 
     public function update(): void
@@ -28,11 +25,7 @@ class WarpDriveSystemData extends AbstractSystemData
         // Überprüfe und begrenze den Wert zwischen 0 und 100
         $this->split = max(0, min(100, $this->split));
 
-        $this->updateSystemData(
-            ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
-            $this,
-            $this->shipSystemRepository
-        );
+        parent::update();
     }
 
     public function getWarpDrive(): int

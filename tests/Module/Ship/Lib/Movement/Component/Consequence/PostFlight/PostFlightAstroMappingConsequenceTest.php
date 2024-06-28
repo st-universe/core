@@ -8,6 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
@@ -162,6 +163,12 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
+        $astroLab = $this->mock(AstroLaboratorySystemData::class);
+
+        $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($astroLab);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -260,6 +267,12 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
+        $astroLab = $this->mock(AstroLaboratorySystemData::class);
+
+        $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($astroLab);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -360,6 +373,12 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
+        $astroLab = $this->mock(AstroLaboratorySystemData::class);
+
+        $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($astroLab);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -387,9 +406,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
-        $this->ship->shouldReceive('setAstroStartTurn')
-            ->with(null)
-            ->once();
+
         $this->ship->shouldReceive('setState')
             ->with(ShipStateEnum::SHIP_STATE_NONE)
             ->once();
@@ -413,6 +430,14 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->once();
         $astroEntry->shouldReceive('setAstroStartTurn')
             ->with(null)
+            ->once();
+
+        $astroLab->shouldReceive('setAstroStartTurn')
+            ->with(null)
+            ->once()
+            ->andReturnSelf();
+        $astroLab->shouldReceive('update')
+            ->withNoArgs()
             ->once();
 
         $this->astroEntryRepository->shouldReceive('getByShipLocation')

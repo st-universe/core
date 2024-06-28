@@ -27,16 +27,16 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
     ): AbstractSystemData {
         switch ($systemType) {
             case ShipSystemTypeEnum::SYSTEM_HULL:
-                return  new HullSystemData();
+                return  new HullSystemData($this->shipSystemRepository);
             case ShipSystemTypeEnum::SYSTEM_SHIELDS:
-                return  new ShieldSystemData();
+                return  new ShieldSystemData($this->shipSystemRepository);
             case ShipSystemTypeEnum::SYSTEM_EPS:
                 return  new EpsSystemData($this->shipSystemRepository);
             case ShipSystemTypeEnum::SYSTEM_TRACKER:
                 return  new TrackerSystemData(
                     $this->shipRepository,
-                    $this->shipSystemRepository,
-                    $shipWrapperFactory
+                    $shipWrapperFactory,
+                    $this->shipSystemRepository
                 );
             case ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB:
                 return  new WebEmitterSystemData(
@@ -51,6 +51,8 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                 return  new SingularityCoreSystemData($this->shipSystemRepository);
             case ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR:
                 return  new FusionCoreSystemData($this->shipSystemRepository);
+            case ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY:
+                return  new AstroLaboratorySystemData($this->shipSystemRepository);
         }
 
         throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value));

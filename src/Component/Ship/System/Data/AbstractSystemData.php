@@ -14,24 +14,25 @@ abstract class AbstractSystemData
 {
     protected ShipInterface $ship;
 
+    public function __construct(private ShipSystemRepositoryInterface $shipSystemRepository)
+    {
+    }
+
     public function setShip(ShipInterface $ship): void
     {
         $this->ship = $ship;
     }
 
-    abstract public function update(): void;
+    abstract public function getSystemType(): ShipSystemTypeEnum;
 
     /**
      * updates the system metadata for this specific ship system
      */
-    protected function updateSystemData(
-        ShipSystemTypeEnum $systemType,
-        AbstractSystemData $data,
-        ShipSystemRepositoryInterface $shipSystemRepository
-    ): void {
-        $system = $this->ship->getShipSystem($systemType);
-        $system->setData(json_encode($data, JSON_THROW_ON_ERROR));
-        $shipSystemRepository->save($system);
+    public function update(): void
+    {
+        $system = $this->ship->getShipSystem($this->getSystemType());
+        $system->setData(json_encode($this, JSON_THROW_ON_ERROR));
+        $this->shipSystemRepository->save($system);
     }
 
     protected function getTalStatusBar(string $label, int $value, int $maxValue, string $color): TalStatusBarInterface

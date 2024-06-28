@@ -9,6 +9,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -17,7 +18,6 @@ use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
@@ -82,7 +82,7 @@ class ShipWrapperTest extends StuTestCase
 
     public function testGetHullSystemData(): void
     {
-        $hullSystemData = new HullSystemData();
+        $hullSystemData = $this->mock(HullSystemData::class);
 
         $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
             ->with(
@@ -163,14 +163,29 @@ class ShipWrapperTest extends StuTestCase
 
     public function testGetStateIconAndTitleForAstroFinalizing(): void
     {
+        $astroLab = $this->mock(AstroLaboratorySystemData::class);
+
+        $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
+            ->with(
+                $this->ship,
+                ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY,
+                AstroLaboratorySystemData::class,
+                Mockery::any(),
+                $this->shipWrapperFactory
+            )
+            ->once()
+            ->andReturn($astroLab);
+
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING);
-        $this->ship->shouldReceive('getAstroStartTurn')
+        $astroLab->shouldReceive('getAstroStartTurn')
             ->withNoArgs()
             ->once()
             ->andReturn(5);
+
+
 
         $this->game->shouldReceive('getCurrentRound->getTurn')
             ->withNoArgs()
@@ -217,6 +232,17 @@ class ShipWrapperTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(6);
 
+        $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
+            ->with(
+                $this->ship,
+                ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY,
+                AstroLaboratorySystemData::class,
+                Mockery::any(),
+                $this->shipWrapperFactory
+            )
+            ->once()
+            ->andReturn(null);
+
         [$icon, $title] = $this->shipWrapper->getStateIconAndTitle();
 
         $this->assertEquals('take2', $icon);
@@ -226,6 +252,7 @@ class ShipWrapperTest extends StuTestCase
     public function testGetStateIconAndTitleForPassiveTakeover(): void
     {
         $takeover = $this->mock(ShipTakeoverInterface::class);
+        $astroLab = $this->mock(AstroLaboratorySystemData::class);
 
         $this->ship->shouldReceive('getState')
             ->withNoArgs()
@@ -260,6 +287,18 @@ class ShipWrapperTest extends StuTestCase
         $this->game->shouldReceive('getCurrentRound->getTurn')
             ->withNoArgs()
             ->andReturn(6);
+
+
+        $this->systemDataDeserializer->shouldReceive('getSpecificShipSystem')
+            ->with(
+                $this->ship,
+                ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY,
+                AstroLaboratorySystemData::class,
+                Mockery::any(),
+                $this->shipWrapperFactory
+            )
+            ->once()
+            ->andReturn($astroLab);
 
         [$icon, $title] = $this->shipWrapper->getStateIconAndTitle();
 

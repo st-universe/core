@@ -78,12 +78,15 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
             }
         }
 
+        $astroLab = $wrapper->getAstroLaboratorySystemData();
+
         if (
             $ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING
             && $astroEntry->getState() === AstronomicalMappingEnum::FINISHING
+            && $astroLab !== null
         ) {
             $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
-            $ship->setAstroStartTurn(null);
+            $astroLab->setAstroStartTurn(null)->update();
             $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
             $astroEntry->setAstroStartTurn(null);
             $message->add(sprintf(_('Die %s hat das Finalisieren der Kartographierung abgebrochen'), $ship->getName()));

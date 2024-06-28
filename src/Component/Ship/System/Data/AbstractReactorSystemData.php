@@ -4,31 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
-
 abstract class AbstractReactorSystemData extends AbstractSystemData
 {
     public int $output = 0;
     public int $load = 0;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    public function __construct(ShipSystemRepositoryInterface $shipSystemRepository)
-    {
-        $this->shipSystemRepository = $shipSystemRepository;
-    }
-
-    public function update(): void
-    {
-        $this->updateSystemData(
-            $this->getSystemType(),
-            $this,
-            $this->shipSystemRepository
-        );
-    }
-
-    abstract function getSystemType(): ShipSystemTypeEnum;
 
     public abstract function getIcon(): string;
 

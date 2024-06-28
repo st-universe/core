@@ -58,7 +58,7 @@ final class ShipStateChanger implements ShipStateChangerInterface
 
         //mapping stuff
         else if ($currentState === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
+            $this->astroEntryLib->cancelAstroFinalizing($wrapper);
         }
 
         //web spinning

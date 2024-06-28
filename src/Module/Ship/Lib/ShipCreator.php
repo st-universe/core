@@ -29,47 +29,20 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
 {
-    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ModuleSpecialRepositoryInterface $moduleSpecialRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ShipConfiguratorFactoryInterface $shipConfiguratorFactory;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipRepositoryInterface $shipRepository,
-        UserRepositoryInterface $userRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ModuleSpecialRepositoryInterface $moduleSpecialRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ShipConfiguratorFactoryInterface $shipConfiguratorFactory,
+        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        private ShipSystemRepositoryInterface $shipSystemRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private UserRepositoryInterface $userRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ModuleSpecialRepositoryInterface $moduleSpecialRepository,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ShipConfiguratorFactoryInterface $shipConfiguratorFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->buildplanModuleRepository = $buildplanModuleRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->shipRepository = $shipRepository;
-        $this->userRepository = $userRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->moduleSpecialRepository = $moduleSpecialRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->shipConfiguratorFactory = $shipConfiguratorFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -141,6 +114,7 @@ final class ShipCreator implements ShipCreatorInterface
 
         $this->shipRepository->save($ship);
         if ($colony !== null) {
+
             $starsystemMap = $colony->getStarsystemMap();
 
             $ship->setMap($starsystemMap->getSystem()->getMapField());
