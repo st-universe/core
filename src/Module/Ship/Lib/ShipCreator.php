@@ -25,7 +25,6 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
@@ -44,8 +43,6 @@ final class ShipCreator implements ShipCreatorInterface
 
     private ModuleSpecialRepositoryInterface $moduleSpecialRepository;
 
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     private ShipConfiguratorFactoryInterface $shipConfiguratorFactory;
@@ -60,7 +57,6 @@ final class ShipCreator implements ShipCreatorInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleSpecialRepositoryInterface $moduleSpecialRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         ShipConfiguratorFactoryInterface $shipConfiguratorFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -72,7 +68,6 @@ final class ShipCreator implements ShipCreatorInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleSpecialRepository = $moduleSpecialRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->shipConfiguratorFactory = $shipConfiguratorFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -146,9 +141,11 @@ final class ShipCreator implements ShipCreatorInterface
 
         $this->shipRepository->save($ship);
         if ($colony !== null) {
-            $starsystemMap = $this->starSystemMapRepository->getByCoordinates($colony->getSystem()->getId(), $colony->getSx(), $colony->getSy());
+            $starsystemMap = $colony->getStarsystemMap();
 
+            $ship->setMap($starsystemMap->getSystem()->getMapField());
             $ship->setStarsystemMap($starsystemMap);
+
             $this->shipRepository->save($ship);
         }
 
