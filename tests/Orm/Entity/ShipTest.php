@@ -15,45 +15,44 @@ class ShipTest extends StuTestCase
         $this->subject = new Ship();
     }
 
-    public function testUpdateLocationWhenMap(): void
+    public function testsetLocationWhenMap(): void
     {
         $map = $this->mock(MapInterface::class);
 
-        $this->subject->updateLocation($map);
+        $this->subject->setLocation($map);
 
         $this->assertSame($map, $this->subject->getMap());
         $this->assertNull($this->subject->getStarsystemMap());
     }
 
-    public function testUpdateLocationWhenSystemMapAndNotWormhole(): void
+    public function testsetLocationWhenSystemMapAndNotWormhole(): void
     {
         $map = $this->mock(MapInterface::class);
         $systemMap = $this->mock(StarSystemMapInterface::class);
 
-        $systemMap->shouldReceive('getSystem->isWormhole')
+        $systemMap->shouldReceive('getSystem->getMapField')
             ->withNoArgs()
             ->once()
-            ->andReturn(false);
+            ->andReturn($map);
 
-        $this->subject->updateLocation($map);
-        $this->subject->updateLocation($systemMap);
+        $this->subject->setLocation($systemMap);
 
         $this->assertSame($systemMap, $this->subject->getStarsystemMap());
         $this->assertSame($map, $this->subject->getMap());
     }
 
-    public function testUpdateLocationWhenSystemMapAndWormhole(): void
+    public function testsetLocationWhenSystemMapAndWormhole(): void
     {
         $map = $this->mock(MapInterface::class);
         $systemMap = $this->mock(StarSystemMapInterface::class);
 
-        $systemMap->shouldReceive('getSystem->isWormhole')
+        $systemMap->shouldReceive('getSystem->getMapField')
             ->withNoArgs()
             ->once()
-            ->andReturn(true);
+            ->andReturn(null);
 
-        $this->subject->updateLocation($map);
-        $this->subject->updateLocation($systemMap);
+        $this->subject->setLocation($map);
+        $this->subject->setLocation($systemMap);
 
         $this->assertSame($systemMap, $this->subject->getStarsystemMap());
         $this->assertNull($this->subject->getMap());

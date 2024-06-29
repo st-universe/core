@@ -39,7 +39,7 @@ class EnterWaypointTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(MapInterface::class);
 
-        $ship->shouldReceive('updateLocation')
+        $ship->shouldReceive('setLocation')
             ->with($waypoint)
             ->once();
 
@@ -57,7 +57,7 @@ class EnterWaypointTest extends StuTestCase
         $waypoint = $this->mock(MapInterface::class);
         $wormholeEntry = $this->mock(WormholeEntryInterface::class);
 
-        $ship->shouldReceive('updateLocation')
+        $ship->shouldReceive('setLocation')
             ->with($waypoint)
             ->once();
 
@@ -87,7 +87,7 @@ class EnterWaypointTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(StarSystemMapInterface::class);
 
-        $ship->shouldReceive('updateLocation')
+        $ship->shouldReceive('setLocation')
             ->with($waypoint)
             ->once();
 
@@ -104,7 +104,7 @@ class EnterWaypointTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(StarSystemMapInterface::class);
 
-        $ship->shouldReceive('updateLocation')
+        $ship->shouldReceive('setLocation')
             ->with($waypoint)
             ->once();
 

@@ -258,7 +258,7 @@ interface ShipInterface extends ShipDestroyerInterface
      */
     public function getBeamableStorage(): array;
 
-    public function updateLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface;
+    public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface;
 
     public function getTradePost(): ?TradePostInterface;
 
@@ -266,13 +266,9 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function getMap(): ?MapInterface;
 
-    public function setMap(?MapInterface $map): ShipInterface;
-
     public function getMapRegion(): ?MapRegionInterface;
 
     public function getStarsystemMap(): ?StarSystemMapInterface;
-
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface;
 
     public function getLocation(): Location;
 

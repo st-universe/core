@@ -115,10 +115,7 @@ final class ShipCreator implements ShipCreatorInterface
         $this->shipRepository->save($ship);
         if ($colony !== null) {
 
-            $starsystemMap = $colony->getStarsystemMap();
-
-            $ship->setMap($starsystemMap->getSystem()->getMapField());
-            $ship->setStarsystemMap($starsystemMap);
+            $ship->setLocation($colony->getStarsystemMap());
 
             $this->shipRepository->save($ship);
         }

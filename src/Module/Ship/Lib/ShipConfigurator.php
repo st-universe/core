@@ -56,7 +56,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
 
     public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipConfiguratorInterface
     {
-        $this->wrapper->get()->updateLocation($location);
+        $this->wrapper->get()->setLocation($location);
 
         return $this;
     }
