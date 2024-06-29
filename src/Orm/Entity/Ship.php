@@ -1137,7 +1137,7 @@ class Ship implements ShipInterface
 
         if ($field instanceof MapInterface) {
             $cx = $field->getCx();
-            $cy = $field->getCx();
+            $cy = $field->getCy();
         } else {
             $cx = $field->getSystem()->getCx();
             $cy = $field->getSystem()->getCy();

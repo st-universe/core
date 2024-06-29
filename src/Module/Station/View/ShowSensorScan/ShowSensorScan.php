@@ -82,6 +82,10 @@ final class ShowSensorScan implements ViewControllerInterface
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
 
+        if (!$station->getLss()) {
+            return;
+        }
+
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
             $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
@@ -97,7 +101,7 @@ final class ShowSensorScan implements ViewControllerInterface
         $field = $station->getCurrentMapField();
         if ($field instanceof MapInterface) {
             $stationCx = $field->getCx();
-            $stationCy = $field->getCx();
+            $stationCy = $field->getCy();
         } else {
             $stationCx = $field->getSystem()->getCx();
             $stationCy = $field->getSystem()->getCy();
@@ -139,9 +143,7 @@ final class ShowSensorScan implements ViewControllerInterface
             return;
         }
 
-        if (!$station->getLss()) {
-            return;
-        }
+
 
         $epsSystem->lowerEps(self::ENERGY_COST_SECTOR_SCAN)->update();
         $this->shipRepository->save($station);
