@@ -17,24 +17,12 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SYSTEM_SENSOR_SCAN';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
-
-    private StationUiFactoryInterface $stationUiFactory;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        MapRepositoryInterface $mapRepository,
-        StationUiFactoryInterface $stationUiFactory,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        private ShipLoaderInterface $shipLoader,
+        private MapRepositoryInterface $mapRepository,
+        private StationUiFactoryInterface $stationUiFactory,
+        private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->mapRepository = $mapRepository;
-        $this->loggerUtilFactory = $loggerUtilFactory;
-        $this->stationUiFactory = $stationUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -55,7 +43,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         $field = $ship->getCurrentMapField();
         if ($field instanceof MapInterface) {
             $shipCx = $field->getCx();
-            $shipCy = $field->getCx();
+            $shipCy = $field->getCy();
         } else {
             $shipCx = $field->getSystem()->getCx();
             $shipCy = $field->getSystem()->getCy();
