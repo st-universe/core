@@ -62,7 +62,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $pods->setMaxHuell(1);
         $pods->setAlertStateGreen();
 
-        $pods->updateLocation($ship->getLocation());
+        $pods->setLocation($ship->getLocation());
 
         //return to save place
         $this->returnToSafety($pods, $ship);
@@ -81,25 +81,27 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
             $newXY = $this->$met($pods);
 
             if ($pods->getSystem() !== null) {
-                $map = $this->starSystemMapRepository->getByCoordinates(
+                $field = $this->starSystemMapRepository->getByCoordinates(
                     $pods->getSystem()->getId(),
                     $newXY[0],
                     $newXY[1]
                 );
-                $pods->setStarsystemMap($map);
             } else {
                 $layer = $pods->getLayer();
                 if ($layer === null) {
                     throw new RuntimeException('this should not happen');
                 }
 
-                $map = $this->mapRepository->getByCoordinates(
+                $field = $this->mapRepository->getByCoordinates(
                     $layer,
                     $newXY[0],
                     $newXY[1]
                 );
-                $pods->setMap($map);
             }
+            if ($field === null) {
+                throw new RuntimeException('this should not happen');
+            }
+            $pods->setLocation($field);
         }
     }
 

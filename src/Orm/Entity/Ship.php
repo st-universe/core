@@ -1066,24 +1066,22 @@ class Ship implements ShipInterface
         return $map->getMapRegion();
     }
 
-    public function updateLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface
+    public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface
     {
         if ($location instanceof MapInterface) {
             $this->setMap($location);
             $this->setStarsystemMap(null);
         } elseif ($location instanceof StarSystemMapInterface) {
-            if ($location->getSystem()->isWormhole()) {
-                $this->setMap(null);
-            }
+            $this->setMap($location->getSystem()->getMapField());
             $this->setStarsystemMap($location);
         } else {
-            $this->updateLocation($location->get());
+            $this->setLocation($location->get());
         }
 
         return $this;
     }
 
-    public function setMap(?MapInterface $map): ShipInterface
+    private function setMap(?MapInterface $map): ShipInterface
     {
         $this->map = $map;
 
@@ -1095,7 +1093,7 @@ class Ship implements ShipInterface
         return $this->starsystem_map;
     }
 
-    public function setStarsystemMap(?StarSystemMapInterface $systemMap): ShipInterface
+    private function setStarsystemMap(?StarSystemMapInterface $systemMap): ShipInterface
     {
         $this->starsystem_map = $systemMap;
 

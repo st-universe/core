@@ -310,7 +310,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction->setAlertStateGreen();
         $construction->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
 
-        $construction->updateLocation($ship->getLocation());
+        $construction->setLocation($ship->getLocation());
 
         $this->shipRepository->save($construction);
 
