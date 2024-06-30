@@ -43,7 +43,7 @@
 				</td>
 				<td>
 					<tal:block tal:condition="not:system/isWormhole">
-						<span tal:replace="system/getCX">CX</span>|<span tal:replace="system/getCY">CY</span>
+						<span tal:replace="system/getCx">CX</span>|<span tal:replace="system/getCy">CY</span>
 					</tal:block>
 				</td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
@@ -70,8 +70,8 @@
 						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
-					<span tal:replace="data/getObject/getMap/getCX">CX</span>|<span
-						tal:replace="data/getObject/getMap/getCY">CY</span>
+					<span tal:replace="data/getObject/getMap/getCx">CX</span>|<span
+						tal:replace="data/getObject/getMap/getCy">CY</span>
 				</td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 			</tal:block>

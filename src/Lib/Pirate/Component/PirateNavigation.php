@@ -94,7 +94,7 @@ class PirateNavigation implements PirateNavigationInterface
             && $leadShip->isOverSystem() !== $system
         ) {
             $this->logger->log('    move to system');
-            if (!$this->moveOnLayer->move($wrapper, $system->getMapField())) {
+            if (!$this->moveOnLayer->move($wrapper, $system->getMap())) {
                 $this->logger->log('    could not reach system');
                 return false;
             }
@@ -114,7 +114,7 @@ class PirateNavigation implements PirateNavigationInterface
 
     private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemInterface $system): bool
     {
-        $mapField = $system->getMapField();
+        $mapField = $system->getMap();
         if ($mapField === null) {
             return false;
         }

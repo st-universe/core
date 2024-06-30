@@ -24,7 +24,7 @@ final class LeaveStarSystem extends AbstractDirectedMovement
         }
 
         //the destination map field
-        $outerMap = $starsystemMap->getSystem()->getMapField();
+        $outerMap = $starsystemMap->getSystem()->getMap();
         if ($outerMap === null) {
             return true;
         }
@@ -42,7 +42,7 @@ final class LeaveStarSystem extends AbstractDirectedMovement
         }
 
         //the destination map field
-        $destination = $starsystemMap->getSystem()->getMapField();
+        $destination = $starsystemMap->getSystem()->getMap();
         if ($destination === null) {
             throw new RuntimeException('should not happen');
         }

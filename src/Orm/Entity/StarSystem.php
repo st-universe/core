@@ -194,10 +194,10 @@ class StarSystem implements StarSystemInterface
             return null;
         }
 
-        return $this->getMapField()->getLayer();
+        return $this->getMap()->getLayer();
     }
 
-    public function getMapField(): ?MapInterface
+    public function getMap(): ?MapInterface
     {
         return $this->map;
     }

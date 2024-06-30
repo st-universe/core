@@ -149,8 +149,8 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->setParameters([
                 'minX' => $location->getCx() - $range,
                 'maxX' => $location->getCx() + $range,
-                'minY' => $location->getCY() - $range,
-                'maxY' => $location->getCY() + $range,
+                'minY' => $location->getCy() - $range,
+                'maxY' => $location->getCy() + $range,
                 'layerId' => $layer->getId()
             ])
             ->getResult();

@@ -142,7 +142,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP,
             'user' => $user,
             'starsystem_map' => $field instanceof MapInterface ? null : $field->getId(),
-            'map' => $field instanceof MapInterface ? $field->getId() : $field->getSystem()->getMapField()
+            'map' => $field instanceof MapInterface ? $field->getId() : $field->getSystem()->getMap()
         ], [
             'fleets_id' => 'desc',
             'is_fleet_leader' => 'desc',
@@ -176,7 +176,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 )
             )
             ->setParameters([
-                'map' => $field instanceof MapInterface ? $field : $field->getSystem()->getMapField(),
+                'map' => $field instanceof MapInterface ? $field : $field->getSystem()->getMap(),
                 'systemMap' => $field instanceof MapInterface ? null : $field,
                 'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK->value
             ])
@@ -489,7 +489,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $this->addTShipItemFields($rsm);
 
         if ($field !== null) {
-            $map = $field instanceof MapInterface ? $field : $field->getSystem()->getMapField();
+            $map = $field instanceof MapInterface ? $field : $field->getSystem()->getMap();
             $systemMap = $field instanceof MapInterface ? null : $field;
         } else {
             $map = $ship->getMap();
@@ -573,7 +573,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $this->addTShipItemFields($rsm);
 
         if ($field !== null) {
-            $map = $field instanceof MapInterface ? $field : $field->getSystem()->getMapField();
+            $map = $field instanceof MapInterface ? $field : $field->getSystem()->getMap();
             $systemMap = $field instanceof MapInterface ? null : $field;
         } else {
             $map = $ship->getMap();
@@ -835,8 +835,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->setParameters([
                 'minX' => $location->getCx() - $range,
                 'maxX' => $location->getCx() + $range,
-                'minY' => $location->getCY() - $range,
-                'maxY' => $location->getCY() + $range,
+                'minY' => $location->getCy() - $range,
+                'maxY' => $location->getCy() + $range,
                 'layerId' => $layer->getId(),
                 'shipType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP->value,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
@@ -875,8 +875,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->setParameters([
                 'minX' => $location->getCx() - $range,
                 'maxX' => $location->getCx() + $range,
-                'minY' => $location->getCY() - $range,
-                'maxY' => $location->getCY() + $range,
+                'minY' => $location->getCy() - $range,
+                'maxY' => $location->getCy() + $range,
                 'layerId' => $layer->getId(),
                 'shipId' => $ship->getId(),
                 'kazonUserId' => UserEnum::USER_NPC_KAZON

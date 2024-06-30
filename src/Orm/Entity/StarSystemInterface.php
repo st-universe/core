@@ -44,7 +44,7 @@ interface StarSystemInterface
 
     public function getLayer(): ?LayerInterface;
 
-    public function getMapField(): ?MapInterface;
+    public function getMap(): ?MapInterface;
 
     public function getBase(): ?ShipInterface;
 

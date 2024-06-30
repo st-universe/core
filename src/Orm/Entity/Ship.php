@@ -1072,7 +1072,7 @@ class Ship implements ShipInterface
             $this->setMap($location);
             $this->setStarsystemMap(null);
         } elseif ($location instanceof StarSystemMapInterface) {
-            $this->setMap($location->getSystem()->getMapField());
+            $this->setMap($location->getSystem()->getMap());
             $this->setStarsystemMap($location);
         } else {
             $this->setLocation($location->get());

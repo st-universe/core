@@ -49,7 +49,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         ) {
             $this->leaveStarSystem($leadWrapper, $currentLocation);
 
-            $mapField = $currentLocation->getSystem()->getMapField();
+            $mapField = $currentLocation->getSystem()->getMap();
             $this->logger->logf('    left star system: %s', $mapField !== null ? $mapField->getSectorString() : $currentLocation->getSectorString());
         }
 
@@ -88,7 +88,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
     private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemMapInterface $currentLocation): void
     {
-        $mapField = $currentLocation->getSystem()->getMapField();
+        $mapField = $currentLocation->getSystem()->getMap();
         if ($mapField === null) {
             return;
         }

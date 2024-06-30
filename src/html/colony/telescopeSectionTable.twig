@@ -11,7 +11,7 @@
     <tr>
         <th>{{ yrow.getRow }}</th>
         {% for data in yrow.getFields %}
-        <td class="starmap" style="{{ data.getFieldStyle }}" id="{{ data.getCX }}_{{ data.getCY }}">
+        <td class="starmap" style="{{ data.getFieldStyle }}" id="{{ data.getCx }}_{{ data.getCy }}">
             {% if data.getIcon %}
             <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
                 {% if data.getHref %}

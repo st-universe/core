@@ -30,7 +30,7 @@ class ShipTest extends StuTestCase
         $map = $this->mock(MapInterface::class);
         $systemMap = $this->mock(StarSystemMapInterface::class);
 
-        $systemMap->shouldReceive('getSystem->getMapField')
+        $systemMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()
             ->once()
             ->andReturn($map);
@@ -46,7 +46,7 @@ class ShipTest extends StuTestCase
         $map = $this->mock(MapInterface::class);
         $systemMap = $this->mock(StarSystemMapInterface::class);
 
-        $systemMap->shouldReceive('getSystem->getMapField')
+        $systemMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()
             ->once()
             ->andReturn(null);

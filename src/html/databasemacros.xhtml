@@ -124,7 +124,7 @@
     <div class="divbody">
       <img tal:condition="not:SYSTEM/isWormhole" src="assets/map/systemtypes/${SYSTEM/getSystemType/getId}.png" /><br />
       <span>Typ</span>: ${SYSTEM/getSystemType/getDescription}<br />
-      <tal:block tal:condition="not:SYSTEM/isWormhole"><span>Koordinaten</span>: ${SYSTEM/getCX}|${SYSTEM/getCY}<br />
+      <tal:block tal:condition="not:SYSTEM/isWormhole"><span>Koordinaten</span>: ${SYSTEM/getCx}|${SYSTEM/getCy}<br />
       </tal:block>
     </div>
   </div>
