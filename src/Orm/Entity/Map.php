@@ -320,7 +320,8 @@ class Map implements MapInterface
 
     public function getShips(): Collection
     {
-        return $this->ships;
+        return $this->ships
+            ->filter(fn (ShipInterface $ship) => $ship->getStarsystemMap() === null);
     }
 
     public function getAnomalies(): Collection
