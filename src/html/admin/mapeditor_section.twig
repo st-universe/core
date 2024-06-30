@@ -22,7 +22,7 @@
 					<tr>
 						<th style="width: 30px;">/\</th>
 						{% for mapItem in TOP_PREVIEW_ROW %}
-						<td class="starmap" id="{{ mapItem.getMap.getCX }}_{{ mapItem.getMap.getCY }}">
+						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
 							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
 						</td>
 						{% endfor %}
@@ -46,7 +46,7 @@
 					<tr>
 						{% for mapItem in row.getFields %}
 						{% set map = mapItem.getMap %}
-						<td class="starmap" id="{{ map.getCX }}_{{ map.getCY }}">
+						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
 							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
 							</div>
 						</td>
@@ -72,7 +72,7 @@
 						{% set map = mapItem.getMap %}
 						<td class="starmap" data-passable="{{ map.getFieldType.getPassableAsInt }}"
 							data-region="{{ map.getRegionId }}" data-admin-region="{{ map.getAdminRegionId }}"
-							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCX }}_{{ map.getCY }}">
+							data-system-type-id="{{ map.getSystemTypeId }}" id="{{ map.getCx }}_{{ map.getCy }}">
 							<div class="lssobj" style="cursor: pointer ! important;"
 								onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)">
 								<div class="divbody"
@@ -96,7 +96,7 @@
 					<tr>
 						{% for mapItem in row.getFields %}
 						{% set map = mapItem.getMap %}
-						<td class="starmap" id="{{ map.getCX }}_{{ map.getCY }}">
+						<td class="starmap" id="{{ map.getCx }}_{{ map.getCy }}">
 							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" />
 							</div>
 						</td>
@@ -120,7 +120,7 @@
 					<tr>
 						<th style="width: 30px;">\/</th>
 						{% for mapItem in BOTTOM_PREVIEW_ROW %}
-						<td class="starmap" id="{{ mapItem.getMap.getCX }}_{{ mapItem.getMap.getCY }}">
+						<td class="starmap" id="{{ mapItem.getMap.getCx }}_{{ mapItem.getMap.getCy }}">
 							<div class="lssobj"><img src="/assets/map/{{ mapItem.getMapGraphicPath }}" /></div>
 						</td>
 						{% endfor %}

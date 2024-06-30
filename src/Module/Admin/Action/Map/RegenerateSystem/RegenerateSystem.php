@@ -44,7 +44,7 @@ final class RegenerateSystem implements ActionControllerInterface
             return;
         }
 
-        $map = $starSystem->getMapField();
+        $map = $starSystem->getMap();
         if ($map === null) {
             return;
         }

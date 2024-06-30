@@ -36,7 +36,7 @@ class Location
                 throw new InvalidArgumentException('Map can only be null in Wormholes');
             }
 
-            if ($sysMap->getSystem()->getMapField() !== $map) {
+            if ($sysMap->getSystem()->getMap() !== $map) {
                 throw new InvalidArgumentException('System of SystemMap does not belong to current Map Field');
             }
         }
@@ -108,7 +108,7 @@ class Location
             return $this->location->getLayer();
         }
 
-        $parentMap = $this->location->getSystem()->getMapField();
+        $parentMap = $this->location->getSystem()->getMap();
         if ($parentMap === null) {
             return null;
         }

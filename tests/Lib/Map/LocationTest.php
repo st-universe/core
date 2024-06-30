@@ -47,7 +47,7 @@ class LocationTest extends StuTestCase
         $otherMap = $this->mock(MapInterface::class);
         $sysMap = $this->mock(StarSystemMapInterface::class);
 
-        $sysMap->shouldReceive('getSystem->getMapField')
+        $sysMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()
             ->once()
             ->andReturn($otherMap);
@@ -83,7 +83,7 @@ class LocationTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $sysMap->shouldReceive('getSystem->getMapField')
+        $sysMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
