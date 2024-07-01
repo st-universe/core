@@ -181,6 +181,11 @@ class TwigHelper
             return $this->shipCrewCalculator->getMaxCrewCountByShip($ship);
         });
         $this->environment->addFilter($getMaxCrewCountByShipFilter);
+
+        $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', function ($value): string {
+            return TalHelper::getNumberWithThousandSeperator($value);
+        });
+        $this->environment->addFilter($numberWithThousandSeperatorFilter);
     }
 
     private function registerFunctions(): void
