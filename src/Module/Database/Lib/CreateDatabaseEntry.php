@@ -14,24 +14,12 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 {
-    private DatabaseEntryRepositoryInterface $databaseEntryRepository;
-
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private CreateUserAwardInterface $createUserAward;
-
     public function __construct(
-        DatabaseEntryRepositoryInterface $databaseEntryRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        CreateUserAwardInterface $createUserAward
+        private DatabaseEntryRepositoryInterface $databaseEntryRepository,
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private CreatePrestigeLogInterface $createPrestigeLog,
+        private CreateUserAwardInterface $createUserAward
     ) {
-        $this->databaseEntryRepository = $databaseEntryRepository;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->createUserAward = $createUserAward;
     }
 
     public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface
@@ -63,13 +51,13 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             //create prestige log
             $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());
 
-            $this->checkForCompletion($user, $databaseEntry->getCategory());
+            $this->checkForCompletion($user, $databaseEntry->getCategory(), $databaseEntryId);
         }
 
         return $databaseEntry;
     }
 
-    private function checkForCompletion(UserInterface $user, DatabaseCategoryInterface $category): void
+    private function checkForCompletion(UserInterface $user, DatabaseCategoryInterface $category, int $databaseEntryId): void
     {
         //check if an award is configured for this category
         if ($category->getAward() === null) {
@@ -78,7 +66,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
         $award = $category->getAward();
 
-        if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId())) {
+        if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId(), $databaseEntryId)) {
             $this->createUserAward->createAwardForUser($user, $award);
         }
     }
