@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -13,24 +14,13 @@ use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 class AttackerProviderFactory implements AttackerProviderFactoryInterface
 {
-    private ModuleValueCalculatorInterface $moduleValueCalculator;
-
-    private ShipTorpedoManagerInterface $shipTorpedoManager;
-
-    private ModuleRepositoryInterface $moduleRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
     public function __construct(
-        ModuleValueCalculatorInterface $moduleValueCalculator,
-        ShipTorpedoManagerInterface $shipTorpedoManager,
-        ModuleRepositoryInterface $moduleRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        private ModuleValueCalculatorInterface $moduleValueCalculator,
+        private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private ModuleRepositoryInterface $moduleRepository,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private StuRandom $stuRandom
     ) {
-        $this->moduleValueCalculator = $moduleValueCalculator;
-        $this->shipTorpedoManager = $shipTorpedoManager;
-        $this->moduleRepository = $moduleRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function getShipAttacker(ShipWrapperInterface $wrapper): ShipAttacker
@@ -38,7 +28,8 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
         return new ShipAttacker(
             $wrapper,
             $this->moduleValueCalculator,
-            $this->shipTorpedoManager
+            $this->shipTorpedoManager,
+            $this->stuRandom
         );
     }
 

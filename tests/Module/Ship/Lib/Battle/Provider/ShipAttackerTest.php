@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -37,6 +38,11 @@ class ShipAttackerTest extends StuTestCase
     private $shipTorpedoManager;
 
     /**
+     * @var MockInterface|StuRandom
+     */
+    private $stuRandom;
+
+    /**
      * @var MockInterface|ShipInterface
      */
     private ShipInterface $ship;
@@ -49,13 +55,15 @@ class ShipAttackerTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->moduleValueCalculator = $this->mock(ModuleValueCalculatorInterface::class);
         $this->shipTorpedoManager = $this->mock(ShipTorpedoManagerInterface::class);
+        $this->stuRandom = $this->mock(StuRandom::class);
 
         $this->ship = $this->mock(ShipInterface::class);
 
         $this->subject = new ShipAttacker(
             $this->wrapper,
             $this->moduleValueCalculator,
-            $this->shipTorpedoManager
+            $this->shipTorpedoManager,
+            $this->stuRandom
         );
     }
 

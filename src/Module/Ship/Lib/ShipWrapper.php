@@ -17,6 +17,7 @@ use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\FusionCoreSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
+use Stu\Component\Ship\System\Data\ProjectileLauncherSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\SingularityCoreSystemData;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
@@ -473,6 +474,14 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY,
             AstroLaboratorySystemData::class
+        );
+    }
+
+    public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_TORPEDO,
+            ProjectileLauncherSystemData::class
         );
     }
 

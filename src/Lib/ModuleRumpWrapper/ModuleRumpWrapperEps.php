@@ -39,6 +39,6 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
             throw new RuntimeException('this should not happen');
         }
 
-        $wrapper->getEpsSystemData()->setMaxEps($this->getValue())->update();
+        $epsSystem->setMaxEps($this->getValue())->update();
     }
 }

@@ -27,6 +27,7 @@ class DamageWrapper
 {
     private float $netDamage = 0;
     private bool $isCrit = false;
+    private bool $isShieldPenetration = false;
     private int $modificator = 100;
     private ?int $pirateWrath = null;
 
@@ -57,6 +58,16 @@ class DamageWrapper
     public function isCrit(): bool
     {
         return $this->isCrit;
+    }
+
+    public function setShieldPenetration(bool $isShieldPenetration): void
+    {
+        $this->isShieldPenetration = $isShieldPenetration;
+    }
+
+    public function isShieldPenetration(): bool
+    {
+        return $this->isShieldPenetration;
     }
 
     private int $shield_damage_factor = 100;

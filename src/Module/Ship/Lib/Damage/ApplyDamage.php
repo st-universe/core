@@ -10,6 +10,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -20,16 +21,10 @@ use Stu\Orm\Entity\ShipSystemInterface;
 //TODO unit tests and move to Lib/Damage
 final class ApplyDamage implements ApplyDamageInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     public function __construct(
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipSystemManagerInterface $shipSystemManager
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipSystemManagerInterface $shipSystemManager
     ) {
-        $this->shipSystemManager = $shipSystemManager;
-        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function damage(
@@ -41,22 +36,17 @@ final class ApplyDamage implements ApplyDamageInterface
 
         $informations = new InformationWrapper();
         if ($ship->getShieldState()) {
-            $damage = (int) $damageWrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_SHIELDS);
-            if ($damage >= $ship->getShield()) {
-                $informations->addInformation("- Schildschaden: " . $ship->getShield());
-                $informations->addInformation("-- Schilde brechen zusammen!");
 
-                $this->shipSystemManager->deactivate($shipWrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-
-                $ship->setShield(0);
+            if ($damageWrapper->isShieldPenetration()) {
+                $informations->addInformationf('- Projektil hat Schilde durchdrungen!');
             } else {
-                $ship->setShield($ship->getShield() - $damage);
-                $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $ship->getShield());
+                $this->damageShields($shipWrapper, $damageWrapper, $informations);
             }
         }
         if ($damageWrapper->getNetDamage() <= 0) {
             return $informations;
         }
+
         $disablemessage = false;
         $damage = (int) $damageWrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_HULL);
         if ($ship->getSystemState(ShipSystemTypeEnum::SYSTEM_RPG_MODULE) && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
@@ -103,6 +93,24 @@ final class ApplyDamage implements ApplyDamageInterface
         $ship->setIsDestroyed(true);
 
         return $informations;
+    }
+
+    private function damageShields(ShipWrapperInterface $wrapper, DamageWrapper $damageWrapper, InformationInterface $informations): void
+    {
+        $ship = $wrapper->get();
+
+        $damage = (int) $damageWrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_SHIELDS);
+        if ($damage >= $ship->getShield()) {
+            $informations->addInformation("- Schildschaden: " . $ship->getShield());
+            $informations->addInformation("-- Schilde brechen zusammen!");
+
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+
+            $ship->setShield(0);
+        } else {
+            $ship->setShield($ship->getShield() - $damage);
+            $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $ship->getShield());
+        }
     }
 
     public function damageBuilding(
