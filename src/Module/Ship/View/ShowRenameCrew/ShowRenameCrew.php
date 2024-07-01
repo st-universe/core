@@ -32,7 +32,7 @@ final class ShowRenameCrew implements ViewControllerInterface
             false
         );
 
-        $game->showMacro('html/shipmacros.xhtml/crewslot');
+        $game->showMacro('html/ship/crew/crewSlot.twig');
 
         $game->setTemplateVar('SHIP', $ship);
     }
