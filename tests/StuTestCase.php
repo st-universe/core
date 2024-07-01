@@ -45,26 +45,18 @@ abstract class StuTestCase extends MockeryTestCase
 
     protected function initLoggerUtil(): LoggerUtilFactoryInterface
     {
-        $loggerUtil = $this->mock(LoggerUtilInterface::class);
+        $loggerUtil = $this->initLogger();
         $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
 
         $pirateLogger = $this->mock(PirateLoggerInterface::class);
 
         $loggerUtilFactory->shouldReceive('getLoggerUtil')
-            ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn($loggerUtil);
         $loggerUtilFactory->shouldReceive('getPirateLogger')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn($pirateLogger);
-
-        $loggerUtil->shouldReceive('init')
-            ->withSomeOfArgs()
-            ->zeroOrMoreTimes();
-        $loggerUtil->shouldReceive('log')
-            ->withSomeOfArgs()
-            ->zeroOrMoreTimes();
 
         $pirateLogger->shouldReceive('log')
             ->withSomeOfArgs()
@@ -74,5 +66,19 @@ abstract class StuTestCase extends MockeryTestCase
             ->zeroOrMoreTimes();
 
         return $loggerUtilFactory;
+    }
+
+    protected function initLogger(): LoggerUtilInterface
+    {
+        $loggerUtil = $this->mock(LoggerUtilInterface::class);
+
+        $loggerUtil->shouldReceive('init')
+            ->withSomeOfArgs()
+            ->zeroOrMoreTimes();
+        $loggerUtil->shouldReceive('log')
+            ->withSomeOfArgs()
+            ->zeroOrMoreTimes();
+
+        return $loggerUtil;
     }
 }

@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle\Provider;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -21,7 +22,8 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         private ShipWrapperInterface $wrapper,
         private ModuleValueCalculatorInterface $moduleValueCalculator,
         private ShipTorpedoManagerInterface $shipTorpedoManager,
-        private StuRandom $stuRandom
+        private StuRandom $stuRandom,
+        private LoggerUtilInterface $logger
     ) {
     }
 
@@ -147,11 +149,13 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
     {
         $torpedo = $this->getTorpedo();
         if ($torpedo === null) {
+            $this->logger->log('shipAttacker->getProjectileWeaponDamage: no torpedo');
             return 0;
         }
 
         $module = $this->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule();
         if ($module === null) {
+            $this->logger->log('shipAttacker->getProjectileWeaponDamage: no module');
             return 0;
         }
 
@@ -163,6 +167,13 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
             $torpedo->getBaseDamage()
         );
         $damage = random_int($basedamage - $variance, $basedamage + $variance);
+
+        if ($damage === 0) {
+            $this->logger->logf(
+                'shipAttacker->getProjectileWeaponDamage, baseDamage: %d',
+                $torpedo->getBaseDamage()
+            );
+        }
 
         return $isCritical ? $damage * 2 : $damage;
     }
