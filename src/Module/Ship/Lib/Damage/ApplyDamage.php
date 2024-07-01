@@ -31,6 +31,12 @@ final class ApplyDamage implements ApplyDamageInterface
         DamageWrapper $damageWrapper,
         ShipWrapperInterface $shipWrapper
     ): InformationWrapper {
+
+        if ($damageWrapper->getNetDamage() <= 0) {
+            throw new RuntimeException('this should not happen');
+        }
+
+
         $ship = $shipWrapper->get();
         $ship->setShieldRegenerationTimer(time());
 
