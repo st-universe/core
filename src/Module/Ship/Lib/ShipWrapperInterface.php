@@ -6,6 +6,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
+use Stu\Component\Ship\System\Data\ProjectileLauncherSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WebEmitterSystemData;
@@ -90,6 +91,8 @@ interface ShipWrapperInterface
     public function getWebEmitterSystemData(): ?WebEmitterSystemData;
 
     public function getAstroLaboratorySystemData(): ?AstroLaboratorySystemData;
+
+    public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData;
 
     public function getReactorWrapper(): ?ReactorWrapperInterface;
 }

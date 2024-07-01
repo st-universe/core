@@ -17,36 +17,16 @@ use Stu\Orm\Entity\UserInterface;
 
 final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
 {
-    private ModuleSelectorInterface $moduleSelector;
-
-    private ModuleInterface $module;
-
-    private ShipRumpInterface $rump;
-
-    private ColonyInterface|ShipInterface $host;
-
-    private ShipRumpModuleLevelInterface $shipRumpModuleLevel;
-
-    private UserInterface $user;
-
-    private ?ShipBuildplanInterface $buildplan;
 
     public function __construct(
-        ModuleSelectorInterface $moduleSelector,
-        ModuleInterface $module,
-        ShipRumpInterface $rump,
-        ShipRumpModuleLevelInterface $shipRumpModuleLevel,
-        ColonyInterface|ShipInterface $host,
-        UserInterface $user,
-        ?ShipBuildplanInterface $buildplan = null
+        private ModuleSelectorInterface $moduleSelector,
+        private ModuleInterface $module,
+        private ShipRumpInterface $rump,
+        private ShipRumpModuleLevelInterface $shipRumpModuleLevel,
+        private ColonyInterface|ShipInterface $host,
+        private UserInterface $user,
+        private ?ShipBuildplanInterface $buildplan = null
     ) {
-        $this->moduleSelector = $moduleSelector;
-        $this->module = $module;
-        $this->rump = $rump;
-        $this->shipRumpModuleLevel = $shipRumpModuleLevel;
-        $this->host = $host;
-        $this->user = $user;
-        $this->buildplan = $buildplan;
     }
 
     public function isChosen(): bool
@@ -64,9 +44,6 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
                 return true;
             }
         }
-
-        //$request = request::postArray('mod_' . $this->module->getType()->value);
-        //return array_key_exists($this->module->getId(), $request);
 
         return false;
     }

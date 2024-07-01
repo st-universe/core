@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -30,6 +31,10 @@ class AttackerProviderFactoryTest extends StuTestCase
      * @var MockInterface|ColonyStorageManagerInterface
      */
     private $colonyStorageManager;
+    /**
+     * @var MockInterface|StuRandom
+     */
+    private $stuRandom;
 
     private AttackerProviderFactoryInterface $subject;
 
@@ -40,12 +45,14 @@ class AttackerProviderFactoryTest extends StuTestCase
         $this->shipTorpedoManager = $this->mock(ShipTorpedoManagerInterface::class);
         $this->moduleRepository = $this->mock(ModuleRepositoryInterface::class);
         $this->colonyStorageManager = $this->mock(ColonyStorageManagerInterface::class);
+        $this->stuRandom = $this->mock(StuRandom::class);
 
         $this->subject = new AttackerProviderFactory(
             $this->moduleValueCalculator,
             $this->shipTorpedoManager,
             $this->moduleRepository,
-            $this->colonyStorageManager
+            $this->colonyStorageManager,
+            $this->stuRandom
         );
     }
 

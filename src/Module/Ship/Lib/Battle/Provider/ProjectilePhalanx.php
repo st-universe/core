@@ -6,21 +6,15 @@ namespace Stu\Module\Ship\Lib\Battle\Provider;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class ProjectilePhalanx implements ProjectileAttackerInterface
 {
-    private ColonyInterface $colony;
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
     public function __construct(
-        ColonyInterface $colony,
-        ColonyStorageManagerInterface $colonyStorageManager
+        private ColonyInterface $colony,
+        private ColonyStorageManagerInterface $colonyStorageManager
     ) {
-        $this->colony = $colony;
-        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function hasSufficientEnergy(int $amount): bool
@@ -85,6 +79,11 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
             $torpedo->getCommodity(),
             $amount
         );
+    }
+
+    public function isShieldPenetration(): bool
+    {
+        return false;
     }
 
     public function getTorpedo(): ?TorpedoTypeInterface

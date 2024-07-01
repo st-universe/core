@@ -65,6 +65,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 $attacker->getProjectileWeaponDamage($isCritical)
             );
             $damage_wrapper->setCrit($isCritical);
+            $damage_wrapper->setShieldPenetration($attacker->isShieldPenetration());
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);

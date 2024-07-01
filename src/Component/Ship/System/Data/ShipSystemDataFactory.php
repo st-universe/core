@@ -53,6 +53,8 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                 return  new FusionCoreSystemData($this->shipSystemRepository);
             case ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY:
                 return  new AstroLaboratorySystemData($this->shipSystemRepository);
+            case ShipSystemTypeEnum::SYSTEM_TORPEDO:
+                return  new ProjectileLauncherSystemData($this->shipSystemRepository);
         }
 
         throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value));

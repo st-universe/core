@@ -25,4 +25,6 @@ interface ProjectileAttackerInterface extends AttackerInterface
     public function getHitChance(): int;
 
     public function getProjectileWeaponDamage(bool $isCritical): int;
+
+    public function isShieldPenetration(): bool;
 }

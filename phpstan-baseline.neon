@@ -139,11 +139,6 @@ parameters:
 			path: src/Lib/Map/VisualPanel/Layer/DataProvider/Subspace/SubspaceDataProviderFactory.php
 
 		-
-			message: "#^Cannot call method setMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperEps.php
-
-		-
 			message: "#^Cannot call method getModulesByType\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Lib/ModuleScreen/ModuleScreenTab.php

@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle\Provider;
 
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -16,18 +17,12 @@ use Stu\Orm\Entity\UserInterface;
 
 class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerInterface
 {
-    private ShipWrapperInterface $wrapper;
-    private ModuleValueCalculatorInterface $moduleValueCalculator;
-    private ShipTorpedoManagerInterface $shipTorpedoManager;
-
     public function __construct(
-        ShipWrapperInterface $wrapper,
-        ModuleValueCalculatorInterface $moduleValueCalculator,
-        ShipTorpedoManagerInterface $shipTorpedoManager
+        private ShipWrapperInterface $wrapper,
+        private ModuleValueCalculatorInterface $moduleValueCalculator,
+        private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private StuRandom $stuRandom
     ) {
-        $this->wrapper = $wrapper;
-        $this->moduleValueCalculator = $moduleValueCalculator;
-        $this->shipTorpedoManager = $shipTorpedoManager;
     }
 
     public function getPhaserVolleys(): int
@@ -136,6 +131,16 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
     public function lowerTorpedoCount(int $amount): void
     {
         $this->shipTorpedoManager->changeTorpedo($this->wrapper, -$amount);
+    }
+
+    public function isShieldPenetration(): bool
+    {
+        $systemData = $this->wrapper->getProjectileLauncherSystemData();
+        if ($systemData === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return $this->stuRandom->rand(1, 10000) <= $systemData->getShieldPenetration();
     }
 
     public function getProjectileWeaponDamage(bool $isCritical): int
