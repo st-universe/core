@@ -45,6 +45,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $torpedoName =  $torpedo->getName();
 
+            $isCritical = $this->isCritical($torpedo, $target->getCloakState());
+            $damage_wrapper = new DamageWrapper(
+                $attacker->getProjectileWeaponDamage($isCritical)
+            );
+
             $attacker->lowerTorpedoCount(1);
             $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
 
@@ -59,11 +64,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 continue;
             }
 
-            $isCritical = $this->isCritical($torpedo, $target->getCloakState());
-
-            $damage_wrapper = new DamageWrapper(
-                $attacker->getProjectileWeaponDamage($isCritical)
-            );
             $damage_wrapper->setCrit($isCritical);
             $damage_wrapper->setShieldPenetration($attacker->isShieldPenetration());
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
