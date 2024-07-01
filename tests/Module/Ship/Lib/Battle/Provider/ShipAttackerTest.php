@@ -56,6 +56,7 @@ class ShipAttackerTest extends StuTestCase
         $this->moduleValueCalculator = $this->mock(ModuleValueCalculatorInterface::class);
         $this->shipTorpedoManager = $this->mock(ShipTorpedoManagerInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
+        $this->stuRandom = $this->mock(StuRandom::class);
 
         $this->ship = $this->mock(ShipInterface::class);
 
@@ -63,7 +64,8 @@ class ShipAttackerTest extends StuTestCase
             $this->wrapper,
             $this->moduleValueCalculator,
             $this->shipTorpedoManager,
-            $this->stuRandom
+            $this->stuRandom,
+            $this->initLogger()
         );
     }
 

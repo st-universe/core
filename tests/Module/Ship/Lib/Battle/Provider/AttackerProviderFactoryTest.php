@@ -52,7 +52,8 @@ class AttackerProviderFactoryTest extends StuTestCase
             $this->shipTorpedoManager,
             $this->moduleRepository,
             $this->colonyStorageManager,
-            $this->stuRandom
+            $this->stuRandom,
+            $this->initLoggerUtil()
         );
     }
 

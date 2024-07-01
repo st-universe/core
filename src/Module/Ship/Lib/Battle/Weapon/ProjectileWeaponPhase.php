@@ -43,12 +43,12 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 break;
             }
 
-            $torpedoName =  $torpedo->getName();
-
             $isCritical = $this->isCritical($torpedo, $target->getCloakState());
-            $damage_wrapper = new DamageWrapper(
-                $attacker->getProjectileWeaponDamage($isCritical)
-            );
+            $netDamage = $attacker->getProjectileWeaponDamage($isCritical);
+
+            $damage_wrapper = new DamageWrapper($netDamage);
+
+            $torpedoName =  $torpedo->getName();
 
             $attacker->lowerTorpedoCount(1);
             $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
