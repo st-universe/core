@@ -9,7 +9,6 @@ use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -26,11 +25,6 @@ class ShipAttackerTest extends StuTestCase
      * @var MockInterface|ShipWrapperInterface
      */
     private $wrapper;
-
-    /**
-     * @var MockInterface|ModuleValueCalculatorInterface
-     */
-    private $moduleValueCalculator;
 
     /**
      * @var MockInterface|ShipTorpedoManagerInterface
@@ -53,7 +47,6 @@ class ShipAttackerTest extends StuTestCase
     {
         //injected
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->moduleValueCalculator = $this->mock(ModuleValueCalculatorInterface::class);
         $this->shipTorpedoManager = $this->mock(ShipTorpedoManagerInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
         $this->stuRandom = $this->mock(StuRandom::class);
@@ -62,10 +55,8 @@ class ShipAttackerTest extends StuTestCase
 
         $this->subject = new ShipAttacker(
             $this->wrapper,
-            $this->moduleValueCalculator,
             $this->shipTorpedoManager,
-            $this->stuRandom,
-            $this->initLogger()
+            $this->stuRandom
         );
     }
 
@@ -197,29 +188,11 @@ class ShipAttackerTest extends StuTestCase
 
     public function testGetEnergyWeaponBaseDamage(): void
     {
-        $rump = $this->mock(ShipRumpInterface::class);
-        $system = $this->mock(ShipSystemInterface::class);
-        $module = $this->mock(ModuleInterface::class);
-
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getShipSystem')
-            ->with(ShipSystemTypeEnum::SYSTEM_PHASER)
-            ->once()
-            ->andReturn($system);
-        $system->shouldReceive('getModule')
+        $this->ship->shouldReceive('getBaseDamage')
             ->withNoArgs()
-            ->once()
-            ->andReturn($module);
-
-        $this->ship->shouldReceive('getRump')
-            ->withNoARgs()
-            ->once()
-            ->andReturn($rump);
-
-        $this->moduleValueCalculator->shouldReceive('calculateModuleValue')
-            ->with($rump, $module, 'getBaseDamage')
             ->once()
             ->andReturn(42);
 
@@ -454,10 +427,6 @@ class ShipAttackerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($torpedo);
-        $this->ship->shouldReceive('getRump')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($rump);
         $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_TORPEDO)
             ->once()
@@ -475,16 +444,11 @@ class ShipAttackerTest extends StuTestCase
             ->once()
             ->andReturn(10);
 
-        $this->moduleValueCalculator->shouldReceive('calculateModuleValue')
-            ->with($rump, $module, false, 1000)
-            ->once()
-            ->andReturn(2000);
-
         $result = $this->subject->getProjectileWeaponDamage(true);
 
-        //1900 - 2100
-        $this->assertTrue($result >= 3800);
-        $this->assertTrue($result <= 4200);
+        //1800 - 2200
+        $this->assertTrue($result >= 1800);
+        $this->assertTrue($result <= 2200);
     }
 
     public function testGetTorpedoVolleys(): void

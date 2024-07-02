@@ -13,12 +13,9 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
     public function calculateModuleValue(
         ShipRumpInterface $rump,
         ModuleInterface $module,
-        $callback = 'aggi',
-        bool|int $value = false
+        int $value
     ): int {
-        if ($value === false) {
-            $value = $rump->$callback();
-        }
+
         if ($module->getType() === ShipModuleTypeEnum::SENSOR) {
             if ($rump->getModuleLevel() > $module->getLevel()) {
                 return (int) round($value -  $module->getDowngradeFactor());

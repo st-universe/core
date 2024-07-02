@@ -6,8 +6,6 @@ namespace Stu\Module\Ship\Lib\Battle\Provider;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -16,12 +14,10 @@ use Stu\Orm\Repository\ModuleRepositoryInterface;
 class AttackerProviderFactory implements AttackerProviderFactoryInterface
 {
     public function __construct(
-        private ModuleValueCalculatorInterface $moduleValueCalculator,
         private ShipTorpedoManagerInterface $shipTorpedoManager,
         private ModuleRepositoryInterface $moduleRepository,
         private ColonyStorageManagerInterface $colonyStorageManager,
-        private StuRandom $stuRandom,
-        private LoggerUtilFactoryInterface $loggerUtilFactory
+        private StuRandom $stuRandom
     ) {
     }
 
@@ -29,10 +25,8 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
     {
         return new ShipAttacker(
             $wrapper,
-            $this->moduleValueCalculator,
             $this->shipTorpedoManager,
-            $this->stuRandom,
-            $this->loggerUtilFactory->getLoggerUtil(true)
+            $this->stuRandom
         );
     }
 

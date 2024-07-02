@@ -10,8 +10,7 @@ interface ModuleValueCalculatorInterface
     public function calculateModuleValue(
         ShipRumpInterface $rump,
         ModuleInterface $module,
-        $callback = 'aggi',
-        bool|int $value = false
+        int $value
     ): int;
 
     public function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module): string;
