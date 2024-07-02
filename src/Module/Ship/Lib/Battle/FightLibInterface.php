@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AttackedBattleParty;
 use Stu\Module\Ship\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface FightLibInterface
 {
-    public function ready(ShipWrapperInterface $wrapper): InformationWrapper;
+    public function ready(ShipWrapperInterface $wrapper, InformationInterface $informations): void;
 
     public function canAttackTarget(
         ShipInterface $ship,

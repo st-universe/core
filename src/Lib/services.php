@@ -6,6 +6,8 @@ namespace Stu\Lib;
 
 use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
+use Stu\Lib\Information\InformationFactory;
+use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Mail\MailFactory;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Map\DistanceCalculation;
@@ -74,6 +76,7 @@ use function DI\create;
 use function DI\get;
 
 return [
+    InformationFactoryInterface::class => autowire(InformationFactory::class),
     UuidGeneratorInterface::class => autowire(UuidGenerator::class),
     ManagerProviderFactoryInterface::class => autowire(ManagerProviderFactory::class),
     ModuleSelectorAddonFactoryInterface::class => autowire(ModuleSelectorAddonFactory::class),
