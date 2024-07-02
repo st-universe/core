@@ -7,8 +7,6 @@ namespace Stu\Module\Ship\Lib\Battle\Provider;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -20,10 +18,8 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
 {
     public function __construct(
         private ShipWrapperInterface $wrapper,
-        private ModuleValueCalculatorInterface $moduleValueCalculator,
         private ShipTorpedoManagerInterface $shipTorpedoManager,
-        private StuRandom $stuRandom,
-        private LoggerUtilInterface $logger
+        private StuRandom $stuRandom
     ) {
     }
 
@@ -64,11 +60,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
 
     public function getEnergyWeaponBaseDamage(): int
     {
-        return $this->moduleValueCalculator->calculateModuleValue(
-            $this->get()->getRump(),
-            $this->getWeaponModule(),
-            'getBaseDamage'
-        );
+        return $this->get()->getBaseDamage();
     }
 
     public function reduceEps(int $amount): void
@@ -149,31 +141,17 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
     {
         $torpedo = $this->getTorpedo();
         if ($torpedo === null) {
-            $this->logger->log('shipAttacker->getProjectileWeaponDamage: no torpedo');
             return 0;
         }
 
         $module = $this->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule();
         if ($module === null) {
-            $this->logger->log('shipAttacker->getProjectileWeaponDamage: no module');
             return 0;
         }
 
         $variance = (int) round($torpedo->getBaseDamage() / 100 * $torpedo->getVariance());
-        $basedamage = $this->moduleValueCalculator->calculateModuleValue(
-            $this->get()->getRump(),
-            $module,
-            false,
-            $torpedo->getBaseDamage()
-        );
+        $basedamage = $torpedo->getBaseDamage();
         $damage = random_int($basedamage - $variance, $basedamage + $variance);
-
-        if ($damage === 0) {
-            $this->logger->logf(
-                'shipAttacker->getProjectileWeaponDamage, baseDamage: %d',
-                $torpedo->getBaseDamage()
-            );
-        }
 
         return $isCritical ? $damage * 2 : $damage;
     }

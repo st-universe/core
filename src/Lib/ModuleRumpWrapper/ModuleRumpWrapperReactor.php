@@ -22,7 +22,6 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            null,
             $this->rump->getBaseReactor()
         );
     }

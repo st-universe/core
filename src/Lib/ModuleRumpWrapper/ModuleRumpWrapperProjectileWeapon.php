@@ -22,7 +22,6 @@ final class ModuleRumpWrapperProjectileWeapon extends ModuleRumpWrapperBase impl
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            null,
             200 //TODO use property of rump / rumpRole
         );
     }

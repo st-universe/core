@@ -22,7 +22,6 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             $module,
-            null,
             $this->rump->getBaseWarpDrive()
         );
     }

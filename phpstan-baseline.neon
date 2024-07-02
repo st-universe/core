@@ -1684,16 +1684,6 @@ parameters:
 			path: src/Module/Ship/Lib/Interaction/TholianWebUtil.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ModuleValueCalculator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ReactorWrapper\\:\\:getEffectiveEpsProduction\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ReactorWrapper.php

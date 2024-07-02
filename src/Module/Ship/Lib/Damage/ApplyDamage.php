@@ -38,7 +38,6 @@ final class ApplyDamage implements ApplyDamageInterface
 
 
         $ship = $shipWrapper->get();
-        $ship->setShieldRegenerationTimer(time());
 
         $informations = new InformationWrapper();
         if ($ship->getShieldState()) {
@@ -117,6 +116,8 @@ final class ApplyDamage implements ApplyDamageInterface
             $ship->setShield($ship->getShield() - $damage);
             $informations->addInformation("- Schildschaden: " . $damage . " - Status: " . $ship->getShield());
         }
+
+        $ship->setShieldRegenerationTimer(time());
     }
 
     public function damageBuilding(
