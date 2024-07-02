@@ -9,7 +9,7 @@ use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
@@ -22,30 +22,27 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
         $this->shipSystemManager = $shipSystemManager;
     }
 
-    public function react(ShipWrapperInterface $wrapper): InformationWrapper
+    public function react(ShipWrapperInterface $wrapper, InformationInterface $informations): void
     {
         $ship = $wrapper->get();
-        $informations = new InformationWrapper();
 
         if ($this->changeFromGreenToYellow($wrapper, $informations)) {
-            return $informations;
+            return;
         }
 
         if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_YELLOW && $this->doAlertYellowReactions($wrapper, $informations)) {
-            return $informations;
+            return;
         }
 
         if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_RED) {
             if ($this->doAlertYellowReactions($wrapper, $informations)) {
-                return $informations;
+                return;
             }
             $this->doAlertRedReactions($wrapper, $informations);
         }
-
-        return $informations;
     }
 
-    private function changeFromGreenToYellow(ShipWrapperInterface $wrapper, InformationWrapper $informations): bool
+    private function changeFromGreenToYellow(ShipWrapperInterface $wrapper, InformationInterface $informations): bool
     {
         $ship = $wrapper->get();
 
@@ -66,7 +63,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
         return false;
     }
 
-    private function doAlertYellowReactions(ShipWrapperInterface $wrapper, InformationWrapper $informations): bool
+    private function doAlertYellowReactions(ShipWrapperInterface $wrapper, InformationInterface $informations): bool
     {
         $ship = $wrapper->get();
 
@@ -107,7 +104,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
         return false;
     }
 
-    private function doAlertRedReactions(ShipWrapperInterface $wrapper, InformationWrapper $informations): void
+    private function doAlertRedReactions(ShipWrapperInterface $wrapper, InformationInterface $informations): void
     {
         try {
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TORPEDO);

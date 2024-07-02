@@ -29,17 +29,16 @@ final class ApplyDamage implements ApplyDamageInterface
 
     public function damage(
         DamageWrapper $damageWrapper,
-        ShipWrapperInterface $shipWrapper
-    ): InformationWrapper {
+        ShipWrapperInterface $shipWrapper,
+        InformationInterface $informations
+    ): void {
 
         if ($damageWrapper->getNetDamage() <= 0) {
             throw new RuntimeException('this should not happen');
         }
 
-
         $ship = $shipWrapper->get();
 
-        $informations = new InformationWrapper();
         if ($ship->getShieldState()) {
 
             if ($damageWrapper->isShieldPenetration()) {
@@ -49,7 +48,7 @@ final class ApplyDamage implements ApplyDamageInterface
             }
         }
         if ($damageWrapper->getNetDamage() <= 0) {
-            return $informations;
+            return;
         }
 
         $disablemessage = false;
@@ -91,13 +90,13 @@ final class ApplyDamage implements ApplyDamageInterface
                 $informations->addInformation("-- Das Schiff wurde zerstört!");
             }
 
-            return $informations;
+            return;
         }
         $informations->addInformation("- Hüllenschaden: " . $damage);
         $informations->addInformation("-- Das Schiff wurde zerstört!");
         $ship->setIsDestroyed(true);
 
-        return $informations;
+        return;
     }
 
     private function damageShields(ShipWrapperInterface $wrapper, DamageWrapper $damageWrapper, InformationInterface $informations): void
@@ -164,7 +163,7 @@ final class ApplyDamage implements ApplyDamageInterface
     private function checkForDamagedShipSystems(
         ShipWrapperInterface $wrapper,
         int $huelleVorher,
-        InformationWrapper $informations
+        InformationInterface $informations
     ): bool {
         $ship = $wrapper->get();
         $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHull()) -
@@ -199,7 +198,7 @@ final class ApplyDamage implements ApplyDamageInterface
 
     private function damageRandomShipSystem(
         ShipWrapperInterface $wrapper,
-        InformationWrapper $informations,
+        InformationInterface $informations,
         int $percent = null
     ): void {
         $healthySystems = $wrapper->get()->getHealthySystems();
@@ -216,7 +215,7 @@ final class ApplyDamage implements ApplyDamageInterface
         ShipWrapperInterface $wrapper,
         ShipSystemInterface $system,
         int $dmg,
-        InformationWrapper $informations
+        InformationInterface $informations
     ): bool {
         $status = $system->getStatus();
         $systemName = $system->getSystemType()->getDescription();

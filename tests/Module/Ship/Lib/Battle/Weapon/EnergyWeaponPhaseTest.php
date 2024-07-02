@@ -79,8 +79,6 @@ class EnergyWeaponPhaseTest extends StuTestCase
 
         $targetId = 42;
 
-        $informations = new InformationWrapper();
-
         $targetPool->shouldReceive('getRandomActiveMember')
             ->withNoArgs()
             ->twice()
@@ -200,8 +198,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->andReturn(0);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::any(), $targetWrapper)
-            ->andReturn($informations);
+            ->with(Mockery::any(), $targetWrapper, Mockery::any());
 
         $this->shipDestruction->shouldReceive('destroy')
             ->with(

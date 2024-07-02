@@ -73,10 +73,12 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
             $ship->getPosX(),
             $ship->getPosY()
         ));
-        $message->addMessageMerge($this->applyDamage->damage(
+
+        $this->applyDamage->damage(
             new DamageWrapper((int) ceil($dmg)),
-            $wrapper
-        )->getInformations());
+            $wrapper,
+            $message
+        );
 
         if ($ship->isDestroyed()) {
 

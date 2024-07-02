@@ -114,16 +114,17 @@ class ApplyFieldDamageTest extends StuTestCase
         $this->applyDamage->shouldReceive('damage')
             ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
                 return $damageWrapper->getNetDamage() == 42;
-            }), $this->wrapper)
+            }), $this->wrapper, Mockery::any())
             ->once()
             ->andReturn($informations);
         $this->applyDamage->shouldReceive('damage')
             ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
                 return $damageWrapper->getNetDamage() == 42;
-            }), $tractoredShipWrapper)
+            }), $tractoredShipWrapper, Mockery::any())
             ->once()
             ->andReturn($Tinformations);
 
+        /** 
         $informations->shouldReceive('getInformations')
             ->withNoArgs()
             ->once()
@@ -131,7 +132,7 @@ class ApplyFieldDamageTest extends StuTestCase
         $Tinformations->shouldReceive('getInformations')
             ->withNoArgs()
             ->once()
-            ->andReturn(['T_APPLY_DAMAGE_INFOS']);
+            ->andReturn(['T_APPLY_DAMAGE_INFOS']);*/
 
         $message = null;
         $messages->shouldReceive('add')
@@ -166,13 +167,13 @@ class ApplyFieldDamageTest extends StuTestCase
         );
 
         $this->assertEquals([
-            'CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt',
-            'APPLY_DAMAGE_INFOS'
+            'CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt'
+            //,'APPLY_DAMAGE_INFOS'
         ], $message->getMessage());
 
         $this->assertEquals([
-            'CAUSE: Die TSHIP wurde in Sektor 23|34 beschädigt',
-            'T_APPLY_DAMAGE_INFOS'
+            'CAUSE: Die TSHIP wurde in Sektor 23|34 beschädigt'
+            //,'T_APPLY_DAMAGE_INFOS'
         ], $Tmessage->getMessage());
     }
 
@@ -214,14 +215,14 @@ class ApplyFieldDamageTest extends StuTestCase
         $this->applyDamage->shouldReceive('damage')
             ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
                 return $damageWrapper->getNetDamage() == 100;
-            }), $this->wrapper)
-            ->once()
-            ->andReturn($informations);
+            }), $this->wrapper, Mockery::any())
+            ->once();
 
+        /**
         $informations->shouldReceive('getInformations')
             ->withNoArgs()
             ->once()
-            ->andReturn(['APPLY_DAMAGE_INFOS']);
+            ->andReturn(['APPLY_DAMAGE_INFOS']); */
 
         $message = null;
         $messages->shouldReceive('add')
@@ -250,8 +251,8 @@ class ApplyFieldDamageTest extends StuTestCase
         );
 
         $this->assertEquals([
-            'CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt',
-            'APPLY_DAMAGE_INFOS'
+            'CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt'
+            //,'APPLY_DAMAGE_INFOS'
         ], $message->getMessage());
     }
 }

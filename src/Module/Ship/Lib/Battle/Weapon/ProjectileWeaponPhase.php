@@ -72,7 +72,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setPirateWrath($attacker->getUser(), $target);
             $this->setTorpedoHullModificator($target, $torpedo, $damage_wrapper);
 
-            $message->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
+            $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
 
             if ($target->isDestroyed()) {
                 $this->checkForShipDestruction(
