@@ -8,7 +8,8 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Information\InformationFactoryInterface;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
@@ -21,32 +22,33 @@ final class FightLib implements FightLibInterface
     public function __construct(
         private ShipSystemManagerInterface $shipSystemManager,
         private  CancelRepairInterface $cancelRepair,
-        private AlertLevelBasedReactionInterface $alertLevelBasedReaction
+        private AlertLevelBasedReactionInterface $alertLevelBasedReaction,
+        private InformationFactoryInterface $informationFactory
     ) {
     }
 
-    public function ready(ShipWrapperInterface $wrapper): InformationWrapper
+    public function ready(ShipWrapperInterface $wrapper, InformationInterface $informations): void
     {
         $ship = $wrapper->get();
-
-        $informations = new InformationWrapper();
 
         if (
             $ship->isDestroyed()
             || $ship->getRump()->isEscapePods()
         ) {
-            return $informations;
+            return;
         }
         if ($ship->getBuildplan() === null) {
-            return $informations;
+            return;
         }
         if (!$ship->hasEnoughCrew()) {
-            return $informations;
+            return;
         }
+
+        $informationWrapper = $this->informationFactory->createInformationWrapper();
 
         if ($ship->getDockedTo() !== null) {
             $ship->setDockedTo(null);
-            $informations->addInformation("- Das Schiff hat abgedockt");
+            $informationWrapper->addInformation("- Das Schiff hat abgedockt");
         }
 
         try {
@@ -60,13 +62,12 @@ final class FightLib implements FightLibInterface
 
         $this->cancelRepair->cancelRepair($ship);
 
-        $informations->addInformationWrapper($this->alertLevelBasedReaction->react($wrapper));
+        $this->alertLevelBasedReaction->react($wrapper, $informationWrapper);
 
-        if (!$informations->isEmpty()) {
-            $informations->addInformationArray([sprintf(_('Aktionen der %s'), $ship->getName())], true);
+        if (!$informationWrapper->isEmpty()) {
+            $informations->addInformationf('Aktionen der %s', $ship->getName());
+            $informationWrapper->dumpTo($informations);
         }
-
-        return $informations;
     }
 
     public function canAttackTarget(

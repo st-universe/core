@@ -9,6 +9,8 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Information\InformationFactoryInterface;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\Party\AttackedBattleParty;
@@ -24,13 +26,13 @@ use Stu\StuTestCase;
 class FightLibTest extends StuTestCase
 {
     /** @var MockInterface|ShipSystemManagerInterface */
-    private ShipSystemManagerInterface $shipSystemManager;
-
+    private $shipSystemManager;
     /** @var MockInterface|CancelRepairInterface */
-    private CancelRepairInterface $cancelRepair;
-
+    private $cancelRepair;
     /** @var MockInterface|AlertLevelBasedReactionInterface */
-    private AlertLevelBasedReactionInterface $alertLevelBasedReaction;
+    private $alertLevelBasedReaction;
+    /** @var MockInterface|InformationFactoryInterface */
+    private $informationFactory;
 
     /** @var MockInterface|ShipWrapperInterface */
     private ShipWrapperInterface $wrapper;
@@ -46,6 +48,7 @@ class FightLibTest extends StuTestCase
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->alertLevelBasedReaction = $this->mock(AlertLevelBasedReactionInterface::class);
+        $this->informationFactory = $this->mock(InformationFactoryInterface::class);
 
         //params
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -61,25 +64,28 @@ class FightLibTest extends StuTestCase
         $this->subject = new FightLib(
             $this->shipSystemManager,
             $this->cancelRepair,
-            $this->alertLevelBasedReaction
+            $this->alertLevelBasedReaction,
+            $this->informationFactory
         );
     }
 
 
     public function testReadyExpectNoActionsWhenDestroyed(): void
     {
+        $informations = $this->mock(InformationInterface::class);
+
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
 
-        $result = $this->subject->ready($this->wrapper);
-
-        $this->assertEquals([], $result->getInformations());
+        $this->subject->ready($this->wrapper, $informations);
     }
 
     public function testReadyExpectNoActionsWhenEscapePod(): void
     {
+        $informations = $this->mock(InformationInterface::class);
+
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
@@ -89,13 +95,13 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $result = $this->subject->ready($this->wrapper);
-
-        $this->assertEquals([], $result->getInformations());
+        $this->subject->ready($this->wrapper, $informations);
     }
 
     public function testReadyExpectNoActionsWhenNoBuildplan(): void
     {
+        $informations = $this->mock(InformationInterface::class);
+
         $this->ship->shouldReceive('getRump->isEscapePods')
             ->withNoArgs()
             ->once()
@@ -109,13 +115,13 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $result = $this->subject->ready($this->wrapper);
-
-        $this->assertEquals([], $result->getInformations());
+        $this->subject->ready($this->wrapper, $informations);
     }
 
     public function testReadyExpectNoActionsWhenNotEnoughCrew(): void
     {
+        $informations = $this->mock(InformationInterface::class);
+
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
@@ -133,13 +139,14 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $result = $this->subject->ready($this->wrapper);
-
-        $this->assertEquals([], $result->getInformations());
+        $this->subject->ready($this->wrapper, $informations);
     }
 
     public function testReadyExpectSuccessWhenNoErrors(): void
     {
+        $informations = $this->mock(InformationInterface::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
+
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
@@ -176,23 +183,42 @@ class FightLibTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->alertLevelBasedReaction->shouldReceive('react')
-            ->with($this->wrapper)
+        $this->informationFactory->shouldReceive('createInformationWrapper')
+            ->withNoArgs()
             ->once()
-            ->andReturn(new InformationWrapper(['test']));
+            ->andReturn($informationWrapper);
+
+        $this->alertLevelBasedReaction->shouldReceive('react')
+            ->with($this->wrapper, $informationWrapper)
+            ->once();
+
+        $informations->shouldReceive('addInformationf')
+            ->with('Aktionen der %s', 'shipname')
+            ->once();
+        $informationWrapper->shouldReceive('addInformation')
+            ->with('- Das Schiff hat abgedockt')
+            ->once();
+        $informationWrapper->shouldReceive('dumpTo')
+            ->with($informations)
+            ->once();
+        $informationWrapper->shouldReceive('isEmpty')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('shipname');
 
-        $result = $this->subject->ready($this->wrapper);
-
-        $this->assertEquals(['Aktionen der shipname', '- Das Schiff hat abgedockt', 'test'], $result->getInformations());
+        $this->subject->ready($this->wrapper, $informations);
     }
 
     public function testReadyExpectSuccessWhenErrors(): void
     {
+        $informationWrapper = $this->mock(InformationWrapper::class);
+        $informations = $this->mock(InformationInterface::class);
+
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
@@ -228,14 +254,21 @@ class FightLibTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->alertLevelBasedReaction->shouldReceive('react')
-            ->with($this->wrapper)
+        $this->informationFactory->shouldReceive('createInformationWrapper')
+            ->withNoArgs()
             ->once()
-            ->andReturn(new InformationWrapper());
+            ->andReturn($informationWrapper);
 
-        $result = $this->subject->ready($this->wrapper);
+        $this->alertLevelBasedReaction->shouldReceive('react')
+            ->with($this->wrapper, $informationWrapper)
+            ->once();
 
-        $this->assertEquals([], $result->getInformations());
+        $informationWrapper->shouldReceive('isEmpty')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->subject->ready($this->wrapper, $informations);
     }
 
     public function testCanAttackTargetExpectFalseWhenNoActiveWeapon(): void
