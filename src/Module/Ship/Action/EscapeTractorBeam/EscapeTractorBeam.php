@@ -172,7 +172,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
-        $informations = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper);
+        $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper, $game);
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
@@ -182,7 +182,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $tractoringShip,
                 $wrapper,
                 ShipDestructionCauseEnum::ESCAPE_TRACTOR,
-                $informations
+                $game
             );
 
             $this->privateMessageSender->send(
@@ -200,8 +200,6 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $href
             );
         }
-
-        $game->addInformationWrapper($informations);
     }
 
     public function performSessionCheck(): bool

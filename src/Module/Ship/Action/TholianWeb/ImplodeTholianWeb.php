@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\TholianWeb;
 
 use request;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -99,10 +100,12 @@ final class ImplodeTholianWeb implements ActionControllerInterface
             $targetUserId = $target->getUser()->getId();
             $isTargetBase = $target->isBase();
 
-            $informations = $this->tholianWebWeaponPhase->damageCapturedShip(
+            $informations = new InformationWrapper();
+
+            $this->tholianWebWeaponPhase->damageCapturedShip(
                 $ship,
                 $targetWrapper,
-                $game
+                $informations
             );
 
             //notify target owner

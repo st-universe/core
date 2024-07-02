@@ -9,6 +9,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
@@ -16,10 +17,13 @@ use Stu\StuTestCase;
 class AlertLevelBasedReactionTest extends StuTestCase
 {
     /** @var MockInterface|ShipSystemManagerInterface */
-    private ShipSystemManagerInterface $shipSystemManager;
+    private $shipSystemManager;
 
     /** @var MockInterface|ShipWrapperInterface */
-    private ShipWrapperInterface $wrapper;
+    private $wrapper;
+
+    /** @var MockInterface|InformationInterface */
+    private $informations;
 
     /** @var MockInterface|ShipInterface */
     private ShipInterface $ship;
@@ -33,6 +37,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
         //params
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
+        $this->informations = $this->mock(InformationInterface::class);
 
         //other
         $this->ship = $this->mock(ShipInterface::class);
@@ -58,9 +63,14 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->once()
             ->andReturn('alertMsg');
 
-        $result = $this->subject->react($this->wrapper);
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- alertMsg')
+            ->once();
 
-        $this->assertEquals(['- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb', '- alertMsg'], $result->getInformations());
+        $this->subject->react($this->wrapper, $this->informations);
     }
 
     public function testReactExpectUncloakWhenYellowAndCloaked(): void
@@ -77,9 +87,11 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_CLOAK)
             ->once();
 
-        $result = $this->subject->react($this->wrapper);
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Tarnung wurde deaktiviert')
+            ->once();
 
-        $this->assertEquals(['- Die Tarnung wurde deaktiviert'], $result->getInformations());
+        $this->subject->react($this->wrapper, $this->informations);
     }
 
     public function testReactExpectShieldsNbsAndPhaserActivationWhenNotCloaked(): void
@@ -110,14 +122,17 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_PHASER)
             ->once();
 
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Schilde wurden aktiviert')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Nahbereichssensoren wurden aktiviert')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Energiewaffe wurde aktiviert')
+            ->once();
 
-        $result = $this->subject->react($this->wrapper);
-
-        $this->assertEquals([
-            '- Die Schilde wurden aktiviert',
-            '- Die Nahbereichssensoren wurden aktiviert',
-            '- Die Energiewaffe wurde aktiviert'
-        ], $result->getInformations());
+        $this->subject->react($this->wrapper, $this->informations);
     }
 
     public function testReactExpectNoShieldActivationWhenTractoring(): void
@@ -141,14 +156,17 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_PHASER)
             ->once();
 
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Nahbereichssensoren wurden aktiviert')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Energiewaffe wurde aktiviert')
+            ->once();
 
-        $result = $this->subject->react($this->wrapper);
-
-        $this->assertEquals([
-            '- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden',
-            '- Die Nahbereichssensoren wurden aktiviert',
-            '- Die Energiewaffe wurde aktiviert'
-        ], $result->getInformations());
+        $this->subject->react($this->wrapper, $this->informations);
     }
 
     public function testReactExpectNoShieldActivationWhenTractored(): void
@@ -176,14 +194,17 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_PHASER)
             ->once();
 
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Nahbereichssensoren wurden aktiviert')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Energiewaffe wurde aktiviert')
+            ->once();
 
-        $result = $this->subject->react($this->wrapper);
-
-        $this->assertEquals([
-            '- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden',
-            '- Die Nahbereichssensoren wurden aktiviert',
-            '- Die Energiewaffe wurde aktiviert'
-        ], $result->getInformations());
+        $this->subject->react($this->wrapper, $this->informations);
     }
 
     public function testReactExpectNothingWhenErrorsOnActivation(): void
@@ -217,10 +238,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->once()
             ->andThrow(new SystemNotFoundException());
 
-
-        $result = $this->subject->react($this->wrapper);
-
-        $this->assertEquals([], $result->getInformations());
+        $this->subject->react($this->wrapper, $this->informations);
     }
 
     public function testReactExpectShieldsNbsPhaserAndTorpedoActivation(): void
@@ -254,13 +272,19 @@ class AlertLevelBasedReactionTest extends StuTestCase
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TORPEDO)
             ->once();
 
-        $result = $this->subject->react($this->wrapper);
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Schilde wurden aktiviert')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Nahbereichssensoren wurden aktiviert')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Die Energiewaffe wurde aktiviert')
+            ->once();
+        $this->informations->shouldReceive('addInformation')
+            ->with('- Der Torpedowerfer wurde aktiviert')
+            ->once();
 
-        $this->assertEquals([
-            '- Die Schilde wurden aktiviert',
-            '- Die Nahbereichssensoren wurden aktiviert',
-            '- Die Energiewaffe wurde aktiviert',
-            '- Der Torpedowerfer wurde aktiviert'
-        ], $result->getInformations());
+        $this->subject->react($this->wrapper, $this->informations);
     }
 }

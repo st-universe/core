@@ -76,7 +76,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setPirateWrath($attacker->getUser(), $target);
             $this->setWeaponShieldModificator($target, $weapon, $damage_wrapper);
 
-            $message->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper)->getInformations());
+            $this->applyDamage->damage($damage_wrapper, $targetWrapper, $message);
 
             if ($target->isDestroyed()) {
 

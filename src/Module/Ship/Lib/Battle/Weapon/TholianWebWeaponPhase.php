@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Lib\DamageWrapper;
-use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -17,9 +16,8 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
     public function damageCapturedShip(
         ShipInterface $ship,
         ShipWrapperInterface $wrapper,
-        GameControllerInterface $game
-    ): InformationWrapper {
-        $informations = new InformationWrapper();
+        InformationInterface $informations
+    ): void {
 
         $ship = $wrapper->get();
 
@@ -37,7 +35,7 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         $damage_wrapper->setHullDamageFactor(100);
         $damage_wrapper->setIsPhaserDamage(true);
 
-        $informations->addInformationWrapper($this->applyDamage->damage($damage_wrapper, $wrapper));
+        $this->applyDamage->damage($damage_wrapper, $wrapper, $informations);
 
         $this->checkForShipDestruction(
             $ship,
@@ -45,7 +43,5 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
             ShipDestructionCauseEnum::THOLIAN_WEB_IMPLOSION,
             $informations
         );
-
-        return $informations;
     }
 }
