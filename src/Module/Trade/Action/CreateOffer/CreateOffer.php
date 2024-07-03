@@ -132,7 +132,7 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        if ($offerAmount < 1 || $offerAmount > 99) {
+        if ($offerAmount > 99) {
             $offerAmount = 1;
         }
         if ($offerAmount * $giveAmount > $storage->getAmount()) {

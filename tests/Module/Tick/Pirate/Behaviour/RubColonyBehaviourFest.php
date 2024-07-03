@@ -22,9 +22,6 @@ class RubColonyBehaviourFest extends StuTestCase
     private MockInterface $distanceCalculation;
 
     /** @var MockInterface&ShipMoverInterface */
-    private MockInterface $shipMover;
-
-    /** @var MockInterface&ShipMoverInterface */
     private MockInterface $fleetWrapper;
 
     private PirateBehaviourInterface $subject;
@@ -33,7 +30,6 @@ class RubColonyBehaviourFest extends StuTestCase
     {
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->distanceCalculation = $this->mock(DistanceCalculationInterface::class);
-        $this->shipMover = $this->mock(ShipMoverInterface::class);
 
         $this->fleetWrapper = $this->mock(FleetWrapperInterface::class);
 

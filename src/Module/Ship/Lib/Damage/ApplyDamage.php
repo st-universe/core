@@ -95,8 +95,6 @@ final class ApplyDamage implements ApplyDamageInterface
         $informations->addInformation("- Hüllenschaden: " . $damage);
         $informations->addInformation("-- Das Schiff wurde zerstört!");
         $ship->setIsDestroyed(true);
-
-        return;
     }
 
     private function damageShields(ShipWrapperInterface $wrapper, DamageWrapper $damageWrapper, InformationInterface $informations): void

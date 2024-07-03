@@ -151,8 +151,7 @@ final class AddKnPost implements ActionControllerInterface
     }
 
     /**
-     * @param KnPostInterface $post
-     * @param int[] $characterIds 
+     * @param int[] $characterIds
      */
     private function notifyCharacterOwners(KnPostInterface $post, array $characterIds): void
     {

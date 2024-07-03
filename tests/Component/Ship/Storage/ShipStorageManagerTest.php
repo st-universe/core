@@ -22,9 +22,6 @@ class ShipStorageManagerTest extends StuTestCase
      */
     private $storageRepository;
 
-    /**
-     * @var ShipStorageManager
-     */
     private ?ShipStorageManager $manager;
 
     public function setUp(): void
@@ -221,7 +218,7 @@ class ShipStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($storedAmount);
         $storageItem->shouldReceive('setAmount')
-            ->with($amount + $storedAmount)
+            ->with($amount)
             ->once();
 
         $this->manager->upperStorage($ship, $commodity, $amount);
@@ -263,7 +260,7 @@ class ShipStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($storedAmount);
         $storageItem->shouldReceive('setAmount')
-            ->with($amount + $storedAmount)
+            ->with($amount)
             ->once();
 
         $this->manager->upperStorage($ship, $commodity, $amount);

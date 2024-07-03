@@ -79,13 +79,13 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         $fleetWrapper = $wrapper->getFleetWrapper();
         if (request::postInt('isfleet') && $fleetWrapper !== null) {
             foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-                if (!$this->transferPerShip(
+                if ($this->transferPerShip(
                     $isUnload,
                     $wrapper,
                     $target,
                     $informations
                 )) {
-                    $hasTransfered = $hasTransfered;
+                    $hasTransfered = true;
                 }
             }
         } else {
@@ -169,7 +169,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 continue;
             }
 
-            if (!$this->beamUtil->transferCommodity(
+            if ($this->beamUtil->transferCommodity(
                 $commodityId,
                 $gcount[$key],
                 $wrapper,
@@ -177,7 +177,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 $transferTarget,
                 $informations
             )) {
-                $hasTransfered = $hasTransfered;
+                $hasTransfered = true;
             }
         }
 

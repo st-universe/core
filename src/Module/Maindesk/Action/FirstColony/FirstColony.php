@@ -71,7 +71,7 @@ final class FirstColony implements ActionControllerInterface
             $game->addInformation(_('Dieser Planet wurde bereits besiedelt'));
             return;
         }
-        $colonyList = $this->colonyRepository->getStartingByFaction((int) $user->getFactionId());
+        $colonyList = $this->colonyRepository->getStartingByFaction($user->getFactionId());
 
         if (!array_key_exists($planetId, $colonyList)) {
             return;

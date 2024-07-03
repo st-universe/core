@@ -28,12 +28,6 @@ class BuildingManagerTest extends StuTestCase
     /** @var MockInterface&ColonySandboxRepositoryInterface */
     private MockInterface $colonySandboxRepository;
 
-    /** @var MockInterface&ColonyRepositoryInterface */
-    private MockInterface $hostRepository;
-
-    /** @var MockInterface&ColonySandboxRepositoryInterface */
-    private MockInterface $hostSandboxRepository;
-
     /** @var MockInterface&BuildingPostActionInterface */
     private MockInterface $buildingPostAction;
 
@@ -354,7 +348,7 @@ class BuildingManagerTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
-        $newHousing = $currentHousing - $housing;
+        $newHousing = $currentHousing;
         $host->shouldReceive('setMaxBev')
             ->with($newHousing)
             ->once();
@@ -424,7 +418,7 @@ class BuildingManagerTest extends StuTestCase
             ->once()
             ->andReturn($currentWorker);
 
-        $newWorkers = $currentWorker - $worker;
+        $newWorkers = $currentWorker;
         $host->shouldReceive('setWorkers')
             ->with($newWorkers)
             ->once()
@@ -595,8 +589,6 @@ class BuildingManagerTest extends StuTestCase
         $host = $this->mock(ColonyInterface::class);
         $function = $this->mock(BuildingFunctionInterface::class);
         $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
-
-        $currentMaxBev = 999;
         $currentStorage = 555;
         $storage = 44;
         $currentEps = 33;

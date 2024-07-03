@@ -418,7 +418,7 @@ class ShipAttackerTest extends StuTestCase
         $torpedo = $this->mock(TorpedoTypeInterface::class);
         $module = $this->mock(ModuleInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
-        $rump = $this->mock(ShipRumpInterface::class);
+        $this->mock(ShipRumpInterface::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

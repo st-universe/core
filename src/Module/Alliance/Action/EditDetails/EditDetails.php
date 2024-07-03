@@ -87,7 +87,7 @@ final class EditDetails implements ActionControllerInterface
 
         $game->setView(Edit::VIEW_IDENTIFIER);
 
-        if ($this->allianceActionManager->mayEditFactionMode($alliance, (int) $user->getFactionId())) {
+        if ($this->allianceActionManager->mayEditFactionMode($alliance, $user->getFactionId())) {
             if ($faction_mode === 1) {
                 $alliance->setFaction($user->getFaction());
             } else {
