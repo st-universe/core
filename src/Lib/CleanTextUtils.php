@@ -27,11 +27,11 @@ class CleanTextUtils
         foreach ($taglist as $tag) {
             // How often is the open tag?
             preg_match_all('/\[[ ]?' . $tag . '[ ]?(=[ ]?[^ ]+?[ ]?)?\]/i', $str, $matches);
-            $opentags = is_countable($matches['0']) ? count($matches['0']) : 0;
+            $opentags = count($matches['0']);
 
             // How often is the close tag?
             preg_match_all('/\[\/' . $tag . '\]/i', $str, $matches);
-            $closetags = is_countable($matches['0']) ? count($matches['0']) : 0;
+            $closetags = count($matches['0']);
 
             // how many tags have been unclosed?
             $diff = abs($opentags - $closetags);

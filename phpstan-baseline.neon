@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, mixed given\\.$#"
+			count: 1
+			path: src/Component/Admin/Reset/ResetManager.php
+
+		-
 			message: "#^Constant _IMG_HANDLER not found\\.$#"
 			count: 1
 			path: src/Component/Image/ImageCreation.php
@@ -279,46 +284,6 @@ parameters:
 			path: src/Module/Admin/Action/StartMirrorWorld.php
 
 		-
-			message: "#^Parameter \\#1 \\$dst_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, GdImage\\|false given\\.$#"
-			count: 3
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#2 \\$red of function imagecolorallocate expects int, float\\|int given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#2 \\$src_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#3 \\$green of function imagecolorallocate expects int, float\\|int given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#4 \\$blue of function imagecolorallocate expects int, float\\|int given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
 			message: "#^Offset 0 might not exist on array\\{int\\|null, int\\|null, int\\|null\\}\\|null\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
@@ -334,62 +299,7 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#1 \\$dst_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#1 \\$dst_image of function imagecopyresized expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagedestroy expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagepng expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#2 \\$red of function imagecolorallocate expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#2 \\$src_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
 			message: "#^Parameter \\#2 \\$src_image of function imagecopyresized expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#3 \\$green of function imagecolorallocate expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#4 \\$blue of function imagecolorallocate expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
@@ -2352,6 +2262,11 @@ parameters:
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/RepairTaskRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, non\\-falsy\\-string given\\.$#"
+			count: 1
+			path: src/Orm/Repository/UserMapRepository.php
 
 		-
 			message: """

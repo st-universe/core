@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map;
 
 use request;
+use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,20 +16,11 @@ final class ShowMapOverall implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MAP_OVERALL';
 
-    private MapRepositoryInterface $mapRepository;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    private StuConfigInterface $config;
-
     public function __construct(
-        MapRepositoryInterface $mapRepository,
-        LayerRepositoryInterface $layerRepository,
-        StuConfigInterface $config
+        private MapRepositoryInterface $mapRepository,
+        private LayerRepositoryInterface $layerRepository,
+        private StuConfigInterface $config
     ) {
-        $this->mapRepository = $mapRepository;
-        $this->layerRepository = $layerRepository;
-        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -62,7 +54,20 @@ final class ShowMapOverall implements ViewControllerInterface
                 $border = imagecreatetruecolor(15, 15);
                 $var = $borderType->getColor();
                 $arr = sscanf($var, '#%2x%2x%2x');
-                $col = imagecolorallocate($border, $arr[0], $arr[1], $arr[2]);
+                $red = $arr[0];
+                $green = $arr[1];
+                $blue = $arr[2];
+                if (
+                    !$red || $red < 1 || $red > 255
+                    || !$green || $green < 1 || $green > 255
+                    || !$blue || $blue < 1 || $blue > 255
+                ) {
+                    throw new RuntimeException('rgb range exception');
+                }
+                $col = imagecolorallocate($border, $red, $green, $blue);
+                if (!$col) {
+                    throw new RuntimeException('color range exception');
+                }
                 imagefill($border, 0, 0, $col);
                 imagecopy($img, $border, $curx, $cury, 0, 0, 15, 15);
                 $curx += 15;

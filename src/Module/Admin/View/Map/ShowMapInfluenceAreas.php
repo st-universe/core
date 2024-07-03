@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map;
 
 use request;
+use RuntimeException;
 use Stu\Component\Image\ImageCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -101,6 +102,13 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
                                 $blue = hexdec($ret[3]);
                             }
+                            if (
+                                !is_integer($red) || $red < 1 || $red > 255
+                                || !is_integer($green) || $green < 1 || $green > 255
+                                || !is_integer($blue) || $blue < 1 || $blue > 255
+                            ) {
+                                throw new RuntimeException('rgb range exception');
+                            }
                             $col = imagecolorallocate($border, $red, $green, $blue);
                         }
                     }
@@ -109,9 +117,15 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
             if ($col === null) {
                 $rest = $id % 200;
+                if ($rest < 1) {
+                    throw new RuntimeException('rgb range exception');
+                }
                 $col = imagecolorallocate($border, $rest, $rest, $rest);
             }
 
+            if (!$col) {
+                throw new RuntimeException('color range exception');
+            }
             imagefill($border, 0, 0, $col);
             imagecopy($img, $border, $curx, $cury, 0, 0, 15, 15);
             $curx += 15;
