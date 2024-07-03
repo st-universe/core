@@ -25,9 +25,6 @@ class TradePostStorageManagerTest extends StuTestCase
      */
     private ?MockInterface $commodityRepository;
 
-    /**
-     * @var TradePostStorageManagerInterface
-     */
     private ?TradePostStorageManagerInterface $manager;
 
     private TradePostInterface $tradePost;

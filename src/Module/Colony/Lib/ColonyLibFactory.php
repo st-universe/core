@@ -20,7 +20,6 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -43,84 +42,26 @@ use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private CommodityConsumptionInterface $commodityConsumption;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    private PlanetGeneratorInterface $planetGenerator;
-
-    private EntityManagerInterface $entityManager;
-
-    private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
-
-    private ModuleRepositoryInterface $moduleRepository;
-
-    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
-
-    private TwigPageInterface $twigPage;
-
-    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    private ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory;
-
-    private CommodityCacheInterface $commodityCache;
-
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
-
     public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        BuildingRepositoryInterface $buildingRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        CommodityConsumptionInterface $commodityConsumption,
-        ShipRepositoryInterface $shipRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        FlightSignatureRepositoryInterface $flightSignatureRepository,
-        PlanetGeneratorInterface $planetGenerator,
-        EntityManagerInterface $entityManager,
-        BuildingCommodityRepositoryInterface $buildingCommodityRepository,
-        ModuleRepositoryInterface $moduleRepository,
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        TwigPageInterface $twigPage,
-        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory,
-        CommodityCacheInterface $commodityCache,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private BuildingRepositoryInterface $buildingRepository,
+        private ColonyRepositoryInterface $colonyRepository,
+        private CommodityConsumptionInterface $commodityConsumption,
+        private ShipRepositoryInterface $shipRepository,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ResearchedRepositoryInterface $researchedRepository,
+        private FlightSignatureRepositoryInterface $flightSignatureRepository,
+        private PlanetGeneratorInterface $planetGenerator,
+        private EntityManagerInterface $entityManager,
+        private BuildingCommodityRepositoryInterface $buildingCommodityRepository,
+        private ModuleRepositoryInterface $moduleRepository,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        private TwigPageInterface $twigPage,
+        private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory,
+        private CommodityCacheInterface $commodityCache
     ) {
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->buildingRepository = $buildingRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->commodityConsumption = $commodityConsumption;
-        $this->shipRepository = $shipRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->researchedRepository = $researchedRepository;
-        $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->planetGenerator = $planetGenerator;
-        $this->entityManager = $entityManager;
-        $this->buildingCommodityRepository = $buildingCommodityRepository;
-        $this->moduleRepository = $moduleRepository;
-        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-        $this->twigPage = $twigPage;
-        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->moduleSelectorAddonFactory = $moduleSelectorAddonFactory;
-        $this->commodityCache = $commodityCache;
-        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function createBuildingFunctionTal(
@@ -144,8 +85,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->planetFieldTypeRetriever,
             $host,
             $buildingId,
-            $showUnderground,
-            $this->loggerUtilFactory->getLoggerUtil()
+            $showUnderground
         );
     }
 

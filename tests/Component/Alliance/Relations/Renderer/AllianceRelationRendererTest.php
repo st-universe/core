@@ -17,9 +17,6 @@ use Stu\StuTestCase;
 
 class AllianceRelationRendererTest extends StuTestCase
 {
-    /** @var float */
-    private const PIXEL_TO_INCH = 0.0104166667;
-
     /** @var MockInterface&GraphVizFactoryInterface */
     private MockInterface $graphVizFactory;
 
@@ -55,7 +52,6 @@ class AllianceRelationRendererTest extends StuTestCase
         $allianceId = 666;
         $opponentId = 42;
         $result = 'some-result';
-        $relationtypeDescription = 'some-type';
         $relationType = AllianceEnum::ALLIANCE_RELATION_ALLIED;
 
         $this->graphVizFactory->shouldReceive('createGraphViz')

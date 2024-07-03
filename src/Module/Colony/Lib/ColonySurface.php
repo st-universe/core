@@ -53,8 +53,7 @@ final class ColonySurface implements ColonySurfaceInterface
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         PlanetFieldHostInterface $host,
         ?int $buildingId,
-        bool $showUnderground,
-        LoggerUtilInterface $loggerUtil
+        bool $showUnderground
     ) {
         $this->host = $host;
         $this->planetFieldRepository = $planetFieldRepository;

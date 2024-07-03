@@ -88,7 +88,7 @@ class ManageCrewTest extends StuTestCase
     public function testManageExpectNothingWhenNotInValues(): void
     {
         $values = ['crew' => ['5' => '42']];
-        $buildplan = $this->mock(ShipBuildplanInterface::class);
+        $this->mock(ShipBuildplanInterface::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

@@ -46,8 +46,6 @@ class DemotePlayerTest extends StuTestCase
 
     private int $userId = 666;
 
-    private int $allianceId = 42;
-
     private int $playerId = 33;
 
     protected function setUp(): void

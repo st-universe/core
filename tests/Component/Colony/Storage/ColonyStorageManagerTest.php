@@ -245,7 +245,7 @@ class ColonyStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($storedAmount);
         $storageItem->shouldReceive('setAmount')
-            ->with($amount + $storedAmount)
+            ->with($amount)
             ->once();
 
         $this->manager->upperStorage($this->colony, $this->commodity, $amount);
@@ -290,7 +290,7 @@ class ColonyStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($storedAmount);
         $storageItem->shouldReceive('setAmount')
-            ->with($amount + $storedAmount)
+            ->with($amount)
             ->once();
 
         $this->manager->upperStorage($this->colony, $this->commodity, $amount);

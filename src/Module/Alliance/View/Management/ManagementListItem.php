@@ -62,7 +62,7 @@ final class ManagementListItem
      */
     public function getFaction(): int
     {
-        return (int) $this->user->getFactionId();
+        return $this->user->getFactionId();
     }
 
     /**

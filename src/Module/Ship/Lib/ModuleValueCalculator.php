@@ -37,7 +37,7 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
                 return (int) round($value + $value / 100 * $module->getDefaultFactor());
             }
         }
-        return (int) $value;
+        return $value;
     }
 
     public function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module): string

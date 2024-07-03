@@ -94,7 +94,7 @@ final class ShowResearchTree implements ViewControllerInterface
         $commodityId = $research->getCommodityId();
 
         if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL1) {
-            $points += $research->getPoints() * 1;
+            $points += $research->getPoints();
         }
         if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL2) {
             $points += $research->getPoints() * 2;

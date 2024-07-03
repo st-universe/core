@@ -148,7 +148,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
     public function testHandleDestruction(): void
     {
         $systemAstro = $this->mock(ShipSystemInterface::class);
-        $systemTracker = $this->mock(ShipSystemInterface::class);
+        $this->mock(ShipSystemInterface::class);
 
         //ASTRO STUFF
         $this->ship->shouldReceive('hasShipSystem')

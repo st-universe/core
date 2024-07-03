@@ -719,11 +719,6 @@ parameters:
 			path: src/Module/Colony/Lib/ColonySurface.php
 
 		-
-			message: "#^Constructor of class Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonySurface has an unused parameter \\$loggerUtil\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonySurface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonySurface\\:\\:isResearched\\(\\) has parameter \\$researched with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonySurface.php
@@ -1790,11 +1785,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
-
-		-
-			message: "#^Comparison operation \"\\<\" between int\\<1, max\\> and 1 is always false\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
 

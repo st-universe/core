@@ -40,9 +40,6 @@ class StationUtilityTest extends StuTestCase
     /** @var TradeLicenseRepositoryInterface|MockInterface */
     private $tradeLicenseRepository;
 
-    /**
-     * @var StationUtilityInterface
-     */
     private StationUtilityInterface $subject;
 
     public function setUp(): void

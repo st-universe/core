@@ -35,9 +35,6 @@ class ManageTorpedoTest extends StuTestCase
     /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
 
-    /** @var MockInterface&ShipBuildplanInterface */
-    private MockInterface $buildplan;
-
     /** @var MockInterface&ShipInterface */
     private MockInterface $ship;
 
@@ -58,7 +55,6 @@ class ManageTorpedoTest extends StuTestCase
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
-        $this->buildplan = $this->mock(ShipBuildplanInterface::class);
         $this->user = $this->mock(UserInterface::class);
         $this->torpedoType = $this->mock(TorpedoTypeInterface::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);

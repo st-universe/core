@@ -9,7 +9,7 @@ use Stu\Module\Tal\TalHelper;
 
 class SignatureWrapper
 {
-    private $signature = null;
+    private $signature;
 
     public function __construct($signature)
     {

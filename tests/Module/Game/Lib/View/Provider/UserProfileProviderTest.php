@@ -81,7 +81,6 @@ class UserProfileProviderTest extends StuTestCase
     {
         $playerId = 666;
         $visitorId = 42;
-        $colonyid = 123;
         $parsedDescription = 'some-parsed-description';
         $description = 'some-description';
 
@@ -93,7 +92,7 @@ class UserProfileProviderTest extends StuTestCase
         $friend = $this->mock(UserInterface::class);
         $bbCodeParser = $this->mock(Parser::class);
         $colonyScan = $this->mock(ColonyScanInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
+        $this->mock(ColonyInterface::class);
 
         request::setMockVars(['uid' => $playerId]);
 

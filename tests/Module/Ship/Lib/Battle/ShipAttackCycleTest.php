@@ -125,6 +125,6 @@ class ShipAttackCycleTest extends StuTestCase
             ->once()
             ->andReturn($messages);
 
-        $collection = $this->subject->cycle($attackers, $defenders, ShipAttackCauseEnum::BOARD_SHIP);
+        $this->subject->cycle($attackers, $defenders, ShipAttackCauseEnum::BOARD_SHIP);
     }
 }
