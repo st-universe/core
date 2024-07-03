@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipLSSModeEnum;
@@ -30,26 +31,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInterface
 {
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private GameControllerInterface $game;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        GameControllerInterface $game
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->game = $game;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private GameControllerInterface $game)
+    {
     }
 
+    #[Override]
     public function activate(
         ShipWrapperInterface|int $target,
         shipSystemTypeEnum $type,
@@ -96,11 +82,11 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                 $logger->addInformationf(_('%s: System %s aktiviert'), $ship->getName(), $systemName);
             }
             return true;
-        } catch (AlreadyActiveException $e) {
+        } catch (AlreadyActiveException) {
             if ($logger instanceof InformationInterface) {
                 $logger->addInformationf(_('%s: System %s ist bereits aktiviert'), $ship->getName(), $systemName);
             }
-        } catch (SystemNotActivatableException $e) {
+        } catch (SystemNotActivatableException) {
             $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $ship->getName(), $systemName), $logger);
         } catch (InsufficientEnergyException $e) {
             $this->logError($ship, sprintf(
@@ -116,15 +102,15 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                 $systemName,
                 TalHelper::formatSeconds((string) $e->getRemainingSeconds())
             ), $logger);
-        } catch (SystemDamagedException $e) {
+        } catch (SystemDamagedException) {
             $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName), $logger);
         } catch (ActivationConditionsNotMetException $e) {
             $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()), $logger);
-        } catch (SystemNotFoundException $e) {
+        } catch (SystemNotFoundException) {
             $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s nicht vorhanden[/color][/b]'), $ship->getName(), $systemName), $logger);
-        } catch (InsufficientCrewException $e) {
+        } catch (InsufficientCrewException) {
             $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s konnte wegen Mangel an Crew nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName), $logger);
-        } catch (ShipSystemException $e) {
+        } catch (ShipSystemException) {
             $this->logError($ship, sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName), $logger);
         }
 
@@ -140,6 +126,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
     }
 
+    #[Override]
     public function activateFleet(
         int $shipId,
         shipSystemTypeEnum $type,
@@ -175,6 +162,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ));
     }
 
+    #[Override]
     public function deactivate(
         ShipWrapperInterface|int $target,
         shipSystemTypeEnum $type,
@@ -202,19 +190,20 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $this->shipRepository->save($ship);
             $informations->addInformationf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName);
             return true;
-        } catch (AlreadyOffException $e) {
+        } catch (AlreadyOffException) {
             $informations->addInformationf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName);
-        } catch (SystemNotDeactivatableException $e) {
+        } catch (SystemNotDeactivatableException) {
             $informations->addInformationf(_('%s: [b][color=#ff2626]System %s besitzt keinen Deaktivierungsmodus[/color][/b]'), $ship->getName(), $systemName);
         } catch (DeactivationConditionsNotMetException $e) {
             $informations->addInformationf(_('%s: [b][color=#ff2626]System %s konnte nicht deaktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage());
-        } catch (SystemNotFoundException $e) {
+        } catch (SystemNotFoundException) {
             $informations->addInformationf(_('%s: System %s nicht vorhanden'), $ship->getName(), $systemName);
         }
 
         return false;
     }
 
+    #[Override]
     public function deactivateFleet(
         ShipWrapperInterface|int $target,
         shipSystemTypeEnum $type,
@@ -259,6 +248,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         return true;
     }
 
+    #[Override]
     public function setLSSMode(
         int $shipId,
         int $lssMode,
@@ -281,6 +271,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
     }
 
+    #[Override]
     public function setAlertState(
         ShipWrapperInterface|int $shipId,
         ShipAlertStateEnum $alertState,
@@ -304,6 +295,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
     }
 
+    #[Override]
     public function setAlertStateFleet(
         int $shipId,
         ShipAlertStateEnum $alertState,

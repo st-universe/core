@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
@@ -27,6 +28,7 @@ class UserMapDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
+    #[Override]
     public function setUp(): void
     {
         $this->userMapRepository = $this->mock(UserMapRepositoryInterface::class);

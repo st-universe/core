@@ -10,13 +10,9 @@ use Stu\Component\Refactor\RefactorRunner;
 
 final class RefactorCommand extends Command
 {
-    private ContainerInterface $dic;
-
     public function __construct(
-        ContainerInterface $dic
+        private ContainerInterface $dic
     ) {
-        $this->dic = $dic;
-
         parent::__construct(
             'refactor:run',
             'Start the needed refactoring'

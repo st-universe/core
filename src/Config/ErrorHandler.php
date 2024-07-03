@@ -22,28 +22,8 @@ use Whoops\Util\Misc;
  */
 final class ErrorHandler
 {
-    private Connection $database;
-
-    private GameRequestSaverInterface $gameRequestSaver;
-
-    private GameControllerInterface $game;
-
-    private StuConfigInterface $stuConfig;
-
-    private SessionInterface $session;
-
-    public function __construct(
-        Connection $database,
-        GameRequestSaverInterface $gameRequestSaver,
-        GameControllerInterface $game,
-        StuConfigInterface $stuConfig,
-        SessionInterface $session
-    ) {
-        $this->database = $database;
-        $this->gameRequestSaver = $gameRequestSaver;
-        $this->game = $game;
-        $this->stuConfig = $stuConfig;
-        $this->session = $session;
+    public function __construct(private Connection $database, private GameRequestSaverInterface $gameRequestSaver, private GameControllerInterface $game, private StuConfigInterface $stuConfig, private SessionInterface $session)
+    {
     }
 
     public function register(bool $registerErrorHandlers): void

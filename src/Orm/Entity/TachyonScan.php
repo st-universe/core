@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -49,53 +50,63 @@ class TachyonScan implements TachyonScanInterface
     #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): TachyonScanInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getScanTime(): int
     {
         return $this->scan_time;
     }
+    #[Override]
     public function setScanTime(int $scanTime): TachyonScanInterface
     {
         $this->scan_time = $scanTime;
         return $this;
     }
 
+    #[Override]
     public function getMap(): ?MapInterface
     {
         return $this->map;
     }
 
+    #[Override]
     public function setMap(?MapInterface $map): TachyonScanInterface
     {
         $this->map = $map;
         return $this;
     }
 
+    #[Override]
     public function getStarsystemMap(): ?StarSystemMapInterface
     {
         return $this->starsystem_map;
     }
 
+    #[Override]
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): TachyonScanInterface
     {
         $this->starsystem_map = $starsystem_map;

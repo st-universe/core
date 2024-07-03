@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Damage;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -27,6 +28,7 @@ final class ApplyDamage implements ApplyDamageInterface
     ) {
     }
 
+    #[Override]
     public function damage(
         DamageWrapper $damageWrapper,
         ShipWrapperInterface $shipWrapper,
@@ -117,6 +119,7 @@ final class ApplyDamage implements ApplyDamageInterface
         $ship->setShieldRegenerationTimer(time());
     }
 
+    #[Override]
     public function damageBuilding(
         DamageWrapper $damageWrapper,
         PlanetFieldInterface $target,
@@ -209,6 +212,7 @@ final class ApplyDamage implements ApplyDamageInterface
         }
     }
 
+    #[Override]
     public function damageShipSystem(
         ShipWrapperInterface $wrapper,
         ShipSystemInterface $system,

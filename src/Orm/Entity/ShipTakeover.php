@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -44,11 +45,13 @@ class ShipTakeover implements ShipTakeoverInterface
     #[JoinColumn(name: 'target_ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $target;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setSourceShip(ShipInterface $ship): ShipTakeoverInterface
     {
         $this->source = $ship;
@@ -56,11 +59,13 @@ class ShipTakeover implements ShipTakeoverInterface
         return $this;
     }
 
+    #[Override]
     public function getSourceShip(): ShipInterface
     {
         return $this->source;
     }
 
+    #[Override]
     public function setTargetShip(ShipInterface $ship): ShipTakeoverInterface
     {
         $this->target = $ship;
@@ -68,27 +73,32 @@ class ShipTakeover implements ShipTakeoverInterface
         return $this;
     }
 
+    #[Override]
     public function getTargetShip(): ShipInterface
     {
         return $this->target;
     }
 
+    #[Override]
     public function getStartTurn(): int
     {
         return $this->start_turn;
     }
 
+    #[Override]
     public function setStartTurn(int $turn): ShipTakeoverInterface
     {
         $this->start_turn = $turn;
         return $this;
     }
 
+    #[Override]
     public function getPrestige(): int
     {
         return $this->prestige;
     }
 
+    #[Override]
     public function setPrestige(int $prestige): ShipTakeoverInterface
     {
         $this->prestige = $prestige;

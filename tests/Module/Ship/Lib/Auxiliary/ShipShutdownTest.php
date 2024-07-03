@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Auxiliary;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -34,6 +35,7 @@ class ShipShutdownTest extends StuTestCase
 
     private ShipShutdownInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Trade\TradeEnum;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\TradePost;
  */
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
+    #[Override]
     public function prototype(): TradeLicenseInterface
     {
         return new TradeLicense();
     }
 
+    #[Override]
     public function save(TradeLicenseInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(TradeLicenseInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -35,6 +39,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         $em->remove($post);
     }
 
+    #[Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()
@@ -48,6 +53,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->execute();
     }
 
+    #[Override]
     public function truncateByUserAndTradepost(int $userId, int $tradePostId): void
     {
         $this->getEntityManager()
@@ -62,6 +68,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->execute();
     }
 
+    #[Override]
     public function getByTradePost(int $tradePostId): array
     {
         return $this->findBy([
@@ -69,6 +76,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         ]);
     }
 
+    #[Override]
     public function getByTradePostAndNotExpired(int $tradePostId): array
     {
         return $this->getEntityManager()
@@ -85,6 +93,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->getResult();
     }
 
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -95,6 +104,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         );
     }
 
+    #[Override]
     public function getLicensesCountbyUser(int $userId): array
     {
         $time = time();
@@ -112,6 +122,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->getResult();
     }
 
+    #[Override]
     public function getAmountByUser(int $userId): int
     {
         return $this->count([
@@ -119,6 +130,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         ]);
     }
 
+    #[Override]
     public function hasFergLicense(int $userId): bool
     {
         return $this->getLatestActiveLicenseByUserAndTradePost(
@@ -127,11 +139,13 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         ) !== null;
     }
 
+    #[Override]
     public function hasLicenseByUserAndTradePost(int $userId, int $tradePostId): bool
     {
         return $this->getLatestActiveLicenseByUserAndTradePost($userId, $tradePostId) !== null;
     }
 
+    #[Override]
     public function getLatestActiveLicenseByUserAndTradePost(int $userId, int $tradePostId): ?TradeLicenseInterface
     {
         return $this->getEntityManager()
@@ -155,6 +169,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->getOneOrNullResult();
     }
 
+    #[Override]
     public function getAmountByTradePost(int $tradePostId): int
     {
         return $this->count([
@@ -162,6 +177,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         ]);
     }
 
+    #[Override]
     public function hasLicenseByUserAndNetwork(int $userId, int $tradeNetworkId): bool
     {
         return (int) $this->getEntityManager()
@@ -184,6 +200,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->getSingleScalarResult() > 0;
     }
 
+    #[Override]
     public function getLicensesExpiredInLessThan(int $days): array
     {
         return $this->getEntityManager()
@@ -199,6 +216,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->getResult();
     }
 
+    #[Override]
     public function getExpiredLicenses(): array
     {
         return $this->getEntityManager()

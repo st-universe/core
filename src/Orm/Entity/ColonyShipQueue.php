@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -61,27 +62,32 @@ class ColonyShipQueue implements ColonyShipQueueInterface
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): ColonyShipQueueInterface
     {
         $this->colony = $colony;
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUserId(int $userId): ColonyShipQueueInterface
     {
         $this->user_id = $userId;
@@ -89,11 +95,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
+    #[Override]
     public function setRumpId(int $shipRumpId): ColonyShipQueueInterface
     {
         $this->rump_id = $shipRumpId;
@@ -101,11 +109,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
+    #[Override]
     public function setBuildtime(int $buildtime): ColonyShipQueueInterface
     {
         $this->buildtime = $buildtime;
@@ -113,11 +123,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getFinishDate(): int
     {
         return $this->finish_date;
     }
 
+    #[Override]
     public function setFinishDate(int $finishDate): ColonyShipQueueInterface
     {
         $this->finish_date = $finishDate;
@@ -125,11 +137,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getStopDate(): int
     {
         return $this->stop_date;
     }
 
+    #[Override]
     public function setStopDate(int $stopDate): ColonyShipQueueInterface
     {
         $this->stop_date = $stopDate;
@@ -137,11 +151,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildingFunctionId(): int
     {
         return $this->building_function_id;
     }
 
+    #[Override]
     public function setBuildingFunctionId(int $buildingFunctionId): ColonyShipQueueInterface
     {
         $this->building_function_id = $buildingFunctionId;
@@ -149,11 +165,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getRump(): ShipRumpInterface
     {
         return $this->shipRump;
     }
 
+    #[Override]
     public function setRump(ShipRumpInterface $shipRump): ColonyShipQueueInterface
     {
         $this->shipRump = $shipRump;
@@ -161,11 +179,13 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getShipBuildplan(): ShipBuildplanInterface
     {
         return $this->shipBuildplan;
     }
 
+    #[Override]
     public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ColonyShipQueueInterface
     {
         $this->shipBuildplan = $shipBuildplan;

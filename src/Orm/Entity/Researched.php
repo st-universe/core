@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -41,32 +42,38 @@ class Researched implements ResearchedInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ResearchedInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getActive(): int
     {
         return $this->aktiv;
     }
 
+    #[Override]
     public function setActive(int $active): ResearchedInterface
     {
         $this->aktiv = $active;
@@ -74,11 +81,13 @@ class Researched implements ResearchedInterface
         return $this;
     }
 
+    #[Override]
     public function getFinished(): int
     {
         return $this->finished;
     }
 
+    #[Override]
     public function setFinished(int $finished): ResearchedInterface
     {
         $this->finished = $finished;
@@ -86,11 +95,13 @@ class Researched implements ResearchedInterface
         return $this;
     }
 
+    #[Override]
     public function getResearch(): ResearchInterface
     {
         return $this->research;
     }
 
+    #[Override]
     public function setResearch(ResearchInterface $research): ResearchedInterface
     {
         $this->research = $research;
@@ -98,11 +109,13 @@ class Researched implements ResearchedInterface
         return $this;
     }
 
+    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function getProgress(): int
     {
         return $this->getResearch()->getPoints() - $this->getActive();

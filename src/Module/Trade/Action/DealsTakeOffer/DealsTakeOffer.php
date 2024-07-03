@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
+use Override;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,52 +26,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class DealsTakeOffer implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEALS_TAKE_OFFER';
+    public const string ACTION_IDENTIFIER = 'B_DEALS_TAKE_OFFER';
 
-    private DealsTakeOfferRequestInterface $dealstakeOfferRequest;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private DealsRepositoryInterface $dealsRepository;
-
-    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
-
-    private TradePostRepositoryInterface $tradepostRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    public function __construct(
-        DealsTakeOfferRequestInterface $dealstakeOfferRequest,
-        TradeLibFactoryInterface $tradeLibFactory,
-        DealsRepositoryInterface $dealsRepository,
-        TradePostRepositoryInterface $tradepostRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        StorageRepositoryInterface $storageRepository,
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ShipCreatorInterface $shipCreator,
-        CreatePrestigeLogInterface $createPrestigeLog
-    ) {
-        $this->dealstakeOfferRequest = $dealstakeOfferRequest;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->buildplanModuleRepository = $buildplanModuleRepository;
-        $this->tradepostRepository = $tradepostRepository;
-        $this->dealsRepository = $dealsRepository;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->storageRepository = $storageRepository;
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->shipCreator = $shipCreator;
+    public function __construct(private DealsTakeOfferRequestInterface $dealstakeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -238,6 +200,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             ->finishConfiguration();
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

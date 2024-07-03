@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\PostKnComment;
 
+use Override;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,29 +18,14 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class PostKnComment implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_POST_COMMENT';
-    public const CHARACTER_LIMIT = 250;
+    public const string ACTION_IDENTIFIER = 'B_POST_COMMENT';
+    public const int CHARACTER_LIMIT = 250;
 
-    private PostKnCommentRequestInterface $postKnCommentRequest;
-
-    private KnCommentRepositoryInterface $knCommentRepository;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        PostKnCommentRequestInterface $postKnCommentRequest,
-        KnCommentRepositoryInterface $knCommentRepository,
-        KnPostRepositoryInterface $knPostRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->postKnCommentRequest = $postKnCommentRequest;
-        $this->knCommentRepository = $knCommentRepository;
-        $this->knPostRepository = $knPostRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private PostKnCommentRequestInterface $postKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
@@ -129,6 +115,7 @@ final class PostKnComment implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

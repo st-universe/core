@@ -9,11 +9,8 @@ use Stu\Module\Tal\TalHelper;
 
 class SignatureWrapper
 {
-    private $signature;
-
-    public function __construct($signature)
+    public function __construct(private $signature)
     {
-        $this->signature = $signature;
     }
 
     public function getRump()

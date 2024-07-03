@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\ManageShips;
 
+use Override;
 use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
@@ -20,40 +21,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ManageShips implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private StationUtilityInterface $stationUtility;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ManagerProviderFactoryInterface $managerProviderFactory;
-
-    private HandleManagersInterface $handleManagers;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        InteractionCheckerInterface $interactionChecker,
-        StationUtilityInterface $stationUtility,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ManagerProviderFactoryInterface $managerProviderFactory,
-        HandleManagersInterface $handleManagers,
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->interactionChecker = $interactionChecker;
-        $this->stationUtility = $stationUtility;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->managerProviderFactory = $managerProviderFactory;
-        $this->handleManagers = $handleManagers;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private StationUtilityInterface $stationUtility, private ShipWrapperFactoryInterface $shipWrapperFactory, private ManagerProviderFactoryInterface $managerProviderFactory, private HandleManagersInterface $handleManagers)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShipManagement::VIEW_IDENTIFIER);
@@ -132,6 +106,7 @@ final class ManageShips implements ActionControllerInterface
         return $msg;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

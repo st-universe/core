@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type;
 
+use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
@@ -15,7 +16,7 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 //TODO unit tests
 final class AdventDoorHandler implements AnomalyHandlerInterface
 {
-    private const ADVENT_DOOR_AMOUNT = 5;
+    private const int ADVENT_DOOR_AMOUNT = 5;
 
     public function __construct(
         private  MapRepositoryInterface $mapRepository,
@@ -26,6 +27,7 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
     }
 
     /** create advent door anomalies on first of december */
+    #[Override]
     public function checkForCreation(): void
     {
         $hour = (int)date("G");
@@ -47,6 +49,7 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
     }
 
     /** reset location */
+    #[Override]
     public function handleShipTick(AnomalyInterface $anomaly): void
     {
         $hour = (int)date("G");
@@ -64,6 +67,7 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
         return $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($layer);
     }
 
+    #[Override]
     public function letAnomalyDisappear(AnomalyInterface $anomaly): void
     {
         //TODO

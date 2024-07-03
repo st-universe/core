@@ -2,15 +2,17 @@
 
 namespace Stu\Module\Config\Model;
 
+use Override;
 use Stu\Module\Config\StuConfigException;
 
 final class ColonySettings extends AbstractSettings implements ColonySettingsInterface
 {
-    public const SETTING_TICK_WORKER_DEFAULT = 1;
+    public const int SETTING_TICK_WORKER_DEFAULT = 1;
 
-    private const CONFIG_PATH = 'colony';
-    private const SETTING_TICK_WORKER = 'tick_worker';
+    private const string CONFIG_PATH = 'colony';
+    private const string SETTING_TICK_WORKER = 'tick_worker';
 
+    #[Override]
     public function getTickWorker(): int
     {
         $tickWorker = $this->getIntegerConfigValue(self::SETTING_TICK_WORKER, self::SETTING_TICK_WORKER_DEFAULT);
@@ -22,6 +24,7 @@ final class ColonySettings extends AbstractSettings implements ColonySettingsInt
         return $tickWorker;
     }
 
+    #[Override]
     public function getConfigPath(): string
     {
         return self::CONFIG_PATH;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
@@ -23,16 +24,19 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
     ) {
     }
 
+    #[Override]
     public function getPhaserVolleys(): int
     {
         return $this->get()->getRump()->getPhaserVolleys();
     }
 
+    #[Override]
     public function getPhaserState(): bool
     {
         return $this->get()->getPhaserState();
     }
 
+    #[Override]
     public function hasSufficientEnergy(int $amount): bool
     {
         $epsSystemData = $this->wrapper->getEpsSystemData();
@@ -42,6 +46,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         return $epsSystemData->getEps() >= $amount;
     }
 
+    #[Override]
     public function getWeaponModule(): ModuleInterface
     {
         if ($this->module === null) {
@@ -58,11 +63,13 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         return $this->module;
     }
 
+    #[Override]
     public function getEnergyWeaponBaseDamage(): int
     {
         return $this->get()->getBaseDamage();
     }
 
+    #[Override]
     public function reduceEps(int $amount): void
     {
         $epsSystemData = $this->wrapper->getEpsSystemData();
@@ -72,11 +79,13 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         $epsSystemData->lowerEps($amount)->update();
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->get()->getName();
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->get()->getUser();
@@ -87,46 +96,55 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         return $this->wrapper->get();
     }
 
+    #[Override]
     public function getHitChance(): int
     {
         return $this->get()->getHitChance();
     }
 
+    #[Override]
     public function getPhaserShieldDamageFactor(): int
     {
         return $this->get()->getRump()->getPhaserShieldDamageFactor();
     }
 
+    #[Override]
     public function getPhaserHullDamageFactor(): int
     {
         return $this->get()->getRump()->getPhaserHullDamageFactor();
     }
 
+    #[Override]
     public function getTorpedoVolleys(): int
     {
         return $this->get()->getRump()->getTorpedoVolleys();
     }
 
+    #[Override]
     public function getTorpedoState(): bool
     {
         return $this->get()->getTorpedoState();
     }
 
+    #[Override]
     public function getTorpedoCount(): int
     {
         return $this->get()->getTorpedoCount();
     }
 
+    #[Override]
     public function getTorpedo(): ?TorpedoTypeInterface
     {
         return $this->get()->getTorpedo();
     }
 
+    #[Override]
     public function lowerTorpedoCount(int $amount): void
     {
         $this->shipTorpedoManager->changeTorpedo($this->wrapper, -$amount);
     }
 
+    #[Override]
     public function isShieldPenetration(): bool
     {
         $systemData = $this->wrapper->getProjectileLauncherSystemData();
@@ -137,6 +155,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         return $this->stuRandom->rand(1, 10000) <= $systemData->getShieldPenetration();
     }
 
+    #[Override]
     public function getProjectileWeaponDamage(bool $isCritical): int
     {
         $torpedo = $this->getTorpedo();

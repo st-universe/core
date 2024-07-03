@@ -7,7 +7,7 @@ namespace Stu\Component\Faction;
 final class FactionEnum
 {
     /** @var array<string, int> */
-    public const FACTION_NAME_TO_ID_MAP = [
+    public const array FACTION_NAME_TO_ID_MAP = [
         'federation' => self::FACTION_FEDERATION,
         'romulan' => self::FACTION_ROMULAN,
         'klingon' => self::FACTION_KLINGON,
@@ -16,7 +16,7 @@ final class FactionEnum
     ];
 
     /** @var array<int, string> */
-    public const FACTION_ID_TO_COLOR_MAP = [
+    public const array FACTION_ID_TO_COLOR_MAP = [
         self::FACTION_FEDERATION => '#0000ff',
         self::FACTION_ROMULAN => '#00ff00',
         self::FACTION_KLINGON => '#ff0000',
@@ -27,40 +27,40 @@ final class FactionEnum
     /**
      * @var int
      */
-    public const FACTION_FEDERATION = 1;
+    public const int FACTION_FEDERATION = 1;
 
     /**
      * @var int
      */
-    public const FACTION_ROMULAN = 2;
+    public const int FACTION_ROMULAN = 2;
 
     /**
      * @var int
      */
-    public const FACTION_KLINGON = 3;
+    public const int FACTION_KLINGON = 3;
 
     /**
      * @var int
      */
-    public const FACTION_CARDASSIAN = 4;
+    public const int FACTION_CARDASSIAN = 4;
 
     /**
      * @var int
      */
-    public const FACTION_FERENGI = 5;
+    public const int FACTION_FERENGI = 5;
 
     /**
      * @var int
      */
-    public const FACTION_PAKLED = 6;
+    public const int FACTION_PAKLED = 6;
 
     /**
      * @var int
      */
-    public const FACTION_KAZON = 7;
+    public const int FACTION_KAZON = 7;
 
     /**
      * @var int
      */
-    public const FACTION_BORG = 8;
+    public const int FACTION_BORG = 8;
 }

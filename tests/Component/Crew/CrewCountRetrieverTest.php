@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Crew;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -29,6 +30,7 @@ class CrewCountRetrieverTest extends StuTestCase
 
     private CrewCountRetriever $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);

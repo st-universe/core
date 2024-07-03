@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowIgnoreList;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 
 final class ShowIgnoreList implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_IGNORELIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_IGNORELIST';
 
-    private IgnoreListRepositoryInterface $ignoreListRepository;
-
-    public function __construct(
-        IgnoreListRepositoryInterface $ignoreListRepository
-    ) {
-        $this->ignoreListRepository = $ignoreListRepository;
+    public function __construct(private IgnoreListRepositoryInterface $ignoreListRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

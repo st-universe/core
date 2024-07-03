@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -29,6 +30,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
     ) {
     }
 
+    #[Override]
     public function intercept(ShipInterface $ship, ShipInterface $target, InformationInterface $informations): void
     {
         $userId = $ship->getUser()->getId();
@@ -43,7 +45,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
             foreach ($target->getFleet()->getShips() as $fleetShip) {
                 try {
                     $this->shipSystemManager->deactivate($this->shipWrapperFactory->wrapShip($fleetShip), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-                } catch (AlreadyOffException $e) {
+                } catch (AlreadyOffException) {
                 }
                 $this->shipRepository->save($fleetShip);
             }
@@ -74,7 +76,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
                 try {
                     $this->shipSystemManager->deactivate($this->shipWrapperFactory->wrapShip($fleetShip), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
                     $interceptorLeftWarp = true;
-                } catch (AlreadyOffException $e) {
+                } catch (AlreadyOffException) {
                 }
                 $this->shipRepository->save($fleetShip);
             }
@@ -82,7 +84,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
             try {
                 $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
                 $interceptorLeftWarp = true;
-            } catch (AlreadyOffException $e) {
+            } catch (AlreadyOffException) {
             }
 
             $this->shipRepository->save($ship);

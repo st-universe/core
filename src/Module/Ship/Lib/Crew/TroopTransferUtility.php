@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Crew;
 
+use Override;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -14,22 +15,11 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class TroopTransferUtility implements TroopTransferUtilityInterface
 {
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private ShipTakeoverManagerInterface $shipTakeoverManager;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    public function __construct(
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipTakeoverManagerInterface $shipTakeoverManager,
-        ShipCrewCalculatorInterface $shipCrewCalculator
-    ) {
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipTakeoverManager = $shipTakeoverManager;
-        $this->shipCrewCalculator = $shipCrewCalculator;
+    public function __construct(private ShipCrewRepositoryInterface $shipCrewRepository, private ShipTakeoverManagerInterface $shipTakeoverManager, private ShipCrewCalculatorInterface $shipCrewCalculator)
+    {
     }
 
+    #[Override]
     public function getFreeQuarters(ShipInterface $ship): int
     {
         $free = $this->shipCrewCalculator->getMaxCrewCountByShip($ship) - $ship->getCrewCount();
@@ -37,6 +27,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return max(0, $free);
     }
 
+    #[Override]
     public function getBeamableTroopCount(ShipInterface $ship): int
     {
         $buildplan = $ship->getBuildplan();
@@ -49,6 +40,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return max(0, $free);
     }
 
+    #[Override]
     public function ownCrewOnTarget(UserInterface $user, ShipInterface $ship): int
     {
         $count = 0;
@@ -62,6 +54,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return $count;
     }
 
+    #[Override]
     public function foreignerCount(ShipInterface $ship): int
     {
         $count = 0;
@@ -77,6 +70,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return $count;
     }
 
+    #[Override]
     public function assignCrew(ShipCrewInterface $crewAssignment, ShipInterface|ColonyInterface $target): void
     {
         $ship = $crewAssignment->getShip();

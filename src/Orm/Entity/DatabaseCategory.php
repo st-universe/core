@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -59,11 +60,13 @@ class DatabaseCategory implements DatabaseCategoryInterface
         $this->entries = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setDescription(string $description): DatabaseCategoryInterface
     {
         $this->description = $description;
@@ -71,11 +74,13 @@ class DatabaseCategory implements DatabaseCategoryInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setPoints(int $points): DatabaseCategoryInterface
     {
         $this->points = $points;
@@ -83,11 +88,13 @@ class DatabaseCategory implements DatabaseCategoryInterface
         return $this;
     }
 
+    #[Override]
     public function getPoints(): int
     {
         return $this->points;
     }
 
+    #[Override]
     public function setType(int $type): DatabaseCategoryInterface
     {
         $this->type = $type;
@@ -95,11 +102,13 @@ class DatabaseCategory implements DatabaseCategoryInterface
         return $this;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setSort(int $sort): DatabaseCategoryInterface
     {
         $this->sort = $sort;
@@ -107,21 +116,25 @@ class DatabaseCategory implements DatabaseCategoryInterface
         return $this;
     }
 
+    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
+    #[Override]
     public function getPrestige(): int
     {
         return $this->prestige;
     }
 
+    #[Override]
     public function getAward(): ?AwardInterface
     {
         return $this->award;
     }
 
+    #[Override]
     public function getEntries(): array
     {
         return $this->entries->toArray();

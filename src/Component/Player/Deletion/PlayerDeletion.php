@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
+use Override;
 use JBBCode\Parser;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
@@ -16,42 +17,30 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class PlayerDeletion implements PlayerDeletionInterface
 {
     //3 days
-    public const USER_IDLE_REGISTRATION = 259200;
+    public const int USER_IDLE_REGISTRATION = 259200;
 
     //3 months
-    public const USER_IDLE_TIME = 7_905_600;
+    public const int USER_IDLE_TIME = 7_905_600;
 
     //6 months
-    public const USER_IDLE_TIME_VACATION = 15_811_200;
-
-    private UserRepositoryInterface $userRepository;
-
-    private StuConfigInterface $config;
+    public const int USER_IDLE_TIME_VACATION = 15_811_200;
 
     private LoggerUtilInterface $loggerUtil;
-
-    /** @var array<PlayerDeletionHandlerInterface> */
-    private array $deletionHandler;
-
-    private Parser $bbCodeParser;
 
     /**
      * @param array<PlayerDeletionHandlerInterface> $deletionHandler
      */
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        StuConfigInterface $config,
+        private UserRepositoryInterface $userRepository,
+        private StuConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        Parser $bbCodeParser,
-        array $deletionHandler
+        private Parser $bbCodeParser,
+        private array $deletionHandler
     ) {
-        $this->userRepository = $userRepository;
-        $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->bbCodeParser = $bbCodeParser;
-        $this->deletionHandler = $deletionHandler;
     }
 
+    #[Override]
     public function handleDeleteable(): void
     {
         $this->loggerUtil->init('DEL', LoggerEnum::LEVEL_ERROR);
@@ -75,6 +64,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
         }
     }
 
+    #[Override]
     public function handleReset(): void
     {
         foreach ($this->userRepository->getNonNpcList() as $player) {

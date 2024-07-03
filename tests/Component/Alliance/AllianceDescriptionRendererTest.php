@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
+use Override;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
@@ -33,6 +34,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
 
     private AllianceDescriptionRenderer $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->parserWithImage = $this->mock(ParserWithImageInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
@@ -14,18 +15,11 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class LoadWaypoints implements LoadWaypointsInterface
 {
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    public function __construct(
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
+    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
+    {
     }
 
+    #[Override]
     public function load(
         MapInterface|StarSystemMapInterface $start,
         MapInterface|StarSystemMapInterface $destination

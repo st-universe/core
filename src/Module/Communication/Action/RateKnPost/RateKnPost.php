@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\RateKnPost;
 
+use Override;
 use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,26 +15,15 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class RateKnPost implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_RATE_KN_POST';
+    public const string ACTION_IDENTIFIER = 'B_RATE_KN_POST';
 
-    private const PRESTIGE_PER_POSITIVE_VOTE = 5;
+    private const int PRESTIGE_PER_POSITIVE_VOTE = 5;
 
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private RateKnPostRequestInterface $knPostRequest;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    public function __construct(
-        KnPostRepositoryInterface $knPostRepository,
-        RateKnPostRequestInterface $knPostRequest,
-        CreatePrestigeLogInterface $createPrestigeLog
-    ) {
-        $this->knPostRepository = $knPostRepository;
-        $this->knPostRequest = $knPostRequest;
-        $this->createPrestigeLog = $createPrestigeLog;
+    public function __construct(private KnPostRepositoryInterface $knPostRepository, private RateKnPostRequestInterface $knPostRequest, private CreatePrestigeLogInterface $createPrestigeLog)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         /** @var KnPostInterface $post */
@@ -94,6 +84,7 @@ final class RateKnPost implements ActionControllerInterface
         return '';
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

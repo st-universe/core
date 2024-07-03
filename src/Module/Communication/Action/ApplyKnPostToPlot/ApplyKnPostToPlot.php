@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\ApplyKnPostToPlot;
 
+use Override;
 use request;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
@@ -19,28 +20,13 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ApplyKnPostToPlot implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_APPLY_POST_TO_PLOT';
+    public const string ACTION_IDENTIFIER = 'B_APPLY_POST_TO_PLOT';
 
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        KnPostRepositoryInterface $knPostRepository,
-        KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->knPostRepository = $knPostRepository;
-        $this->knPostToPlotApplicationRepository = $knPostToPlotApplicationRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository, private KnPostRepositoryInterface $knPostRepository, private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -139,6 +125,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

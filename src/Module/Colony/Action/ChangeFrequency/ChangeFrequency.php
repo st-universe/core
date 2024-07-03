@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ChangeFrequency;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -15,20 +16,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ChangeFrequency implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_FREQUENCY';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_FREQUENCY';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -56,6 +50,7 @@ final class ChangeFrequency implements ActionControllerInterface
         $game->addInformation(_('Die Schildfrequenz wurde geändert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -16,6 +17,7 @@ class AttackedBattleParty extends AbstractBattleParty
         );
     }
 
+    #[Override]
     protected function initMembers(): Collection
     {
         $fleetWrapper = $this->leader->getFleetWrapper();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Orm\Entity\LayerInterface;
@@ -13,17 +14,14 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class UserYRow extends YRow
 {
-    private UserInterface $user;
-
     private MapRepositoryInterface $mapRepository;
-    private StarmapUiFactoryInterface $starmapUiFactory;
 
     public function __construct(
-        StarmapUiFactoryInterface $starmapUiFactory,
+        private StarmapUiFactoryInterface $starmapUiFactory,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         EncodedMapInterface $encodedMap,
-        UserInterface $user,
+        private UserInterface $user,
         LayerInterface $layer,
         int $cury,
         int $minx,
@@ -40,14 +38,13 @@ class UserYRow extends YRow
             $maxx,
             $systemId
         );
-        $this->user = $user;
         $this->mapRepository = $mapRepository;
-        $this->starmapUiFactory = $starmapUiFactory;
     }
 
     /**
      * @return array<ExplorableStarMapItemInterface>
      */
+    #[Override]
     public function getFields(): array
     {
         $layer = $this->layer;

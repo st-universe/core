@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -17,27 +18,17 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class TractorBeamShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->entityManager = $entityManager;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM;
     }
 
+    #[Override]
     public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
@@ -65,6 +56,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         return true;
     }
 
+    #[Override]
     public function checkDeactivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         if ($wrapper->get()->getWarpDriveState()) {
@@ -75,16 +67,19 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         return true;
     }
 
+    #[Override]
     public function getEnergyUsageForActivation(): int
     {
         return 2;
     }
 
+    #[Override]
     public function getEnergyConsumption(): int
     {
         return 2;
     }
 
+    #[Override]
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
@@ -110,6 +105,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         }
     }
 
+    #[Override]
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();

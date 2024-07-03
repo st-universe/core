@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -19,34 +20,23 @@ use Throwable;
 final class ShipTickRunner implements TickRunnerInterface
 {
     /** @var int */
-    private const ATTEMPTS = 5;
+    private const int ATTEMPTS = 5;
 
-    private const TICK_DESCRIPTION = "shiptick";
-
-    private ShipTickManagerInterface $shipTickManager;
-
-    private TransactionTickRunnerInterface $transactionTickRunner;
-
-    private FailureEmailSenderInterface $failureEmailSender;
+    private const string TICK_DESCRIPTION = "shiptick";
 
     private LoggerUtilInterface $loggerUtil;
 
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        ShipTickManagerInterface $shipTickManager,
-        TransactionTickRunnerInterface $transactionTickRunner,
-        FailureEmailSenderInterface $failureEmailSender,
+        private ShipTickManagerInterface $shipTickManager,
+        private TransactionTickRunnerInterface $transactionTickRunner,
+        private FailureEmailSenderInterface $failureEmailSender,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager
     ) {
-        $this->shipTickManager = $shipTickManager;
-        $this->transactionTickRunner = $transactionTickRunner;
-        $this->failureEmailSender = $failureEmailSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->entityManager = $entityManager;
     }
 
+    #[Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         if ($this->transactionTickRunner->isGameStateReset()) {

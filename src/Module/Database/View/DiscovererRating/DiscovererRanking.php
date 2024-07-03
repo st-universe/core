@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DiscovererRating;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class DiscovererRanking implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TOP_DISCOVER';
+    public const string VIEW_IDENTIFIER = 'SHOW_TOP_DISCOVER';
 
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private DatabaseUiFactoryInterface $databaseUiFactory;
-
-    public function __construct(
-        DatabaseUiFactoryInterface $databaseUiFactory,
-        DatabaseUserRepositoryInterface $databaseUserRepository
-    ) {
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->databaseUiFactory = $databaseUiFactory;
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private DatabaseUserRepositoryInterface $databaseUserRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

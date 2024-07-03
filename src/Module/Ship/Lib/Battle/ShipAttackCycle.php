@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -26,6 +27,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     ) {
     }
 
+    #[Override]
     public function cycle(
         BattlePartyInterface $attackers,
         BattlePartyInterface $defenders,

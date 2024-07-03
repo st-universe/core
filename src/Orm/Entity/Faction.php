@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -71,16 +72,19 @@ class Faction implements FactionInterface
     #[JoinColumn(name: 'positive_effect_secondary_commodity_id', referencedColumnName: 'id')]
     private ?CommodityInterface $secondaryEffectCommodity;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): FactionInterface
     {
         $this->name = $name;
@@ -88,11 +92,13 @@ class Faction implements FactionInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): FactionInterface
     {
         $this->description = $description;
@@ -100,11 +106,13 @@ class Faction implements FactionInterface
         return $this;
     }
 
+    #[Override]
     public function getDarkerColor(): string
     {
         return $this->darker_color;
     }
 
+    #[Override]
     public function setDarkerColor(string $darkerColor): FactionInterface
     {
         $this->darker_color = $darkerColor;
@@ -112,11 +120,13 @@ class Faction implements FactionInterface
         return $this;
     }
 
+    #[Override]
     public function getChooseable(): bool
     {
         return $this->chooseable;
     }
 
+    #[Override]
     public function setChooseable(bool $chooseable): FactionInterface
     {
         $this->chooseable = $chooseable;
@@ -124,11 +134,13 @@ class Faction implements FactionInterface
         return $this;
     }
 
+    #[Override]
     public function getPlayerLimit(): int
     {
         return $this->player_limit;
     }
 
+    #[Override]
     public function setPlayerLimit(int $playerLimit): FactionInterface
     {
         $this->player_limit = $playerLimit;
@@ -136,11 +148,13 @@ class Faction implements FactionInterface
         return $this;
     }
 
+    #[Override]
     public function getStartBuildingId(): int
     {
         return $this->start_building_id;
     }
 
+    #[Override]
     public function setStartBuildingId(int $startBuildingId): FactionInterface
     {
         $this->start_building_id = $startBuildingId;
@@ -148,38 +162,45 @@ class Faction implements FactionInterface
         return $this;
     }
 
+    #[Override]
     public function getStartResearch(): ?ResearchInterface
     {
         return $this->start_research;
     }
 
+    #[Override]
     public function setStartResearch(?ResearchInterface $start_research): FactionInterface
     {
         $this->start_research = $start_research;
         return $this;
     }
 
+    #[Override]
     public function getStartMap(): ?MapInterface
     {
         return $this->start_map;
     }
 
+    #[Override]
     public function setStartMap(?MapInterface $start_map): FactionInterface
     {
         $this->start_map = $start_map;
         return $this;
     }
 
+    #[Override]
     public function getCloseCombatScore(): ?int
     {
         return $this->close_combat_score;
     }
 
+    #[Override]
     public function getPrimaryEffectCommodity(): ?CommodityInterface
     {
         return $this->primaryEffectCommodity;
     }
 
+    #[Override]
     public function getSecondaryEffectCommodity(): ?CommodityInterface
     {
         return $this->secondaryEffectCommodity;

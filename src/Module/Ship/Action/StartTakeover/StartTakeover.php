@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StartTakeover;
 
+use Override;
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipStateEnum;
@@ -19,36 +20,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class StartTakeover implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TAKEOVER_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_TAKEOVER_SHIP';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private NbsUtilityInterface $nbsUtility;
-
-    private FightLibInterface $fightLib;
-
-    private ShipTakeoverManagerInterface $shipTakeoverManager;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker,
-        NbsUtilityInterface $nbsUtility,
-        FightLibInterface $fightLib,
-        ShipTakeoverManagerInterface $shipTakeoverManager,
-        ShipStateChangerInterface $shipStateChanger
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
-        $this->nbsUtility = $nbsUtility;
-        $this->fightLib = $fightLib;
-        $this->shipTakeoverManager = $shipTakeoverManager;
-        $this->shipStateChanger = $shipStateChanger;
+    public function __construct(private ShipLoaderInterface $shipLoader, private InteractionCheckerInterface $interactionChecker, private NbsUtilityInterface $nbsUtility, private FightLibInterface $fightLib, private ShipTakeoverManagerInterface $shipTakeoverManager, private ShipStateChangerInterface $shipStateChanger)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -160,6 +138,7 @@ final class StartTakeover implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

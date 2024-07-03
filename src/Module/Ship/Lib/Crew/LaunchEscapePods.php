@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Crew;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -17,34 +18,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 //TODO unit tests
 final class LaunchEscapePods implements LaunchEscapePodsInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        UserRepositoryInterface $userRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
-        MapRepositoryInterface $mapRepository,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->userRepository = $userRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->mapRepository = $mapRepository;
-        $this->entityManager = $entityManager;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository, private MapRepositoryInterface $mapRepository, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function launch(ShipInterface $ship): ?ShipInterface
     {
         $shipRump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);

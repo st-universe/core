@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AttackBuilding;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManager;
@@ -30,7 +31,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class AttackBuilding implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ATTACK_BUILDING';
+    public const string ACTION_IDENTIFIER = 'B_ATTACK_BUILDING';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -49,6 +50,7 @@ final class AttackBuilding implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -221,6 +223,7 @@ final class AttackBuilding implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

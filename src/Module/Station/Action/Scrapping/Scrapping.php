@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\Scrapping;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
@@ -24,40 +25,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class Scrapping implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SCRAP';
+    public const string ACTION_IDENTIFIER = 'B_SCRAP';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private ConstructionProgressRepositoryInterface $constructionProgressRepository;
-
-    private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
-        ShipRemoverInterface $shipRemover,
-        TradePostRepositoryInterface $tradePostRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->constructionProgressRepository = $constructionProgressRepository;
-        $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
-        $this->shipRemover = $shipRemover;
-        $this->tradePostRepository = $tradePostRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ShipSystemRepositoryInterface $shipSystemRepository, private ConstructionProgressRepositoryInterface $constructionProgressRepository, private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository, private ShipRemoverInterface $shipRemover, private TradePostRepositoryInterface $tradePostRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -192,6 +166,7 @@ final class Scrapping implements ActionControllerInterface
         return $intactModules;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

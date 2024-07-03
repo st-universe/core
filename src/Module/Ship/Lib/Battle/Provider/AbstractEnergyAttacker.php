@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
+use Override;
 use RuntimeException;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\WeaponInterface;
@@ -13,6 +14,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
     protected ?ModuleInterface $module = null;
     private ?WeaponInterface $weapon = null;
 
+    #[Override]
     public function getFiringMode(): int
     {
         $weapon = $this->getWeapon();
@@ -22,6 +24,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
 
     abstract public function getWeaponModule(): ModuleInterface;
 
+    #[Override]
     public function getWeapon(): WeaponInterface
     {
         if ($this->weapon === null) {
@@ -38,6 +41,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
 
     abstract public function getEnergyWeaponBaseDamage(): int;
 
+    #[Override]
     public function getWeaponDamage(bool $isCritical): int
     {
         $basedamage = $this->getEnergyWeaponBaseDamage();

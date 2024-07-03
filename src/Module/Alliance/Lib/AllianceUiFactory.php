@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
@@ -18,27 +19,11 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
  */
 final class AllianceUiFactory implements AllianceUiFactoryInterface
 {
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private CrewCountRetrieverInterface $crewCountRetriever;
-
-    private CrewLimitCalculatorInterface $crewLimitCalculator;
-
-
-    public function __construct(
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        CrewCountRetrieverInterface $crewCountRetriever,
-        CrewLimitCalculatorInterface $crewLimitCalculator
-    ) {
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->crewCountRetriever = $crewCountRetriever;
-        $this->crewLimitCalculator = $crewLimitCalculator;
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private CrewCountRetrieverInterface $crewCountRetriever, private CrewLimitCalculatorInterface $crewLimitCalculator)
+    {
     }
 
+    #[Override]
     public function createManagementListItem(
         AllianceInterface $alliance,
         UserInterface $user,
@@ -55,6 +40,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createAllianceListItem(
         AllianceInterface $alliance
     ): AllianceListItem {
@@ -63,6 +49,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createAllianceMemberWrapper(
         UserInterface $user,
         AllianceInterface $alliance
@@ -73,6 +60,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createAllianceRelationWrapper(
         AllianceInterface $alliance,
         AllianceRelationInterface $allianceRelation

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -17,22 +18,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 //TODO create unit test
 final class ReactorUtil implements ReactorUtilInterface
 {
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipStorageManager = $shipStorageManager;
-        $this->shipRepository = $shipRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipStorageManagerInterface $shipStorageManager, private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function storageContainsNeededCommodities(Collection $storages, ReactorWrapperInterface $reactor): bool
     {
         foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
@@ -49,6 +39,7 @@ final class ReactorUtil implements ReactorUtilInterface
         return true;
     }
 
+    #[Override]
     public function loadReactor(
         ShipInterface $ship,
         int $additionalLoad,

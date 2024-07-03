@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Fleet;
 
+use Override;
 use Iterator;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
@@ -15,12 +16,6 @@ use Stu\Orm\Entity\ShipInterface;
  */
 final class FleetNfsIterator implements Iterator
 {
-    private ShipInterface $currentShip;
-
-    private ?SessionInterface $session;
-
-    private int $userId;
-
     protected int $position = 0;
 
     /** @var array<int, array<TFleetShipItemInterface>> */
@@ -29,12 +24,8 @@ final class FleetNfsIterator implements Iterator
     /**
      * @param iterable<TFleetShipItemInterface> $ships
      */
-    public function __construct(iterable $ships, ShipInterface $currentShip, ?SessionInterface $session, int $userId)
+    public function __construct(iterable $ships, private ShipInterface $currentShip, private ?SessionInterface $session, private int $userId)
     {
-        $this->currentShip = $currentShip;
-        $this->session = $session;
-        $this->userId = $userId;
-
         $currentFleetId = null;
         $currentFleet = null;
 
@@ -59,26 +50,31 @@ final class FleetNfsIterator implements Iterator
         }
     }
 
+    #[Override]
     public function rewind(): void
     {
         $this->position = 0;
     }
 
+    #[Override]
     public function current(): FleetNfsItem
     {
         return new FleetNfsItem($this->fleets[$this->position], $this->currentShip, $this->session, $this->userId);
     }
 
+    #[Override]
     public function key(): int
     {
         return $this->position;
     }
 
+    #[Override]
     public function next(): void
     {
         ++$this->position;
     }
 
+    #[Override]
     public function valid(): bool
     {
         return isset($this->fleets[$this->position]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
+use Override;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -17,6 +18,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
     ) {
     }
 
+    #[Override]
     public function hasSufficientEnergy(int $amount): bool
     {
         return $this->getEps() >= $amount;
@@ -27,31 +29,37 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         return $this->colony->getEps();
     }
 
+    #[Override]
     public function reduceEps(int $amount): void
     {
         $this->colony->setEps($this->getEps() - $amount);
     }
 
+    #[Override]
     public function getName(): string
     {
         return 'Orbitale Torpedophalanx';
     }
 
+    #[Override]
     public function getTorpedoState(): bool
     {
         return $this->getTorpedoCount() > 0;
     }
 
+    #[Override]
     public function getHitChance(): int
     {
         return 75;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->colony->getUser();
     }
 
+    #[Override]
     public function getTorpedoCount(): int
     {
         $torpedo = $this->getTorpedo();
@@ -67,6 +75,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         return  0;
     }
 
+    #[Override]
     public function lowerTorpedoCount(int $amount): void
     {
         $torpedo = $this->getTorpedo();
@@ -81,21 +90,25 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         );
     }
 
+    #[Override]
     public function isShieldPenetration(): bool
     {
         return false;
     }
 
+    #[Override]
     public function getTorpedo(): ?TorpedoTypeInterface
     {
         return $this->colony->getTorpedo();
     }
 
+    #[Override]
     public function getTorpedoVolleys(): int
     {
         return 7;
     }
 
+    #[Override]
     public function getProjectileWeaponDamage(bool $isCritical): int
     {
         $torpedo = $this->getTorpedo();

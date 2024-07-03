@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\FallbackUserDoesNotExistException;
@@ -21,11 +22,13 @@ use Stu\Orm\Entity\UserSetting;
  */
 final class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
+    #[Override]
     public function prototype(): UserInterface
     {
         return new User();
     }
 
+    #[Override]
     public function save(UserInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +37,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         //$em->flush();
     }
 
+    #[Override]
     public function delete(UserInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -41,6 +45,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $em->remove($post);
     }
 
+    #[Override]
     public function getByResetToken(string $resetToken): ?UserInterface
     {
         return $this->findOneBy([
@@ -48,6 +53,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getDeleteable(
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,
@@ -76,6 +82,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getIdleRegistrations(
         int $idleTimeThreshold
     ): iterable {
@@ -93,6 +100,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getByEmail(string $email): ?UserInterface
     {
         return $this->findOneBy([
@@ -100,6 +108,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getByMobile(string $mobile, string $mobileHash): ?UserInterface
     {
         return $this->getEntityManager()->createQuery(
@@ -115,6 +124,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getOneOrNullResult();
     }
 
+    #[Override]
     public function getByLogin(string $loginName): ?UserInterface
     {
         return $this->findOneBy([
@@ -122,6 +132,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getByAlliance(AllianceInterface $alliance): iterable
     {
         return $this->findBy(
@@ -134,6 +145,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         );
     }
 
+    #[Override]
     public function getList(
         string $sortField,
         string $sortOrder,
@@ -158,6 +170,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $query->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
     }
 
+    #[Override]
     public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable
     {
         $allianceId = $alliance === null
@@ -180,6 +193,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -212,6 +226,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getActiveAmount(): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -222,6 +237,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getSingleScalarResult();
     }
 
+    #[Override]
     public function getInactiveAmount(int $days): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -238,6 +254,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getVacationAmount(): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -255,6 +272,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getActiveAmountRecentlyOnline(int $threshold): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -268,6 +286,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getSingleScalarResult();
     }
 
+    #[Override]
     public function getNpcList(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -281,6 +300,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getNonNpcList(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -291,6 +311,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
     }
 
+    #[Override]
     public function getFallbackUser(): UserInterface
     {
         $user = $this->find(UserEnum::USER_NOONE);

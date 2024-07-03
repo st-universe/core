@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use Stu\Lib\Pirate\Component\Coordinate;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -32,6 +33,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

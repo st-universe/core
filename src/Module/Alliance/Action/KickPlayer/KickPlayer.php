@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\KickPlayer;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -20,32 +21,13 @@ final class KickPlayer implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_KICK_USER';
+    public const string ACTION_IDENTIFIER = 'B_KICK_USER';
 
-    private KickPlayerRequestInterface $kickPlayerRequest;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        KickPlayerRequestInterface $kickPlayerRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->kickPlayerRequest = $kickPlayerRequest;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
+    public function __construct(private KickPlayerRequestInterface $kickPlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -100,6 +82,7 @@ final class KickPlayer implements ActionControllerInterface
         $game->addInformation(_('Der Siedler wurde rausgeworfen'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

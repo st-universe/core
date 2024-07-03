@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditSystemField;
 
+use Override;
 use RuntimeException;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,24 +15,13 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class EditSystemField implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_EDIT_SYSTEM_FIELD';
+    public const string ACTION_IDENTIFIER = 'B_EDIT_SYSTEM_FIELD';
 
-    private EditSystemFieldRequestInterface $editSystemFieldRequest;
-
-    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    public function __construct(
-        EditSystemFieldRequestInterface $editSystemFieldRequest,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-        $this->editSystemFieldRequest = $editSystemFieldRequest;
-        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
+    public function __construct(private EditSystemFieldRequestInterface $editSystemFieldRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         /** @var StarSystemMapInterface $selectedField */
@@ -49,6 +39,7 @@ final class EditSystemField implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

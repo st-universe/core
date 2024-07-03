@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSubspaceTelescope;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -20,7 +21,7 @@ use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 
 final class ShowSubspaceTelescope implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SUBSPACE_TELESCOPE';
+    public const string VIEW_IDENTIFIER = 'SHOW_SUBSPACE_TELESCOPE';
 
 
     public function __construct(
@@ -31,6 +32,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

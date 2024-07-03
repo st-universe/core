@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Override;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
@@ -12,6 +13,7 @@ class DamageWrapperTest extends StuTestCase
 {
     private DamageWrapper $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->subject = new DamageWrapper(0);

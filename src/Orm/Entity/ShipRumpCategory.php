@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -34,16 +35,19 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): ShipRumpCategoryInterface
     {
         $this->name = $name;
@@ -51,11 +55,13 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
         return $this;
     }
 
+    #[Override]
     public function getDatabaseId(): int
     {
         return $this->database_id;
     }
 
+    #[Override]
     public function setDatabaseId(int $databaseId): ShipRumpCategoryInterface
     {
         $this->database_id = $databaseId;
@@ -64,11 +70,13 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
     }
 
     //@deprecated
+    #[Override]
     public function getPoints(): int
     {
         return $this->points;
     }
 
+    #[Override]
     public function setPoints(int $points): ShipRumpCategoryInterface
     {
         $this->points = $points;
@@ -76,11 +84,13 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
         return $this;
     }
 
+    #[Override]
     public function getDatabaseEntry(): ?DatabaseEntryInterface
     {
         return $this->databaseEntry;
     }
 
+    #[Override]
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): ShipRumpCategoryInterface
     {
         $this->databaseEntry = $databaseEntry;

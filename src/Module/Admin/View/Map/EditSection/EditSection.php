@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map\EditSection;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
@@ -19,40 +20,13 @@ use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
 
 final class EditSection implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_EDIT_MAP_SECTION';
+    public const string VIEW_IDENTIFIER = 'SHOW_EDIT_MAP_SECTION';
 
-    private ShowSectionRequestInterface $request;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
-
-    private MapRegionRepositoryInterface $mapRegionRepository;
-
-    private MapBorderTypeRepositoryInterface $mapBorderTypeRepository;
-
-    private StarmapUiFactoryInterface $starmapUiFactory;
-
-    private StarSystemTypeRepositoryInterface $starSystemTypeRepository;
-
-    public function __construct(
-        ShowSectionRequestInterface $request,
-        LayerRepositoryInterface $layerRepository,
-        StarmapUiFactoryInterface $starmapUiFactory,
-        MapRegionRepositoryInterface $mapRegionRepository,
-        MapBorderTypeRepositoryInterface $mapBorderTypeRepository,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
-        StarSystemTypeRepositoryInterface $starSystemTypeRepository
-    ) {
-        $this->request = $request;
-        $this->layerRepository = $layerRepository;
-        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
-        $this->starmapUiFactory = $starmapUiFactory;
-        $this->mapBorderTypeRepository = $mapBorderTypeRepository;
-        $this->mapRegionRepository = $mapRegionRepository;
-        $this->starSystemTypeRepository = $starSystemTypeRepository;
+    public function __construct(private ShowSectionRequestInterface $request, private LayerRepositoryInterface $layerRepository, private StarmapUiFactoryInterface $starmapUiFactory, private MapRegionRepositoryInterface $mapRegionRepository, private MapBorderTypeRepositoryInterface $mapBorderTypeRepository, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemTypeRepositoryInterface $starSystemTypeRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = $this->request->getLayerId();

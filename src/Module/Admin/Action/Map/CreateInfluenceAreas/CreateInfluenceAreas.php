@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\CreateInfluenceAreas;
 
+use Override;
 use request;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,9 +17,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class CreateInfluenceAreas implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_INFLUENCE_AREAS';
-
-    private MapRepositoryInterface $mapRepository;
+    public const string ACTION_IDENTIFIER = 'B_INFLUENCE_AREAS';
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -32,13 +31,13 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     private array $mapsByCoords = [];
 
     public function __construct(
-        MapRepositoryInterface $mapRepository,
+        private MapRepositoryInterface $mapRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->mapRepository = $mapRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
@@ -273,6 +272,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $this->usedMaps[$x][$y] = true;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowSystemSensorScan;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,7 +16,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowSystemSensorScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SYSTEM_SENSOR_SCAN';
+    public const string VIEW_IDENTIFIER = 'SHOW_SYSTEM_SENSOR_SCAN';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -25,6 +26,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

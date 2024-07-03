@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount;
 
+use Override;
 use Crunz\Exception\NotImplementedException;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -11,22 +12,21 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class AllianceShipcountDataProvider extends AbstractShipcountDataProvider
 {
-    private int $allianceId;
-
     public function __construct( #
-        int $allianceId,
+        private int $allianceId,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
         parent::__construct($mapRepository, $starSystemMapRepository);
-        $this->allianceId = $allianceId;
     }
 
+    #[Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
         return $this->mapRepository->getAllianceShipcountLayerData($boundaries, $this->allianceId, $this->createResultSetMapping());
     }
 
+    #[Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
         throw new NotImplementedException('this is not possible');

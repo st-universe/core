@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
+use Override;
 use Exception;
 use GdImage;
 use Noodlehaus\ConfigInterface;
@@ -15,20 +16,13 @@ use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 final class ChangeAvatar implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    private ChangeUserSettingInterface $changerUserSetting;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        ChangeUserSettingInterface $changerUserSetting,
-        ConfigInterface $config
-    ) {
-        $this->changerUserSetting = $changerUserSetting;
-        $this->config = $config;
+    public function __construct(private ChangeUserSettingInterface $changerUserSetting, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $file = $_FILES['avatar'];
@@ -66,7 +60,7 @@ final class ChangeAvatar implements ActionControllerInterface
 
         try {
             $img = imagecreatefrompng($file['tmp_name']);
-        } catch (Exception $e) {
+        } catch (Exception) {
             $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
@@ -98,6 +92,7 @@ final class ChangeAvatar implements ActionControllerInterface
         $game->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

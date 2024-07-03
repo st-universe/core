@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\StarSystem;
 
+use Override;
 use RuntimeException;
 use Stu\Component\StarSystem\StarSystemCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,28 +14,13 @@ use Stu\Orm\Repository\NamesRepositoryInterface;
 
 final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 {
-    public const BATCH_AMOUNT = 10;
+    public const int BATCH_AMOUNT = 10;
 
-    private LayerRepositoryInterface $layerRepository;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private NamesRepositoryInterface $namesRepository;
-
-    private StarSystemCreationInterface $starSystemCreation;
-
-    public function __construct(
-        LayerRepositoryInterface $layerRepository,
-        MapRepositoryInterface $mapRepository,
-        NamesRepositoryInterface $namesRepository,
-        StarSystemCreationInterface $starSystemCreation
-    ) {
-        $this->layerRepository = $layerRepository;
-        $this->mapRepository = $mapRepository;
-        $this->namesRepository = $namesRepository;
-        $this->starSystemCreation = $starSystemCreation;
+    public function __construct(private LayerRepositoryInterface $layerRepository, private MapRepositoryInterface $mapRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation)
+    {
     }
 
+    #[Override]
     public function generate(int $layerId, ?GameControllerInterface $game): int
     {
         $layer = $this->layerRepository->find($layerId);

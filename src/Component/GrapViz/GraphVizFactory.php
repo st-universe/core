@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\GrapViz;
 
+use Override;
 use Fhaculty\Graph\Graph;
 use Graphp\GraphViz\GraphViz;
 
@@ -12,11 +13,13 @@ use Graphp\GraphViz\GraphViz;
  */
 final class GraphVizFactory implements GraphVizFactoryInterface
 {
+    #[Override]
     public function createGraph(): Graph
     {
         return new Graph();
     }
 
+    #[Override]
     public function createGraphViz(): GraphViz
     {
         return new GraphViz();

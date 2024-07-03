@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -37,26 +38,31 @@ class RpgPlotMember implements RpgPlotMemberInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getPlotId(): int
     {
         return $this->plot_id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getRpgPlot(): RpgPlotInterface
     {
         return $this->rpgPlot;
     }
 
+    #[Override]
     public function setRpgPlot(RpgPlotInterface $rpgPlot): RpgPlotMemberInterface
     {
         $this->rpgPlot = $rpgPlot;
@@ -64,11 +70,13 @@ class RpgPlotMember implements RpgPlotMemberInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): RpgPlotMemberInterface
     {
         $this->user = $user;

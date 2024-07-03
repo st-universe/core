@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\LatinumRanking;
 
+use Override;
 use Generator;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -16,20 +17,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class LatinumRanking implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TOP_LATINUM';
+    public const string VIEW_IDENTIFIER = 'SHOW_TOP_LATINUM';
 
-    private StorageRepositoryInterface $storageRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        StorageRepositoryInterface $storageRepository,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->storageRepository = $storageRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private StorageRepositoryInterface $storageRepository, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setNavigation([

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\Deals;
@@ -15,11 +16,13 @@ use Stu\Orm\Entity\User;
  */
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
+    #[Override]
     public function prototype(): DealsInterface
     {
         return new Deals();
     }
 
+    #[Override]
     public function save(DealsInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -27,6 +30,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(DealsInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -35,6 +39,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         $em->flush();
     }
 
+    #[Override]
     public function hasActiveDeals(int $userId): bool
     {
         return $this->getEntityManager()
@@ -56,6 +61,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getSingleScalarResult() > 0;
     }
 
+    #[Override]
     public function getActiveDealsGoods(int $userId): array
     {
         return $this->getEntityManager()
@@ -78,6 +84,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveDealsShips(int $userId): array
     {
         return $this->getEntityManager()
@@ -100,6 +107,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveDealsBuildplans(int $userId): array
     {
         return $this->getEntityManager()
@@ -121,6 +129,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveDealsGoodsPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -143,6 +152,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveDealsShipsPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -165,6 +175,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveDealsBuildplansPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -186,6 +197,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function hasActiveAuctions(int $userId): bool
     {
         return $this->getEntityManager()
@@ -206,6 +218,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getSingleScalarResult() > 0;
     }
 
+    #[Override]
     public function getActiveAuctionsGoods(int $userId): array
     {
         return $this->getEntityManager()
@@ -227,6 +240,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveAuctionsShips(int $userId): array
     {
         return $this->getEntityManager()
@@ -248,6 +262,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveAuctionsBuildplans(int $userId): array
     {
         return $this->getEntityManager()
@@ -269,6 +284,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveAuctionsGoodsPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -290,6 +306,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveAuctionsShipsPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -311,6 +328,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getActiveAuctionsBuildplansPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -332,6 +350,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function hasEndedAuctions(int $userId): bool
     {
         return $this->getEntityManager()
@@ -355,6 +374,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getSingleScalarResult() > 0;
     }
 
+    #[Override]
     public function hasOwnAuctionsToTake(int $userId): bool
     {
         $time = time();
@@ -378,6 +398,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getSingleScalarResult() > 0;
     }
 
+    #[Override]
     public function getEndedAuctionsGoods(int $userId): array
     {
         return $this->getEntityManager()
@@ -401,6 +422,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getEndedAuctionsShips(int $userId): array
     {
         return $this->getEntityManager()
@@ -425,6 +447,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getEndedAuctionsBuildplans(int $userId): array
     {
         return $this->getEntityManager()
@@ -448,6 +471,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getEndedAuctionsGoodsPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -471,6 +495,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getEndedAuctionsShipsPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -494,6 +519,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getEndedAuctionsBuildplansPrestige(int $userId): array
     {
         return $this->getEntityManager()
@@ -517,6 +543,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getOwnEndedAuctionsGoods(int $userId): array
     {
         $time = time();
@@ -543,6 +570,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getOwnEndedAuctionsShips(int $userId): array
     {
         $time = time();
@@ -569,6 +597,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getOwnEndedAuctionsBuildplans(int $userId): array
     {
         $time = time();
@@ -595,6 +624,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getOwnEndedAuctionsGoodsPrestige(int $userId): array
     {
         $time = time();
@@ -621,6 +651,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getOwnEndedAuctionsShipsPrestige(int $userId): array
     {
         $time = time();
@@ -647,6 +678,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getOwnEndedAuctionsBuildplansPrestige(int $userId): array
     {
         $time = time();
@@ -673,6 +705,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function truncateAllDeals(): void
     {
         $this->getEntityManager()->createQuery(

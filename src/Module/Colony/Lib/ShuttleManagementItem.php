@@ -8,15 +8,12 @@ use Stu\Orm\Entity\CommodityInterface;
 
 final class ShuttleManagementItem
 {
-    private CommodityInterface $commodity;
-
     private int $currentLoad = 0;
 
     private int $colonyLoad = 0;
 
-    public function __construct(CommodityInterface $commodity)
+    public function __construct(private CommodityInterface $commodity)
     {
-        $this->commodity = $commodity;
     }
 
     public function setCurrentLoad(int $load): void

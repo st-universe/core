@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider;
 
+use Override;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
@@ -12,16 +13,8 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 abstract class AbstractPanelLayerDataProvider implements PanelLayerDataProviderInterface
 {
-    protected MapRepositoryInterface $mapRepository;
-
-    protected StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    public function __construct(
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
+    public function __construct(protected MapRepositoryInterface $mapRepository, protected StarSystemMapRepositoryInterface $starSystemMapRepository)
+    {
     }
 
     /**
@@ -38,6 +31,7 @@ abstract class AbstractPanelLayerDataProvider implements PanelLayerDataProviderI
     /** @return array<CellDataInterface> */
     protected abstract function provideDataForSystemMap(PanelBoundaries $boundaries): array;
 
+    #[Override]
     public function loadData(PanelBoundaries $boundaries): array
     {
         if ($boundaries->isOnMap()) {

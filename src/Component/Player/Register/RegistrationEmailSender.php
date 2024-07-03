@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Override;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
@@ -12,14 +13,11 @@ use Stu\Orm\Entity\UserInterface;
 
 final class RegistrationEmailSender implements RegistrationEmailSenderInterface
 {
-    private ConfigInterface $config;
-
-    public function __construct(
-        ConfigInterface $config
-    ) {
-        $this->config = $config;
+    public function __construct(private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function send(UserInterface $player, string $password): void
     {
         $body = <<<EOT
@@ -49,7 +47,7 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
         try {
             $transport = new Sendmail();
             $transport->send($mail);
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             //nothing to do here
         }
     }

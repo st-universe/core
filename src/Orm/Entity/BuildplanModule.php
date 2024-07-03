@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -47,16 +48,19 @@ class BuildplanModule implements BuildplanModuleInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getBuildplan(): ShipBuildplanInterface
     {
         return $this->buildplan;
     }
 
+    #[Override]
     public function setBuildplan(ShipBuildplanInterface $buildplan): BuildplanModuleInterface
     {
         $this->buildplan = $buildplan;
@@ -64,11 +68,13 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return $this->module_type;
     }
 
+    #[Override]
     public function setModuleType(ShipModuleTypeEnum $moduleType): BuildplanModuleInterface
     {
         $this->module_type = $moduleType;
@@ -76,11 +82,13 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getModuleCount(): int
     {
         return $this->module_count;
     }
 
+    #[Override]
     public function setModuleCount(int $moduleCount): BuildplanModuleInterface
     {
         $this->module_count = $moduleCount;
@@ -88,11 +96,13 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getModuleSpecial(): ?int
     {
         return $this->module_special;
     }
 
+    #[Override]
     public function setModuleSpecial(?int $moduleSpecial): BuildplanModuleInterface
     {
         $this->module_special = $moduleSpecial;
@@ -100,11 +110,13 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): BuildplanModuleInterface
     {
         $this->module_id = $moduleId;
@@ -112,11 +124,13 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getModule(): ModuleInterface
     {
         return $this->module;
     }
 
+    #[Override]
     public function setModule(ModuleInterface $module): BuildplanModuleInterface
     {
         $this->module = $module;

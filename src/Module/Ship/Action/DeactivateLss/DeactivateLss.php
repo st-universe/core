@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeactivateLss;
 
+use Override;
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,16 +14,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class DeactivateLss implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEACTIVATE_LSS';
+    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_LSS';
 
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    public function __construct(
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->helper = $helper;
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -30,6 +28,7 @@ final class DeactivateLss implements ActionControllerInterface
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_LSS, $game);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

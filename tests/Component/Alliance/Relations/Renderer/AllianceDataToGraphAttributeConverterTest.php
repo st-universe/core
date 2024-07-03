@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
+use Override;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
@@ -22,6 +23,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     private AllianceDataToGraphAttributeConverter $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->bbCodeParser = $this->mock(Parser::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
@@ -19,6 +20,7 @@ class ColonyTickRunnerTest extends StuTestCase
 
     private ColonyTickRunner $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->colonyTickManager = $this->mock(ColonyTickManagerInterface::class);

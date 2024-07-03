@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
@@ -19,6 +20,7 @@ class ProcessTickRunnerTest extends StuTestCase
 
     private ProcessTickRunner $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->transactionTickRunner = $this->mock(TransactionTickRunnerInterface::class);

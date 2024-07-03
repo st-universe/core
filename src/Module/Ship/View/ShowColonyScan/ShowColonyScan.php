@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowColonyScan;
 
+use Override;
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
@@ -22,32 +23,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowColonyScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONY_SCAN';
+    public const string VIEW_IDENTIFIER = 'SHOW_COLONY_SCAN';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ColonyScanRepositoryInterface $colonyScanRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyScanRepositoryInterface $colonyScanRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->colonyScanRepository = $colonyScanRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyScanRepositoryInterface $colonyScanRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateVar('ERROR', true);

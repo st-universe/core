@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
@@ -25,6 +26,7 @@ class MessageFolderFragmentTest extends StuTestCase
 
     private MessageFolderFragment $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->privateMessageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);

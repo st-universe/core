@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DeleteBuildPlan;
 
+use Override;
 use request;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class DeleteBuildPlan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEL_BUILDPLAN';
+    public const string ACTION_IDENTIFIER = 'B_DEL_BUILDPLAN';
 
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private BuildPlanDeleterInterface $buildPlanDeleter;
-
-    public function __construct(
-        BuildPlanDeleterInterface $buildPlanDeleter,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->buildPlanDeleter = $buildPlanDeleter;
+    public function __construct(private BuildPlanDeleterInterface $buildPlanDeleter, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -49,6 +43,7 @@ final class DeleteBuildPlan implements ActionControllerInterface
         $game->addInformation('Der Bauplan wurde gelöscht');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

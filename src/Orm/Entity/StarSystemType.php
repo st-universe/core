@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -53,11 +54,13 @@ class StarSystemType implements StarSystemTypeInterface
     #[JoinColumn(name: 'second_mass_center_id', referencedColumnName: 'id')]
     private ?MassCenterTypeInterface $secondMassCenterType = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         $firstMassCenter = $this->getFirstMassCenterType();
@@ -85,6 +88,7 @@ class StarSystemType implements StarSystemTypeInterface
         );
     }
 
+    #[Override]
     public function setDescription(string $description): StarSystemTypeInterface
     {
         $this->description = $description;
@@ -92,11 +96,13 @@ class StarSystemType implements StarSystemTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getDatabaseEntryId(): ?int
     {
         return $this->database_id;
     }
 
+    #[Override]
     public function setDatabaseEntryId(?int $databaseEntryId): StarSystemTypeInterface
     {
         $this->database_id = $databaseEntryId;
@@ -104,11 +110,13 @@ class StarSystemType implements StarSystemTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getDatabaseEntry(): ?DatabaseEntryInterface
     {
         return $this->databaseEntry;
     }
 
+    #[Override]
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemTypeInterface
     {
         $this->databaseEntry = $databaseEntry;
@@ -116,16 +124,19 @@ class StarSystemType implements StarSystemTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getFirstMassCenterType(): ?MassCenterTypeInterface
     {
         return $this->firstMassCenterType;
     }
 
+    #[Override]
     public function getSecondMassCenterType(): ?MassCenterTypeInterface
     {
         return $this->secondMassCenterType;
     }
 
+    #[Override]
     public function getIsGenerateable(): ?bool
     {
         return $this->is_generateable;

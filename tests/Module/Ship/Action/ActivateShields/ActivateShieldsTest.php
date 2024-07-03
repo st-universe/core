@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\MoveShip;
 
+use Override;
 use Mockery\MockInterface;
 use request;
 use Stu\ActionControllerTestCase;
@@ -19,6 +20,7 @@ class ActivateShieldsTest extends ActionControllerTestCase
 
     private ActivateShields $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

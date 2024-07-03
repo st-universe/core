@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
 
@@ -19,6 +20,7 @@ class EpsSystemData extends AbstractSystemData
     public int $batteryCooldown = 0;
     public bool $reloadBattery = false;
 
+    #[Override]
     function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_EPS;

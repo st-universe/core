@@ -6,11 +6,8 @@ namespace Stu\Component\Ship\System\Exception;
 
 final class SystemCooldownException extends ShipSystemException
 {
-    private int $remainingSeconds;
-
-    public function __construct(int $remainingSeconds)
+    public function __construct(private int $remainingSeconds)
     {
-        $this->remainingSeconds = $remainingSeconds;
     }
 
     public function getRemainingSeconds(): int

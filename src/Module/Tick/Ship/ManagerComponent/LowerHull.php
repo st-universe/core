@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
+use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -25,6 +26,7 @@ class LowerHull implements ManagerComponentInterface
     ) {
     }
 
+    #[Override]
     public function work(): void
     {
         $this->lowerTrumfieldHull();

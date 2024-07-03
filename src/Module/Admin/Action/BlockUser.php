@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use request;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,28 +19,20 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class BlockUser implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BLOCK_USER';
-
-    private UserRepositoryInterface $userRepository;
-
-    private BlockedUserRepositoryInterface $blockedUserRepository;
-
-    private StuHashInterface $stuHash;
+    public const string ACTION_IDENTIFIER = 'B_BLOCK_USER';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        BlockedUserRepositoryInterface $blockedUserRepository,
-        StuHashInterface $stuHash,
+        private UserRepositoryInterface $userRepository,
+        private BlockedUserRepositoryInterface $blockedUserRepository,
+        private StuHashInterface $stuHash,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->userRepository = $userRepository;
-        $this->blockedUserRepository = $blockedUserRepository;
-        $this->stuHash = $stuHash;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('admin', LoggerEnum::LEVEL_ERROR);
@@ -90,6 +83,7 @@ final class BlockUser implements ActionControllerInterface
         $game->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getName(), $userIdToBlock);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

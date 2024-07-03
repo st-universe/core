@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Storage;
 
+use Override;
 use Stu\Component\Colony\Storage\Exception\CommodityMissingException;
 use Stu\Component\Colony\Storage\Exception\QuantityTooSmallException;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -14,18 +15,16 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ColonyStorageManager implements ColonyStorageManagerInterface
 {
-    private StorageRepositoryInterface $storageRepository;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        StorageRepositoryInterface $storageRepository,
+        private StorageRepositoryInterface $storageRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->storageRepository = $storageRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
         $storage = $colony->getStorage();
@@ -63,6 +62,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         $this->storageRepository->save($stor);
     }
 
+    #[Override]
     public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
         $startTime = null;

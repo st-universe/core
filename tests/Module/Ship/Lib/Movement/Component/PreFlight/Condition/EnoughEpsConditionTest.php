@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -36,6 +37,7 @@ class EnoughEpsConditionTest extends StuTestCase
     /** @var MockInterface&ConditionCheckResult */
     private MockInterface $conditionCheckResult;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);

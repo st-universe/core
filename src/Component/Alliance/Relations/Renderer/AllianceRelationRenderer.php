@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
+use Override;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Stu\Component\Alliance\AllianceEnum;
@@ -16,18 +17,11 @@ use Stu\Orm\Entity\AllianceRelationInterface;
  */
 final class AllianceRelationRenderer implements AllianceRelationRendererInterface
 {
-    private GraphVizFactoryInterface $graphvizFactory;
-
-    private RelationItemVertexBuilderInterface $relationItemVertexBuilder;
-
-    public function __construct(
-        GraphVizFactoryInterface $graphvizFactory,
-        RelationItemVertexBuilderInterface $relationItemVertexBuilder
-    ) {
-        $this->graphvizFactory = $graphvizFactory;
-        $this->relationItemVertexBuilder = $relationItemVertexBuilder;
+    public function __construct(private GraphVizFactoryInterface $graphvizFactory, private RelationItemVertexBuilderInterface $relationItemVertexBuilder)
+    {
     }
 
+    #[Override]
     public function render(
         iterable $relationList,
         int $width,

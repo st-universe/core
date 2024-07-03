@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,21 +40,25 @@ class TradeShoutbox implements TradeShoutboxInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getTradeNetworkId(): int
     {
         return $this->trade_network_id;
     }
 
+    #[Override]
     public function setTradeNetworkId(int $tradeNetworkId): TradeShoutboxInterface
     {
         $this->trade_network_id = $tradeNetworkId;
@@ -61,11 +66,13 @@ class TradeShoutbox implements TradeShoutboxInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): TradeShoutboxInterface
     {
         $this->date = $date;
@@ -73,11 +80,13 @@ class TradeShoutbox implements TradeShoutboxInterface
         return $this;
     }
 
+    #[Override]
     public function getMessage(): string
     {
         return $this->message;
     }
 
+    #[Override]
     public function setMessage(string $message): TradeShoutboxInterface
     {
         $this->message = $message;
@@ -85,11 +94,13 @@ class TradeShoutbox implements TradeShoutboxInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): TradeShoutboxInterface
     {
         $this->user = $user;

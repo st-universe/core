@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Override;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickHandlerInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->shipRepository = $shipRepository;
+    public function __construct(private ShipRepositoryInterface $shipRepository)
+    {
     }
 
+    #[Override]
     public function work(): void
     {
         $time = time();

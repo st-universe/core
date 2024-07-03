@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeclineOffer;
 
+use Override;
 use request;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
@@ -17,20 +18,13 @@ final class DeclineOffer implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_DECLINE_OFFER';
+    public const string ACTION_IDENTIFIER = 'B_DECLINE_OFFER';
 
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -69,6 +63,7 @@ final class DeclineOffer implements ActionControllerInterface
         $game->addInformation(_('Das Angebot wurden abgelehnt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
@@ -18,33 +19,18 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
     /**
      * @var int
      */
-    private const RELATION_IMAGE_WIDTH = 600;
+    private const int RELATION_IMAGE_WIDTH = 600;
 
     /**
      * @var int
      */
-    private const RELATION_IMAGE_HEIGHT = 700;
+    private const int RELATION_IMAGE_HEIGHT = 700;
 
-    private ParserWithImageInterface $parserWithImage;
-
-    private AllianceRelationRendererInterface $allianceRelationRenderer;
-
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        ParserWithImageInterface $parserWithImage,
-        AllianceRelationRendererInterface $allianceRelationRenderer,
-        ConfigInterface $config,
-        AllianceRelationRepositoryInterface $allianceRelationRepository
-    ) {
-        $this->parserWithImage = $parserWithImage;
-        $this->allianceRelationRenderer = $allianceRelationRenderer;
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->config = $config;
+    public function __construct(private ParserWithImageInterface $parserWithImage, private AllianceRelationRendererInterface $allianceRelationRenderer, private ConfigInterface $config, private AllianceRelationRepositoryInterface $allianceRelationRepository)
+    {
     }
 
+    #[Override]
     public function render(
         AllianceInterface $alliance
     ): string {

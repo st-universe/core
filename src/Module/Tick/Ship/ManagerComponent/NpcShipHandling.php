@@ -2,23 +2,17 @@
 
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
+use Override;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class NpcShipHandling implements ManagerComponentInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    {
     }
 
+    #[Override]
     public function work(): void
     {
         // @todo

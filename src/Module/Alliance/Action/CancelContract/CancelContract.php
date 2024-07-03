@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CancelContract;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -17,28 +18,13 @@ final class CancelContract implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_CANCEL_CONTRACT';
+    public const string ACTION_IDENTIFIER = 'B_CANCEL_CONTRACT';
 
-    private CancelContractRequestInterface $cancelContractRequest;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        CancelContractRequestInterface $cancelContractRequest,
-        EntryCreatorInterface $entryCreator,
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->cancelContractRequest = $cancelContractRequest;
-        $this->entryCreator = $entryCreator;
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private CancelContractRequestInterface $cancelContractRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -111,6 +97,7 @@ final class CancelContract implements ActionControllerInterface
         $game->addInformation(_('Das Abkommen wurde aufgelöst'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

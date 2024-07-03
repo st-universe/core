@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\BasicTradeSell;
 
+use Override;
 use request;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -17,24 +18,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class BasicTradeSell implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BASIC_SELL';
+    public const string ACTION_IDENTIFIER = 'B_BASIC_SELL';
 
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private BasicTradeRepositoryInterface $basicTradeRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    public function __construct(
-        TradeLibFactoryInterface $tradeLibFactory,
-        BasicTradeRepositoryInterface $basicTradeRepository,
-        TradePostRepositoryInterface $tradePostRepository
-    ) {
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->basicTradeRepository = $basicTradeRepository;
-        $this->tradePostRepository = $tradePostRepository;
+    public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
@@ -113,6 +103,7 @@ final class BasicTradeSell implements ActionControllerInterface
         $game->addInformation('Die Waren wurden verkauft');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

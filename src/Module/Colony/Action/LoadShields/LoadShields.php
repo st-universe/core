@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\LoadShields;
 
+use Override;
 use request;
 
 use Stu\Component\Colony\ColonyEnum;
@@ -16,24 +17,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class LoadShields implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_LOAD_SHIELDS';
+    public const string ACTION_IDENTIFIER = 'B_LOAD_SHIELDS';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyRepository = $colonyRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -68,6 +58,7 @@ final class LoadShields implements ActionControllerInterface
         $game->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

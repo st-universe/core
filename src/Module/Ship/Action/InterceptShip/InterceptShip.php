@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\InterceptShip;
 
+use Override;
 use request;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
@@ -16,7 +17,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class InterceptShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_INTERCEPT';
+    public const string ACTION_IDENTIFIER = 'B_INTERCEPT';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -26,6 +27,7 @@ final class InterceptShip implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -86,6 +88,7 @@ final class InterceptShip implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

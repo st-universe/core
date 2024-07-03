@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -24,56 +25,13 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_AIRFIELD_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_START_AIRFIELD_SHIP';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private BuildplanHangarRepositoryInterface $buildplanHangarRepository;
-
-    private CrewCreatorInterface $crewCreator;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipTorpedoManagerInterface $shipTorpedoManager;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        CommodityRepositoryInterface $commodityRepository,
-        BuildplanHangarRepositoryInterface $buildplanHangarRepository,
-        CrewCreatorInterface $crewCreator,
-        ShipCreatorInterface $shipCreator,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        ShipTorpedoManagerInterface $shipTorpedoManager
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->commodityRepository = $commodityRepository;
-        $this->buildplanHangarRepository = $buildplanHangarRepository;
-        $this->crewCreator = $crewCreator;
-        $this->shipCreator = $shipCreator;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->shipTorpedoManager = $shipTorpedoManager;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private CommodityRepositoryInterface $commodityRepository, private BuildplanHangarRepositoryInterface $buildplanHangarRepository, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private ShipTorpedoManagerInterface $shipTorpedoManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -184,6 +142,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $game->addInformation(_('Das Schiff wurde gestartet'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

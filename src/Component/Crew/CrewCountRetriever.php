@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Crew;
 
+use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\UserInterface;
@@ -16,26 +17,11 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
  */
 final class CrewCountRetriever implements CrewCountRetrieverInterface
 {
-    private CrewRepositoryInterface $crewRepository;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private CrewTrainingRepositoryInterface $crewTrainingRepository;
-
-    private CrewLimitCalculatorInterface $crewLimitCalculator;
-
-    public function __construct(
-        CrewRepositoryInterface $crewRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        CrewLimitCalculatorInterface $crewLimitCalculator,
-        CrewTrainingRepositoryInterface $crewTrainingRepository
-    ) {
-        $this->crewRepository = $crewRepository;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->crewTrainingRepository = $crewTrainingRepository;
-        $this->crewLimitCalculator = $crewLimitCalculator;
+    public function __construct(private CrewRepositoryInterface $crewRepository, private ShipCrewRepositoryInterface $shipCrewRepository, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewTrainingRepositoryInterface $crewTrainingRepository)
+    {
     }
 
+    #[Override]
     public function getDebrisAndTradePostsCount(UserInterface $user): int
     {
         $count = $this->crewRepository
@@ -47,16 +33,19 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         return $count + $this->shipCrewRepository->getAmountByUserAtTradeposts($user);
     }
 
+    #[Override]
     public function getAssignedToShipsCount(UserInterface $user): int
     {
         return $this->shipCrewRepository->getAmountByUserOnShips($user);
     }
 
+    #[Override]
     public function getInTrainingCount(UserInterface $user): int
     {
         return $this->crewTrainingRepository->getCountByUser($user);
     }
 
+    #[Override]
     public function getRemainingCount(UserInterface $user): int
     {
         return max(
@@ -65,11 +54,13 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         );
     }
 
+    #[Override]
     public function getAssignedCount(UserInterface $user): int
     {
         return $this->shipCrewRepository->getAmountByUser($user);
     }
 
+    #[Override]
     public function getTrainableCount(UserInterface $user): int
     {
         return (int) ceil($this->crewLimitCalculator->getGlobalCrewLimit($user) / 10);

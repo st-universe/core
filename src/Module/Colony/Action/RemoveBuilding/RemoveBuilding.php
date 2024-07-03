@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RemoveBuilding;
 
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
@@ -12,20 +13,13 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class RemoveBuilding implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_REMOVE_BUILDING';
+    public const string ACTION_IDENTIFIER = 'B_REMOVE_BUILDING';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private BuildingActionInterface $buildingAction;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        BuildingActionInterface $buildingAction
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->buildingAction = $buildingAction;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
@@ -44,6 +38,7 @@ final class RemoveBuilding implements ActionControllerInterface
         $game->addExecuteJS('refreshHost();');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

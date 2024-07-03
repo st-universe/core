@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\Terraform;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Exception\SanityCheckException;
@@ -21,36 +22,13 @@ use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 final class Terraform implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TERRAFORM';
+    public const string ACTION_IDENTIFIER = 'B_TERRAFORM';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private TerraformingRepositoryInterface $terraformingRepository;
-
-    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        TerraformingRepositoryInterface $terraformingRepository,
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->terraformingRepository = $terraformingRepository;
-        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private TerraformingRepositoryInterface $terraformingRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
@@ -182,6 +160,7 @@ final class Terraform implements ActionControllerInterface
         return true;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

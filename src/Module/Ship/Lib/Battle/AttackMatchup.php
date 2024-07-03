@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Battle\Party\RoundBasedBattleParty;
@@ -15,6 +16,7 @@ final class AttackMatchup implements AttackMatchupInterface
     ) {
     }
 
+    #[Override]
     public function getMatchup(
         RoundBasedBattleParty $attackers,
         RoundBasedBattleParty $defenders,

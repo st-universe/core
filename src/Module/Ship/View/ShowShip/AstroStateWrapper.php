@@ -6,17 +6,8 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 
 class AstroStateWrapper
 {
-    private int $state;
-
-    private ?int $turnsLeft;
-
-    private bool $isSystem;
-
-    public function __construct(int $state, ?int $turnsLeft, bool $isSystem)
+    public function __construct(private int $state, private ?int $turnsLeft, private bool $isSystem)
     {
-        $this->state = $state;
-        $this->turnsLeft = $turnsLeft;
-        $this->isSystem = $isSystem;
     }
 
     public function isPlannable(): bool

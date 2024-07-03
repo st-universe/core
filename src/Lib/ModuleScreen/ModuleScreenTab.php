@@ -6,12 +6,8 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 
 class ModuleScreenTab
 {
-    private ModuleSelectorInterface $moduleSelector;
-
-    public function __construct(
-        ModuleSelectorInterface $moduleSelector
-    ) {
-        $this->moduleSelector = $moduleSelector;
+    public function __construct(private ModuleSelectorInterface $moduleSelector)
+    {
     }
 
     public function getTabTitle(): string

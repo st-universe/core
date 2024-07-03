@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 use Stu\Lib\Map\VisualPanel\VisualPanelRow;
@@ -11,10 +12,6 @@ use Stu\Module\Logging\LoggerUtilInterface;
 
 abstract class AbstractVisualPanel implements PanelAttributesInterface
 {
-    protected PanelLayerCreationInterface $panelLayerCreation;
-
-    protected LoggerUtilInterface $loggerUtil;
-
     protected PanelLayers $layers;
 
     private ?PanelBoundaries $boundaries = null;
@@ -28,12 +25,8 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
 
     private ?string $fontSize = null;
 
-    public function __construct(
-        PanelLayerCreationInterface $panelLayerCreation,
-        LoggerUtilInterface $loggerUtil
-    ) {
-        $this->panelLayerCreation = $panelLayerCreation;
-        $this->loggerUtil = $loggerUtil;
+    public function __construct(protected PanelLayerCreationInterface $panelLayerCreation, protected LoggerUtilInterface $loggerUtil)
+    {
     }
 
     protected abstract function createBoundaries(): PanelBoundaries;
@@ -94,6 +87,7 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
         return $this->boundaries;
     }
 
+    #[Override]
     public function getHeightAndWidth(): string
     {
         if ($this->heightAndWidth === null) {
@@ -104,6 +98,7 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
         return $this->heightAndWidth;
     }
 
+    #[Override]
     public function getFontSize(): string
     {
         if ($this->fontSize === null) {

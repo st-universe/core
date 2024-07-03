@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\UndockStationShip;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
@@ -16,28 +17,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class UndockStationShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_UNDOCK_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_UNDOCK_SHIP';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private CancelRepairInterface $cancelRepair;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        CancelRepairInterface $cancelRepair,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->cancelRepair = $cancelRepair;
-        $this->entityManager = $entityManager;
+    public function __construct(private ShipLoaderInterface $shipLoader, private PrivateMessageSenderInterface $privateMessageSender, private CancelRepairInterface $cancelRepair, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -97,6 +83,7 @@ final class UndockStationShip implements ActionControllerInterface
         $game->addInformation(sprintf(_('Die %s wurde erfolgreich abgedockt'), $target->getName()));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

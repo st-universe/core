@@ -7,16 +7,8 @@ use Stu\Module\Config\StuConfigException;
 
 abstract class AbstractSettings implements SettingsInterface
 {
-    private ?string $parentPath;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        ?String $parentPath,
-        ConfigInterface $config
-    ) {
-        $this->parentPath = $parentPath;
-        $this->config = $config;
+    public function __construct(private ?string $parentPath, private ConfigInterface $config)
+    {
     }
 
     protected function getPath(): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ChangeName;
 
+use Override;
 use JBBCode\Parser;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
@@ -17,28 +18,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ChangeName implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_NAME';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_NAME';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private Parser $bbCodeParser;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ChangeNameRequestInterface $changeNameRequest;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        Parser $bbCodeParser,
-        ColonyRepositoryInterface $colonyRepository,
-        ChangeNameRequestInterface $changeNameRequest
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->bbCodeParser = $bbCodeParser;
-        $this->colonyRepository = $colonyRepository;
-        $this->changeNameRequest = $changeNameRequest;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private Parser $bbCodeParser, private ColonyRepositoryInterface $colonyRepository, private ChangeNameRequestInterface $changeNameRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -78,6 +64,7 @@ final class ChangeName implements ActionControllerInterface
         $game->addInformation(_('Der Koloniename wurde geändert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

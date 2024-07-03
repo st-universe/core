@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPostToPlot;
 
+use Override;
 use request;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
@@ -20,30 +21,15 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class AddKnPostToPlot implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ADD_POST_TO_PLOT';
+    public const string ACTION_IDENTIFIER = 'B_ADD_POST_TO_PLOT';
 
-    public const MAXIMUM_APPLICATION_TIME = TimeConstants::TWO_DAYS_IN_SECONDS;
+    public const int MAXIMUM_APPLICATION_TIME = TimeConstants::TWO_DAYS_IN_SECONDS;
 
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        KnPostRepositoryInterface $knPostRepository,
-        KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->knPostRepository = $knPostRepository;
-        $this->knPostToPlotApplicationRepository = $knPostToPlotApplicationRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository, private KnPostRepositoryInterface $knPostRepository, private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -112,6 +98,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

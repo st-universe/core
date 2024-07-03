@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class CommodityConsumption implements CommodityConsumptionInterface
 {
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function getConsumption(
         array $production,
         ColonyInterface $colony

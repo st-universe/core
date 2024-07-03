@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AstroMapping;
 
+use Override;
 use request;
 
 use Stu\Component\Ship\AstronomicalMappingEnum;
@@ -20,30 +21,15 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class PlanAstroMapping implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_PLAN_ASTRO';
+    public const string ACTION_IDENTIFIER = 'B_PLAN_ASTRO';
 
-    private const REGION_MAP_PERCENTAGE = 25;
+    private const int REGION_MAP_PERCENTAGE = 25;
 
-    private ShipLoaderInterface $shipLoader;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    private AstroEntryRepositoryInterface $astroEntryRepository;
-
-    private MapRepositoryInterface $mapRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
-        MapRepositoryInterface $mapRepository,
-        AstroEntryRepositoryInterface $astroEntryRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->mapRepository = $mapRepository;
-        $this->astroEntryRepository = $astroEntryRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private StarSystemMapRepositoryInterface $starSystemMapRepository, private MapRepositoryInterface $mapRepository, private AstroEntryRepositoryInterface $astroEntryRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -117,6 +103,7 @@ final class PlanAstroMapping implements ActionControllerInterface
     }
 
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

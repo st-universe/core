@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowScan;
 
+use Override;
 use request;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
@@ -19,7 +20,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ShowScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SCAN';
+    public const string VIEW_IDENTIFIER = 'SHOW_SCAN';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -29,6 +30,7 @@ final class ShowScan implements ViewControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -16,22 +17,11 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamUtil implements BeamUtilInterface
 {
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ShipStorageManagerInterface $shipStorageManager,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->shipStorageManager = $shipStorageManager;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ShipStorageManagerInterface $shipStorageManager, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function transferCommodity(
         int $commodityId,
         string|int $wantedAmount,
@@ -102,6 +92,7 @@ final class BeamUtil implements BeamUtilInterface
         return true;
     }
 
+    #[Override]
     public function isDockTransfer(
         ShipInterface|ColonyInterface $source,
         ShipInterface|ColonyInterface $target

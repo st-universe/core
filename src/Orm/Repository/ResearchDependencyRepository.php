@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Research\ResearchModeEnum;
 use Stu\Orm\Entity\ResearchDependency;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\ResearchDependency;
  */
 final class ResearchDependencyRepository extends EntityRepository implements ResearchDependencyRepositoryInterface
 {
+    #[Override]
     public function getByMode(array $modes): array
     {
         return $this->findBy([
@@ -20,6 +22,7 @@ final class ResearchDependencyRepository extends EntityRepository implements Res
         ]);
     }
 
+    #[Override]
     public function getExcludesByResearch(int $researchId): array
     {
         return $this->findBy([
@@ -28,6 +31,7 @@ final class ResearchDependencyRepository extends EntityRepository implements Res
         ]);
     }
 
+    #[Override]
     public function getByDependingResearch(int $researchId): array
     {
         return $this->findBy([

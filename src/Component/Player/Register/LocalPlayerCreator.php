@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Override;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -12,6 +13,7 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class LocalPlayerCreator extends PlayerCreator
 {
+    #[Override]
     public function createPlayer(
         string $loginName,
         string $emailAddress,

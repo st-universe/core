@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -30,6 +31,7 @@ class PirateAttack implements PirateAttackInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function attackShip(FleetWrapperInterface $fleetWrapper, ShipInterface $target): void
     {
         $leadWrapper = $fleetWrapper->getLeadWrapper();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
@@ -24,6 +25,7 @@ class ModuleSelectorAddonFactoryTest extends StuTestCase
 
     private ModuleSelectorAddonFactory $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->torpedoHullRepository = $this->mock(TorpedoHullRepositoryInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
+use Override;
 use Stu\StuTestCase;
 
 class KnBbCodeDefinitionSetTest extends StuTestCase
@@ -13,6 +14,7 @@ class KnBbCodeDefinitionSetTest extends StuTestCase
      */
     private KnBbCodeDefinitionSet $set;
 
+    #[Override]
     public function setUp(): void
     {
         $this->set = new KnBbCodeDefinitionSet();

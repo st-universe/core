@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -38,27 +39,32 @@ class SessionString implements SessionStringInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): SessionStringInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getSessionString(): string
     {
         return $this->sess_string;
     }
 
+    #[Override]
     public function setSessionString(string $sessionString): SessionStringInterface
     {
         $this->sess_string = $sessionString;
@@ -66,11 +72,13 @@ class SessionString implements SessionStringInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(DateTimeInterface $date): SessionStringInterface
     {
         $this->date = $date;

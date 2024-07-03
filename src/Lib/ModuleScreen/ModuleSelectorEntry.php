@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
+use Override;
 use request;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -29,6 +30,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     ) {
     }
 
+    #[Override]
     public function isChosen(): bool
     {
         if ($this->isDisabled()) {
@@ -48,11 +50,13 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         return false;
     }
 
+    #[Override]
     public function isDisabled(): bool
     {
         return $this->getStoredAmount() < 1;
     }
 
+    #[Override]
     public function getStoredAmount(): int
     {
         /** @var StorageInterface|null */
@@ -65,16 +69,19 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         return $storage->getAmount();
     }
 
+    #[Override]
     public function getModule(): ModuleInterface
     {
         return $this->module;
     }
 
+    #[Override]
     public function getNeededCrew(): int
     {
         return $this->getModule()->getCrewByFactionAndRumpLvl($this->user->getFaction(), $this->rump);
     }
 
+    #[Override]
     public function getValue(): int
     {
         return $this->getModule()
@@ -83,6 +90,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
             ->getValue($this->getModule());
     }
 
+    #[Override]
     public function getModuleLevelClass(): string
     {
         $moduleLevels = $this->shipRumpModuleLevel;
@@ -97,6 +105,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         return '';
     }
 
+    #[Override]
     public function getAddonValues(): array
     {
         $addon = $this->moduleSelector->getAddon();

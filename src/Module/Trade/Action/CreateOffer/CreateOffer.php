@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CreateOffer;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,32 +21,13 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class CreateOffer implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_OFFER';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_OFFER';
 
-    private CreateOfferRequestInterface $createOfferRequest;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        CreateOfferRequestInterface $createOfferRequest,
-        CommodityRepositoryInterface $commodityRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradeOfferRepositoryInterface $tradeOfferRepository,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->createOfferRequest = $createOfferRequest;
-        $this->commodityRepository = $commodityRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private CreateOfferRequestInterface $createOfferRequest, private CommodityRepositoryInterface $commodityRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -214,6 +196,7 @@ final class CreateOffer implements ActionControllerInterface
         return false;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

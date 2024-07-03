@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\CloseCombat;
 
+use Override;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
@@ -11,8 +12,9 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class CloseCombatUtil implements CloseCombatUtilInterface
 {
-    public const MAX_CREWMAN_PER_COMBAT = 5;
+    public const int MAX_CREWMAN_PER_COMBAT = 5;
 
+    #[Override]
     public function getCombatGroup(ShipInterface $ship): array
     {
         $crewArray = $ship->getCrewAssignments()->toArray();
@@ -27,6 +29,7 @@ final class CloseCombatUtil implements CloseCombatUtilInterface
         return array_slice($crewArray, 0, self::MAX_CREWMAN_PER_COMBAT);
     }
 
+    #[Override]
     public function getCombatValue(array $combatGroup, FactionInterface $faction): int
     {
         $factionCombatScore = $faction->getCloseCombatScore();

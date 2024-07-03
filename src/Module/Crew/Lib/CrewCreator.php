@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Crew\Lib;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Crew\CrewOriginException;
@@ -18,30 +19,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CrewCreator implements CrewCreatorInterface
 {
-    private CrewRaceRepositoryInterface $crewRaceRepository;
-
-    private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private CrewRepositoryInterface $crewRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        CrewRaceRepositoryInterface $crewRaceRepository,
-        ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        CrewRepositoryInterface $crewRepository,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->crewRaceRepository = $crewRaceRepository;
-        $this->shipRumpCategoryRoleCrewRepository = $shipRumpCategoryRoleCrewRepository;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->crewRepository = $crewRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private CrewRaceRepositoryInterface $crewRaceRepository, private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository, private ShipCrewRepositoryInterface $shipCrewRepository, private CrewRepositoryInterface $crewRepository, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function create(int $userId, ?ColonyInterface $colony = null): ShipCrewInterface
     {
         $user = $this->userRepository->find($userId);
@@ -88,6 +70,7 @@ final class CrewCreator implements CrewCreatorInterface
         return $crewAssignment;
     }
 
+    #[Override]
     public function createShipCrew(
         ShipInterface $ship,
         ColonyInterface|ShipInterface $crewProvider,

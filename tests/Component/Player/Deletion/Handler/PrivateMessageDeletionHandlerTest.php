@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Component\Player\Deletion\Handler;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
 use Stu\Orm\Entity\PrivateMessageInterface;
@@ -22,6 +23,7 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
 
     private PrivateMessageDeletionHandler $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->userRepository = $this->mock(UserRepositoryInterface::class);

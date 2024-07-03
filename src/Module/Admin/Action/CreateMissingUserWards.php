@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,28 +17,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreateMissingUserWards implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MISSING_AWARDS';
+    public const string ACTION_IDENTIFIER = 'B_MISSING_AWARDS';
 
-    private UserRepositoryInterface $userRepository;
-
-    private DatabaseCategoryRepositoryInterface $databaseCategoryRepository;
-
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private CreateUserAwardInterface $createUserAward;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        CreateUserAwardInterface $createUserAward
-    ) {
-        $this->userRepository = $userRepository;
-        $this->databaseCategoryRepository = $databaseCategoryRepository;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->createUserAward = $createUserAward;
+    public function __construct(private UserRepositoryInterface $userRepository, private DatabaseCategoryRepositoryInterface $databaseCategoryRepository, private DatabaseUserRepositoryInterface $databaseUserRepository, private CreateUserAwardInterface $createUserAward)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -73,6 +59,7 @@ final class CreateMissingUserWards implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

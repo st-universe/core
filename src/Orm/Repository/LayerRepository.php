@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\UserLayer;
  */
 final class LayerRepository extends EntityRepository implements LayerRepositoryInterface
 {
+    #[Override]
     public function prototype(): LayerInterface
     {
         return new Layer();
     }
 
+    #[Override]
     public function save(LayerInterface $layer): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
         $em->persist($layer);
     }
 
+    #[Override]
     public function delete(LayerInterface $layer): void
     {
         $em = $this->getEntityManager();
@@ -35,6 +39,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
         $em->remove($layer);
     }
 
+    #[Override]
     public function findAllIndexed(): array
     {
         return $this->getEntityManager()
@@ -49,6 +54,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getKnownByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -68,6 +74,7 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function getDefaultLayer(): LayerInterface
     {
         $layer = $this->find(MapEnum::DEFAULT_LAYER);

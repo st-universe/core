@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -12,18 +13,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipUndocking implements ShipUndockingInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function undockAllDocked(ShipInterface $station): bool
     {
         $dockedShips = $station->getDockedShips();

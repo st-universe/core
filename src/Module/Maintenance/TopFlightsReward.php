@@ -2,30 +2,20 @@
 
 namespace Stu\Module\Maintenance;
 
+use Override;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TopFlightsReward implements MaintenanceHandlerInterface
 {
-    public const PRESTIGE_REWARDS = [20, 15, 10, 7, 6, 5, 4, 3, 2, 1];
+    public const array PRESTIGE_REWARDS = [20, 15, 10, 7, 6, 5, 4, 3, 2, 1];
 
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    public function __construct(
-        FlightSignatureRepositoryInterface $flightSignatureRepository,
-        UserRepositoryInterface $userRepository,
-        CreatePrestigeLogInterface $createPrestigeLog
-    ) {
-        $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->userRepository = $userRepository;
-        $this->createPrestigeLog = $createPrestigeLog;
+    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private UserRepositoryInterface $userRepository, private CreatePrestigeLogInterface $createPrestigeLog)
+    {
     }
 
+    #[Override]
     public function handle(): void
     {
         $ranking = $this->flightSignatureRepository->getFlightsTop10();

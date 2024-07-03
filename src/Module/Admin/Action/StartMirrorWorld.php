@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,24 +15,22 @@ use Stu\Module\Logging\LoggerUtilInterface;
 
 final class StartMirrorWorld implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MIRROR_START';
+    public const string ACTION_IDENTIFIER = 'B_MIRROR_START';
 
-    public const MIRROR_FROM_DB_NAME = 'stu';
-    public const MIRROR_TO_DB_NAME = 'mirrorto';
-    public const MIRROR_WORLD_DUMP_NAME = 'mirrorWorld.dump';
-
-    private ConfigInterface $config;
+    public const string MIRROR_FROM_DB_NAME = 'stu';
+    public const string MIRROR_TO_DB_NAME = 'mirrorto';
+    public const string MIRROR_WORLD_DUMP_NAME = 'mirrorWorld.dump';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ConfigInterface $config,
+        private ConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -163,6 +162,7 @@ final class StartMirrorWorld implements ActionControllerInterface
         return true;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

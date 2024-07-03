@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Override;
 use InvalidArgumentException;
 use JBBCode\Parser;
 use Laminas\Mail\Exception\RuntimeException;
@@ -38,6 +39,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function send(
         int $senderId,
         int $recipientId,
@@ -102,6 +104,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         }
     }
 
+    #[Override]
     public function sendBroadcast(
         UserInterface $sender,
         array $recipients,

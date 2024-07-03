@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\ShipInterface;
@@ -13,13 +14,11 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class RandomSystemEntry implements RandomSystemEntryInterface
 {
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    public function __construct(StarSystemMapRepositoryInterface $starSystemMapRepository)
+    public function __construct(private StarSystemMapRepositoryInterface $starSystemMapRepository)
     {
-        $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
+    #[Override]
     public function getRandomEntryPoint(ShipInterface $ship, StarSystemInterface $system): StarSystemMapInterface
     {
         [$posx, $posy] = $this->getDestinationCoordinates($ship, $system);

@@ -6,7 +6,7 @@ namespace Stu\Component\Building;
 
 final class NameAbbreviations
 {
-    public const ABBREVIATIONS =
+    public const array ABBREVIATIONS =
     [
         'Forschungszentrum (' => 'FZ (',
         'mit Material-Labor' => 'm. Materiallabor',

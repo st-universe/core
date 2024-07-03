@@ -11,20 +11,8 @@ use Stu\Orm\Entity\StarSystemInterface;
 
 final class PanelBoundaries
 {
-    private LayerInterface|StarSystemInterface $parent;
-
-    private int $minX;
-    private int $maxX;
-    private int $minY;
-    private int $maxY;
-
-    public function __construct(int $minX, int $maxX, int $minY, int $maxY, LayerInterface|StarSystemInterface $parent)
+    public function __construct(private int $minX, private int $maxX, private int $minY, private int $maxY, private LayerInterface|StarSystemInterface $parent)
     {
-        $this->minX = $minX;
-        $this->maxX = $maxX;
-        $this->minY = $minY;
-        $this->maxY = $maxY;
-        $this->parent = $parent;
     }
 
     /** @return array<int> */

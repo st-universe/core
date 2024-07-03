@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\View\Overview;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private NoteRepositoryInterface $noteRepository;
-
-    public function __construct(
-        NoteRepositoryInterface $noteRepository
-    ) {
-        $this->noteRepository = $noteRepository;
+    public function __construct(private NoteRepositoryInterface $noteRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

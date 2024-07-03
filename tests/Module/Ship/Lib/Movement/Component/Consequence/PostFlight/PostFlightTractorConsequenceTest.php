@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -29,6 +30,7 @@ class PostFlightTractorConsequenceTest extends StuTestCase
     /** @var MockInterface&FlightRouteInterface */
     private MockInterface $flightRoute;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->tractorMassPayloadUtil = $this->mock(TractorMassPayloadUtilInterface::class);

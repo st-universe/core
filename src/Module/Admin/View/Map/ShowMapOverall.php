@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
@@ -14,7 +15,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowMapOverall implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_MAP_OVERALL';
+    public const string VIEW_IDENTIFIER = 'SHOW_MAP_OVERALL';
 
     public function __construct(
         private MapRepositoryInterface $mapRepository,
@@ -23,6 +24,7 @@ final class ShowMapOverall implements ViewControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = request::getIntFatal('layerid');

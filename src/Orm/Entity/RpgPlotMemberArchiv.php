@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,36 +40,43 @@ class RpgPlotMemberArchiv implements RpgPlotMemberArchivInterface
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'former_id', onDelete: 'CASCADE')]
     private RpgPlotArchivInterface $rpgPlot;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
+    #[Override]
     public function getFormerId(): int
     {
         return $this->former_id;
     }
 
+    #[Override]
     public function getPlotId(): int
     {
         return $this->plot_id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getRpgPlot(): RpgPlotArchivInterface
     {
         return $this->rpgPlot;
     }
 
+    #[Override]
     public function setRpgPlot(RpgPlotArchivInterface $rpgPlot): RpgPlotMemberArchivInterface
     {
         $this->rpgPlot = $rpgPlot;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -78,16 +79,19 @@ class TorpedoType implements TorpedoTypeInterface
         $this->productionCosts = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): TorpedoTypeInterface
     {
         $this->name = $name;
@@ -95,11 +99,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getBaseDamage(): int
     {
         return $this->base_damage;
     }
 
+    #[Override]
     public function setBaseDamage(int $baseDamage): TorpedoTypeInterface
     {
         $this->base_damage = $baseDamage;
@@ -107,11 +113,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getCriticalChance(): int
     {
         return $this->critical_chance;
     }
 
+    #[Override]
     public function setCriticalChance(int $criticalChance): TorpedoTypeInterface
     {
         $this->critical_chance = $criticalChance;
@@ -119,11 +127,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getHitFactor(): int
     {
         return $this->hit_factor;
     }
 
+    #[Override]
     public function setHitFactor(int $hitFactor): TorpedoTypeInterface
     {
         $this->hit_factor = $hitFactor;
@@ -131,11 +141,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getHullDamageFactor(): int
     {
         return $this->hull_damage_factor;
     }
 
+    #[Override]
     public function setHullDamageFactor(int $hullDamageFactor): TorpedoTypeInterface
     {
         $this->hull_damage_factor = $hullDamageFactor;
@@ -143,11 +155,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getShieldDamageFactor(): int
     {
         return $this->shield_damage_factor;
     }
 
+    #[Override]
     public function setShieldDamageFactor(int $shieldDamageFactor): TorpedoTypeInterface
     {
         $this->shield_damage_factor = $shieldDamageFactor;
@@ -155,11 +169,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getVariance(): int
     {
         return $this->variance;
     }
 
+    #[Override]
     public function setVariance(int $variance): TorpedoTypeInterface
     {
         $this->variance = $variance;
@@ -167,11 +183,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): TorpedoTypeInterface
     {
         $this->commodity_id = $commodityId;
@@ -179,11 +197,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getLevel(): int
     {
         return $this->level;
     }
 
+    #[Override]
     public function setLevel(int $level): TorpedoTypeInterface
     {
         $this->level = $level;
@@ -191,11 +211,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function setResearchId(int $researchId): TorpedoTypeInterface
     {
         $this->research_id = $researchId;
@@ -203,11 +225,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getEnergyCost(): int
     {
         return $this->ecost;
     }
 
+    #[Override]
     public function setEnergyCost(int $energyCost): TorpedoTypeInterface
     {
         $this->ecost = $energyCost;
@@ -215,11 +239,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getProductionAmount(): int
     {
         return $this->amount;
     }
 
+    #[Override]
     public function setProductionAmount(int $productionAmount): TorpedoTypeInterface
     {
         $this->amount = $productionAmount;
@@ -227,11 +253,13 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getProductionCosts(): Collection
     {
         return $this->productionCosts;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;

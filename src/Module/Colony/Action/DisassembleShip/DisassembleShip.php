@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DisassembleShip;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -23,48 +24,13 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class DisassembleShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DISASSEMBLE_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_DISASSEMBLE_SHIP';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private ClearTorpedoInterface $clearTorpedo;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShipLoaderInterface $shipLoader,
-        ColonyRepositoryInterface $colonyRepository,
-        ShipRemoverInterface $shipRemover,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        CommodityRepositoryInterface $commodityRepository,
-        ClearTorpedoInterface $clearTorpedo,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        TroopTransferUtilityInterface $troopTransferUtility
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->shipLoader = $shipLoader;
-        $this->colonyRepository = $colonyRepository;
-        $this->shipRemover = $shipRemover;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->commodityRepository = $commodityRepository;
-        $this->clearTorpedo = $clearTorpedo;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private ShipRemoverInterface $shipRemover, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -229,6 +195,7 @@ final class DisassembleShip implements ActionControllerInterface
         $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

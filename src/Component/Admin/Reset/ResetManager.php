@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Override;
 use Ahc\Cli\IO\Interactor;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,6 +56,7 @@ final class ResetManager implements ResetManagerInterface
     ) {
     }
 
+    #[Override]
     public function performReset(Interactor $io): void
     {
         $io->info('starting game reset', true);

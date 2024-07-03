@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RepairShip;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
@@ -28,52 +29,13 @@ use Stu\Module\Control\ViewContextTypeEnum;
 
 final class RepairShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
-
-    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ShipRepositoryInterface $shipRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        OrbitShipListRetrieverInterface $orbitShipListRetriever,
-        InteractionCheckerInterface $interactionChecker,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ColonyFunctionManagerInterface $colonyFunctionManager
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
-        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->shipRepository = $shipRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->interactionChecker = $interactionChecker;
-        $this->orbitShipListRetriever = $orbitShipListRetriever;
-        $this->colonyFunctionManager = $colonyFunctionManager;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private InteractionCheckerInterface $interactionChecker, private PrivateMessageSenderInterface $privateMessageSender, private ColonyFunctionManagerInterface $colonyFunctionManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -194,6 +156,7 @@ final class RepairShip implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

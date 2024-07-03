@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\ModuleBuildingFunction;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\ModuleBuildingFunction;
  */
 final class ModuleBuildingFunctionRepository extends EntityRepository implements ModuleBuildingFunctionRepositoryInterface
 {
+    #[Override]
     public function getByBuildingFunctionAndUser(int $buildingFunction, int $userId): array
     {
         $rsm = new ResultSetMapping();

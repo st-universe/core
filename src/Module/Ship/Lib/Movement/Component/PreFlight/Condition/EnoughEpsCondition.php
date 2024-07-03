@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -15,13 +16,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 class EnoughEpsCondition implements PreFlightConditionInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    public function __construct(ShipSystemManagerInterface $shipSystemManager)
+    public function __construct(private ShipSystemManagerInterface $shipSystemManager)
     {
-        $this->shipSystemManager = $shipSystemManager;
     }
 
+    #[Override]
     public function check(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

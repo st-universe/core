@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Provider;
 
+use Override;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -14,30 +15,11 @@ use Stu\Orm\Entity\ColonyInterface;
 
 class ManagerProviderFactory implements ManagerProviderFactoryInterface
 {
-    private CrewCreatorInterface $crewCreator;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    public function __construct(
-        CrewCreatorInterface $crewCreator,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ShipStorageManagerInterface $shipStorageManager
-    ) {
-        $this->crewCreator = $crewCreator;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->shipStorageManager = $shipStorageManager;
+    public function __construct(private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility, private ColonyStorageManagerInterface $colonyStorageManager, private ShipStorageManagerInterface $shipStorageManager)
+    {
     }
 
+    #[Override]
     public function getManagerProviderColony(ColonyInterface $colony): ManagerProviderInterface
     {
         return new ManagerProviderColony(
@@ -49,6 +31,7 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
         );
     }
 
+    #[Override]
     public function getManagerProviderStation(ShipWrapperInterface $wrapper): ManagerProviderInterface
     {
         return new ManagerProviderStation(

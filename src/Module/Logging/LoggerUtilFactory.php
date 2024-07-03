@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
+use Override;
 use JBBCode\Parser;
 use Stu\Module\Config\StuConfigInterface;
 
@@ -15,6 +16,7 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
     ) {
     }
 
+    #[Override]
     public function getLoggerUtil(bool $doDefaultInit = false): LoggerUtilInterface
     {
         $loggerUtil = new LoggerUtil(
@@ -28,6 +30,7 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
         return $loggerUtil;
     }
 
+    #[Override]
     public function getPirateLogger(): PirateLoggerInterface
     {
         $loggerUtil = new PirateLogger(

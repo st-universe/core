@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
@@ -23,6 +24,7 @@ class ModuleSelectorAddonHullTest extends StuTestCase
 
     private ModuleSelectorAddonHull $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->torpedoHullRepository = $this->mock(TorpedoHullRepositoryInterface::class);

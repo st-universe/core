@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use request;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -11,18 +12,15 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class HistoryProvider implements ViewComponentProviderInterface
 {
-    private const MAX_LIMIT = 10000;
+    private const int MAX_LIMIT = 10000;
 
-    private const LIMIT = 50;
+    private const int LIMIT = 50;
 
-    private HistoryRepositoryInterface $historyRepository;
-
-    public function __construct(
-        HistoryRepositoryInterface $historyRepository
-    ) {
-        $this->historyRepository = $historyRepository;
+    public function __construct(private HistoryRepositoryInterface $historyRepository)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

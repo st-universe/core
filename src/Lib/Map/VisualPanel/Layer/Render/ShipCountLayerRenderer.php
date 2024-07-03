@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\ShipCountData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
@@ -12,17 +13,12 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ShipCountLayerRenderer implements LayerRendererInterface
 {
-    private bool $showCloakedEverywhere;
-
-    private ?ShipInterface $currentShip;
-
-    public function __construct(bool $showCloakedEverywhere, ?ShipInterface $currentShip)
+    public function __construct(private bool $showCloakedEverywhere, private ?ShipInterface $currentShip)
     {
-        $this->showCloakedEverywhere = $showCloakedEverywhere;
-        $this->currentShip = $currentShip;
     }
 
     /** @param ShipCountData $data */
+    #[Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         $displayCount = $this->getDisplayCount($data);

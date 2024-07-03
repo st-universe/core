@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
+use Override;
 use request;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
@@ -16,29 +17,14 @@ use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class CommodityCheat implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_COMMODITY_CHEAT';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private NPCLogRepositoryInterface $npcLogRepository;
+    public const string ACTION_IDENTIFIER = 'B_COMMODITY_CHEAT';
 
 
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipStorageManagerInterface $shipStorageManager,
-        CommodityRepositoryInterface $commodityRepository,
-        NPCLogRepositoryInterface $npcLogRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->commodityRepository = $commodityRepository;
-        $this->npcLogRepository = $npcLogRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
@@ -120,6 +106,7 @@ final class CommodityCheat implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Exception\ShipDoesNotExistException;
@@ -16,28 +17,13 @@ use Stu\Module\Tick\Ship\ShipTickManagerInterface;
 
 final class DoManualShipTick implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SHIP_TICK';
+    public const string ACTION_IDENTIFIER = 'B_SHIP_TICK';
 
-    private ShipTickManagerInterface $shipTickManager;
-
-    private ShipTickInterface $shipTick;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ShipTickManagerInterface $shipTickManager,
-        ShipTickInterface $shipTick,
-        ShipLoaderInterface $shipLoader,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->shipTickManager = $shipTickManager;
-        $this->shipTick = $shipTick;
-        $this->shipLoader = $shipLoader;
-        $this->entityManager = $entityManager;
+    public function __construct(private ShipTickManagerInterface $shipTickManager, private ShipTickInterface $shipTick, private ShipLoaderInterface $shipLoader, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -67,6 +53,7 @@ final class DoManualShipTick implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

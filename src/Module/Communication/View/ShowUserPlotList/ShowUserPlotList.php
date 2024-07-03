@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowUserPlotList;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowUserPlotList implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_MYPLOTS';
+    public const string VIEW_IDENTIFIER = 'SHOW_MYPLOTS';
 
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    public function __construct(
-        RpgPlotRepositoryInterface $rpgPlotRepository
-    ) {
-        $this->rpgPlotRepository = $rpgPlotRepository;
+    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/userplotlist.xhtml');

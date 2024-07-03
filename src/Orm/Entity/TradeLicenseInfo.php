@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -46,16 +47,19 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTradepost(): TradePostInterface
     {
         return $this->tradePost;
     }
 
+    #[Override]
     public function setTradepost(TradePostInterface $tradepost): TradeLicenseInfoInterface
     {
         $this->tradePost = $tradepost;
@@ -63,11 +67,13 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
         return $this;
     }
 
+    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
+    #[Override]
     public function setTradePostId(int $posts_id): TradeLicenseInfoInterface
     {
         $this->posts_id = $posts_id;
@@ -75,16 +81,19 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function setCommodity(CommodityInterface $commodity): TradeLicenseInfoInterface
     {
         $this->commodity = $commodity;
@@ -92,11 +101,13 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->amount;
     }
 
+    #[Override]
     public function setAmount(int $amount): TradeLicenseInfoInterface
     {
         $this->amount = $amount;
@@ -104,11 +115,13 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): TradeLicenseInfoInterface
     {
         $this->date = $date;
@@ -116,11 +129,13 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
         return $this;
     }
 
+    #[Override]
     public function getDays(): int
     {
         return $this->days;
     }
 
+    #[Override]
     public function setDays(int $days): TradeLicenseInfoInterface
     {
         $this->days = $days;

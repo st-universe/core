@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Storage;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Colony\Storage\Exception\CommodityMissingException;
@@ -37,6 +38,7 @@ class ColonyStorageManagerTest extends StuTestCase
 
     public $commodityId;
 
+    #[Override]
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);

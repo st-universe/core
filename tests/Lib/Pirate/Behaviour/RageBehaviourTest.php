@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
@@ -42,6 +43,7 @@ class RageBehaviourTest extends StuTestCase
 
     private PirateBehaviourInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);

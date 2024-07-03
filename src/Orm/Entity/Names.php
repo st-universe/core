@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -29,26 +30,31 @@ class Names implements NamesInterface
     #[Column(type: 'integer', enumType: NameTypeEnum::class)]
     private NameTypeEnum $type;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function getCount(): ?int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setCount(int $count): void
     {
         $this->count = $count;
     }
 
+    #[Override]
     public function getType(): NameTypeEnum
     {
         return $this->type;

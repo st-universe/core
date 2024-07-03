@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Override;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -14,56 +15,37 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 {
-    private StorageRepositoryInterface $storageRepository;
-
-    private TradePostInterface $tradePost;
-
-    /**
-     * @var array<BasicTradeInterface>
-     */
-    private array $basicTrades;
-
-    private int $userId;
-
     /**
      * @var array<StorageInterface>|null
      */
     private ?array $storage = null;
 
-    private CommodityRepositoryInterface $commodityRepository;
-
     /**
      * @param array<BasicTradeInterface> $basicTrades
      */
-    public function __construct(
-        StorageRepositoryInterface $storageRepository,
-        TradePostInterface $tradePost,
-        array $basicTrades,
-        int $userId,
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->storageRepository = $storageRepository;
-        $this->tradePost = $tradePost;
-        $this->basicTrades = $basicTrades;
-        $this->userId = $userId;
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private StorageRepositoryInterface $storageRepository, private TradePostInterface $tradePost, private array $basicTrades, private int $userId, private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->tradePost->getId();
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->tradePost->getShip();
     }
 
+    #[Override]
     public function getTradePostDescription(): string
     {
         return $this->tradePost->getDescription();
     }
 
+    #[Override]
     public function getBasicTradeItems(): array
     {
         $result = [];
@@ -78,6 +60,7 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         return $result;
     }
 
+    #[Override]
     public function getLatinumItem(): BasicTradeItem
     {
         $latinumStorage = $this->getStorage()[CommodityTypeEnum::COMMODITY_LATINUM] ?? null;
@@ -99,6 +82,7 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         return $this->storage;
     }
 
+    #[Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -108,11 +92,13 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         );
     }
 
+    #[Override]
     public function isOverStorage(): bool
     {
         return $this->getStorageSum() > $this->tradePost->getStorage();
     }
 
+    #[Override]
     public function getStorageCapacity(): int
     {
         return $this->tradePost->getStorage();

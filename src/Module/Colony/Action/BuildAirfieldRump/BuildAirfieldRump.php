@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildAirfieldRump;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -18,28 +19,13 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class BuildAirfieldRump implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILD_AIRFIELD_RUMP';
+    public const string ACTION_IDENTIFIER = 'B_BUILD_AIRFIELD_RUMP';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -125,6 +111,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
         return true;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

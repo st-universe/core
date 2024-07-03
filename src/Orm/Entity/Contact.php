@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -47,81 +48,96 @@ class Contact implements ContactInterface
     #[JoinColumn(name: 'recipient', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $opponent;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getRecipientId(): int
     {
         return $this->recipient;
     }
 
+    #[Override]
     public function getMode(): ContactListModeEnum
     {
         return $this->mode;
     }
 
+    #[Override]
     public function setMode(ContactListModeEnum $mode): ContactInterface
     {
         $this->mode = $mode;
         return $this;
     }
 
+    #[Override]
     public function getComment(): string
     {
         return $this->comment;
     }
 
+    #[Override]
     public function setComment(string $comment): ContactInterface
     {
         $this->comment = $comment;
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): ContactInterface
     {
         $this->date = $date;
         return $this;
     }
 
+    #[Override]
     public function getRecipient(): UserInterface
     {
         return $this->opponent;
     }
 
+    #[Override]
     public function setRecipient(UserInterface $recipient): ContactInterface
     {
         $this->opponent = $recipient;
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ContactInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function isFriendly(): bool
     {
         return $this->getMode() === ContactListModeEnum::FRIEND;
     }
 
+    #[Override]
     public function isEnemy(): bool
     {
         return $this->getMode() === ContactListModeEnum::ENEMY;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\SendPassword;
 
+use Override;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
@@ -16,28 +17,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SendPassword implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SEND_PASSWORD';
+    public const string ACTION_IDENTIFIER = 'B_SEND_PASSWORD';
 
-    private SendPasswordRequestInterface $sendPasswordRequest;
-
-    private UserRepositoryInterface $userRepository;
-
-    private StuHashInterface $stuHash;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        SendPasswordRequestInterface $sendPasswordRequest,
-        UserRepositoryInterface $userRepository,
-        StuHashInterface $stuHash,
-        ConfigInterface $config
-    ) {
-        $this->sendPasswordRequest = $sendPasswordRequest;
-        $this->userRepository = $userRepository;
-        $this->stuHash = $stuHash;
-        $this->config = $config;
+    public function __construct(private SendPasswordRequestInterface $sendPasswordRequest, private UserRepositoryInterface $userRepository, private StuHashInterface $stuHash, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowLostPassword::VIEW_IDENTIFIER);
@@ -80,13 +66,14 @@ Das Star Trek Universe Team\n
         try {
             $transport = new Sendmail();
             $transport->send($mail);
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
             return;
         }
         $game->addInformation(_('Die eMail wurde verschickt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\CancelResearch;
 
+use Override;
 use request;
 use Stu\Module\Control\AuthenticatedActionController;
 use Stu\Module\Control\GameController;
@@ -15,16 +16,13 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
  */
 final class CancelResearch extends AuthenticatedActionController
 {
-    public const ACTION_IDENTIFIER = 'B_CANCEL_CURRENT_RESEARCH';
+    public const string ACTION_IDENTIFIER = 'B_CANCEL_CURRENT_RESEARCH';
 
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    public function __construct(
-        ResearchedRepositoryInterface $researchedRepository
-    ) {
-        $this->researchedRepository = $researchedRepository;
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $id = request::getIntFatal('id');

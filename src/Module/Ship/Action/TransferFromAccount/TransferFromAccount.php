@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TransferFromAccount;
 
+use Override;
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,36 +19,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class TransferFromAccount implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TRANSFER_FROM_ACCOUNT';
+    public const string ACTION_IDENTIFIER = 'B_TRANSFER_FROM_ACCOUNT';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        InteractionCheckerInterface $interactionChecker
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->interactionChecker = $interactionChecker;
+    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private ShipStorageManagerInterface $shipStorageManager, private InteractionCheckerInterface $interactionChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -135,6 +113,7 @@ final class TransferFromAccount implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

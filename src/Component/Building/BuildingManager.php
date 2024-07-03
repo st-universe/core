@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Override;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -18,30 +19,11 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
  */
 final class BuildingManager implements BuildingManagerInterface
 {
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ColonySandboxRepositoryInterface $colonySandboxRepository;
-
-    private BuildingPostActionInterface $buildingPostAction;
-
-    private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper;
-
-    public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonySandboxRepositoryInterface $colonySandboxRepository,
-        BuildingFunctionActionMapperInterface $buildingFunctionActionMapper,
-        BuildingPostActionInterface $buildingPostAction
-    ) {
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->colonySandboxRepository = $colonySandboxRepository;
-        $this->buildingFunctionActionMapper = $buildingFunctionActionMapper;
-        $this->buildingPostAction = $buildingPostAction;
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper, private BuildingPostActionInterface $buildingPostAction)
+    {
     }
 
+    #[Override]
     public function activate(PlanetFieldInterface $field): bool
     {
         $building = $field->getBuilding();
@@ -89,6 +71,7 @@ final class BuildingManager implements BuildingManagerInterface
         return true;
     }
 
+    #[Override]
     public function deactivate(PlanetFieldInterface $field): void
     {
         $building = $field->getBuilding();
@@ -137,6 +120,7 @@ final class BuildingManager implements BuildingManagerInterface
         $host->setMaxBev($host->getMaxBev() - $building->getHousing());
     }
 
+    #[Override]
     public function remove(PlanetFieldInterface $field, bool $isDueToUpgrade = false): void
     {
         $building = $field->getBuilding();
@@ -172,6 +156,7 @@ final class BuildingManager implements BuildingManagerInterface
         $this->saveHost($host);
     }
 
+    #[Override]
     public function finish(PlanetFieldInterface $field, bool $activate = true): ?string
     {
         $building = $field->getBuilding();

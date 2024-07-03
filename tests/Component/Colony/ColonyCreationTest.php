@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
+use Override;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Module\Control\StuRandom;
@@ -28,6 +29,7 @@ class ColonyCreationTest extends StuTestCase
 
     private ColonyCreationInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);

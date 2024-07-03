@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\EpsTransfer;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,20 +16,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class EpsTransfer implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ETRANSFER';
+    public const string ACTION_IDENTIFIER = 'B_ETRANSFER';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipLoaderInterface $shipLoader, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -115,6 +109,7 @@ final class EpsTransfer implements ActionControllerInterface
         $game->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

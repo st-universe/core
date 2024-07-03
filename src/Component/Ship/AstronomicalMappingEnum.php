@@ -7,14 +7,14 @@ namespace Stu\Component\Ship;
 final class AstronomicalMappingEnum
 {
     //states
-    public const NONE = -1;
-    public const PLANNABLE = 0;
-    public const PLANNED = 1;
-    public const MEASURED = 2;
-    public const FINISHING = 3;
-    public const DONE = 4;
+    public const int NONE = -1;
+    public const int PLANNABLE = 0;
+    public const int PLANNED = 1;
+    public const int MEASURED = 2;
+    public const int FINISHING = 3;
+    public const int DONE = 4;
 
     //other
-    public const MEASUREMENT_COUNT = 5;
-    public const TURNS_TO_FINISH = 3;
+    public const int MEASUREMENT_COUNT = 5;
+    public const int TURNS_TO_FINISH = 3;
 }

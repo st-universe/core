@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeShoutboxInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\TradeShoutboxInterface;
  */
 final class TradeShoutboxRepository extends EntityRepository implements TradeShoutboxRepositoryInterface
 {
+    #[Override]
     public function getByTradeNetwork(int $tradeNetworkId): array
     {
         return $this->findBy(
@@ -21,6 +23,7 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
         );
     }
 
+    #[Override]
     public function deleteHistory(int $tradeNetworkId, int $limit = 30): void
     {
         $entry = $this->findBy(
@@ -45,11 +48,13 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
             ->execute();
     }
 
+    #[Override]
     public function prototype(): TradeShoutboxInterface
     {
         return new TradeShoutbox();
     }
 
+    #[Override]
     public function save(TradeShoutboxInterface $tradeShoutbox): void
     {
         $em = $this->getEntityManager();
@@ -57,6 +62,7 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
         $em->persist($tradeShoutbox);
     }
 
+    #[Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()
@@ -70,6 +76,7 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
             ->execute();
     }
 
+    #[Override]
     public function truncateAllEntries(): void
     {
         $this->getEntityManager()->createQuery(

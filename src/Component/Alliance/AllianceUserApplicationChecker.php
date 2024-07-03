@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
+use Override;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -13,14 +14,11 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
  */
 final class AllianceUserApplicationChecker implements AllianceUserApplicationCheckerInterface
 {
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    public function __construct(
-        AllianceJobRepositoryInterface $allianceJobRepository
-    ) {
-        $this->allianceJobRepository = $allianceJobRepository;
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository)
+    {
     }
 
+    #[Override]
     public function mayApply(
         UserInterface $user,
         AllianceInterface $alliance

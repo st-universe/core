@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
@@ -17,11 +18,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class CrewRepository extends EntityRepository implements CrewRepositoryInterface
 {
+    #[Override]
     public function prototype(): CrewInterface
     {
         return new Crew();
     }
 
+    #[Override]
     public function save(CrewInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -29,6 +32,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(CrewInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -36,6 +40,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
         $em->remove($post);
     }
 
+    #[Override]
     public function getAmountByUserAndShipRumpCategory(
         UserInterface $user,
         int $shipRumpCategoryId
@@ -63,6 +68,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()
@@ -76,6 +82,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             ->execute();
     }
 
+    #[Override]
     public function truncateAllCrew(): void
     {
         $this->getEntityManager()->createQuery(

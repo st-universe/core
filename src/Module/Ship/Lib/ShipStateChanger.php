@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -14,30 +15,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipStateChanger implements ShipStateChangerInterface
 {
-    private CancelRepairInterface $cancelRepair;
-
-    private AstroEntryLibInterface $astroEntryLib;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private TholianWebUtilInterface $tholianWebUtil;
-
-    private ShipTakeoverManagerInterface $shipTakeoverManager;
-
-    public function __construct(
-        CancelRepairInterface $cancelRepair,
-        AstroEntryLibInterface $astroEntryLib,
-        ShipRepositoryInterface $shipRepository,
-        TholianWebUtilInterface $tholianWebUtil,
-        ShipTakeoverManagerInterface $shipTakeoverManager
-    ) {
-        $this->cancelRepair = $cancelRepair;
-        $this->astroEntryLib = $astroEntryLib;
-        $this->shipRepository = $shipRepository;
-        $this->tholianWebUtil = $tholianWebUtil;
-        $this->shipTakeoverManager = $shipTakeoverManager;
+    public function __construct(private CancelRepairInterface $cancelRepair, private AstroEntryLibInterface $astroEntryLib, private ShipRepositoryInterface $shipRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipTakeoverManagerInterface $shipTakeoverManager)
+    {
     }
 
+    #[Override]
     public function changeShipState(ShipWrapperInterface $wrapper, ShipStateEnum $newState): void
     {
         $ship = $wrapper->get();
@@ -70,6 +52,7 @@ final class ShipStateChanger implements ShipStateChangerInterface
         $this->shipRepository->save($ship);
     }
 
+    #[Override]
     public function changeAlertState(
         ShipWrapperInterface $wrapper,
         ShipAlertStateEnum $alertState

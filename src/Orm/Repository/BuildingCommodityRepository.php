@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyFunctionManager;
@@ -18,6 +19,7 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class BuildingCommodityRepository extends EntityRepository implements BuildingCommodityRepositoryInterface
 {
+    #[Override]
     public function getByBuilding(int $buildingId): array
     {
         return $this->findBy([
@@ -25,6 +27,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         ]);
     }
 
+    #[Override]
     public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClassInterface $colonyClass): iterable
     {
         $rsm = new ResultSetMapping();
@@ -55,6 +58,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             ->getResult();
     }
 
+    #[Override]
     public function getProductionSumForAllUserColonies(UserInterface $user): iterable
     {
         $rsm = new ResultSetMapping();
@@ -84,6 +88,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             ->toIterable();
     }
 
+    #[Override]
     public function getProductionByCommodityAndUser(int $commodityId, UserInterface $user): int
     {
         $rsm = new ResultSetMapping();

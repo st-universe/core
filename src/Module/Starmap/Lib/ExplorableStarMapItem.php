@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use Override;
 use JBBCode\Parser;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Orm\Entity\LayerInterface;
@@ -12,54 +13,39 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 {
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private EncodedMapInterface $encodedMap;
-
-    private Parser $bbCodeParser;
-
     private ?TradePostInterface $tradepost = null;
 
     private bool $hide = false;
 
-    private ExploreableStarMapInterface $exploreableStarMap;
-
-    private LayerInterface $layer;
-
-    public function __construct(
-        TradePostRepositoryInterface $tradePostRepository,
-        EncodedMapInterface $encodedMap,
-        Parser $bbCodeParser,
-        ExploreableStarMapInterface $exploreableStarMap,
-        LayerInterface $layer
-    ) {
-        $this->tradePostRepository = $tradePostRepository;
-        $this->encodedMap = $encodedMap;
-        $this->bbCodeParser = $bbCodeParser;
-        $this->exploreableStarMap = $exploreableStarMap;
-        $this->layer = $layer;
+    public function __construct(private TradePostRepositoryInterface $tradePostRepository, private EncodedMapInterface $encodedMap, private Parser $bbCodeParser, private ExploreableStarMapInterface $exploreableStarMap, private LayerInterface $layer)
+    {
     }
 
+    #[Override]
     public function getCx(): int
     {
         return $this->exploreableStarMap->getCx();
     }
 
+    #[Override]
     public function getCy(): int
     {
         return $this->exploreableStarMap->getCy();
     }
 
+    #[Override]
     public function getFieldId(): int
     {
         return $this->exploreableStarMap->getFieldId();
     }
 
+    #[Override]
     public function getLayer(): LayerInterface
     {
         return $this->layer;
     }
 
+    #[Override]
     public function getTitle(): ?string
     {
         if ($this->hide === true) {
@@ -113,6 +99,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return $this->bbCodeParser->parse($string)->getAsText();
     }
 
+    #[Override]
     public function getIcon(): ?string
     {
         if ($this->hide === true) {
@@ -132,6 +119,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         );
     }
 
+    #[Override]
     public function getHref(): ?string
     {
         return $this->exploreableStarMap->getMapped() ? sprintf('database.php?SHOW_ENTRY=1&cat=7&ent=%d', $this->exploreableStarMap->getMapped()) : null;
@@ -151,6 +139,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     }
 
 
+    #[Override]
     public function setHide(bool $hide): ExplorableStarMapItemInterface
     {
         $this->hide = $hide;
@@ -183,6 +172,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return '';
     }
 
+    #[Override]
     public function getFieldStyle(): string
     {
         if ($this->hide === true) {

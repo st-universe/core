@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TakeBuoy;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,28 +21,13 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 
 final class TakeBuoy implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TAKE_BUOY';
+    public const string ACTION_IDENTIFIER = 'B_TAKE_BUOY';
 
-    private ShipLoaderInterface $shipLoader;
-    private BuoyRepositoryInterface $buoyRepository;
-    private CommodityRepositoryInterface $commodityRepository;
-    private ShipStorageManagerInterface $shipStorageManager;
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        BuoyRepositoryInterface $buoyRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->buoyRepository = $buoyRepository;
-        $this->commodityRepository = $commodityRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipLoaderInterface $shipLoader, private BuoyRepositoryInterface $buoyRepository, private CommodityRepositoryInterface $commodityRepository, private ShipStorageManagerInterface $shipStorageManager, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -114,6 +100,7 @@ final class TakeBuoy implements ActionControllerInterface
         $game->addInformation(_('Die Boje wurde erfolgreich eingesammelt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RenameBuildplan;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class RenameBuildplan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILDPLAN_CHANGE_NAME';
+    public const string ACTION_IDENTIFIER = 'B_BUILDPLAN_CHANGE_NAME';
 
-    private RenameBuildplanRequestInterface $renameBuildplanRequest;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    public function __construct(
-        RenameBuildplanRequestInterface $renameBuildplanRequest,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-        $this->renameBuildplanRequest = $renameBuildplanRequest;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
+    public function __construct(private RenameBuildplanRequestInterface $renameBuildplanRequest, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -65,6 +59,7 @@ final class RenameBuildplan implements ActionControllerInterface
         $game->addInformation(_('Der Name des Bauplans wurde geändert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

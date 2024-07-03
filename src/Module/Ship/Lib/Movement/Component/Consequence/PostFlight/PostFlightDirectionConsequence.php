@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreatorInterface;
@@ -13,18 +14,11 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class PostFlightDirectionConsequence extends AbstractFlightConsequence
 {
-    private FlightSignatureCreatorInterface $flightSignatureCreator;
-
-    private UpdateFlightDirectionInterface $updateFlightDirection;
-
-    public function __construct(
-        FlightSignatureCreatorInterface $flightSignatureCreator,
-        UpdateFlightDirectionInterface $updateFlightDirection
-    ) {
-        $this->flightSignatureCreator = $flightSignatureCreator;
-        $this->updateFlightDirection = $updateFlightDirection;
+    public function __construct(private FlightSignatureCreatorInterface $flightSignatureCreator, private UpdateFlightDirectionInterface $updateFlightDirection)
+    {
     }
 
+    #[Override]
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

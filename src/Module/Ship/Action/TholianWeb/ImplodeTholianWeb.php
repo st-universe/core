@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TholianWeb;
 
+use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
@@ -20,32 +21,21 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class ImplodeTholianWeb implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_IMPLODE_WEB';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private TholianWebUtilInterface $tholianWebUtil;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private TholianWebWeaponPhaseInterface $tholianWebWeaponPhase;
+    public const string ACTION_IDENTIFIER = 'B_IMPLODE_WEB';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TholianWebUtilInterface $tholianWebUtil,
-        PrivateMessageSenderInterface $privateMessageSender,
-        TholianWebWeaponPhaseInterface $tholianWebWeaponPhase,
+        private ShipLoaderInterface $shipLoader,
+        private TholianWebUtilInterface $tholianWebUtil,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private TholianWebWeaponPhaseInterface $tholianWebWeaponPhase,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->tholianWebUtil = $tholianWebUtil;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->tholianWebWeaponPhase = $tholianWebWeaponPhase;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -127,6 +117,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
 
 
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

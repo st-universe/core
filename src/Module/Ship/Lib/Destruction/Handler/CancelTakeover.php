@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Destruction\Handler;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
@@ -15,6 +16,7 @@ class CancelTakeover implements ShipDestructionHandlerInterface
     ) {
     }
 
+    #[Override]
     public function handleShipDestruction(
         ?ShipDestroyerInterface $destroyer,
         ShipWrapperInterface $destroyedShipWrapper,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -45,16 +46,19 @@ class TradeLicense implements TradeLicenseInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
+    #[Override]
     public function setTradePostId(int $tradePostId): TradeLicenseInterface
     {
         $this->posts_id = $tradePostId;
@@ -62,16 +66,19 @@ class TradeLicense implements TradeLicenseInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): TradeLicenseInterface
     {
         $this->date = $date;
@@ -79,11 +86,13 @@ class TradeLicense implements TradeLicenseInterface
         return $this;
     }
 
+    #[Override]
     public function getExpired(): int
     {
         return $this->expired;
     }
 
+    #[Override]
     public function setExpired(int $expired): TradeLicenseInterface
     {
         $this->expired = $expired;
@@ -91,22 +100,26 @@ class TradeLicense implements TradeLicenseInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): TradeLicenseInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getTradePost(): TradePostInterface
     {
         return $this->tradePost;
     }
 
+    #[Override]
     public function setTradePost(TradePostInterface $tradePost): TradeLicenseInterface
     {
         $this->tradePost = $tradePost;
@@ -114,6 +127,7 @@ class TradeLicense implements TradeLicenseInterface
         return $this;
     }
 
+    #[Override]
     public function getRemainingFullDays(?StuTime $stuTime = null): int
     {
         return (int)floor(($this->getExpired() - ($stuTime !== null ? $stuTime->time() : time())) / TimeConstants::ONE_DAY_IN_SECONDS);

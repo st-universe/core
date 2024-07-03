@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Override;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -45,6 +46,7 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
 
     private PlayerDefaultsCreatorInterface $defaultsCreator;
 
+    #[Override]
     public function setUp(): void
     {
         $this->privateMessageFolderRepository = Mockery::mock(PrivateMessageFolderRepositoryInterface::class);

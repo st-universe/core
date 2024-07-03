@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Override;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -15,26 +16,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class RepairTaskJobs implements ProcessTickHandlerInterface
 {
-    private RepairTaskRepositoryInterface $repairTaskRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private RepairUtilInterface $repairUtil;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        RepairTaskRepositoryInterface $repairTaskRepository,
-        ShipRepositoryInterface $shipRepository,
-        RepairUtilInterface $repairUtil,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->repairTaskRepository = $repairTaskRepository;
-        $this->shipRepository = $shipRepository;
-        $this->repairUtil = $repairUtil;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private RepairTaskRepositoryInterface $repairTaskRepository, private ShipRepositoryInterface $shipRepository, private RepairUtilInterface $repairUtil, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function work(): void
     {
         $result = $this->repairTaskRepository->getFinishedRepairTasks();

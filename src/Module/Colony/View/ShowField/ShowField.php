@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowField;
 
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,44 +23,13 @@ use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 final class ShowField implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_FIELD';
+    public const string VIEW_IDENTIFIER = 'SHOW_FIELD';
 
-    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
-
-    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private TerraformingRepositoryInterface $terraformingRepository;
-
-    private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository;
-
-    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
-
-    public function __construct(
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        TerraformingRepositoryInterface $terraformingRepository,
-        BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
-        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
-        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->terraformingRepository = $terraformingRepository;
-        $this->buildingUpgradeRepository = $buildingUpgradeRepository;
-        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
+    public function __construct(private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ColonyLibFactoryInterface $colonyLibFactory, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private TerraformingRepositoryInterface $terraformingRepository, private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Entity\RpgPlotArchiv;
@@ -15,6 +16,7 @@ use Stu\Orm\Entity\RpgPlotMemberArchiv;
  */
 final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotArchivRepositoryInterface
 {
+    #[Override]
     public function getByFoundingUser(int $userId): array
     {
         return $this->findBy([
@@ -22,11 +24,13 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         ]);
     }
 
+    #[Override]
     public function prototype(): RpgPlotArchivInterface
     {
         return new RpgPlotArchiv();
     }
 
+    #[Override]
     public function save(RpgPlotArchivInterface $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         $em->persist($rpgPlot);
     }
 
+    #[Override]
     public function delete(RpgPlotArchivInterface $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -41,6 +46,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         $em->remove($rpgPlot);
     }
 
+    #[Override]
     public function getActiveByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -57,6 +63,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
             ->getResult();
     }
 
+    #[Override]
     public function getEmptyOldPlots(int $maxAge): array
     {
         return $this->getEntityManager()
@@ -76,11 +83,13 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
             ->getResult();
     }
 
+    #[Override]
     public function getOrderedList(): array
     {
         return $this->findBy([], ['start_date' => 'asc']);
     }
 
+    #[Override]
     public function truncateAllEntities(): void
     {
         $this->getEntityManager()->createQuery(

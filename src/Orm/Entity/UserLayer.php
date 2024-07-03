@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -35,11 +36,13 @@ class UserLayer implements UserLayerInterface
     #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private LayerInterface $layer;
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): UserLayerInterface
     {
         $this->user = $user;
@@ -48,11 +51,13 @@ class UserLayer implements UserLayerInterface
         return $this;
     }
 
+    #[Override]
     public function getLayer(): LayerInterface
     {
         return $this->layer;
     }
 
+    #[Override]
     public function setLayer(LayerInterface $layer): UserLayerInterface
     {
         $this->layer = $layer;
@@ -61,11 +66,13 @@ class UserLayer implements UserLayerInterface
         return $this;
     }
 
+    #[Override]
     public function getMappingType(): int
     {
         return $this->map_type;
     }
 
+    #[Override]
     public function setMappingType(int $mappingType): UserLayerInterface
     {
         $this->map_type = $mappingType;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowTradeMenu;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,40 +21,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenu implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
+    public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        InteractionCheckerInterface $interactionChecker
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->commodityRepository = $commodityRepository;
-        $this->interactionChecker = $interactionChecker;
+    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository, private InteractionCheckerInterface $interactionChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

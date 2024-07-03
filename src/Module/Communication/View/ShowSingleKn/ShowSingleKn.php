@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowSingleKn;
 
+use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowSingleKn implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SINGLE_KN';
+    public const string VIEW_IDENTIFIER = 'SHOW_SINGLE_KN';
 
-    private ShowSingleKnRequestInterface $showSingleKnRequest;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private KnFactoryInterface $knFactory;
-
-    public function __construct(
-        ShowSingleKnRequestInterface $showSingleKnRequest,
-        KnPostRepositoryInterface $knPostRepository,
-        KnFactoryInterface $knFactory
-    ) {
-        $this->showSingleKnRequest = $showSingleKnRequest;
-        $this->knPostRepository = $knPostRepository;
-        $this->knFactory = $knFactory;
+    public function __construct(private ShowSingleKnRequestInterface $showSingleKnRequest, private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

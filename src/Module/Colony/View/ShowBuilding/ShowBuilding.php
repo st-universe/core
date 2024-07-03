@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuilding;
 
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,32 +18,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ShowBuilding implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_BUILDING';
+    public const string VIEW_IDENTIFIER = 'SHOW_BUILDING';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ShowBuildingRequestInterface $showBuildingRequest;
-
-    private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ShowBuildingRequestInterface $showBuildingRequest,
-        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
-        BuildingRepositoryInterface $buildingRepository
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->showBuildingRequest = $showBuildingRequest;
-        $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
-        $this->buildingRepository = $buildingRepository;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShowBuildingRequestInterface $showBuildingRequest, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private BuildingRepositoryInterface $buildingRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

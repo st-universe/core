@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
+use Override;
 use request;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
@@ -20,40 +21,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_SHIPS';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ManagerProviderFactoryInterface $managerProviderFactory;
-
-    private HandleManagersInterface $handleManagers;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyRepositoryInterface $colonyRepository,
-        ShipRepositoryInterface $shipRepository,
-        InteractionCheckerInterface $interactionChecker,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ManagerProviderFactoryInterface $managerProviderFactory,
-        HandleManagersInterface $handleManagers,
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyRepository = $colonyRepository;
-        $this->shipRepository = $shipRepository;
-        $this->interactionChecker = $interactionChecker;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->managerProviderFactory = $managerProviderFactory;
-        $this->handleManagers = $handleManagers;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private ShipWrapperFactoryInterface $shipWrapperFactory, private ManagerProviderFactoryInterface $managerProviderFactory, private HandleManagersInterface $handleManagers)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
@@ -125,6 +99,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         return $msg;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

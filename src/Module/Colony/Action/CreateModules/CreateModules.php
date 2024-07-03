@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CreateModules;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -18,36 +19,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class CreateModules implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_MODULES';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_MODULES';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository;
-
-    private ModuleQueueRepositoryInterface $moduleQueueRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
-        ModuleQueueRepositoryInterface $moduleQueueRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
-        $this->moduleQueueRepository = $moduleQueueRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -164,6 +142,7 @@ final class CreateModules implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

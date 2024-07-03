@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Torpedo;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -12,22 +13,11 @@ use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 
 final class ClearTorpedo implements ClearTorpedoInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private TorpedoStorageRepositoryInterface $torpedoStorageRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        ShipSystemManagerInterface $shipSystemManager,
-        TorpedoStorageRepositoryInterface $torpedoStorageRepository,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->shipSystemManager = $shipSystemManager;
-        $this->torpedoStorageRepository = $torpedoStorageRepository;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private ShipSystemManagerInterface $shipSystemManager, private TorpedoStorageRepositoryInterface $torpedoStorageRepository, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function clearTorpedoStorage(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();

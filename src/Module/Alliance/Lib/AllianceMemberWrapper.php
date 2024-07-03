@@ -7,14 +7,8 @@ use Stu\Orm\Entity\UserInterface;
 
 final class AllianceMemberWrapper
 {
-    private UserInterface $user;
-
-    private AllianceInterface $alliance;
-
-    public function __construct(UserInterface $user, AllianceInterface $alliance)
+    public function __construct(private UserInterface $user, private AllianceInterface $alliance)
     {
-        $this->user = $user;
-        $this->alliance = $alliance;
     }
 
     public function getUser(): UserInterface

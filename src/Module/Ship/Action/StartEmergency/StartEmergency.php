@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StartEmergency;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -15,26 +16,15 @@ use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
  */
 final class StartEmergency implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_EMERGENCY';
+    public const string ACTION_IDENTIFIER = 'B_START_EMERGENCY';
 
-    public const CHARACTER_LIMIT = 250;
+    public const int CHARACTER_LIMIT = 250;
 
-    private ShipLoaderInterface $shipLoader;
-
-    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
-
-    private StartEmergencyRequestInterface $startEmergencyRequest;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
-        StartEmergencyRequestInterface $startEmergencyRequest
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
-        $this->startEmergencyRequest = $startEmergencyRequest;
+    public function __construct(private ShipLoaderInterface $shipLoader, private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository, private StartEmergencyRequestInterface $startEmergencyRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -68,6 +58,7 @@ final class StartEmergency implements ActionControllerInterface
         $game->addInformation('Das Notrufsignal wurde gestartet');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

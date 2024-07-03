@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SetLSSModeBorder;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,16 +14,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class SetLSSModeBorder implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SET_LSS_BORDER';
+    public const string ACTION_IDENTIFIER = 'B_SET_LSS_BORDER';
 
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    public function __construct(
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->helper = $helper;
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -30,6 +28,7 @@ final class SetLSSModeBorder implements ActionControllerInterface
         $this->helper->setLSSMode(request::indInt('id'), ShipLSSModeEnum::LSS_BORDER, $game);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

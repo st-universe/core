@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowByPosition;
 
+use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
@@ -16,20 +17,13 @@ use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 
 final class ShowByPosition implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_STARMAP_POSITION';
+    public const string VIEW_IDENTIFIER = 'SHOW_STARMAP_POSITION';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private StarmapUiFactoryInterface $starmapUiFactory;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        StarmapUiFactoryInterface $starmapUiFactory
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->starmapUiFactory = $starmapUiFactory;
+    public function __construct(private ShipLoaderInterface $shipLoader, private StarmapUiFactoryInterface $starmapUiFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship =  $this->shipLoader->getByIdAndUser(

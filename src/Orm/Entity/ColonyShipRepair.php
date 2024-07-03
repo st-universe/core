@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,21 +40,25 @@ class ColonyShipRepair implements ColonyShipRepairInterface
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getColonyId(): int
     {
         return $this->colony_id;
     }
 
+    #[Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
+    #[Override]
     public function setFieldId(int $field_id): ColonyShipRepairInterface
     {
         $this->field_id = $field_id;
@@ -61,27 +66,32 @@ class ColonyShipRepair implements ColonyShipRepairInterface
         return $this;
     }
 
+    #[Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): ColonyShipRepairInterface
     {
         $this->colony = $colony;
         return $this;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): ColonyShipRepairInterface
     {
         $this->ship = $ship;

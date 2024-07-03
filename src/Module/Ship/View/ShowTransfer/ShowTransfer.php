@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowTransfer;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
@@ -19,34 +20,14 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowTransfer implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TRANSFER';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private TransferTargetLoaderInterface $transferTargetLoader;
-
-    private BeamUtilInterface $beamUtil;
-
-    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
-
-    /** @var array<TransferStrategyInterface> */
-    private array $transferStrategies;
+    public const string VIEW_IDENTIFIER = 'SHOW_TRANSFER';
 
     /** @param array<TransferStrategyInterface> $transferStrategies */
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TransferTargetLoaderInterface $transferTargetLoader,
-        BeamUtilInterface $beamUtil,
-        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        array $transferStrategies
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->transferTargetLoader = $transferTargetLoader;
-        $this->beamUtil = $beamUtil;
-        $this->playerRelationDeterminator = $playerRelationDeterminator;
-        $this->transferStrategies = $transferStrategies;
+    public function __construct(private ShipLoaderInterface $shipLoader, private TransferTargetLoaderInterface $transferTargetLoader, private BeamUtilInterface $beamUtil, private PlayerRelationDeterminatorInterface $playerRelationDeterminator, private array $transferStrategies)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

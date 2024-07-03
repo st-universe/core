@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SelfDestruct;
 
+use Override;
 use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,7 +23,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SelfDestruct implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SELFDESTRUCT';
+    public const string ACTION_IDENTIFIER = 'B_SELFDESTRUCT';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -34,6 +35,7 @@ final class SelfDestruct implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -116,6 +118,7 @@ final class SelfDestruct implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

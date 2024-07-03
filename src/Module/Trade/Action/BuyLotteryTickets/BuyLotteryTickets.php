@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\BuyLotteryTickets;
 
+use Override;
 use request;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -18,32 +19,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class BuyLotteryTickets implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUY_LOTTERY_TICKETS';
+    public const string ACTION_IDENTIFIER = 'B_BUY_LOTTERY_TICKETS';
 
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradePostRepositoryInterface $tradepostRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private LotteryFacadeInterface $lotteryFacade;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradePostRepositoryInterface $tradepostRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        LotteryFacadeInterface $lotteryFacade,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradepostRepository = $tradepostRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->lotteryFacade = $lotteryFacade;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLibFactoryInterface $tradeLibFactory, private LotteryFacadeInterface $lotteryFacade, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -93,6 +75,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         $game->addInformationf(_('%d Lotterielos(e) wurde gekauft'), $amount);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AddBoard;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
@@ -17,30 +18,19 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 final class AddBoard implements ActionControllerInterface
 {
     /** @var string */
-    public const ACTION_IDENTIFIER = 'B_ADD_BOARD';
+    public const string ACTION_IDENTIFIER = 'B_ADD_BOARD';
 
     /** @var int */
-    private const NAME_LENGTH_CONSTRAINT = 5;
+    private const int NAME_LENGTH_CONSTRAINT = 5;
 
-    private AddBoardRequestInterface $addBoardRequest;
-
-    private AllianceBoardRepositoryInterface $allianceBoardRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        AddBoardRequestInterface $addBoardRequest,
-        AllianceBoardRepositoryInterface $allianceBoardRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->addBoardRequest = $addBoardRequest;
-        $this->allianceBoardRepository = $allianceBoardRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private AddBoardRequestInterface $addBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
     /**
      * @throws AccessViolation
      */
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -74,6 +64,7 @@ final class AddBoard implements ActionControllerInterface
         $game->addInformation(_('Das Forum wurde erstellt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

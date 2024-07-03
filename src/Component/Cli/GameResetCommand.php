@@ -13,13 +13,9 @@ use Stu\Component\Admin\Reset\ResetManagerInterface;
  */
 final class GameResetCommand extends Command
 {
-    private ContainerInterface $dic;
-
     public function __construct(
-        ContainerInterface $dic
+        private ContainerInterface $dic
     ) {
-        $this->dic = $dic;
-
         parent::__construct(
             'game:reset',
             'Performs a complete reset of the game'

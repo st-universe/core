@@ -12,20 +12,8 @@ use Stu\Orm\Entity\UserInterface;
  */
 class WarDeclaredEvent
 {
-    private AllianceInterface $alliance;
-
-    private AllianceInterface $counterpart;
-
-    private UserInterface $responsibleUser;
-
-    public function __construct(
-        AllianceInterface $alliance,
-        AllianceInterface $counterpart,
-        UserInterface $responsibleUser
-    ) {
-        $this->alliance = $alliance;
-        $this->counterpart = $counterpart;
-        $this->responsibleUser = $responsibleUser;
+    public function __construct(private AllianceInterface $alliance, private AllianceInterface $counterpart, private UserInterface $responsibleUser)
+    {
     }
 
     /**

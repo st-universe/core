@@ -13,13 +13,9 @@ use Stu\Module\Tick\Manager\TickManagerRunner;
  */
 final class ManagerTickCommand extends Command
 {
-    private ContainerInterface $dic;
-
     public function __construct(
-        ContainerInterface $dic
+        private ContainerInterface $dic
     ) {
-        $this->dic = $dic;
-
         parent::__construct(
             'tick:manager',
             'Runs the manager tick'

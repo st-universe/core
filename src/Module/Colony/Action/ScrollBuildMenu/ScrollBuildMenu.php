@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ScrollBuildMenu;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Colony\ColonyEnum;
@@ -15,20 +16,13 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 final class ScrollBuildMenu implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SCROLL_BUILDMENU';
+    public const string ACTION_IDENTIFIER = 'B_SCROLL_BUILDMENU';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        BuildingRepositoryInterface $buildingRepository
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->buildingRepository = $buildingRepository;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -73,6 +67,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         $game->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

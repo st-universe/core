@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -83,16 +84,19 @@ class Storage implements StorageInterface
     #[JoinColumn(name: 'tradeoffer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TradeOfferInterface $tradeOffer = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): StorageInterface
     {
         $this->user = $user;
@@ -100,16 +104,19 @@ class Storage implements StorageInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setAmount(int $amount): StorageInterface
     {
         $this->count = $amount;
@@ -117,11 +124,13 @@ class Storage implements StorageInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function setCommodity(CommodityInterface $commodity): StorageInterface
     {
         $this->commodity = $commodity;
@@ -129,55 +138,65 @@ class Storage implements StorageInterface
         return $this;
     }
 
+    #[Override]
     public function getColony(): ?ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): StorageInterface
     {
         $this->colony = $colony;
         return $this;
     }
 
+    #[Override]
     public function getShip(): ?ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): StorageInterface
     {
         $this->ship = $ship;
         return $this;
     }
 
+    #[Override]
     public function getTorpedoStorage(): ?TorpedoStorageInterface
     {
         return $this->torpedoStorage;
     }
 
+    #[Override]
     public function setTorpedoStorage(TorpedoStorageInterface $torpedoStorage): StorageInterface
     {
         $this->torpedoStorage = $torpedoStorage;
         return $this;
     }
 
+    #[Override]
     public function getTradePost(): ?TradePostInterface
     {
         return $this->tradePost;
     }
 
+    #[Override]
     public function setTradePost(TradePostInterface $tradePost): StorageInterface
     {
         $this->tradePost = $tradePost;
         return $this;
     }
 
+    #[Override]
     public function getTradeOffer(): ?TradeOfferInterface
     {
         return $this->tradeOffer;
     }
 
+    #[Override]
     public function setTradeOffer(TradeOfferInterface $tradeOffer): StorageInterface
     {
         $this->tradeOffer = $tradeOffer;

@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Sandbox;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowNewSandbox implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_NEW_SANDBOX';
+    public const string VIEW_IDENTIFIER = 'SHOW_NEW_SANDBOX';
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Neue Sandbox erstellen'));

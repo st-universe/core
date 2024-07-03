@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly;
 
+use Override;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
@@ -25,6 +26,7 @@ class AnomalyCreationTest extends StuTestCase
 
     private AnomalyCreationInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->anomalyRepository = $this->mock(AnomalyRepositoryInterface::class);

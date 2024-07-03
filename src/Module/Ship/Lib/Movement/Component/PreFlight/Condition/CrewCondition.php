@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
+use Override;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class CrewCondition implements PreFlightConditionInterface
 {
+    #[Override]
     public function check(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

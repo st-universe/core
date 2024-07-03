@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowWaste;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
@@ -13,20 +14,13 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowWaste implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_WASTE';
+    public const string VIEW_IDENTIFIER = 'SHOW_WASTE';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

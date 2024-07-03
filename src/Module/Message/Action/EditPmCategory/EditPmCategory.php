@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\EditPmCategory;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class EditPmCategory implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_EDIT_PMCATEGORY_NAME';
+    public const string ACTION_IDENTIFIER = 'B_EDIT_PMCATEGORY_NAME';
 
-    private EditPmCategoryRequestInterface $editPmCategoryRequest;
-
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    public function __construct(
-        EditPmCategoryRequestInterface $editPmCategoryRequest,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
-    ) {
-        $this->editPmCategoryRequest = $editPmCategoryRequest;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+    public function __construct(private EditPmCategoryRequestInterface $editPmCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowPmCategoryList::VIEW_IDENTIFIER);
@@ -47,6 +41,7 @@ final class EditPmCategory implements ActionControllerInterface
         $game->setTemplateVar('CATEGORY', $cat);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

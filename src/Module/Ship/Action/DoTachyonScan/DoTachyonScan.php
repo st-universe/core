@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DoTachyonScan;
 
+use Override;
 use request;
 
 use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
@@ -17,24 +18,13 @@ use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
 final class DoTachyonScan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TACHYON_SCAN';
+    public const string ACTION_IDENTIFIER = 'B_TACHYON_SCAN';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private TachyonScanRepositoryInterface $tachyonScanRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TachyonScanRepositoryInterface $tachyonScanRepository,
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->tachyonScanRepository = $tachyonScanRepository;
-        $this->shipRepository = $shipRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private TachyonScanRepositoryInterface $tachyonScanRepository, private ShipRepositoryInterface $shipRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -88,6 +78,7 @@ final class DoTachyonScan implements ActionControllerInterface
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

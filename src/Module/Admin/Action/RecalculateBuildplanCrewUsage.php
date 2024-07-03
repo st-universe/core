@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
@@ -18,26 +19,21 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_FIX_BUILDPLAN_CREW';
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
+    public const string ACTION_IDENTIFIER = 'B_FIX_BUILDPLAN_CREW';
 
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->shipCrewCalculator = $shipCrewCalculator;
         $this->logger = $loggerUtilFactory->getLoggerUtil();
 
         $this->logger->init('CREW', LoggerEnum::LEVEL_ERROR);
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -89,6 +85,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
         ));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

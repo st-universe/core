@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
@@ -11,9 +12,10 @@ use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 
 final class SystemLayerRenderer implements LayerRendererInterface
 {
-    private const ONLY_BACKGROUND_IMAGE = 1;
+    private const int ONLY_BACKGROUND_IMAGE = 1;
 
     /** @param MapData $data */
+    #[Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(

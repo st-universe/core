@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\ResetPassword;
 
+use Override;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
@@ -17,28 +18,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ResetPassword implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_RESET_PASSWORD';
+    public const string ACTION_IDENTIFIER = 'B_RESET_PASSWORD';
 
-    private ResetPasswordRequestInterface $resetPasswordRequest;
-
-    private ConfigInterface $config;
-
-    private UserRepositoryInterface $userRepository;
-
-    private PasswordGeneratorInterface $passwordGenerator;
-
-    public function __construct(
-        ResetPasswordRequestInterface $resetPasswordRequest,
-        ConfigInterface $config,
-        UserRepositoryInterface $userRepository,
-        PasswordGeneratorInterface $passwordGenerator
-    ) {
-        $this->resetPasswordRequest = $resetPasswordRequest;
-        $this->config = $config;
-        $this->userRepository = $userRepository;
-        $this->passwordGenerator = $passwordGenerator;
+    public function __construct(private ResetPasswordRequestInterface $resetPasswordRequest, private ConfigInterface $config, private UserRepositoryInterface $userRepository, private PasswordGeneratorInterface $passwordGenerator)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $token = $this->resetPasswordRequest->getToken();
@@ -79,11 +65,12 @@ final class ResetPassword implements ActionControllerInterface
         try {
             $transport = new Sendmail();
             $transport->send($mail);
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

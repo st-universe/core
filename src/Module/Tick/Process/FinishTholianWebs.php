@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -19,34 +20,11 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class FinishTholianWebs implements ProcessTickHandlerInterface
 {
-    private TholianWebRepositoryInterface $tholianWebRepository;
-
-    private TholianWebUtilInterface $tholianWebUtil;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private LeaveFleetInterface $leaveFleet;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        TholianWebRepositoryInterface $tholianWebRepository,
-        TholianWebUtilInterface $tholianWebUtil,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        LeaveFleetInterface $leaveFleet,
-        ShipSystemManagerInterface $shipSystemManager,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->tholianWebRepository = $tholianWebRepository;
-        $this->tholianWebUtil = $tholianWebUtil;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->leaveFleet = $leaveFleet;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipWrapperFactoryInterface $shipWrapperFactory, private LeaveFleetInterface $leaveFleet, private ShipSystemManagerInterface $shipSystemManager, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function work(): void
     {
         foreach ($this->tholianWebRepository->getFinishedWebs() as $web) {

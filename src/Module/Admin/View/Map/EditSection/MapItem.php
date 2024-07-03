@@ -9,16 +9,8 @@ use Stu\Orm\Entity\MapInterface;
 
 class MapItem
 {
-    private EncodedMapInterface $encodedMap;
-
-    private MapInterface $map;
-
-    public function __construct(
-        EncodedMapInterface $encodedMap,
-        MapInterface $map
-    ) {
-        $this->encodedMap = $encodedMap;
-        $this->map = $map;
+    public function __construct(private EncodedMapInterface $encodedMap, private MapInterface $map)
+    {
     }
 
     public function getMap(): MapInterface

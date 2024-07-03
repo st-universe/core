@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
+use Override;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Mockery\MockInterface;
@@ -19,6 +20,7 @@ class DatabaseAdapterTest extends StuTestCase
 
     private DatabaseAdapter $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->database = $this->mock(Connection::class);

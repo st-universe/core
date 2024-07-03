@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
@@ -14,6 +15,7 @@ class MixedBattleParty extends AbstractBattleParty
         parent::__construct($wrappers->first());
     }
 
+    #[Override]
     public function initMembers(): Collection
     {
         return $this->wrappers;

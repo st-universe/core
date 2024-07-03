@@ -16,43 +16,11 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class YRow
 {
-    protected ?LayerInterface $layer;
-
-    protected int $row;
-
-    protected int $minx;
-
-    protected int $maxx;
-
-    protected int|StarSystemInterface $system;
-
     /** @var null|array<MapItem>|array<MapData> */
     protected $fields;
 
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $systemMapRepository;
-
-    private EncodedMapInterface $encodedMap;
-
-    public function __construct(
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $systemMapRepository,
-        EncodedMapInterface $encodedMap,
-        ?LayerInterface $layer,
-        int $cury,
-        int $minx,
-        int $maxx,
-        int|StarSystemInterface $system
-    ) {
-        $this->layer = $layer;
-        $this->row = $cury;
-        $this->minx = $minx;
-        $this->maxx = $maxx;
-        $this->system = $system;
-        $this->mapRepository = $mapRepository;
-        $this->systemMapRepository = $systemMapRepository;
-        $this->encodedMap = $encodedMap;
+    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $systemMapRepository, private EncodedMapInterface $encodedMap, protected ?LayerInterface $layer, protected int $row, protected int $minx, protected int $maxx, protected int|StarSystemInterface $system)
+    {
     }
 
     /**

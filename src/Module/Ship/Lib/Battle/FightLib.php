@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -27,6 +28,7 @@ final class FightLib implements FightLibInterface
     ) {
     }
 
+    #[Override]
     public function ready(ShipWrapperInterface $wrapper, InformationInterface $informations): void
     {
         $ship = $wrapper->get();
@@ -57,7 +59,7 @@ final class FightLib implements FightLibInterface
         }
         try {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_CLOAK);
-        } catch (ShipSystemException $e) {
+        } catch (ShipSystemException) {
         }
 
         $this->cancelRepair->cancelRepair($ship);
@@ -70,6 +72,7 @@ final class FightLib implements FightLibInterface
         }
     }
 
+    #[Override]
     public function canAttackTarget(
         ShipInterface $ship,
         ShipInterface|ShipNfsItem $target,
@@ -125,6 +128,7 @@ final class FightLib implements FightLibInterface
         return $ownFleetId !== $targetFleetId;
     }
 
+    #[Override]
     public function getAttackersAndDefenders(
         ShipWrapperInterface|FleetWrapperInterface $wrapper,
         ShipWrapperInterface $targetWrapper,
@@ -140,6 +144,7 @@ final class FightLib implements FightLibInterface
         ];
     }
 
+    #[Override]
     public function isTargetOutsideFinishedTholianWeb(ShipInterface $ship, ShipInterface $target): bool
     {
         $web = $ship->getHoldingWeb();
@@ -160,6 +165,7 @@ final class FightLib implements FightLibInterface
             || $ship->isWarped());
     }
 
+    #[Override]
     public function calculateHealthPercentage(ShipInterface $target): int
     {
         $shipCount = 0;

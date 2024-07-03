@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBeamFrom;
 
+use Override;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -12,28 +13,13 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowBeamFrom implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_BEAMFROM';
+    public const string VIEW_IDENTIFIER = 'SHOW_BEAMFROM';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShowBeamFromRequestInterface $showBeamFromRequest;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShowBeamFromRequestInterface $showBeamFromRequest,
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->showBeamFromRequest = $showBeamFromRequest;
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowBeamFromRequestInterface $showBeamFromRequest, private ShipLoaderInterface $shipLoader, private InteractionCheckerInterface $interactionChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -50,16 +51,19 @@ class KnComment implements KnCommentInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getPostId(): int
     {
         return $this->post_id;
     }
 
+    #[Override]
     public function setPostId(int $postId): KnCommentInterface
     {
         $this->post_id = $postId;
@@ -67,27 +71,32 @@ class KnComment implements KnCommentInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): KnCommentInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
+    #[Override]
     public function setUsername(string $username): KnCommentInterface
     {
         $this->username = $username;
@@ -95,11 +104,13 @@ class KnComment implements KnCommentInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): KnCommentInterface
     {
         $this->text = $text;
@@ -107,11 +118,13 @@ class KnComment implements KnCommentInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): KnCommentInterface
     {
         $this->date = $date;
@@ -119,11 +132,13 @@ class KnComment implements KnCommentInterface
         return $this;
     }
 
+    #[Override]
     public function getPosting(): KnPostInterface
     {
         return $this->post;
     }
 
+    #[Override]
     public function setPosting(KnPostInterface $post): KnCommentInterface
     {
         $this->post = $post;
@@ -131,6 +146,7 @@ class KnComment implements KnCommentInterface
         return $this;
     }
 
+    #[Override]
     public function setDeleted(int $timestamp): KnCommentInterface
     {
         $this->deleted = $timestamp;
@@ -138,6 +154,7 @@ class KnComment implements KnCommentInterface
         return $this;
     }
 
+    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

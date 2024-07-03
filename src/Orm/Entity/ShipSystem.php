@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -57,16 +58,19 @@ class ShipSystem implements ShipSystemInterface
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return $this->system_type;
     }
 
+    #[Override]
     public function setSystemType(ShipSystemTypeEnum $type): ShipSystemInterface
     {
         $this->system_type = $type;
@@ -74,11 +78,13 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): ShipSystemInterface
     {
         $this->module_id = $moduleId;
@@ -86,11 +92,13 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getStatus(): int
     {
         return $this->status;
     }
 
+    #[Override]
     public function setStatus(int $status): ShipSystemInterface
     {
         $this->status = $status;
@@ -98,11 +106,13 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->getSystemType()->getDescription();
     }
 
+    #[Override]
     public function getCssClass(): string
     {
         if ($this->getStatus() < 1) {
@@ -118,11 +128,13 @@ class ShipSystem implements ShipSystemInterface
         }
     }
 
+    #[Override]
     public function getMode(): int
     {
         return $this->mode;
     }
 
+    #[Override]
     public function setMode(int $mode): ShipSystemInterface
     {
         $this->mode = $mode;
@@ -130,11 +142,13 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getCooldown(): ?int
     {
         return $this->cooldown;
     }
 
+    #[Override]
     public function setCooldown(int $cooldown): ShipSystemInterface
     {
         $this->cooldown = $cooldown;
@@ -142,11 +156,13 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getModule(): ?ModuleInterface
     {
         return $this->module;
     }
 
+    #[Override]
     public function setModule(ModuleInterface $module): ShipSystemInterface
     {
         $this->module = $module;
@@ -154,28 +170,33 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): ShipSystemInterface
     {
         $this->ship = $ship;
         return $this;
     }
 
+    #[Override]
     public function getData(): ?string
     {
         return $this->data;
     }
 
+    #[Override]
     public function setData(string $data): ShipSystemInterface
     {
         $this->data = $data;
         return $this;
     }
 
+    #[Override]
     public function determineSystemLevel(): int
     {
         $module = $this->getModule();

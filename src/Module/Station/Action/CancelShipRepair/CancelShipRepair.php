@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\CancelShipRepair;
 
+use Override;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipStateEnum;
@@ -16,24 +17,13 @@ use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class CancelShipRepair implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CANCEL_REPAIR';
+    public const string ACTION_IDENTIFIER = 'B_CANCEL_REPAIR';
 
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private CancelRepairInterface $cancelRepair;
-
-    private StationShipRepairRepositoryInterface $stationShipRepairRepository;
-
-    public function __construct(
-        StationShipRepairRepositoryInterface $stationShipRepairRepository,
-        CancelRepairInterface $cancelRepair,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->stationShipRepairRepository = $stationShipRepairRepository;
-        $this->cancelRepair = $cancelRepair;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private StationShipRepairRepositoryInterface $stationShipRepairRepository, private CancelRepairInterface $cancelRepair, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -69,6 +59,7 @@ final class CancelShipRepair implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

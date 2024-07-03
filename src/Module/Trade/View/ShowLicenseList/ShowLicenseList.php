@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowLicenseList;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowLicenseList implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_LICENSE_LIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_LICENSE_LIST';
 
-    private ShowLicenseListRequestInterface $showLicenseListRequest;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    public function __construct(
-        ShowLicenseListRequestInterface $showLicenseListRequest,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradePostRepositoryInterface $tradePostRepository
-    ) {
-        $this->showLicenseListRequest = $showLicenseListRequest;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradePostRepository = $tradePostRepository;
+    public function __construct(private ShowLicenseListRequestInterface $showLicenseListRequest, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradePostRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicenselist');

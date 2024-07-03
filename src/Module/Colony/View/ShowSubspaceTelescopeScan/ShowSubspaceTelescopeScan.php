@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSubspaceTelescopeScan;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
@@ -19,35 +20,24 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TELESCOPE_SCAN';
+    public const string VIEW_IDENTIFIER = 'SHOW_TELESCOPE_SCAN';
 
-    private const SCAN_BASE_COST = 20;
-    private const SCAN_VARIABEL_COST = 180;
-
-    private ColonyLoaderInterface $colonyLoader;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
+    private const int SCAN_BASE_COST = 20;
+    private const int SCAN_VARIABEL_COST = 180;
 
     private LoggerUtilInterface $loggerUtil;
 
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
+        private ColonyLoaderInterface $colonyLoader,
+        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private ColonyRepositoryInterface $colonyRepository,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->colonyRepository = $colonyRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

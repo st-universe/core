@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
+use Override;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Lib\Map\Location;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
@@ -20,39 +21,28 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class VisualNavPanel extends AbstractVisualPanel
 {
-    private ShipInterface $currentShip;
-
-    private UserInterface $user;
-
-    private bool $tachyonFresh;
-
-    private UserMapRepositoryInterface $userMapRepository;
-
     private ?Location $panelCenter = null;
 
     private ?bool $isOnShipLevel = null;
 
     public function __construct(
         PanelLayerCreationInterface $panelLayerCreation,
-        UserMapRepositoryInterface $userMapRepository,
-        ShipInterface $currentShip,
-        UserInterface $user,
+        private UserMapRepositoryInterface $userMapRepository,
+        private ShipInterface $currentShip,
+        private UserInterface $user,
         LoggerUtilInterface $loggerUtil,
-        bool $tachyonFresh
+        private bool $tachyonFresh
     ) {
         parent::__construct($panelLayerCreation, $loggerUtil);
-
-        $this->userMapRepository = $userMapRepository;
-        $this->currentShip = $currentShip;
-        $this->user = $user;
-        $this->tachyonFresh = $tachyonFresh;
     }
 
+    #[Override]
     protected function createBoundaries(): PanelBoundaries
     {
         return PanelBoundaries::fromLocation($this->getPanelCenter(), $this->currentShip->getSensorRange());
     }
 
+    #[Override]
     protected function loadLayers(): void
     {
 
@@ -78,6 +68,7 @@ class VisualNavPanel extends AbstractVisualPanel
         $this->layers = $panelLayerCreation->build($this);
     }
 
+    #[Override]
     protected function getEntryCallable(): callable
     {
         return fn (int $x, int $y): VisualNavPanelEntry => new VisualNavPanelEntry(
@@ -89,6 +80,7 @@ class VisualNavPanel extends AbstractVisualPanel
         );
     }
 
+    #[Override]
     protected function getPanelViewportPercentage(): int
     {
         return $this->currentShip->isBase() ? 50 : 33;

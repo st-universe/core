@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
@@ -15,6 +16,7 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ColonyFragment implements RenderFragmentInterface
 {
+    #[Override]
     public function render(
         UserInterface $user,
         TalPageInterface|TwigPageInterface $page,

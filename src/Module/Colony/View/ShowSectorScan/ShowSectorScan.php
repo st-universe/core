@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSectorScan;
 
+use Override;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
@@ -16,27 +17,16 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SECTOR_SCAN';
-
-    private ColonyLoaderInterface $colonyLoader;
-
-    private StarSystemMapRepositoryInterface $mapRepository;
-
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
+    public const string VIEW_IDENTIFIER = 'SHOW_SECTOR_SCAN';
 
     private array $fadedSignaturesUncloaked = [];
     private array $fadedSignaturesCloaked = [];
 
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        StarSystemMapRepositoryInterface $mapRepository,
-        FlightSignatureRepositoryInterface $flightSignatureRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->mapRepository = $mapRepository;
-        $this->flightSignatureRepository = $flightSignatureRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private StarSystemMapRepositoryInterface $mapRepository, private FlightSignatureRepositoryInterface $flightSignatureRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

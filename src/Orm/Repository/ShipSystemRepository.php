@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipSystem;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\ShipSystemInterface;
  */
 final class ShipSystemRepository extends EntityRepository implements ShipSystemRepositoryInterface
 {
+    #[Override]
     public function prototype(): ShipSystemInterface
     {
         return new ShipSystem();
     }
 
+    #[Override]
     public function save(ShipSystemInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -26,6 +29,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(ShipSystemInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         $em->flush();
     }
 
+    #[Override]
     public function getByShip(int $shipId): array
     {
         return $this->findBy(
@@ -42,6 +47,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         );
     }
 
+    #[Override]
     public function getTrackingShipSystems(int $targetId): array
     {
         return $this->getEntityManager()
@@ -60,6 +66,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             ->getResult();
     }
 
+    #[Override]
     public function getWebConstructingShipSystems(int $webId): array
     {
         return $this->getEntityManager()
@@ -78,6 +85,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             ->getResult();
     }
 
+    #[Override]
     public function truncateByShip(int $shipId): void
     {
         $this->getEntityManager()

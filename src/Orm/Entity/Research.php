@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -73,16 +74,19 @@ class Research implements ResearchInterface
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id')]
     private ?AwardInterface $award = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): ResearchInterface
     {
         $this->name = $name;
@@ -90,11 +94,13 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): ResearchInterface
     {
         $this->description = $description;
@@ -102,11 +108,13 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
+    #[Override]
     public function setSort(int $sort): ResearchInterface
     {
         $this->sort = $sort;
@@ -114,11 +122,13 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    #[Override]
     public function getRumpId(): int
     {
         return $this->rumps_id;
     }
 
+    #[Override]
     public function setRumpId(int $rumpId): ResearchInterface
     {
         $this->rumps_id = $rumpId;
@@ -126,11 +136,13 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    #[Override]
     public function getDatabaseEntryIds(): array
     {
         return $this->database_entries;
     }
 
+    #[Override]
     public function setDatabaseEntryIds(array $databaseEntryIds): ResearchInterface
     {
         $this->database_entries = $databaseEntryIds;
@@ -138,11 +150,13 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    #[Override]
     public function getPoints(): int
     {
         return $this->points;
     }
 
+    #[Override]
     public function setPoints(int $points): ResearchInterface
     {
         $this->points = $points;
@@ -150,11 +164,13 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): ResearchInterface
     {
         $this->commodity_id = $commodityId;
@@ -162,44 +178,52 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    #[Override]
     public function getUpperPlanetLimit(): int
     {
         return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_PLANET
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
+    #[Override]
     public function getUpperMoonLimit(): int
     {
         return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_MOON
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
+    #[Override]
     public function getUpperAsteroidLimit(): int
     {
         return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_ASTEROID
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
+    #[Override]
     public function getRewardBuildplanId(): ?int
     {
         return $this->reward_buildplan_id;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function getRewardBuildplan(): ?ShipBuildplanInterface
     {
         return $this->rewardBuildplan;
     }
 
+    #[Override]
     public function getAward(): ?AwardInterface
     {
         return $this->award;
     }
 
+    #[Override]
     public function getNeededAwardId(): ?int
     {
         return $this->needed_award;

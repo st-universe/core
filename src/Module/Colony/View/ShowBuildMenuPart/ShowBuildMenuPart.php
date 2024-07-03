@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildMenuPart;
 
+use Override;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 final class ShowBuildMenuPart implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_BUILDMENU_PART';
+    public const string VIEW_IDENTIFIER = 'SHOW_BUILDMENU_PART';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        BuildingRepositoryInterface $buildingRepository
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->buildingRepository = $buildingRepository;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

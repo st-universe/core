@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\RenameCrew;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,24 +15,13 @@ use Stu\Orm\Repository\CrewRepositoryInterface;
 
 final class RenameCrew implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_RENAME_CREW';
+    public const string ACTION_IDENTIFIER = 'B_RENAME_CREW';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private CrewRepositoryInterface $crewRepository;
-
-    private RenameCrewRequestInterface $renameCrewRequest;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        CrewRepositoryInterface $crewRepository,
-        RenameCrewRequestInterface $renameCrewRequest
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->crewRepository = $crewRepository;
-        $this->renameCrewRequest = $renameCrewRequest;
+    public function __construct(private ShipLoaderInterface $shipLoader, private CrewRepositoryInterface $crewRepository, private RenameCrewRequestInterface $renameCrewRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -59,6 +49,7 @@ final class RenameCrew implements ActionControllerInterface
         $game->setTemplateVar('CREW', $crew);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

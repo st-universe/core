@@ -11,20 +11,8 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class TransferToClosestLocation
 {
-    private ClosestLocations $closestLocations;
-
-    private DistanceCalculationInterface $distanceCalculation;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    public function __construct(
-        ClosestLocations $closestLocations,
-        DistanceCalculationInterface $distanceCalculation,
-        ShipCrewRepositoryInterface $shipCrewRepository
-    ) {
-        $this->closestLocations = $closestLocations;
-        $this->distanceCalculation = $distanceCalculation;
-        $this->shipCrewRepository = $shipCrewRepository;
+    public function __construct(private ClosestLocations $closestLocations, private DistanceCalculationInterface $distanceCalculation, private ShipCrewRepositoryInterface $shipCrewRepository)
+    {
     }
 
     public function transfer(

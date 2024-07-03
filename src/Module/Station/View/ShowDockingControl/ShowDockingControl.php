@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowDockingControl;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,24 +16,13 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class ShowDockingControl implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_DOCK_CONTROL';
+    public const string VIEW_IDENTIFIER = 'SHOW_DOCK_CONTROL';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private StationUiFactoryInterface $stationUiFactory;
-
-    public function __construct(
-        AllianceRepositoryInterface $allianceRepository,
-        StationUiFactoryInterface $stationUiFactory,
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->allianceRepository = $allianceRepository;
-        $this->stationUiFactory = $stationUiFactory;
+    public function __construct(private AllianceRepositoryInterface $allianceRepository, private StationUiFactoryInterface $stationUiFactory, private ShipLoaderInterface $shipLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

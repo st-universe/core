@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ModuleSpecial;
 
@@ -12,6 +13,7 @@ use Stu\Orm\Entity\ModuleSpecial;
  */
 final class ModuleSpecialRepository extends EntityRepository implements ModuleSpecialRepositoryInterface
 {
+    #[Override]
     public function getByModule(int $moduleId): array
     {
         return $this->findBy([

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Sandbox;
 
+use Override;
 use request;
 use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,20 +16,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class CreateSandbox implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_SANDBOX';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_SANDBOX';
 
-    private ColonySandboxRepositoryInterface $colonySandboxRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    public function __construct(
-        ColonySandboxRepositoryInterface $colonySandboxRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
-    ) {
-        $this->colonySandboxRepository = $colonySandboxRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
+    public function __construct(private ColonySandboxRepositoryInterface $colonySandboxRepository, private PlanetFieldRepositoryInterface $planetFieldRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColonySandbox::VIEW_IDENTIFIER);
@@ -82,6 +76,7 @@ final class CreateSandbox implements ActionControllerInterface
         $game->setViewContext(ViewContextTypeEnum::HOST, $sandbox);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

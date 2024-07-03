@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use JBBCode\Parser;
 use Mockery;
 use Mockery\MockInterface;
@@ -52,6 +53,7 @@ class ShipWrapperTest extends StuTestCase
 
     private Parser $bbCodeParser;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

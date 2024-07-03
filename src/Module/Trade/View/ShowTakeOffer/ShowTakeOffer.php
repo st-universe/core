@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTakeOffer;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,28 +14,13 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class ShowTakeOffer implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TAKE_OFFER';
+    public const string VIEW_IDENTIFIER = 'SHOW_TAKE_OFFER';
 
-    private ShowTakeOfferRequestInterface $showTakeOfferRequest;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    public function __construct(
-        ShowTakeOfferRequestInterface $showTakeOfferRequest,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeOfferRepositoryInterface $tradeOfferRepository
-    ) {
-        $this->showTakeOfferRequest = $showTakeOfferRequest;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeOfferRepository = $tradeOfferRepository;
+    public function __construct(private ShowTakeOfferRequestInterface $showTakeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

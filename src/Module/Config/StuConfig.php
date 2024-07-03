@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Config;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Config\Model\CacheSettings;
 use Stu\Module\Config\Model\CacheSettingsInterface;
@@ -16,34 +17,35 @@ use Stu\Module\Config\Model\ResetSettingsInterface;
 
 final class StuConfig implements StuConfigInterface
 {
-    private ConfigInterface $config;
-
-    public function __construct(
-        ConfigInterface $config
-    ) {
-        $this->config = $config;
+    public function __construct(private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function getCacheSettings(): CacheSettingsInterface
     {
         return new CacheSettings(null, $this->config);
     }
 
+    #[Override]
     public function getDbSettings(): DbSettingsInterface
     {
         return new DbSettings(null, $this->config);
     }
 
+    #[Override]
     public function getDebugSettings(): DebugSettingsInterface
     {
         return new DebugSettings(null, $this->config);
     }
 
+    #[Override]
     public function getGameSettings(): GameSettingsInterface
     {
         return new GameSettings(null, $this->config);
     }
 
+    #[Override]
     public function getResetSettings(): ResetSettingsInterface
     {
         return new ResetSettings(null, $this->config);

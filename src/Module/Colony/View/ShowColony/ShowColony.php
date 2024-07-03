@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowColony;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -22,44 +23,13 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowColony implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONY';
+    public const string VIEW_IDENTIFIER = 'SHOW_COLONY';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    private ShowColonyRequestInterface $showColonyRequest;
-
-    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
-
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowColonyRequestInterface $showColonyRequest,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
-        OrbitShipListRetrieverInterface $orbitShipListRetriever,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
-        $this->showColonyRequest = $showColonyRequest;
-        $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->orbitShipListRetriever = $orbitShipListRetriever;
-        $this->colonyFunctionManager = $colonyFunctionManager;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowColonyRequestInterface $showColonyRequest, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

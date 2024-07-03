@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
+use Override;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -14,6 +15,7 @@ class AlertedShipsDetection implements AlertedShipsDetectionInterface
     ) {
     }
 
+    #[Override]
     public function getAlertedShipsOnLocation(ShipInterface $incomingShip): Collection
     {
         return $incomingShip->getCurrentMapField()->getShips()

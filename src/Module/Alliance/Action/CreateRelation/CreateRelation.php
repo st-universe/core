@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
@@ -19,28 +20,13 @@ final class CreateRelation implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_NEW_RELATION';
+    public const string ACTION_IDENTIFIER = 'B_NEW_RELATION';
 
-    private CreateRelationRequestInterface $createRelationRequest;
-
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    public function __construct(
-        CreateRelationRequestInterface $createRelationRequest,
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        AllianceRepositoryInterface $allianceRepository
-    ) {
-        $this->createRelationRequest = $createRelationRequest;
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->allianceRepository = $allianceRepository;
+    public function __construct(private CreateRelationRequestInterface $createRelationRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -107,6 +93,7 @@ final class CreateRelation implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -31,6 +32,7 @@ class DatabaseUiFactoryTest extends StuTestCase
 
     private DatabaseUiFactory $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);

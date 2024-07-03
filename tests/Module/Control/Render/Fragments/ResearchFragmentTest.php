@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -30,6 +31,7 @@ class ResearchFragmentTest extends StuTestCase
 
     private ResearchFragment $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);

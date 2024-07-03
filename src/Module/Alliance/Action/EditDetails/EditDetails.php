@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditDetails;
 
+use Override;
 use JBBCode\Parser;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
@@ -22,36 +23,13 @@ final class EditDetails implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
+    public const string ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
 
-    private EditDetailsRequestInterface $editDetailsRequest;
-
-    private Parser $bbcodeParser;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    public function __construct(
-        EditDetailsRequestInterface $editDetailsRequest,
-        Parser $bbcodeParser,
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender,
-        AllianceRepositoryInterface $allianceRepository
-    ) {
-        $this->editDetailsRequest = $editDetailsRequest;
-        $this->bbcodeParser = $bbcodeParser;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->allianceRepository = $allianceRepository;
+    public function __construct(private EditDetailsRequestInterface $editDetailsRequest, private Parser $bbcodeParser, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private AllianceRepositoryInterface $allianceRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -152,6 +130,7 @@ final class EditDetails implements ActionControllerInterface
         return preg_match('/^#?(([a-f0-9]{3}){1,2})$/i', $hex);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

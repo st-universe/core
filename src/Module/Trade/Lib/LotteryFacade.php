@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -14,22 +15,11 @@ use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 
 final class LotteryFacade implements LotteryFacadeInterface
 {
-    private LotteryTicketRepositoryInterface $lotteryTicketRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private StuTime $stuTime;
-
-    public function __construct(
-        LotteryTicketRepositoryInterface $lotteryTicketRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        StuTime $stuTime
-    ) {
-        $this->lotteryTicketRepository = $lotteryTicketRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->stuTime = $stuTime;
+    public function __construct(private LotteryTicketRepositoryInterface $lotteryTicketRepository, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime)
+    {
     }
 
+    #[Override]
     public function createLotteryTicket(UserInterface $user, bool $sendPm): void
     {
         $ticket = $this->lotteryTicketRepository->prototype();
@@ -47,6 +37,7 @@ final class LotteryFacade implements LotteryFacadeInterface
         }
     }
 
+    #[Override]
     public function getTicketAmount(bool $isLastPeriod): int
     {
         return $this->lotteryTicketRepository->getAmountByPeriod(
@@ -54,6 +45,7 @@ final class LotteryFacade implements LotteryFacadeInterface
         );
     }
 
+    #[Override]
     public function getTicketAmountByUser(int $userId, bool $isLastPeriod): int
     {
         return $this->lotteryTicketRepository->getAmountByPeriodAndUser(
@@ -62,6 +54,7 @@ final class LotteryFacade implements LotteryFacadeInterface
         );
     }
 
+    #[Override]
     public function getTicketsOfLastPeriod(): array
     {
         return $this->lotteryTicketRepository->getByPeriod($this->getCurrentOrLastPeriod(true));

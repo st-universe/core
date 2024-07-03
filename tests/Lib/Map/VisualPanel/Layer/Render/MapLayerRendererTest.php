@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
@@ -24,6 +25,7 @@ class MapLayerRendererTest extends StuTestCase
 
     private LayerRendererInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->layer = mock(LayerInterface::class);

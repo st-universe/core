@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
+use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,24 +14,16 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
 
 final class DoManualMaintenance implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MAINTENANCE';
-
-    private MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory;
-
-    /** @var array<MaintenanceHandlerInterface> */
-    private array $handlerList;
+    public const string ACTION_IDENTIFIER = 'B_MAINTENANCE';
 
     /**
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
-    public function __construct(
-        MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory,
-        array $handlerList
-    ) {
-        $this->maintenanceTickRunnerFactory = $maintenanceTickRunnerFactory;
-        $this->handlerList = $handlerList;
+    public function __construct(private MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory, private array $handlerList)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -54,6 +47,7 @@ final class DoManualMaintenance implements ActionControllerInterface
         $game->addInformation('Der Wartungs-Tick wurde durchgeführt!');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
@@ -32,6 +33,7 @@ class AlertDetectionTest extends StuTestCase
 
     private AlertDetectionInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

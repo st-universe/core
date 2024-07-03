@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyPopulationCalculator;
@@ -64,12 +65,14 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     ) {
     }
 
+    #[Override]
     public function createBuildingFunctionTal(
         array $buildingFunctionIds
     ): BuildingFunctionTalInterface {
         return new BuildingFunctionTal($buildingFunctionIds);
     }
 
+    #[Override]
     public function createColonySurface(
         PlanetFieldHostInterface $host,
         ?int $buildingId = null,
@@ -89,6 +92,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createColonyListItem(
         ColonyInterface $colony
     ): ColonyListItemInterface {
@@ -101,6 +105,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createBuildableRumpItem(
         ShipRumpInterface $shipRump,
         UserInterface $currentUser
@@ -113,6 +118,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createColonyProductionPreviewWrapper(
         BuildingInterface $building,
         PlanetFieldHostInterface $host
@@ -124,6 +130,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createEpsProductionPreviewWrapper(
         PlanetFieldHostInterface $host,
         BuildingInterface $building
@@ -135,6 +142,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createModuleSelector(
         ShipModuleTypeEnum $moduleType,
         ColonyInterface|ShipInterface $host,
@@ -158,6 +166,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createColonyProduction(
         CommodityInterface $commodity,
         int $production,
@@ -170,6 +179,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createColonyShieldingManager(
         PlanetFieldHostInterface $host
     ): ColonyShieldingManagerInterface {
@@ -180,6 +190,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createColonyCommodityProduction(
         PlanetFieldHostInterface $host
     ): ColonyCommodityProductionInterface {
@@ -191,11 +202,13 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface
     {
         return new ColonyProductionSumReducer();
     }
 
+    #[Override]
     public function createColonyPopulationCalculator(
         PlanetFieldHostInterface $host,
         array $production = null

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -16,24 +17,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class SwitchColonyMenu implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SWITCH_COLONYMENU';
+    public const string ACTION_IDENTIFIER = 'B_SWITCH_COLONYMENU';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->buildingFunctionRepository = $buildingFunctionRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
@@ -71,6 +61,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
         ) > 0;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -7,13 +7,8 @@ use Stu\Orm\Entity\StorageInterface;
 
 class StationCostWrapper
 {
-    private BuildplanModuleInterface $buildplanModule;
-    private ?StorageInterface $shipStorage;
-
-    public function __construct(BuildplanModuleInterface $buildplanModule, ?StorageInterface $shipStorage)
+    public function __construct(private BuildplanModuleInterface $buildplanModule, private ?StorageInterface $shipStorage)
     {
-        $this->buildplanModule = $buildplanModule;
-        $this->shipStorage = $shipStorage;
     }
 
     public function getCommodityId(): int

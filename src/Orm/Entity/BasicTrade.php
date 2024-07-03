@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -52,11 +53,13 @@ class BasicTrade implements BasicTradeInterface
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setFaction(FactionInterface $faction): BasicTradeInterface
     {
         $this->faction = $faction;
@@ -64,11 +67,13 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    #[Override]
     public function getFaction(): FactionInterface
     {
         return $this->faction;
     }
 
+    #[Override]
     public function setCommodity(CommodityInterface $commodity): BasicTradeInterface
     {
         $this->commodity = $commodity;
@@ -76,11 +81,13 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function setBuySell(int $buySell): BasicTradeInterface
     {
         $this->buy_sell = $buySell;
@@ -88,11 +95,13 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    #[Override]
     public function getBuySell(): int
     {
         return $this->buy_sell;
     }
 
+    #[Override]
     public function setValue(int $value): BasicTradeInterface
     {
         $this->value = $value;
@@ -100,11 +109,13 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    #[Override]
     public function getValue(): int
     {
         return $this->value;
     }
 
+    #[Override]
     public function setDate(int $date): BasicTradeInterface
     {
         $this->date_ms = $date;
@@ -112,11 +123,13 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return (int)$this->date_ms;
     }
 
+    #[Override]
     public function setUniqId(string $uniqid): BasicTradeInterface
     {
         $this->uniqid = $uniqid;
@@ -124,11 +137,13 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    #[Override]
     public function getUniqId(): string
     {
         return $this->uniqid;
     }
 
+    #[Override]
     public function setUserId(int $userId): BasicTradeInterface
     {
         $this->user_id = $userId;

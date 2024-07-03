@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Ship;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
@@ -60,6 +61,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
     }
 
+    #[Override]
     public function work(): void
     {
         foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
@@ -67,6 +69,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
         }
     }
 
+    #[Override]
     public function workShip(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
+use Override;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,44 +23,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SALVAGE_EPODS';
+    public const string ACTION_IDENTIFIER = 'B_SALVAGE_EPODS';
 
-    private SalvageEmergencyPodsRequestInterface $request;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private CancelRepairInterface $cancelRepair;
-
-    private TransferToClosestLocation $transferToClosestLocation;
-
-    public function __construct(
-        SalvageEmergencyPodsRequestInterface $request,
-        ShipLoaderInterface $shipLoader,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        TroopTransferUtilityInterface  $troopTransferUtility,
-        CancelRepairInterface $cancelRepair,
-        TransferToClosestLocation $transferToClosestLocation
-    ) {
-        $this->request = $request;
-        $this->shipLoader = $shipLoader;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->cancelRepair = $cancelRepair;
-        $this->transferToClosestLocation = $transferToClosestLocation;
+    public function __construct(private SalvageEmergencyPodsRequestInterface $request, private ShipLoaderInterface $shipLoader, private ShipCrewRepositoryInterface $shipCrewRepository, private TradePostRepositoryInterface $tradePostRepository, private PrivateMessageSenderInterface $privateMessageSender, private TroopTransferUtilityInterface  $troopTransferUtility, private CancelRepairInterface $cancelRepair, private TransferToClosestLocation $transferToClosestLocation)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -218,6 +188,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         return $this->troopTransferUtility->getFreeQuarters($ship) >= $count;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

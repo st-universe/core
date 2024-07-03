@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -37,16 +38,19 @@ class ModuleSpecial implements ModuleSpecialInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): ModuleSpecialInterface
     {
         $this->module_id = $moduleId;
@@ -54,11 +58,13 @@ class ModuleSpecial implements ModuleSpecialInterface
         return $this;
     }
 
+    #[Override]
     public function getSpecialId(): int
     {
         return $this->special_id;
     }
 
+    #[Override]
     public function setSpecialId(int $specialId): ModuleSpecialInterface
     {
         $this->special_id = $specialId;
@@ -66,6 +72,7 @@ class ModuleSpecial implements ModuleSpecialInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return ModuleSpecialAbilityEnum::getDescription($this->getSpecialId());

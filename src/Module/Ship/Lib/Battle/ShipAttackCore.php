@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -32,6 +33,7 @@ final class ShipAttackCore implements ShipAttackCoreInterface
     ) {
     }
 
+    #[Override]
     public function attack(
         ShipWrapperInterface|FleetWrapperInterface $sourceWrapper,
         ShipWrapperInterface $targetWrapper,

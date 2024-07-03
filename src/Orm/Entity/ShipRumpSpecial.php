@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -33,16 +34,19 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
     #[JoinColumn(name: 'rumps_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ShipRumpInterface $shipRump = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getShipRumpId(): int
     {
         return $this->rumps_id;
     }
 
+    #[Override]
     public function setShipRumpId(int $shipRumpId): ShipRumpSpecialInterface
     {
         $this->rumps_id = $shipRumpId;
@@ -50,11 +54,13 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
         return $this;
     }
 
+    #[Override]
     public function getSpecialId(): int
     {
         return $this->special;
     }
 
+    #[Override]
     public function setSpecialId(int $specialId): ShipRumpSpecialInterface
     {
         $this->special = $specialId;

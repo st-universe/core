@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,7 @@ class GameConfigRepositoryTest extends StuTestCase
 
     private GameConfigRepository $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->entityManager = $this->mock(EntityManagerInterface::class);

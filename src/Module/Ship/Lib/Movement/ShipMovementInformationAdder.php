@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Movement;
 
+use Override;
 use InvalidArgumentException;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
@@ -15,6 +16,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
     {
     }
 
+    #[Override]
     public function reachedDestination(
         ShipInterface $ship,
         bool $isFleetMode,
@@ -83,6 +85,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         }
     }
 
+    #[Override]
     public function reachedDestinationDestroyed(
         ShipInterface $ship,
         string $leadShipName,
@@ -157,6 +160,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         }
     }
 
+    #[Override]
     public function pulledTractoredShip(
         ShipInterface $ship,
         ShipInterface $tractoredShip,

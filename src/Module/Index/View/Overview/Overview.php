@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\Overview;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
@@ -15,22 +16,11 @@ use Stu\Orm\Repository\NewsRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private NewsRepositoryInterface $newsRepository;
-
-    private NewsFactoryInterface $newsFactory;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        NewsRepositoryInterface $newsRepository,
-        NewsFactoryInterface $newsFactory,
-        ConfigInterface $config
-    ) {
-        $this->newsRepository = $newsRepository;
-        $this->newsFactory = $newsFactory;
-        $this->config = $config;
+    public function __construct(private NewsRepositoryInterface $newsRepository, private NewsFactoryInterface $newsFactory, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(ModuleViewEnum::INDEX->getTitle());

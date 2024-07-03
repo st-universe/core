@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ChangeName;
 
+use Override;
 use JBBCode\Parser;
 use request;
 use Stu\Lib\CleanTextUtils;
@@ -15,28 +16,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ChangeName implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_NAME';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_NAME';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private Parser $bbCodeParser;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ChangeNameRequestInterface $changeNameRequest;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        Parser $bbCodeParser,
-        ShipRepositoryInterface $shipRepository,
-        ChangeNameRequestInterface $changeNameRequest
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->bbCodeParser = $bbCodeParser;
-        $this->shipRepository = $shipRepository;
-        $this->changeNameRequest = $changeNameRequest;
+    public function __construct(private ShipLoaderInterface $shipLoader, private Parser $bbCodeParser, private ShipRepositoryInterface $shipRepository, private ChangeNameRequestInterface $changeNameRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -79,6 +65,7 @@ final class ChangeName implements ActionControllerInterface
         $game->addInformation("Der Schiffname wurde geändert");
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

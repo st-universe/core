@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowSensorScan;
 
+use Override;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
@@ -22,21 +23,9 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowSensorScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SENSOR_SCAN';
+    public const string VIEW_IDENTIFIER = 'SHOW_SENSOR_SCAN';
 
-    public const ENERGY_COST_SECTOR_SCAN = 15;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    private NbsUtilityInterface $nbsUtility;
+    public const int ENERGY_COST_SECTOR_SCAN = 15;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -47,23 +36,18 @@ final class ShowSensorScan implements ViewControllerInterface
     private array $fadedSignaturesCloaked = [];
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
-        FlightSignatureRepositoryInterface $flightSignatureRepository,
-        NbsUtilityInterface $nbsUtility,
+        private ShipLoaderInterface $shipLoader,
+        private ShipRepositoryInterface $shipRepository,
+        private MapRepositoryInterface $mapRepository,
+        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private FlightSignatureRepositoryInterface $flightSignatureRepository,
+        private NbsUtilityInterface $nbsUtility,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->nbsUtility = $nbsUtility;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

@@ -6,7 +6,7 @@ namespace Stu\Component\Ship;
 
 final class ShipRoleEnum
 {
-    public const ROLE_PHASERSHIP = 1;
-    public const ROLE_PULSESHIP = 2;
-    public const ROLE_TORPEDOSHIP = 3;
+    public const int ROLE_PHASERSHIP = 1;
+    public const int ROLE_PULSESHIP = 2;
+    public const int ROLE_TORPEDOSHIP = 3;
 }

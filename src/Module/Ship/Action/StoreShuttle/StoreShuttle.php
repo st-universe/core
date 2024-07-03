@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StoreShuttle;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -21,40 +22,23 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class StoreShuttle implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_STORE_SHUTTLE';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private EntityManagerInterface $entityManager;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private InteractionCheckerInterface $interactionChecker;
+    public const string ACTION_IDENTIFIER = 'B_STORE_SHUTTLE';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipStorageManagerInterface $shipStorageManager,
-        EntityManagerInterface $entityManager,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ShipRemoverInterface $shipRemover,
-        InteractionCheckerInterface $interactionChecker,
+        private ShipLoaderInterface $shipLoader,
+        private ShipStorageManagerInterface $shipStorageManager,
+        private EntityManagerInterface $entityManager,
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private ShipRemoverInterface $shipRemover,
+        private InteractionCheckerInterface $interactionChecker,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->entityManager = $entityManager;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->shipRemover = $shipRemover;
-        $this->interactionChecker = $interactionChecker;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -154,6 +138,7 @@ final class StoreShuttle implements ActionControllerInterface
         $this->shipLoader->save($ship);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

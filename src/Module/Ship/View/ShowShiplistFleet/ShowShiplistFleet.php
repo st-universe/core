@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShiplistFleet;
 
+use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
@@ -15,24 +16,13 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ShowShiplistFleet implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIPLIST_FLEET';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIPLIST_FLEET';
 
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private SessionInterface $session;
-
-    public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        SessionInterface $session
-    ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->session = $session;
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private SessionInterface $session)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

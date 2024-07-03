@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EditKnPost;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,43 +22,16 @@ use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 
 final class EditKnPost implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_EDIT_KN';
+    public const string ACTION_IDENTIFIER = 'B_EDIT_KN';
 
-    public const EDIT_TIME = 600;
-
-    private EditKnPostRequestInterface $editKnPostRequest;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private KnCharactersRepositoryInterface $knCharactersRepository;
-
-    private UserCharactersRepositoryInterface $userCharactersRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
+    public const int EDIT_TIME = 600;
 
 
-    public function __construct(
-        EditKnPostRequestInterface $editKnPostRequest,
-        KnPostRepositoryInterface $knPostRepository,
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        KnCharactersRepositoryInterface $knCharactersRepository,
-        UserCharactersRepositoryInterface $userCharactersRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->editKnPostRequest = $editKnPostRequest;
-        $this->knPostRepository = $knPostRepository;
-        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->knCharactersRepository = $knCharactersRepository;
-        $this->userCharactersRepository = $userCharactersRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private EditKnPostRequestInterface $editKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharactersRepositoryInterface $knCharactersRepository, private UserCharactersRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -190,6 +164,7 @@ final class EditKnPost implements ActionControllerInterface
         $game->addInformation(_('Der Beitrag wurde editiert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

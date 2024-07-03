@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount;
 
+use Override;
 use RuntimeException;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -11,18 +12,11 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShipcountDataProviderFactory implements ShipcountDataProviderFactoryInterface
 {
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    public function __construct(
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
+    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
+    {
     }
 
+    #[Override]
     public function getDataProvider(int $id, ShipcountLayerTypeEnum $type): AbstractPanelLayerDataProvider
     {
         switch ($type) {

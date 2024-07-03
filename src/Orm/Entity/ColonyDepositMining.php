@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -42,11 +43,13 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ColonyDepositMiningInterface
     {
         $this->user = $user;
@@ -55,11 +58,13 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
         return $this;
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): ColonyDepositMiningInterface
     {
         $this->colony = $colony;
@@ -68,11 +73,13 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function setCommodity(CommodityInterface $commodity): ColonyDepositMiningInterface
     {
         $this->commodity = $commodity;
@@ -81,11 +88,13 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
         return $this;
     }
 
+    #[Override]
     public function getAmountLeft(): int
     {
         return $this->amount_left;
     }
 
+    #[Override]
     public function setAmountLeft(int $amountLeft): ColonyDepositMiningInterface
     {
         $this->amount_left = $amountLeft;
@@ -93,6 +102,7 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
         return $this;
     }
 
+    #[Override]
     public function isEnoughLeft(int $neededAmount): bool
     {
         return $this->getAmountLeft() >= $neededAmount;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowAstroEntry;
 
+use Override;
 use request;
 
 use Stu\Module\Control\GameControllerInterface;
@@ -15,28 +16,13 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowAstroEntry implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_ASTRO_ENTRY';
+    public const string VIEW_IDENTIFIER = 'SHOW_ASTRO_ENTRY';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private AstroEntryRepositoryInterface $astroEntryRepository;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        AstroEntryRepositoryInterface $astroEntryRepository,
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->astroEntryRepository = $astroEntryRepository;
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private AstroEntryRepositoryInterface $astroEntryRepository, private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

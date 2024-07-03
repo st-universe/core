@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DockShip;
 
+use Override;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipEnum;
@@ -23,36 +24,13 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class DockShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DOCK';
+    public const string ACTION_IDENTIFIER = 'B_DOCK';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private DockPrivilegeUtilityInterface $dockPrivilegeUtility;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private CancelRepairInterface $cancelRepair;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        DockPrivilegeUtilityInterface $dockPrivilegeUtility,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipSystemManagerInterface $shipSystemManager,
-        InteractionCheckerInterface $interactionChecker,
-        CancelRepairInterface $cancelRepair
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->dockPrivilegeUtility = $dockPrivilegeUtility;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->interactionChecker = $interactionChecker;
-        $this->cancelRepair = $cancelRepair;
+    public function __construct(private ShipLoaderInterface $shipLoader, private DockPrivilegeUtilityInterface $dockPrivilegeUtility, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private InteractionCheckerInterface $interactionChecker, private CancelRepairInterface $cancelRepair)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -143,7 +121,7 @@ final class DockShip implements ActionControllerInterface
 
         try {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-        } catch (ShipSystemException $e) {
+        } catch (ShipSystemException) {
         }
 
         if ($this->cancelRepair->cancelRepair($ship)) {
@@ -208,7 +186,7 @@ final class DockShip implements ActionControllerInterface
 
             try {
                 $this->shipSystemManager->deactivate($fleetShipWrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-            } catch (ShipSystemException $e) {
+            } catch (ShipSystemException) {
             }
 
             $fleetShip->setDockedTo($target);
@@ -243,6 +221,7 @@ final class DockShip implements ActionControllerInterface
         return $tradePost->isDockPmAutoRead();
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

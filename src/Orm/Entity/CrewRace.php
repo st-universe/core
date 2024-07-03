@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -40,16 +41,19 @@ class CrewRace implements CrewRaceInterface
     #[JoinColumn(name: 'faction_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private FactionInterface $faction;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getFactionId(): int
     {
         return $this->faction_id;
     }
 
+    #[Override]
     public function setFactionId(int $factionId): CrewRaceInterface
     {
         $this->faction_id = $factionId;
@@ -57,11 +61,13 @@ class CrewRace implements CrewRaceInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): CrewRaceInterface
     {
         $this->description = $description;
@@ -69,11 +75,13 @@ class CrewRace implements CrewRaceInterface
         return $this;
     }
 
+    #[Override]
     public function getChance(): int
     {
         return $this->chance;
     }
 
+    #[Override]
     public function setChance(int $chance): CrewRaceInterface
     {
         $this->chance = $chance;
@@ -81,11 +89,13 @@ class CrewRace implements CrewRaceInterface
         return $this;
     }
 
+    #[Override]
     public function getMaleRatio(): int
     {
         return $this->maleratio;
     }
 
+    #[Override]
     public function setMaleRatio(int $maleRatio): CrewRaceInterface
     {
         $this->maleratio = $maleRatio;
@@ -93,11 +103,13 @@ class CrewRace implements CrewRaceInterface
         return $this;
     }
 
+    #[Override]
     public function getGfxPath(): string
     {
         return $this->define;
     }
 
+    #[Override]
     public function setGfxPath(string $gfxPath): CrewRaceInterface
     {
         $this->define = $gfxPath;
@@ -105,11 +117,13 @@ class CrewRace implements CrewRaceInterface
         return $this;
     }
 
+    #[Override]
     public function getFaction(): FactionInterface
     {
         return $this->faction;
     }
 
+    #[Override]
     public function setFaction(FactionInterface $faction): CrewRaceInterface
     {
         $this->faction = $faction;

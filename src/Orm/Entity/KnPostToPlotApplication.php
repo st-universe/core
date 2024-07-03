@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -38,16 +39,19 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private RpgPlotInterface $rpgPlot;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getRpgPlot(): RpgPlotInterface
     {
         return $this->rpgPlot;
     }
 
+    #[Override]
     public function setRpgPlot(RpgPlotInterface $rpgPlot): KnPostToPlotApplicationInterface
     {
         $this->rpgPlot = $rpgPlot;
@@ -55,11 +59,13 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
         return $this;
     }
 
+    #[Override]
     public function getKnPost(): KnPostInterface
     {
         return $this->knPost;
     }
 
+    #[Override]
     public function setKnPost(KnPostInterface $knPost): KnPostToPlotApplicationInterface
     {
         $this->knPost = $knPost;
@@ -67,10 +73,12 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
         return $this;
     }
 
+    #[Override]
     public function getTime(): int
     {
         return $this->time;
     }
+    #[Override]
     public function setTime(int $time): KnPostToPlotApplicationInterface
     {
         $this->time = $time;

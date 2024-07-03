@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ShipyardShipQueue;
 use Stu\Orm\Entity\ShipyardShipQueueInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\ShipyardShipQueueInterface;
  */
 final class ShipyardShipQueueRepository extends EntityRepository implements ShipyardShipQueueRepositoryInterface
 {
+    #[Override]
     public function prototype(): ShipyardShipQueueInterface
     {
         return new ShipyardShipQueue();
     }
 
+    #[Override]
     public function save(ShipyardShipQueueInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -25,6 +28,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(ShipyardShipQueueInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -33,6 +37,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         //$em->flush();
     }
 
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
@@ -40,6 +45,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         ]);
     }
 
+    #[Override]
     public function getByShipyard(int $stationId): array
     {
         return $this->findBy([
@@ -47,6 +53,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         ]);
     }
 
+    #[Override]
     public function getAmountByShipyard(int $shipId): int
     {
         return $this->count([
@@ -54,6 +61,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         ]);
     }
 
+    #[Override]
     public function stopQueueByShipyard(int $shipId): void
     {
         $this->getEntityManager()
@@ -70,6 +78,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
             ->execute();
     }
 
+    #[Override]
     public function restartQueueByShipyard(int $shipId): void
     {
         $this->getEntityManager()
@@ -90,6 +99,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
             ->execute();
     }
 
+    #[Override]
     public function getFinishedJobs(): array
     {
         return $this->getEntityManager()

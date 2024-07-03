@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnPlot;
 
+use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
@@ -15,28 +16,13 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowKnPlot implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_PLOT';
+    public const string VIEW_IDENTIFIER = 'SHOW_PLOT';
 
-    private ShowKnPlotRequestInterface $showKnPlotRequest;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private KnFactoryInterface $knFactory;
-
-    public function __construct(
-        ShowKnPlotRequestInterface $showKnPlotRequest,
-        KnPostRepositoryInterface $knPostRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        KnFactoryInterface $knFactory
-    ) {
-        $this->showKnPlotRequest = $showKnPlotRequest;
-        $this->knPostRepository = $knPostRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->knFactory = $knFactory;
+    public function __construct(private ShowKnPlotRequestInterface $showKnPlotRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnFactoryInterface $knFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

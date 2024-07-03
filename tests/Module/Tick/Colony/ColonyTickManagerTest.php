@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
+use Override;
 use Exception;
 use Mockery\MockInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -56,6 +57,7 @@ class ColonyTickManagerTest extends StuTestCase
 
     private ColonyTickManagerInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->colonyTick = $this->mock(ColonyTickInterface::class);

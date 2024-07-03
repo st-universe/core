@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use RuntimeException;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
@@ -40,6 +41,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

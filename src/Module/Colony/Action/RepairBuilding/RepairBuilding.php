@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RepairBuilding;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -16,32 +17,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class RepairBuilding implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_REPAIR';
+    public const string ACTION_IDENTIFIER = 'B_REPAIR';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -147,6 +129,7 @@ final class RepairBuilding implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

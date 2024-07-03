@@ -6,30 +6,8 @@ namespace Stu\Module\Control\Render;
 
 final class UserContainer
 {
-    private int $id;
-    private string $avatar;
-    private string $name;
-    private int $factionId;
-    private string $css;
-    private bool $hasStationsNavigation;
-    private bool $showDeals;
-
-    public function __construct(
-        int $id,
-        string $avatar,
-        string $name,
-        int $factionId,
-        string $css,
-        bool $hasStationsNavigation,
-        bool $showDeals
-    ) {
-        $this->id = $id;
-        $this->avatar = $avatar;
-        $this->name = $name;
-        $this->factionId = $factionId;
-        $this->css = $css;
-        $this->hasStationsNavigation = $hasStationsNavigation;
-        $this->showDeals = $showDeals;
+    public function __construct(private int $id, private string $avatar, private string $name, private int $factionId, private string $css, private bool $hasStationsNavigation, private bool $showDeals)
+    {
     }
 
     public function getId(): int

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 
@@ -19,16 +20,19 @@ class TFleetShipItem extends TShipItem implements TFleetShipItemInterface
     #[Column(type: 'boolean')]
     private bool $is_blocking = false;
 
+    #[Override]
     public function getFleetName(): string
     {
         return $this->fleet_name;
     }
 
+    #[Override]
     public function isDefending(): bool
     {
         return $this->is_defending;
     }
 
+    #[Override]
     public function isBlocking(): bool
     {
         return $this->is_blocking;

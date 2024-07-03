@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -15,34 +16,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        TradePostRepositoryInterface $tradePostRepository,
-        ShipRepositoryInterface $shipRepository,
-        UserRepositoryInterface $userRepository,
-        StorageRepositoryInterface $storageRepository,
-        EntryCreatorInterface $entryCreator,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->tradePostRepository = $tradePostRepository;
-        $this->shipRepository = $shipRepository;
-        $this->userRepository = $userRepository;
-        $this->storageRepository = $storageRepository;
-        $this->entryCreator = $entryCreator;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private TradePostRepositoryInterface $tradePostRepository, private ShipRepositoryInterface $shipRepository, private UserRepositoryInterface $userRepository, private StorageRepositoryInterface $storageRepository, private EntryCreatorInterface $entryCreator, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function delete(UserInterface $user): void
     {
         $fallbackUser = $this->userRepository->getFallbackUser();

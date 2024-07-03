@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
 
@@ -15,11 +16,13 @@ class WarpDriveSystemData extends AbstractSystemData
     public int $split = 100;
     public bool $autoCarryOver = false;
 
+    #[Override]
     function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }
 
+    #[Override]
     public function update(): void
     {
         // Überprüfe und begrenze den Wert zwischen 0 und 100

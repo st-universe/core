@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -38,49 +39,58 @@ class DockingPrivilege implements DockingPrivilegeInterface
     #[JoinColumn(name: 'ships_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTargetId(): int
     {
         return $this->target;
     }
 
+    #[Override]
     public function setTargetId(int $targetId): DockingPrivilegeInterface
     {
         $this->target = $targetId;
         return $this;
     }
 
+    #[Override]
     public function getPrivilegeType(): int
     {
         return $this->privilege_type;
     }
 
+    #[Override]
     public function setPrivilegeType(int $privilegeType): DockingPrivilegeInterface
     {
         $this->privilege_type = $privilegeType;
         return $this;
     }
 
+    #[Override]
     public function getPrivilegeMode(): int
     {
         return $this->privilege_mode;
     }
 
+    #[Override]
     public function setPrivilegeMode(int $privilegeMode): DockingPrivilegeInterface
     {
         $this->privilege_mode = $privilegeMode;
         return $this;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): DockingPrivilegeInterface
     {
         $this->ship = $ship;

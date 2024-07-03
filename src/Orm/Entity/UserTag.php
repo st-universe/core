@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -35,43 +36,51 @@ class UserTag implements UserTagInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setTagTypeId(int $tagTypeId): UserTagInterface
     {
         $this->tag_type_id = $tagTypeId;
         return $this;
     }
 
+    #[Override]
     public function getTagTypeId(): int
     {
         return $this->tag_type_id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): UserTagInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(DateTimeInterface $date): UserTagInterface
     {
         $this->date = $date;

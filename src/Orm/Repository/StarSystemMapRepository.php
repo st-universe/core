@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
@@ -26,6 +27,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
  */
 final class StarSystemMapRepository extends EntityRepository implements StarSystemMapRepositoryInterface
 {
+    #[Override]
     public function getBySystemOrdered(int $starSystemId): array
     {
         return $this->findBy(
@@ -34,6 +36,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         );
     }
 
+    #[Override]
     public function getByCoordinates(
         int $starSystemId,
         int $sx,
@@ -46,6 +49,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ]);
     }
 
+    #[Override]
     public function getByCoordinateRange(
         StarSystemInterface $starSystem,
         int $startSx,
@@ -76,6 +80,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->getResult();
     }
 
+    #[Override]
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -94,6 +99,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
+    #[Override]
     public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -128,6 +134,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
 
+    #[Override]
     public function getColonyShieldData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -158,6 +165,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
 
+    #[Override]
     public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -176,6 +184,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
+    #[Override]
     public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array
     {
         $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
@@ -219,6 +228,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
+    #[Override]
     public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId): array
     {
         $result = [];
@@ -298,6 +308,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return array_map(fn (array $data) => $data['id'], $result);
     }
 
+    #[Override]
     public function getRumpCategoryInfo(LayerInterface $layer, int $cx, int $cy): array
     {
         $rsm = new ResultSetMapping();
@@ -335,11 +346,13 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->getResult();
     }
 
+    #[Override]
     public function prototype(): StarSystemMapInterface
     {
         return new StarSystemMap();
     }
 
+    #[Override]
     public function save(StarSystemMapInterface $starSystemMap): void
     {
         $em = $this->getEntityManager();
@@ -347,6 +360,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         $em->persist($starSystemMap);
     }
 
+    #[Override]
     public function getForSubspaceEllipseCreation(): array
     {
         $rsm = new ResultSetMapping();
@@ -421,6 +435,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->getResult();
     }
 
+    #[Override]
     public function truncateByStarSystem(StarSystemInterface $starSystem): void
     {
         $this->getEntityManager()->createQuery(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
@@ -18,6 +19,7 @@ class AttackMatchupTest extends StuTestCase
 
     private AttackMatchupInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->stuRandom = $this->mock(StuRandom::class);

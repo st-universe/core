@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeletePost;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\Board\Board;
@@ -19,20 +20,13 @@ final class DeletePost implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_DEL_POSTING';
+    public const string ACTION_IDENTIFIER = 'B_DEL_POSTING';
 
-    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
-
-    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
-
-    public function __construct(
-        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
-    ) {
-        $this->allianceBoardPostRepository = $allianceBoardPostRepository;
-        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
+    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -63,6 +57,7 @@ final class DeletePost implements ActionControllerInterface
         $game->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

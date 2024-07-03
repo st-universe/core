@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -95,11 +96,13 @@ class Deals implements DealsInterface
         $this->auctionBids = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setAuction(bool $auction): DealsInterface
     {
         $this->auction = $auction;
@@ -107,17 +110,20 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getAuction(): bool
     {
         return $this->auction;
     }
 
+    #[Override]
     public function getAmount(): ?int
     {
         return $this->amount;
     }
 
 
+    #[Override]
     public function setAmount(int $amount): DealsInterface
     {
         $this->amount = $amount;
@@ -125,32 +131,38 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getgiveCommodityId(): ?int
     {
         return $this->give_commodity;
     }
 
+    #[Override]
     public function getwantCommodityId(): ?int
     {
         return $this->want_commodity;
     }
 
+    #[Override]
     public function getgiveCommodityAmount(): ?int
     {
         return $this->give_commodity_amonut;
     }
 
 
+    #[Override]
     public function getwantCommodityAmount(): ?int
     {
         return $this->want_commodity_amount;
     }
 
+    #[Override]
     public function getWantPrestige(): ?int
     {
         return $this->want_prestige;
     }
 
+    #[Override]
     public function setwantPrestige(int $wantprestige): DealsInterface
     {
         $this->want_prestige = $wantprestige;
@@ -158,11 +170,13 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildplanId(): ?int
     {
         return $this->buildplan_id;
     }
 
+    #[Override]
     public function setBuildplanId(int $buildplanid): DealsInterface
     {
         $this->buildplan_id = $buildplanid;
@@ -170,11 +184,13 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getShip(): ?bool
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(bool $ship): DealsInterface
     {
         $this->ship = $ship;
@@ -182,16 +198,19 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getStart(): int
     {
         return $this->start;
     }
 
+    #[Override]
     public function getEnd(): int
     {
         return $this->end;
     }
 
+    #[Override]
     public function setEnd(int $end): DealsInterface
     {
         $this->end = $end;
@@ -199,11 +218,13 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getTakenTime(): ?int
     {
         return $this->taken_time;
     }
 
+    #[Override]
     public function setTakenTime(int $time): DealsInterface
     {
         $this->taken_time = $time;
@@ -211,11 +232,13 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getAuctionAmount(): ?int
     {
         return $this->auction_amount;
     }
 
+    #[Override]
     public function setAuctionAmount(int $auction_amount): DealsInterface
     {
         $this->auction_amount = $auction_amount;
@@ -223,6 +246,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getAuctionUser(): ?UserInterface
     {
         $highestBid = $this->getHighestBid();
@@ -230,6 +254,7 @@ class Deals implements DealsInterface
         return $highestBid !== null ? $highestBid->getUser() : null;
     }
 
+    #[Override]
     public function setAuctionUser(int $auction_user): DealsInterface
     {
         $this->auction_user = $auction_user;
@@ -237,11 +262,13 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getWantedCommodity(): CommodityInterface
     {
         return $this->wantedCommodity;
     }
 
+    #[Override]
     public function setWantedCommodity(CommodityInterface $wantedCommodity): DealsInterface
     {
         $this->wantedCommodity = $wantedCommodity;
@@ -249,11 +276,13 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getGiveCommodity(): CommodityInterface
     {
         return $this->giveCommodity;
     }
 
+    #[Override]
     public function setGiveCommodity(CommodityInterface $giveCommodity): DealsInterface
     {
         $this->giveCommodity = $giveCommodity;
@@ -261,6 +290,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
+    #[Override]
     public function getModules(): array
     {
         $modules = [];
@@ -273,36 +303,43 @@ class Deals implements DealsInterface
         return $modules;
     }
 
+    #[Override]
     public function getBuildplan(): ?ShipBuildplanInterface
     {
         return $this->buildplan;
     }
 
+    #[Override]
     public function getRumpId(): int
     {
         return $this->getBuildplan()->getRumpId();
     }
 
+    #[Override]
     public function getCrew(): int
     {
         return $this->getBuildplan() == null ? 0 : $this->getBuildplan()->getCrew();
     }
 
+    #[Override]
     public function getBuildplanName(): string
     {
         return $this->getBuildplan()->getName();
     }
 
+    #[Override]
     public function getAuctionBids(): Collection
     {
         return $this->auctionBids;
     }
 
+    #[Override]
     public function getHighestBid(): ?AuctionBidInterface
     {
         return $this->getAuctionBids()->count() > 0 ? $this->getAuctionBids()->last() : null;
     }
 
+    #[Override]
     public function isPrestigeCost(): bool
     {
         return $this->getWantPrestige() !== null;

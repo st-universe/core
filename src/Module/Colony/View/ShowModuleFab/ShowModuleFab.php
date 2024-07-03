@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -20,40 +21,13 @@ use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_MODULEFAB';
+    public const string VIEW_IDENTIFIER = 'SHOW_MODULEFAB';
 
-    private ColonyLoaderInterface $colonyLoader;
-    private ShowModuleFabRequestInterface $showModuleFabRequest;
-    private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository;
-    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
-    private ModuleQueueRepositoryInterface $moduleQueueRepository;
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShowModuleFabRequestInterface $showModuleFabRequest,
-        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
-        ModuleQueueRepositoryInterface $moduleQueueRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->showModuleFabRequest = $showModuleFabRequest;
-        $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
-        $this->buildingFunctionRepository = $buildingFunctionRepository;
-        $this->moduleQueueRepository = $moduleQueueRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->buildplanModuleRepository = $buildplanModuleRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleFabRequestInterface $showModuleFabRequest, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

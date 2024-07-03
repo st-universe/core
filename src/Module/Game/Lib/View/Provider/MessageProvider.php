@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
@@ -24,36 +25,13 @@ use Stu\Component\Game\GameEnum;
 
 final class MessageProvider implements ViewComponentProviderInterface
 {
-    private const PMLIMITER = 6;
+    private const int PMLIMITER = 6;
 
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
-    private IgnoreListRepositoryInterface $ignoreListRepository;
-
-    private ContactRepositoryInterface $contactRepository;
-
-    private PrivateMessageUiFactoryInterface $privateMessageUiFactory;
-
-    private ComponentLoaderInterface $componentLoader;
-
-    public function __construct(
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository,
-        IgnoreListRepositoryInterface $ignoreListRepository,
-        PrivateMessageUiFactoryInterface $privateMessageUiFactory,
-        ContactRepositoryInterface $contactRepository,
-        ComponentLoaderInterface $componentLoader
-    ) {
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
-        $this->privateMessageRepository = $privateMessageRepository;
-        $this->ignoreListRepository = $ignoreListRepository;
-        $this->contactRepository = $contactRepository;
-        $this->privateMessageUiFactory = $privateMessageUiFactory;
-        $this->componentLoader = $componentLoader;
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory, private ContactRepositoryInterface $contactRepository, private ComponentLoaderInterface $componentLoader)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

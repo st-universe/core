@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
+use Override;
 use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class ShowMapEditor implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_MAP_EDITOR';
+    public const string VIEW_IDENTIFIER = 'SHOW_MAP_EDITOR';
 
-    private LayerRepositoryInterface $layerRepository;
-
-    private StarSystemRepositoryInterface $starSystemRepository;
-
-    public function __construct(
-        LayerRepositoryInterface $layerRepository,
-        StarSystemRepositoryInterface $starSystemRepository
-    ) {
-        $this->layerRepository = $layerRepository;
-        $this->starSystemRepository = $starSystemRepository;
+    public function __construct(private LayerRepositoryInterface $layerRepository, private StarSystemRepositoryInterface $starSystemRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/admin/mapeditor_overview.twig');

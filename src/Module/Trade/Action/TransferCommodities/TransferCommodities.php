@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TransferCommodities;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,36 +18,13 @@ use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 final class TransferCommodities implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TRANSFER';
+    public const string ACTION_IDENTIFIER = 'B_TRANSFER';
 
-    private TransferCommoditiesRequestInterface $transferCommoditiesRequest;
-
-    private TradeTransferRepositoryInterface $tradeTransferRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        TransferCommoditiesRequestInterface $transferCommoditiesRequest,
-        TradeTransferRepositoryInterface $tradeTransferRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->transferCommoditiesRequest = $transferCommoditiesRequest;
-        $this->tradeTransferRepository = $tradeTransferRepository;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private TransferCommoditiesRequestInterface $transferCommoditiesRequest, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -130,6 +108,7 @@ final class TransferCommodities implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

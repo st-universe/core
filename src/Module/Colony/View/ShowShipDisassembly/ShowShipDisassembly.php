@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipDisassembly;
 
+use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
@@ -12,24 +13,13 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowShipDisassembly implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIP_DISASSEMBLY';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_DISASSEMBLY';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    private ShowShipDisassemblyRequestInterface $showShipDisassemblyRequest;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowShipDisassemblyRequestInterface $showShipDisassemblyRequest
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
-        $this->showShipDisassemblyRequest = $showShipDisassemblyRequest;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowShipDisassemblyRequestInterface $showShipDisassemblyRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

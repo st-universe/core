@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -21,30 +22,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipLoader implements ShipLoaderInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private SemaphoreUtilInterface $semaphoreUtil;
-
-    private GameControllerInterface $game;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private LockManagerInterface $lockManager;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        SemaphoreUtilInterface $semaphoreUtil,
-        GameControllerInterface $game,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        LockManagerInterface $lockManager
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->semaphoreUtil = $semaphoreUtil;
-        $this->game = $game;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->lockManager = $lockManager;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private SemaphoreUtilInterface $semaphoreUtil, private GameControllerInterface $game, private ShipWrapperFactoryInterface $shipWrapperFactory, private LockManagerInterface $lockManager)
+    {
     }
 
+    #[Override]
     public function getByIdAndUser(
         int $shipId,
         int $userId,
@@ -60,6 +42,7 @@ final class ShipLoader implements ShipLoaderInterface
         )->getSource()->get();
     }
 
+    #[Override]
     public function getWrapperByIdAndUser(
         int $shipId,
         int $userId,
@@ -75,6 +58,7 @@ final class ShipLoader implements ShipLoaderInterface
         )->getSource();
     }
 
+    #[Override]
     public function getWrappersBySourceAndUserAndTarget(
         int $shipId,
         int $userId,
@@ -142,6 +126,7 @@ final class ShipLoader implements ShipLoaderInterface
         }
     }
 
+    #[Override]
     public function find(int $shipId, bool $checkForEntityLock = true): ?ShipWrapperInterface
     {
         if ($checkForEntityLock) {
@@ -156,6 +141,7 @@ final class ShipLoader implements ShipLoaderInterface
         return $this->acquireSemaphores($ship, null)->getSource();
     }
 
+    #[Override]
     public function save(ShipInterface $ship): void
     {
         $this->shipRepository->save($ship);

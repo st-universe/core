@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\ColonyWorthRanking;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ColonyWorthRanking implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONY_WORTH';
+    public const string VIEW_IDENTIFIER = 'SHOW_COLONY_WORTH';
 
-    private DatabaseUiFactoryInterface $databaseUiFactory;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        DatabaseUiFactoryInterface $databaseUiFactory,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->databaseUiFactory = $databaseUiFactory;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setNavigation([

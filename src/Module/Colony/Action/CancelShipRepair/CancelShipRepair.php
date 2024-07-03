@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CancelShipRepair;
 
+use Override;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
@@ -16,29 +17,14 @@ use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 
 final class CancelShipRepair implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CANCEL_REPAIR';
-
-    private CancelShipRepairRequestInterface $request;
-
-    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
-
-    private CancelRepairInterface $cancelRepair;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
+    public const string ACTION_IDENTIFIER = 'B_CANCEL_REPAIR';
 
 
-    public function __construct(
-        CancelShipRepairRequestInterface $request,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        CancelRepairInterface $cancelRepair,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->request = $request;
-        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
-        $this->cancelRepair = $cancelRepair;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private CancelShipRepairRequestInterface $request, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private CancelRepairInterface $cancelRepair, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -74,6 +60,7 @@ final class CancelShipRepair implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

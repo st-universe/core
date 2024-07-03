@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -28,6 +29,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
+    #[Override]
     public function setUp(): void
     {
         $this->allianceJobRepository = Mockery::mock(AllianceJobRepositoryInterface::class);

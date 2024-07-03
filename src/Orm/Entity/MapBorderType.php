@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -28,16 +29,19 @@ class MapBorderType implements MapBorderTypeInterface
     #[Column(type: 'string')]
     private string $description;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getFactionId(): int
     {
         return $this->faction_id;
     }
 
+    #[Override]
     public function setFactionId(int $factionId): MapBorderTypeInterface
     {
         $this->faction_id = $factionId;
@@ -45,11 +49,13 @@ class MapBorderType implements MapBorderTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getColor(): string
     {
         return $this->color;
     }
 
+    #[Override]
     public function setColor(string $color): MapBorderTypeInterface
     {
         $this->color = $color;
@@ -57,11 +63,13 @@ class MapBorderType implements MapBorderTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): MapBorderTypeInterface
     {
         $this->description = $description;

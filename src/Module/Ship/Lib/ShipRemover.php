@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -41,6 +42,7 @@ final class ShipRemover implements ShipRemoverInterface
         }
     }
 
+    #[Override]
     public function remove(ShipInterface $ship, ?bool $truncateCrew = false): void
     {
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);

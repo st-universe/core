@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Lib;
 
+use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 
@@ -12,14 +13,11 @@ use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
  */
 final class ProfileVisitorRegistration implements ProfileVisitorRegistrationInterface
 {
-    private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
-
-    public function __construct(
-        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository
-    ) {
-        $this->userProfileVisitorRepository = $userProfileVisitorRepository;
+    public function __construct(private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository)
+    {
     }
 
+    #[Override]
     public function register(
         UserInterface $user,
         UserInterface $visitor

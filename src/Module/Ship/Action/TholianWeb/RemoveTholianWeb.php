@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TholianWeb;
 
+use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,24 +17,19 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class RemoveTholianWeb implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_REMOVE_WEB';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private TholianWebUtilInterface $tholianWebUtil;
+    public const string ACTION_IDENTIFIER = 'B_REMOVE_WEB';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TholianWebUtilInterface $tholianWebUtil,
+        private ShipLoaderInterface $shipLoader,
+        private TholianWebUtilInterface $tholianWebUtil,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->tholianWebUtil = $tholianWebUtil;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -89,6 +85,7 @@ final class RemoveTholianWeb implements ActionControllerInterface
     }
 
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

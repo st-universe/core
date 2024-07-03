@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditPassable;
 
+use Override;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 
 final class EditPassable implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_EDIT_PASSABLE';
+    public const string ACTION_IDENTIFIER = 'B_EDIT_PASSABLE';
 
-    private EditPassableRequestInterface $editPassableRequest;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
-
-    public function __construct(
-        EditPassableRequestInterface $editPassableRequest,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
-        MapRepositoryInterface $mapRepository
-    ) {
-        $this->editPassableRequest = $editPassableRequest;
-        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
-        $this->mapRepository = $mapRepository;
+    public function __construct(private EditPassableRequestInterface $editPassableRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private MapRepositoryInterface $mapRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $selectedField = $this->mapRepository->find($this->editPassableRequest->getFieldId());
@@ -55,6 +45,7 @@ final class EditPassable implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

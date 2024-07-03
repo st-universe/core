@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -18,6 +19,7 @@ use Stu\Orm\Entity\ShipInterface;
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
     // used for ModuleSelector
+    #[Override]
     public function getBySpecialTypeAndRump(
         ColonyInterface|ShipInterface $host,
         ShipModuleTypeEnum $moduleType,
@@ -61,6 +63,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     // used for ModuleSelector
+    #[Override]
     public function getByTypeColonyAndLevel(
         int $colonyId,
         ShipModuleTypeEnum $moduleType,
@@ -100,6 +103,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     // used for admin createBuildplan
+    #[Override]
     public function getByTypeAndLevel(
         int $moduleTypeId,
         int $shipRumpRoleId,
@@ -123,6 +127,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     // used for admin createBuildplan
+    #[Override]
     public function getBySpecialTypeIds(array $specialTypeIds): iterable
     {
         return $this->getEntityManager()

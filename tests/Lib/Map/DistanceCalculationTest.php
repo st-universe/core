@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map;
 
+use Override;
 use RuntimeException;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -14,6 +15,7 @@ class DistanceCalculationTest extends StuTestCase
 {
     private DistanceCalculationInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->subject = new DistanceCalculation();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ConstructionProgress;
 use Stu\Orm\Entity\ConstructionProgressInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\ConstructionProgressInterface;
  */
 final class ConstructionProgressRepository extends EntityRepository implements ConstructionProgressRepositoryInterface
 {
+    #[Override]
     public function getByShip(int $shipId): ?ConstructionProgressInterface
     {
         return $this->getEntityManager()
@@ -27,11 +29,13 @@ final class ConstructionProgressRepository extends EntityRepository implements C
             ->getOneOrNullResult();
     }
 
+    #[Override]
     public function prototype(): ConstructionProgressInterface
     {
         return new ConstructionProgress();
     }
 
+    #[Override]
     public function save(ConstructionProgressInterface $constructionProgress): void
     {
         $em = $this->getEntityManager();
@@ -39,6 +43,7 @@ final class ConstructionProgressRepository extends EntityRepository implements C
         $em->persist($constructionProgress);
     }
 
+    #[Override]
     public function delete(ConstructionProgressInterface $constructionProgress): void
     {
         $em = $this->getEntityManager();

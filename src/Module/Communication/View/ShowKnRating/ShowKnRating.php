@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnRating;
 
+use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -11,16 +12,13 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowKnRating implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_KN_RATING';
+    public const string VIEW_IDENTIFIER = 'SHOW_KN_RATING';
 
-    private KnFactoryInterface $knFactory;
-
-    public function __construct(
-        KnFactoryInterface $knFactory
-    ) {
-        $this->knFactory = $knFactory;
+    public function __construct(private KnFactoryInterface $knFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->showMacro('html/commmacros.xhtml/knrating');

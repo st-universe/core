@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Torpedo;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -33,6 +34,7 @@ class ClearTorpedoTest extends StuTestCase
 
     private ClearTorpedoInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

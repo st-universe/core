@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -47,16 +48,19 @@ class BuildplanHangar implements BuildplanHangarInterface
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpInterface $shipRump;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getBuildplanId(): int
     {
         return $this->buildplan_id;
     }
 
+    #[Override]
     public function setBuildplanId(int $buildplanId): BuildplanHangarInterface
     {
         $this->buildplan_id = $buildplanId;
@@ -64,11 +68,13 @@ class BuildplanHangar implements BuildplanHangarInterface
         return $this;
     }
 
+    #[Override]
     public function getDefaultTorpedoTypeId(): int
     {
         return $this->default_torpedo_type_id;
     }
 
+    #[Override]
     public function setDefaultTorpedoTypeId(int $defaultTorpedoTypeId): BuildplanHangarInterface
     {
         $this->default_torpedo_type_id = $defaultTorpedoTypeId;
@@ -76,22 +82,26 @@ class BuildplanHangar implements BuildplanHangarInterface
         return $this;
     }
 
+    #[Override]
     public function getDefaultTorpedoType(): ?TorpedoTypeInterface
     {
         return $this->defaultTorpedoType;
     }
 
+    #[Override]
     public function getBuildplan(): ShipBuildplanInterface
     {
         return $this->buildplan;
     }
 
+    #[Override]
     public function setStartEnergyCosts(int $startEnergyCosts): BuildplanHangarInterface
     {
         $this->start_energy_costs = $startEnergyCosts;
         return $this;
     }
 
+    #[Override]
     public function getStartEnergyCosts(): int
     {
         return $this->start_energy_costs;

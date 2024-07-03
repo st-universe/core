@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use Override;
 use SysvSemaphore;
 use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
@@ -13,22 +14,17 @@ use Stu\Module\Logging\LoggerUtilInterface;
 
 final class SemaphoreUtil implements SemaphoreUtilInterface
 {
-    private GameControllerInterface $game;
-
-    private StuConfigInterface $stuConfig;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        GameControllerInterface $game,
-        StuConfigInterface $stuConfig,
+        private GameControllerInterface $game,
+        private StuConfigInterface $stuConfig,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->game = $game;
-        $this->stuConfig = $stuConfig;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function getSemaphore(int $key): ?SysvSemaphore
     {
         if (!$this->isSemaphoreUsageActive()) {
@@ -49,6 +45,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         return $semaphore;
     }
 
+    #[Override]
     public function acquireMainSemaphore($semaphore): void
     {
         if (!$this->isSemaphoreUsageActive()) {
@@ -58,6 +55,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->acquire($semaphore);
     }
 
+    #[Override]
     public function acquireSemaphore(int $key, $semaphore): void
     {
         if (!$this->isSemaphoreUsageActive()) {
@@ -79,6 +77,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         }
     }
 
+    #[Override]
     public function releaseSemaphore($semaphore, bool $doRemove = false): void
     {
         if (!$this->isSemaphoreUsageActive()) {

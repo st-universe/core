@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
+use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 /**
@@ -13,11 +14,13 @@ final class SalvageEmergencyPodsRequest implements SalvageEmergencyPodsRequestIn
 {
     use CustomControllerHelperTrait;
 
+    #[Override]
     public function getShipId(): int
     {
         return $this->queryParameter('id')->int()->required();
     }
 
+    #[Override]
     public function getTargetId(): int
     {
         return $this->queryParameter('target')->int()->required();

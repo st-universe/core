@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\ShowColonySurface;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 
 final class ShowColonySurface implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SURFACE';
+    public const string VIEW_IDENTIFIER = 'SHOW_SURFACE';
 
-    private ColonyScanRepositoryInterface $colonyScanRepository;
-    private ShowColonySurfaceRequestInterface $showColonySurfaceRequest;
-
-    public function __construct(
-        ColonyScanRepositoryInterface $colonyScanRepository,
-        ShowColonySurfaceRequestInterface $showColonySurfaceRequest
-    ) {
-        $this->colonyScanRepository = $colonyScanRepository;
-        $this->showColonySurfaceRequest = $showColonySurfaceRequest;
+    public function __construct(private ColonyScanRepositoryInterface $colonyScanRepository, private ShowColonySurfaceRequestInterface $showColonySurfaceRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Letzter Oberflächenscan'));

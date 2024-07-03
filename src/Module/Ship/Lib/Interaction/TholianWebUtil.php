@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
@@ -26,38 +27,21 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class TholianWebUtil implements TholianWebUtilInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private StuTime $stuTime;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     private LoggerUtilInterface $loggerUtil;
 
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        TholianWebRepositoryInterface $tholianWebRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        StuTime $stuTime,
-        PrivateMessageSenderInterface $privateMessageSender,
+        private ShipRepositoryInterface $shipRepository,
+        private TholianWebRepositoryInterface $tholianWebRepository,
+        private ShipSystemRepositoryInterface $shipSystemRepository,
+        private StuTime $stuTime,
+        private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager
     ) {
-        $this->shipRepository = $shipRepository;
-        $this->tholianWebRepository = $tholianWebRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->stuTime = $stuTime;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function releaseShipFromWeb(ShipWrapperInterface $wrapper): void
     {
         $this->loggerUtil->log(sprintf('releaseShipFromWeb, shipId: %d', $wrapper->get()->getId()));
@@ -79,6 +63,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->shipRepository->save($ship);
     }
 
+    #[Override]
     public function releaseAllShips(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory): void
     {
         foreach ($web->getCapturedShips() as $target) {
@@ -98,6 +83,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
     }
 
+    #[Override]
     public function removeWeb(TholianWebInterface $web): void
     {
         $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
@@ -106,6 +92,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->shipRepository->delete($web->getWebShip());
     }
 
+    #[Override]
     public function releaseWebHelper(ShipWrapperInterface $wrapper): void
     {
         $this->loggerUtil->log(sprintf('releaseWebHelper, shipId: %d', $wrapper->get()->getId()));
@@ -144,6 +131,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
     }
 
+    #[Override]
     public function resetWebHelpers(
         TholianWebInterface $web,
         ShipWrapperFactoryInterface $shipWrapperFactory,
@@ -192,6 +180,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->updateWebFinishTime($web, -1);
     }
 
+    #[Override]
     public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): void
     {
         $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));

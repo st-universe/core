@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use JsonMapper\JsonMapperFactory;
 use Mockery\MockInterface;
@@ -32,6 +33,7 @@ class SystemDataDeserializerTest extends StuTestCase
 
     private SystemDataDeserializerInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

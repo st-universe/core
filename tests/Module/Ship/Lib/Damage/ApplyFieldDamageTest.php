@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Damage;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\DamageWrapper;
@@ -35,6 +36,7 @@ class ApplyFieldDamageTest extends StuTestCase
     /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);

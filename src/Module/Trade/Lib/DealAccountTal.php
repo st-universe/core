@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Override;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -11,30 +12,20 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class DealAccountTal implements DealAccountTalInterface
 {
-    private StorageRepositoryInterface $storageRepository;
-
-    private TradePostInterface $tradePost;
-
-    private int $userId;
-
     /** @var array<StorageInterface> */
     private ?array $storage = null;
 
-    public function __construct(
-        StorageRepositoryInterface $storageRepository,
-        TradePostInterface $tradePost,
-        int $userId
-    ) {
-        $this->storageRepository = $storageRepository;
-        $this->tradePost = $tradePost;
-        $this->userId = $userId;
+    public function __construct(private StorageRepositoryInterface $storageRepository, private TradePostInterface $tradePost, private int $userId)
+    {
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->tradePost->getId();
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->tradePost->getShip();
@@ -51,6 +42,7 @@ final class DealAccountTal implements DealAccountTalInterface
         return $this->storage;
     }
 
+    #[Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -60,11 +52,13 @@ final class DealAccountTal implements DealAccountTalInterface
         );
     }
 
+    #[Override]
     public function isOverStorage(): bool
     {
         return $this->getStorageSum() > $this->tradePost->getStorage();
     }
 
+    #[Override]
     public function getStorageCapacity(): int
     {
         return $this->tradePost->getStorage();

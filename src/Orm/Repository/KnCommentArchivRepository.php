@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnCommentArchiv;
 use Stu\Orm\Entity\KnCommentArchivInterface;
@@ -14,6 +15,7 @@ use Stu\Orm\Entity\KnPostArchivInterface;
  */
 final class KnCommentArchivRepository extends EntityRepository implements KnCommentArchivRepositoryInterface
 {
+    #[Override]
     public function getByPost(int $postId): array
     {
         return $this->findBy(
@@ -22,16 +24,19 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         );
     }
 
+    #[Override]
     public function getAmountByPost(KnPostArchivInterface $post): int
     {
         return $this->count(['post_id' => $post, 'deleted' => null]);
     }
 
+    #[Override]
     public function prototype(): KnCommentArchivInterface
     {
         return new KnCommentArchiv();
     }
 
+    #[Override]
     public function save(KnCommentArchivInterface $comment): void
     {
         $em = $this->getEntityManager();
@@ -40,6 +45,7 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         $em->flush();
     }
 
+    #[Override]
     public function delete(KnCommentArchivInterface $comment): void
     {
         $em = $this->getEntityManager();
@@ -48,6 +54,7 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         $em->flush();
     }
 
+    #[Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()

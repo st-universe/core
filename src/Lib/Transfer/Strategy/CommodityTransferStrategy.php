@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Strategy;
 
+use Override;
 use request;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -24,6 +25,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
     ) {
     }
 
+    #[Override]
     public function setTemplateVariables(
         bool $isUnload,
         ShipInterface $ship,
@@ -44,6 +46,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         }
     }
 
+    #[Override]
     public function transfer(
         bool $isUnload,
         ShipWrapperInterface $wrapper,

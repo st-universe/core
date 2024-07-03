@@ -10,20 +10,10 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 class ColonyEpsProductionPreviewWrapper
 {
-    private PlanetFieldHostInterface $host;
-    private BuildingInterface $building;
     private ?int $preview = null;
 
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        PlanetFieldHostInterface $host,
-        BuildingInterface $building
-    ) {
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->host = $host;
-        $this->building = $building;
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetFieldHostInterface $host, private BuildingInterface $building)
+    {
     }
 
     public function getDisplay(): string

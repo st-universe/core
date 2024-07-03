@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowEditKn;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,28 +16,13 @@ use Stu\Orm\Repository\KnCharactersRepositoryInterface;
 
 final class ShowEditKn implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'EDIT_KN';
+    public const string VIEW_IDENTIFIER = 'EDIT_KN';
 
-    private ShowEditKnRequestInterface $showEditKnRequest;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private KnCharactersRepositoryInterface $knCharactersRepository;
-
-    public function __construct(
-        ShowEditKnRequestInterface $showEditKnRequest,
-        KnPostRepositoryInterface $knPostRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        KnCharactersRepositoryInterface $knCharactersRepository
-    ) {
-        $this->showEditKnRequest = $showEditKnRequest;
-        $this->knPostRepository = $knPostRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->knCharactersRepository = $knCharactersRepository;
+    public function __construct(private ShowEditKnRequestInterface $showEditKnRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharactersRepositoryInterface $knCharactersRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         /** @var KnPostInterface $post */

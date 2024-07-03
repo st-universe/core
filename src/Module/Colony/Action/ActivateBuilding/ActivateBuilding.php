@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ActivateBuilding;
 
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -11,20 +12,13 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class ActivateBuilding implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ACTIVATE';
+    public const string ACTION_IDENTIFIER = 'B_ACTIVATE';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private BuildingActionInterface $buildingAction;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        BuildingActionInterface $buildingAction
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->buildingAction = $buildingAction;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
@@ -43,6 +37,7 @@ final class ActivateBuilding implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

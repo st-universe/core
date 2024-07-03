@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\EnterStarSystem;
 
+use Override;
 use RuntimeException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Action\MoveShip\AbstractDirectedMovement;
@@ -12,8 +13,9 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class EnterStarSystem extends AbstractDirectedMovement
 {
-    public const ACTION_IDENTIFIER = 'B_ENTER_STARSYSTEM';
+    public const string ACTION_IDENTIFIER = 'B_ENTER_STARSYSTEM';
 
+    #[Override]
     protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $ship = $wrapper->get();
@@ -22,6 +24,7 @@ final class EnterStarSystem extends AbstractDirectedMovement
         return $system === null;
     }
 
+    #[Override]
     protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface
     {
         $ship = $wrapper->get();

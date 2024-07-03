@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Prestige\Lib;
 
+use Override;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
 use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
@@ -13,27 +14,17 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreatePrestigeLog implements CreatePrestigeLogInterface
 {
-    private PrestigeLogRepositoryInterface $prestigeLogRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ComponentLoaderInterface $componentLoader;
-
-    public function __construct(
-        PrestigeLogRepositoryInterface $prestigeLogRepository,
-        UserRepositoryInterface $userRepository,
-        ComponentLoaderInterface $componentLoader
-    ) {
-        $this->prestigeLogRepository = $prestigeLogRepository;
-        $this->userRepository = $userRepository;
-        $this->componentLoader = $componentLoader;
+    public function __construct(private PrestigeLogRepositoryInterface $prestigeLogRepository, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader)
+    {
     }
 
+    #[Override]
     public function createLog(int $amount, string $description, UserInterface $user, int $date): void
     {
         $this->createLogIntern($amount, $description, $user, $date);
     }
 
+    #[Override]
     public function createLogForDatabaseEntry(DatabaseEntryInterface $databaseEntry, UserInterface $user, int $date): void
     {
         $amount = $databaseEntry->getCategory()->getPrestige();

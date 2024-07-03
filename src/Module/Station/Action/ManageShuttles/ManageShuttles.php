@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\ManageShuttles;
 
+use Override;
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -21,32 +22,13 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManageShuttles implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MANAGE_STATION_SHUTTLES';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_STATION_SHUTTLES';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipStorageManagerInterface $shipStorageManager,
-        CommodityRepositoryInterface $commodityRepository,
-        InteractionCheckerInterface $interactionChecker
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->commodityRepository = $commodityRepository;
-        $this->interactionChecker = $interactionChecker;
+    public function __construct(private ShipLoaderInterface $shipLoader, private PrivateMessageSenderInterface $privateMessageSender, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private InteractionCheckerInterface $interactionChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShipManagement::VIEW_IDENTIFIER);
@@ -191,6 +173,7 @@ final class ManageShuttles implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

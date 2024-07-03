@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -25,6 +26,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
     ) {
     }
 
+    #[Override]
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

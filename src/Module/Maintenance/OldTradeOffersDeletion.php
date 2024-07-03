@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Maintenance;
 
+use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -13,28 +14,13 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 {
-    public const OFFER_MAX_AGE = TimeConstants::TWO_WEEKS_IN_SECONDS;
+    public const int OFFER_MAX_AGE = TimeConstants::TWO_WEEKS_IN_SECONDS;
 
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        PrivateMessageSenderInterface $privateMessageSender,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLibFactoryInterface $tradeLibFactory, private PrivateMessageSenderInterface $privateMessageSender, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function handle(): void
     {
         $offersToDelete = $this->tradeOfferRepository->getOldOffers(OldTradeOffersDeletion::OFFER_MAX_AGE);

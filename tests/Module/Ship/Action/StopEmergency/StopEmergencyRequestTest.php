@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StopEmergency;
 
+use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -16,11 +17,13 @@ class StopEmergencyRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
+    #[Override]
     protected function getRequestClass(): string
     {
         return StopEmergencyRequest::class;
     }
 
+    #[Override]
     public static function requestVarsDataProvider(): array
     {
         return [

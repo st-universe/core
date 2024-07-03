@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
+use Override;
 use InvalidArgumentException;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -34,6 +35,7 @@ final class CrewLimitations implements ManagerComponentInterface
     ) {
     }
 
+    #[Override]
     public function work(): void
     {
         $userList = $this->userRepository->getNonNpcList();

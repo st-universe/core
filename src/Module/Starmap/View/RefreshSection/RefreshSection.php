@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\RefreshSection;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
@@ -15,7 +16,7 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class RefreshSection implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'REFRESH_SECTION';
+    public const string VIEW_IDENTIFIER = 'REFRESH_SECTION';
 
     public function __construct(
         private ShowSectionRequestInterface $request,
@@ -24,6 +25,7 @@ final class RefreshSection implements ViewControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = $this->request->getLayerId();

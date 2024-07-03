@@ -4,23 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset\Fleet;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class FleetReset implements FleetResetInterface
 {
-    private FleetRepositoryInterface $fleetRepository;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->entityManager = $entityManager;
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function deleteAllFleets(): void
     {
         echo "  - deleting all fleets\n";

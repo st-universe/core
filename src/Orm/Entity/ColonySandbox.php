@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -66,21 +67,25 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
         $this->planetFields = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->getColony()->getUser();
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): ColonySandboxInterface
     {
         $this->colony = $colony;
@@ -88,122 +93,145 @@ class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): ColonySandboxInterface
     {
         $this->name = $name;
         return $this;
     }
 
+    #[Override]
     public function getWorkers(): int
     {
         return $this->bev_work;
     }
 
+    #[Override]
     public function setWorkers(int $bev_work): ColonySandboxInterface
     {
         $this->bev_work = $bev_work;
         return $this;
     }
 
+    #[Override]
     public function getMaxBev(): int
     {
         return $this->bev_max;
     }
 
+    #[Override]
     public function setMaxBev(int $bev_max): ColonySandboxInterface
     {
         $this->bev_max = $bev_max;
         return $this;
     }
 
+    #[Override]
     public function getPopulation(): int
     {
         return $this->getMaxBev();
     }
 
+    #[Override]
     public function getMaxEps(): int
     {
         return $this->max_eps;
     }
 
+    #[Override]
     public function setMaxEps(int $max_eps): ColonySandboxInterface
     {
         $this->max_eps = $max_eps;
         return $this;
     }
 
+    #[Override]
     public function getMaxStorage(): int
     {
         return $this->max_storage;
     }
 
+    #[Override]
     public function setMaxStorage(int $max_storage): ColonySandboxInterface
     {
         $this->max_storage = $max_storage;
         return $this;
     }
 
+    #[Override]
     public function getMask(): ?string
     {
         return $this->mask;
     }
 
+    #[Override]
     public function setMask(?string $mask): ColonySandboxInterface
     {
         $this->mask = $mask;
         return $this;
     }
 
+    #[Override]
     public function getPlanetFields(): Collection
     {
         return $this->planetFields;
     }
 
+    #[Override]
     public function getTwilightZone(): int
     {
         return $this->getColony()->getTwilightZone();
     }
 
+    #[Override]
     public function getSurfaceWidth(): int
     {
         return $this->getColony()->getSurfaceWidth();
     }
 
+    #[Override]
     public function getColonyClass(): ColonyClassInterface
     {
         return $this->getColony()->getColonyClass();
     }
 
+    #[Override]
     public function getPlanetFieldHostIdentifier(): string
     {
         return 'sandbox';
     }
 
+    #[Override]
     public function getPlanetFieldHostColumnIdentifier(): string
     {
         return 'colony_sandbox_id';
     }
 
+    #[Override]
     public function isColony(): bool
     {
         return false;
     }
 
+    #[Override]
     public function getHostType(): PlanetFieldHostTypeEnum
     {
         return PlanetFieldHostTypeEnum::SANDBOX;
     }
 
+    #[Override]
     public function getDefaultViewIdentifier(): string
     {
         return ShowColonySandbox::VIEW_IDENTIFIER;
     }
 
+    #[Override]
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return in_array($menu, [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -22,6 +23,7 @@ class AttackedBattlePartyTest extends StuTestCase
 
     private BattlePartyInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

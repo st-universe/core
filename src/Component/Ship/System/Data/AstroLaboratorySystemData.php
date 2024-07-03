@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 class AstroLaboratorySystemData extends AbstractSystemData
 {
     public ?int $astroStartTurn = null;
 
+    #[Override]
     function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;

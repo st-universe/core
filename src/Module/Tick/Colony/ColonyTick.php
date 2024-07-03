@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Colony;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use RuntimeException;
@@ -30,30 +31,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
-    private ModuleQueueRepositoryInterface $moduleQueueRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private BuildingManagerInterface $buildingManager;
-
-    private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    private CommodityCacheInterface $commodityCache;
-
     private LoggerUtilInterface $loggerUtil;
-
-    /** @var array<ColonyTickComponentInterface> */
-    private array $components;
 
     /**
      * @var array<string>
@@ -62,33 +40,23 @@ final class ColonyTick implements ColonyTickInterface
 
     /** @param array<ColonyTickComponentInterface> $components */
     public function __construct(
-        ModuleQueueRepositoryInterface $moduleQueueRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        BuildingManagerInterface $buildingManager,
-        ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        CommodityCacheInterface $commodityCache,
+        private ModuleQueueRepositoryInterface $moduleQueueRepository,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private ColonyRepositoryInterface $colonyRepository,
+        private BuildingManagerInterface $buildingManager,
+        private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private CommodityCacheInterface $commodityCache,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        array $components
+        private array $components
     ) {
-        $this->moduleQueueRepository = $moduleQueueRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->buildingManager = $buildingManager;
-        $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->commodityCache = $commodityCache;
-        $this->components = $components;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function work(ColonyInterface $colony): void
     {
         $doLog = $this->loggerUtil->doLog();

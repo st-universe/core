@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Crew;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
@@ -33,6 +34,7 @@ class TroopTransferUtilityTest extends StuTestCase
     /** @var MockInterface&ShipInterface */
     private MockInterface $ship;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);

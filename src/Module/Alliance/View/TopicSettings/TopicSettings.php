@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\TopicSettings;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -14,20 +15,13 @@ final class TopicSettings implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_TOPIC_SETTINGS';
+    public const string VIEW_IDENTIFIER = 'SHOW_TOPIC_SETTINGS';
 
-    private TopicSettingsRequestInterface $topicSettingsRequest;
-
-    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
-
-    public function __construct(
-        TopicSettingsRequestInterface $topicSettingsRequest,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
-    ) {
-        $this->topicSettingsRequest = $topicSettingsRequest;
-        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
+    public function __construct(private TopicSettingsRequestInterface $topicSettingsRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

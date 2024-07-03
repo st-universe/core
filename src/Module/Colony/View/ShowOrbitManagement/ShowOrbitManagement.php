@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitManagement;
 
+use Override;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,28 +14,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShowOrbitManagementRequestInterface $showOrbitManagementRequest;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShowOrbitManagementRequestInterface $showOrbitManagementRequest,
-        ShipRepositoryInterface $shipRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->showOrbitManagementRequest = $showOrbitManagementRequest;
-        $this->shipRepository = $shipRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowOrbitManagementRequestInterface $showOrbitManagementRequest, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

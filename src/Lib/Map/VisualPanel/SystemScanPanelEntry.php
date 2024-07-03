@@ -9,17 +9,13 @@ use Stu\Orm\Entity\StarSystemInterface;
 
 class SystemScanPanelEntry extends SignaturePanelEntry
 {
-    private StarSystemInterface $system;
-
     public function __construct(
         int $x,
         int $y,
         PanelLayers $layers,
-        StarSystemInterface $system
+        private StarSystemInterface $system
     ) {
         parent::__construct($x, $y, $layers);
-
-        $this->system = $system;
     }
 
     public function isClickAble(): bool

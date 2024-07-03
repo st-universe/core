@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map\ShowSystem;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
@@ -11,24 +12,13 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class ShowSystem implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SYSTEM';
+    public const string VIEW_IDENTIFIER = 'SHOW_SYSTEM';
 
-    private ShowSystemRequestInterface $showSystemRequest;
-
-    private StarSystemRepositoryInterface $starSystemRepository;
-
-    private StarmapUiFactoryInterface $starmapUiFactory;
-
-    public function __construct(
-        ShowSystemRequestInterface $showSystemRequest,
-        StarmapUiFactoryInterface $starmapUiFactory,
-        StarSystemRepositoryInterface $starSystemRepository
-    ) {
-        $this->showSystemRequest = $showSystemRequest;
-        $this->starSystemRepository = $starSystemRepository;
-        $this->starmapUiFactory = $starmapUiFactory;
+    public function __construct(private ShowSystemRequestInterface $showSystemRequest, private StarmapUiFactoryInterface $starmapUiFactory, private StarSystemRepositoryInterface $starSystemRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $system = $this->starSystemRepository->find($this->showSystemRequest->getSystemId());

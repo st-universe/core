@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Strategy;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -19,24 +20,18 @@ use Stu\Orm\Entity\ShipInterface;
 
 class TorpedoTransferStrategy implements TransferStrategyInterface
 {
-    private ShipTorpedoManagerInterface $shipTorpedoManager;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        ShipTorpedoManagerInterface $shipTorpedoManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipTorpedoManager = $shipTorpedoManager;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-
         $this->logger = $loggerUtilFactory->getLoggerUtil();
         //$this->logger->init('TORP', LoggerEnum::LEVEL_ERROR);
     }
 
+    #[Override]
     public function setTemplateVariables(
         bool $isUnload,
         ShipInterface $ship,
@@ -63,6 +58,7 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         $game->setTemplateVar('COMMODITY_ID', $commodityId);
     }
 
+    #[Override]
     public function transfer(
         bool $isUnload,
         ShipWrapperInterface $wrapper,

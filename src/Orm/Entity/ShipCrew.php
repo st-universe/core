@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -75,16 +76,19 @@ class ShipCrew implements ShipCrewInterface
     #[JoinColumn(name: 'repair_task_id', referencedColumnName: 'id')]
     private ?RepairTaskInterface $repairTask = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getCrewId(): int
     {
         return $this->crew_id;
     }
 
+    #[Override]
     public function setCrewId(int $crewId): ShipCrewInterface
     {
         $this->crew_id = $crewId;
@@ -92,11 +96,13 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
+    #[Override]
     public function setShipId(int $shipId): ShipCrewInterface
     {
         $this->ship_id = $shipId;
@@ -104,11 +110,13 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getSlot(): ?int
     {
         return $this->slot;
     }
 
+    #[Override]
     public function setSlot(?int $slot): ShipCrewInterface
     {
         $this->slot = $slot;
@@ -116,43 +124,51 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getPosition(): string
     {
         return CrewEnum::getDescription($this->getSlot());
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ShipCrewInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getRepairTask(): ?RepairTaskInterface
     {
         return $this->repairTask;
     }
 
+    #[Override]
     public function setRepairTask(?RepairTaskInterface $repairTask): ShipCrewInterface
     {
         $this->repairTask = $repairTask;
         return $this;
     }
 
+    #[Override]
     public function getCrew(): CrewInterface
     {
         return $this->crew;
     }
 
+    #[Override]
     public function setCrew(CrewInterface $crew): ShipCrewInterface
     {
         $this->crew = $crew;
@@ -160,22 +176,26 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getShip(): ?ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(?ShipInterface $ship): ShipCrewInterface
     {
         $this->ship = $ship;
         return $this;
     }
 
+    #[Override]
     public function getColony(): ?ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(?ColonyInterface $colony): ShipCrewInterface
     {
         $this->colony = $colony;
@@ -183,11 +203,13 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getTradepost(): ?TradePostInterface
     {
         return $this->tradepost;
     }
 
+    #[Override]
     public function setTradepost(?TradePostInterface $tradepost): ShipCrewInterface
     {
         $this->tradepost = $tradepost;
@@ -195,6 +217,7 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
+    #[Override]
     public function isForeigner(): bool
     {
         return $this->getShip()->getUser() !== $this->getCrew()->getUser();

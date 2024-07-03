@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -44,53 +45,63 @@ class AllianceRelation implements AllianceRelationInterface
     #[JoinColumn(name: 'recipient', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AllianceInterface $opponent;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(int $type): AllianceRelationInterface
     {
         $this->type = $type;
         return $this;
     }
 
+    #[Override]
     public function getAllianceId(): int
     {
         return $this->alliance_id;
     }
 
+    #[Override]
     public function getOpponentId(): int
     {
         return $this->recipient;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): AllianceRelationInterface
     {
         $this->date = $date;
         return $this;
     }
 
+    #[Override]
     public function isPending(): bool
     {
         return $this->getDate() === 0;
     }
 
+    #[Override]
     public function isWar(): bool
     {
         return $this->getType() === AllianceEnum::ALLIANCE_RELATION_WAR;
     }
 
+    #[Override]
     public function getPossibleTypes(): array
     {
         $ret = [];
@@ -109,11 +120,13 @@ class AllianceRelation implements AllianceRelationInterface
         return $ret;
     }
 
+    #[Override]
     public function getAlliance(): AllianceInterface
     {
         return $this->alliance;
     }
 
+    #[Override]
     public function setAlliance(AllianceInterface $alliance): AllianceRelationInterface
     {
         $this->alliance = $alliance;
@@ -121,11 +134,13 @@ class AllianceRelation implements AllianceRelationInterface
         return $this;
     }
 
+    #[Override]
     public function getOpponent(): AllianceInterface
     {
         return $this->opponent;
     }
 
+    #[Override]
     public function setOpponent(AllianceInterface $opponent): AllianceRelationInterface
     {
         $this->opponent = $opponent;
@@ -133,22 +148,17 @@ class AllianceRelation implements AllianceRelationInterface
         return $this;
     }
 
-    public function getTypeDescription(): string
+    #[Override]
+    public function getTypeDescription() : string
     {
-        switch ($this->getType()) {
-            case AllianceEnum::ALLIANCE_RELATION_WAR:
-                return 'Krieg';
-            case AllianceEnum::ALLIANCE_RELATION_PEACE:
-                return 'Friedensabkommen';
-            case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
-                return 'Freundschaftabkommen';
-            case AllianceEnum::ALLIANCE_RELATION_ALLIED:
-                return 'Bündnis';
-            case AllianceEnum::ALLIANCE_RELATION_TRADE:
-                return 'Handelsabkommen';
-            case AllianceEnum::ALLIANCE_RELATION_VASSAL:
-                return 'Vasall';
-        }
-        return '';
+        return match ($this->getType()) {
+            AllianceEnum::ALLIANCE_RELATION_WAR => 'Krieg',
+            AllianceEnum::ALLIANCE_RELATION_PEACE => 'Friedensabkommen',
+            AllianceEnum::ALLIANCE_RELATION_FRIENDS => 'Freundschaftabkommen',
+            AllianceEnum::ALLIANCE_RELATION_ALLIED => 'Bündnis',
+            AllianceEnum::ALLIANCE_RELATION_TRADE => 'Handelsabkommen',
+            AllianceEnum::ALLIANCE_RELATION_VASSAL => 'Vasall',
+            default => '',
+        };
     }
 }

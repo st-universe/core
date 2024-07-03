@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -18,11 +19,13 @@ use Stu\Orm\Entity\StarSystemInterface;
  */
 final class StarSystemRepository extends EntityRepository implements StarSystemRepositoryInterface
 {
+    #[Override]
     public function prototype(): StarSystemInterface
     {
         return new StarSystem();
     }
 
+    #[Override]
     public function save(StarSystemInterface $storage): void
     {
         $em = $this->getEntityManager();
@@ -30,6 +33,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
         $em->persist($storage);
     }
 
+    #[Override]
     public function getByLayer(int $layerId): array
     {
         return $this->getEntityManager()
@@ -50,6 +54,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getResult();
     }
 
+    #[Override]
     public function getWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()
@@ -66,6 +71,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getResult();
     }
 
+    #[Override]
     public function getNumberOfSystemsToGenerate(LayerInterface $layer): int
     {
         return (int) $this->getEntityManager()
@@ -84,6 +90,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getPreviousStarSystem(StarSystemInterface $current): ?StarSystemInterface
     {
         return $this->getEntityManager()
@@ -104,6 +111,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getOneOrNullResult();
     }
 
+    #[Override]
     public function getNextStarSystem(StarSystemInterface $current): ?StarSystemInterface
     {
         return $this->getEntityManager()
@@ -124,6 +132,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getOneOrNullResult();
     }
 
+    #[Override]
     public function getPirateHides(ShipInterface $ship): array
     {
         $layer = $ship->getLayer();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,6 +24,7 @@ final class ThreatReaction implements ThreatReactionInterface
     ) {
     }
 
+    #[Override]
     public function reactToThreat(
         ShipWrapperInterface $wrapper,
         ShipWrapperInterface $targetWrapper,

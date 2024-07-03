@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\OpenAdventDoor;
 
+use Override;
 use request;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Ship\Storage\ShipStorageManager;
@@ -21,38 +22,15 @@ use Stu\Orm\Repository\OpenedAdventDoorRepositoryInterface;
 
 final class OpenAdventDoor implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ADVENT_DOOR';
+    public const string ACTION_IDENTIFIER = 'B_ADVENT_DOOR';
 
-    private const NICHOLAS_AMOUNT = 500;
+    private const int NICHOLAS_AMOUNT = 500;
 
-    private ShipLoaderInterface $shipLoader;
-
-    private AnomalyRepositoryInterface $anomalyRepository;
-
-    private OpenedAdventDoorRepositoryInterface $openedAdventDoorRepository;
-
-    private CommodityCacheInterface $commodityCache;
-
-    private ShipStorageManager $shipStorageManager;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        AnomalyRepositoryInterface $anomalyRepository,
-        OpenedAdventDoorRepositoryInterface $openedAdventDoorRepository,
-        CommodityCacheInterface $commodityCache,
-        ShipStorageManager $shipStorageManager,
-        CreatePrestigeLogInterface $createPrestigeLog
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->anomalyRepository = $anomalyRepository;
-        $this->openedAdventDoorRepository = $openedAdventDoorRepository;
-        $this->commodityCache = $commodityCache;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->createPrestigeLog = $createPrestigeLog;
+    public function __construct(private ShipLoaderInterface $shipLoader, private AnomalyRepositoryInterface $anomalyRepository, private OpenedAdventDoorRepositoryInterface $openedAdventDoorRepository, private CommodityCacheInterface $commodityCache, private ShipStorageManager $shipStorageManager, private CreatePrestigeLogInterface $createPrestigeLog)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -136,6 +114,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         $this->openedAdventDoorRepository->save($openedDoor);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

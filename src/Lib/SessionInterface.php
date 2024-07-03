@@ -18,21 +18,18 @@ interface SessionInterface
 
     /**
      * @param string $key
-     * @param mixed $value
      */
-    public function storeSessionData($key, $value, bool $isSingleValue = false): void;
+    public function storeSessionData($key, mixed $value, bool $isSingleValue = false): void;
 
     /**
      * @param string $key
-     * @param mixed $value
      */
-    public function deleteSessionData($key, $value = null): void;
+    public function deleteSessionData($key, mixed $value = null): void;
 
     /**
      * @param string $key
-     * @param mixed $value
      */
-    public function hasSessionValue($key, $value): bool;
+    public function hasSessionValue($key, mixed $value): bool;
 
     /**
      * @param string $key

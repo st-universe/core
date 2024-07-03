@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
@@ -22,6 +23,7 @@ class ModuleSelectorAddonShieldTest extends StuTestCase
 
     private ModuleSelectorAddonShield $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->weaponShieldRepository = $this->mock(WeaponShieldRepositoryInterface::class);

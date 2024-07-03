@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\SmsVerification;
 
+use Override;
 use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,28 +19,20 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SmsVerification implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SMS_VERIFICATION';
-
-    private UserRepositoryInterface $userRepository;
-
-    private LotteryFacadeInterface $lotteryFacade;
-
-    private StuHashInterface $stuHash;
+    public const string ACTION_IDENTIFIER = 'B_SMS_VERIFICATION';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        LotteryFacadeInterface $lotteryFacade,
-        StuHashInterface $stuHash,
+        private UserRepositoryInterface $userRepository,
+        private LotteryFacadeInterface $lotteryFacade,
+        private StuHashInterface $stuHash,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->userRepository = $userRepository;
-        $this->lotteryFacade = $lotteryFacade;
-        $this->stuHash = $stuHash;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -74,6 +67,7 @@ final class SmsVerification implements ActionControllerInterface
         $game->addInformation('Dein Account wurde erfolgreich freigeschaltet');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

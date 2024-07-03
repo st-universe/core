@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 
 final class ResearchProvider implements ViewComponentProviderInterface
 {
-    private TechlistRetrieverInterface $techlistRetriever;
-
-    public function __construct(
-        TechlistRetrieverInterface $techlistRetriever
-    ) {
-        $this->techlistRetriever = $techlistRetriever;
+    public function __construct(private TechlistRetrieverInterface $techlistRetriever)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

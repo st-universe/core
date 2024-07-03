@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\ActivateConstructionHub;
 
+use Override;
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,16 +14,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class ActivateConstructionHub implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ACTIVATE_HUB';
+    public const string ACTION_IDENTIFIER = 'B_ACTIVATE_HUB';
 
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    public function __construct(
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->helper = $helper;
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -30,6 +28,7 @@ final class ActivateConstructionHub implements ActionControllerInterface
         $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB, $game);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

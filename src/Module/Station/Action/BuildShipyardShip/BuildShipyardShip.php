@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\BuildShipyardShip;
 
+use Override;
 use request;
 
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -17,32 +18,13 @@ use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 
 final class BuildShipyardShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILD_SHIPYARD_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_BUILD_SHIPYARD_SHIP';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
-        ShipStorageManagerInterface $shipStorageManager
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
-        $this->shipStorageManager = $shipStorageManager;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private ShipStorageManagerInterface $shipStorageManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -124,6 +106,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

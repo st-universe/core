@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoStorageInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\TorpedoStorageInterface;
  */
 final class TorpedoStorageRepository extends EntityRepository implements TorpedoStorageRepositoryInterface
 {
+    #[Override]
     public function prototype(): TorpedoStorageInterface
     {
         return new TorpedoStorage();
     }
 
+    #[Override]
     public function save(TorpedoStorageInterface $torpedoStorage): void
     {
         $em = $this->getEntityManager();
@@ -25,6 +28,7 @@ final class TorpedoStorageRepository extends EntityRepository implements Torpedo
         $em->persist($torpedoStorage);
     }
 
+    #[Override]
     public function delete(TorpedoStorageInterface $torpedoStorage): void
     {
         $em = $this->getEntityManager();
@@ -32,6 +36,7 @@ final class TorpedoStorageRepository extends EntityRepository implements Torpedo
         $em->remove($torpedoStorage);
     }
 
+    #[Override]
     public function truncateAllTorpedoStorages(): void
     {
         $this->getEntityManager()->createQuery(

@@ -4,27 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Request;
 
+use Override;
 use MPScholten\RequestParser\Config;
 use MPScholten\RequestParser\RequestParser;
 use MPScholten\RequestParser\RequestParserFactory;
 
 final class CustomRequestParserFactory implements RequestParserFactory
 {
-    /** @var array<mixed> */
-    private array $request;
-
     private $config;
 
     /**
      * @param array<mixed> $request
      * @param callable|Config $config
      */
-    public function __construct(array $request, $config)
+    public function __construct(private array $request, $config)
     {
-        $this->request = $request;
         $this->config = $config;
     }
 
+    #[Override]
     public function createQueryParser(): RequestParser
     {
         return new RequestParser(
@@ -38,6 +36,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
         );
     }
 
+    #[Override]
     public function createBodyParser(): RequestParser
     {
         return new RequestParser(

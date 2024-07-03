@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
+use Override;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tick\Lock\LockManagerInterface;
@@ -23,6 +24,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
     }
 
+    #[Override]
     public function work(): void
     {
         $this->setLock(1);

@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Ship\System;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use JsonMapper\JsonMapperInterface;
 use RuntimeException;
@@ -18,6 +19,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
     ) {
     }
 
+    #[Override]
     public function getSpecificShipSystem(
         ShipInterface $ship,
         ShipSystemTypeEnum $systemType,

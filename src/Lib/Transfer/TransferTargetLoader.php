@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
+use Override;
 use RuntimeException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -12,17 +13,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 class TransferTargetLoader implements TransferTargetLoaderInterface
 {
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShipLoaderInterface $shipLoader;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->shipLoader = $shipLoader;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShipLoaderInterface $shipLoader)
+    {
     }
+    #[Override]
     public function loadTarget(int $targetId, bool $isColonyTarget, bool $checkForEntityLock = true): ShipInterface|ColonyInterface
     {
         if ($isColonyTarget) {

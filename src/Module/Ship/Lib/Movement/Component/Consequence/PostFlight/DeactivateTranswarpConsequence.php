@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -14,14 +15,11 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class DeactivateTranswarpConsequence extends AbstractFlightConsequence
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    public function __construct(
-        ShipSystemManagerInterface $shipSystemManager
-    ) {
-        $this->shipSystemManager = $shipSystemManager;
+    public function __construct(private ShipSystemManagerInterface $shipSystemManager)
+    {
     }
 
+    #[Override]
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

@@ -10,20 +10,8 @@ use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabricationListItemTal
 {
-    private ModuleQueueRepositoryInterface $moduleQueueRepository;
-
-    private ColonyInterface $colony;
-
-    private ModuleInterface $module;
-
-    public function __construct(
-        ModuleQueueRepositoryInterface $moduleQueueRepository,
-        ModuleInterface $module,
-        ColonyInterface $colony
-    ) {
-        $this->colony = $colony;
-        $this->module = $module;
-        $this->moduleQueueRepository = $moduleQueueRepository;
+    public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private ModuleInterface $module, private ColonyInterface $colony)
+    {
     }
 
     public function getModule(): ModuleInterface

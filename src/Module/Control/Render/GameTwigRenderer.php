@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,18 +19,11 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class GameTwigRenderer implements GameTwigRendererInterface
 {
-    private ConfigInterface $config;
-
-    private ComponentLoaderInterface $componentLoader;
-
-    public function __construct(
-        ConfigInterface $config,
-        ComponentLoaderInterface $componentLoader
-    ) {
-        $this->config = $config;
-        $this->componentLoader = $componentLoader;
+    public function __construct(private ConfigInterface $config, private ComponentLoaderInterface $componentLoader)
+    {
     }
 
+    #[Override]
     public function render(
         GameControllerInterface $game,
         ?UserInterface $user,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -49,11 +50,13 @@ class DatabaseEntry implements DatabaseEntryInterface
     #[JoinColumn(name: 'category_id', referencedColumnName: 'id')]
     private DatabaseCategoryInterface $category;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setDescription(string $description): DatabaseEntryInterface
     {
         $this->description = $description;
@@ -61,11 +64,13 @@ class DatabaseEntry implements DatabaseEntryInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setData(string $data): DatabaseEntryInterface
     {
         $this->data = $data;
@@ -73,11 +78,13 @@ class DatabaseEntry implements DatabaseEntryInterface
         return $this;
     }
 
+    #[Override]
     public function getData(): string
     {
         return $this->data;
     }
 
+    #[Override]
     public function setCategory(DatabaseCategoryInterface $category): DatabaseEntryInterface
     {
         $this->category = $category;
@@ -85,11 +92,13 @@ class DatabaseEntry implements DatabaseEntryInterface
         return $this;
     }
 
+    #[Override]
     public function getCategory(): DatabaseCategoryInterface
     {
         return $this->category;
     }
 
+    #[Override]
     public function setSort(int $sort): DatabaseEntryInterface
     {
         $this->sort = $sort;
@@ -97,11 +106,13 @@ class DatabaseEntry implements DatabaseEntryInterface
         return $this;
     }
 
+    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
+    #[Override]
     public function setObjectId(int $objectId): DatabaseEntryInterface
     {
         $this->object_id = $objectId;
@@ -109,16 +120,19 @@ class DatabaseEntry implements DatabaseEntryInterface
         return $this;
     }
 
+    #[Override]
     public function getObjectId(): int
     {
         return $this->object_id;
     }
 
+    #[Override]
     public function getTypeObject(): DatabaseTypeInterface
     {
         return $this->type_object;
     }
 
+    #[Override]
     public function setTypeObject(DatabaseTypeInterface $typeObject): DatabaseEntryInterface
     {
         $this->type_object = $typeObject;
@@ -126,11 +140,13 @@ class DatabaseEntry implements DatabaseEntryInterface
         return $this;
     }
 
+    #[Override]
     public function getCategoryId(): int
     {
         return $this->category_id;
     }
 
+    #[Override]
     public function getTypeId(): int
     {
         return $this->type;

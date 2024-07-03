@@ -4,26 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowLicenseMenu;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ShowLicenseMenu implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_LICENSE_MENU';
+    public const string VIEW_IDENTIFIER = 'SHOW_LICENSE_MENU';
 
-    private ShowLicenseMenuRequestInterface $showLicenseMenuRequest;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        ShowLicenseMenuRequestInterface $showLicenseMenuRequest,
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->showLicenseMenuRequest = $showLicenseMenuRequest;
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private ShowLicenseMenuRequestInterface $showLicenseMenuRequest, private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $trade_post = $this->showLicenseMenuRequest->getTradePostId();

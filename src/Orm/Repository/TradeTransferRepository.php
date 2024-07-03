@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\TradeTransfer;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\TradeTransferInterface;
  */
 final class TradeTransferRepository extends EntityRepository implements TradeTransferRepositoryInterface
 {
+    #[Override]
     public function prototype(): TradeTransferInterface
     {
         return new TradeTransfer();
     }
 
+    #[Override]
     public function save(TradeTransferInterface $tradeTransfer): void
     {
         $em = $this->getEntityManager();
@@ -26,6 +29,7 @@ final class TradeTransferRepository extends EntityRepository implements TradeTra
         $em->persist($tradeTransfer);
     }
 
+    #[Override]
     public function getSumByPostAndUser(int $tradePostId, int $userId): int
     {
         return (int) $this->getEntityManager()

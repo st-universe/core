@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -25,6 +26,7 @@ class EpsSystemDataTest extends StuTestCase
 
     private EpsSystemData $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->shipSystemRepository = $this->mock(ShipSystemRepositoryInterface::class);

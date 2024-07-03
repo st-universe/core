@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -17,6 +18,7 @@ use Stu\Orm\Entity\DatabaseUserInterface;
  */
 final class DatabaseUserRepository extends EntityRepository implements DatabaseUserRepositoryInterface
 {
+    #[Override]
     public function truncateByUserId(int $userId): void
     {
         $this->getEntityManager()->createQuery(
@@ -29,6 +31,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->execute();
     }
 
+    #[Override]
     public function findFor(int $databaseEntryId, int $userId): ?DatabaseUserInterface
     {
         return $this->findOneBy([
@@ -37,6 +40,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         ]);
     }
 
+    #[Override]
     public function exists(int $userId, int $databaseEntryId): bool
     {
         return $this->count([
@@ -45,11 +49,13 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         ]) > 0;
     }
 
+    #[Override]
     public function prototype(): DatabaseUserInterface
     {
         return new DatabaseUser();
     }
 
+    #[Override]
     public function save(DatabaseUserInterface $entry): void
     {
         $em = $this->getEntityManager();
@@ -57,6 +63,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         //$em->flush();
     }
 
+    #[Override]
     public function getTopList(): array
     {
         $rsm = new ResultSetMapping();
@@ -85,6 +92,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->getArrayResult();
     }
 
+    #[Override]
     public function getCountForUser(int $userId): int
     {
         return (int) $this->getEntityManager()
@@ -105,6 +113,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function hasUserCompletedCategory(int $userId, int $categoryId, int $finishedDatabaseEntryId = 0): bool
     {
         return (int) $this->getEntityManager()
@@ -131,6 +140,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->getSingleScalarResult() == 0;
     }
 
+    #[Override]
     public function truncateAllEntries(): void
     {
         $this->getEntityManager()->createQuery(

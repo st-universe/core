@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
@@ -19,22 +20,11 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 class ManageTorpedo implements ManagerInterface
 {
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    private ShipTorpedoManagerInterface $shipTorpedoManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        ShipTorpedoManagerInterface $shipTorpedoManager,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
-        $this->shipTorpedoManager = $shipTorpedoManager;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private ShipTorpedoManagerInterface $shipTorpedoManager, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $torp = $values['torp'] ?? null;

@@ -13,13 +13,9 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
  */
 final class MaintenanceTickCommand extends Command
 {
-    private ContainerInterface $dic;
-
     public function __construct(
-        ContainerInterface $dic
+        private ContainerInterface $dic
     ) {
-        $this->dic = $dic;
-
         parent::__construct(
             'tick:maintenance',
             'Runs the maintenance tick'

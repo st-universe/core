@@ -9,24 +9,11 @@ use Stu\Orm\Entity\BuildingInterface;
 
 class ColonyProductionPreviewWrapper
 {
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private BuildingInterface $building;
-
-    /** @var array<ColonyProduction> */
-    private array $production = [];
-
     /**
      * @param array<ColonyProduction> $production
      */
-    public function __construct(
-        ColonyLibFactoryInterface $colonyLibFactory,
-        BuildingInterface $building,
-        array $production
-    ) {
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->building = $building;
-        $this->production = $production;
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private BuildingInterface $building, private array $production)
+    {
     }
 
     /** @return array<ColonyProduction> */

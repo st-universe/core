@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Stu\Component\Ship\System\Data\AbstractReactorSystemData;
 
 final class ReactorWrapper implements ReactorWrapperInterface
 {
-    private ShipWrapperInterface $wrapper;
-    private AbstractReactorSystemData $reactorSystemData;
-
     //absolute values
     private ?int $epsProduction = null;
     private ?int $warpdriveProduction = null;
@@ -19,19 +17,17 @@ final class ReactorWrapper implements ReactorWrapperInterface
     private ?int $effectiveEpsProduction = null;
     private ?int $effectiveWarpDriveProduction = null;
 
-    public function __construct(
-        ShipWrapperInterface $wrapper,
-        AbstractReactorSystemData $reactorSystemData
-    ) {
-        $this->wrapper = $wrapper;
-        $this->reactorSystemData = $reactorSystemData;
+    public function __construct(private ShipWrapperInterface $wrapper, private AbstractReactorSystemData $reactorSystemData)
+    {
     }
 
+    #[Override]
     public function get(): AbstractReactorSystemData
     {
         return $this->reactorSystemData;
     }
 
+    #[Override]
     public function getEpsProduction(): int
     {
         if ($this->epsProduction === null) {
@@ -72,6 +68,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this->warpdriveProduction;
     }
 
+    #[Override]
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
@@ -80,6 +77,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this->effectiveEpsProduction;
     }
 
+    #[Override]
     public function getEffectiveWarpDriveProduction(): int
     {
         if ($this->effectiveWarpDriveProduction === null) {
@@ -118,22 +116,26 @@ final class ReactorWrapper implements ReactorWrapperInterface
         $this->effectiveWarpDriveProduction = $effWdProd;
     }
 
+    #[Override]
     public function getUsage(): int
     {
         return $this->getEffectiveEpsProduction()
             + $this->getEffectiveWarpDriveProduction() * $this->wrapper->get()->getRump()->getFlightEcost();
     }
 
+    #[Override]
     public function getCapacity(): int
     {
         return $this->get()->getCapacity();
     }
 
+    #[Override]
     public function getOutput(): int
     {
         return $this->get()->getOutput();
     }
 
+    #[Override]
     public function setOutput(int $output): ReactorWrapperInterface
     {
         $this->get()->setOutput($output)->update();
@@ -141,6 +143,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this;
     }
 
+    #[Override]
     public function getOutputCappedByLoad(): int
     {
         if ($this->getOutput() > $this->getLoad()) {
@@ -150,11 +153,13 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this->getOutput();
     }
 
+    #[Override]
     public function getLoad(): int
     {
         return $this->get()->getLoad();
     }
 
+    #[Override]
     public function setLoad(int $load): ReactorWrapperInterface
     {
         $this->get()->setLoad($load)->update();
@@ -162,6 +167,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this;
     }
 
+    #[Override]
     public function changeLoad(int $amount): ReactorWrapperInterface
     {
         $this->get()->setLoad($this->get()->getLoad() + $amount)->update();
@@ -169,11 +175,13 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this;
     }
 
+    #[Override]
     public function isHealthy(): bool
     {
         return $this->wrapper->get()->isSystemHealthy($this->get()->getSystemType());
     }
 
+    #[Override]
     public function getReactorLoadStyle(): string
     {
         $load = $this->getLoad();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\StationShipRepair;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\StationShipRepairInterface;
  */
 final class StationShipRepairRepository extends EntityRepository implements StationShipRepairRepositoryInterface
 {
+    #[Override]
     public function prototype(): StationShipRepairInterface
     {
         return new StationShipRepair();
     }
 
+    #[Override]
     public function getByStation(int $stationId): array
     {
         return $this->findBy([
@@ -26,6 +29,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         ], ['id' => 'asc']);
     }
 
+    #[Override]
     public function getByShip(int $shipId): ?StationShipRepairInterface
     {
         return $this->findOneBy([
@@ -33,6 +37,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         ]);
     }
 
+    #[Override]
     public function getMostRecentJobs(): array
     {
         $rsm = new ResultSetMapping();
@@ -54,6 +59,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
             ->getResult();
     }
 
+    #[Override]
     public function save(StationShipRepairInterface $stationShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -61,6 +67,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         $em->persist($stationShipRepair);
     }
 
+    #[Override]
     public function delete(StationShipRepairInterface $stationShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -69,6 +76,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         //$em->flush();
     }
 
+    #[Override]
     public function truncateByShipId(int $shipId): void
     {
         $q = $this->getEntityManager()->createQuery(

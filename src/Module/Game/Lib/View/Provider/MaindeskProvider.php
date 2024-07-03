@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
@@ -27,62 +28,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class MaindeskProvider implements ViewComponentProviderInterface
 {
-    private HistoryRepositoryInterface $historyRepository;
-
-    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
-
-    private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
-
-    private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
-
-    private KnFactoryInterface $knFactory;
-
-    private ColonyLimitCalculatorInterface $colonyLimitCalculator;
-
-    private CrewCountRetrieverInterface $crewCountRetriever;
-
-    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
-
-    private CrewLimitCalculatorInterface $crewLimitCalculator;
-
-    public function __construct(
-        HistoryRepositoryInterface $historyRepository,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
-        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
-        KnPostRepositoryInterface $knPostRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
-        UserRepositoryInterface $userRepository,
-        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
-        KnFactoryInterface $knFactory,
-        ColonyLimitCalculatorInterface $colonyLimitCalculator,
-        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        CrewLimitCalculatorInterface $crewLimitCalculator,
-        CrewCountRetrieverInterface $crewCountRetriever
-    ) {
-        $this->historyRepository = $historyRepository;
-        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
-        $this->userProfileVisitorRepository = $userProfileVisitorRepository;
-        $this->knPostRepository = $knPostRepository;
-        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
-        $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
-        $this->userRepository = $userRepository;
-        $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
-        $this->knFactory = $knFactory;
-        $this->colonyLimitCalculator = $colonyLimitCalculator;
-        $this->crewCountRetriever = $crewCountRetriever;
-        $this->playerRelationDeterminator = $playerRelationDeterminator;
-        $this->crewLimitCalculator = $crewLimitCalculator;
+    public function __construct(private HistoryRepositoryInterface $historyRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private KnPostRepositoryInterface $knPostRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private UserRepositoryInterface $userRepository, private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository, private KnFactoryInterface $knFactory, private ColonyLimitCalculatorInterface $colonyLimitCalculator, private PlayerRelationDeterminatorInterface $playerRelationDeterminator, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

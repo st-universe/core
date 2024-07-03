@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -25,11 +26,13 @@ class DatabaseType implements DatabaseTypeInterface
     #[Column(type: 'string')]
     private string $macro;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setDescription(string $description): DatabaseTypeInterface
     {
         $this->description = $description;
@@ -37,11 +40,13 @@ class DatabaseType implements DatabaseTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setMacro(string $macro): DatabaseTypeInterface
     {
         $this->macro = $macro;
@@ -49,6 +54,7 @@ class DatabaseType implements DatabaseTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getMacro(): string
     {
         return $this->macro;

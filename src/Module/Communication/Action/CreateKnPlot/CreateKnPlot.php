@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\CreateKnPlot;
 
+use Override;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class CreateKnPlot implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_PLOT';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_PLOT';
 
-    private CreateKnPlotRequestInterface $createKnPlotRequest;
-
-    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    public function __construct(
-        CreateKnPlotRequestInterface $createKnPlotRequest,
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository
-    ) {
-        $this->createKnPlotRequest = $createKnPlotRequest;
-        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
+    public function __construct(private CreateKnPlotRequestInterface $createKnPlotRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $title = $this->createKnPlotRequest->getTitle();
@@ -67,6 +57,7 @@ final class CreateKnPlot implements ActionControllerInterface
         $game->setView(ShowPlotList::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

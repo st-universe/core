@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
@@ -17,11 +18,13 @@ class SingletonBattleParty extends AbstractBattleParty
         $this->isBase = $leader->get()->isBase();
     }
 
+    #[Override]
     public function initMembers(): Collection
     {
         return $this->createSingleton($this->leader);
     }
 
+    #[Override]
     public function isBase(): bool
     {
         return $this->isBase;

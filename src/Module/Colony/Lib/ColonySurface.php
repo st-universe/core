@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -23,55 +24,16 @@ use Stu\PlanetGenerator\PlanetGeneratorInterface;
  */
 final class ColonySurface implements ColonySurfaceInterface
 {
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private PlanetGeneratorInterface $planetGenerator;
-
-    private EntityManagerInterface $entityManager;
-
-    private PlanetFieldHostInterface $host;
-
-    private ?int $buildingId;
-
-    private bool $showUnderground;
-
-    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
-
-    public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        BuildingRepositoryInterface $buildingRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        PlanetGeneratorInterface $planetGenerator,
-        EntityManagerInterface $entityManager,
-        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        PlanetFieldHostInterface $host,
-        ?int $buildingId,
-        bool $showUnderground
-    ) {
-        $this->host = $host;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->buildingRepository = $buildingRepository;
-        $this->buildingId = $buildingId;
-        $this->colonyRepository = $colonyRepository;
-        $this->researchedRepository = $researchedRepository;
-        $this->planetGenerator = $planetGenerator;
-        $this->entityManager = $entityManager;
-        $this->showUnderground = $showUnderground;
-        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingRepositoryInterface $buildingRepository, private ColonyRepositoryInterface $colonyRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetGeneratorInterface $planetGenerator, private EntityManagerInterface $entityManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private PlanetFieldHostInterface $host, private ?int $buildingId, private bool $showUnderground)
+    {
     }
 
+    #[Override]
     public function getSurface(): array
     {
         try {
             $this->updateSurface();
-        } catch (PlanetGeneratorException $e) {
+        } catch (PlanetGeneratorException) {
             return $this->host->getPlanetFields()->toArray();
         }
 
@@ -123,6 +85,7 @@ final class ColonySurface implements ColonySurfaceInterface
         return false;
     }
 
+    #[Override]
     public function getSurfaceTileStyle(): string
     {
         $width = $this->planetGenerator->loadColonyClassConfig($this->host->getColonyClass()->getId())['sizew'];
@@ -134,6 +97,7 @@ final class ColonySurface implements ColonySurfaceInterface
         return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
+    #[Override]
     public function updateSurface(): void
     {
         $host = $this->host;
@@ -183,6 +147,7 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function hasShipyard(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
@@ -192,6 +157,7 @@ final class ColonySurface implements ColonySurfaceInterface
         ) > 0;
     }
 
+    #[Override]
     public function hasAirfield(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(

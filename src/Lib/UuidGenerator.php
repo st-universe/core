@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Override;
 /**
  * Instead of using a library, use a short implementation of RFC 4122 for uuidv4
  */
 final class UuidGenerator implements UuidGeneratorInterface
 {
+    #[Override]
     public function genV4(): string
     {
         $data = random_bytes(16);

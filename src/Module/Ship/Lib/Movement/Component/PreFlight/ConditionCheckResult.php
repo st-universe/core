@@ -11,12 +11,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 class ConditionCheckResult
 {
-    private LeaveFleetInterface $leaveFleet;
-
-    private ShipWrapperInterface $leader;
-
-    private bool $isFixedFleetMode;
-
     /** @var array<int> */
     private array $blockedShipIds = [];
 
@@ -25,13 +19,10 @@ class ConditionCheckResult
     private InformationWrapper $informations;
 
     public function __construct(
-        LeaveFleetInterface $leaveFleet,
-        ShipWrapperInterface $leader,
-        bool $isFixedFleetMode
+        private LeaveFleetInterface $leaveFleet,
+        private ShipWrapperInterface $leader,
+        private bool $isFixedFleetMode
     ) {
-        $this->leaveFleet = $leaveFleet;
-        $this->leader = $leader;
-        $this->isFixedFleetMode = $isFixedFleetMode;
         $this->informations = new InformationWrapper();
     }
 

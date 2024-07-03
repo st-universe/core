@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -167,41 +168,49 @@ class Colony implements ColonyInterface
         $this->depositMinings = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getColonyClassId(): int
     {
         return $this->colonies_classes_id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getSx(): int
     {
         return $this->getStarsystemMap()->getSx();
     }
 
+    #[Override]
     public function getSy(): int
     {
         return $this->getStarsystemMap()->getSy();
     }
 
+    #[Override]
     public function getSystemsId(): int
     {
         return $this->getSystem()->getId();
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function getNameAndSectorString(): string
     {
         return sprintf(
@@ -211,149 +220,176 @@ class Colony implements ColonyInterface
         );
     }
 
+    #[Override]
     public function getSystemString(): string
     {
         return sprintf('%s-System (%s|%s)', $this->getSystem()->getName(), $this->getSystem()->getCx(), $this->getSystem()->getCy());
     }
 
+    #[Override]
     public function setName(string $name): ColonyInterface
     {
         $this->name = $name;
         return $this;
     }
 
+    #[Override]
     public function getPlanetName(): string
     {
         return $this->planet_name;
     }
 
+    #[Override]
     public function setPlanetName(string $planet_name): ColonyInterface
     {
         $this->planet_name = $planet_name;
         return $this;
     }
 
+    #[Override]
     public function getWorkers(): int
     {
         return $this->bev_work;
     }
 
+    #[Override]
     public function setWorkers(int $bev_work): ColonyInterface
     {
         $this->bev_work = $bev_work;
         return $this;
     }
 
+    #[Override]
     public function getWorkless(): int
     {
         return $this->bev_free;
     }
 
+    #[Override]
     public function setWorkless(int $bev_free): ColonyInterface
     {
         $this->bev_free = $bev_free;
         return $this;
     }
 
+    #[Override]
     public function getMaxBev(): int
     {
         return $this->bev_max;
     }
 
+    #[Override]
     public function setMaxBev(int $bev_max): ColonyInterface
     {
         $this->bev_max = $bev_max;
         return $this;
     }
 
+    #[Override]
     public function getEps(): int
     {
         return $this->eps;
     }
 
+    #[Override]
     public function setEps(int $eps): ColonyInterface
     {
         $this->eps = $eps;
         return $this;
     }
 
+    #[Override]
     public function getMaxEps(): int
     {
         return $this->max_eps;
     }
 
+    #[Override]
     public function setMaxEps(int $max_eps): ColonyInterface
     {
         $this->max_eps = $max_eps;
         return $this;
     }
 
+    #[Override]
     public function getMaxStorage(): int
     {
         return $this->max_storage;
     }
 
+    #[Override]
     public function setMaxStorage(int $max_storage): ColonyInterface
     {
         $this->max_storage = $max_storage;
         return $this;
     }
 
+    #[Override]
     public function getMask(): ?string
     {
         return $this->mask;
     }
 
+    #[Override]
     public function setMask(?string $mask): ColonyInterface
     {
         $this->mask = $mask;
         return $this;
     }
 
+    #[Override]
     public function getDatabaseId(): ?int
     {
         return $this->database_id;
     }
 
+    #[Override]
     public function setDatabaseId(?int $database_id): ColonyInterface
     {
         $this->database_id = $database_id;
         return $this;
     }
 
+    #[Override]
     public function getPopulationlimit(): int
     {
         return $this->populationlimit;
     }
 
+    #[Override]
     public function setPopulationlimit(int $populationlimit): ColonyInterface
     {
         $this->populationlimit = $populationlimit;
         return $this;
     }
 
+    #[Override]
     public function getImmigrationstate(): bool
     {
         return $this->immigrationstate;
     }
 
+    #[Override]
     public function setImmigrationstate(bool $immigrationstate): ColonyInterface
     {
         $this->immigrationstate = $immigrationstate;
         return $this;
     }
 
+    #[Override]
     public function getShields(): ?int
     {
         return $this->shields;
     }
 
+    #[Override]
     public function setShields(?int $shields): ColonyInterface
     {
         $this->shields = $shields;
         return $this;
     }
 
+    #[Override]
     public function getTwilightZone(): int
     {
         $twilightZone = 0;
@@ -386,33 +422,39 @@ class Colony implements ColonyInterface
         return $twilightZone;
     }
 
+    #[Override]
     public function getShieldFrequency(): ?int
     {
         return $this->shield_frequency;
     }
 
+    #[Override]
     public function setShieldFrequency(?int $shieldFrequency): ColonyInterface
     {
         $this->shield_frequency = $shieldFrequency;
         return $this;
     }
 
+    #[Override]
     public function getTorpedo(): ?TorpedoTypeInterface
     {
         return $this->torpedo;
     }
 
+    #[Override]
     public function setTorpedo(?TorpedoTypeInterface $torpedoType): ColonyInterface
     {
         $this->torpedo = $torpedoType;
         return $this;
     }
 
+    #[Override]
     public function getRotationFactor(): int
     {
         return $this->rotation_factor;
     }
 
+    #[Override]
     public function setRotationFactor(int $rotationFactor): ColonyInterface
     {
         $this->rotation_factor = $rotationFactor;
@@ -420,16 +462,19 @@ class Colony implements ColonyInterface
         return $this;
     }
 
+    #[Override]
     public function getRotationTime(): int
     {
         return (int) (TimeConstants::ONE_DAY_IN_SECONDS * $this->getRotationFactor() / 100);
     }
 
+    #[Override]
     public function getColonyTimeSeconds(): int
     {
         return time() % $this->getRotationTime();
     }
 
+    #[Override]
     public function getColonyTimeHour(): ?string
     {
         $rotationTime = $this->getRotationTime();
@@ -437,6 +482,7 @@ class Colony implements ColonyInterface
         return sprintf("%02d", (int) floor(($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime)));
     }
 
+    #[Override]
     public function getColonyTimeMinute(): ?string
     {
         $rotationTime = $this->getRotationTime();
@@ -444,6 +490,7 @@ class Colony implements ColonyInterface
         return sprintf("%02d", (int) floor(60 * (($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime) - ((int) $this->getColonyTimeHour()))));
     }
 
+    #[Override]
     public function getDayTimePrefix(): ?int
     {
         $daytimeprefix = null;
@@ -463,6 +510,7 @@ class Colony implements ColonyInterface
         return $daytimeprefix;
     }
 
+    #[Override]
     public function getDayTimeName(): ?string
     {
         $daytimename = null;
@@ -484,28 +532,33 @@ class Colony implements ColonyInterface
         return $daytimename;
     }
 
+    #[Override]
     public function getSurfaceWidth(): int
     {
         return $this->surface_width;
     }
 
+    #[Override]
     public function setSurfaceWidth(int $surfaceWidth): ColonyInterface
     {
         $this->surface_width = $surfaceWidth;
         return $this;
     }
 
+    #[Override]
     public function getColonyClass(): ColonyClassInterface
     {
         return $this->colonyClass;
     }
 
+    #[Override]
     public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface
     {
         $this->colonyClass = $colonyClass;
         return $this;
     }
 
+    #[Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -515,16 +568,19 @@ class Colony implements ColonyInterface
         );
     }
 
+    #[Override]
     public function storagePlaceLeft(): bool
     {
         return $this->getMaxStorage() > $this->getStorageSum();
     }
 
+    #[Override]
     public function getStarsystemMap(): StarSystemMapInterface
     {
         return $this->starsystem_map;
     }
 
+    #[Override]
     public function setStarsystemMap(StarSystemMapInterface $systemMap): ColonyInterface
     {
         $this->starsystem_map = $systemMap;
@@ -532,16 +588,19 @@ class Colony implements ColonyInterface
         return $this;
     }
 
+    #[Override]
     public function getSystem(): StarSystemInterface
     {
         return $this->getStarsystemMap()->getSystem();
     }
 
+    #[Override]
     public function getBeamFactor(): int
     {
         return 10;
     }
 
+    #[Override]
     public function getPlanetFields(): Collection
     {
         return $this->planetFields;
@@ -550,6 +609,7 @@ class Colony implements ColonyInterface
     /**
      * @return StorageInterface[]
      */
+    #[Override]
     public function getBeamableStorage(): array
     {
         return array_filter(
@@ -558,46 +618,55 @@ class Colony implements ColonyInterface
         );
     }
 
+    #[Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
+    #[Override]
     public function isDefended(): bool
     {
         return !$this->getDefenders()->isEmpty();
     }
 
+    #[Override]
     public function getDefenders(): Collection
     {
         return $this->defenders;
     }
 
+    #[Override]
     public function isBlocked(): bool
     {
         return !$this->getBlockers()->isEmpty();
     }
 
+    #[Override]
     public function getBlockers(): Collection
     {
         return $this->blockers;
     }
 
+    #[Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crewAssignments;
     }
 
+    #[Override]
     public function getCrewAssignmentAmount(): int
     {
         return $this->crewAssignments->count();
     }
 
+    #[Override]
     public function getCrewTrainingAmount(): int
     {
         return $this->crewTrainings->count();
     }
 
+    #[Override]
     public function getUserDepositMinings(): array
     {
         $result = [];
@@ -611,77 +680,92 @@ class Colony implements ColonyInterface
         return $result;
     }
 
+    #[Override]
     public function isFree(): bool
     {
         return $this->getUserId() === UserEnum::USER_NOONE;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ColonyInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getPopulation(): int
     {
         return $this->getWorkers() + $this->getWorkless();
     }
 
+    #[Override]
     public function getFreeHousing(): int
     {
         return $this->getMaxBev() - $this->getPopulation();
     }
 
+    #[Override]
     public function lowerEps(int $value): void
     {
         $this->setEps($this->getEps() - $value);
     }
 
+    #[Override]
     public function upperEps(int $value): void
     {
         $this->setEps($this->getEps() + $value);
     }
 
+    #[Override]
     public function getSectorString(): string
     {
         return $this->getStarsystemMap()->getSectorString();
     }
 
+    #[Override]
     public function getDepositMinings(): Collection
     {
         return $this->depositMinings;
     }
 
+    #[Override]
     public function getPlanetFieldHostIdentifier(): string
     {
         return 'colony';
     }
 
+    #[Override]
     public function getPlanetFieldHostColumnIdentifier(): string
     {
         return 'colonies_id';
     }
 
+    #[Override]
     public function isColony(): bool
     {
         return true;
     }
 
+    #[Override]
     public function getHostType(): PlanetFieldHostTypeEnum
     {
         return PlanetFieldHostTypeEnum::COLONY;
     }
 
+    #[Override]
     public function getDefaultViewIdentifier(): string
     {
         return ShowColony::VIEW_IDENTIFIER;
     }
 
+    #[Override]
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return true;

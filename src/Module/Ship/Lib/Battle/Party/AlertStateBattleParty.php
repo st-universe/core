@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
@@ -20,6 +21,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
         $this->leaderAlertState = $leader->get()->getAlertState();
     }
 
+    #[Override]
     public function initMembers(): Collection
     {
         $fleet = $this->leader->getFleetWrapper();
@@ -47,11 +49,13 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
         return $this->leaderAlertState;
     }
 
+    #[Override]
     public function getAttackCause(): ShipAttackCauseEnum
     {
         return $this->leaderAlertState->getAttackCause();
     }
 
+    #[Override]
     public function getAlertDescription(): string
     {
         return $this->leaderAlertState === ShipAlertStateEnum::ALERT_RED

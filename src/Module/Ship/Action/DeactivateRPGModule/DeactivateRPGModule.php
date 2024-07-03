@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeactivateRPGModule;
 
+use Override;
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,24 +16,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DeactivateRPGModule implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEACTIVATE_RPG_MODULE';
+    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_RPG_MODULE';
 
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->helper = $helper;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -52,6 +42,7 @@ final class DeactivateRPGModule implements ActionControllerInterface
 
         $game->addInformation("Das RPG Modul wurde deaktiviert");
     }
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

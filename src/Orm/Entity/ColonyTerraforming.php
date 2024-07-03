@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -48,26 +49,31 @@ class ColonyTerraforming implements ColonyTerraformingInterface
     #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getColonyId(): int
     {
         return $this->colonies_id;
     }
 
+    #[Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
+    #[Override]
     public function getTerraformingId(): int
     {
         return $this->terraforming_id;
     }
 
+    #[Override]
     public function setTerraformingId(int $terraformingId): ColonyTerraformingInterface
     {
         $this->terraforming_id = $terraformingId;
@@ -75,11 +81,13 @@ class ColonyTerraforming implements ColonyTerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getFinishDate(): int
     {
         return $this->finished;
     }
 
+    #[Override]
     public function setFinishDate(int $finishDate): ColonyTerraformingInterface
     {
         $this->finished = $finishDate;
@@ -87,11 +95,13 @@ class ColonyTerraforming implements ColonyTerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getTerraforming(): TerraformingInterface
     {
         return $this->terraforming;
     }
 
+    #[Override]
     public function setTerraforming(TerraformingInterface $terraforming): ColonyTerraformingInterface
     {
         $this->terraforming = $terraforming;
@@ -99,11 +109,13 @@ class ColonyTerraforming implements ColonyTerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getField(): PlanetFieldInterface
     {
         return $this->field;
     }
 
+    #[Override]
     public function setField(PlanetFieldInterface $planetField): ColonyTerraformingInterface
     {
         $this->field = $planetField;
@@ -111,17 +123,20 @@ class ColonyTerraforming implements ColonyTerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): ColonyTerraformingInterface
     {
         $this->colony = $colony;
         return $this;
     }
 
+    #[Override]
     public function getProgress(): int
     {
         $start = $this->getFinishDate() - $this->getTerraforming()->getDuration();

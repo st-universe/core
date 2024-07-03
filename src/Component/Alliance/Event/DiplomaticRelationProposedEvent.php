@@ -11,20 +11,8 @@ use Stu\Orm\Entity\AllianceInterface;
  */
 class DiplomaticRelationProposedEvent
 {
-    private AllianceInterface $alliance;
-
-    private AllianceInterface $counterpart;
-
-    private int $relationTypeId;
-
-    public function __construct(
-        AllianceInterface $alliance,
-        AllianceInterface $counterpart,
-        int $relationTypeId
-    ) {
-        $this->alliance = $alliance;
-        $this->counterpart = $counterpart;
-        $this->relationTypeId = $relationTypeId;
+    public function __construct(private AllianceInterface $alliance, private AllianceInterface $counterpart, private int $relationTypeId)
+    {
     }
 
     /**

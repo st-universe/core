@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
@@ -42,11 +43,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
+    #[Override]
     public function prototype(): ShipInterface
     {
         return new Ship();
     }
 
+    #[Override]
     public function save(ShipInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -54,6 +57,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(ShipInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -61,6 +65,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $em->remove($post);
     }
 
+    #[Override]
     public function getAmountByUserAndSpecialAbility(
         int $userId,
         int $specialAbilityId
@@ -86,6 +91,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getSingleScalarResult();
     }
 
+    #[Override]
     public function getAmountByUserAndRump(int $userId, int $shipRumpId): int
     {
         return $this->count([
@@ -94,6 +100,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getByUser(UserInterface $user): iterable
     {
         return $this->findBy([
@@ -101,6 +108,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getByUserAndRump(int $userId, int $rumpId): array
     {
         return $this->findBy([
@@ -114,6 +122,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -136,6 +145,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getByLocationAndUser(MapInterface|StarSystemMapInterface $field, UserInterface $user): array
     {
         return $this->findBy([
@@ -150,6 +160,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getByLocation(MapInterface|StarSystemMapInterface $field): array
     {
         return $this->getEntityManager()
@@ -183,6 +194,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getForeignStationsInBroadcastRange(ShipInterface $ship): array
     {
         $systemMap = $ship->getStarsystemMap();
@@ -222,6 +234,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getShipsForAlertRed(
         ShipInterface $ship
     ): iterable {
@@ -262,6 +275,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getTradePostsWithoutDatabaseEntry(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -272,6 +286,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->getResult();
     }
 
+    #[Override]
     public function getByUserAndFleetAndType(int $userId, ?int $fleetId, SpacecraftTypeEnum $type): array
     {
         return $this->findBy(
@@ -284,6 +299,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         );
     }
 
+    #[Override]
     public function getByUplink(int $userId): array
     {
         return $this->getEntityManager()->createQuery(
@@ -317,6 +333,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getWithTradeLicensePayment(
         int $userId,
         int $tradePostShipId,
@@ -339,6 +356,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getSuitableForShildRegeneration(int $regenerationThreshold): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -370,6 +388,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getEscapePods(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -386,6 +405,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getEscapePodsByCrewOwner(int $userId): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -407,6 +427,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    #[Override]
     public function getDebrisFields(): iterable
     {
         return $this->findBy([
@@ -414,6 +435,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    #[Override]
     public function getStationConstructions(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -433,6 +455,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getPlayerShipsForTick(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -465,6 +488,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->toIterable();
     }
 
+    #[Override]
     public function getNpcShipsForTick(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -475,6 +499,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
     }
 
+    #[Override]
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
@@ -561,6 +586,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $query->getResult();
     }
 
+    #[Override]
     public function getSingleShipScannerResults(
         ShipInterface $ship,
         array $types,
@@ -673,6 +699,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addFieldResult('s', 'hascrew', 'has_crew');
     }
 
+    #[Override]
     public function isCloakedShipAtShipLocation(
         ShipInterface $ship
     ): bool {
@@ -709,6 +736,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $result > 0;
     }
 
+    #[Override]
     public function getRandomShipIdWithCrewByUser(int $userId): ?int
     {
         $rsm = new ResultSetMapping();
@@ -733,6 +761,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $result != null ? $result['id'] : null;
     }
 
+    #[Override]
     public function isBaseOnLocation(ShipInterface $ship): bool
     {
         $query = $this->getEntityManager()->createQuery(
@@ -753,6 +782,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $query->getSingleScalarResult() > 0;
     }
 
+    #[Override]
     public function getStationsByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -775,6 +805,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getAllDockedShips(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -786,6 +817,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->getResult();
     }
 
+    #[Override]
     public function getAllTractoringShips(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -797,6 +829,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->getResult();
     }
 
+    #[Override]
     public function getPirateTargets(ShipInterface $ship): array
     {
         $layer = $ship->getLayer();
@@ -848,6 +881,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function getPirateFriends(ShipInterface $ship): array
     {
         $layer = $ship->getLayer();
@@ -884,6 +918,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ->getResult();
     }
 
+    #[Override]
     public function truncateAllShips(): void
     {
         $this->getEntityManager()->createQuery(

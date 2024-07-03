@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BuildConstruction;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
@@ -33,59 +34,20 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class BuildConstruction implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILD_CONSTRUCTION';
+    public const string ACTION_IDENTIFIER = 'B_BUILD_CONSTRUCTION';
 
-    public const NEEDED_WORKBEES = 5;
+    public const int NEEDED_WORKBEES = 5;
 
-    public const NEEDED_RESOURCES = [
+    public const array NEEDED_RESOURCES = [
         CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS => 100,
         CommodityTypeEnum::COMMODITY_DURANIUM => 50
     ];
 
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipLoaderInterface $shipLoader,
-        ShipCreatorInterface $shipCreator,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipRumpUserRepositoryInterface $shipRumpUserRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipLoader = $shipLoader;
-        $this->shipCreator = $shipCreator;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->shipRumpUserRepository = $shipRumpUserRepository;
-        $this->commodityRepository = $commodityRepository;
-        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipLoaderInterface $shipLoader, private ShipCreatorInterface $shipCreator, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipStorageManagerInterface $shipStorageManager, private TroopTransferUtilityInterface $troopTransferUtility, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private CommodityRepositoryInterface $commodityRepository, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -328,6 +290,7 @@ final class BuildConstruction implements ActionControllerInterface
         $this->dockingPrivilegeRepository->save($dock);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

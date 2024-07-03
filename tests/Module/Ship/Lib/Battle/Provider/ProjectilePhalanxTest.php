@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -28,6 +29,7 @@ class ProjectilePhalanxTest extends StuTestCase
 
     private ProjectilePhalanx $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

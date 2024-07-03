@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Cache\Adapter\Common\CacheItem;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Component\Colony\ColonyFieldTypeCategoryEnum;
@@ -19,27 +20,22 @@ use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
  */
 final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterface
 {
-    private const CACHE_KEY_NAME = 'planet_field_type_list';
-    private const CACHE_KEY_CATEGORY = 'planet_field_type_categories';
+    private const string CACHE_KEY_NAME = 'planet_field_type_list';
+    private const string CACHE_KEY_CATEGORY = 'planet_field_type_categories';
 
-    private const CACHE_TTL = TimeConstants::ONE_DAY_IN_SECONDS;
-
-    private CacheItemPoolInterface $cache;
-
-    private PlanetFieldTypeRepositoryInterface $planetFieldTypeRepository;
+    private const int CACHE_TTL = TimeConstants::ONE_DAY_IN_SECONDS;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        CacheItemPoolInterface $cache,
-        PlanetFieldTypeRepositoryInterface $planetFieldTypeRepository,
+        private CacheItemPoolInterface $cache,
+        private PlanetFieldTypeRepositoryInterface $planetFieldTypeRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->cache = $cache;
-        $this->planetFieldTypeRepository = $planetFieldTypeRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function getDescription(int $fieldTypeId): string
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_NAME)) {
@@ -49,6 +45,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         return $this->cache->getItem(self::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
     }
 
+    #[Override]
     public function getCategory(int $fieldTypeId): int
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_CATEGORY)) {
@@ -69,6 +66,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         return $result ?? 0;
     }
 
+    #[Override]
     public function isUndergroundField(
         PlanetFieldInterface $planetField
     ): bool {
@@ -78,6 +76,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         );
     }
 
+    #[Override]
     public function isOrbitField(
         PlanetFieldInterface $planetField
     ): bool {

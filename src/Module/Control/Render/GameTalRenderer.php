@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,22 +18,14 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class GameTalRenderer implements GameTalRendererInterface
 {
-    private ConfigInterface $config;
-
-    /** @var array<Fragments\RenderFragmentInterface> */
-    private array $renderFragments;
-
     /**
      * @param array<Fragments\RenderFragmentInterface> $renderFragments
      */
-    public function __construct(
-        ConfigInterface $config,
-        array $renderFragments
-    ) {
-        $this->config = $config;
-        $this->renderFragments = $renderFragments;
+    public function __construct(private ConfigInterface $config, private array $renderFragments)
+    {
     }
 
+    #[Override]
     public function render(
         GameControllerInterface $game,
         ?UserInterface $user,

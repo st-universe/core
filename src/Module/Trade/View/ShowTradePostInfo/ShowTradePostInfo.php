@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTradePostInfo;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,28 +14,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradePostInfo implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TRADEPOST_INFO';
+    public const string VIEW_IDENTIFIER = 'SHOW_TRADEPOST_INFO';
 
-    private ShowTradePostInfoRequestInterface $showTradePostInfoRequest;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLibFactoryInterface $talFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    public function __construct(
-        ShowTradePostInfoRequestInterface $showTradePostInfoRequest,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $talFactory,
-        TradePostRepositoryInterface $tradePostRepository
-    ) {
-        $this->showTradePostInfoRequest = $showTradePostInfoRequest;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->talFactory = $talFactory;
-        $this->tradePostRepository = $tradePostRepository;
+    public function __construct(private ShowTradePostInfoRequestInterface $showTradePostInfoRequest, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $talFactory, private TradePostRepositoryInterface $tradePostRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

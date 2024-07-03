@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\AddShoutBoxEntry;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,24 +14,13 @@ use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 
 final class AddShoutBoxEntry implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ADD_SHOUTBOX_ENTRY';
+    public const string ACTION_IDENTIFIER = 'B_ADD_SHOUTBOX_ENTRY';
 
-    private AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest;
-
-    private TradeShoutboxRepositoryInterface $tradeShoutboxRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    public function __construct(
-        AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest,
-        TradeShoutboxRepositoryInterface $tradeShoutboxRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
-    ) {
-        $this->addShoutBoxEntryRequest = $addShoutBoxEntryRequest;
-        $this->tradeShoutboxRepository = $tradeShoutboxRepository;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
+    public function __construct(private AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -57,6 +47,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         $game->setView(ShowShoutBoxList::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

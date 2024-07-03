@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -17,34 +18,11 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManagementProvider implements GuiComponentProviderInterface
 {
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
-
-    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
-        OrbitShipListRetrieverInterface $orbitShipListRetriever,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
-        $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        $this->orbitShipListRetriever = $orbitShipListRetriever;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory, private ColonyLibFactoryInterface $colonyLibFactory)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

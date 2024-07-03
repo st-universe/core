@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJob;
@@ -15,11 +16,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class AllianceJobRepository extends EntityRepository implements AllianceJobRepositoryInterface
 {
+    #[Override]
     public function prototype(): AllianceJobInterface
     {
         return new AllianceJob();
     }
 
+    #[Override]
     public function save(AllianceJobInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -27,6 +30,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(AllianceJobInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         $em->remove($post);
     }
 
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
@@ -41,6 +46,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ]);
     }
 
+    #[Override]
     public function getByAlliance(int $allianceId): array
     {
         return $this->findBy([
@@ -48,6 +54,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ]);
     }
 
+    #[Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()->createQuery(
@@ -60,6 +67,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ])->execute();
     }
 
+    #[Override]
     public function truncateByAlliance(int $allianceId): void
     {
         $this->getEntityManager()->createQuery(
@@ -72,6 +80,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ])->execute();
     }
 
+    #[Override]
     public function getByAllianceAndType(int $allianceId, int $typeId): array
     {
         return $this->findBy([
@@ -80,6 +89,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ]);
     }
 
+    #[Override]
     public function getByUserAndAllianceAndType(
         UserInterface $user,
         AllianceInterface $alliance,
@@ -92,6 +102,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ]);
     }
 
+    #[Override]
     public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJobInterface
     {
         return $this->findOneBy([
@@ -100,6 +111,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ]);
     }
 
+    #[Override]
     public function truncateAllAllianceJobs(): void
     {
         $this->getEntityManager()->createQuery(

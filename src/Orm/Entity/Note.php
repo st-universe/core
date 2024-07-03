@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,27 +40,32 @@ class Note implements NoteInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): NoteInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function setDate(int $date): NoteInterface
     {
         $this->date = $date;
@@ -67,11 +73,13 @@ class Note implements NoteInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setTitle(string $title): NoteInterface
     {
         $this->title = $title;
@@ -79,11 +87,13 @@ class Note implements NoteInterface
         return $this;
     }
 
+    #[Override]
     public function getTitle(): string
     {
         return $this->title;
     }
 
+    #[Override]
     public function setText(string $text): NoteInterface
     {
         $this->text = $text;
@@ -91,6 +101,7 @@ class Note implements NoteInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;

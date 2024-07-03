@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -32,11 +33,13 @@ class OpenedAdventDoor implements OpenedAdventDoorInterface
     private int $time;
 
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setUserId(int $userId): OpenedAdventDoorInterface
     {
         $this->user_id = $userId;
@@ -44,6 +47,7 @@ class OpenedAdventDoor implements OpenedAdventDoorInterface
         return $this;
     }
 
+    #[Override]
     public function setDay(int $day): OpenedAdventDoorInterface
     {
         $this->day = $day;
@@ -51,12 +55,14 @@ class OpenedAdventDoor implements OpenedAdventDoorInterface
         return $this;
     }
 
+    #[Override]
     public function setYear(int $year): OpenedAdventDoorInterface
     {
         $this->year = $year;
 
         return $this;
     }
+    #[Override]
     public function setTime(int $time): OpenedAdventDoorInterface
     {
         $this->time = $time;

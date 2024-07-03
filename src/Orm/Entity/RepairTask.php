@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -45,60 +46,71 @@ class RepairTask implements RepairTaskInterface
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): RepairTaskInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): RepairTaskInterface
     {
         $this->ship = $ship;
         return $this;
     }
 
+    #[Override]
     public function setFinishTime(int $finishTime): RepairTaskInterface
     {
         $this->finish_time = $finishTime;
         return $this;
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return $this->system_type;
     }
 
+    #[Override]
     public function setSystemType(ShipSystemTypeEnum $type): RepairTaskInterface
     {
         $this->system_type = $type;
         return $this;
     }
 
+    #[Override]
     public function getHealingPercentage(): int
     {
         return $this->healing_percentage;
     }
 
+    #[Override]
     public function setHealingPercentage(int $healingPercentage): RepairTaskInterface
     {
         $this->healing_percentage = $healingPercentage;

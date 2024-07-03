@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\EscapeTractorBeam;
 
+use Override;
 use request;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -25,7 +26,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ESCAPE_TRAKTOR';
+    public const string ACTION_IDENTIFIER = 'B_ESCAPE_TRAKTOR';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -38,6 +39,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -202,6 +204,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

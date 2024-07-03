@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowShiplist;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
 final class ShowShiplist implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIPLIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIPLIST';
 
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->shipRepository = $shipRepository;
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private ShipRepositoryInterface $shipRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

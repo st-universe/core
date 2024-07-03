@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeleteContacts;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class DeleteContacts implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DELETE_CONTACTS';
+    public const string ACTION_IDENTIFIER = 'B_DELETE_CONTACTS';
 
-    private DeleteContactsRequestInterface $deleteContactsRequest;
-
-    private ContactRepositoryInterface $contactRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        DeleteContactsRequestInterface $deleteContactsRequest,
-        ContactRepositoryInterface $contactRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->deleteContactsRequest = $deleteContactsRequest;
-        $this->contactRepository = $contactRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private DeleteContactsRequestInterface $deleteContactsRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         foreach ($this->deleteContactsRequest->getContactIds() as $contactId) {
@@ -53,6 +43,7 @@ final class DeleteContacts implements ActionControllerInterface
         $game->addInformation(_('Die Kontakte wurden gelöscht'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

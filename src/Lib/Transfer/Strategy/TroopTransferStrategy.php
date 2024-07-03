@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Strategy;
 
+use Override;
 use request;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
@@ -33,51 +34,24 @@ use Stu\Orm\Entity\ShipInterface;
 
 class TroopTransferStrategy implements TransferStrategyInterface
 {
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    private TroopTransferUtilityInterface $transferUtility;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private DockPrivilegeUtilityInterface $dockPrivilegeUtility;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private ShipShutdownInterface $shipShutdown;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        TroopTransferUtilityInterface $transferUtility,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipSystemManagerInterface $shipSystemManager,
-        DockPrivilegeUtilityInterface $dockPrivilegeUtility,
-        ActivatorDeactivatorHelperInterface $helper,
-        ShipShutdownInterface $shipShutdown,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        PrivateMessageSenderInterface $privateMessageSender,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private TroopTransferUtilityInterface $transferUtility,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private DockPrivilegeUtilityInterface $dockPrivilegeUtility,
+        private ActivatorDeactivatorHelperInterface $helper,
+        private ShipShutdownInterface $shipShutdown,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->transferUtility = $transferUtility;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->dockPrivilegeUtility = $dockPrivilegeUtility;
-        $this->helper = $helper;
-        $this->shipShutdown = $shipShutdown;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->privateMessageSender = $privateMessageSender;
-
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function setTemplateVariables(
         bool $isUnload,
         ShipInterface $ship,
@@ -145,6 +119,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         $game->setTemplateVar('MAXIMUM', $max);
     }
 
+    #[Override]
     public function transfer(
         bool $isUnload,
         ShipWrapperInterface $wrapper,
@@ -222,7 +197,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
                     $amount = $this->transferFromShip($requestedTransferCount, $wrapper, $target, $isUplinkSituation, $ownCrewOnTarget, $informations);
                 }
             }
-        } catch (ShipSystemException $e) {
+        } catch (ShipSystemException) {
             return;
         }
 

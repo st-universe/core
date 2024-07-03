@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
@@ -55,6 +56,7 @@ class PirateCreation implements PirateCreationInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function createPirateFleetsIfNeeded(): array
     {
         $gameTurn = $this->game->getCurrentRound();
@@ -80,6 +82,7 @@ class PirateCreation implements PirateCreationInterface
         return $pirateFleets;
     }
 
+    #[Override]
     public function createPirateFleet(ShipInterface $supportCaller = null): FleetInterface
     {
         $pirateUser = $this->userRepository->find(UserEnum::USER_NPC_KAZON);

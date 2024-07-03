@@ -13,24 +13,8 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class ClosestLocations
 {
-    private DistanceCalculationInterface $distanceCalculation;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        DistanceCalculationInterface $distanceCalculation,
-        ShipRepositoryInterface $shipRepository,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        $this->distanceCalculation = $distanceCalculation;
-        $this->shipRepository = $shipRepository;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private DistanceCalculationInterface $distanceCalculation, private ShipRepositoryInterface $shipRepository, private TroopTransferUtilityInterface $troopTransferUtility, private ColonyLibFactoryInterface $colonyLibFactory)
+    {
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
@@ -57,6 +58,7 @@ class ShipSystemManagerTest extends StuTestCase
 
     private ShipSystemManagerInterface $manager;
 
+    #[Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(ShipInterface::class);

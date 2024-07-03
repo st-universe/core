@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -22,6 +23,7 @@ class ShipUiFactoryTest extends StuTestCase
 
     private ShipUiFactory $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->userMapRepository = $this->mock(UserMapRepositoryInterface::class);

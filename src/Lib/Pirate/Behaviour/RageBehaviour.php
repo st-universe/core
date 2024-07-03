@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -29,6 +30,7 @@ class RageBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

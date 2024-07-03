@@ -9,12 +9,8 @@ use Stu\Orm\Entity\FactionInterface;
 
 final class AllianceListItem
 {
-    private AllianceInterface $alliance;
-
-    public function __construct(
-        AllianceInterface $alliance
-    ) {
-        $this->alliance = $alliance;
+    public function __construct(private AllianceInterface $alliance)
+    {
     }
 
     public function getId(): int

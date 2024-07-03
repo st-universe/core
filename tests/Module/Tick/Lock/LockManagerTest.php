@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Lock;
 
+use Override;
 use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
 use Stu\Module\Config\StuConfigInterface;
@@ -16,6 +17,7 @@ class LockManagerTest extends StuTestCase
 
     private LockManagerInterface $lockManager;
 
+    #[Override]
     protected function setUp(): void
     {
         vfsStream::setup('tmpDir');

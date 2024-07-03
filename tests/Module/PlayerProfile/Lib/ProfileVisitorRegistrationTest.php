@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Lib;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -17,6 +18,7 @@ class ProfileVisitorRegistrationTest extends StuTestCase
 
     private ProfileVisitorRegistration $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->userProfileVisitorRepository = $this->mock(UserProfileVisitorRepositoryInterface::class);

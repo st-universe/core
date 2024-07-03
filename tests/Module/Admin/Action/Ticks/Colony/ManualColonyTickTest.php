@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Config\Model\ColonySettings;
@@ -37,6 +38,7 @@ class ManualColonyTickTest extends StuTestCase
 
     private ManualColonyTick $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->request = $this->mock(ManualColonyTickRequestInterface::class);

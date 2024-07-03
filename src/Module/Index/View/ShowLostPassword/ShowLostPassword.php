@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowLostPassword;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowLostPassword implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_LOST_PASSWORD';
+    public const string VIEW_IDENTIFIER = 'SHOW_LOST_PASSWORD';
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/index_lostpassword.xhtml');

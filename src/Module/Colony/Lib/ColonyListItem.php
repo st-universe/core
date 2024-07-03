@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
@@ -16,115 +17,112 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyListItem implements ColonyListItemInterface
 {
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ColonyInterface $colony;
-
-    private int $signatureCount;
-
-    private CommodityConsumptionInterface $commodityConsumption;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
     /** @var array<int, ColonyProduction>|null */
     private ?array $production = null;
 
     private ?ColonyPopulationCalculatorInterface $colonyPopulationCalculator = null;
 
-    public function __construct(
-        ColonyLibFactoryInterface $colonyLibFactory,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        CommodityConsumptionInterface $commodityConsumption,
-        ColonyInterface $colony,
-        int $signatureCount
-    ) {
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->commodityConsumption = $commodityConsumption;
-        $this->colony = $colony;
-        $this->signatureCount = $signatureCount;
-        $this->planetFieldRepository = $planetFieldRepository;
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private PlanetFieldRepositoryInterface $planetFieldRepository, private CommodityConsumptionInterface $commodityConsumption, private ColonyInterface $colony, private int $signatureCount)
+    {
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->colony->getId();
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->colony->getName();
     }
 
+    #[Override]
     public function getSystem(): StarSystemInterface
     {
         return $this->colony->getSystem();
     }
 
+    #[Override]
     public function getSX(): int
     {
         return $this->colony->getSX();
     }
 
+    #[Override]
     public function getSY(): int
     {
         return $this->colony->getSY();
     }
 
+    #[Override]
     public function getSignatureCount(): int
     {
         return $this->signatureCount;
     }
 
+    #[Override]
     public function getPopulation(): int
     {
         return $this->colony->getPopulation();
     }
 
+    #[Override]
     public function getHousing(): int
     {
         return $this->colony->getMaxBev();
     }
 
+    #[Override]
     public function getImmigration(): int
     {
         return $this->getPopulationCalculator()->getGrowth();
     }
 
+    #[Override]
     public function getEps(): int
     {
         return $this->colony->getEps();
     }
 
+    #[Override]
     public function getMaxEps(): int
     {
         return $this->colony->getMaxEps();
     }
 
+    #[Override]
     public function getEnergyProduction(): int
     {
         return $this->planetFieldRepository->getEnergyProductionByHost($this->colony);
     }
 
+    #[Override]
     public function getStorageSum(): int
     {
         return $this->colony->getStorageSum();
     }
 
+    #[Override]
     public function getMaxStorage(): int
     {
         return $this->colony->getMaxStorage();
     }
 
+    #[Override]
     public function getStorage(): Collection
     {
         return $this->colony->getStorage();
     }
 
+    #[Override]
     public function getColonyClass(): ColonyClassInterface
     {
         return $this->colony->getColonyClass();
     }
 
+    #[Override]
     public function getProductionSum(): int
     {
         return $this->colonyLibFactory->createColonyProductionSumReducer()->reduce(
@@ -132,6 +130,7 @@ final class ColonyListItem implements ColonyListItemInterface
         );
     }
 
+    #[Override]
     public function getCommodityUseView(): array
     {
         return $this->commodityConsumption->getConsumption(
@@ -140,31 +139,37 @@ final class ColonyListItem implements ColonyListItemInterface
         );
     }
 
+    #[Override]
     public function isDefended(): bool
     {
         return $this->colony->isDefended();
     }
 
+    #[Override]
     public function isBlocked(): bool
     {
         return $this->colony->isBlocked();
     }
 
+    #[Override]
     public function getCrewAssignmentAmount(): int
     {
         return $this->colony->getCrewAssignmentAmount();
     }
 
+    #[Override]
     public function getCrewTrainingAmount(): int
     {
         return $this->colony->getCrewTrainingAmount();
     }
 
+    #[Override]
     public function getCrewLimit(): int
     {
         return $this->getPopulationCalculator()->getCrewLimit();
     }
 
+    #[Override]
     public function getCrewLimitStyle(): string
     {
         $lifeStandardPercentage = $this->getPopulationCalculator()->getLifeStandardPercentage();
@@ -184,6 +189,7 @@ final class ColonyListItem implements ColonyListItemInterface
         return "color: red;";
     }
 
+    #[Override]
     public function getStorageStatusBar(): string
     {
         return (new TalStatusBar())
@@ -194,6 +200,7 @@ final class ColonyListItem implements ColonyListItemInterface
             ->render();
     }
 
+    #[Override]
     public function getEpsStatusBar(): string
     {
         return (new TalStatusBar())

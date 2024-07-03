@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Action\ChangeCharacter;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserCharactersRepositoryInterface;
@@ -12,22 +13,13 @@ use Laminas\Mail\Exception\RuntimeException;
 
 final class ChangeCharacter implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_CHARACTER';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_CHARACTER';
 
-    private ChangeCharacterRequestInterface $request;
-    private UserCharactersRepositoryInterface $userCharactersRepository;
-    private ConfigInterface $config;
-
-    public function __construct(
-        ChangeCharacterRequestInterface $request,
-        UserCharactersRepositoryInterface $userCharactersRepository,
-        ConfigInterface $config
-    ) {
-        $this->request = $request;
-        $this->userCharactersRepository = $userCharactersRepository;
-        $this->config = $config;
+    public function __construct(private ChangeCharacterRequestInterface $request, private UserCharactersRepositoryInterface $userCharactersRepository, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $characterId = $this->request->getCharacterId();
@@ -97,6 +89,7 @@ final class ChangeCharacter implements ActionControllerInterface
         $game->addInformation(_('Der Charakter wurde erfolgreich bearbeitet.'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

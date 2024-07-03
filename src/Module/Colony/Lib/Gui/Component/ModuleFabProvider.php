@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -14,23 +15,12 @@ use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabProvider implements GuiComponentProviderInterface
 {
-    private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository;
-
-    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
-
-    private ModuleQueueRepositoryInterface $moduleQueueRepository;
-
-    public function __construct(
-        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
-        ModuleQueueRepositoryInterface $moduleQueueRepository
-    ) {
-        $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
-        $this->buildingFunctionRepository = $buildingFunctionRepository;
-        $this->moduleQueueRepository = $moduleQueueRepository;
+    public function __construct(private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository)
+    {
     }
 
     /** @param ColonyInterface $host */
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

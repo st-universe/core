@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -37,16 +38,19 @@ class GameTurn implements GameTurnInterface
     #[OneToOne(targetEntity: 'GameTurnStats', mappedBy: 'turn')]
     private ?GameTurnStatsInterface $stats = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTurn(): int
     {
         return $this->turn;
     }
 
+    #[Override]
     public function setTurn(int $turn): GameTurnInterface
     {
         $this->turn = $turn;
@@ -54,11 +58,13 @@ class GameTurn implements GameTurnInterface
         return $this;
     }
 
+    #[Override]
     public function getStart(): int
     {
         return $this->startdate;
     }
 
+    #[Override]
     public function setStart(int $start): GameTurnInterface
     {
         $this->startdate = $start;
@@ -66,11 +72,13 @@ class GameTurn implements GameTurnInterface
         return $this;
     }
 
+    #[Override]
     public function getEnd(): int
     {
         return $this->enddate;
     }
 
+    #[Override]
     public function setEnd(int $end): GameTurnInterface
     {
         $this->enddate = $end;
@@ -78,16 +86,19 @@ class GameTurn implements GameTurnInterface
         return $this;
     }
 
+    #[Override]
     public function getStats(): ?GameTurnStatsInterface
     {
         return $this->stats;
     }
 
+    #[Override]
     public function getPirateFleets(): int
     {
         return $this->pirate_fleets ?? 0;
     }
 
+    #[Override]
     public function setPirateFleets(int $pirateFleets): GameTurnInterface
     {
         $this->pirate_fleets = $pirateFleets;

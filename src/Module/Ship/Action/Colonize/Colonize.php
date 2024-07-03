@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Colonize;
 
+use Override;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
@@ -35,72 +36,13 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class Colonize implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_COLONIZE';
+    public const string ACTION_IDENTIFIER = 'B_COLONIZE';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private PlanetColonizationInterface $planetColonization;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private ColonizationCheckerInterface $colonizationChecker;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ComponentLoaderInterface $componentLoader;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
-        BuildingRepositoryInterface $buildingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        PlanetColonizationInterface $planetColonization,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        CommodityRepositoryInterface $commodityRepository,
-        ShipRemoverInterface $shipRemover,
-        InteractionCheckerInterface $interactionChecker,
-        ColonizationCheckerInterface $colonizationChecker,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
-        UserRepositoryInterface $userRepository,
-        ComponentLoaderInterface $componentLoader
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
-        $this->buildingRepository = $buildingRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->planetColonization = $planetColonization;
-        $this->colonyRepository = $colonyRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->commodityRepository = $commodityRepository;
-        $this->shipRemover = $shipRemover;
-        $this->interactionChecker = $interactionChecker;
-        $this->colonizationChecker = $colonizationChecker;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
-        $this->userRepository = $userRepository;
-        $this->componentLoader = $componentLoader;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private ShipRemoverInterface $shipRemover, private InteractionCheckerInterface $interactionChecker, private ColonizationCheckerInterface $colonizationChecker, private TroopTransferUtilityInterface $troopTransferUtility, private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -243,6 +185,7 @@ final class Colonize implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

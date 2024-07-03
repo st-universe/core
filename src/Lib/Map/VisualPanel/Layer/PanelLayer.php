@@ -13,18 +13,14 @@ final class PanelLayer
     /** @var array<int, array<int, CellDataInterface>> */
     private array $data = [];
 
-    private LayerRendererInterface $renderer;
-
     /**
      * @param array<CellDataInterface> $array
      */
-    public function __construct(array $array, LayerRendererInterface $renderer)
+    public function __construct(array $array, private LayerRendererInterface $renderer)
     {
         foreach ($array as $data) {
             $this->data[$data->getPosX()][$data->getPosY()] = $data;
         }
-
-        $this->renderer = $renderer;
     }
 
     public function renderCell(int $x, int $y, AbstractVisualPanel $panel): string

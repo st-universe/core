@@ -13,28 +13,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DockingPrivilegeItem
 {
-    private DockingPrivilegeInterface $dockingPrivilege;
-
-    private UserRepositoryInterface $userRepository;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private FactionRepositoryInterface $factionRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        FactionRepositoryInterface $factionRepository,
-        ShipRepositoryInterface $shipRepository,
-        DockingPrivilegeInterface $dockingPrivilege
-    ) {
-        $this->dockingPrivilege = $dockingPrivilege;
-        $this->userRepository = $userRepository;
-        $this->allianceRepository = $allianceRepository;
-        $this->factionRepository = $factionRepository;
-        $this->shipRepository = $shipRepository;
+    public function __construct(private UserRepositoryInterface $userRepository, private AllianceRepositoryInterface $allianceRepository, private FactionRepositoryInterface $factionRepository, private ShipRepositoryInterface $shipRepository, private DockingPrivilegeInterface $dockingPrivilege)
+    {
     }
 
     public function getId(): int

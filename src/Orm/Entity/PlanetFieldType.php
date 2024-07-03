@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -33,16 +34,19 @@ class PlanetFieldType implements PlanetFieldTypeInterface
     #[Column(type: 'integer')]
     private int $category;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getFieldType(): int
     {
         return $this->field_id;
     }
 
+    #[Override]
     public function setFieldType(int $fieldType): PlanetFieldTypeInterface
     {
         $this->field_id = $fieldType;
@@ -50,11 +54,13 @@ class PlanetFieldType implements PlanetFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): PlanetFieldTypeInterface
     {
         $this->description = $description;
@@ -62,11 +68,13 @@ class PlanetFieldType implements PlanetFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getBaseFieldType(): int
     {
         return $this->normal_id;
     }
 
+    #[Override]
     public function setBaseFieldType(int $baseFieldType): PlanetFieldTypeInterface
     {
         $this->normal_id = $baseFieldType;
@@ -74,6 +82,7 @@ class PlanetFieldType implements PlanetFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getCategory(): int
     {
         return $this->category;

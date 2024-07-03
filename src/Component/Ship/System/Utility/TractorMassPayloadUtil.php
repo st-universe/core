@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Utility;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
@@ -15,7 +16,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 {
-    public const POSSIBLE_DAMAGE_THRESHOLD = 0.9;
+    public const float POSSIBLE_DAMAGE_THRESHOLD = 0.9;
 
     public function __construct(
         private ApplyDamageInterface $applyDamage,
@@ -25,6 +26,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
     ) {
     }
 
+    #[Override]
     public function tryToTow(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip): ?string
     {
         $ship = $wrapper->get();
@@ -45,6 +47,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return null;
     }
 
+    #[Override]
     public function isTractorSystemStressed(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip
@@ -57,6 +60,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return $mass > self::POSSIBLE_DAMAGE_THRESHOLD * $payload;
     }
 
+    #[Override]
     public function stressTractorSystemForTowing(
         ShipWrapperInterface $wrapper,
         ShipInterface $tractoredShip,

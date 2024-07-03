@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\View\ShowResearch;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,28 +14,13 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class ShowResearch implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_RESEARCH';
+    public const string VIEW_IDENTIFIER = 'SHOW_RESEARCH';
 
-    private ShowResearchRequestInterface $showResearchRequest;
-
-    private TechlistRetrieverInterface $techlistRetriever;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private TalFactoryInterface $talFactory;
-
-    public function __construct(
-        ShowResearchRequestInterface $showResearchRequest,
-        TechlistRetrieverInterface $techlistRetriever,
-        ResearchedRepositoryInterface $researchedRepository,
-        TalFactoryInterface $talFactory
-    ) {
-        $this->showResearchRequest = $showResearchRequest;
-        $this->techlistRetriever = $techlistRetriever;
-        $this->researchedRepository = $researchedRepository;
-        $this->talFactory = $talFactory;
+    public function __construct(private ShowResearchRequestInterface $showResearchRequest, private TechlistRetrieverInterface $techlistRetriever, private ResearchedRepositoryInterface $researchedRepository, private TalFactoryInterface $talFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

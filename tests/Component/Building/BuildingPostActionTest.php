@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Module\Building\Action\BuildingActionHandlerInterface;
@@ -20,6 +21,7 @@ class BuildingPostActionTest extends StuTestCase
 
     private BuildingPostAction $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->buildingFunctionActionMapper = $this->mock(BuildingFunctionActionMapperInterface::class);

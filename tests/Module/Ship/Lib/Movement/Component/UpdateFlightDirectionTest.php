@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\MapInterface;
@@ -14,6 +15,7 @@ class UpdateFlightDirectionTest extends StuTestCase
 {
     private UpdateFlightDirectionInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->subject = new UpdateFlightDirection();

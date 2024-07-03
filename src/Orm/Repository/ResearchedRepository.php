@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -17,6 +18,7 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ResearchedRepository extends EntityRepository implements ResearchedRepositoryInterface
 {
+    #[Override]
     public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool
     {
         return $this->getEntityManager()
@@ -30,6 +32,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getSingleScalarResult() > 0;
     }
 
+    #[Override]
     public function getListByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -46,6 +49,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getResult();
     }
 
+    #[Override]
     public function getFinishedListByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -59,6 +63,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getResult();
     }
 
+    #[Override]
     public function getCurrentResearch(UserInterface $user): array
     {
         return $this->getEntityManager()
@@ -75,6 +80,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getResult();
     }
 
+    #[Override]
     public function getFor(int $researchId, int $userId): ?ResearchedInterface
     {
         return $this->findOneBy([
@@ -83,6 +89,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         ]);
     }
 
+    #[Override]
     public function save(ResearchedInterface $researched): void
     {
         $em = $this->getEntityManager();
@@ -91,6 +98,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         $em->flush();
     }
 
+    #[Override]
     public function delete(ResearchedInterface $researched): void
     {
         $em = $this->getEntityManager();
@@ -99,11 +107,13 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         $em->flush();
     }
 
+    #[Override]
     public function prototype(): ResearchedInterface
     {
         return new Researched();
     }
 
+    #[Override]
     public function truncateForUser(int $userId): void
     {
         $this->getEntityManager()
@@ -117,6 +127,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->execute();
     }
 
+    #[Override]
     public function getResearchedPoints(): array
     {
         $rsm = new ResultSetMapping();

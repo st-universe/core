@@ -14,16 +14,8 @@ use Stu\Module\Ship\Lib\Battle\FightLib;
 
 final class ShipNfsItem
 {
-    private TShipItemInterface $item;
-
-    private int $userId;
-
-    public function __construct(
-        TShipItemInterface $item,
-        int $userId
-    ) {
-        $this->item = $item;
-        $this->userId = $userId;
+    public function __construct(private TShipItemInterface $item, private int $userId)
+    {
     }
 
     public function getId(): int

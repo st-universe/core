@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,24 +14,13 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowKnComments implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_KN_COMMENTS';
+    public const string VIEW_IDENTIFIER = 'SHOW_KN_COMMENTS';
 
-    private ShowKnCommentsRequestInterface $showKnCommentsRequest;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        ShowKnCommentsRequestInterface $showKnCommentsRequest,
-        ConfigInterface $config,
-        KnPostRepositoryInterface $knPostRepository
-    ) {
-        $this->showKnCommentsRequest = $showKnCommentsRequest;
-        $this->knPostRepository = $knPostRepository;
-        $this->config = $config;
+    public function __construct(private ShowKnCommentsRequestInterface $showKnCommentsRequest, private ConfigInterface $config, private KnPostRepositoryInterface $knPostRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

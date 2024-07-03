@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -84,21 +85,25 @@ class TradePost implements TradePostInterface
         $this->crewAssignments = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): TradePostInterface
     {
         $this->user = $user;
@@ -106,11 +111,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): TradePostInterface
     {
         $this->name = $name;
@@ -118,11 +125,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): TradePostInterface
     {
         $this->description = $description;
@@ -130,11 +139,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
+    #[Override]
     public function setShipId(int $shipId): TradePostInterface
     {
         $this->ship_id = $shipId;
@@ -142,11 +153,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getTradeNetwork(): int
     {
         return $this->trade_network;
     }
 
+    #[Override]
     public function setTradeNetwork(int $tradeNetwork): TradePostInterface
     {
         $this->trade_network = $tradeNetwork;
@@ -154,11 +167,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getLevel(): int
     {
         return $this->level;
     }
 
+    #[Override]
     public function setLevel(int $level): TradePostInterface
     {
         $this->level = $level;
@@ -166,11 +181,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getTransferCapacity(): int
     {
         return $this->transfer_capacity;
     }
 
+    #[Override]
     public function setTransferCapacity(int $transferCapacity): TradePostInterface
     {
         $this->transfer_capacity = $transferCapacity;
@@ -178,11 +195,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getStorage(): int
     {
         return $this->storage;
     }
 
+    #[Override]
     public function setStorage(int $storage): TradePostInterface
     {
         $this->storage = $storage;
@@ -190,11 +209,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function isDockPmAutoRead(): bool
     {
         return $this->is_dock_pm_auto_read ?? false;
     }
 
+    #[Override]
     public function setIsDockPmAutoRead(bool $value): TradePostInterface
     {
         $this->is_dock_pm_auto_read = $value;
@@ -202,6 +223,7 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getLatestLicenseInfo(): ?TradeLicenseInfoInterface
     {
         if ($this->licenseInfos->isEmpty()) {
@@ -210,11 +232,13 @@ class TradePost implements TradePostInterface
         return $this->licenseInfos->first();
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): TradePostInterface
     {
         $this->ship = $ship;
@@ -222,11 +246,13 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    #[Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crewAssignments;
     }
 
+    #[Override]
     public function getCrewCountOfUser(
         UserInterface $user
     ): int {
@@ -241,11 +267,13 @@ class TradePost implements TradePostInterface
         return $count;
     }
 
+    #[Override]
     public function isNpcTradepost(): bool
     {
         return $this->getUserId() < UserEnum::USER_FIRST_ID;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->getName();

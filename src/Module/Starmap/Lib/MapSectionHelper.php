@@ -16,15 +16,12 @@ use Stu\Orm\Entity\LayerInterface;
 
 final class MapSectionHelper
 {
-    private StarmapUiFactoryInterface $starmapUiFactory;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        StarmapUiFactoryInterface $starmapUiFactory,
+        private StarmapUiFactoryInterface $starmapUiFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->starmapUiFactory = $starmapUiFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 

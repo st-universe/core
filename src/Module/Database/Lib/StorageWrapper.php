@@ -13,36 +13,8 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class StorageWrapper
 {
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private int $commodityId;
-
-    private int $amount;
-
-    private ?int $entityId;
-
-    public function __construct(
-        CommodityRepositoryInterface $commodityRepository,
-        ShipRepositoryInterface $shipRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        int $commodityId,
-        int $amount,
-        ?int $entityId
-    ) {
-        $this->commodityId = $commodityId;
-        $this->amount = $amount;
-        $this->commodityRepository = $commodityRepository;
-        $this->shipRepository = $shipRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->entityId = $entityId;
+    public function __construct(private CommodityRepositoryInterface $commodityRepository, private ShipRepositoryInterface $shipRepository, private ColonyRepositoryInterface $colonyRepository, private TradePostRepositoryInterface $tradePostRepository, private int $commodityId, private int $amount, private ?int $entityId)
+    {
     }
 
     public function getCommodityId(): int

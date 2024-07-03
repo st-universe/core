@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,16 +44,19 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
     #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getFieldTypeId(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setFieldTypeId(int $fieldTypeId): PlanetFieldTypeBuildingInterface
     {
         $this->type = $fieldTypeId;
@@ -60,11 +64,13 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildingId(): int
     {
         return $this->buildings_id;
     }
 
+    #[Override]
     public function setBuildingId(int $buildingId): PlanetFieldTypeBuildingInterface
     {
         $this->buildings_id = $buildingId;
@@ -72,11 +78,13 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
         return $this;
     }
 
+    #[Override]
     public function getResearchId(): ?int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function setResearchId(?int $researchId): PlanetFieldTypeBuildingInterface
     {
         $this->research_id = $researchId;
@@ -84,11 +92,13 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
         return $this;
     }
 
+    #[Override]
     public function getView(): bool
     {
         return $this->view;
     }
 
+    #[Override]
     public function setView(bool $view): PlanetFieldTypeBuildingInterface
     {
         $this->view = $view;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -17,26 +18,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 class ManageCrew implements ManagerInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ShipShutdownInterface $shipShutdown;
-
-    private ShipLeaverInterface $shipLeaver;
-
-    public function __construct(
-        ShipSystemManagerInterface $shipSystemManager,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ShipShutdownInterface $shipShutdown,
-        ShipLeaverInterface $shipLeaver
-    ) {
-        $this->shipSystemManager = $shipSystemManager;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->shipShutdown = $shipShutdown;
-        $this->shipLeaver = $shipLeaver;
+    public function __construct(private ShipSystemManagerInterface $shipSystemManager, private TroopTransferUtilityInterface $troopTransferUtility, private ShipShutdownInterface $shipShutdown, private ShipLeaverInterface $shipLeaver)
+    {
     }
 
+    #[Override]
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];

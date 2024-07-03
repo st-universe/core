@@ -17,23 +17,14 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 abstract class AbstractJoinFleet
 {
-    private FleetRepositoryInterface $fleetRepository;
-
-    protected ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
     protected LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker,
+        private FleetRepositoryInterface $fleetRepository,
+        protected ShipLoaderInterface $shipLoader,
+        private InteractionCheckerInterface $interactionChecker,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 

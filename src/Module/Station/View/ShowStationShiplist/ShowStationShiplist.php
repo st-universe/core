@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowStationShiplist;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -11,24 +12,13 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ShowStationShiplist implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_STATION_SHIPLIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_STATION_SHIPLIST';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShowStationShiplistRequestInterface $showStationShiplistRequest;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShowStationShiplistRequestInterface $showStationShiplistRequest,
-        ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->showStationShiplistRequest = $showStationShiplistRequest;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShowStationShiplistRequestInterface $showStationShiplistRequest, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 final class Category implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_CATEGORY';
+    public const string VIEW_IDENTIFIER = 'SHOW_CATEGORY';
 
-    private CategoryRequestInterface $categoryRequest;
-
-    private DatabaseCategoryRepositoryInterface $databaseCategoryRepository;
-
-    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
-
-    public function __construct(
-        CategoryRequestInterface $categoryRequest,
-        DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
-        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
-    ) {
-        $this->categoryRequest = $categoryRequest;
-        $this->databaseCategoryRepository = $databaseCategoryRepository;
-        $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
+    public function __construct(private CategoryRequestInterface $categoryRequest, private DatabaseCategoryRepositoryInterface $databaseCategoryRepository, private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $category_id = $this->categoryRequest->getCategoryId();

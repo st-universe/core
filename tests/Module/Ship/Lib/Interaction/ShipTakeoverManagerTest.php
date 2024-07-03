@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
@@ -60,6 +61,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     private ShipTakeoverManagerInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

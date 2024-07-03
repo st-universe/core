@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use DateTimeInterface;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserInterface;
@@ -15,11 +16,13 @@ use Stu\Orm\Entity\UserInvitationInterface;
  */
 final class UserInvitationRepository extends EntityRepository implements UserInvitationRepositoryInterface
 {
+    #[Override]
     public function prototype(): UserInvitationInterface
     {
         return new UserInvitation();
     }
 
+    #[Override]
     public function save(UserInvitationInterface $userInvitation): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
         $em->flush();
     }
 
+    #[Override]
     public function getInvitationsByUser(UserInterface $user): array
     {
         return $this->findBy([
@@ -35,6 +39,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
         ]);
     }
 
+    #[Override]
     public function getByToken(string $token): ?UserInvitationInterface
     {
         return $this->findOneBy([
@@ -42,6 +47,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
         ]);
     }
 
+    #[Override]
     public function truncateExpiredTokens(DateTimeInterface $ttl): void
     {
         $this->getEntityManager()->createQuery(
@@ -56,6 +62,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
             ->execute();
     }
 
+    #[Override]
     public function truncateAllEntries(): void
     {
         $this->getEntityManager()->createQuery(

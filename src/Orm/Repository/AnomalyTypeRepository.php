@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AnomalyType;
 use Stu\Orm\Entity\AnomalyTypeInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\AnomalyTypeInterface;
  */
 final class AnomalyTypeRepository extends EntityRepository implements AnomalyTypeRepositoryInterface
 {
+    #[Override]
     public function prototype(): AnomalyTypeInterface
     {
         return new AnomalyType();
     }
 
+    #[Override]
     public function save(AnomalyTypeInterface $anomalytype): void
     {
         $em = $this->getEntityManager();

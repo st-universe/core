@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
+use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Config\Model\ColonySettings;
 use Stu\Module\Config\StuConfigInterface;
@@ -15,32 +16,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ManualColonyTick implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_COLONY_TICK';
+    public const string ACTION_IDENTIFIER = 'B_COLONY_TICK';
 
-    private ManualColonyTickRequestInterface $request;
-
-    private ColonyTickManagerInterface $colonyTickManager;
-
-    private ColonyTickInterface $colonyTick;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private StuConfigInterface $config;
-
-    public function __construct(
-        ManualColonyTickRequestInterface $request,
-        ColonyTickManagerInterface $colonyTickManager,
-        ColonyTickInterface $colonyTick,
-        ColonyRepositoryInterface $colonyRepository,
-        StuConfigInterface $config
-    ) {
-        $this->request = $request;
-        $this->colonyTickManager = $colonyTickManager;
-        $this->colonyTick = $colonyTick;
-        $this->colonyRepository = $colonyRepository;
-        $this->config = $config;
+    public function __construct(private ManualColonyTickRequestInterface $request, private ColonyTickManagerInterface $colonyTickManager, private ColonyTickInterface $colonyTick, private ColonyRepositoryInterface $colonyRepository, private StuConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -95,6 +77,7 @@ final class ManualColonyTick implements ActionControllerInterface
         $game->addInformationf("Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!", $colonyId);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

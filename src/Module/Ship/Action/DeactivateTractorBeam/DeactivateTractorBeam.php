@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeactivateTractorBeam;
 
+use Override;
 use request;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -15,20 +16,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class DeactivateTractorBeam implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEACTIVATE_TRACTOR';
+    public const string ACTION_IDENTIFIER = 'B_DEACTIVATE_TRACTOR';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->helper = $helper;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -46,6 +40,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

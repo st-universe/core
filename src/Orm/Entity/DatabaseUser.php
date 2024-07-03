@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -40,11 +41,13 @@ class DatabaseUser implements DatabaseUserInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setDatabaseEntry(DatabaseEntryInterface $databaseEntry): DatabaseUserInterface
     {
         $this->databaseEntry = $databaseEntry;
@@ -52,27 +55,32 @@ class DatabaseUser implements DatabaseUserInterface
         return $this;
     }
 
+    #[Override]
     public function getDatabaseEntry(): DatabaseEntryInterface
     {
         return $this->databaseEntry;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): DatabaseUserInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setDate(int $date): DatabaseUserInterface
     {
         $this->date = $date;
@@ -80,11 +88,13 @@ class DatabaseUser implements DatabaseUserInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function getDatabaseEntryId(): int
     {
         return $this->database_id;

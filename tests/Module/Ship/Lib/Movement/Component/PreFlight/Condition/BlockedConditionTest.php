@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -28,6 +29,7 @@ class BlockedConditionTest extends StuTestCase
     /** @var MockInterface&ConditionCheckResult */
     private MockInterface $conditionCheckResult;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->ship = $this->mock(ShipInterface::class);

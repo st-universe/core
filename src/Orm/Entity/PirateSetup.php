@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -39,21 +40,25 @@ class PirateSetup implements PirateSetupInterface
         $this->setupBuildplans = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function getProbabilityWeight(): int
     {
         return $this->probability_weight;
     }
 
+    #[Override]
     public function getSetupBuildplans(): Collection
     {
         return $this->setupBuildplans;

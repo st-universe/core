@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -51,16 +52,19 @@ class Anomaly implements AnomalyInterface
     #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getRemainingTicks(): int
     {
         return $this->remaining_ticks;
     }
 
+    #[Override]
     public function setRemainingTicks(int $remainingTicks): AnomalyInterface
     {
         $this->remaining_ticks = $remainingTicks;
@@ -68,16 +72,19 @@ class Anomaly implements AnomalyInterface
         return $this;
     }
 
+    #[Override]
     public function isActive(): bool
     {
         return $this->getRemainingTicks() > 0;
     }
 
+    #[Override]
     public function getAnomalyType(): AnomalyTypeInterface
     {
         return $this->anomalyType;
     }
 
+    #[Override]
     public function setAnomalyType(AnomalyTypeInterface $anomalyType): AnomalyInterface
     {
         $this->anomalyType = $anomalyType;
@@ -85,11 +92,13 @@ class Anomaly implements AnomalyInterface
         return $this;
     }
 
+    #[Override]
     public function getMap(): ?MapInterface
     {
         return $this->map;
     }
 
+    #[Override]
     public function setMap(?MapInterface $map): AnomalyInterface
     {
         $this->map = $map;
@@ -97,11 +106,13 @@ class Anomaly implements AnomalyInterface
         return $this;
     }
 
+    #[Override]
     public function getStarsystemMap(): ?StarSystemMapInterface
     {
         return $this->starsystem_map;
     }
 
+    #[Override]
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): AnomalyInterface
     {
         $this->starsystem_map = $starsystem_map;
@@ -109,6 +120,7 @@ class Anomaly implements AnomalyInterface
         return $this;
     }
 
+    #[Override]
     public function getLocation(): Location
     {
         return new Location($this->getMap(), $this->getStarsystemMap());

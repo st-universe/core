@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnCharacters;
 use Stu\Orm\Entity\KnCharactersInterface;
@@ -15,11 +16,13 @@ use Stu\Orm\Entity\KnCharactersInterface;
  */
 final class KnCharactersRepository extends EntityRepository implements KnCharactersRepositoryInterface
 {
+    #[Override]
     public function prototype(): KnCharactersInterface
     {
         return new KnCharacters();
     }
 
+    #[Override]
     public function save(KnCharactersInterface $knCharacters): void
     {
         $em = $this->getEntityManager();
@@ -27,6 +30,7 @@ final class KnCharactersRepository extends EntityRepository implements KnCharact
         $em->flush();
     }
 
+    #[Override]
     public function delete(KnCharactersInterface $knCharacters): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class KnCharactersRepository extends EntityRepository implements KnCharact
         $em->flush();
     }
 
+    #[Override]
     public function getByKnId(int $knId): array
     {
         return $this->findBy(['knId' => $knId]);

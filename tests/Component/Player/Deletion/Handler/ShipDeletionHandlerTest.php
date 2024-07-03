@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
@@ -52,6 +53,7 @@ class ShipDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
+    #[Override]
     public function setUp(): void
     {
         $this->shipRemover = $this->mock(ShipRemoverInterface::class);

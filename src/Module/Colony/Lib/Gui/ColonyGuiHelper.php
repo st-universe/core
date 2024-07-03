@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib\Gui;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -14,15 +15,12 @@ use Stu\Orm\Entity\ColonySandboxInterface;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
-    /** @var array<int, GuiComponentProviderInterface> */
-    private array $guiComponentProviders;
-
     /** @param array<int, GuiComponentProviderInterface> $guiComponentProviders */
-    public function __construct(array $guiComponentProviders)
+    public function __construct(private array $guiComponentProviders)
     {
-        $this->guiComponentProviders = $guiComponentProviders;
     }
 
+    #[Override]
     public function registerMenuComponents(
         ColonyMenuEnum $menu,
         PlanetFieldHostInterface $host,
@@ -46,6 +44,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
     }
 
+    #[Override]
     public function registerComponents(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game,

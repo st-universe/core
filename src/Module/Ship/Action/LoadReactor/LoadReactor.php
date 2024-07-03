@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\LoadReactor;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
@@ -16,30 +17,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LoadReactor implements ActionControllerInterface
 {
-    /**
-     * @var ShipRepositoryInterface
-     */
-    public $shipRepository;
-    public const ACTION_IDENTIFIER = 'B_LOAD_REACTOR';
+    public const string ACTION_IDENTIFIER = 'B_LOAD_REACTOR';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ReactorUtilInterface $reactorUtil;
-
-    private CommodityCacheInterface $commodityCache;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ReactorUtilInterface $reactorUtil,
-        ShipRepositoryInterface $shipRepository,
-        CommodityCacheInterface $commodityCache
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->reactorUtil = $reactorUtil;
-        $this->shipRepository = $shipRepository;
-        $this->commodityCache = $commodityCache;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ReactorUtilInterface $reactorUtil, public ShipRepositoryInterface $shipRepository, private CommodityCacheInterface $commodityCache)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -151,6 +135,7 @@ final class LoadReactor implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

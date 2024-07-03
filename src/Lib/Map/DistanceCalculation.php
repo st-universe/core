@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map;
 
+use Override;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
 class DistanceCalculation implements DistanceCalculationInterface
 {
+    #[Override]
     public function shipToShipDistance(ShipInterface $ship, ShipInterface $station): int
     {
 
@@ -23,6 +25,7 @@ class DistanceCalculation implements DistanceCalculationInterface
         );
     }
 
+    #[Override]
     public function shipToColonyDistance(ShipInterface $ship, ColonyInterface $colony): int
     {
         return $this->calculateAbsoluteDistance(

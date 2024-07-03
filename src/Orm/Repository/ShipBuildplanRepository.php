@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -18,6 +19,7 @@ use Stu\Orm\Entity\ShipRumpUser;
  */
 final class ShipBuildplanRepository extends EntityRepository implements ShipBuildplanRepositoryInterface
 {
+    #[Override]
     public function getByUserAndBuildingFunction(int $userId, int $buildingFunction): array
     {
         return $this->getEntityManager()
@@ -37,6 +39,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->getResult();
     }
 
+    #[Override]
     public function getCountByRumpAndUser(int $rumpId, int $userId): int
     {
         return $this->count([
@@ -45,6 +48,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
+    #[Override]
     public function getByUserShipRumpAndSignature(
         int $userId,
         int $shipRumpId,
@@ -57,6 +61,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
+    #[Override]
     public function getShuttleBuildplan(int $commodityId): ?ShipBuildplanInterface
     {
         return $this->getEntityManager()
@@ -76,6 +81,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->getOneOrNullResult();
     }
 
+    #[Override]
     public function getStationBuildplansByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -101,6 +107,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->getResult();
     }
 
+    #[Override]
     public function getShipyardBuildplansByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -123,11 +130,13 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->getResult();
     }
 
+    #[Override]
     public function prototype(): ShipBuildplanInterface
     {
         return new ShipBuildplan();
     }
 
+    #[Override]
     public function save(ShipBuildplanInterface $shipBuildplan): void
     {
         $em = $this->getEntityManager();
@@ -136,6 +145,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em->flush();
     }
 
+    #[Override]
     public function delete(ShipBuildplanInterface $shipBuildplan): void
     {
         $em = $this->getEntityManager();
@@ -143,6 +153,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em->remove($shipBuildplan);
     }
 
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
@@ -150,6 +161,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
+    #[Override]
     public function findByUserAndName(int $userId, string $name): ?ShipBuildplanInterface
     {
         return $this->findOneBy([
@@ -158,6 +170,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
+    #[Override]
     public function truncateAllBuildplansExceptNoOne(): void
     {
         $this->getEntityManager()
@@ -174,6 +187,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->execute();
     }
 
+    #[Override]
     public function getByUserAndRump(int $userId, int $rumpId): array
     {
         return $this->findBy([

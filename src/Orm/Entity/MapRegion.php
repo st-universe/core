@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -31,16 +32,19 @@ class MapRegion implements MapRegionInterface
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private ?DatabaseEntryInterface $databaseEntry = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): MapRegionInterface
     {
         $this->description = $description;
@@ -48,11 +52,13 @@ class MapRegion implements MapRegionInterface
         return $this;
     }
 
+    #[Override]
     public function getDatabaseEntry(): ?DatabaseEntryInterface
     {
         return $this->databaseEntry;
     }
 
+    #[Override]
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): MapRegionInterface
     {
         $this->databaseEntry = $databaseEntry;

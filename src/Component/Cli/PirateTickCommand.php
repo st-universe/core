@@ -13,13 +13,9 @@ use Stu\Module\Tick\Pirate\PirateTickRunner;
  */
 final class PirateTickCommand extends Command
 {
-    private ContainerInterface $dic;
-
     public function __construct(
-        ContainerInterface $dic
+        private ContainerInterface $dic
     ) {
-        $this->dic = $dic;
-
         parent::__construct(
             'tick:pirate',
             'Runs the pirate tick'

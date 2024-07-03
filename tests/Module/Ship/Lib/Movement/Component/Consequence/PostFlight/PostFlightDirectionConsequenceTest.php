@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
@@ -34,6 +35,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
     /** @var MockInterface&FlightRouteInterface */
     private MockInterface $flightRoute;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->flightSignatureCreator = $this->mock(FlightSignatureCreatorInterface::class);

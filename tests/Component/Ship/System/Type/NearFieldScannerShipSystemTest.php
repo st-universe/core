@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -39,6 +40,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;
 
+    #[Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(ShipInterface::class);

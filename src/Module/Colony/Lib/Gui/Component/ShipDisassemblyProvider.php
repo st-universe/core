@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -14,27 +15,12 @@ use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipDisassemblyProvider implements GuiComponentProviderInterface
 {
-    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
-
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
-
-    public function __construct(
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        OrbitShipListRetrieverInterface $orbitShipListRetriever
-    ) {
-        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->orbitShipListRetriever = $orbitShipListRetriever;
+    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever)
+    {
     }
 
     /** @param ColonyInterface $host */
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

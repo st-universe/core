@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
+use Override;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Building\BuildingEnum;
 
 final class BuildingFunctionActionMapper implements BuildingFunctionActionMapperInterface
 {
-    private ContainerInterface $container;
-
-    public function __construct(
-        ContainerInterface $container
-    ) {
-        $this->container = $container;
+    public function __construct(private ContainerInterface $container)
+    {
     }
 
+    #[Override]
     public function map(int $buildingFunctionId): ?BuildingActionHandlerInterface
     {
         $map = [

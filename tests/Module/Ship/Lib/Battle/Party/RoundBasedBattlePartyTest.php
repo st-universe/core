@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -20,6 +21,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
     private RoundBasedBattleParty $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);

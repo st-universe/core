@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DropBuoy;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,25 +18,13 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 
 final class DropBuoy implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DROP_BOUY';
+    public const string ACTION_IDENTIFIER = 'B_DROP_BOUY';
 
-    private ShipLoaderInterface $shipLoader;
-    private BuoyRepositoryInterface $buoyRepository;
-    private CommodityRepositoryInterface $commodityRepository;
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        BuoyRepositoryInterface $buoyRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        ShipStorageManagerInterface $shipStorageManager
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->buoyRepository = $buoyRepository;
-        $this->commodityRepository = $commodityRepository;
-        $this->shipStorageManager = $shipStorageManager;
+    public function __construct(private ShipLoaderInterface $shipLoader, private BuoyRepositoryInterface $buoyRepository, private CommodityRepositoryInterface $commodityRepository, private ShipStorageManagerInterface $shipStorageManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -125,6 +114,7 @@ final class DropBuoy implements ActionControllerInterface
         $game->addInformation(_('Die Boje wurde erfolgreich platziert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

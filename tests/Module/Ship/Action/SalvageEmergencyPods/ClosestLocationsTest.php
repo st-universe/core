@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
@@ -33,6 +34,7 @@ class ClosestLocationsTest extends StuTestCase
 
     private ClosestLocations $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->distanceCalculation = $this->mock(DistanceCalculationInterface::class);

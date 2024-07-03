@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Maintenance;
 
+use Override;
 use Doctrine\DBAL\Connection;
 use Exception;
 use Mockery;
@@ -30,6 +31,7 @@ class MaintenanceTickRunnerTest extends StuTestCase
 
     private MaintenanceTickRunner $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);

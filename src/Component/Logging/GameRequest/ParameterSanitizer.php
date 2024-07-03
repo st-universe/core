@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest;
 
+use Override;
 use Stu\Orm\Entity\GameRequestInterface;
 
 /**
@@ -12,7 +13,7 @@ use Stu\Orm\Entity\GameRequestInterface;
 final class ParameterSanitizer implements ParameterSanitizerInterface
 {
     /** @var array<string> */
-    private const PARAMETER_BLACKLIST = [
+    private const array PARAMETER_BLACKLIST = [
         '_',
         'sstr',
         'login',
@@ -21,6 +22,7 @@ final class ParameterSanitizer implements ParameterSanitizerInterface
         'oldpass',
     ];
 
+    #[Override]
     public function sanitize(
         GameRequestInterface $gameRequest
     ): GameRequestInterface {

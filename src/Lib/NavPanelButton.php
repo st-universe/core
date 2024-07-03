@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Override;
 final class NavPanelButton implements NavPanelButtonInterface
 {
-    private string $label;
-
-    private bool $disabled;
-
-    public function __construct(
-        string $label,
-        bool $disabled = false
-    ) {
-        $this->label = $label;
-        $this->disabled = $disabled;
+    public function __construct(private string $label, private bool $disabled = false)
+    {
     }
 
+    #[Override]
     public function getLabel(): string
     {
         return $this->label;
     }
 
+    #[Override]
     public function isDisabled(): bool
     {
         return $this->disabled;

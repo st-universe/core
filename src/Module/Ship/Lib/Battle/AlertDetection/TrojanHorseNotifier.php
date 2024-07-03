@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -14,6 +15,7 @@ class TrojanHorseNotifier implements TrojanHorseNotifierInterface
     ) {
     }
 
+    #[Override]
     public function informUsersAboutTrojanHorse(
         ShipInterface $incomingShip,
         ?ShipInterface $tractoringShip,

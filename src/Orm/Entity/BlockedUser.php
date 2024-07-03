@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -26,44 +27,52 @@ class BlockedUser implements BlockedUserInterface
     #[Column(type: 'string', length: 255, nullable: true)]
     private ?string $mobile_hash = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setId(int $userId): BlockedUserInterface
     {
         $this->user_id = $userId;
         return $this;
     }
 
+    #[Override]
     public function getTime(): int
     {
         return $this->time;
     }
 
+    #[Override]
     public function setTime(int $time): BlockedUserInterface
     {
         $this->time = $time;
         return $this;
     }
 
+    #[Override]
     public function getEmailHash(): string
     {
         return $this->email_hash;
     }
 
+    #[Override]
     public function setEmailHash(string $emailHash): BlockedUserInterface
     {
         $this->email_hash = $emailHash;
         return $this;
     }
 
+    #[Override]
     public function getMobileHash(): ?string
     {
         return $this->mobile_hash;
     }
 
+    #[Override]
     public function setMobileHash(?string $mobileHash): BlockedUserInterface
     {
         $this->mobile_hash = $mobileHash;

@@ -2,6 +2,7 @@
 
 namespace Stu\Lib;
 
+use Override;
 use DateTimeImmutable;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
@@ -18,32 +19,21 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Session implements SessionInterface
 {
-    private UserIpTableRepositoryInterface $userIpTableRepository;
-
-    private SessionStringRepositoryInterface $sessionStringRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private StuHashInterface $stuHash;
-
     private LoggerUtilInterface $loggerUtil;
 
     private ?UserInterface $user = null;
 
     public function __construct(
-        UserIpTableRepositoryInterface $userIpTableRepository,
-        SessionStringRepositoryInterface $sessionStringRepository,
-        UserRepositoryInterface $userRepository,
-        StuHashInterface $stuHash,
+        private UserIpTableRepositoryInterface $userIpTableRepository,
+        private SessionStringRepositoryInterface $sessionStringRepository,
+        private UserRepositoryInterface $userRepository,
+        private StuHashInterface $stuHash,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->userIpTableRepository = $userIpTableRepository;
-        $this->sessionStringRepository = $sessionStringRepository;
-        $this->userRepository = $userRepository;
-        $this->stuHash = $stuHash;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function createSession(bool $session_check = true): void
     {
         if (!$this->isLoggedIn() && $session_check) {
@@ -61,6 +51,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
+    #[Override]
     public function checkLoginCookie(): void
     {
         $sstr = $_COOKIE['sstr'] ?? '';
@@ -80,11 +71,13 @@ final class Session implements SessionInterface
     /**
      * @api
      */
+    #[Override]
     public function getUser(): ?UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function login(string $login, string $password): bool
     {
         $this->destroyLoginCookies();
@@ -190,6 +183,7 @@ final class Session implements SessionInterface
         setcookie('sstr', 0);
     }
 
+    #[Override]
     public function logout(?UserInterface $user = null): void
     {
         $this->destroySession($user);
@@ -281,6 +275,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
+    #[Override]
     public function storeSessionData($key, $value, bool $isSingleValue = false): void
     {
         $stored = false;
@@ -308,6 +303,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
+    #[Override]
     public function deleteSessionData($key, $value = null): void
     {
         $data = $this->user->getSessionDataUnserialized();
@@ -329,6 +325,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
+    #[Override]
     public function hasSessionValue($key, $value): bool
     {
         $data = $this->user->getSessionDataUnserialized();
@@ -341,6 +338,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
+    #[Override]
     public function getSessionValue($key)
     {
         $data = $this->user->getSessionDataUnserialized();

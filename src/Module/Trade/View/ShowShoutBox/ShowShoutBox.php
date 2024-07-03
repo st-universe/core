@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowShoutBox;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 
 final class ShowShoutBox implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHOUTBOX';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHOUTBOX';
 
-    private ShowShoutBoxRequestInterface $showShoutBoxRequest;
-
-    private TradeShoutboxRepositoryInterface $tradeShoutboxRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    public function __construct(
-        ShowShoutBoxRequestInterface $showShoutBoxRequest,
-        TradeShoutboxRepositoryInterface $tradeShoutboxRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
-    ) {
-        $this->showShoutBoxRequest = $showShoutBoxRequest;
-        $this->tradeShoutboxRepository = $tradeShoutboxRepository;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
+    public function __construct(private ShowShoutBoxRequestInterface $showShoutBoxRequest, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $tradeNetworkId = $this->showShoutBoxRequest->getTradeNetworkId();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Cli;
 
+use Override;
 use Ahc\Cli\Application;
 use InvalidArgumentException;
 use Mockery;
@@ -25,6 +26,7 @@ class UserCreateCommandTest extends StuTestCase
 
     private UserCreateCommand $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->dic = $this->mock(ContainerInterface::class);

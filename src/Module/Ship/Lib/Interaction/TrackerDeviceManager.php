@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -20,6 +21,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
     ) {
     }
 
+    #[Override]
     public function resetTrackersOfTrackedShip(
         ShipWrapperInterface $trackedShipWrapper,
         ShipSystemManagerInterface $shipSystemManager,
@@ -34,6 +36,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
         }
     }
 
+    #[Override]
     public function deactivateTrackerIfActive(ShipWrapperInterface $wrapper, bool $sendPmToTargetOwner): void
     {
         $tracker = $wrapper->getTrackerSystemData();
@@ -87,15 +90,10 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
 
     private function getTrackerSource(UserInterface $user): string
     {
-        switch (random_int(0, 2)) {
-            case 0:
-                return _('Der Ursprung kann nicht identifiziert werden');
-            case 1:
-                return sprintf(_('Der Ursprung lässt auf %s schließen'), $user->getName());
-            case 2:
-                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction()->getName());
-            default:
-                return '';
-        }
+        return match (random_int(0, 2)) {
+            0 => _('Der Ursprung kann nicht identifiziert werden'),
+            1 => sprintf(_('Der Ursprung lässt auf %s schließen'), $user->getName()),
+            2 => sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction()->getName()),
+        };
     }
 }

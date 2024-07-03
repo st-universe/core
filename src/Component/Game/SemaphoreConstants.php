@@ -6,6 +6,6 @@ namespace Stu\Component\Game;
 
 final class SemaphoreConstants
 {
-    public const AUTO_RELEASE_SEMAPHORES = true;
-    public const MAIN_SHIP_SEMAPHORE_KEY = 4_342_338;
+    public const bool AUTO_RELEASE_SEMAPHORES = true;
+    public const int MAIN_SHIP_SEMAPHORE_KEY = 4_342_338;
 }

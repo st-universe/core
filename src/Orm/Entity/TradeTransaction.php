@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -49,16 +50,19 @@ class TradeTransaction implements TradeTransactionInterface
     #[JoinColumn(name: 'gg_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $offeredCommodity;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getWantedCommodityId(): int
     {
         return $this->wg_id;
     }
 
+    #[Override]
     public function setWantedCommodityId(int $wantedCommodityId): TradeTransactionInterface
     {
         $this->wg_id = $wantedCommodityId;
@@ -66,11 +70,13 @@ class TradeTransaction implements TradeTransactionInterface
         return $this;
     }
 
+    #[Override]
     public function getWantedCommodityCount(): int
     {
         return $this->wg_count;
     }
 
+    #[Override]
     public function setWantedCommodityCount(int $wantedCommodityCount): TradeTransactionInterface
     {
         $this->wg_count = $wantedCommodityCount;
@@ -78,11 +84,13 @@ class TradeTransaction implements TradeTransactionInterface
         return $this;
     }
 
+    #[Override]
     public function getOfferedCommodityId(): int
     {
         return $this->gg_id;
     }
 
+    #[Override]
     public function setOfferedCommodityId(int $offeredCommodityId): TradeTransactionInterface
     {
         $this->gg_id = $offeredCommodityId;
@@ -90,11 +98,13 @@ class TradeTransaction implements TradeTransactionInterface
         return $this;
     }
 
+    #[Override]
     public function getOfferedCommodityCount(): int
     {
         return $this->gg_count;
     }
 
+    #[Override]
     public function setOfferedCommodityCount(int $offeredCommodityCount): TradeTransactionInterface
     {
         $this->gg_count = $offeredCommodityCount;
@@ -102,11 +112,13 @@ class TradeTransaction implements TradeTransactionInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): TradeTransactionInterface
     {
         $this->date = $date;
@@ -114,11 +126,13 @@ class TradeTransaction implements TradeTransactionInterface
         return $this;
     }
 
+    #[Override]
     public function getTradePostId(): int
     {
         return $this->tradepost_id;
     }
 
+    #[Override]
     public function setTradePostId(int $tradepost_id): TradeTransactionInterface
     {
         $this->tradepost_id = $tradepost_id;
@@ -126,11 +140,13 @@ class TradeTransaction implements TradeTransactionInterface
         return $this;
     }
 
+    #[Override]
     public function getWantedCommodity(): CommodityInterface
     {
         return $this->wantedCommodity;
     }
 
+    #[Override]
     public function setWantedCommodity(CommodityInterface $wantedCommodity): TradeTransactionInterface
     {
         $this->wantedCommodity = $wantedCommodity;
@@ -138,11 +154,13 @@ class TradeTransaction implements TradeTransactionInterface
         return $this;
     }
 
+    #[Override]
     public function getOfferedCommodity(): CommodityInterface
     {
         return $this->offeredCommodity;
     }
 
+    #[Override]
     public function setOfferedCommodity(CommodityInterface $offeredCommodity): TradeTransactionInterface
     {
         $this->offeredCommodity = $offeredCommodity;

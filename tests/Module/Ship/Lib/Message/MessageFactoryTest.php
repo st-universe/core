@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Message;
 
+use Override;
 use Stu\StuTestCase;
 
 class MessageFactoryTest extends StuTestCase
 {
     private MessageFactoryInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->subject = new MessageFactory();

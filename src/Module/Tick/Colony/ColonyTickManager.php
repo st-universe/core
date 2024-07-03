@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
+use Override;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
@@ -25,58 +26,26 @@ use Ubench;
 
 final class ColonyTickManager extends AbstractTickManager implements ColonyTickManagerInterface
 {
-    private ColonyTickInterface $colonyTick;
-
-    private CrewCreatorInterface $crewCreator;
-
-    private CrewTrainingRepositoryInterface $crewTrainingRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private CrewCountRetrieverInterface $crewCountRetriever;
-
-    private LockManagerInterface $lockManager;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    private CrewLimitCalculatorInterface $crewLimitCalculator;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     private LoggerUtilInterface $loggerUtil;
 
-    private Ubench $benchmark;
-
     public function __construct(
-        ColonyTickInterface $colonyTick,
-        CrewCreatorInterface $crewCreator,
-        CrewTrainingRepositoryInterface $crewTrainingRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        CrewCountRetrieverInterface $crewCountRetriever,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        CrewLimitCalculatorInterface $crewLimitCalculator,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        LockManagerInterface $lockManager,
+        private ColonyTickInterface $colonyTick,
+        private CrewCreatorInterface $crewCreator,
+        private CrewTrainingRepositoryInterface $crewTrainingRepository,
+        private ColonyRepositoryInterface $colonyRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private CrewCountRetrieverInterface $crewCountRetriever,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private CrewLimitCalculatorInterface $crewLimitCalculator,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private LockManagerInterface $lockManager,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        Ubench $benchmark
+        private Ubench $benchmark
     ) {
-        $this->colonyTick = $colonyTick;
-        $this->crewCreator = $crewCreator;
-        $this->crewTrainingRepository = $crewTrainingRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->crewCountRetriever = $crewCountRetriever;
-        $this->lockManager = $lockManager;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->crewLimitCalculator = $crewLimitCalculator;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->benchmark = $benchmark;
     }
 
+    #[Override]
     public function work(int $batchGroup, int $batchGroupCount): void
     {
         $this->setLock($batchGroup);
@@ -183,11 +152,13 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         $this->lockManager->clearLock($batchGroupId, LockTypeEnum::COLONY_GROUP);
     }
 
+    #[Override]
     protected function getBenchmark(): Ubench
     {
         return $this->benchmark;
     }
 
+    #[Override]
     protected function getLoggerUtil(): LoggerUtilInterface
     {
         return $this->loggerUtil;

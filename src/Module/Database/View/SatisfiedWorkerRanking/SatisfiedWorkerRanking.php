@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\SatisfiedWorkerRanking;
 
+use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,28 +17,20 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class SatisfiedWorkerRanking implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SATISFIED_WORKER';
-
-    private DatabaseUiFactoryInterface $databaseUiFactory;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
+    public const string VIEW_IDENTIFIER = 'SHOW_SATISFIED_WORKER';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        DatabaseUiFactoryInterface $databaseUiFactory,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
+        private DatabaseUiFactoryInterface $databaseUiFactory,
+        private ColonyRepositoryInterface $colonyRepository,
+        private ColonyLibFactoryInterface $colonyLibFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->databaseUiFactory = $databaseUiFactory;
-        $this->colonyRepository = $colonyRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setNavigation([

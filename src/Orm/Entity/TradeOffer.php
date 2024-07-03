@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -67,21 +68,25 @@ class TradeOffer implements TradeOfferInterface
     #[OneToOne(targetEntity: 'Storage', mappedBy: 'tradeOffer')]
     private StorageInterface $storage;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
+    #[Override]
     public function setTradePostId(int $tradePostId): TradeOfferInterface
     {
         $this->posts_id = $tradePostId;
@@ -89,11 +94,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getOfferCount(): int
     {
         return $this->amount;
     }
 
+    #[Override]
     public function setOfferCount(int $offerCount): TradeOfferInterface
     {
         $this->amount = $offerCount;
@@ -101,11 +108,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getWantedCommodityId(): int
     {
         return $this->wg_id;
     }
 
+    #[Override]
     public function setWantedCommodityId(int $wantedCommodityId): TradeOfferInterface
     {
         $this->wg_id = $wantedCommodityId;
@@ -113,11 +122,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getWantedCommodityCount(): int
     {
         return $this->wg_count;
     }
 
+    #[Override]
     public function setWantedCommodityCount(int $wantedCommodityCount): TradeOfferInterface
     {
         $this->wg_count = $wantedCommodityCount;
@@ -125,11 +136,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getOfferedCommodityId(): int
     {
         return $this->gg_id;
     }
 
+    #[Override]
     public function setOfferedCommodityId(int $offeredCommodityId): TradeOfferInterface
     {
         $this->gg_id = $offeredCommodityId;
@@ -137,11 +150,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getOfferedCommodityCount(): int
     {
         return $this->gg_count;
     }
 
+    #[Override]
     public function setOfferedCommodityCount(int $offeredCommodityCount): TradeOfferInterface
     {
         $this->gg_count = $offeredCommodityCount;
@@ -149,11 +164,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): TradeOfferInterface
     {
         $this->date = $date;
@@ -161,11 +178,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getTradePost(): TradePostInterface
     {
         return $this->tradePost;
     }
 
+    #[Override]
     public function setTradePost(TradePostInterface $tradePost): TradeOfferInterface
     {
         $this->tradePost = $tradePost;
@@ -173,11 +192,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getWantedCommodity(): CommodityInterface
     {
         return $this->wantedCommodity;
     }
 
+    #[Override]
     public function setWantedCommodity(CommodityInterface $wantedCommodity): TradeOfferInterface
     {
         $this->wantedCommodity = $wantedCommodity;
@@ -185,11 +206,13 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getOfferedCommodity(): CommodityInterface
     {
         return $this->offeredCommodity;
     }
 
+    #[Override]
     public function setOfferedCommodity(CommodityInterface $offeredCommodity): TradeOfferInterface
     {
         $this->offeredCommodity = $offeredCommodity;
@@ -197,17 +220,20 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): TradeOfferInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getStorage(): StorageInterface
     {
         return $this->storage;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowGiveUp;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -11,16 +12,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowGiveUp implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_GIVEUP_AJAX';
+    public const string VIEW_IDENTIFIER = 'SHOW_GIVEUP_AJAX';
 
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyRepository->find(request::indInt('id'));

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
@@ -17,19 +18,6 @@ use Stu\Orm\Entity\WormholeEntryInterface;
 
 final class FlightRoute implements FlightRouteInterface
 {
-    //Components
-    private CheckDestinationInterface $checkDestination;
-
-    private LoadWaypointsInterface $loadWaypoints;
-
-    private EnterWaypointInterface $enterWaypoint;
-
-    /** @var array<string, FlightConsequenceInterface>  */
-    private array $flightConsequences;
-
-    /** @var array<string, FlightConsequenceInterface> */
-    private array $postFlightConsequences;
-
     //Members
     private bool $isTraversing = false;
 
@@ -49,21 +37,16 @@ final class FlightRoute implements FlightRouteInterface
      * @param array<string, FlightConsequenceInterface> $postFlightConsequences
      */
     public function __construct(
-        CheckDestinationInterface $checkDestination,
-        LoadWaypointsInterface $loadWaypoints,
-        EnterWaypointInterface $enterWaypoint,
-        array $flightConsequences,
-        array $postFlightConsequences,
+        private CheckDestinationInterface $checkDestination,
+        private LoadWaypointsInterface $loadWaypoints,
+        private EnterWaypointInterface $enterWaypoint,
+        private array $flightConsequences,
+        private array $postFlightConsequences,
     ) {
-        $this->checkDestination = $checkDestination;
-        $this->loadWaypoints = $loadWaypoints;
-        $this->enterWaypoint = $enterWaypoint;
-        $this->flightConsequences = $flightConsequences;
-        $this->postFlightConsequences = $postFlightConsequences;
-
         $this->waypoints = new ArrayCollection();
     }
 
+    #[Override]
     public function setDestination(
         MapInterface|StarSystemMapInterface $destination,
         bool $isTranswarp
@@ -83,6 +66,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this;
     }
 
+    #[Override]
     public function setDestinationViaWormhole(WormholeEntryInterface $wormholeEntry, bool $isEntry): FlightRouteInterface
     {
         $this->wormholeEntry = $wormholeEntry;
@@ -97,6 +81,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this;
     }
 
+    #[Override]
     public function setDestinationViaCoordinates(ShipInterface $ship, int $x, int $y): FlightRouteInterface
     {
         $start = $ship->getCurrentMapField();
@@ -111,11 +96,13 @@ final class FlightRoute implements FlightRouteInterface
         return $this;
     }
 
+    #[Override]
     public function getCurrentWaypoint(): MapInterface|StarSystemMapInterface
     {
         return $this->current;
     }
 
+    #[Override]
     public function getNextWaypoint(): MapInterface|StarSystemMapInterface
     {
         if ($this->waypoints->isEmpty()) {
@@ -125,6 +112,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this->waypoints->first();
     }
 
+    #[Override]
     public function stepForward(): void
     {
         $first =  $this->waypoints->first();
@@ -137,11 +125,13 @@ final class FlightRoute implements FlightRouteInterface
         $this->waypoints->removeElement($this->current);
     }
 
+    #[Override]
     public function abortFlight(): void
     {
         $this->waypoints->clear();
     }
 
+    #[Override]
     public function enterNextWaypoint(
         ShipWrapperInterface $wrapper,
         MessageCollectionInterface $messages
@@ -176,21 +166,25 @@ final class FlightRoute implements FlightRouteInterface
         );
     }
 
+    #[Override]
     public function isDestinationArrived(): bool
     {
         return $this->waypoints->isEmpty();
     }
 
+    #[Override]
     public function getRouteMode(): RouteModeEnum
     {
         return $this->routeMode;
     }
 
+    #[Override]
     public function isTraversing(): bool
     {
         return $this->isTraversing;
     }
 
+    #[Override]
     public function isImpulseDriveNeeded(): bool
     {
         $routeMode = $this->getRouteMode();
@@ -206,6 +200,7 @@ final class FlightRoute implements FlightRouteInterface
             && $this->getNextWaypoint() instanceof StarSystemMapInterface;
     }
 
+    #[Override]
     public function isWarpDriveNeeded(): bool
     {
         $routeMode = $this->getRouteMode();
@@ -221,11 +216,13 @@ final class FlightRoute implements FlightRouteInterface
             && $this->getNextWaypoint() instanceof MapInterface;
     }
 
+    #[Override]
     public function isTranswarpCoilNeeded(): bool
     {
         return $this->getRouteMode() === RouteModeEnum::ROUTE_MODE_TRANSWARP;
     }
 
+    #[Override]
     public function isRouteDangerous(): bool
     {
         foreach ($this->waypoints as $waypoint) {
@@ -237,6 +234,7 @@ final class FlightRoute implements FlightRouteInterface
         return false;
     }
 
+    #[Override]
     public function isDestinationInAdminRegion(array $regionIds): bool
     {
         $destination = $this->waypoints->last();
@@ -245,6 +243,7 @@ final class FlightRoute implements FlightRouteInterface
             && in_array($destination->getAdminRegionId(), $regionIds);
     }
 
+    #[Override]
     public function isDestinationAtTradepost(): bool
     {
         $destination = $this->waypoints->last();

@@ -2,23 +2,17 @@
 
 namespace Stu\Module\Maintenance;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 
 final class IdleUserDeletion implements MaintenanceHandlerInterface
 {
-    private PlayerDeletionInterface $playerDeletion;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        PlayerDeletionInterface $playerDeletion,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->playerDeletion = $playerDeletion;
-        $this->entityManager = $entityManager;
+    public function __construct(private PlayerDeletionInterface $playerDeletion, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function handle(): void
     {
         $this->playerDeletion->handleDeleteable();

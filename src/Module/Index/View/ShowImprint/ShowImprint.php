@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowImprint;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowImprint implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_INFOS';
+    public const string VIEW_IDENTIFIER = 'SHOW_INFOS';
 
-    private ConfigInterface $config;
-
-    public function __construct(
-        ConfigInterface $config
-    ) {
-        $this->config = $config;
+    public function __construct(private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Impressum - Star Trek Universe'));

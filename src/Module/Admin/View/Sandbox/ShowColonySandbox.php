@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Sandbox;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
@@ -17,24 +18,13 @@ use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 
 final class ShowColonySandbox implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONY_SANDBOX';
+    public const string VIEW_IDENTIFIER = 'SHOW_COLONY_SANDBOX';
 
-    private ColonySandboxRepositoryInterface $colonySandboxRepository;
-
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    public function __construct(
-        ColonySandboxRepositoryInterface $colonySandboxRepository,
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        ColonyGuiHelperInterface $colonyGuiHelper
-    ) {
-        $this->colonySandboxRepository = $colonySandboxRepository;
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+    public function __construct(private ColonySandboxRepositoryInterface $colonySandboxRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyGuiHelperInterface $colonyGuiHelper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/admin/colonySandbox.twig');

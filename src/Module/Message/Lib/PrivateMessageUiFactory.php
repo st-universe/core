@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Override;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -12,14 +13,11 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
  */
 final class PrivateMessageUiFactory implements PrivateMessageUiFactoryInterface
 {
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
-    public function __construct(
-        PrivateMessageRepositoryInterface $privateMessageRepository
-    ) {
-        $this->privateMessageRepository = $privateMessageRepository;
+    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository)
+    {
     }
 
+    #[Override]
     public function createPrivateMessageFolderItem(
         PrivateMessageFolderInterface $privateMessageFolder
     ): PrivateMessageFolderItem {

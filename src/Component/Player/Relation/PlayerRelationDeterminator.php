@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Relation;
 
+use Override;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -17,6 +18,7 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
     ) {
     }
 
+    #[Override]
     public function isFriend(UserInterface $user, UserInterface $otherUser): bool
     {
         $friendRelation = $this->friendDeterminator->isFriend($user, $otherUser);
@@ -32,6 +34,7 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
         return $friendRelation !== PlayerRelationTypeEnum::NONE;
     }
 
+    #[Override]
     public function isEnemy(UserInterface $user, UserInterface $otherUser): bool
     {
         $enemyRelation = $this->enemyDeterminator->isEnemy($user, $otherUser);

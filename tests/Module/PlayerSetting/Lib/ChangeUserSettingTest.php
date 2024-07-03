@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\CancelResearch;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use request;
@@ -25,6 +26,7 @@ class ChangeUserSettingTest extends StuTestCase
 
     private ChangeUserSettingInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->userSettingRepository = $this->mock(UserSettingRepositoryInterface::class);

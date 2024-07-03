@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Override;
 use JBBCode\InputValidator;
 use JBBCode\validators\UrlValidator;
 
@@ -14,6 +15,7 @@ final class StuBbCodeImageValidator implements InputValidator
      *
      * @param string $input  the string to validate
      */
+    #[Override]
     public function validate($input): bool
     {
         $urlValidator = new UrlValidator();

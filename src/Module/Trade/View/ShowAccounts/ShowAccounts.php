@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowAccounts;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeAccountTalInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowAccounts implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_ACCOUNTS';
+    public const string VIEW_IDENTIFIER = 'SHOW_ACCOUNTS';
 
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    public function __construct(
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
-    ) {
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
+    public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

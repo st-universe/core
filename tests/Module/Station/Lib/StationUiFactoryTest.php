@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
@@ -32,6 +33,7 @@ class StationUiFactoryTest extends StuTestCase
 
     private StationUiFactory $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->userRepository = $this->mock(UserRepositoryInterface::class);

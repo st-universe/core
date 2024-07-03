@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\CreateFleet;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -11,24 +12,13 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class CreateFleet implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_NEW_FLEET';
+    public const string ACTION_IDENTIFIER = 'B_NEW_FLEET';
 
-    private CreateFleetRequestInterface $createFleetRequest;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipLoaderInterface $shipLoader;
-
-    public function __construct(
-        CreateFleetRequestInterface $createFleetRequest,
-        FleetRepositoryInterface $fleetRepository,
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->createFleetRequest = $createFleetRequest;
-        $this->fleetRepository = $fleetRepository;
-        $this->shipLoader = $shipLoader;
+    public function __construct(private CreateFleetRequestInterface $createFleetRequest, private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship = $this->shipLoader->getByIdAndUser($this->createFleetRequest->getShipId(), $game->getUser()->getId());
@@ -71,6 +61,7 @@ final class CreateFleet implements ActionControllerInterface
         $game->addInformation(_('Die Flotte wurde erstellt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

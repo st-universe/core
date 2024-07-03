@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
+use Override;
 use request;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -17,28 +18,13 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class ShowModuleScreenBuildplan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN_BUILDPLAN';
+    public const string VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN_BUILDPLAN';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipCrewCalculator = $shipCrewCalculator;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

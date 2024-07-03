@@ -2,18 +2,16 @@
 
 namespace Stu\Lib;
 
+use Override;
 use JBBCode\Parser;
 
 final class ParserWithImage implements ParserWithImageInterface
 {
-    private Parser $bbcodeParser;
-
-    public function __construct(
-        Parser $bbcodeParser
-    ) {
-        $this->bbcodeParser = $bbcodeParser;
+    public function __construct(private Parser $bbcodeParser)
+    {
     }
 
+    #[Override]
     public function parse($str)
     {
         return $this->bbcodeParser->parse($str);

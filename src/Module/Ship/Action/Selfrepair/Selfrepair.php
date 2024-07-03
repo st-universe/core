@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Selfrepair;
 
+use Override;
 use request;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\RepairTaskEnum;
@@ -20,28 +21,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class Selfrepair implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SELF_REPAIR';
+    public const string ACTION_IDENTIFIER = 'B_SELF_REPAIR';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private RepairUtilInterface $repairUtil;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        RepairUtilInterface $repairUtil,
-        ShipRepositoryInterface $shipRepository,
-        ShipStorageManagerInterface $shipStorageManager
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->repairUtil = $repairUtil;
-        $this->shipRepository = $shipRepository;
-        $this->shipStorageManager = $shipStorageManager;
+    public function __construct(private ShipLoaderInterface $shipLoader, private RepairUtilInterface $repairUtil, private ShipRepositoryInterface $shipRepository, private ShipStorageManagerInterface $shipStorageManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -187,6 +173,7 @@ final class Selfrepair implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageCrew;
 
+use Override;
 use request;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
@@ -21,36 +22,13 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class SalvageCrew implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SALVAGE_CREW';
+    public const string ACTION_IDENTIFIER = 'B_SALVAGE_CREW';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private CancelRepairInterface $cancelRepair;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        TroopTransferUtilityInterface  $troopTransferUtility,
-        ActivatorDeactivatorHelperInterface $helper,
-        CancelRepairInterface $cancelRepair,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->helper = $helper;
-        $this->cancelRepair = $cancelRepair;
-        $this->shipCrewCalculator = $shipCrewCalculator;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipCrewRepositoryInterface $shipCrewRepository, private TroopTransferUtilityInterface  $troopTransferUtility, private ActivatorDeactivatorHelperInterface $helper, private CancelRepairInterface $cancelRepair, private ShipCrewCalculatorInterface $shipCrewCalculator)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -132,6 +110,7 @@ final class SalvageCrew implements ActionControllerInterface
         $this->shipLoader->save($ship);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

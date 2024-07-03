@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowShipManagement;
 
+use Override;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -14,28 +15,13 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ShowShipManagement implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_MANAGEMENT';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShowShipManagementRequestInterface $showShipManagementRequest;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private StationUtilityInterface $stationUtility;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShowShipManagementRequestInterface $showShipManagementRequest,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        StationUtilityInterface $stationUtility
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->showShipManagementRequest = $showShipManagementRequest;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->stationUtility = $stationUtility;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShowShipManagementRequestInterface $showShipManagementRequest, private ShipWrapperFactoryInterface $shipWrapperFactory, private StationUtilityInterface $stationUtility)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

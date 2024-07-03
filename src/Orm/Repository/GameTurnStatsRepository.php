@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -19,11 +20,13 @@ use Stu\Orm\Entity\ShipRump;
  */
 final class GameTurnStatsRepository extends EntityRepository implements GameTurnStatsRepositoryInterface
 {
+    #[Override]
     public function prototype(): GameTurnStatsInterface
     {
         return new GameTurnStats();
     }
 
+    #[Override]
     public function save(GameTurnStatsInterface $turn): void
     {
         $em = $this->getEntityManager();
@@ -32,6 +35,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         $em->flush();
     }
 
+    #[Override]
     public function delete(GameTurnStatsInterface $turn): void
     {
         $em = $this->getEntityManager();
@@ -39,6 +43,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         $em->remove($turn);
     }
 
+    #[Override]
     public function getShipCount(): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -51,6 +56,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getShipCountManned(): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -67,6 +73,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getShipCountNpc(): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -83,6 +90,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getFlightSigs24h(): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -94,6 +102,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult() / 2;
     }
 
+    #[Override]
     public function getFlightSigsSystem24h(): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -106,6 +115,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult() / 2;
     }
 
+    #[Override]
     public function getLatestStats(int $amount, int $divisor): array
     {
         return $this->getEntityManager()

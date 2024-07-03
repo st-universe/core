@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\CommoditiesOverview;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
@@ -15,20 +16,13 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
  */
 final class CommoditiesOverview implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COMMODITIES_OVERVIEW';
+    public const string VIEW_IDENTIFIER = 'SHOW_COMMODITIES_OVERVIEW';
 
-    private StorageRepositoryInterface $storageRepository;
-
-    private DatabaseUiFactoryInterface $databaseUiFactory;
-
-    public function __construct(
-        StorageRepositoryInterface $storageRepository,
-        DatabaseUiFactoryInterface $databaseUiFactory
-    ) {
-        $this->storageRepository = $storageRepository;
-        $this->databaseUiFactory = $databaseUiFactory;
+    public function __construct(private StorageRepositoryInterface $storageRepository, private DatabaseUiFactoryInterface $databaseUiFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setNavigation([

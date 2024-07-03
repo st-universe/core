@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
@@ -39,6 +40,7 @@ class ShipMoverTest extends StuTestCase
 
     private ShipMoverInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);

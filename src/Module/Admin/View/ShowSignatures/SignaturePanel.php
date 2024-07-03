@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
@@ -15,39 +16,26 @@ use Stu\Orm\Entity\LayerInterface;
 
 class SignaturePanel extends AbstractVisualPanel
 {
-    private int $shipId;
-    private int $userId;
-    private int $allyId;
-
-    /** @var array{minx: int, maxx: int, miny: int, maxy: int} */
-    private array $data;
-
-    private LayerInterface $layer;
-
     /** @param array{minx: int, maxx: int, miny: int, maxy: int} $data */
     public function __construct(
-        array $data,
+        private array $data,
         PanelLayerCreationInterface $panelLayerCreation,
-        LayerInterface $layer,
-        int $shipId,
-        int $userId,
-        int $allyId,
+        private LayerInterface $layer,
+        private int $shipId,
+        private int $userId,
+        private int $allyId,
         LoggerUtilInterface $loggerUtil
     ) {
         parent::__construct($panelLayerCreation, $loggerUtil);
-
-        $this->data = $data;
-        $this->layer = $layer;
-        $this->shipId = $shipId;
-        $this->userId = $userId;
-        $this->allyId = $allyId;
     }
 
+    #[Override]
     protected function createBoundaries(): PanelBoundaries
     {
         return PanelBoundaries::fromArray($this->data, $this->layer);
     }
 
+    #[Override]
     protected function loadLayers(): void
     {
 
@@ -73,6 +61,7 @@ class SignaturePanel extends AbstractVisualPanel
         $this->layers = $panelLayerCreation->build($this);
     }
 
+    #[Override]
     protected function getEntryCallable(): callable
     {
         return fn (int $x, int $y): SignaturePanelEntry => new SignaturePanelEntry(
@@ -82,6 +71,7 @@ class SignaturePanel extends AbstractVisualPanel
         );
     }
 
+    #[Override]
     protected function getPanelViewportPercentage(): int
     {
         return 100;

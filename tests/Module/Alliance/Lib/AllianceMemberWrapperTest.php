@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -19,6 +20,7 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     private AllianceMemberWrapper $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->user = $this->mock(UserInterface::class);

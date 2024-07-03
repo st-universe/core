@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -44,16 +45,19 @@ class WeaponShield implements WeaponShieldInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private ModuleInterface $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): WeaponShieldInterface
     {
         $this->module_id = $moduleId;
@@ -61,11 +65,13 @@ class WeaponShield implements WeaponShieldInterface
         return $this;
     }
 
+    #[Override]
     public function getWeaponId(): int
     {
         return $this->weapon_id;
     }
 
+    #[Override]
     public function setWeaponId(int $weaponid): WeaponShieldInterface
     {
         $this->weapon_id = $weaponid;
@@ -73,11 +79,13 @@ class WeaponShield implements WeaponShieldInterface
         return $this;
     }
 
+    #[Override]
     public function getModificator(): int
     {
         return $this->modificator;
     }
 
+    #[Override]
     public function setModificator(int $Modificator): WeaponShieldInterface
     {
         $this->modificator = $Modificator;
@@ -85,11 +93,13 @@ class WeaponShield implements WeaponShieldInterface
         return $this;
     }
 
+    #[Override]
     public function getFactionId(): ?int
     {
         return $this->faction_id;
     }
 
+    #[Override]
     public function setFactionId(int $factionid): WeaponShieldInterface
     {
         $this->faction_id = $factionid;
@@ -97,11 +107,13 @@ class WeaponShield implements WeaponShieldInterface
         return $this;
     }
 
+    #[Override]
     public function getWeapon(): WeaponInterface
     {
         return $this->weapon;
     }
 
+    #[Override]
     public function getModule(): ModuleInterface
     {
         return $this->module;

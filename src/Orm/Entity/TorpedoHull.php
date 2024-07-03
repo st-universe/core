@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -42,16 +43,19 @@ class TorpedoHull implements TorpedoHullInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private ModuleInterface $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): TorpedoHullInterface
     {
         $this->module_id = $moduleId;
@@ -59,11 +63,13 @@ class TorpedoHull implements TorpedoHullInterface
         return $this;
     }
 
+    #[Override]
     public function getTorpedoType(): int
     {
         return $this->torpedo_type;
     }
 
+    #[Override]
     public function setTorpedoType(int $torpedoType): TorpedoHullInterface
     {
         $this->torpedo_type = $torpedoType;
@@ -71,11 +77,13 @@ class TorpedoHull implements TorpedoHullInterface
         return $this;
     }
 
+    #[Override]
     public function getModificator(): int
     {
         return $this->modificator;
     }
 
+    #[Override]
     public function setModificator(int $Modificator): TorpedoHullInterface
     {
         $this->modificator = $Modificator;
@@ -83,11 +91,13 @@ class TorpedoHull implements TorpedoHullInterface
         return $this;
     }
 
+    #[Override]
     public function getTorpedo(): TorpedoTypeInterface
     {
         return $this->torpedo;
     }
 
+    #[Override]
     public function getModule(): ModuleInterface
     {
         return $this->module;

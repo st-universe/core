@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\MapInterface;
@@ -12,6 +13,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 
 final class UpdateFlightDirection implements UpdateFlightDirectionInterface
 {
+    #[Override]
     public function updateWhenTraversing(
         MapInterface|StarSystemMapInterface $oldWaypoint,
         MapInterface|StarSystemMapInterface $waypoint,
@@ -52,6 +54,7 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
         return $flightDirection;
     }
 
+    #[Override]
     public function updateWhenSystemExit(ShipInterface $ship, StarSystemMapInterface $starsystemMap): void
     {
         $system = $starsystemMap->getSystem();

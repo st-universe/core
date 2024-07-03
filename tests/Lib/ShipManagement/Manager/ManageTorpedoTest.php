@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -47,6 +48,7 @@ class ManageTorpedoTest extends StuTestCase
 
     private ManageTorpedo $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);

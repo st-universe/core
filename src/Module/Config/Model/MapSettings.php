@@ -2,11 +2,13 @@
 
 namespace Stu\Module\Config\Model;
 
+use Override;
 final class MapSettings extends AbstractSettings implements MapSettingsInterface
 {
-    private const CONFIG_PATH = 'map';
-    private const SETTING_ENCRYPTION_KEY = 'encryptionKey';
+    private const string CONFIG_PATH = 'map';
+    private const string SETTING_ENCRYPTION_KEY = 'encryptionKey';
 
+    #[Override]
     public function getEncryptionKey(): ?string
     {
         if ($this->exists(self::SETTING_ENCRYPTION_KEY)) {
@@ -16,6 +18,7 @@ final class MapSettings extends AbstractSettings implements MapSettingsInterface
         return null;
     }
 
+    #[Override]
     public function getConfigPath(): string
     {
         return self::CONFIG_PATH;

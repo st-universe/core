@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreatePost;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\NewPost\NewPost;
 use Stu\Module\Alliance\View\Topic\Topic;
@@ -18,24 +19,13 @@ final class CreatePost implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_CREATE_POSTING';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_POSTING';
 
-    private CreatePostRequestInterface $createPostRequest;
-
-    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
-
-    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
-
-    public function __construct(
-        CreatePostRequestInterface $createPostRequest,
-        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
-    ) {
-        $this->createPostRequest = $createPostRequest;
-        $this->allianceBoardPostRepository = $allianceBoardPostRepository;
-        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
+    public function __construct(private CreatePostRequestInterface $createPostRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -73,6 +63,7 @@ final class CreatePost implements ActionControllerInterface
         $game->addInformation(_('Der Beitrag wurde erstellt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

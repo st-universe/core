@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
@@ -39,6 +40,7 @@ class LocalPlayerCreatorTest extends StuTestCase
 
     private LocalPlayerCreator $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->userRepository = $this->mock(UserRepositoryInterface::class);

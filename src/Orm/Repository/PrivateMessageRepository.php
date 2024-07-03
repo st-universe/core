@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class PrivateMessageRepository extends EntityRepository implements PrivateMessageRepositoryInterface
 {
+    #[Override]
     public function prototype(): PrivateMessageInterface
     {
         return new PrivateMessage();
     }
 
+    #[Override]
     public function save(PrivateMessageInterface $post, bool $doFlush = false): void
     {
         $em = $this->getEntityManager();
@@ -32,6 +35,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         }
     }
 
+    #[Override]
     public function getOrderedCorrepondence(
         int $senderUserId,
         int $recipientUserId,
@@ -62,6 +66,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             ->getResult();
     }
 
+    #[Override]
     public function getBySender(UserInterface $user): array
     {
         return $this->findBy(
@@ -69,6 +74,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         );
     }
 
+    #[Override]
     public function getByReceiver(UserInterface $user): array
     {
         return $this->findBy(
@@ -76,6 +82,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         );
     }
 
+    #[Override]
     public function getByUserAndFolder(
         int $userId,
         int $folderId,
@@ -90,6 +97,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         );
     }
 
+    #[Override]
     public function getAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int
     {
         return $this->count([
@@ -98,6 +106,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ]);
     }
 
+    #[Override]
     public function getNewAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int
     {
         return $this->count([
@@ -107,6 +116,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ]);
     }
 
+    #[Override]
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void
     {
         $this->getEntityManager()->createQuery(
@@ -120,6 +130,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ])->execute();
     }
 
+    #[Override]
     public function unsetAllInboxReferences(): void
     {
         $this->getEntityManager()->createQuery(
@@ -131,6 +142,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         )->execute();
     }
 
+    #[Override]
     public function truncateAllPrivateMessages(): void
     {
         $this->getEntityManager()->createQuery(

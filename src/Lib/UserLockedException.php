@@ -8,12 +8,9 @@ use Stu\Exception\StuException;
 
 final class UserLockedException extends StuException
 {
-    private string $details;
-
-    public function __construct(string $message, string $details)
+    public function __construct(string $message, private string $details)
     {
         $this->message = $message;
-        $this->details = $details;
     }
 
     public function getDetails(): string

@@ -157,11 +157,9 @@ class request
     }
 
     /**
-     * @param mixed $result
-     *
      * @return array<int|string, mixed>
      */
-    public static function returnArray($result): array
+    public static function returnArray(mixed $result): array
     {
         if (!is_array($result)) {
             return [];
@@ -169,10 +167,7 @@ class request
         return $result;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public static function setVar(string $var, $value): void
+    public static function setVar(string $var, mixed $value): void
     {
         global $_GET, $_POST;
         $_GET[$var] = $value;

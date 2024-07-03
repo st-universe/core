@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
@@ -27,6 +28,7 @@ class PirateNavigation implements PirateNavigationInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function navigateToTarget(
         FleetWrapperInterface $fleet,
         MapInterface|StarSystemMapInterface|StarSystemInterface $target

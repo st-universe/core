@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\LastTutorial;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,17 +13,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class LastTutorial implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TUTORIAL_BACK';
+    public const string ACTION_IDENTIFIER = 'B_TUTORIAL_BACK';
 
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->userRepository = $userRepository;
+    public function __construct(private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -43,6 +40,7 @@ final class LastTutorial implements ActionControllerInterface
     }
 
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

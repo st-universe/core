@@ -6,20 +6,8 @@ namespace Stu\Module\Ship\Lib;
 
 final class ShipRepairCost
 {
-    private int $amount;
-
-    private int $commodityId;
-
-    private string $commodityName;
-
-    public function __construct(
-        int $amount,
-        int $commodityId,
-        string $commodityName
-    ) {
-        $this->amount = $amount;
-        $this->commodityId = $commodityId;
-        $this->commodityName = $commodityName;
+    public function __construct(private int $amount, private int $commodityId, private string $commodityName)
+    {
     }
 
     public function getAmount(): int

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -83,26 +84,31 @@ class KnPostArchiv implements KnPostArchivInterface
         $this->comments = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
+    #[Override]
     public function getFormerId(): int
     {
         return $this->former_id;
     }
 
+    #[Override]
     public function getTitle(): ?string
     {
         return $this->titel;
     }
 
+    #[Override]
     public function setTitle(string $title): KnPostArchivInterface
     {
         $this->titel = $title;
@@ -110,11 +116,13 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): KnPostArchivInterface
     {
         $this->text = $text;
@@ -122,11 +130,13 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): KnPostArchivInterface
     {
         $this->date = $date;
@@ -134,11 +144,13 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
+    #[Override]
     public function setUsername(string $username): KnPostArchivInterface
     {
         $this->username = $username;
@@ -146,16 +158,19 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): ?int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getdelUserId(): ?int
     {
         return $this->del_user_id;
     }
 
+    #[Override]
     public function setdelUserId(?int $userid): KnPostArchivInterface
     {
         $this->del_user_id = $userid;
@@ -163,11 +178,13 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getEditDate(): ?int
     {
         return $this->lastedit;
     }
 
+    #[Override]
     public function setEditDate(int $editDate): KnPostArchivInterface
     {
         $this->lastedit = $editDate;
@@ -175,16 +192,19 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getPlotId(): ?int
     {
         return $this->plot_id;
     }
 
+    #[Override]
     public function getRpgPlot(): ?RpgPlotArchivInterface
     {
         return $this->rpgPlot;
     }
 
+    #[Override]
     public function setRpgPlot(?RpgPlotArchivInterface $rpgPlot): KnPostArchivInterface
     {
         $this->rpgPlot = $rpgPlot;
@@ -192,22 +212,26 @@ class KnPostArchiv implements KnPostArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getComments(): Collection
     {
         return $this->comments;
     }
 
+    #[Override]
     public function getRatings(): array
     {
         return $this->ratings;
     }
 
+    #[Override]
     public function setRatings(array $ratings): KnPostArchivInterface
     {
         $this->ratings = $ratings;
         return $this;
     }
 
+    #[Override]
     public function getUrl(): string
     {
         return sprintf(

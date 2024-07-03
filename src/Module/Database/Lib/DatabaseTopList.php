@@ -9,16 +9,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 abstract class DatabaseTopList
 {
-    private int $user_id;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        int $user_id
-    ) {
-        $this->user_id = $user_id;
-        $this->userRepository = $userRepository;
+    public function __construct(private UserRepositoryInterface $userRepository, private int $user_id)
+    {
     }
 
     public function getUserId(): int

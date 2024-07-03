@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
@@ -36,6 +37,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     ) {
     }
 
+    #[Override]
     public function wrapShip(ShipInterface $ship): ShipWrapperInterface
     {
         return new ShipWrapper(
@@ -52,6 +54,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         );
     }
 
+    #[Override]
     public function wrapShips(array $ships): Collection
     {
         $result = new ArrayCollection();
@@ -63,6 +66,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         return $result;
     }
 
+    #[Override]
     public function wrapShipsAsFleet(array $ships, bool $isSingleShips = false): FleetWrapperInterface
     {
         if ($ships === []) {
@@ -92,11 +96,13 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         return new FleetWrapper($fleet, $this, $this->game, $isSingleShips);
     }
 
+    #[Override]
     public function wrapFleet(FleetInterface $fleet): FleetWrapperInterface
     {
         return new FleetWrapper($fleet, $this, $this->game, false);
     }
 
+    #[Override]
     public function wrapFleets(array $fleets): array
     {
         return array_map(

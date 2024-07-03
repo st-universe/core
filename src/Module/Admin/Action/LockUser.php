@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use request;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
@@ -18,28 +19,20 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class LockUser implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_LOCK_USER';
-
-    private UserRepositoryInterface $userRepository;
-
-    private UserLockRepositoryInterface $userLockRepository;
-
-    private SessionInterface $session;
+    public const string ACTION_IDENTIFIER = 'B_LOCK_USER';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        UserLockRepositoryInterface $userLockRepository,
-        SessionInterface $session,
+        private UserRepositoryInterface $userRepository,
+        private UserLockRepositoryInterface $userLockRepository,
+        private SessionInterface $session,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->userRepository = $userRepository;
-        $this->userLockRepository = $userLockRepository;
-        $this->session = $session;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('admin', LoggerEnum::LEVEL_ERROR);
@@ -102,6 +95,7 @@ final class LockUser implements ActionControllerInterface
         $this->userLockRepository->save($lock);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

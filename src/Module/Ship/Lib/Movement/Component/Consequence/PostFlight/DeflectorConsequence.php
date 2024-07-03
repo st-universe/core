@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Damage\ApplyFieldDamageInterface;
@@ -14,14 +15,11 @@ use Stu\Orm\Entity\MapFieldTypeInterface;
 
 class DeflectorConsequence extends AbstractFlightConsequence
 {
-    private ApplyFieldDamageInterface $applyFieldDamage;
-
-    public function __construct(
-        ApplyFieldDamageInterface $applyFieldDamage
-    ) {
-        $this->applyFieldDamage = $applyFieldDamage;
+    public function __construct(private ApplyFieldDamageInterface $applyFieldDamage)
+    {
     }
 
+    #[Override]
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

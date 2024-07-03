@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
+use Override;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
@@ -24,22 +25,14 @@ use Stu\Orm\Entity\ShipSystemInterface;
 
 final class ShipSystemManager implements ShipSystemManagerInterface
 {
-    /** @var array<ShipSystemTypeInterface> */
-    private array $systemList;
-
-    private StuTime $stuTime;
-
     /**
      * @param array<ShipSystemTypeInterface> $systemList
      */
-    public function __construct(
-        array $systemList,
-        StuTime $stuTime
-    ) {
-        $this->systemList = $systemList;
-        $this->stuTime = $stuTime;
+    public function __construct(private array $systemList, private StuTime $stuTime)
+    {
     }
 
+    #[Override]
     public function activate(
         ShipWrapperInterface $wrapper,
         ShipSystemTypeEnum $type,
@@ -71,6 +64,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system->activate($wrapper, $this);
     }
 
+    #[Override]
     public function deactivate(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type, bool $force = false): void
     {
         $system = $this->lookupSystem($type);
@@ -82,17 +76,19 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system->deactivate($wrapper);
     }
 
+    #[Override]
     public function deactivateAll(ShipWrapperInterface $wrapper): void
     {
         foreach ($wrapper->get()->getSystems() as $shipSystem) {
             try {
                 $this->deactivate($wrapper, $shipSystem->getSystemType(), true);
-            } catch (ShipSystemException $e) {
+            } catch (ShipSystemException) {
                 continue;
             }
         }
     }
 
+    #[Override]
     public function getEnergyUsageForActivation(ShipSystemTypeEnum $type): int
     {
         $system = $this->lookupSystem($type);
@@ -100,6 +96,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         return $system->getEnergyUsageForActivation();
     }
 
+    #[Override]
     public function getEnergyConsumption(ShipSystemTypeEnum $type): int
     {
         $system = $this->lookupSystem($type);
@@ -107,6 +104,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         return $system->getEnergyConsumption();
     }
 
+    #[Override]
     public function lookupSystem(ShipSystemTypeEnum $type): ShipSystemTypeInterface
     {
         $system = $this->systemList[$type->value] ?? null;
@@ -194,6 +192,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
     }
 
+    #[Override]
     public function handleDestroyedSystem(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type): void
     {
         $system = $this->lookupSystem($type);
@@ -201,6 +200,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system->handleDestruction($wrapper);
     }
 
+    #[Override]
     public function handleDamagedSystem(ShipWrapperInterface $wrapper, ShipSystemTypeEnum $type): void
     {
         $system = $this->lookupSystem($type);
@@ -208,6 +208,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system->handleDamage($wrapper);
     }
 
+    #[Override]
     public function getActiveSystems(ShipInterface $ship, bool $sort = false): array
     {
         $activeSystems = [];

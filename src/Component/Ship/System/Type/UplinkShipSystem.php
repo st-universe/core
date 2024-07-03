@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -11,13 +12,15 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class UplinkShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public const MAX_FOREIGNERS = 3;
+    public const int MAX_FOREIGNERS = 3;
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_UPLINK;
     }
 
+    #[Override]
     public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
@@ -41,11 +44,13 @@ final class UplinkShipSystem extends AbstractShipSystemType implements ShipSyste
         return false;
     }
 
+    #[Override]
     public function getEnergyUsageForActivation(): int
     {
         return 0;
     }
 
+    #[Override]
     public function getEnergyConsumption(): int
     {
         return 5;

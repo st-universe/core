@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -24,48 +25,13 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class UpgradeBuilding implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_UPGRADE_BUILDING';
+    public const string ACTION_IDENTIFIER = 'B_UPGRADE_BUILDING';
 
-    private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private BuildingActionInterface $buildingAction;
-
-    private BuildingManagerInterface $buildingManager;
-
-    public function __construct(
-        BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        BuildingActionInterface $buildingAction,
-        BuildingManagerInterface $buildingManager
-    ) {
-        $this->buildingUpgradeRepository = $buildingUpgradeRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
-        $this->researchedRepository = $researchedRepository;
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->buildingAction = $buildingAction;
-        $this->buildingManager = $buildingManager;
+    public function __construct(private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private BuildingManagerInterface $buildingManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
@@ -182,6 +148,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         return true;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

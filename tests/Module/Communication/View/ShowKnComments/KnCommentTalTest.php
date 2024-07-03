@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
+use Override;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Orm\Entity\KnCommentInterface;
@@ -23,6 +24,7 @@ class KnCommentTalTest extends StuTestCase
 
     private KnCommentTal $tal;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->comment = $this->mock(KnCommentInterface::class);

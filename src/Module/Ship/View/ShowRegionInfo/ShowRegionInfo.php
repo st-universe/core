@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowRegionInfo;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,16 +13,13 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowRegionInfo implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_REGION_INFO';
+    public const string VIEW_IDENTIFIER = 'SHOW_REGION_INFO';
 
-    private ShipLoaderInterface $shipLoader;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->shipLoader = $shipLoader;
+    public function __construct(private ShipLoaderInterface $shipLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

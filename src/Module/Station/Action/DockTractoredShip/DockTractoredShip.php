@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\DockTractoredShip;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -17,24 +18,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class DockTractoredShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DOCK_TRACTORED';
+    public const string ACTION_IDENTIFIER = 'B_DOCK_TRACTORED';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->helper = $helper;
+    public function __construct(private ShipLoaderInterface $shipLoader, private PrivateMessageSenderInterface $privateMessageSender, private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -108,6 +98,7 @@ final class DockTractoredShip implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

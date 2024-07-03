@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
@@ -15,6 +16,7 @@ class DeactivateShieldsBehaviour implements PirateBehaviourInterface
     public function __construct(private ShipSystemManagerInterface $shipSystemManager)
     {
     }
+    #[Override]
     public function action(
         FleetWrapperInterface $fleetWrapper,
         PirateReactionInterface $pirateReaction,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -40,11 +41,13 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
     #[JoinColumn(name: 'buildings_upgrades_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingUpgradeInterface $upgrade;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setBuildingUpgradeId(int $building_upgrade_id): BuildingUpgradeCostInterface
     {
         $this->buildings_upgrades_id = $building_upgrade_id;
@@ -52,11 +55,13 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildingUpgradeId(): int
     {
         return $this->buildings_upgrades_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): BuildingUpgradeCostInterface
     {
         $this->commodity_id = $commodityId;
@@ -64,11 +69,13 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setAmount(int $amount): BuildingUpgradeCostInterface
     {
         $this->amount = $amount;
@@ -76,16 +83,19 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->amount;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function getUpgrade(): BuildingUpgradeInterface
     {
         return $this->upgrade;

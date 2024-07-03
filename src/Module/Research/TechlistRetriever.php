@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Override;
 use Stu\Component\Research\ResearchModeEnum;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
@@ -15,26 +16,11 @@ use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class TechlistRetriever implements TechlistRetrieverInterface
 {
-    private ResearchRepositoryInterface $researchRepository;
-
-    private ResearchDependencyRepositoryInterface $researchDependencyRepository;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private FactionRepositoryInterface $factionRepository;
-
-    public function __construct(
-        ResearchRepositoryInterface $researchRepository,
-        ResearchDependencyRepositoryInterface $researchDependencyRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        FactionRepositoryInterface $factionRepository
-    ) {
-        $this->researchRepository = $researchRepository;
-        $this->researchDependencyRepository = $researchDependencyRepository;
-        $this->researchedRepository = $researchedRepository;
-        $this->factionRepository = $factionRepository;
+    public function __construct(private ResearchRepositoryInterface $researchRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository, private ResearchedRepositoryInterface $researchedRepository, private FactionRepositoryInterface $factionRepository)
+    {
     }
 
+    #[Override]
     public function getResearchList(UserInterface $user): array
     {
         $researchedList = $this->getResearchedList($user);
@@ -123,6 +109,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         return $list_result;
     }
 
+    #[Override]
     public function canResearch(UserInterface $user, int $researchId): ?ResearchInterface
     {
         return $this->getResearchList($user)[$researchId] ?? null;
@@ -173,6 +160,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         return $excludes;
     }
 
+    #[Override]
     public function getResearchedList(UserInterface $user): array
     {
         return $this->researchedRepository->getListByUser($user->getId());

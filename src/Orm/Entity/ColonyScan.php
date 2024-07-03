@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -52,110 +53,130 @@ class ColonyScan implements ColonyScanInterface
     private UserInterface $user;
 
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getColonyId(): int
     {
         return $this->colony_id;
     }
 
+    #[Override]
     public function setColonyId(int $colonyid): ColonyScanInterface
     {
         $this->colony_id = $colonyid;
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUserId(int $userid): ColonyScanInterface
     {
         $this->user_id = $userid;
         return $this;
     }
 
+    #[Override]
     public function getColonyUserId(): int
     {
         return $this->colony_user_id;
     }
 
+    #[Override]
     public function setColonyUserId(int $colonyuserid): ColonyScanInterface
     {
         $this->colony_user_id = $colonyuserid;
         return $this;
     }
 
+    #[Override]
     public function getColonyName(): ?string
     {
         return $this->colony_name;
     }
 
+    #[Override]
     public function setColonyName(?string $colonyname): ColonyScanInterface
     {
         $this->colony_name = $colonyname;
         return $this;
     }
 
+    #[Override]
     public function getColonyUserName(): string
     {
         return $this->colony_user_name;
     }
 
+    #[Override]
     public function setColonyUserName(string $colonyusername): ColonyScanInterface
     {
         $this->colony_user_name = $colonyusername;
         return $this;
     }
 
+    #[Override]
     public function getFieldData(): string
     {
         return $this->mask;
     }
 
+    #[Override]
     public function setFieldData(string $fieldData): ColonyScanInterface
     {
         $this->mask = $fieldData;
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): ColonyScanInterface
     {
         $this->date = $date;
         return $this;
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): ColonyScanInterface
     {
         $this->colony = $colony;
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ColonyScanInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function isAbandoned(): bool
     {
         return $this->getColony()->getUserId() !== $this->colony_user_id;

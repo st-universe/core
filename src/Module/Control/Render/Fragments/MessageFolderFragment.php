@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
@@ -18,18 +19,11 @@ use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
  */
 final class MessageFolderFragment implements RenderFragmentInterface
 {
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    private PrivateMessageUiFactoryInterface $commUiFactory;
-
-    public function __construct(
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageUiFactoryInterface $privateMessageUiFactory
-    ) {
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
-        $this->commUiFactory = $privateMessageUiFactory;
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $commUiFactory)
+    {
     }
 
+    #[Override]
     public function render(
         UserInterface $user,
         TalPageInterface|TwigPageInterface $page,

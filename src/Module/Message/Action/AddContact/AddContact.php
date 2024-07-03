@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\AddContact;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -14,28 +15,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddContact implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ADD_CONTACT';
+    public const string ACTION_IDENTIFIER = 'B_ADD_CONTACT';
 
-    private AddContactRequestInterface $addContactRequest;
-
-    private ContactRepositoryInterface $contactRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        AddContactRequestInterface $addContactRequest,
-        ContactRepositoryInterface $contactRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->addContactRequest = $addContactRequest;
-        $this->contactRepository = $contactRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
+    public function __construct(private AddContactRequestInterface $addContactRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowContactMode::VIEW_IDENTIFIER);
@@ -95,6 +81,7 @@ final class AddContact implements ActionControllerInterface
         $game->setTemplateVar('contact', $contact);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

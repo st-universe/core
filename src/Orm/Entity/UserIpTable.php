@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -49,32 +50,38 @@ class UserIpTable implements UserIpTableInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): UserInterface
     {
         $this->user = $user;
         return $this->user;
     }
 
+    #[Override]
     public function getIp(): string
     {
         return $this->ip;
     }
 
+    #[Override]
     public function setIp(string $ip): UserIpTableInterface
     {
         $this->ip = $ip;
@@ -82,11 +89,13 @@ class UserIpTable implements UserIpTableInterface
         return $this;
     }
 
+    #[Override]
     public function getSessionId(): string
     {
         return $this->session;
     }
 
+    #[Override]
     public function setSessionId(string $sessionId): UserIpTableInterface
     {
         $this->session = $sessionId;
@@ -94,11 +103,13 @@ class UserIpTable implements UserIpTableInterface
         return $this;
     }
 
+    #[Override]
     public function getUserAgent(): string
     {
         return $this->agent;
     }
 
+    #[Override]
     public function setUserAgent(string $userAgent): UserIpTableInterface
     {
         $this->agent = $userAgent;
@@ -106,11 +117,13 @@ class UserIpTable implements UserIpTableInterface
         return $this;
     }
 
+    #[Override]
     public function getStartDate(): ?DateTimeInterface
     {
         return $this->startDate;
     }
 
+    #[Override]
     public function setStartDate(DateTimeInterface $startDate): UserIpTableInterface
     {
         $this->startDate = $startDate;
@@ -118,11 +131,13 @@ class UserIpTable implements UserIpTableInterface
         return $this;
     }
 
+    #[Override]
     public function getEndDate(): ?DateTimeInterface
     {
         return $this->endDate;
     }
 
+    #[Override]
     public function setEndDate(DateTimeInterface $endDate): UserIpTableInterface
     {
         $this->endDate = $endDate;

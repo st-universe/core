@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardPostInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\AllianceBoardPostInterface;
  */
 final class AllianceBoardPostRepository extends EntityRepository implements AllianceBoardPostRepositoryInterface
 {
+    #[Override]
     public function getRecentByBoard(int $boardId): ?AllianceBoardPostInterface
     {
         return $this->findOneBy(
@@ -21,6 +23,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
         );
     }
 
+    #[Override]
     public function getRecentByTopic(int $topicId): ?AllianceBoardPostInterface
     {
         return $this->findOneBy(
@@ -29,6 +32,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
         );
     }
 
+    #[Override]
     public function getAmountByBoard(int $boardId): int
     {
         return $this->count([
@@ -36,6 +40,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
         ]);
     }
 
+    #[Override]
     public function getAmountByTopic(int $topicId): int
     {
         return $this->count([
@@ -43,6 +48,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
         ]);
     }
 
+    #[Override]
     public function getByTopic(int $topicId, int $limit, int $offset): array
     {
         return $this->findBy(
@@ -53,11 +59,13 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
         );
     }
 
+    #[Override]
     public function prototype(): AllianceBoardPostInterface
     {
         return new AllianceBoardPost();
     }
 
+    #[Override]
     public function save(AllianceBoardPostInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -66,6 +74,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
         $em->flush();
     }
 
+    #[Override]
     public function delete(AllianceBoardPostInterface $post): void
     {
         $em = $this->getEntityManager();

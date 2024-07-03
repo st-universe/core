@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
@@ -16,6 +17,7 @@ class BorderLayerRendererTest extends StuTestCase
     /** @var MockInterface|AbstractVisualPanel */
     private MockInterface $panel;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->panel = mock(AbstractVisualPanel::class);
