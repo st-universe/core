@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -38,27 +39,32 @@ class ColonyClassResearch implements ColonyClassResearchInterface
     #[JoinColumn(name: 'planet_type_id', referencedColumnName: 'id')]
     private ColonyClassInterface $colonyClass;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getResearch(): ResearchInterface
     {
         return $this->research;
     }
 
+    #[Override]
     public function setResearch(ResearchInterface $research): ColonyClassResearchInterface
     {
         $this->research = $research;
         return $this;
     }
 
+    #[Override]
     public function getColonyClass(): ColonyClassInterface
     {
         return $this->colonyClass;
     }
 
+    #[Override]
     public function setColonyClass(ColonyClassInterface $colonyClass): ColonyClassResearchInterface
     {
         $this->colonyClass = $colonyClass;

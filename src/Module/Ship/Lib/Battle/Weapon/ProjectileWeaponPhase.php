@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
@@ -18,6 +19,7 @@ use Stu\Orm\Entity\TorpedoTypeInterface;
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
+    #[Override]
     public function fire(
         ProjectileAttackerInterface $attacker,
         BattlePartyInterface $targetPool,
@@ -85,6 +87,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         }
     }
 
+    #[Override]
     public function fireAtBuilding(
         ProjectileAttackerInterface $attacker,
         PlanetFieldInterface $target,

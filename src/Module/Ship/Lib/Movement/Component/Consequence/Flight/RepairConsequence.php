@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
+use Override;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
@@ -20,6 +21,7 @@ class RepairConsequence extends AbstractFlightConsequence
     ) {
     }
 
+    #[Override]
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

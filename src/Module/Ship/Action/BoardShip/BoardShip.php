@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BoardShip;
 
+use Override;
 use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
@@ -36,7 +37,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class BoardShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BOARD_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_BOARD_SHIP';
 
     public function __construct(
         private  CrewRepositoryInterface $crewRepository,
@@ -58,6 +59,7 @@ final class BoardShip implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -341,6 +343,7 @@ final class BoardShip implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

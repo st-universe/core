@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
+use Override;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
@@ -12,19 +13,14 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class BorderLayerRenderer implements LayerRendererInterface
 {
-    public const DEFAULT_BORDER_COLOR = '#2d2d2d';
+    public const string DEFAULT_BORDER_COLOR = '#2d2d2d';
 
-    private ?ShipInterface $currentShip;
-
-    private ?bool $isOnShipLevel;
-
-    public function __construct(?ShipInterface $currentShip, ?bool $isOnShipLevel)
+    public function __construct(private ?ShipInterface $currentShip, private ?bool $isOnShipLevel)
     {
-        $this->currentShip = $currentShip;
-        $this->isOnShipLevel = $isOnShipLevel;
     }
 
     /** @param BorderData $data */
+    #[Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(

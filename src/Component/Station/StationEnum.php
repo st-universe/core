@@ -9,13 +9,13 @@ use Stu\Component\Ship\ShipRumpEnum;
 final class StationEnum
 {
     // where can the station type be build
-    public const BUILDABLE_EVERYWHERE = 'überall';
-    public const BUILDABLE_OVER_SYSTEM = 'über einem System';
-    public const BUILDABLE_INSIDE_SYSTEM = 'innerhalb eines Systems';
-    public const BUILDABLE_OUTSIDE_SYSTEM = 'außerhalb eines Systems';
+    public const string BUILDABLE_EVERYWHERE = 'überall';
+    public const string BUILDABLE_OVER_SYSTEM = 'über einem System';
+    public const string BUILDABLE_INSIDE_SYSTEM = 'innerhalb eines Systems';
+    public const string BUILDABLE_OUTSIDE_SYSTEM = 'außerhalb eines Systems';
 
     // station role buildable locations
-    public const BUILDABLE_LOCATIONS_PER_ROLE = [
+    public const array BUILDABLE_LOCATIONS_PER_ROLE = [
         ShipRumpEnum::SHIP_ROLE_SHIPYARD => self::BUILDABLE_INSIDE_SYSTEM,
         ShipRumpEnum::SHIP_ROLE_SENSOR => self::BUILDABLE_EVERYWHERE,
         ShipRumpEnum::SHIP_ROLE_DEPOT_LARGE => self::BUILDABLE_INSIDE_SYSTEM,
@@ -25,7 +25,7 @@ final class StationEnum
     ];
 
     // buildable limits
-    public const BUILDABLE_LIMITS_PER_ROLE = [
+    public const array BUILDABLE_LIMITS_PER_ROLE = [
         ShipRumpEnum::SHIP_ROLE_CONSTRUCTION => 2,
         ShipRumpEnum::SHIP_ROLE_SHIPYARD => 2,
         ShipRumpEnum::SHIP_ROLE_SENSOR => PHP_INT_MAX,

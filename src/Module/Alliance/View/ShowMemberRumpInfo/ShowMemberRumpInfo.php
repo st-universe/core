@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\ShowMemberRumpInfo;
 
+use Override;
 use JBBCode\Parser;
 use request;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -19,36 +20,13 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_MEMBER_RUMP_INFO';
+    public const string VIEW_IDENTIFIER = 'SHOW_MEMBER_RUMP_INFO';
 
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private Parser $bbcodeParser;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    public function __construct(
-        AllianceActionManagerInterface $allianceActionManager,
-        UserRepositoryInterface $userRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        Parser $bbcodeParser,
-        ShipRepositoryInterface $shipRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
-        $this->allianceActionManager = $allianceActionManager;
-        $this->userRepository = $userRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->bbcodeParser = $bbcodeParser;
-        $this->shipRepository = $shipRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private Parser $bbcodeParser, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

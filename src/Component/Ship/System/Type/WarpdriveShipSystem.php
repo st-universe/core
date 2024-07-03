@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -16,23 +17,17 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private ShipUndockingInterface $shipUndocking;
-
-    public function __construct(
-        ShipStateChangerInterface $shipStateChanger,
-        ShipUndockingInterface $shipUndocking
-    ) {
-        $this->shipStateChanger = $shipStateChanger;
-        $this->shipUndocking = $shipUndocking;
+    public function __construct(private ShipStateChangerInterface $shipStateChanger, private ShipUndockingInterface $shipUndocking)
+    {
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }
 
+    #[Override]
     public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
@@ -65,6 +60,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         return true;
     }
 
+    #[Override]
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $ship = $wrapper->get();
@@ -79,6 +75,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         }
     }
 
+    #[Override]
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         $systemData = $wrapper->getWarpDriveSystemData();
@@ -89,6 +86,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $systemData->setWarpDrive(0)->update();
     }
 
+    #[Override]
     public function handleDamage(ShipWrapperInterface $wrapper): void
     {
         $systemData = $wrapper->getWarpDriveSystemData();

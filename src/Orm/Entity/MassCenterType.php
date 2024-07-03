@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -36,21 +37,25 @@ class MassCenterType implements MassCenterTypeInterface
     #[JoinColumn(name: 'first_field_type_id', referencedColumnName: 'id')]
     private MapFieldTypeInterface $firstFieldType;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function getSize(): int
     {
         return $this->size;
     }
 
+    #[Override]
     public function getFirstFieldType(): MapFieldTypeInterface
     {
         return $this->firstFieldType;

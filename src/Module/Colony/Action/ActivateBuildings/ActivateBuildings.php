@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ActivateBuildings;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
@@ -16,24 +17,13 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 
 final class ActivateBuildings implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MULTIPLE_ACTIVATION';
+    public const string ACTION_IDENTIFIER = 'B_MULTIPLE_ACTIVATION';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private BuildingActionInterface $buildingAction;
-
-    private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        BuildingActionInterface $buildingAction,
-        BuildingMassActionConfigurationInterface $buildingMassActionConfiguration
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->buildingAction = $buildingAction;
-        $this->buildingMassActionConfiguration = $buildingMassActionConfiguration;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction, private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
@@ -61,6 +51,7 @@ final class ActivateBuildings implements ActionControllerInterface
         $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_BUILDINGS);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

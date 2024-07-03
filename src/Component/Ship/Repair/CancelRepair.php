@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -13,28 +14,12 @@ use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class CancelRepair implements CancelRepairInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private RepairTaskRepositoryInterface $repairTaskRepository;
-
-    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
-
-    private StationShipRepairRepositoryInterface $stationShipRepairRepository;
-
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        RepairTaskRepositoryInterface $repairTaskRepository,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        StationShipRepairRepositoryInterface $stationShipRepairRepository
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->repairTaskRepository = $repairTaskRepository;
-        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
-        $this->stationShipRepairRepository = $stationShipRepairRepository;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private RepairTaskRepositoryInterface $repairTaskRepository, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private StationShipRepairRepositoryInterface $stationShipRepairRepository)
+    {
     }
 
 
+    #[Override]
     public function cancelRepair(ShipInterface $ship): bool
     {
         $state = $ship->getState();

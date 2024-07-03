@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Maintenance;
 
+use Override;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
@@ -21,50 +22,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class EndLotteryPeriod implements MaintenanceHandlerInterface
 {
-    private LotteryTicketRepositoryInterface $lotteryTicketRepository;
-
-    private TradePostRepositoryInterface $tradepostRepository;
-
-    private AwardRepositoryInterface $awardRepository;
-
-    private LotteryFacadeInterface $lotteryFacade;
-
-    private UserRepositoryInterface $userRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private CreateUserAwardInterface $createUserAward;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private StuTime $stuTime;
-
-    public function __construct(
-        LotteryTicketRepositoryInterface $lotteryTicketRepository,
-        TradePostRepositoryInterface $tradepostRepository,
-        AwardRepositoryInterface $awardRepository,
-        LotteryFacadeInterface $lotteryFacade,
-        UserRepositoryInterface $userRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        CreateUserAwardInterface $createUserAward,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        PrivateMessageSenderInterface $privateMessageSender,
-        StuTime $stuTime
-    ) {
-        $this->lotteryTicketRepository = $lotteryTicketRepository;
-        $this->tradepostRepository = $tradepostRepository;
-        $this->awardRepository = $awardRepository;
-        $this->lotteryFacade = $lotteryFacade;
-        $this->userRepository = $userRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->createUserAward = $createUserAward;
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->stuTime = $stuTime;
+    public function __construct(private LotteryTicketRepositoryInterface $lotteryTicketRepository, private TradePostRepositoryInterface $tradepostRepository, private AwardRepositoryInterface $awardRepository, private LotteryFacadeInterface $lotteryFacade, private UserRepositoryInterface $userRepository, private TradeLibFactoryInterface $tradeLibFactory, private CreateUserAwardInterface $createUserAward, private CreatePrestigeLogInterface $createPrestigeLog, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime)
+    {
     }
 
+    #[Override]
     public function handle(): void
     {
         $time = $this->stuTime->time();

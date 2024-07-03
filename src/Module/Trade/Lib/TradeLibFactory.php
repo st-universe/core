@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Override;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -15,30 +16,11 @@ use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 final class TradeLibFactory implements TradeLibFactoryInterface
 {
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeTransferRepositoryInterface $tradeTransferRepository;
-
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeTransferRepositoryInterface $tradeTransferRepository,
-        TradeOfferRepositoryInterface $tradeOfferRepository,
-        StorageRepositoryInterface $storageRepository,
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeTransferRepository = $tradeTransferRepository;
-        $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->storageRepository = $storageRepository;
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository, private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function createTradeAccountTal(
         TradePostInterface $tradePost,
         int $userId
@@ -53,6 +35,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createBasicTradeAccountTal(
         TradePostInterface $tradePost,
         array $basicTrades,
@@ -72,6 +55,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         );
     }
 
+    #[Override]
     public function createTradePostStorageManager(
         TradePostInterface $tradePost,
         UserInterface $user

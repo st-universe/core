@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -35,11 +36,13 @@ class PirateSetupBuildplan implements PirateSetupBuildplanInterface
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $buildplan;
 
+    #[Override]
     public function getBuildplan(): ShipBuildplanInterface
     {
         return $this->buildplan;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->amount;

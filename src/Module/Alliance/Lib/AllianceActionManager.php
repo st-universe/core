@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Component\Alliance\AllianceEnum;
@@ -20,34 +21,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
 {
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository,
-        ConfigInterface $config
-    ) {
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceRepository = $allianceRepository;
-        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
-        $this->config = $config;
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceRepositoryInterface $allianceRepository, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void
     {
         $obj = $this->allianceJobRepository->getSingleResultByAllianceAndType(
@@ -68,6 +46,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $this->allianceJobRepository->save($obj);
     }
 
+    #[Override]
     public function delete(int $allianceId, bool $sendMesage = true): void
     {
         $alliance = $this->allianceRepository->find($allianceId);
@@ -108,6 +87,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $this->allianceRepository->delete($alliance);
     }
 
+    #[Override]
     public function mayEdit(AllianceInterface $alliance, UserInterface $user): bool
     {
         $successor = $alliance->getSuccessor();
@@ -117,6 +97,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         ) || $user === $founder->getUser();
     }
 
+    #[Override]
     public function mayManageForeignRelations(AllianceInterface $alliance, UserInterface $user): bool
     {
         $diplomatic = $alliance->getDiplomatic();
@@ -128,6 +109,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         return true;
     }
 
+    #[Override]
     public function sendMessage(int $allianceId, string $text): void
     {
         /** @var AllianceJobInterface[] $jobList */
@@ -141,6 +123,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         }
     }
 
+    #[Override]
     public function mayEditFactionMode(AllianceInterface $alliance, int $factionId): bool
     {
         if ($alliance->getFaction() === null) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AcceptOffer;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -17,28 +18,13 @@ final class AcceptOffer implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
+    public const string ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
 
-    private AcceptOfferRequestInterface $acceptOfferRequest;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        AcceptOfferRequestInterface $acceptOfferRequest,
-        EntryCreatorInterface $entryCreator,
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->acceptOfferRequest = $acceptOfferRequest;
-        $this->entryCreator = $entryCreator;
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private AcceptOfferRequestInterface $acceptOfferRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -115,6 +101,7 @@ final class AcceptOffer implements ActionControllerInterface
         $game->addInformation(_('Das Angebot wurden angenommen'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

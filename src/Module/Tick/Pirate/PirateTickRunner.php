@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Pirate;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -18,34 +19,23 @@ use Throwable;
 final class PirateTickRunner implements TickRunnerInterface
 {
     /** @var int */
-    private const ATTEMPTS = 5;
+    private const int ATTEMPTS = 5;
 
-    private const TICK_DESCRIPTION = "piratetick";
-
-    private TransactionTickRunnerInterface $transactionTickRunner;
-
-    private PirateTickInterface $pirateTick;
-
-    private FailureEmailSenderInterface $failureEmailSender;
+    private const string TICK_DESCRIPTION = "piratetick";
 
     private PirateLoggerInterface $loggerUtil;
 
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        TransactionTickRunnerInterface $transactionTickRunner,
-        PirateTickInterface $pirateTick,
-        FailureEmailSenderInterface $failureEmailSender,
+        private TransactionTickRunnerInterface $transactionTickRunner,
+        private PirateTickInterface $pirateTick,
+        private FailureEmailSenderInterface $failureEmailSender,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager
     ) {
-        $this->transactionTickRunner = $transactionTickRunner;
-        $this->pirateTick = $pirateTick;
-        $this->failureEmailSender = $failureEmailSender;
         $this->loggerUtil = $loggerUtilFactory->getPirateLogger();
-        $this->entityManager = $entityManager;
     }
 
+    #[Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         if ($this->transactionTickRunner->isGameStateReset()) {

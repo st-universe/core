@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight;
 
+use Override;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -11,22 +12,14 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class PreFlightConditionsCheck implements PreFlightConditionsCheckInterface
 {
-    private LeaveFleetInterface $leaveFleet;
-
-    /** @var array<string, PreFlightConditionInterface>  */
-    private array $conditions;
-
     /**
      * @param array<string, PreFlightConditionInterface> $conditions
      */
-    public function __construct(
-        LeaveFleetInterface $leaveFleet,
-        array $conditions
-    ) {
-        $this->leaveFleet = $leaveFleet;
-        $this->conditions = $conditions;
+    public function __construct(private LeaveFleetInterface $leaveFleet, private array $conditions)
+    {
     }
 
+    #[Override]
     public function checkPreconditions(
         ShipWrapperInterface $leader,
         array $wrappers,

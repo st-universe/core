@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Award;
 use Stu\Orm\Entity\AwardInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\AwardInterface;
  */
 final class AwardRepository extends EntityRepository implements AwardRepositoryInterface
 {
+    #[Override]
     public function save(AwardInterface $award): void
     {
         $em = $this->getEntityManager();
@@ -20,6 +22,7 @@ final class AwardRepository extends EntityRepository implements AwardRepositoryI
         $em->persist($award);
     }
 
+    #[Override]
     public function delete(AwardInterface $award): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class AwardRepository extends EntityRepository implements AwardRepositoryI
         $em->flush();
     }
 
+    #[Override]
     public function prototype(): AwardInterface
     {
         return new Award();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 
+use Override;
 use JBBCode\Parser;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeUserName implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_NAME';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_NAME';
 
-    private ChangeUserNameRequestInterface $changeUserNameRequest;
-
-    private Parser $bbcodeParser;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        ChangeUserNameRequestInterface $changeUserNameRequest,
-        Parser $bbcodeParser,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->changeUserNameRequest = $changeUserNameRequest;
-        $this->bbcodeParser = $bbcodeParser;
-        $this->userRepository = $userRepository;
+    public function __construct(private ChangeUserNameRequestInterface $changeUserNameRequest, private Parser $bbcodeParser, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $text = $this->changeUserNameRequest->getName();
@@ -80,6 +70,7 @@ final class ChangeUserName implements ActionControllerInterface
         $game->addInformation(_('Dein Name wurde geändert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

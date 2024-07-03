@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
+use Override;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -15,30 +16,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class DatabaseUiFactory implements DatabaseUiFactoryInterface
 {
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        CommodityRepositoryInterface $commodityRepository,
-        ShipRepositoryInterface $shipRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        UserRepositoryInterface $userRepository,
-        TradePostRepositoryInterface $tradePostRepository
-    ) {
-        $this->commodityRepository = $commodityRepository;
-        $this->shipRepository = $shipRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private CommodityRepositoryInterface $commodityRepository, private ShipRepositoryInterface $shipRepository, private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private TradePostRepositoryInterface $tradePostRepository)
+    {
     }
 
+    #[Override]
     public function createStorageWrapper(
         int $commodityId,
         int $amount,
@@ -55,6 +37,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createDatabaseTopActivTradePost(
         array $item
     ): DatabaseTopActivTradePost {
@@ -64,6 +47,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createDatabaseTopListCrew(
         array $item
     ): DatabaseTopListCrew {
@@ -73,6 +57,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createDatabaseTopListWithPoints(
         int $userId,
         string $points,
@@ -86,6 +71,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createDatabaseTopListFlights(
         array $item
     ): DatabaseTopListFlights {
@@ -95,6 +81,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createDatabaseTopListWithColorGradient(
         int $userId,
         string $gradientColor

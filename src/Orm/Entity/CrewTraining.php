@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -38,37 +39,44 @@ class CrewTraining implements CrewTrainingInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getColonyId(): int
     {
         return $this->colony_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): CrewTrainingInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): CrewTrainingInterface
     {
         $this->colony = $colony;

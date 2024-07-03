@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\LatinumRanking;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,6 +24,7 @@ class LatinumRankingTest extends StuTestCase
 
     private LatinumRanking $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);

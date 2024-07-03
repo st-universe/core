@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,28 +18,13 @@ final class CancelOffer implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
+    public const string ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
-    private CancelOfferRequestInterface $cancelOfferRequest;
-
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        CancelOfferRequestInterface $cancelOfferRequest,
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->cancelOfferRequest = $cancelOfferRequest;
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -77,6 +63,7 @@ final class CancelOffer implements ActionControllerInterface
         $game->addInformation(_('Das Angebot wurde zurückgezogen'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

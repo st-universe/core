@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ManageOrbitalShuttles;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -25,40 +26,13 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManageOrbitalShuttles implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MANAGE_SHUTTLES';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_SHUTTLES';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ShipStorageManagerInterface $shipStorageManager,
-        CommodityRepositoryInterface $commodityRepository,
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->commodityRepository = $commodityRepository;
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private PrivateMessageSenderInterface $privateMessageSender, private ColonyStorageManagerInterface $colonyStorageManager, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private ShipLoaderInterface $shipLoader, private InteractionCheckerInterface $interactionChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
@@ -215,6 +189,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         ));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

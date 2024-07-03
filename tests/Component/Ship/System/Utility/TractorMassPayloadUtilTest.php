@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
@@ -40,6 +41,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     private TractorMassPayloadUtilInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //INJECTED

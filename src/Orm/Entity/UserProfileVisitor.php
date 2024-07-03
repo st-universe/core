@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -40,26 +41,31 @@ class UserProfileVisitor implements UserProfileVisitorInterface
     #[JoinColumn(name: 'recipient', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $opponent;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getProfileUserId(): int
     {
         return $this->recipient;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): UserProfileVisitorInterface
     {
         $this->date = $date;
@@ -67,22 +73,26 @@ class UserProfileVisitor implements UserProfileVisitorInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): UserProfileVisitorInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getProfileUser(): UserInterface
     {
         return $this->opponent;
     }
 
+    #[Override]
     public function setProfileUser(UserInterface $profileUser): UserProfileVisitorInterface
     {
         $this->opponent = $profileUser;

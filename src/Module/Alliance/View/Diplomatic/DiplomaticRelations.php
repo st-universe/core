@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Diplomatic;
 
+use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,28 +16,21 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 final class DiplomaticRelations implements ViewControllerInterface
 {
     /** @var int */
-    private const GRAPH_WIDTH = 800;
+    private const int GRAPH_WIDTH = 800;
 
     /** @var int */
-    private const GRAPH_HEIGHT = 700;
+    private const int GRAPH_HEIGHT = 700;
 
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
+    public const string VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
 
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceRelationRendererInterface $allianceRelationRenderer;
-
-    public function __construct(
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceRelationRendererInterface $allianceRelationRenderer
-    ) {
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceRelationRenderer = $allianceRelationRenderer;
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceRelationRendererInterface $allianceRelationRenderer)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle('Diplomatische Beziehungen');

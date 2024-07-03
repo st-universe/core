@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -28,6 +29,7 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
 
     private RpgPlotDeletionHandler $handler;
 
+    #[Override]
     public function setUp(): void
     {
         $this->rpgPlotMemberRepository = Mockery::mock(RpgPlotMemberRepositoryInterface::class);

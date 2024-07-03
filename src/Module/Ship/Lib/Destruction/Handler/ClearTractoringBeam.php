@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Destruction\Handler;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -21,6 +22,7 @@ class ClearTractoringBeam implements ShipDestructionHandlerInterface
     ) {
     }
 
+    #[Override]
     public function handleShipDestruction(
         ?ShipDestroyerInterface $destroyer,
         ShipWrapperInterface $destroyedShipWrapper,

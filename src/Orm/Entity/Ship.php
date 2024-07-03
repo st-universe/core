@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -252,6 +253,7 @@ class Ship implements ShipInterface
         $this->logbook = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         if ($this->id === null) {
@@ -261,69 +263,82 @@ class Ship implements ShipInterface
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUserName(): string
     {
         return $this->getUser()->getName();
     }
 
+    #[Override]
     public function getFleetId(): ?int
     {
         return $this->fleets_id;
     }
 
+    #[Override]
     public function setFleetId(?int $fleetId): ShipInterface
     {
         $this->fleets_id = $fleetId;
         return $this;
     }
 
+    #[Override]
     public function getSystemsId(): ?int
     {
         return $this->getSystem() !== null ? $this->getSystem()->getId() : null;
     }
 
+    #[Override]
     public function getLayer(): ?LayerInterface
     {
         return $this->getLocation()->getLayer();
     }
 
+    #[Override]
     public function getSx(): int
     {
         return $this->getStarsystemMap()->getSx();
     }
 
+    #[Override]
     public function getSy(): int
     {
         return $this->getStarsystemMap()->getSy();
     }
 
+    #[Override]
     public function getFlightDirection(): int
     {
         return $this->direction;
     }
 
+    #[Override]
     public function setFlightDirection(int $direction): ShipInterface
     {
         $this->direction = $direction;
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): ShipInterface
     {
         $this->name = $name;
         return $this;
     }
 
+    #[Override]
     public function getLSSmode(): int
     {
         return $this->lss_mode;
@@ -339,28 +354,33 @@ class Ship implements ShipInterface
         return $this->getLSSMode() === ShipLSSModeEnum::LSS_BORDER;
     }
 
+    #[Override]
     public function setLSSMode(int $lssMode): ShipInterface
     {
         $this->lss_mode = $lssMode;
         return $this;
     }
 
+    #[Override]
     public function getAlertState(): ShipAlertStateEnum
     {
         return $this->alvl;
     }
 
+    #[Override]
     public function setAlertState(ShipAlertStateEnum $state): ShipInterface
     {
         $this->alvl = $state;
         return $this;
     }
 
+    #[Override]
     public function setAlertStateGreen(): ShipInterface
     {
         return $this->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
     }
 
+    #[Override]
     public function isSystemHealthy(ShipSystemTypeEnum $type): bool
     {
         if (!$this->hasShipSystem($type)) {
@@ -370,6 +390,7 @@ class Ship implements ShipInterface
         return $this->getShipSystem($type)->getStatus() > 0;
     }
 
+    #[Override]
     public function getSystemState(ShipSystemTypeEnum $type): bool
     {
         if (!$this->hasShipSystem($type)) {
@@ -380,16 +401,19 @@ class Ship implements ShipInterface
             || $this->getShipSystem($type)->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON;
     }
 
+    #[Override]
     public function getImpulseState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
     }
 
+    #[Override]
     public function getWarpDriveState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
+    #[Override]
     public function isWarped(): bool
     {
         $tractoringShip = $this->getTractoringShip();
@@ -401,68 +425,81 @@ class Ship implements ShipInterface
         return $this->getWarpDriveState();
     }
 
+    #[Override]
     public function getWebState(): bool
     {
         return $this->getHoldingWeb() !== null;
     }
 
+    #[Override]
     public function getCloakState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_CLOAK);
     }
 
+    #[Override]
     public function getTachyonState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
     }
 
+    #[Override]
     public function getSubspaceState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
     }
 
+    #[Override]
     public function getAstroState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
     }
 
+    #[Override]
     public function getRPGModuleState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_RPG_MODULE);
     }
 
+    #[Override]
     public function getConstructionHubState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB);
     }
 
+    #[Override]
     public function getHull(): int
     {
         return $this->huelle;
     }
 
+    #[Override]
     public function setHuell(int $hull): ShipInterface
     {
         $this->huelle = $hull;
         return $this;
     }
 
+    #[Override]
     public function getMaxHull(): int
     {
         return $this->max_huelle;
     }
 
+    #[Override]
     public function setMaxHuell(int $maxHull): ShipInterface
     {
         $this->max_huelle = $maxHull;
         return $this;
     }
 
+    #[Override]
     public function getShield(): int
     {
         return $this->schilde;
     }
 
+    #[Override]
     public function setShield(int $schilde): ShipInterface
     {
         $this->schilde = $schilde;
@@ -472,6 +509,7 @@ class Ship implements ShipInterface
     /**
      * proportional to shield system status
      */
+    #[Override]
     public function getMaxShield(bool $isTheoretical = false): int
     {
         if ($isTheoretical || !$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
@@ -482,59 +520,70 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100));
     }
 
+    #[Override]
     public function setMaxShield(int $maxShields): ShipInterface
     {
         $this->max_schilde = $maxShields;
         return $this;
     }
 
+    #[Override]
     public function getHealthPercentage(): float
     {
         return ($this->getHull() + $this->getShield())
             / ($this->getMaxHull() + $this->getMaxShield(true)) * 100;
     }
 
+    #[Override]
     public function getShieldState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SHIELDS);
     }
 
+    #[Override]
     public function getNbs(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_NBS);
     }
 
+    #[Override]
     public function getLss(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_LSS);
     }
 
+    #[Override]
     public function getPhaserState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_PHASER);
     }
 
+    #[Override]
     public function isAlertGreen(): bool
     {
         return $this->getAlertState() === ShipAlertStateEnum::ALERT_GREEN;
     }
 
+    #[Override]
     public function getTorpedoState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_TORPEDO);
     }
 
+    #[Override]
     public function getFormerRumpId(): int
     {
         return $this->former_rumps_id;
     }
 
+    #[Override]
     public function setFormerRumpId(int $formerShipRumpId): ShipInterface
     {
         $this->former_rumps_id = $formerShipRumpId;
         return $this;
     }
 
+    #[Override]
     public function getTorpedoCount(): int
     {
         if ($this->getTorpedoStorage() === null) {
@@ -544,64 +593,76 @@ class Ship implements ShipInterface
         return $this->getTorpedoStorage()->getStorage()->getAmount();
     }
 
+    #[Override]
     public function isBase(): bool
     {
         return $this->type === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION;
     }
 
+    #[Override]
     public function isTrumfield(): bool
     {
         return $this->getRump()->isTrumfield();
     }
 
+    #[Override]
     public function isShuttle(): bool
     {
         return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE;
     }
 
+    #[Override]
     public function isConstruction(): bool
     {
         return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION;
     }
 
+    #[Override]
     public function getSpacecraftType(): SpacecraftTypeEnum
     {
         return $this->type;
     }
 
+    #[Override]
     public function setSpacecraftType(SpacecraftTypeEnum $type): ShipInterface
     {
         $this->type = $type;
         return $this;
     }
 
+    #[Override]
     public function getDatabaseId(): int
     {
         return $this->database_id;
     }
 
+    #[Override]
     public function setDatabaseId(int $databaseEntryId): ShipInterface
     {
         $this->database_id = $databaseEntryId;
         return $this;
     }
 
+    #[Override]
     public function isDestroyed(): bool
     {
         return $this->is_destroyed;
     }
 
+    #[Override]
     public function setIsDestroyed(bool $isDestroyed): ShipInterface
     {
         $this->is_destroyed = $isDestroyed;
         return $this;
     }
 
+    #[Override]
     public function isDisabled(): bool
     {
         return $this->disabled;
     }
 
+    #[Override]
     public function setDisabled(bool $isDisabled): ShipInterface
     {
         $this->disabled = $isDisabled;
@@ -613,6 +674,7 @@ class Ship implements ShipInterface
     /**
      * proportional to computer system status
      */
+    #[Override]
     public function getHitChance(): int
     {
         if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)) {
@@ -623,6 +685,7 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100));
     }
 
+    #[Override]
     public function setHitChance(int $hitChance): ShipInterface
     {
         $this->hit_chance = $hitChance;
@@ -632,6 +695,7 @@ class Ship implements ShipInterface
     /**
      * proportional to impulsedrive system status
      */
+    #[Override]
     public function getEvadeChance(): int
     {
         if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
@@ -642,6 +706,7 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100));
     }
 
+    #[Override]
     public function setEvadeChance(int $evadeChance): ShipInterface
     {
         $this->evade_chance = $evadeChance;
@@ -651,6 +716,7 @@ class Ship implements ShipInterface
     /**
      * proportional to energy weapon system status
      */
+    #[Override]
     public function getBaseDamage(): int
     {
         if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
@@ -661,6 +727,7 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100));
     }
 
+    #[Override]
     public function setBaseDamage(int $baseDamage): ShipInterface
     {
         $this->base_damage = $baseDamage;
@@ -670,6 +737,7 @@ class Ship implements ShipInterface
     /**
      * proportional to sensor system status
      */
+    #[Override]
     public function getSensorRange(): int
     {
         if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)) {
@@ -680,6 +748,7 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100));
     }
 
+    #[Override]
     public function setSensorRange(int $sensorRange): ShipInterface
     {
         $this->sensor_range = $sensorRange;
@@ -689,6 +758,7 @@ class Ship implements ShipInterface
     /**
      * proportional to tractor beam system status
      */
+    #[Override]
     public function getTractorPayload(): int
     {
         if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)) {
@@ -699,61 +769,72 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->getStatus() / 100));
     }
 
+    #[Override]
     public function getShieldRegenerationTimer(): int
     {
         return $this->shield_regeneration_timer;
     }
 
+    #[Override]
     public function setShieldRegenerationTimer(int $shieldRegenerationTimer): ShipInterface
     {
         $this->shield_regeneration_timer = $shieldRegenerationTimer;
         return $this;
     }
 
+    #[Override]
     public function getState(): ShipStateEnum
     {
         return $this->state;
     }
 
+    #[Override]
     public function setState(ShipStateEnum $state): ShipInterface
     {
         $this->state = $state;
         return $this;
     }
 
+    #[Override]
     public function getIsInEmergency(): bool
     {
         return $this->in_emergency;
     }
 
+    #[Override]
     public function setIsInEmergency(bool $inEmergency): ShipInterface
     {
         $this->in_emergency = $inEmergency;
         return $this;
     }
 
+    #[Override]
     public function isUnderRepair(): bool
     {
         return $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
             || $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE;
     }
 
+    #[Override]
     public function getIsFleetLeader(): bool
     {
         return $this->getFleet() !== null && $this->is_fleet_leader;
     }
 
+    #[Override]
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface
     {
         $this->is_fleet_leader = $isFleetLeader;
         return $this;
     }
 
+    #[Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crew;
     }
 
+    #[Override]
     public function getPosX(): int
     {
         $field = $this->getCurrentMapField();
@@ -765,6 +846,7 @@ class Ship implements ShipInterface
         return $field->getSx();
     }
 
+    #[Override]
     public function getPosY(): int
     {
         $field = $this->getCurrentMapField();
@@ -776,11 +858,13 @@ class Ship implements ShipInterface
         return $field->getSy();
     }
 
+    #[Override]
     public function getCrewCount(): int
     {
         return $this->getCrewAssignments()->count();
     }
 
+    #[Override]
     public function getNeededCrewCount(): int
     {
         $buildplan = $this->getBuildplan();
@@ -791,11 +875,13 @@ class Ship implements ShipInterface
         return $buildplan->getCrew();
     }
 
+    #[Override]
     public function getExcessCrewCount(): int
     {
         return $this->getCrewCount() - $this->getNeededCrewCount();
     }
 
+    #[Override]
     public function hasEnoughCrew(?GameControllerInterface $game = null): bool
     {
         $buildplan = $this->getBuildplan();
@@ -820,38 +906,45 @@ class Ship implements ShipInterface
         return $result;
     }
 
+    #[Override]
     public function getFleet(): ?FleetInterface
     {
         return $this->fleet;
     }
 
+    #[Override]
     public function setFleet(?FleetInterface $fleet): ShipInterface
     {
         $this->fleet = $fleet;
         return $this;
     }
 
+    #[Override]
     public function isFleetLeader(): bool
     {
         return $this->getIsFleetLeader();
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ShipInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getSystem(): ?StarSystemInterface
     {
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getSystem() : null;
     }
 
+    #[Override]
     public function getModules(): array
     {
         $modules = [];
@@ -881,56 +974,67 @@ class Ship implements ShipInterface
         return $modules;
     }
 
+    #[Override]
     public function isDeflectorHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
     }
 
+    #[Override]
     public function isTroopQuartersHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS);
     }
 
+    #[Override]
     public function isMatrixScannerHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER);
     }
 
+    #[Override]
     public function isTorpedoStorageHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE);
     }
 
+    #[Override]
     public function isShuttleRampHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
     }
 
+    #[Override]
     public function isWebEmitterHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB);
     }
 
+    #[Override]
     public function isWarpAble(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
+    #[Override]
     public function isTractoring(): bool
     {
         return $this->getTractoredShip() !== null;
     }
 
+    #[Override]
     public function isTractored(): bool
     {
         return $this->getTractoringShip() !== null;
     }
 
+    #[Override]
     public function isOverColony(): ?ColonyInterface
     {
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getColony() : null;
     }
 
+    #[Override]
     public function isOverSystem(): ?StarSystemInterface
     {
         if ($this->getSystem() !== null) {
@@ -940,16 +1044,19 @@ class Ship implements ShipInterface
         return $this->getMap()->getSystem();
     }
 
+    #[Override]
     public function isOverWormhole(): bool
     {
         return $this->getMap() !== null && $this->getMap()->getRandomWormholeEntry() !== null;
     }
 
+    #[Override]
     public function isWarpPossible(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->getSystem() === null;
     }
 
+    #[Override]
     public function getTorpedo(): ?TorpedoTypeInterface
     {
         if ($this->getTorpedoStorage() === null) {
@@ -959,32 +1066,38 @@ class Ship implements ShipInterface
         return $this->getTorpedoStorage()->getTorpedo();
     }
 
+    #[Override]
     public function getTorpedoStorage(): ?TorpedoStorageInterface
     {
         return $this->torpedoStorage;
     }
 
+    #[Override]
     public function setTorpedoStorage(?TorpedoStorageInterface $torpedoStorage): ShipInterface
     {
         $this->torpedoStorage = $torpedoStorage;
         return $this;
     }
 
+    #[Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
+    #[Override]
     public function getLogbook(): Collection
     {
         return $this->logbook;
     }
 
+    #[Override]
     public function getTakeoverActive(): ?ShipTakeoverInterface
     {
         return $this->takeoverActive;
     }
 
+    #[Override]
     public function setTakeoverActive(?ShipTakeoverInterface $takeover): ShipInterface
     {
         $this->takeoverActive = $takeover;
@@ -992,11 +1105,13 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    #[Override]
     public function getTakeoverPassive(): ?ShipTakeoverInterface
     {
         return $this->takeoverPassive;
     }
 
+    #[Override]
     public function setTakeoverPassive(?ShipTakeoverInterface $takeover): ShipInterface
     {
         $this->takeoverPassive = $takeover;
@@ -1004,6 +1119,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    #[Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -1013,11 +1129,13 @@ class Ship implements ShipInterface
         );
     }
 
+    #[Override]
     public function getMaxStorage(): int
     {
         return $this->getRump()->getStorage();
     }
 
+    #[Override]
     public function getBeamableStorage(): array
     {
         return array_filter(
@@ -1026,11 +1144,13 @@ class Ship implements ShipInterface
         );
     }
 
+    #[Override]
     public function getTradePost(): ?TradePostInterface
     {
         return $this->tradePost;
     }
 
+    #[Override]
     public function setTradePost(?TradePostInterface $tradePost): ShipInterface
     {
         $this->tradePost = $tradePost;
@@ -1038,11 +1158,13 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    #[Override]
     public function getMap(): ?MapInterface
     {
         return $this->map;
     }
 
+    #[Override]
     public function getMapRegion(): ?MapRegionInterface
     {
         $systemMap = $this->getStarsystemMap();
@@ -1058,6 +1180,7 @@ class Ship implements ShipInterface
         return $map->getMapRegion();
     }
 
+    #[Override]
     public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface
     {
         if ($location instanceof MapInterface) {
@@ -1080,6 +1203,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    #[Override]
     public function getStarsystemMap(): ?StarSystemMapInterface
     {
         return $this->starsystem_map;
@@ -1092,32 +1216,38 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    #[Override]
     public function getLocation(): Location
     {
         return new Location($this->getMap(), $this->getStarsystemMap());
     }
 
+    #[Override]
     public function getInfluenceArea(): ?StarSystemInterface
     {
         return $this->influenceArea;
     }
 
+    #[Override]
     public function setInfluenceArea(?StarSystemInterface $influenceArea): ShipInterface
     {
         $this->influenceArea = $influenceArea;
         return $this;
     }
 
+    #[Override]
     public function getBeamFactor(): int
     {
         return $this->getRump()->getBeamFactor();
     }
 
+    #[Override]
     public function getSectorString(): string
     {
         return $this->getCurrentMapField()->getSectorString();
     }
 
+    #[Override]
     public function getSectorId(): ?int
     {
         $layer = $this->getLayer();
@@ -1149,27 +1279,32 @@ class Ship implements ShipInterface
         return (int) ceil($cy / MapEnum::FIELDS_PER_SECTION);
     }
 
+    #[Override]
     public function getBuildplan(): ?ShipBuildplanInterface
     {
         return $this->buildplan;
     }
 
+    #[Override]
     public function setBuildplan(?ShipBuildplanInterface $shipBuildplan): ShipInterface
     {
         $this->buildplan = $shipBuildplan;
         return $this;
     }
 
+    #[Override]
     public function getSystems(): Collection
     {
         return $this->systems;
     }
 
+    #[Override]
     public function hasShipSystem(ShipSystemTypeEnum $type): bool
     {
         return $this->getSystems()->containsKey($type->value);
     }
 
+    #[Override]
     public function getShipSystem(ShipSystemTypeEnum $type): ShipSystemInterface
     {
         $system = $this->getSystems()->get($type->value);
@@ -1180,6 +1315,7 @@ class Ship implements ShipInterface
         return $system;
     }
 
+    #[Override]
     public function getHealthySystems(): array
     {
         $healthySystems = [];
@@ -1191,38 +1327,45 @@ class Ship implements ShipInterface
         return $healthySystems;
     }
 
+    #[Override]
     public function displayNbsActions(): bool
     {
         return !$this->getCloakState()
             && !$this->isWarped();
     }
 
+    #[Override]
     public function isTractorbeamPossible(): bool
     {
         return TractorBeamShipSystem::isTractorBeamPossible($this);
     }
 
+    #[Override]
     public function isBoardingPossible(): bool
     {
         return FightLib::isBoardingPossible($this);
     }
 
+    #[Override]
     public function isInterceptable(): bool
     {
         //TODO can tractored ships be intercepted?!
         return $this->getWarpDriveState();
     }
 
+    #[Override]
     public function dockedOnTradePost(): bool
     {
         return $this->getDockedTo() && $this->getDockedTo()->getTradePost() !== null;
     }
 
+    #[Override]
     public function getDockPrivileges(): Collection
     {
         return $this->dockingPrivileges;
     }
 
+    #[Override]
     public function getDockingSlotCount(): int
     {
         return ($this->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION)
@@ -1230,54 +1373,64 @@ class Ship implements ShipInterface
             ? 50 : $this->getRump()->getDockingSlots();
     }
 
+    #[Override]
     public function hasFreeDockingSlots(): bool
     {
         return $this->getDockingSlotCount() > $this->getDockedShipCount();
     }
 
+    #[Override]
     public function getFreeDockingSlotCount(): int
     {
         return $this->getDockingSlotCount() - $this->getDockedShipCount();
     }
 
+    #[Override]
     public function getDockedShipCount(): int
     {
         return $this->dockedShips->count();
     }
 
+    #[Override]
     public function getTractoredShip(): ?ShipInterface
     {
         return $this->tractoredShip;
     }
 
+    #[Override]
     public function setTractoredShip(?ShipInterface $ship): ShipInterface
     {
         $this->tractoredShip = $ship;
         return $this;
     }
 
+    #[Override]
     public function setTractoredShipId(?int $shipId): ShipInterface
     {
         $this->tractored_ship_id = $shipId;
         return $this;
     }
 
+    #[Override]
     public function getTractoringShip(): ?ShipInterface
     {
         return $this->tractoringShip;
     }
 
+    #[Override]
     public function setTractoringShip(?ShipInterface $ship): ShipInterface
     {
         $this->tractoringShip = $ship;
         return $this;
     }
 
+    #[Override]
     public function getHoldingWeb(): ?TholianWebInterface
     {
         return $this->holdingWeb;
     }
 
+    #[Override]
     public function setHoldingWeb(?TholianWebInterface $web): ShipInterface
     {
         $this->holdingWeb = $web;
@@ -1289,6 +1442,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    #[Override]
     public function getHoldingWebBackgroundStyle(): string
     {
         if ($this->getHoldingWeb() === null) {
@@ -1323,6 +1477,7 @@ class Ship implements ShipInterface
         return $icon;
     }
 
+    #[Override]
     public function getCurrentMapField(): StarSystemMapInterface|MapInterface
     {
         return $this->getStarsystemMap() ?? $this->getMap();
@@ -1333,100 +1488,119 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHIELDS) ? 10 : 0;
     }
 
+    #[Override]
     public function getShieldRegenerationRate(): int
     {
         return (int) ceil(($this->getMaxShield() / 100) * $this->getShieldRegenerationPercentage());
     }
 
+    #[Override]
     public function canIntercept(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)
             && !$this->isTractored() && !$this->isTractoring();
     }
 
+    #[Override]
     public function canMove(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)
             || $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
     }
 
+    #[Override]
     public function hasActiveWeapon(): bool
     {
         return $this->getPhaserState() || $this->getTorpedoState();
     }
 
+    #[Override]
     public function hasEscapePods(): bool
     {
         return $this->getRump()->isEscapePods() && $this->getCrewCount() > 0;
     }
 
+    #[Override]
     public function getRepairRate(): int
     {
         // @todo
         return 100;
     }
 
+    #[Override]
     public function getRump(): ShipRumpInterface
     {
         return $this->rump;
     }
 
+    #[Override]
     public function getRumpId(): int
     {
         return $this->getRump()->getId();
     }
 
+    #[Override]
     public function getRumpName(): string
     {
         return $this->getRump()->getName();
     }
 
+    #[Override]
     public function setRump(ShipRumpInterface $shipRump): ShipInterface
     {
         $this->rump = $shipRump;
         return $this;
     }
 
+    #[Override]
     public function hasPhaser(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER);
     }
 
+    #[Override]
     public function hasTorpedo(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO);
     }
 
+    #[Override]
     public function hasCloak(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK);
     }
 
+    #[Override]
     public function hasTachyonScanner(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
     }
 
+    #[Override]
     public function hasShuttleRamp(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
     }
 
+    #[Override]
     public function hasSubspaceScanner(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
     }
 
+    #[Override]
     public function hasAstroLaboratory(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
     }
 
+    #[Override]
     public function hasWarpdrive(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
+    #[Override]
     public function hasReactor(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE) ||
@@ -1434,26 +1608,31 @@ class Ship implements ShipInterface
             $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR);
     }
 
+    #[Override]
     public function hasRPGModule(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_RPG_MODULE);
     }
 
+    #[Override]
     public function hasNbsLss(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LSS);
     }
 
+    #[Override]
     public function hasUplink(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK);
     }
 
+    #[Override]
     public function hasTranswarp(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL);
     }
 
+    #[Override]
     public function getTranswarpCooldown(): ?int
     {
         $cooldown = $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->getCooldown();
@@ -1461,6 +1640,7 @@ class Ship implements ShipInterface
         return $cooldown > time() ? $cooldown : null;
     }
 
+    #[Override]
     public function getMaxTorpedos(): int
     {
         return $this->getRump()->getBaseTorpedoStorage()
@@ -1468,28 +1648,33 @@ class Ship implements ShipInterface
                 ? TorpedoStorageShipSystem::TORPEDO_CAPACITY : 0);
     }
 
+    #[Override]
     public function getDockedShips(): Collection
     {
         return $this->dockedShips;
     }
 
+    #[Override]
     public function getDockedTo(): ?ShipInterface
     {
         return $this->dockedTo;
     }
 
+    #[Override]
     public function setDockedTo(?ShipInterface $dockedTo): ShipInterface
     {
         $this->dockedTo = $dockedTo;
         return $this;
     }
 
+    #[Override]
     public function setDockedToId(?int $dockedToId): ShipInterface
     {
         $this->dock = $dockedToId;
         return $this;
     }
 
+    #[Override]
     public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil = null): bool
     {
         if ($loggerUtil !== null) {
@@ -1500,6 +1685,7 @@ class Ship implements ShipInterface
             && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
     }
 
+    #[Override]
     public function getStoredShuttles(): array
     {
         $shuttles = [];
@@ -1513,6 +1699,7 @@ class Ship implements ShipInterface
         return $shuttles;
     }
 
+    #[Override]
     public function getStoredShuttleCount(): int
     {
         $count = 0;
@@ -1529,6 +1716,7 @@ class Ship implements ShipInterface
     /**
      * @return CommodityInterface[]
      */
+    #[Override]
     public function getStoredBuoy(): array
     {
         $buoy = [];
@@ -1543,12 +1731,14 @@ class Ship implements ShipInterface
     }
 
 
+    #[Override]
     public function hasStoredBuoy(): bool
     {
         return $this->getStoredBuoy() !== [];
     }
 
 
+    #[Override]
     public function getDockedWorkbeeCount(): int
     {
         $count = 0;
@@ -1562,6 +1752,7 @@ class Ship implements ShipInterface
         return $count;
     }
 
+    #[Override]
     public function canMan(): bool
     {
         $buildplan = $this->getBuildplan();
@@ -1571,11 +1762,13 @@ class Ship implements ShipInterface
             && $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
     }
 
+    #[Override]
     public function canBuildConstruction(): bool
     {
         return StationUtility::canShipBuildConstruction($this);
     }
 
+    #[Override]
     public function hasCrewmanOfUser(int $userId): bool
     {
         foreach ($this->getCrewAssignments() as $shipCrew) {
@@ -1587,6 +1780,7 @@ class Ship implements ShipInterface
         return false;
     }
 
+    #[Override]
     public function __toString(): string
     {
         if ($this->id !== null) {
@@ -1596,6 +1790,7 @@ class Ship implements ShipInterface
         return $this->getName();
     }
 
+    #[Override]
     public function getHullColorStyle(): string
     {
         return $this->getColorStyle($this->getHull(), $this->getMaxHull());

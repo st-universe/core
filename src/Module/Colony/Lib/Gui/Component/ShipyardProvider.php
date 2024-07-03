@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use request;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\BuildableRumpListItemInterface;
@@ -13,22 +14,11 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShipyardProvider implements GuiComponentProviderInterface
 {
-    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        $this->buildingFunctionRepository = $buildingFunctionRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyLibFactoryInterface $colonyLibFactory)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

@@ -9,28 +9,8 @@ use Stu\Orm\Entity\ShipInterface;
 
 class TransferInformation
 {
-    private TransferTypeEnum $currentType;
-
-    private ColonyInterface|ShipInterface $from;
-
-    private ColonyInterface|ShipInterface $to;
-
-    private bool $isUnload;
-
-    private bool $isFriend;
-
-    public function __construct(
-        TransferTypeEnum $currentType,
-        ColonyInterface|ShipInterface $from,
-        ColonyInterface|ShipInterface $to,
-        bool $isUnload,
-        bool $isFriend
-    ) {
-        $this->currentType = $currentType;
-        $this->from = $from;
-        $this->to = $to;
-        $this->isUnload = $isUnload;
-        $this->isFriend = $isFriend;
+    public function __construct(private TransferTypeEnum $currentType, private ColonyInterface|ShipInterface $from, private ColonyInterface|ShipInterface $to, private bool $isUnload, private bool $isFriend)
+    {
     }
 
     public function isCommodityTransferPossible(bool $isOtherTypeRequired = true): bool

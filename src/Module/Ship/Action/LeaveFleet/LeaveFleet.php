@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\LeaveFleet;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -11,20 +12,13 @@ use Stu\Module\Ship\View\ShowInformation\ShowInformation;
 
 final class LeaveFleet implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_LEAVE_FLEET';
+    public const string ACTION_IDENTIFIER = 'B_LEAVE_FLEET';
 
-    private LeaveFleetRequestInterface $leaveFleetRequest;
-
-    private ShipLoaderInterface $shipLoader;
-
-    public function __construct(
-        LeaveFleetRequestInterface $leaveFleetRequest,
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->leaveFleetRequest = $leaveFleetRequest;
-        $this->shipLoader = $shipLoader;
+    public function __construct(private LeaveFleetRequestInterface $leaveFleetRequest, private ShipLoaderInterface $shipLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship = $this->shipLoader->getByIdAndUser($this->leaveFleetRequest->getShipId(), $game->getUser()->getId());
@@ -51,6 +45,7 @@ final class LeaveFleet implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

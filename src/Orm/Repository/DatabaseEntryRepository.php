@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseEntryInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\DatabaseEntryInterface;
  */
 final class DatabaseEntryRepository extends EntityRepository implements DatabaseEntryRepositoryInterface
 {
+    #[Override]
     public function getByCategoryId(int $categoryId): array
     {
         return $this->findBy([
@@ -20,6 +22,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         ]);
     }
 
+    #[Override]
     public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): ?DatabaseEntryInterface
     {
         return $this->findOneBy([
@@ -28,11 +31,13 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         ]);
     }
 
+    #[Override]
     public function prototype(): DatabaseEntryInterface
     {
         return new DatabaseEntry();
     }
 
+    #[Override]
     public function save(DatabaseEntryInterface $entry): void
     {
         $em = $this->getEntityManager();

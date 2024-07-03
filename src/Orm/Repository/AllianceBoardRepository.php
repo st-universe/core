@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\AllianceBoardInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\AllianceBoardInterface;
  */
 final class AllianceBoardRepository extends EntityRepository implements AllianceBoardRepositoryInterface
 {
+    #[Override]
     public function prototype(): AllianceBoardInterface
     {
         return new AllianceBoard();
     }
 
+    #[Override]
     public function save(AllianceBoardInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -25,6 +28,7 @@ final class AllianceBoardRepository extends EntityRepository implements Alliance
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(AllianceBoardInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -33,6 +37,7 @@ final class AllianceBoardRepository extends EntityRepository implements Alliance
         $em->flush();
     }
 
+    #[Override]
     public function getByAlliance(int $allianceId): array
     {
         return $this->findBy([
@@ -40,6 +45,7 @@ final class AllianceBoardRepository extends EntityRepository implements Alliance
         ]);
     }
 
+    #[Override]
     public function truncateAllAllianceBoards(): void
     {
         $this->getEntityManager()->createQuery(

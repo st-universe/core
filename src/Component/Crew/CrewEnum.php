@@ -9,52 +9,52 @@ final class CrewEnum
     /**
      * @var int
      */
-    public const CREW_TYPE_COMMAND = 1;
+    public const int CREW_TYPE_COMMAND = 1;
 
     /**
      * @var int
      */
-    public const CREW_TYPE_SECURITY = 2;
+    public const int CREW_TYPE_SECURITY = 2;
 
     /**
      * @var int
      */
-    public const CREW_TYPE_SCIENCE = 3;
+    public const int CREW_TYPE_SCIENCE = 3;
 
     /**
      * @var int
      */
-    public const CREW_TYPE_TECHNICAL = 4;
+    public const int CREW_TYPE_TECHNICAL = 4;
 
     /**
      * @var int
      */
-    public const CREW_TYPE_NAVIGATION = 5;
+    public const int CREW_TYPE_NAVIGATION = 5;
 
     /**
      * @var int
      */
-    public const CREW_TYPE_CREWMAN = 6;
+    public const int CREW_TYPE_CREWMAN = 6;
 
     /**
      * @var int
      */
-    public const CREW_TYPE_CAPTAIN = 7;
+    public const int CREW_TYPE_CAPTAIN = 7;
 
     /**
      * @var int
      */
-    public const CREW_GENDER_MALE = 1;
+    public const int CREW_GENDER_MALE = 1;
 
     /**
      * @var int
      */
-    public const CREW_GENDER_FEMALE = 2;
+    public const int CREW_GENDER_FEMALE = 2;
 
     /**
      * @var int[]
      */
-    public const CREW_ORDER = [
+    public const array CREW_ORDER = [
         CrewEnum::CREW_TYPE_CAPTAIN,
         CrewEnum::CREW_TYPE_COMMAND,
         CrewEnum::CREW_TYPE_SECURITY,
@@ -64,7 +64,7 @@ final class CrewEnum
         CrewEnum::CREW_TYPE_CREWMAN
     ];
 
-    public const CREW_FIGHT_CAPABILITIES = [
+    public const array CREW_FIGHT_CAPABILITIES = [
         CrewEnum::CREW_TYPE_CAPTAIN => 10,
         CrewEnum::CREW_TYPE_COMMAND => 8,
         CrewEnum::CREW_TYPE_SECURITY => 20,
@@ -76,23 +76,15 @@ final class CrewEnum
 
     public static function getDescription(?int $crewType): string
     {
-        switch ($crewType) {
-            case self::CREW_TYPE_CAPTAIN:
-                return _("Captain");
-            case self::CREW_TYPE_COMMAND:
-                return _("Commander");
-            case self::CREW_TYPE_SECURITY:
-                return _("Sicherheit");
-            case self::CREW_TYPE_SCIENCE:
-                return _("Wissenschaftler");
-            case self::CREW_TYPE_TECHNICAL:
-                return _("Ingenieur");
-            case self::CREW_TYPE_NAVIGATION:
-                return _("Navigator");
-            case self::CREW_TYPE_CREWMAN:
-                return _("Crewman");
-        }
-
-        return '';
+        return match ($crewType) {
+            self::CREW_TYPE_CAPTAIN => _("Captain"),
+            self::CREW_TYPE_COMMAND => _("Commander"),
+            self::CREW_TYPE_SECURITY => _("Sicherheit"),
+            self::CREW_TYPE_SCIENCE => _("Wissenschaftler"),
+            self::CREW_TYPE_TECHNICAL => _("Ingenieur"),
+            self::CREW_TYPE_NAVIGATION => _("Navigator"),
+            self::CREW_TYPE_CREWMAN => _("Crewman"),
+            default => '',
+        };
     }
 }

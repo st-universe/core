@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Contact;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\ContactInterface;
  */
 final class ContactRepository extends EntityRepository implements ContactRepositoryInterface
 {
+    #[Override]
     public function prototype(): ContactInterface
     {
         return new Contact();
     }
 
+    #[Override]
     public function save(ContactInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -26,6 +29,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(ContactInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         $em->flush();
     }
 
+    #[Override]
     public function getByUserAndOpponent(int $userId, int $opponentId): ?ContactInterface
     {
         return $this->findOneBy([
@@ -42,6 +47,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         ]);
     }
 
+    #[Override]
     public function getOrderedByUser(int $userId): array
     {
         return $this->findBy(
@@ -50,6 +56,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         );
     }
 
+    #[Override]
     public function getRemoteOrderedByUser(int $userId): array
     {
         return $this->findBy(
@@ -64,6 +71,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         );
     }
 
+    #[Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()->createQuery(
@@ -76,6 +84,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         ])->execute();
     }
 
+    #[Override]
     public function truncateByUserAndOpponent(int $userId, int $opponentId): void
     {
         $this->getEntityManager()->createQuery(
@@ -89,6 +98,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         ])->execute();
     }
 
+    #[Override]
     public function truncateAllContacts(): void
     {
         $this->getEntityManager()->createQuery(

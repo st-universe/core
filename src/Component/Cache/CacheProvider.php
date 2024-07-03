@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Cache;
 
+use Override;
 use Cache\Adapter\Redis\RedisCachePool;
 use Exception;
 use Psr\Cache\CacheItemPoolInterface;
@@ -10,14 +11,11 @@ use Stu\Module\Config\StuConfigInterface;
 
 final class CacheProvider implements CacheProviderInterface
 {
-    private StuConfigInterface $config;
-
-    public function __construct(
-        StuConfigInterface $config,
-    ) {
-        $this->config = $config;
+    public function __construct(private StuConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function getRedisCachePool(): CacheItemPoolInterface
     {
         $redis = new Redis();
@@ -27,7 +25,7 @@ final class CacheProvider implements CacheProviderInterface
         if ($cacheSettings->getRedisSocket() !== null) {
             try {
                 $redis->connect($cacheSettings->getRedisSocket());
-            } catch (Exception $e) {
+            } catch (Exception) {
                 $redis->connect(
                     $cacheSettings->getRedisHost(),
                     $cacheSettings->getRedisPort()

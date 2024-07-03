@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type;
 
+use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -26,7 +27,7 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 //TODO unit tests
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 {
-    public const MASS_CALCULATION_THRESHOLD = 33_333_333;
+    public const int MASS_CALCULATION_THRESHOLD = 33_333_333;
 
     public function __construct(
         private MapRepositoryInterface $mapRepository,
@@ -42,6 +43,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     ) {
     }
 
+    #[Override]
     public function checkForCreation(): void
     {
         $subspaceEllipses = [];
@@ -64,6 +66,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         }
     }
 
+    #[Override]
     public function handleShipTick(AnomalyInterface $anomaly): void
     {
         $location = $anomaly->getLocation();
@@ -140,6 +143,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         );
     }
 
+    #[Override]
     public function letAnomalyDisappear(AnomalyInterface $anomaly): void
     {
         //TODO

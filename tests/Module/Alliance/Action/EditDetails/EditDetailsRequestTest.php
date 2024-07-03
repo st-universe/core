@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditDetails;
 
+use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -11,11 +12,13 @@ class EditDetailsRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
+    #[Override]
     protected function getRequestClass(): string
     {
         return EditDetailsRequest::class;
     }
 
+    #[Override]
     public static function requestVarsDataProvider(): array
     {
         return [

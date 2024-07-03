@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
@@ -42,6 +43,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

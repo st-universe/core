@@ -4,31 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangePassword;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangePassword implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_PASSWORD';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_PASSWORD';
 
     /**
      * @todo Extract into a separate password validator
      */
-    public const PASSWORD_REGEX = '/[a-zA-Z0-9]{6,20}/';
+    public const string PASSWORD_REGEX = '/[a-zA-Z0-9]{6,20}/';
 
-    private ChangePasswordRequestInterface $changePasswordRequest;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        ChangePasswordRequestInterface $changePasswordRequest,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->changePasswordRequest = $changePasswordRequest;
-        $this->userRepository = $userRepository;
+    public function __construct(private ChangePasswordRequestInterface $changePasswordRequest, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -65,6 +59,7 @@ final class ChangePassword implements ActionControllerInterface
         $game->addInformation(_('Das Passwort wurde geändert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

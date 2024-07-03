@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
@@ -21,6 +22,7 @@ class FlightSignatureRepositoryTest extends StuTestCase
 
     private FlightSignatureRepository $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->entityManager = $this->mock(EntityManagerInterface::class);

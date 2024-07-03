@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\CheckInput;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuHashInterface;
@@ -12,34 +13,19 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CheckInput implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHECK_REGVAR';
-    public const REGISTER_STATE_OK = "OK";
-    public const REGISTER_STATE_NOK = "NA";
-    public const REGISTER_STATE_DUP = "DUP"; //duplication
-    public const REGISTER_STATE_UCP = "UCP"; //unknown country prefix
-    public const REGISTER_STATE_UPD = "UPD"; //unknown phone digits
-    public const REGISTER_STATE_BLK = "BLK"; //blocked
+    public const string ACTION_IDENTIFIER = 'B_CHECK_REGVAR';
+    public const string REGISTER_STATE_OK = "OK";
+    public const string REGISTER_STATE_NOK = "NA";
+    public const string REGISTER_STATE_DUP = "DUP"; //duplication
+    public const string REGISTER_STATE_UCP = "UCP"; //unknown country prefix
+    public const string REGISTER_STATE_UPD = "UPD"; //unknown phone digits
+    public const string REGISTER_STATE_BLK = "BLK";
 
-    private CheckInputRequestInterface $checkInputRequest;
-
-    private UserRepositoryInterface $userRepository;
-
-    private BlockedUserRepositoryInterface $blockedUserRepository;
-
-    private StuHashInterface $stuHash;
-
-    public function __construct(
-        CheckInputRequestInterface $checkInputRequest,
-        UserRepositoryInterface $userRepository,
-        BlockedUserRepositoryInterface $blockedUserRepository,
-        StuHashInterface $stuHash
-    ) {
-        $this->checkInputRequest = $checkInputRequest;
-        $this->userRepository = $userRepository;
-        $this->blockedUserRepository = $blockedUserRepository;
-        $this->stuHash = $stuHash;
+    public function __construct(private CheckInputRequestInterface $checkInputRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $var = $this->checkInputRequest->getVariable();
@@ -113,6 +99,7 @@ final class CheckInput implements ActionControllerInterface
         return (bool) preg_match('/00..[1-9][0-9]/', $mobile);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

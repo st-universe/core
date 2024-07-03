@@ -6,21 +6,13 @@ namespace Stu\Module\Database\Lib;
 
 final class GraphInfo
 {
-    public string $title;
-
-    /** @var PlotInfo[] */
-    private array $plotInfos;
-
-    public bool $yAxisStartAtZero;
-
     public function __construct(
-        string $title,
-        array $plotInfos,
-        bool $yAxisStartAtZero = false
-    ) {
-        $this->title = $title;
-        $this->plotInfos = $plotInfos;
-        $this->yAxisStartAtZero = $yAxisStartAtZero;
+        public string $title,
+        /** @var PlotInfo[] */
+        private array $plotInfos,
+        public bool $yAxisStartAtZero = false
+    )
+    {
     }
 
     /**

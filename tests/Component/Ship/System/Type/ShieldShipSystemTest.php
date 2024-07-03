@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -28,6 +29,7 @@ class ShieldShipSystemTest extends StuTestCase
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;
 
+    #[Override]
     public function setUp(): void
     {
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);

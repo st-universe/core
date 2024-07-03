@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ColonyDefending;
 
+use Override;
 use request;
 
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,28 +18,13 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class StartDefending implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_DEFENDING';
+    public const string ACTION_IDENTIFIER = 'B_START_DEFENDING';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ColonyRepositoryInterface $colonyRepository,
-        FleetRepositoryInterface $fleetRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->colonyRepository = $colonyRepository;
-        $this->fleetRepository = $fleetRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private FleetRepositoryInterface $fleetRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -95,6 +81,7 @@ final class StartDefending implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

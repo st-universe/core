@@ -2,18 +2,16 @@
 
 namespace Stu\Module\Maintenance;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 
 final class DatabaseBackup implements MaintenanceHandlerInterface
 {
-    private ConfigInterface $config;
-
-    public function __construct(
-        ConfigInterface $config
-    ) {
-        $this->config = $config;
+    public function __construct(private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(): void
     {
         $this->cleanup();

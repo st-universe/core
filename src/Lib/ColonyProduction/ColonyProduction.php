@@ -6,20 +6,10 @@ use Stu\Orm\Entity\CommodityInterface;
 
 class ColonyProduction
 {
-    private CommodityInterface $commodity;
-    private int $production;
-    private ?int $pc = null;
-
     private int $preview = 0;
 
-    public function __construct(
-        CommodityInterface $commodity,
-        int $production,
-        ?int $pc
-    ) {
-        $this->commodity = $commodity;
-        $this->production = $production;
-        $this->pc = $pc;
+    public function __construct(private CommodityInterface $commodity, private int $production, private ?int $pc)
+    {
     }
 
     public function getCommodityId(): int

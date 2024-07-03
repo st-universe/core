@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -45,16 +46,19 @@ class Crew implements CrewInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(int $type): CrewInterface
     {
         $this->type = $type;
@@ -62,11 +66,13 @@ class Crew implements CrewInterface
         return $this;
     }
 
+    #[Override]
     public function getGender(): int
     {
         return $this->gender;
     }
 
+    #[Override]
     public function setGender(int $gender): CrewInterface
     {
         $this->gender = $gender;
@@ -74,11 +80,13 @@ class Crew implements CrewInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): CrewInterface
     {
         $this->name = $name;
@@ -91,11 +99,13 @@ class Crew implements CrewInterface
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): CrewInterface
     {
         $this->user = $user;
@@ -103,11 +113,13 @@ class Crew implements CrewInterface
         return $this;
     }
 
+    #[Override]
     public function getRaceId(): int
     {
         return $this->race_id;
     }
 
+    #[Override]
     public function setRaceId(int $raceId): CrewInterface
     {
         $this->race_id = $raceId;
@@ -115,6 +127,7 @@ class Crew implements CrewInterface
         return $this;
     }
 
+    #[Override]
     public function getGenderShort(): string
     {
         if ($this->getGender() == CrewEnum::CREW_GENDER_MALE) {
@@ -123,16 +136,19 @@ class Crew implements CrewInterface
         return 'w';
     }
 
+    #[Override]
     public function getTypeDescription(): string
     {
         return CrewEnum::getDescription($this->getType());
     }
 
+    #[Override]
     public function getRace(): CrewRaceInterface
     {
         return $this->race;
     }
 
+    #[Override]
     public function setRace(CrewRaceInterface $crewRace): CrewInterface
     {
         $this->race = $crewRace;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\Action\DeleteNotes;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,17 +14,13 @@ use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class DeleteNotes implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DELETE_NOTES';
+    public const string ACTION_IDENTIFIER = 'B_DELETE_NOTES';
 
-
-    private NoteRepositoryInterface $noteRepository;
-
-    public function __construct(
-        NoteRepositoryInterface $noteRepository
-    ) {
-        $this->noteRepository = $noteRepository;
+    public function __construct(private NoteRepositoryInterface $noteRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $delnotesString = request::indString('delnotes');
@@ -52,6 +49,7 @@ final class DeleteNotes implements ActionControllerInterface
         $game->addInformation(_('Die ausgewählten Notizen wurden gelöscht'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

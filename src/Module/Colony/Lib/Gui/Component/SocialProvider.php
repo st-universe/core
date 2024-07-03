@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -10,22 +11,11 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class SocialProvider implements GuiComponentProviderInterface
 {
-    private CrewCountRetrieverInterface $crewCountRetriever;
-
-    private CrewLimitCalculatorInterface $crewLimitCalculator;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        CrewLimitCalculatorInterface $crewLimitCalculator,
-        CrewCountRetrieverInterface $crewCountRetriever,
-        ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        $this->crewCountRetriever = $crewCountRetriever;
-        $this->crewLimitCalculator = $crewLimitCalculator;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever, private ColonyLibFactoryInterface $colonyLibFactory)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

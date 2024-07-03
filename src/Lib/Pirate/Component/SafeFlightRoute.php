@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -16,6 +17,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
     ) {
     }
 
+    #[Override]
     public function getSafeFlightRoute(
         ShipInterface $ship,
         callable $coordinateCallable

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPost;
 
+use Override;
 use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
@@ -22,48 +23,13 @@ use Stu\Orm\Entity\KnPostInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_WRITE_KN';
+    public const string ACTION_IDENTIFIER = 'B_WRITE_KN';
 
-    private AddKnPostRequestInterface $addKnPostRequest;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private NewKnPostNotificatorInterface $newKnPostNotificator;
-
-    private KnCharactersRepositoryInterface $knCharactersRepository;
-
-    private UserCharactersRepositoryInterface $userCharactersRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        AddKnPostRequestInterface $addKnPostRequest,
-        KnPostRepositoryInterface $knPostRepository,
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        UserRepositoryInterface $userRepository,
-        NewKnPostNotificatorInterface $newKnPostNotificator,
-        KnCharactersRepositoryInterface $knCharactersRepository,
-        UserCharactersRepositoryInterface $userCharactersRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->addKnPostRequest = $addKnPostRequest;
-        $this->knPostRepository = $knPostRepository;
-        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->userRepository = $userRepository;
-        $this->newKnPostNotificator = $newKnPostNotificator;
-        $this->knCharactersRepository = $knCharactersRepository;
-        $this->userCharactersRepository = $userCharactersRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private AddKnPostRequestInterface $addKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private UserRepositoryInterface $userRepository, private NewKnPostNotificatorInterface $newKnPostNotificator, private KnCharactersRepositoryInterface $knCharactersRepository, private UserCharactersRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -199,6 +165,7 @@ final class AddKnPost implements ActionControllerInterface
 
 
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

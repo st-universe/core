@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\View\NPCLog;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class NPCLog implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_NPC_LOG';
+    public const string VIEW_IDENTIFIER = 'SHOW_NPC_LOG';
 
-    private NPCLogRepositoryInterface $npclogRepository;
-
-    public function __construct(
-        NPCLogRepositoryInterface $npclogRepository
-    ) {
-        $this->npclogRepository = $npclogRepository;
+    public function __construct(private NPCLogRepositoryInterface $npclogRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

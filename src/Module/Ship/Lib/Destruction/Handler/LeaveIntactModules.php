@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Destruction\Handler;
 
+use Override;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -16,6 +17,7 @@ class LeaveIntactModules implements ShipDestructionHandlerInterface
     ) {
     }
 
+    #[Override]
     public function handleShipDestruction(
         ?ShipDestroyerInterface $destroyer,
         ShipWrapperInterface $destroyedShipWrapper,

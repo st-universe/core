@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\PirateProtection;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,23 +14,13 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
 final class PirateProtection implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_PIRATE_PROTECTION';
+    public const string ACTION_IDENTIFIER = 'B_PIRATE_PROTECTION';
 
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-    private PirateWrathManagerInterface $pirateWrathManager;
-
-    private PirateProtectionRequestInterface $pirateProtectionRequest;
-
-    public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        PirateWrathManagerInterface $pirateWrathManager,
-        PirateProtectionRequestInterface $pirateProtectionRequest
-    ) {
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->pirateWrathManager = $pirateWrathManager;
-        $this->pirateProtectionRequest = $pirateProtectionRequest;
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PirateWrathManagerInterface $pirateWrathManager, private PirateProtectionRequestInterface $pirateProtectionRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -61,6 +52,7 @@ final class PirateProtection implements ActionControllerInterface
         $this->pirateWrathManager->setProtectionTimeoutFromPrestige($user, $prestige, $game);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -34,6 +35,7 @@ class BeamUtilTest extends StuTestCase
 
     private InformationWrapper $informations;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipStorageManager = $this->mock(ShipStorageManagerInterface::class);

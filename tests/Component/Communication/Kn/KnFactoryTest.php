@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
+use Override;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -28,6 +29,7 @@ class KnFactoryTest extends StuTestCase
      */
     private KnFactoryInterface $factory;
 
+    #[Override]
     public function setUp(): void
     {
         $this->bbcodeParser = $this->mock(Parser::class);

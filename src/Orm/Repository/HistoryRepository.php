@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\History;
@@ -15,6 +16,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
  */
 final class HistoryRepository extends EntityRepository implements HistoryRepositoryInterface
 {
+    #[Override]
     public function getRecent(): array
     {
         return $this->findBy(
@@ -24,6 +26,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         );
     }
 
+    #[Override]
     public function getRecentWithoutPirate(): array
     {
         return $this->getEntityManager()
@@ -42,6 +45,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
 
+    #[Override]
     public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array
     {
         $searchCriteria = $search ? 'AND UPPER(h.text) like UPPER(:search)' : '';
@@ -66,6 +70,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             ->getResult();
     }
 
+    #[Override]
     public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit, $search): array
     {
         $searchCriteria = $search ? 'AND UPPER(h.text) like UPPER(:search)' : '';
@@ -93,6 +98,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             ->getResult();
     }
 
+    #[Override]
     public function getSumDestroyedByUser(int $source_user, int $target_user): int
     {
         return (int) $this->getEntityManager()
@@ -113,6 +119,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
 
+    #[Override]
     public function getAmountByType(int $typeId): int
     {
         return $this->count([
@@ -120,11 +127,13 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         ]);
     }
 
+    #[Override]
     public function prototype(): HistoryInterface
     {
         return new History();
     }
 
+    #[Override]
     public function save(HistoryInterface $history): void
     {
         $em = $this->getEntityManager();
@@ -132,6 +141,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         $em->persist($history);
     }
 
+    #[Override]
     public function delete(HistoryInterface $history): void
     {
         $em = $this->getEntityManager();
@@ -139,6 +149,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         $em->remove($history);
     }
 
+    #[Override]
     public function truncateAllEntities(): void
     {
         $this->getEntityManager()->createQuery(

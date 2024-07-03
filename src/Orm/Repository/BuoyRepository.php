@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Buoy;
 use Stu\Orm\Entity\BuoyInterface;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\BuoyInterface;
  */
 final class BuoyRepository extends EntityRepository implements BuoyRepositoryInterface
 {
+    #[Override]
     public function prototype(): BuoyInterface
     {
         return new Buoy();
     }
 
+    #[Override]
     public function save(BuoyInterface $buoy): void
     {
         $em = $this->getEntityManager();
@@ -26,6 +29,7 @@ final class BuoyRepository extends EntityRepository implements BuoyRepositoryInt
         $em->persist($buoy);
     }
 
+    #[Override]
     public function delete(BuoyInterface $buoy): void
     {
         $em = $this->getEntityManager();
@@ -33,6 +37,7 @@ final class BuoyRepository extends EntityRepository implements BuoyRepositoryInt
         $em->remove($buoy);
     }
 
+    #[Override]
     public function findByUserId(int $userId): array
     {
         return $this->findBy(['user_id' => $userId]);

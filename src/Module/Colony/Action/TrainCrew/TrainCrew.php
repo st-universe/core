@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\TrainCrew;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -18,36 +19,13 @@ use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class TrainCrew implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TRAIN_CREW';
+    public const string ACTION_IDENTIFIER = 'B_TRAIN_CREW';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private CrewTrainingRepositoryInterface $crewTrainingRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private CrewCountRetrieverInterface $crewCountRetriever;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        ColonyLoaderInterface $colonyLoader,
-        CrewTrainingRepositoryInterface $crewTrainingRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        CrewCountRetrieverInterface $crewCountRetriever
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->crewTrainingRepository = $crewTrainingRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->crewCountRetriever = $crewCountRetriever;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ColonyLoaderInterface $colonyLoader, private CrewTrainingRepositoryInterface $crewTrainingRepository, private ColonyRepositoryInterface $colonyRepository, private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -118,6 +96,7 @@ final class TrainCrew implements ActionControllerInterface
         $game->addInformationf(_('Es werden %d Crew auf dieser Kolonie ausgebildet'), $count);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

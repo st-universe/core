@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemPriorities;
@@ -17,6 +18,7 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 {
     protected ShipInterface $ship;
 
+    #[Override]
     public function setShip(ShipInterface $ship): void
     {
         $this->ship = $ship;
@@ -36,31 +38,37 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 
     abstract public function getSystemType(): ShipSystemTypeEnum;
 
+    #[Override]
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
+    #[Override]
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
+    #[Override]
     public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         return true;
     }
 
+    #[Override]
     public function checkDeactivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         return true;
     }
 
+    #[Override]
     public function getEnergyUsageForActivation(): int
     {
         return 1;
     }
 
+    #[Override]
     public function getPriority(): int
     {
         if (array_key_exists($this->getSystemType()->value, ShipSystemPriorities::PRIORITIES)) {
@@ -70,26 +78,31 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         return ShipSystemPriorities::PRIORITY_STANDARD;
     }
 
+    #[Override]
     public function getEnergyConsumption(): int
     {
         return 1;
     }
 
+    #[Override]
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         //nothing to do here
     }
 
+    #[Override]
     public function handleDamage(ShipWrapperInterface $wrapper): void
     {
         //nothing to do here
     }
 
+    #[Override]
     public function getDefaultMode(): int
     {
         return ShipSystemModeEnum::MODE_OFF;
     }
 
+    #[Override]
     public function getCooldownSeconds(): ?int
     {
         return null;

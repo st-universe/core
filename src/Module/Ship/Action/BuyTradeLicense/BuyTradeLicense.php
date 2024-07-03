@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
+use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
@@ -29,48 +30,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class BuyTradeLicense implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_PAY_TRADELICENSE';
+    public const string ACTION_IDENTIFIER = 'B_PAY_TRADELICENSE';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        InteractionCheckerInterface $interactionChecker
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeCreateLicenseRepository = $tradeCreateLicenseRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->shipRepository = $shipRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->interactionChecker = $interactionChecker;
+    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private ShipStorageManagerInterface $shipStorageManager, private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private InteractionCheckerInterface $interactionChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTradeMenu::VIEW_IDENTIFIER);
@@ -223,6 +189,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $this->tradeLicenseRepository->save($license);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

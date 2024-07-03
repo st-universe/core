@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use request;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
@@ -15,18 +16,11 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class CommunicationProvider implements ViewComponentProviderInterface
 {
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private KnFactoryInterface $knFactory;
-
-    public function __construct(
-        KnPostRepositoryInterface $knPostRepository,
-        KnFactoryInterface $knFactory
-    ) {
-        $this->knPostRepository = $knPostRepository;
-        $this->knFactory = $knFactory;
+    public function __construct(private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

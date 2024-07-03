@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -33,6 +34,7 @@ class DeflectorConsequenceTest extends StuTestCase
     /** @var MockInterface&FlightRouteInterface */
     private MockInterface $flightRoute;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->applyFieldDamage = $this->mock(ApplyFieldDamageInterface::class);

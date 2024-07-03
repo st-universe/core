@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -47,6 +48,7 @@ class ShipLoaderTest extends StuTestCase
     private int $shipId = 5;
     private int $userId = 42;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

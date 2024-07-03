@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -68,109 +69,129 @@ class FlightSignature implements FlightSignatureInterface
     #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?StarSystemMapInterface $starsystem_map = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setUserId(int $userId): FlightSignatureInterface
     {
         $this->user_id = $userId;
         return $this;
     }
 
+    #[Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
+    #[Override]
     public function setShipId(int $shipId): FlightSignatureInterface
     {
         $this->ship_id = $shipId;
         return $this;
     }
 
+    #[Override]
     public function getShipName(): string
     {
         return $this->ship_name;
     }
 
+    #[Override]
     public function setShipName(string $name): FlightSignatureInterface
     {
         $this->ship_name = $name;
         return $this;
     }
 
+    #[Override]
     public function isCloaked(): bool
     {
         return $this->is_cloaked;
     }
 
+    #[Override]
     public function setIsCloaked(bool $isCloaked): FlightSignatureInterface
     {
         $this->is_cloaked = $isCloaked;
         return $this;
     }
 
+    #[Override]
     public function getRump(): ShipRumpInterface
     {
         return $this->rump;
     }
 
+    #[Override]
     public function setRump(ShipRumpInterface $shipRump): FlightSignatureInterface
     {
         $this->rump = $shipRump;
         return $this;
     }
 
+    #[Override]
     public function getTime(): int
     {
         return $this->time;
     }
+    #[Override]
     public function setTime(int $time): FlightSignatureInterface
     {
         $this->time = $time;
         return $this;
     }
 
+    #[Override]
     public function getMap(): ?MapInterface
     {
         return $this->map;
     }
 
+    #[Override]
     public function setMap(?MapInterface $map): FlightSignatureInterface
     {
         $this->map = $map;
         return $this;
     }
 
+    #[Override]
     public function getStarsystemMap(): ?StarSystemMapInterface
     {
         return $this->starsystem_map;
     }
 
+    #[Override]
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): FlightSignatureInterface
     {
         $this->starsystem_map = $starsystem_map;
         return $this;
     }
 
+    #[Override]
     public function getFromDirection(): int
     {
         return $this->from_direction;
     }
 
+    #[Override]
     public function setFromDirection(int $direction): FlightSignatureInterface
     {
         $this->from_direction = $direction;
         return $this;
     }
 
+    #[Override]
     public function getToDirection(): int
     {
         return $this->to_direction;
     }
 
+    #[Override]
     public function setToDirection(int $direction): FlightSignatureInterface
     {
         $this->to_direction = $direction;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowPartnerSites;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
@@ -17,6 +18,7 @@ class ShowPartnerSitesTest extends StuTestCase
 
     private ShowPartnerSites $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -37,16 +38,19 @@ class History implements HistoryInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $target_user_id = 0;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): HistoryInterface
     {
         $this->text = $text;
@@ -54,11 +58,13 @@ class History implements HistoryInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): HistoryInterface
     {
         $this->date = $date;
@@ -66,11 +72,13 @@ class History implements HistoryInterface
         return $this;
     }
 
+    #[Override]
     public function getType(): HistoryTypeEnum
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(HistoryTypeEnum $type): HistoryInterface
     {
         $this->type = $type;
@@ -78,11 +86,13 @@ class History implements HistoryInterface
         return $this;
     }
 
+    #[Override]
     public function getSourceUserId(): ?int
     {
         return $this->source_user_id;
     }
 
+    #[Override]
     public function setSourceUserId(int $sourceuserId): HistoryInterface
     {
         $this->source_user_id = $sourceuserId;
@@ -90,11 +100,13 @@ class History implements HistoryInterface
         return $this;
     }
 
+    #[Override]
     public function getTargetUserId(): ?int
     {
         return $this->target_user_id;
     }
 
+    #[Override]
     public function setTargetUserId(int $targetuserId): HistoryInterface
     {
         $this->target_user_id = $targetuserId;

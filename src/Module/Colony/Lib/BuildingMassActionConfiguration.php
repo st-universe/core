@@ -4,27 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class BuildingMassActionConfiguration implements BuildingMassActionConfigurationInterface
 {
-    public const CONFIGURATION_EPS = 1;
-    public const CONFIGURATION_SELECTION = 2;
-    public const CONFIGURATION_EPS_PRODUCER = 3;
-    public const CONFIGURATION_INDUSTRY = 4;
-    public const CONFIGURATION_RESIDENTIALS = 5;
-    public const CONFIGURATION_COMMODITY_CONSUMER = 6;
-    public const CONFIGURATION_COMMODITY_PRODUCER = 7;
+    public const int CONFIGURATION_EPS = 1;
+    public const int CONFIGURATION_SELECTION = 2;
+    public const int CONFIGURATION_EPS_PRODUCER = 3;
+    public const int CONFIGURATION_INDUSTRY = 4;
+    public const int CONFIGURATION_RESIDENTIALS = 5;
+    public const int CONFIGURATION_COMMODITY_CONSUMER = 6;
+    public const int CONFIGURATION_COMMODITY_PRODUCER = 7;
 
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository
-    ) {
-        $this->planetFieldRepository = $planetFieldRepository;
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository)
+    {
     }
 
+    #[Override]
     public function getConfigurations(): array
     {
         return [

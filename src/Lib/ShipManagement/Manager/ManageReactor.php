@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use RuntimeException;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
@@ -14,18 +15,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 class ManageReactor implements ManagerInterface
 {
-    private ReactorUtilInterface $reactorUtil;
-
-    private CommodityCacheInterface $commodityCache;
-
-    public function __construct(
-        ReactorUtilInterface $reactorUtil,
-        CommodityCacheInterface $commodityCache
-    ) {
-        $this->reactorUtil = $reactorUtil;
-        $this->commodityCache = $commodityCache;
+    public function __construct(private ReactorUtilInterface $reactorUtil, private CommodityCacheInterface $commodityCache)
+    {
     }
 
+    #[Override]
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $values = $values['reactor'] ?? null;

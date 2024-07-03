@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class PrivateMessageFolderRepository extends EntityRepository implements PrivateMessageFolderRepositoryInterface
 {
+    #[Override]
     public function prototype(): PrivateMessageFolderInterface
     {
         return new PrivateMessageFolder();
     }
 
+    #[Override]
     public function save(PrivateMessageFolderInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -29,6 +32,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         $em->flush();
     }
 
+    #[Override]
     public function delete(PrivateMessageFolderInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -37,6 +41,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         $em->flush();
     }
 
+    #[Override]
     public function getOrderedByUser(int $userId): array
     {
         return $this->findBy(
@@ -45,6 +50,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         );
     }
 
+    #[Override]
     public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolderInterface
     {
         return $this->findOneBy([
@@ -53,6 +59,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         ]);
     }
 
+    #[Override]
     public function getMaxOrderIdByUser(UserInterface $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -65,6 +72,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         ])->getSingleScalarResult();
     }
 
+    #[Override]
     public function truncateAllNonNpcFolders(): void
     {
         $this->getEntityManager()->createQuery(

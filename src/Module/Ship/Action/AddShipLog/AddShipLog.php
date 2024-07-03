@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AddShipLog;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\ShipLogRepositoryInterface;
 
 final class AddShipLog implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ADD_SHIP_LOG';
+    public const string ACTION_IDENTIFIER = 'B_ADD_SHIP_LOG';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipLogRepositoryInterface $shipLogRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipLogRepositoryInterface $shipLogRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipLogRepository = $shipLogRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipLogRepositoryInterface $shipLogRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -53,6 +47,7 @@ final class AddShipLog implements ActionControllerInterface
         $game->addInformation('Logbucheintrag wurde hinzugefügt');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

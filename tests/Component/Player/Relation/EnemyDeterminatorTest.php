@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Relation;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Orm\Entity\AllianceInterface;
@@ -30,6 +31,7 @@ class EnemyDeterminatorTest extends StuTestCase
     /** @var MockInterface&UserInterface */
     private MockInterface $opponent;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->allianceRelationRepository = $this->mock(AllianceRelationRepositoryInterface::class);

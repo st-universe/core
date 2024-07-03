@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowColonization;
 
+use Override;
 use request;
 
 use Stu\Component\Player\ColonizationCheckerInterface;
@@ -16,28 +17,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonization implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONIZATION';
+    public const string VIEW_IDENTIFIER = 'SHOW_COLONIZATION';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ColonizationCheckerInterface $colonizationChecker;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonizationCheckerInterface $colonizationChecker
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->colonyRepository = $colonyRepository;
-        $this->colonizationChecker = $colonizationChecker;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private ColonizationCheckerInterface $colonizationChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

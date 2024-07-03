@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
@@ -38,6 +39,7 @@ class FlightRouteTest extends StuTestCase
 
     private FlightRouteInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->checkDestination = $this->mock(CheckDestinationInterface::class);

@@ -6,8 +6,8 @@ namespace Stu\Component\Ship\System;
 
 final class ShipSystemPriorities
 {
-    public const PRIORITY_STANDARD = 1;
-    public const PRIORITIES = [
+    public const int PRIORITY_STANDARD = 1;
+    public const array PRIORITIES = [
         ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT->value => 10,
         ShipSystemTypeEnum::SYSTEM_EPS->value => 6,
         ShipSystemTypeEnum::SYSTEM_WARPCORE->value => 5,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowDeals;
 
+use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,24 +14,13 @@ use Stu\Orm\Entity\PirateWrathInterface;
 
 final class ShowDeals implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_DEALS';
+    public const string VIEW_IDENTIFIER = 'SHOW_DEALS';
 
-    private DealsRepositoryInterface $dealsRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private StuTime $stuTime;
-
-    public function __construct(
-        DealsRepositoryInterface $dealsRepository,
-        StuTime $stuTime,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
-    ) {
-        $this->dealsRepository = $dealsRepository;
-        $this->stuTime = $stuTime;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
+    public function __construct(private DealsRepositoryInterface $dealsRepository, private StuTime $stuTime, private TradeLicenseRepositoryInterface $tradeLicenseRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

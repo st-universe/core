@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset\Trade;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
@@ -13,34 +14,11 @@ use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class TradeReset implements TradeResetInterface
 {
-    private BasicTradeRepositoryInterface $basicTradeRepository;
-
-    private DealsRepositoryInterface $dealsRepository;
-
-    private LotteryTicketRepositoryInterface $lotteryTicketRepository;
-
-    private TradeShoutboxRepositoryInterface $tradeShoutboxRepository;
-
-    private TradeTransactionRepositoryInterface $tradeTransactionRepository;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        BasicTradeRepositoryInterface $basicTradeRepository,
-        DealsRepositoryInterface $dealsRepository,
-        LotteryTicketRepositoryInterface $lotteryTicketRepository,
-        TradeShoutboxRepositoryInterface $tradeShoutboxRepository,
-        TradeTransactionRepositoryInterface $tradeTransactionRepository,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->basicTradeRepository = $basicTradeRepository;
-        $this->dealsRepository = $dealsRepository;
-        $this->lotteryTicketRepository = $lotteryTicketRepository;
-        $this->tradeShoutboxRepository = $tradeShoutboxRepository;
-        $this->tradeTransactionRepository = $tradeTransactionRepository;
-        $this->entityManager = $entityManager;
+    public function __construct(private BasicTradeRepositoryInterface $basicTradeRepository, private DealsRepositoryInterface $dealsRepository, private LotteryTicketRepositoryInterface $lotteryTicketRepository, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function deleteAllBasicTrades(): void
     {
         echo "  - deleting all basic trades\n";
@@ -50,6 +28,7 @@ final class TradeReset implements TradeResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllDeals(): void
     {
         echo "  - deleting all deals\n";
@@ -59,6 +38,7 @@ final class TradeReset implements TradeResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllLotteryTickets(): void
     {
         echo "  - deleting all lottery tickets\n";
@@ -68,6 +48,7 @@ final class TradeReset implements TradeResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllTradeShoutboxEntries(): void
     {
         echo "  - deleting all trade shoutbox entries\n";
@@ -77,6 +58,7 @@ final class TradeReset implements TradeResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllTradeTransactions(): void
     {
         echo "  - deleting all trade transactions\n";

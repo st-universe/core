@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
@@ -24,15 +25,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class PanelLayerCreation implements PanelLayerCreationInterface
 {
-    private EncodedMapInterface $encodedMap;
-
-    private ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory;
-
-    private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory;
-
-    /** @var array<int, PanelLayerDataProviderInterface> */
-    private array $dataProviders;
-
     /** @var array<int, PanelLayerDataProviderInterface> */
     private array $specialDataProviders = [];
 
@@ -40,18 +32,11 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     private array $layers = [];
 
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
-    public function __construct(
-        EncodedMapInterface $encodedMap,
-        ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory,
-        SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
-        array $dataProviders
-    ) {
-        $this->encodedMap = $encodedMap;
-        $this->shipcountDataProviderFactory = $shipcountDataProviderFactory;
-        $this->subspaceDataProviderFactory = $subspaceDataProviderFactory;
-        $this->dataProviders = $dataProviders;
+    public function __construct(private EncodedMapInterface $encodedMap, private ShipcountDataProviderFactoryInterface $shipcountDataProviderFactory, private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory, private array $dataProviders)
+    {
     }
 
+    #[Override]
     public function addSystemLayer(): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::SYSTEM->value] = new SystemLayerRenderer();
@@ -59,6 +44,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
+    #[Override]
     public function addMapLayer(LayerInterface $layer): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::MAP->value] = new MapLayerRenderer($layer, $this->encodedMap);
@@ -66,6 +52,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
+    #[Override]
     public function addColonyShieldLayer(): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::COLONY_SHIELD->value] = new ColonyShieldLayerRenderer();
@@ -73,6 +60,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
+    #[Override]
     public function addSubspaceLayer(int $id, SubspaceLayerTypeEnum $type): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::SUBSPACE_SIGNATURES->value] = new SubspaceLayerRenderer();
@@ -81,6 +69,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
+    #[Override]
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
         ?ShipInterface $currentShip,
@@ -93,6 +82,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
+    #[Override]
     public function addBorderLayer(?ShipInterface $currentShip, ?bool $isOnShipLevel): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentShip, $isOnShipLevel);
@@ -100,6 +90,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
+    #[Override]
     public function build(AbstractVisualPanel $panel): PanelLayers
     {
         $layers = $this->layers;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Override;
 use Ahc\Cli\IO\Interactor;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
@@ -101,6 +102,7 @@ class ResetManagerTest extends StuTestCase
 
     private ResetManager $manager;
 
+    #[Override]
     public function setUp(): void
     {
         vfsStream::setup('tmpDir');

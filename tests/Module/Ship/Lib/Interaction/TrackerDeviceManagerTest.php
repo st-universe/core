@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -29,6 +30,7 @@ class TrackerDeviceManagerTest extends StuTestCase
 
     private TrackerDeviceManagerInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

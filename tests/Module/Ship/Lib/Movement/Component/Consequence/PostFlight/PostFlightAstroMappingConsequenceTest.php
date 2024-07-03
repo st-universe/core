@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
@@ -44,6 +45,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     /** @var MockInterface&FlightRouteInterface */
     private MockInterface $flightRoute;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->astroEntryRepository = $this->mock(AstroEntryRepositoryInterface::class);

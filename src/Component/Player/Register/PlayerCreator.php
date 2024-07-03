@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
@@ -21,38 +22,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 class PlayerCreator implements PlayerCreatorInterface
 {
-    protected UserRepositoryInterface $userRepository;
-
-    protected PlayerDefaultsCreatorInterface $playerDefaultsCreator;
-
-    private RegistrationEmailSenderInterface $registrationEmailSender;
-
-    private SmsVerificationCodeSenderInterface $smsVerificationCodeSender;
-
-    private StuHashInterface $stuHash;
-
-    private PasswordGeneratorInterface $passwordGenerator;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        PlayerDefaultsCreatorInterface $playerDefaultsCreator,
-        RegistrationEmailSenderInterface $registrationEmailSender,
-        SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
-        StuHashInterface $stuHash,
-        PasswordGeneratorInterface $passwordGenerator,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->userRepository = $userRepository;
-        $this->playerDefaultsCreator = $playerDefaultsCreator;
-        $this->registrationEmailSender = $registrationEmailSender;
-        $this->smsVerificationCodeSender = $smsVerificationCodeSender;
-        $this->stuHash = $stuHash;
-        $this->passwordGenerator = $passwordGenerator;
-        $this->entityManager = $entityManager;
+    public function __construct(protected UserRepositoryInterface $userRepository, protected PlayerDefaultsCreatorInterface $playerDefaultsCreator, private RegistrationEmailSenderInterface $registrationEmailSender, private SmsVerificationCodeSenderInterface $smsVerificationCodeSender, private StuHashInterface $stuHash, private PasswordGeneratorInterface $passwordGenerator, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function createWithMobileNumber(
         string $loginName,
         string $emailAddress,
@@ -108,6 +82,7 @@ class PlayerCreator implements PlayerCreatorInterface
         return (bool) preg_match('/00..[1-9]\d/', $mobile);
     }
 
+    #[Override]
     public function createPlayer(
         string $loginName,
         string $emailAddress,

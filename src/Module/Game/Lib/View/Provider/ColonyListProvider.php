@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace  Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,31 +16,11 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyListProvider implements ViewComponentProviderInterface
 {
-    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ModuleQueueRepositoryInterface $moduleQueueRepository;
-
-    private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
-
-
-    public function __construct(
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ModuleQueueRepositoryInterface $moduleQueueRepository,
-        BuildingCommodityRepositoryInterface $buildingCommodityRepository
-    ) {
-        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->moduleQueueRepository = $moduleQueueRepository;
-        $this->buildingCommodityRepository = $buildingCommodityRepository;
+    public function __construct(private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyLibFactoryInterface $colonyLibFactory, private ModuleQueueRepositoryInterface $moduleQueueRepository, private BuildingCommodityRepositoryInterface $buildingCommodityRepository)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

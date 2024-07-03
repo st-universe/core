@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SubspaceData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
@@ -12,6 +13,7 @@ use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 final class SubspaceLayerRenderer implements LayerRendererInterface
 {
     /** @param SubspaceData $data */
+    #[Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         $subspaceCode = $this->getSubspaceCode($data);

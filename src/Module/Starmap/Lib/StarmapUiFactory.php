@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use Override;
 use JBBCode\Parser;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -19,34 +20,11 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
  */
 final class StarmapUiFactory implements StarmapUiFactoryInterface
 {
-    private MapRepositoryInterface $mapRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private EncodedMapInterface $encodedMap;
-
-    private Parser $parser;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
-
-    public function __construct(
-        MapRepositoryInterface $mapRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        EncodedMapInterface $encodedMap,
-        Parser $parser,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->mapRepository = $mapRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->encodedMap = $encodedMap;
-        $this->parser = $parser;
-        $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->loggerUtilFactory = $loggerUtilFactory;
+    public function __construct(private MapRepositoryInterface $mapRepository, private TradePostRepositoryInterface $tradePostRepository, private EncodedMapInterface $encodedMap, private Parser $parser, private StarSystemMapRepositoryInterface $starSystemMapRepository, private LoggerUtilFactoryInterface $loggerUtilFactory)
+    {
     }
 
+    #[Override]
     public function createMapSectionHelper(): MapSectionHelper
     {
         return new MapSectionHelper(
@@ -55,6 +33,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createYRow(
         ?LayerInterface $layer,
         int $cury,
@@ -74,6 +53,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createUserYRow(
         UserInterface $user,
         LayerInterface $layer,
@@ -96,6 +76,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createExplorableStarmapItem(
         ExploreableStarMapInterface $exploreableStarMap,
         LayerInterface $layer

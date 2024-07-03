@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -35,37 +36,44 @@ class UserAward implements UserAwardInterface
     #[JoinColumn(name: 'award_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AwardInterface $award;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): UserAwardInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getAwardId(): int
     {
         return $this->award_id;
     }
 
+    #[Override]
     public function getAward(): AwardInterface
     {
         return $this->award;
     }
 
+    #[Override]
     public function setAward(AwardInterface $award): UserAwardInterface
     {
         $this->award = $award;

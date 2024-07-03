@@ -13,26 +13,9 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class FleetNfsItem
 {
-    /** @var array<TFleetShipItemInterface> */
-    private array $ships;
-
-    private ShipInterface $currentShip;
-
-    private ?SessionInterface $session;
-
-    private int $userId;
-
     /** @param array<TFleetShipItemInterface> $ships */
-    public function __construct(
-        array $ships,
-        ShipInterface $currentShip,
-        ?SessionInterface $session,
-        int $userId
-    ) {
-        $this->ships = $ships;
-        $this->session = $session;
-        $this->currentShip = $currentShip;
-        $this->userId = $userId;
+    public function __construct(private array $ships, private ShipInterface $currentShip, private ?SessionInterface $session, private int $userId)
+    {
     }
 
     public function isHidden(): bool

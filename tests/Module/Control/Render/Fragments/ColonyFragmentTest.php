@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -15,6 +16,7 @@ class ColonyFragmentTest extends StuTestCase
 {
     private ColonyFragment $subject;
 
+    #[Override]
     protected function setUp(): void
     {
 

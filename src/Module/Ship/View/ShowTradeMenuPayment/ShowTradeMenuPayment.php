@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowTradeMenuPayment;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -19,44 +20,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU_CHOOSE_PAYMENT';
+    public const string VIEW_IDENTIFIER = 'SHOW_TRADEMENU_CHOOSE_PAYMENT';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        StorageRepositoryInterface $storageRepository,
-        ShipRepositoryInterface $shipRepository,
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->storageRepository = $storageRepository;
-        $this->shipRepository = $shipRepository;
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository, private ShipRepositoryInterface $shipRepository, private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

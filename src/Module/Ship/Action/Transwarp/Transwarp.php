@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Transwarp;
 
+use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,9 +23,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class Transwarp extends AbstractDirectedMovement
 {
-    public const ACTION_IDENTIFIER = 'B_TRANSWARP';
-
-    private MapRepositoryInterface $mapRepository;
+    public const string ACTION_IDENTIFIER = 'B_TRANSWARP';
 
     private MapInterface $destination;
 
@@ -35,7 +34,7 @@ final class Transwarp extends AbstractDirectedMovement
         FlightRouteFactoryInterface $flightRouteFactory,
         RandomSystemEntryInterface $randomSystemEntry,
         DistributedMessageSenderInterface $distributedMessageSender,
-        MapRepositoryInterface $mapRepository
+        private MapRepositoryInterface $mapRepository
     ) {
         parent::__construct(
             $moveShipRequest,
@@ -45,10 +44,9 @@ final class Transwarp extends AbstractDirectedMovement
             $randomSystemEntry,
             $distributedMessageSender
         );
-
-        $this->mapRepository = $mapRepository;
     }
 
+    #[Override]
     protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $layerId = request::postIntFatal('transwarplayer');
@@ -115,6 +113,7 @@ final class Transwarp extends AbstractDirectedMovement
         return false;
     }
 
+    #[Override]
     protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface
     {
         return $this->flightRouteFactory->getRouteForMapDestination($this->destination, true);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowDockingPrivileges;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -14,20 +15,13 @@ use Stu\Orm\Entity\DockingPrivilegeInterface;
 
 final class ShowDockingPrivileges implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_DOCKPRIVILEGE_LIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_DOCKPRIVILEGE_LIST';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private StationUiFactoryInterface $stationUiFactory;
-
-    public function __construct(
-        StationUiFactoryInterface $stationUiFactory,
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->stationUiFactory = $stationUiFactory;
+    public function __construct(private StationUiFactoryInterface $stationUiFactory, private ShipLoaderInterface $shipLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

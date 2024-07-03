@@ -9,16 +9,13 @@ use Stu\Lib\Map\VisualPanel\Layer\Render\BorderLayerRenderer;
 
 class PanelLayers
 {
-    private AbstractVisualPanel $panel;
-
     /** @var array<int, PanelLayer> */
     private array $layers = [];
 
     private ?PanelLayer $borderLayer = null;
 
-    public function __construct(AbstractVisualPanel $panel)
+    public function __construct(private AbstractVisualPanel $panel)
     {
-        $this->panel = $panel;
     }
 
     public function addLayer(PanelLayerEnum $type, PanelLayer $layer): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -15,19 +16,17 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class CloakShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private ShipStateChangerInterface $shipStateChanger;
-
-    public function __construct(
-        ShipStateChangerInterface $shipStateChanger
-    ) {
-        $this->shipStateChanger = $shipStateChanger;
+    public function __construct(private ShipStateChangerInterface $shipStateChanger)
+    {
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_CLOAK;
     }
 
+    #[Override]
     public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
@@ -55,16 +54,19 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         return true;
     }
 
+    #[Override]
     public function getEnergyUsageForActivation(): int
     {
         return 10;
     }
 
+    #[Override]
     public function getEnergyConsumption(): int
     {
         return 8;
     }
 
+    #[Override]
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $ship = $wrapper->get();

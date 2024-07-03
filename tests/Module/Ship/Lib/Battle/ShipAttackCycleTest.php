@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
@@ -38,6 +39,7 @@ class ShipAttackCycleTest extends StuTestCase
 
     private ShipAttackCycleInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->energyWeaponPhase = $this->mock(EnergyWeaponPhaseInterface::class);

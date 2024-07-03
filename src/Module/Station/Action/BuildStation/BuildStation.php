@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\BuildStation;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -25,40 +26,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BuildStation implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILD_STATION';
+    public const string ACTION_IDENTIFIER = 'B_BUILD_STATION';
 
-    private StationUtilityInterface $stationUtility;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ModuleRepositoryInterface $moduleRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private ConstructionProgressRepositoryInterface $constructionProgressRepository;
-
-    private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
-
-    public function __construct(
-        StationUtilityInterface $stationUtility,
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ModuleRepositoryInterface $moduleRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository
-    ) {
-        $this->stationUtility = $stationUtility;
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->moduleRepository = $moduleRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->constructionProgressRepository = $constructionProgressRepository;
-        $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
+    public function __construct(private StationUtilityInterface $stationUtility, private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private ModuleRepositoryInterface $moduleRepository, private ShipStorageManagerInterface $shipStorageManager, private ConstructionProgressRepositoryInterface $constructionProgressRepository, private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -267,6 +241,7 @@ final class BuildStation implements ActionControllerInterface
         return true;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -20,11 +21,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class StorageRepository extends EntityRepository implements StorageRepositoryInterface
 {
+    #[Override]
     public function prototype(): StorageInterface
     {
         return new Storage();
     }
 
+    #[Override]
     public function save(StorageInterface $storage): void
     {
         $em = $this->getEntityManager();
@@ -32,6 +35,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         $em->persist($storage);
     }
 
+    #[Override]
     public function delete(StorageInterface $storage): void
     {
         $em = $this->getEntityManager();
@@ -39,6 +43,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         $em->remove($storage);
     }
 
+    #[Override]
     public function getByUserAccumulated(UserInterface $user): array
     {
         $rsm = new ResultSetMapping();
@@ -62,6 +67,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->getResult();
     }
 
+    #[Override]
     public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
@@ -83,6 +89,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    #[Override]
     public function getShipStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
@@ -108,6 +115,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->getResult();
     }
 
+    #[Override]
     public function getTradePostStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         return $this->getEntityManager()
@@ -129,6 +137,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->getResult();
     }
 
+    #[Override]
     public function getTradeOfferStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
@@ -154,6 +163,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    #[Override]
     public function getTorpdeoStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
@@ -179,6 +189,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    #[Override]
     public function getByTradePostAndUser(int $tradePostId, int $userId): array
     {
         return $this->getEntityManager()->createQuery(
@@ -195,6 +206,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    #[Override]
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int
     {
         return (int) $this->getEntityManager()
@@ -211,6 +223,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getByTradepostAndUserAndCommodity(
         int $tradePostId,
         int $userId,
@@ -223,6 +236,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ]);
     }
 
+    #[Override]
     public function getByTradeNetworkAndUserAndCommodityAmount(
         int $tradeNetwork,
         int $userId,
@@ -249,6 +263,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->getResult();
     }
 
+    #[Override]
     public function getByTradePost(int $tradePostId): array
     {
         return $this->getEntityManager()
@@ -267,6 +282,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->getResult();
     }
 
+    #[Override]
     public function getLatinumTop10(): array
     {
         $rsm = new ResultSetMapping();
@@ -287,6 +303,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    #[Override]
     public function truncateByColony(ColonyInterface $colony): void
     {
         $this->getEntityManager()
@@ -300,6 +317,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->execute();
     }
 
+    #[Override]
     public function truncateByCommodity(int $commodityId): void
     {
         $this->getEntityManager()
@@ -313,6 +331,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->execute();
     }
 
+    #[Override]
     public function truncateAllStorages(): void
     {
         $this->getEntityManager()->createQuery(

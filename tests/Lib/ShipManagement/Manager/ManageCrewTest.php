@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
@@ -52,6 +53,7 @@ class ManageCrewTest extends StuTestCase
 
     private ManageCrew $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);

@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
@@ -16,6 +17,7 @@ final class ModuleSelectorAddonFactory implements ModuleSelectorAddonFactoryInte
     ) {
     }
 
+    #[Override]
     public function createModuleSelectorAddon(ShipModuleTypeEnum $moduleType): ?ModuleSelectorAddonInterface
     {
         switch ($moduleType) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ActivateVacation;
 
+use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\SessionInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ActivateVacation implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ACTIVATE_VACATION';
+    public const string ACTION_IDENTIFIER = 'B_ACTIVATE_VACATION';
 
-    private SessionInterface $session;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        SessionInterface $session,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->session = $session;
-        $this->userRepository = $userRepository;
+    public function __construct(private SessionInterface $session, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //wenn die letzte Aktivierung älter als eine Woche ist
@@ -48,6 +42,7 @@ final class ActivateVacation implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

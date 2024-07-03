@@ -164,7 +164,22 @@ parameters:
 			path: src/Lib/Session.php
 
 		-
+			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:deleteSessionData\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
 			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:getSessionValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:hasSessionValue\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:storeSessionData\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Lib/Session.php
 
@@ -225,11 +240,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Lib\\\\SignatureWrapper\\:\\:getShipName\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/SignatureWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\SignatureWrapper\\:\\:\\$signature has no type specified\\.$#"
 			count: 1
 			path: src/Lib/SignatureWrapper.php
 
@@ -689,11 +699,6 @@ parameters:
 			path: src/Module/Colony/Lib/BuildingAction.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\BuildingFunctionTal\\:\\:__construct\\(\\) has parameter \\$buildingfunctionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/BuildingFunctionTal.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyLibFactory\\:\\:createBuildingFunctionTal\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonyLibFactory.php
@@ -1052,11 +1057,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$crewRace of method Stu\\\\Orm\\\\Entity\\\\CrewInterface\\:\\:setRace\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface, Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Crew/Lib/CrewCreator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\Lib\\\\GraphInfo\\:\\:__construct\\(\\) has parameter \\$plotInfos with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/GraphInfo.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTal\\:\\:getEntries\\(\\) return type has no value type specified in iterable type array\\.$#"

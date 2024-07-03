@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -27,16 +28,19 @@ class ShipRumpModuleSpecial implements ShipRumpModuleSpecialInterface
     #[Column(type: 'integer')]
     private int $module_special_id = 0;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getShipRumpId(): int
     {
         return $this->rump_id;
     }
 
+    #[Override]
     public function setShipRumpId(int $shipRumpId): ShipRumpModuleSpecialInterface
     {
         $this->rump_id = $shipRumpId;
@@ -44,11 +48,13 @@ class ShipRumpModuleSpecial implements ShipRumpModuleSpecialInterface
         return $this;
     }
 
+    #[Override]
     public function getModuleSpecialId(): int
     {
         return $this->module_special_id;
     }
 
+    #[Override]
     public function setModuleSpecialId(int $moduleSpecialId): ShipRumpModuleSpecialInterface
     {
         $this->module_special_id = $moduleSpecialId;

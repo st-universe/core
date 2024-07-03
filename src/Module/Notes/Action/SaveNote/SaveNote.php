@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\Action\SaveNote;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class SaveNote implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SAVE_NOTE';
+    public const string ACTION_IDENTIFIER = 'B_SAVE_NOTE';
 
-    private SaveNoteRequestInterface $saveNoteRequest;
-
-    private NoteRepositoryInterface $noteRepository;
-
-    public function __construct(
-        SaveNoteRequestInterface $saveNoteRequest,
-        NoteRepositoryInterface $noteRepository
-    ) {
-        $this->saveNoteRequest = $saveNoteRequest;
-        $this->noteRepository = $noteRepository;
+    public function __construct(private SaveNoteRequestInterface $saveNoteRequest, private NoteRepositoryInterface $noteRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -63,6 +57,7 @@ final class SaveNote implements ActionControllerInterface
         $game->addInformation(_('Die Notiz wurde gespeichert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

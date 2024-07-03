@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -15,18 +16,11 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
  */
 final class ShipUiFactory implements ShipUiFactoryInterface
 {
-    private UserMapRepositoryInterface $userMapRepository;
-
-    private PanelLayerCreationInterface $panelLayerCreation;
-
-    public function __construct(
-        UserMapRepositoryInterface $userMapRepository,
-        PanelLayerCreationInterface $panelLayerCreation
-    ) {
-        $this->userMapRepository = $userMapRepository;
-        $this->panelLayerCreation = $panelLayerCreation;
+    public function __construct(private UserMapRepositoryInterface $userMapRepository, private PanelLayerCreationInterface $panelLayerCreation)
+    {
     }
 
+    #[Override]
     public function createVisualNavPanel(
         ShipInterface $currentShip,
         UserInterface $user,

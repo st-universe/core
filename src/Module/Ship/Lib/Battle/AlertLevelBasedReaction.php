@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
@@ -14,14 +15,11 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
 {
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    public function __construct(
-        ShipSystemManagerInterface $shipSystemManager
-    ) {
-        $this->shipSystemManager = $shipSystemManager;
+    public function __construct(private ShipSystemManagerInterface $shipSystemManager)
+    {
     }
 
+    #[Override]
     public function react(ShipWrapperInterface $wrapper, InformationInterface $informations): void
     {
         $ship = $wrapper->get();
@@ -54,7 +52,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
                     $informations->addInformation("- " . $alertMsg);
                 }
                 return true;
-            } catch (InsufficientEnergyException $e) {
+            } catch (InsufficientEnergyException) {
                 $informations->addInformation("- Nicht genügend Energie vorhanden um auf Alarm-Gelb zu wechseln");
                 return true;
             }
@@ -71,7 +69,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             try {
                 $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_CLOAK);
                 $informations->addInformation("- Die Tarnung wurde deaktiviert");
-            } catch (ShipSystemException $e) {
+            } catch (ShipSystemException) {
             }
 
             return true;
@@ -82,7 +80,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
                 $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
 
                 $informations->addInformation("- Die Schilde wurden aktiviert");
-            } catch (ShipSystemException $e) {
+            } catch (ShipSystemException) {
             }
         } else {
             $informations->addInformation("- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden");
@@ -98,7 +96,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_PHASER);
 
             $informations->addInformation("- Die Energiewaffe wurde aktiviert");
-        } catch (ShipSystemException $e) {
+        } catch (ShipSystemException) {
         }
 
         return false;
@@ -110,7 +108,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
             $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TORPEDO);
 
             $informations->addInformation("- Der Torpedowerfer wurde aktiviert");
-        } catch (ShipSystemException $e) {
+        } catch (ShipSystemException) {
         }
     }
 }

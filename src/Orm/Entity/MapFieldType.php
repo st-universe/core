@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -60,16 +61,19 @@ class MapFieldType implements MapFieldTypeInterface
     #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id')]
     private ?ColonyClassInterface $colonyClass = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(int $type): MapFieldTypeInterface
     {
         $this->type = $type;
@@ -77,11 +81,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getIsSystem(): bool
     {
         return $this->is_system;
     }
 
+    #[Override]
     public function setIsSystem(bool $isSystem): MapFieldTypeInterface
     {
         $this->is_system = $isSystem;
@@ -89,11 +95,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getEnergyCosts(): int
     {
         return $this->ecost;
     }
 
+    #[Override]
     public function setEnergyCosts(int $energyCosts): MapFieldTypeInterface
     {
         $this->ecost = $energyCosts;
@@ -101,11 +109,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): MapFieldTypeInterface
     {
         $this->name = $name;
@@ -113,11 +123,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getColonyClassId(): int
     {
         return $this->colonies_classes_id;
     }
 
+    #[Override]
     public function setColonyClassId(int $colonyClassId): MapFieldTypeInterface
     {
         $this->colonies_classes_id = $colonyClassId;
@@ -125,11 +137,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getDamage(): int
     {
         return $this->damage;
     }
 
+    #[Override]
     public function setDamage(int $damage): MapFieldTypeInterface
     {
         $this->damage = $damage;
@@ -137,11 +151,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getSpecialDamage(): int
     {
         return $this->x_damage;
     }
 
+    #[Override]
     public function setSpecialDamage(int $specialDamage): MapFieldTypeInterface
     {
         $this->x_damage = $specialDamage;
@@ -149,16 +165,19 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getSpecialDamageType(): ?int
     {
         return $this->x_damage_type;
     }
 
+    #[Override]
     public function getView(): bool
     {
         return $this->view;
     }
 
+    #[Override]
     public function setView(bool $view): MapFieldTypeInterface
     {
         $this->view = $view;
@@ -166,11 +185,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getPassable(): bool
     {
         return $this->passable;
     }
 
+    #[Override]
     public function setPassable(bool $passable): MapFieldTypeInterface
     {
         $this->passable = $passable;
@@ -178,11 +199,13 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
+    #[Override]
     public function getPassableAsInt(): int
     {
         return $this->passable ? 1 : 0;
     }
 
+    #[Override]
     public function getColonyClass(): ?ColonyClassInterface
     {
         return $this->colonyClass;

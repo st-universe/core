@@ -12,12 +12,8 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
  */
 final class HistoryEntrySubscriber
 {
-    private EntryCreatorInterface $entryCreator;
-
-    public function __construct(
-        EntryCreatorInterface $entryCreator
-    ) {
-        $this->entryCreator = $entryCreator;
+    public function __construct(private EntryCreatorInterface $entryCreator)
+    {
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Action\DeleteCharacter;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserCharactersRepositoryInterface;
@@ -11,22 +12,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteCharacter implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DELETE_CHARACTER';
+    public const string ACTION_IDENTIFIER = 'B_DELETE_CHARACTER';
 
-    private DeleteCharacterRequestInterface $deleteCharacterRequest;
-    private UserCharactersRepositoryInterface $userCharactersRepository;
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        DeleteCharacterRequestInterface $deleteCharacterRequest,
-        UserRepositoryInterface $userRepository,
-        UserCharactersRepositoryInterface $userCharactersRepository
-    ) {
-        $this->deleteCharacterRequest = $deleteCharacterRequest;
-        $this->userCharactersRepository = $userCharactersRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private DeleteCharacterRequestInterface $deleteCharacterRequest, private UserRepositoryInterface $userRepository, private UserCharactersRepositoryInterface $userCharactersRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $characterId = $this->deleteCharacterRequest->getCharacterId();
@@ -45,6 +37,7 @@ final class DeleteCharacter implements ActionControllerInterface
         $game->addInformation(_('Der Charakter wurde erfolgreich entfernt.'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

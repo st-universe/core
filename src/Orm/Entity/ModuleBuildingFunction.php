@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -33,16 +34,19 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): ModuleBuildingFunctionInterface
     {
         $this->module_id = $moduleId;
@@ -50,11 +54,13 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildingFunction(): int
     {
         return $this->buildingfunction;
     }
 
+    #[Override]
     public function setBuildingFunction(int $buildingFunction): ModuleBuildingFunctionInterface
     {
         $this->buildingfunction = $buildingFunction;
@@ -62,6 +68,7 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
         return $this;
     }
 
+    #[Override]
     public function getModule(): ModuleInterface
     {
         return $this->module;

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
+use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -14,30 +15,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class EscapePodHandling implements ManagerComponentInterface
 {
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipRemoverInterface $shipRemover,
-        ShipRepositoryInterface $shipRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        $this->privateMessageSender = $privateMessageSender;
-        $this->shipRemover = $shipRemover;
-        $this->shipRepository = $shipRepository;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private PrivateMessageSenderInterface $privateMessageSender, private ShipRemoverInterface $shipRemover, private ShipRepositoryInterface $shipRepository, private ShipCrewRepositoryInterface $shipCrewRepository, private ColonyLibFactoryInterface $colonyLibFactory)
+    {
     }
 
+    #[Override]
     public function work(): void
     {
         $escapedToColonies = [];

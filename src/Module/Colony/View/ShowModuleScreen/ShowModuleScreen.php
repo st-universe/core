@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreen;
 
+use Override;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Exception\AccessViolation;
@@ -16,32 +17,13 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowModuleScreen implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN';
+    public const string VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShowModuleScreenRequestInterface $showModuleScreenRequest;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShowModuleScreenRequestInterface $showModuleScreenRequest,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->showModuleScreenRequest = $showModuleScreenRequest;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipCrewCalculator = $shipCrewCalculator;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleScreenRequestInterface $showModuleScreenRequest, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyLibFactoryInterface $colonyLibFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

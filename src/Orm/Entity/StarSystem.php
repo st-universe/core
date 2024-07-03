@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -82,16 +83,19 @@ class StarSystem implements StarSystemInterface
         $this->fields = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getCx(): int
     {
         return $this->cx;
     }
 
+    #[Override]
     public function setCx(int $cx): StarSystemInterface
     {
         $this->cx = $cx;
@@ -99,11 +103,13 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getCy(): int
     {
         return $this->cy;
     }
 
+    #[Override]
     public function setCy(int $cy): StarSystemInterface
     {
         $this->cy = $cy;
@@ -111,11 +117,13 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getType(): StarSystemTypeInterface
     {
         return $this->systemType;
     }
 
+    #[Override]
     public function setType(StarSystemTypeInterface $systemType): StarSystemInterface
     {
         $this->systemType = $systemType;
@@ -123,11 +131,13 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): StarSystemInterface
     {
         $this->name = $name;
@@ -135,11 +145,13 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getMaxX(): int
     {
         return $this->max_x;
     }
 
+    #[Override]
     public function setMaxX(int $maxX): StarSystemInterface
     {
         $this->max_x = $maxX;
@@ -147,11 +159,13 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getMaxY(): int
     {
         return $this->max_y;
     }
 
+    #[Override]
     public function setMaxY(int $maxY): StarSystemInterface
     {
         $this->max_y = $maxY;
@@ -159,11 +173,13 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getBonusFieldAmount(): int
     {
         return $this->bonus_fields;
     }
 
+    #[Override]
     public function setBonusFieldAmount(int $bonusFieldAmount): StarSystemInterface
     {
         $this->bonus_fields = $bonusFieldAmount;
@@ -171,16 +187,19 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getSystemType(): StarSystemTypeInterface
     {
         return $this->systemType;
     }
 
+    #[Override]
     public function getDatabaseEntry(): ?DatabaseEntryInterface
     {
         return $this->databaseEntry;
     }
 
+    #[Override]
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemInterface
     {
         $this->databaseEntry = $databaseEntry;
@@ -188,6 +207,7 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
+    #[Override]
     public function getLayer(): ?LayerInterface
     {
         if ($this->isWormhole()) {
@@ -197,21 +217,25 @@ class StarSystem implements StarSystemInterface
         return $this->getMap()->getLayer();
     }
 
+    #[Override]
     public function getMap(): ?MapInterface
     {
         return $this->map;
     }
 
+    #[Override]
     public function getBase(): ?ShipInterface
     {
         return $this->base;
     }
 
+    #[Override]
     public function getFields(): Collection
     {
         return $this->fields;
     }
 
+    #[Override]
     public function isWormhole(): bool
     {
         return $this->is_wormhole;

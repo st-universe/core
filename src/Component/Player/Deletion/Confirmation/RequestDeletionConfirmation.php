@@ -15,20 +15,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class RequestDeletionConfirmation implements RequestDeletionConfirmationInterface
 {
-    private UserRepositoryInterface $userRepository;
-
-    private ConfigInterface $config;
-
-    private StuHashInterface $stuHash;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        ConfigInterface $config,
-        StuHashInterface $stuHash
-    ) {
-        $this->userRepository = $userRepository;
-        $this->config = $config;
-        $this->stuHash = $stuHash;
+    public function __construct(private UserRepositoryInterface $userRepository, private ConfigInterface $config, private StuHashInterface $stuHash)
+    {
     }
 
     public function request(UserInterface $user): void
@@ -61,7 +49,7 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
         try {
             $transport = new Sendmail();
             $transport->send($mail);
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             return;
         }
 

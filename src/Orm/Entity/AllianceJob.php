@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,21 +40,25 @@ class AllianceJob implements AllianceJobInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(int $type): AllianceJobInterface
     {
         $this->type = $type;
@@ -61,11 +66,13 @@ class AllianceJob implements AllianceJobInterface
         return $this;
     }
 
+    #[Override]
     public function getAlliance(): AllianceInterface
     {
         return $this->alliance;
     }
 
+    #[Override]
     public function setAlliance(AllianceInterface $alliance): AllianceJobInterface
     {
         $this->alliance = $alliance;
@@ -73,11 +80,13 @@ class AllianceJob implements AllianceJobInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): AllianceJobInterface
     {
         $this->user = $user;

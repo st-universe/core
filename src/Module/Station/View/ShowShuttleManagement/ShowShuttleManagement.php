@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowShuttleManagement;
 
+use Override;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -14,28 +15,20 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ShowShuttleManagement implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHUTTLE_MANAGEMENT';
-
-    private ShowShuttleManagementRequestInterface $request;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    public const string VIEW_IDENTIFIER = 'SHOW_SHUTTLE_MANAGEMENT';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShowShuttleManagementRequestInterface $request,
-        ShipLoaderInterface $shipLoader,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ShowShuttleManagementRequestInterface $request,
+        private ShipLoaderInterface $shipLoader,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->request = $request;
-        $this->shipLoader = $shipLoader;
-        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $stationId = $this->request->getStationId();

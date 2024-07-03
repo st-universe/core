@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use request;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
@@ -12,22 +13,11 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class ShipBuildplansProvider implements GuiComponentProviderInterface
 {
-    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private BuildPlanDeleterInterface $buildPlanDeleter;
-
-    public function __construct(
-        BuildPlanDeleterInterface $buildPlanDeleter,
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-        $this->buildingFunctionRepository = $buildingFunctionRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->buildPlanDeleter = $buildPlanDeleter;
+    public function __construct(private BuildPlanDeleterInterface $buildPlanDeleter, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
+use Override;
 use Fhaculty\Graph\Edge\Undirected;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
@@ -25,6 +26,7 @@ class AllianceRelationRendererTest extends StuTestCase
 
     private AllianceRelationRenderer $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->graphVizFactory = $this->mock(GraphVizFactoryInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\MoveShip;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Information\InformationWrapper;
@@ -44,6 +45,7 @@ class DirectedMovementTest extends StuTestCase
     /** @var MockInterface&DistributedMessageSenderInterface */
     private DistributedMessageSenderInterface $distributedMessageSender;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->moveShipRequest = $this->mock(MoveShipRequestInterface::class);

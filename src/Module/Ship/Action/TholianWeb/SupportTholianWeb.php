@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TholianWeb;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -25,48 +26,25 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class SupportTholianWeb implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SUPPORT_WEB';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private TholianWebUtilInterface $tholianWebUtil;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private StuTime $stuTime;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
+    public const string ACTION_IDENTIFIER = 'B_SUPPORT_WEB';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TholianWebUtilInterface $tholianWebUtil,
-        TholianWebRepositoryInterface $tholianWebRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipStateChangerInterface $shipStateChanger,
-        ActivatorDeactivatorHelperInterface $helper,
-        StuTime $stuTime,
-        PrivateMessageSenderInterface $privateMessageSender,
+        private ShipLoaderInterface $shipLoader,
+        private TholianWebUtilInterface $tholianWebUtil,
+        private TholianWebRepositoryInterface $tholianWebRepository,
+        private ShipSystemRepositoryInterface $shipSystemRepository,
+        private ShipStateChangerInterface $shipStateChanger,
+        private ActivatorDeactivatorHelperInterface $helper,
+        private StuTime $stuTime,
+        private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->tholianWebUtil = $tholianWebUtil;
-        $this->tholianWebRepository = $tholianWebRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->helper = $helper;
-        $this->stuTime = $stuTime;
-        $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -139,6 +117,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

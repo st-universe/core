@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BeamTo;
 
+use Override;
 use request;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\BeamUtilInterface;
@@ -20,32 +21,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class BeamTo implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TRANSFER';
+    public const string ACTION_IDENTIFIER = 'B_TRANSFER';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private BeamUtilInterface $beamUtil;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        BeamUtilInterface $beamUtil,
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->beamUtil = $beamUtil;
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private BeamUtilInterface $beamUtil, private ShipLoaderInterface $shipLoader, private InteractionCheckerInterface $interactionChecker, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -147,6 +129,7 @@ final class BeamTo implements ActionControllerInterface
         $game->addInformationWrapper($informations);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,16 +40,19 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): SpacecraftEmergencyInterface
     {
         $this->ship = $ship;
@@ -56,11 +60,13 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): SpacecraftEmergencyInterface
     {
         $this->text = $text;
@@ -68,11 +74,13 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): SpacecraftEmergencyInterface
     {
         $this->date = $date;
@@ -80,6 +88,7 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
         return $this;
     }
 
+    #[Override]
     public function setDeleted(int $timestamp): SpacecraftEmergencyInterface
     {
         $this->deleted = $timestamp;
@@ -87,6 +96,7 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
         return $this;
     }
 
+    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

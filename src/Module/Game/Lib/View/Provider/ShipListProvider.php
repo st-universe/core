@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
@@ -16,30 +17,11 @@ use Stu\Orm\Repository\BuoyRepositoryInterface;
 
 final class ShipListProvider implements ViewComponentProviderInterface
 {
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private BuoyRepositoryInterface $buoyRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private SessionInterface $session;
-
-    public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        BuoyRepositoryInterface $buoyRepository,
-        SessionInterface $session
-    ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->shipRepository = $shipRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->session = $session;
-        $this->buoyRepository = $buoyRepository;
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private BuoyRepositoryInterface $buoyRepository, private SessionInterface $session)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

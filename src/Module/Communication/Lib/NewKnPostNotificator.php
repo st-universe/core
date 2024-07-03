@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Lib;
 
+use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -16,14 +17,11 @@ use Stu\Orm\Entity\RpgPlotMemberInterface;
  */
 final class NewKnPostNotificator implements NewKnPostNotificatorInterface
 {
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function notify(KnPostInterface $post, RpgPlotInterface $plot): void
     {
         $postUser = $post->getUser();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -20,6 +21,7 @@ class PostFlightTrackerConsequence extends AbstractFlightConsequence
     ) {
     }
 
+    #[Override]
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

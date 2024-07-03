@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Lock;
 
+use Override;
 use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 
 final class LockManager implements LockManagerInterface
 {
-    private StuConfigInterface $config;
-
-    public function __construct(StuConfigInterface $config)
+    public function __construct(private StuConfigInterface $config)
     {
-        $this->config = $config;
     }
 
+    #[Override]
     public function setLock(int $batchGroupId, LockTypeEnum $type): void
     {
         $result = @touch($this->getLockPath($batchGroupId, $type));
@@ -29,6 +28,7 @@ final class LockManager implements LockManagerInterface
         }
     }
 
+    #[Override]
     public function clearLock(int $batchGroupId, LockTypeEnum $type): void
     {
         $result = @unlink($this->getLockPath($batchGroupId, $type));
@@ -42,6 +42,7 @@ final class LockManager implements LockManagerInterface
         }
     }
 
+    #[Override]
     public function isLocked(int $entityId, LockTypeEnum $type): bool
     {
         return @file_exists($this->getLockPath($entityId % $this->getGroupCount($type) + 1, $type));

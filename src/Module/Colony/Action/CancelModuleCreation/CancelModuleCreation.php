@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -18,36 +19,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class CancelModuleCreation implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CANCEL_MODULECREATION';
+    public const string ACTION_IDENTIFIER = 'B_CANCEL_MODULECREATION';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ModuleQueueRepositoryInterface $moduleQueueRepository;
-
-    private ModuleRepositoryInterface $moduleRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ModuleQueueRepositoryInterface $moduleQueueRepository,
-        ModuleRepositoryInterface $moduleRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->moduleQueueRepository = $moduleQueueRepository;
-        $this->moduleRepository = $moduleRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ModuleRepositoryInterface $moduleRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -113,6 +91,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         $this->colonyRepository->save($colony);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

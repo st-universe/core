@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -47,6 +48,7 @@ class ConstructionProgress implements ConstructionProgressInterface
         $this->specialModules = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
@@ -57,11 +59,13 @@ class ConstructionProgress implements ConstructionProgressInterface
         return $this->ship_id;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): ConstructionProgressInterface
     {
         $this->ship = $ship;
@@ -69,16 +73,19 @@ class ConstructionProgress implements ConstructionProgressInterface
         return $this;
     }
 
+    #[Override]
     public function getSpecialModules(): Collection
     {
         return $this->specialModules;
     }
 
+    #[Override]
     public function getRemainingTicks(): int
     {
         return $this->remaining_ticks;
     }
 
+    #[Override]
     public function setRemainingTicks(int $remainingTicks): ConstructionProgressInterface
     {
         $this->remaining_ticks = $remainingTicks;
@@ -86,6 +93,7 @@ class ConstructionProgress implements ConstructionProgressInterface
         return $this;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return sprintf('constructionProgress, shipId: %d', $this->getShipId());

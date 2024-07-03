@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -138,16 +139,19 @@ class Module implements ModuleInterface
         $this->weaponShield = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): ModuleInterface
     {
         $this->name = $name;
@@ -155,11 +159,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getLevel(): int
     {
         return $this->level;
     }
 
+    #[Override]
     public function setLevel(int $level): ModuleInterface
     {
         $this->level = $level;
@@ -167,11 +173,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getUpgradeFactor(): int
     {
         return $this->upgrade_factor;
     }
 
+    #[Override]
     public function setUpgradeFactor(int $upgradeFactor): ModuleInterface
     {
         $this->upgrade_factor = $upgradeFactor;
@@ -179,11 +187,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getDefaultFactor(): int
     {
         return $this->default_factor;
     }
 
+    #[Override]
     public function setDefaultFactor(int $defaultFactor): ModuleInterface
     {
         $this->default_factor = $defaultFactor;
@@ -191,11 +201,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getDowngradeFactor(): int
     {
         return $this->downgrade_factor;
     }
 
+    #[Override]
     public function setDowngradeFactor(int $downgradeFactor): ModuleInterface
     {
         $this->downgrade_factor = $downgradeFactor;
@@ -203,11 +215,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getCrew(): int
     {
         return $this->crew;
     }
 
+    #[Override]
     public function getCrewByFactionAndRumpLvl(FactionInterface $faction, ShipRumpInterface $rump): int
     {
         $result = $this->getCrew();
@@ -226,6 +240,7 @@ class Module implements ModuleInterface
         return $result;
     }
 
+    #[Override]
     public function setCrew(int $crew): ModuleInterface
     {
         $this->crew = $crew;
@@ -233,11 +248,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getType(): ShipModuleTypeEnum
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(ShipModuleTypeEnum $type): ModuleInterface
     {
         $this->type = $type;
@@ -245,11 +262,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function setResearchId(int $researchId): ModuleInterface
     {
         $this->research_id = $researchId;
@@ -257,11 +276,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): ModuleInterface
     {
         $this->commodity_id = $commodityId;
@@ -269,11 +290,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getViewable(): bool
     {
         return $this->viewable;
     }
 
+    #[Override]
     public function setViewable(bool $viewable): ModuleInterface
     {
         $this->viewable = $viewable;
@@ -281,11 +304,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getShipRumpRoleId(): ?int
     {
         return $this->rumps_role_id;
     }
 
+    #[Override]
     public function setShipRumpRoleId(int $shipRumpRoleId): ModuleInterface
     {
         $this->rumps_role_id = $shipRumpRoleId;
@@ -293,16 +318,19 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getWeapon(): ?WeaponInterface
     {
         return $this->weapon;
     }
 
+    #[Override]
     public function getEcost(): int
     {
         return $this->ecost;
     }
 
+    #[Override]
     public function setEcost(int $energyCosts): ModuleInterface
     {
         $this->ecost = $energyCosts;
@@ -310,11 +338,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getFactionId(): ?int
     {
         return $this->faction_id;
     }
 
+    #[Override]
     public function setFactionId(int $factionId): ?ModuleInterface
     {
         $this->faction_id = $factionId;
@@ -322,11 +352,13 @@ class Module implements ModuleInterface
         return $this;
     }
 
+    #[Override]
     public function getSystemType(): ?ShipSystemTypeEnum
     {
         return $this->system_type;
     }
 
+    #[Override]
     public function hasSpecial($special_id): bool
     {
         if ($this->specialAbilities === null) {
@@ -338,16 +370,19 @@ class Module implements ModuleInterface
         return in_array((int)$special_id, $this->specialAbilities);
     }
 
+    #[Override]
     public function getSpecials(): Collection
     {
         return $this->moduleSpecials;
     }
 
+    #[Override]
     public function getCost(): Collection
     {
         return $this->buildingCosts;
     }
 
+    #[Override]
     public function getCostSorted(): array
     {
         $array = $this->getCost()->getValues();
@@ -360,26 +395,31 @@ class Module implements ModuleInterface
         return $array;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->getType()->getDescription();
     }
 
+    #[Override]
     public function getTorpedoHull(): Collection
     {
         return $this->torpedoHull;
     }
 
+    #[Override]
     public function getWeaponShield(): Collection
     {
         return $this->weaponShield;
     }
 
+    #[Override]
     public function getFaction(): ?FactionInterface
     {
         return $this->faction;

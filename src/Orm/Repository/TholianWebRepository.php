@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
@@ -15,11 +16,13 @@ use Stu\Orm\Entity\TholianWebInterface;
  */
 final class TholianWebRepository extends EntityRepository implements TholianWebRepositoryInterface
 {
+    #[Override]
     public function prototype(): TholianWebInterface
     {
         return new TholianWeb();
     }
 
+    #[Override]
     public function save(TholianWebInterface $web): void
     {
         $em = $this->getEntityManager();
@@ -27,6 +30,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
         $em->persist($web);
     }
 
+    #[Override]
     public function delete(TholianWebInterface $web): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
         $em->remove($web);
     }
 
+    #[Override]
     public function getWebAtLocation(ShipInterface $ship): ?TholianWebInterface
     {
         $starSystemMap = $ship->getStarsystemMap();
@@ -53,6 +58,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
         ])->getOneOrNullResult();
     }
 
+    #[Override]
     public function getFinishedWebs(): array
     {
         return $this->getEntityManager()

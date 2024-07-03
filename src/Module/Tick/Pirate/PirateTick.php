@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Pirate;
 
+use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -15,7 +16,7 @@ use Stu\Module\Logging\PirateLoggerInterface;
 
 final class PirateTick implements PirateTickInterface
 {
-    private const BEHAVIOUR_PROBABILITIES = [
+    private const array BEHAVIOUR_PROBABILITIES = [
         PirateBehaviourEnum::DO_NOTHING->value => 30,
         PirateBehaviourEnum::FLY->value => 40,
         PirateBehaviourEnum::RUB_COLONY->value => 5,
@@ -40,6 +41,7 @@ final class PirateTick implements PirateTickInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function work(): void
     {
         $this->logger->log('PIRATE TICK:');

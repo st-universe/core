@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,16 +44,19 @@ class ShipRumpCost implements ShipRumpCostInterface
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $shipRump;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
+    #[Override]
     public function setRumpId(int $shipRumpId): ShipRumpCostInterface
     {
         $this->rump_id = $shipRumpId;
@@ -60,11 +64,13 @@ class ShipRumpCost implements ShipRumpCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): ShipRumpCostInterface
     {
         $this->commodity_id = $commodityId;
@@ -72,11 +78,13 @@ class ShipRumpCost implements ShipRumpCostInterface
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setAmount(int $amount): ShipRumpCostInterface
     {
         $this->count = $amount;
@@ -84,6 +92,7 @@ class ShipRumpCost implements ShipRumpCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;

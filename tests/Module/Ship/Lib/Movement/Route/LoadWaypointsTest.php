@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use InvalidArgumentException;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -23,6 +24,7 @@ class LoadWaypointsTest extends StuTestCase
 
     private LoadWaypointsInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);

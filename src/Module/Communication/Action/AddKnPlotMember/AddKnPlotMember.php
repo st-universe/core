@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPlotMember;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -14,31 +15,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddKnPlotMember implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ADD_PLOTMEMBER';
+    public const string ACTION_IDENTIFIER = 'B_ADD_PLOTMEMBER';
 
-    private AddKnPlotMemberRequestInterface $addKnPlotMemberRequest;
-
-    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        AddKnPlotMemberRequestInterface $addKnPlotMemberRequest,
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->addKnPlotMemberRequest = $addKnPlotMemberRequest;
-        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
+    public function __construct(private AddKnPlotMemberRequestInterface $addKnPlotMemberRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         /** @var RpgPlotInterface $plot */
@@ -76,6 +59,7 @@ final class AddKnPlotMember implements ActionControllerInterface
         $game->addInformation(_('Der Spieler wurde hinzugefügt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

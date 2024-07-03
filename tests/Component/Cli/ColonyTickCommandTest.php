@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Cli;
 
+use Override;
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
 use Psr\Container\ContainerInterface;
@@ -19,6 +20,7 @@ class ColonyTickCommandTest extends StuTestCase
 
     private ColonyTickCommand $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->dic = $this->mock(ContainerInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Component\Player\Deletion\Handler;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Player\Deletion\Handler\KnPostDeletionHandler;
 use Stu\Orm\Entity\KnPostInterface;
@@ -22,6 +23,7 @@ class KnPostDeletionHandlerTest extends StuTestCase
 
     private KnPostDeletionHandler $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->knPostRepository = $this->mock(KnPostRepositoryInterface::class);

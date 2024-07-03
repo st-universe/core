@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\ColonyDepositMiningInterface;
  */
 final class ColonyDepositMiningRepository extends EntityRepository implements ColonyDepositMiningRepositoryInterface
 {
+    #[Override]
     public function prototype(): ColonyDepositMiningInterface
     {
         return new ColonyDepositMining();
     }
 
+    #[Override]
     public function save(ColonyDepositMiningInterface $entity): void
     {
         $em = $this->getEntityManager();

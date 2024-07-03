@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Information;
 
+use Override;
 class InformationWrapper implements InformationInterface
 {
-    /** @var array<string> */
-    private array $informations;
-
     /**
      * @param array<string> $informations
      */
-    public function __construct(array $informations = [])
+    public function __construct(private array $informations = [])
     {
-        $this->informations = $informations;
     }
 
+    #[Override]
     public function addInformation(?string $information): InformationInterface
     {
         if ($information !== null) {
@@ -26,6 +24,7 @@ class InformationWrapper implements InformationInterface
         return $this;
     }
 
+    #[Override]
     public function addInformationf(string $information, ...$args): InformationInterface
     {
         $this->addInformation(vsprintf(

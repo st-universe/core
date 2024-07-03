@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use Override;
 use Throwable;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,10 +56,10 @@ use Ubench;
 final class GameController implements GameControllerInterface
 {
     /** @var string */
-    public const DEFAULT_VIEW = 'DEFAULT_VIEW';
+    public const string DEFAULT_VIEW = 'DEFAULT_VIEW';
 
     /** @var string */
-    private const GAME_VERSION_DEV = 'dev';
+    private const string GAME_VERSION_DEV = 'dev';
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -125,6 +126,7 @@ final class GameController implements GameControllerInterface
         $this->gameInformations = new InformationWrapper();
     }
 
+    #[Override]
     public function setView(ModuleViewEnum|string $view): void
     {
         if ($view instanceof ModuleViewEnum) {
@@ -134,6 +136,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function getViewContext(ViewContextTypeEnum $type): mixed
     {
         if (!array_key_exists($type->value, $this->viewContext)) {
@@ -143,16 +146,19 @@ final class GameController implements GameControllerInterface
         return $this->viewContext[$type->value];
     }
 
+    #[Override]
     public function setViewContext(ViewContextTypeEnum $type, mixed $value): void
     {
         $this->viewContext[$type->value] = $value;
     }
 
+    #[Override]
     public function getGameState(): int
     {
         return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
     }
 
+    #[Override]
     public function setViewTemplate(string $viewTemplate): void
     {
         $isSwitch = request::has('switch');
@@ -164,6 +170,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function setTemplateFile(string $template): void
     {
         $this->loggerUtil->log(sprintf('setTemplateFile: %s', $template));
@@ -177,12 +184,14 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function setMacroAndTemplate(string $macro, string $tpl): void
     {
         $this->macro = $macro;
         $this->setTemplateFile($tpl);
     }
 
+    #[Override]
     public function setMacroInAjaxWindow(string $macro): void
     {
         $this->macro = $macro;
@@ -194,6 +203,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function showMacro(string $macro): void
     {
         $this->loggerUtil->log(sprintf('showMacro: %s', $macro));
@@ -207,11 +217,13 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function getMacro(): string
     {
         return $this->macro;
     }
 
+    #[Override]
     public function addInformationf(string $text, ...$args): InformationInterface
     {
         $this->addInformation(vsprintf(
@@ -222,6 +234,7 @@ final class GameController implements GameControllerInterface
         return $this;
     }
 
+    #[Override]
     public function addInformation(?string $information): InformationInterface
     {
         if ($information !== null) {
@@ -233,16 +246,19 @@ final class GameController implements GameControllerInterface
         return $this;
     }
 
+    #[Override]
     public function addInformationMerge(array $info): void
     {
         $this->gameInformations->addInformationArray($info, true);
     }
 
+    #[Override]
     public function addInformationMergeDown(array $info): void
     {
         $this->gameInformations->addInformationArray($info);
     }
 
+    #[Override]
     public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void
     {
         if ($informations === null) {
@@ -256,16 +272,19 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function getInformation(): array
     {
         return $this->gameInformations->getInformations();
     }
 
+    #[Override]
     public function getTargetLink(): ?TargetLink
     {
         return $this->targetLink;
     }
 
+    #[Override]
     public function setTargetLink(TargetLink $targetLink): GameControllerInterface
     {
         $this->targetLink = $targetLink;
@@ -273,12 +292,14 @@ final class GameController implements GameControllerInterface
         return $this;
     }
 
+    #[Override]
     public function setTemplateVar(string $key, $variable): void
     {
         $this->twigPage->setVar($key, $variable);
         $this->talPage->setVar($key, $variable);
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         $user = $this->session->getUser();
@@ -289,6 +310,7 @@ final class GameController implements GameControllerInterface
         return $user;
     }
 
+    #[Override]
     public function hasUser(): bool
     {
         return $this->session->getUser() !== null;
@@ -297,6 +319,7 @@ final class GameController implements GameControllerInterface
     /**
      * @return array<int, GameConfigInterface>
      */
+    #[Override]
     public function getGameConfig(): array
     {
         if ($this->gameConfig === null) {
@@ -309,11 +332,13 @@ final class GameController implements GameControllerInterface
         return $this->gameConfig;
     }
 
+    #[Override]
     public function getUniqId(): string
     {
         return uniqid();
     }
 
+    #[Override]
     public function setNavigation(
         array $navigationItems
     ): GameControllerInterface {
@@ -324,6 +349,7 @@ final class GameController implements GameControllerInterface
         return $this;
     }
 
+    #[Override]
     public function appendNavigationPart(
         string $url,
         string $title
@@ -331,21 +357,25 @@ final class GameController implements GameControllerInterface
         $this->siteNavigation[$url] = $title;
     }
 
+    #[Override]
     public function getNavigation(): array
     {
         return $this->siteNavigation;
     }
 
+    #[Override]
     public function getPageTitle(): string
     {
         return $this->pagetitle;
     }
 
+    #[Override]
     public function setPageTitle(string $title): void
     {
         $this->pagetitle = $title;
     }
 
+    #[Override]
     public function getExecuteJS(int $when): ?array
     {
         if (!array_key_exists($when, $this->execjs)) {
@@ -355,6 +385,7 @@ final class GameController implements GameControllerInterface
         return $this->execjs[$when];
     }
 
+    #[Override]
     public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void
     {
         switch ($when) {
@@ -373,6 +404,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function redirectTo(string $href): void
     {
         $this->gameRequestSaver->save($this->getGameRequest());
@@ -382,6 +414,7 @@ final class GameController implements GameControllerInterface
         exit;
     }
 
+    #[Override]
     public function getCurrentRound(): GameTurnInterface
     {
         if ($this->currentRound === null) {
@@ -390,6 +423,7 @@ final class GameController implements GameControllerInterface
         return $this->currentRound;
     }
 
+    #[Override]
     public function getJavascriptPath(): string
     {
         $gameVersion = $this->stuConfig->getGameSettings()->getVersion();
@@ -403,6 +437,7 @@ final class GameController implements GameControllerInterface
         );
     }
 
+    #[Override]
     public function checkDatabaseItem($databaseEntryId): void
     {
         $userId = $this->getUser()->getId();
@@ -423,11 +458,13 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function getAchievements(): array
     {
         return $this->achievements;
     }
 
+    #[Override]
     public function getSessionString(): string
     {
         $string = bin2hex(random_bytes(15));
@@ -442,6 +479,7 @@ final class GameController implements GameControllerInterface
         return $string;
     }
 
+    #[Override]
     public function sessionAndAdminCheck(): void
     {
         $this->session->createSession(true);
@@ -451,11 +489,13 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function getGameRequestId(): string
     {
         return $this->getGameRequest()->getRequestId();
     }
 
+    #[Override]
     public function getGameRequest(): GameRequestInterface
     {
         if ($this->gameRequest === null) {
@@ -474,6 +514,7 @@ final class GameController implements GameControllerInterface
         return $this->gameRequest;
     }
 
+    #[Override]
     public function main(
         ModuleViewEnum $view,
         array $actions,
@@ -533,7 +574,7 @@ final class GameController implements GameControllerInterface
 
             $gameRequest->setActionMs((int)$actionMs / 1_000_000);
             $gameRequest->setViewMs((int)$viewMs / 1_000_000);
-        } catch (SessionInvalidException $e) {
+        } catch (SessionInvalidException) {
             session_destroy();
 
             if (request::isAjaxRequest()) {
@@ -558,36 +599,36 @@ final class GameController implements GameControllerInterface
             if ($e->getMessage() !== '') {
                 $this->setTemplateVar('REASON', $e->getMessage());
             }
-        } catch (TickGameStateException $e) {
+        } catch (TickGameStateException) {
             $this->setPageTitle(_('Rundenwechsel aktiv'));
             $this->setTemplateFile('html/tick.xhtml');
 
             $this->setTemplateVar('THIS', $this);
-        } catch (MaintenanceGameStateException $e) {
+        } catch (MaintenanceGameStateException) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/maintenance.xhtml');
 
             $this->setTemplateVar('THIS', $this);
-        } catch (ResetGameStateException $e) {
+        } catch (ResetGameStateException) {
             $this->setPageTitle(_('Resetmodus'));
             $this->setTemplateFile('html/gamereset.xhtml');
 
             $this->setTemplateVar('THIS', $this);
-        } catch (RelocationGameStateException $e) {
+        } catch (RelocationGameStateException) {
             $this->setPageTitle(_('Umzugsmodus'));
             $this->setTemplateFile('html/relocation.xhtml');
 
             $this->setTemplateVar('THIS', $this);
-        } catch (ShipDoesNotExistException $e) {
+        } catch (ShipDoesNotExistException) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
             $this->setViewTemplate('html/ship/ship.twig');
-        } catch (ShipIsDestroyedException $e) {
+        } catch (ShipIsDestroyedException) {
             $this->addInformation('Dieses Schiff wurde zerstört!');
             $this->setViewTemplate('html/ship/ship.twig');
-        } catch (ItemNotFoundException $e) {
+        } catch (ItemNotFoundException) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
             $this->setTemplateFile('html/notfound.xhtml');
-        } catch (UnallowedUplinkOperation $e) {
+        } catch (UnallowedUplinkOperation) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
             if (request::isAjaxRequest()) {
@@ -665,6 +706,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function isAdmin(): bool
     {
         if (!$this->hasUser()) {
@@ -678,6 +720,7 @@ final class GameController implements GameControllerInterface
         );
     }
 
+    #[Override]
     public function isNpc(): bool
     {
         if (!$this->hasUser()) {
@@ -687,11 +730,13 @@ final class GameController implements GameControllerInterface
         return $this->getUser()->isNpc();
     }
 
+    #[Override]
     public function isSemaphoreAlreadyAcquired(int $key): bool
     {
         return array_key_exists($key, $this->semaphores);
     }
 
+    #[Override]
     public function addSemaphore(int $key, $semaphore): void
     {
         $this->semaphores[$key] = $semaphore;
@@ -700,6 +745,7 @@ final class GameController implements GameControllerInterface
     /**
      * Triggers a certain event
      */
+    #[Override]
     public function triggerEvent(object $event): void
     {
         $this->eventDispatcher->dispatch($event);
@@ -756,6 +802,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    #[Override]
     public function getGameStats(): array
     {
         if ($this->gameStats === null) {
@@ -768,11 +815,13 @@ final class GameController implements GameControllerInterface
         return $this->gameStats;
     }
 
+    #[Override]
     public function getGameStateTextual(): string
     {
         return GameEnum::gameStateTypeToDescription($this->getGameState());
     }
 
+    #[Override]
     public function getLoginError(): string
     {
         return $this->loginError;
@@ -781,6 +830,7 @@ final class GameController implements GameControllerInterface
     /**
      * @return array{executionTime: float|string, memoryUsage: float|string, memoryPeakUsage: float|string}
      */
+    #[Override]
     public function getBenchmarkResult(): array
     {
         $this->loggerUtil->log(sprintf('getBenchmarkResult, timestamp: %F', microtime(true)));

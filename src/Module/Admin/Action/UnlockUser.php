@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use request;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
@@ -12,16 +13,13 @@ use Stu\Orm\Repository\UserLockRepositoryInterface;
 
 final class UnlockUser implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_UNLOCK_USER';
+    public const string ACTION_IDENTIFIER = 'B_UNLOCK_USER';
 
-    private UserLockRepositoryInterface $userLockRepository;
-
-    public function __construct(
-        UserLockRepositoryInterface $userLockRepository
-    ) {
-        $this->userLockRepository = $userLockRepository;
+    public function __construct(private UserLockRepositoryInterface $userLockRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Playerlist::VIEW_IDENTIFIER);
@@ -53,6 +51,7 @@ final class UnlockUser implements ActionControllerInterface
         $game->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getName(), $userIdToUnlock);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Movement;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\Information\InformationWrapper;
@@ -46,6 +47,7 @@ final class ShipMover implements ShipMoverInterface
         $this->messages->add($this->messageFactory->createMessage(UserEnum::USER_NOONE, null, $value));
     }
 
+    #[Override]
     public function checkAndMove(
         ShipWrapperInterface $leadShipWrapper,
         FlightRouteInterface $flightRoute

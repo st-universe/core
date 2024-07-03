@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ChangeTorpedoType;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -16,28 +17,13 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ChangeTorpedoType implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_TORPS';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_TORPS';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ChangeTorpedoTypeRequestInterface $changeTorpedoTypeRequest;
-
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyRepositoryInterface $colonyRepository,
-        ChangeTorpedoTypeRequestInterface $changeTorpedoTypeRequest,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyRepository = $colonyRepository;
-        $this->changeTorpedoTypeRequest = $changeTorpedoTypeRequest;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository, private ChangeTorpedoTypeRequestInterface $changeTorpedoTypeRequest, private TorpedoTypeRepositoryInterface $torpedoTypeRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -66,6 +52,7 @@ final class ChangeTorpedoType implements ActionControllerInterface
         $game->addInformation(_('Die Torpedo-Sorte wurde geändert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

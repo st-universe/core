@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tal;
 
+use Override;
 use PhpTal;
 use PhpTal\PhpTalInterface;
 use Stu\Module\Config\StuConfigInterface;
 
 final class TalPage implements TalPageInterface
 {
-    private StuConfigInterface $stuConfig;
-
     private ?PhpTal\PHPTAL $template = null;
 
     private bool $isTemplateSet = false;
 
-    public function __construct(
-        StuConfigInterface $stuConfig
-    ) {
-        $this->stuConfig = $stuConfig;
+    public function __construct(private StuConfigInterface $stuConfig)
+    {
     }
 
+    #[Override]
     public function setVar(string $var, $value): void
     {
         $this->getTemplate()->set($var, $value);
@@ -51,17 +49,20 @@ final class TalPage implements TalPageInterface
         return $this->template;
     }
 
+    #[Override]
     public function setTemplate(string $file): void
     {
         $this->getTemplate()->setTemplate($file);
         $this->isTemplateSet = true;
     }
 
+    #[Override]
     public function isTemplateSet(): bool
     {
         return $this->isTemplateSet;
     }
 
+    #[Override]
     public function parse(): string
     {
         return $this->getTemplate()->execute();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
+use Override;
 use InvalidArgumentException;
 use JBBCode\Parser;
 use request;
@@ -17,39 +18,20 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowWriteQuickPm implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_WRITE_QUICKPM';
+    public const string VIEW_IDENTIFIER = 'SHOW_WRITE_QUICKPM';
 
-    public const TYPE_USER = 1;
-    public const TYPE_SHIP = 2;
-    public const TYPE_FLEET = 3;
-    public const TYPE_STATION = 4;
-    public const TYPE_COLONY = 5;
-
-    private Parser $bbCodeParser;
-
-    private UserRepositoryInterface $userRepository;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
+    public const int TYPE_USER = 1;
+    public const int TYPE_SHIP = 2;
+    public const int TYPE_FLEET = 3;
+    public const int TYPE_STATION = 4;
+    public const int TYPE_COLONY = 5;
 
 
-    public function __construct(
-        Parser $bbCodeParser,
-        UserRepositoryInterface $userRepository,
-        FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->bbCodeParser = $bbCodeParser;
-        $this->userRepository = $userRepository;
-        $this->fleetRepository = $fleetRepository;
-        $this->shipRepository = $shipRepository;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private Parser $bbCodeParser, private UserRepositoryInterface $userRepository, private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setMacroInAjaxWindow('html/commmacros.xhtml/write_quick_pm');

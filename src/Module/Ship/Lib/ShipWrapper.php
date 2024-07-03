@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JBBCode\Parser;
@@ -65,21 +66,25 @@ final class ShipWrapper implements ShipWrapperInterface
         $this->shipSystemDataCache = new ArrayCollection();
     }
 
+    #[Override]
     public function get(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function getShipWrapperFactory(): ShipWrapperFactoryInterface
     {
         return $this->shipWrapperFactory;
     }
 
+    #[Override]
     public function getShipSystemManager(): ShipSystemManagerInterface
     {
         return $this->shipSystemManager;
     }
 
+    #[Override]
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
         if ($this->get()->getFleet() === null) {
@@ -89,6 +94,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->shipWrapperFactory->wrapFleet($this->get()->getFleet());
     }
 
+    #[Override]
     public function getEpsUsage(): int
     {
         if ($this->epsUsage === null) {
@@ -97,6 +103,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->epsUsage;
     }
 
+    #[Override]
     public function lowerEpsUsage(int $value): void
     {
         $this->epsUsage -= $value;
@@ -130,6 +137,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getEpsUsage() + $reactor->getUsage();
     }
 
+    #[Override]
     public function getReactorWrapper(): ?ReactorWrapperInterface
     {
         if ($this->reactorWrapper === null) {
@@ -166,6 +174,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->reactorWrapper;
     }
 
+    #[Override]
     public function setAlertState(ShipAlertStateEnum $alertState): ?string
     {
         $msg = $this->shipStateChanger->changeAlertState($this, $alertState);
@@ -179,6 +188,7 @@ final class ShipWrapper implements ShipWrapperInterface
      *
      * @return ShipSystemInterface[]
      */
+    #[Override]
     public function getDamagedSystems(): array
     {
         $damagedSystems = [];
@@ -204,11 +214,13 @@ final class ShipWrapper implements ShipWrapperInterface
         return $damagedSystems;
     }
 
+    #[Override]
     public function isOwnedByCurrentUser(): bool
     {
         return $this->game->getUser() === $this->get()->getUser();
     }
 
+    #[Override]
     public function canLandOnCurrentColony(): bool
     {
         if ($this->get()->getRump()->getCommodity() === null) {
@@ -232,6 +244,7 @@ final class ShipWrapper implements ShipWrapperInterface
             ->hasAirfield();
     }
 
+    #[Override]
     public function canBeRepaired(): bool
     {
         if ($this->get()->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN) {
@@ -253,6 +266,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->get()->getHull() < $this->get()->getMaxHull();
     }
 
+    #[Override]
     public function canFire(): bool
     {
         $ship = $this->get();
@@ -267,16 +281,19 @@ final class ShipWrapper implements ShipWrapperInterface
         return $epsSystem !== null && $epsSystem->getEps() !== 0;
     }
 
+    #[Override]
     public function getRepairDuration(): int
     {
         return $this->repairUtil->getRepairDuration($this);
     }
 
+    #[Override]
     public function getRepairDurationPreview(): int
     {
         return $this->repairUtil->getRepairDurationPreview($this);
     }
 
+    #[Override]
     public function getRepairCosts(): array
     {
         $neededParts = $this->repairUtil->determineSpareParts($this, false);
@@ -290,6 +307,7 @@ final class ShipWrapper implements ShipWrapperInterface
         ];
     }
 
+    #[Override]
     public function getPossibleTorpedoTypes(): array
     {
         if ($this->ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
@@ -299,6 +317,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->torpedoTypeRepository->getByLevel($this->ship->getRump()->getTorpedoLevel());
     }
 
+    #[Override]
     public function getTractoredShipWrapper(): ?ShipWrapperInterface
     {
         $tractoredShip = $this->get()->getTractoredShip();
@@ -309,6 +328,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->shipWrapperFactory->wrapShip($tractoredShip);
     }
 
+    #[Override]
     public function getTractoringShipWrapper(): ?ShipWrapperInterface
     {
         $tractoringShip = $this->get()->getTractoringShip();
@@ -319,6 +339,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->shipWrapperFactory->wrapShip($tractoringShip);
     }
 
+    #[Override]
     public function getDockedToShipWrapper(): ?ShipWrapperInterface
     {
         $dockedTo = $this->get()->getDockedTo();
@@ -329,6 +350,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->shipWrapperFactory->wrapShip($dockedTo);
     }
 
+    #[Override]
     public function getStateIconAndTitle(): ?array
     {
         $ship = $this->get();
@@ -384,6 +406,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return null;
     }
 
+    #[Override]
     public function getTakeoverTicksLeft(ShipTakeoverInterface $takeover = null): int
     {
         $takeover = $takeover ?? $this->get()->getTakeoverActive();
@@ -396,6 +419,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $takeover->getStartTurn() + ShipTakeoverManagerInterface::TURNS_TO_TAKEOVER - $currentTurn;
     }
 
+    #[Override]
     public function canBeScrapped(): bool
     {
         $ship = $this->get();
@@ -403,6 +427,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $ship->isBase() && $ship->getState() !== ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING;
     }
 
+    #[Override]
     public function getCrewStyle(): string
     {
         $ship = $this->get();
@@ -415,6 +440,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $excessCrew > 0 ? "color: green;" : "color: red;";
     }
 
+    #[Override]
     public function getHullSystemData(): HullSystemData
     {
         $hullSystemData = $this->getSpecificShipSystem(
@@ -429,6 +455,7 @@ final class ShipWrapper implements ShipWrapperInterface
         return $hullSystemData;
     }
 
+    #[Override]
     public function getShieldSystemData(): ?ShieldSystemData
     {
         return $this->getSpecificShipSystem(
@@ -437,6 +464,7 @@ final class ShipWrapper implements ShipWrapperInterface
         );
     }
 
+    #[Override]
     public function getEpsSystemData(): ?EpsSystemData
     {
         return $this->getSpecificShipSystem(
@@ -445,6 +473,7 @@ final class ShipWrapper implements ShipWrapperInterface
         );
     }
 
+    #[Override]
     public function getWarpDriveSystemData(): ?WarpDriveSystemData
     {
         return $this->getSpecificShipSystem(
@@ -453,6 +482,7 @@ final class ShipWrapper implements ShipWrapperInterface
         );
     }
 
+    #[Override]
     public function getTrackerSystemData(): ?TrackerSystemData
     {
         return $this->getSpecificShipSystem(
@@ -461,6 +491,7 @@ final class ShipWrapper implements ShipWrapperInterface
         );
     }
 
+    #[Override]
     public function getWebEmitterSystemData(): ?WebEmitterSystemData
     {
         return $this->getSpecificShipSystem(
@@ -469,6 +500,7 @@ final class ShipWrapper implements ShipWrapperInterface
         );
     }
 
+    #[Override]
     public function getAstroLaboratorySystemData(): ?AstroLaboratorySystemData
     {
         return $this->getSpecificShipSystem(
@@ -477,6 +509,7 @@ final class ShipWrapper implements ShipWrapperInterface
         );
     }
 
+    #[Override]
     public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData
     {
         return $this->getSpecificShipSystem(

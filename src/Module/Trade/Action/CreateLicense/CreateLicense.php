@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CreateLicense;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,28 +15,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class CreateLicense implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_LICENSE';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_LICENSE';
 
-    private CreateLicenseRequestInterface $createLicenseRequest;
-
-    private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        CreateLicenseRequestInterface $createLicenseRequest,
-        TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->createLicenseRequest = $createLicenseRequest;
-        $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private CreateLicenseRequestInterface $createLicenseRequest, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
@@ -87,6 +73,7 @@ final class CreateLicense implements ActionControllerInterface
         $game->addInformation('Handelslizenz geändert');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

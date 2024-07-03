@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
@@ -12,26 +13,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    private SessionStringRepositoryInterface $sessionStringRepository;
-
-    private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private UserLockRepositoryInterface $userLockRepository;
-
-    public function __construct(
-        SessionStringRepositoryInterface $sessionStringRepository,
-        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
-        UserRepositoryInterface $userRepository,
-        UserLockRepositoryInterface $userLockRepository
-    ) {
-        $this->sessionStringRepository = $sessionStringRepository;
-        $this->userProfileVisitorRepository = $userProfileVisitorRepository;
-        $this->userRepository = $userRepository;
-        $this->userLockRepository = $userLockRepository;
+    public function __construct(private SessionStringRepositoryInterface $sessionStringRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private UserRepositoryInterface $userRepository, private UserLockRepositoryInterface $userLockRepository)
+    {
     }
 
+    #[Override]
     public function delete(UserInterface $user): void
     {
         $this->unlockUser($user);

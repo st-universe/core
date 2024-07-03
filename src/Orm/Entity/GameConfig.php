@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -29,16 +30,19 @@ class GameConfig implements GameConfigInterface
     #[Column(type: 'smallint')]
     private int $value = 0;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getOption(): int
     {
         return $this->option;
     }
 
+    #[Override]
     public function setOption(int $option): GameConfigInterface
     {
         $this->option = $option;
@@ -46,11 +50,13 @@ class GameConfig implements GameConfigInterface
         return $this;
     }
 
+    #[Override]
     public function getValue(): int
     {
         return $this->value;
     }
 
+    #[Override]
     public function setValue(int $value): GameConfigInterface
     {
         $this->value = $value;

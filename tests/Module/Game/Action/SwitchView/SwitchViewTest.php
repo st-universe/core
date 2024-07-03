@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Action\SwitchView;
 
+use Override;
 use Mockery\MockInterface;
 use request;
 use Stu\Component\Game\ModuleViewEnum;
@@ -22,6 +23,7 @@ class SwitchViewTest extends StuTestCase
 
     private ActionControllerInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->game = $this->mock(GameControllerInterface::class);

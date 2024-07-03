@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu;
 
+use Override;
 /**
  * @template TRequestClass of object
  */
@@ -27,6 +28,7 @@ abstract class RequestTestCase extends StuTestCase
      */
     abstract protected function getRequestClass(): string;
 
+    #[Override]
     protected function tearDown(): void
     {
         // reset vars

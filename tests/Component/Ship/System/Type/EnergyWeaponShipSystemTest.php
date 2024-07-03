@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -19,6 +20,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;
 
+    #[Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(ShipInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShip;
 
+use Override;
 use NavPanel;
 use request;
 use Stu\Component\Game\GameEnum;
@@ -41,85 +42,35 @@ use Stu\Orm\Repository\UserLayerRepositoryInterface;
 
 final class ShowShip implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIP';
-
-    private SessionInterface $session;
-
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIP';
 
     private LoggerUtilInterface $loggerUtil;
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ColonizationCheckerInterface $colonizationChecker;
-
-    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
-
-    private AstroEntryRepositoryInterface $astroEntryRepository;
-
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-
-    private NbsUtilityInterface $nbsUtility;
-
-    private StationShipRepairRepositoryInterface $stationShipRepairRepository;
-
-    private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository;
-
-    private UserLayerRepositoryInterface $userLayerRepository;
-
-    private StationUtilityInterface $stationUtility;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipUiFactoryInterface $shipUiFactory;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    private AnomalyRepositoryInterface $anomalyRepository;
-
     public function __construct(
-        SessionInterface $session,
-        ShipLoaderInterface $shipLoader,
-        ColonizationCheckerInterface $colonizationChecker,
-        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
-        AstroEntryRepositoryInterface $astroEntryRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        NbsUtilityInterface $nbsUtility,
-        StationShipRepairRepositoryInterface $stationShipRepairRepository,
-        ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
-        UserLayerRepositoryInterface $userLayerRepository,
-        StationUtilityInterface $stationUtility,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipUiFactoryInterface $shipUiFactory,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        AnomalyRepositoryInterface $anomalyRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        private SessionInterface $session,
+        private ShipLoaderInterface $shipLoader,
+        private ColonizationCheckerInterface $colonizationChecker,
+        private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
+        private AstroEntryRepositoryInterface $astroEntryRepository,
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private NbsUtilityInterface $nbsUtility,
+        private StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
+        private UserLayerRepositoryInterface $userLayerRepository,
+        private StationUtilityInterface $stationUtility,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipUiFactoryInterface $shipUiFactory,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private AnomalyRepositoryInterface $anomalyRepository,
+        private LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->session = $session;
-        $this->shipLoader = $shipLoader;
-        $this->colonizationChecker = $colonizationChecker;
-        $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        $this->astroEntryRepository = $astroEntryRepository;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->nbsUtility = $nbsUtility;
-        $this->stationShipRepairRepository = $stationShipRepairRepository;
-        $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
-        $this->userLayerRepository = $userLayerRepository;
-        $this->stationUtility = $stationUtility;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->loggerUtilFactory = $loggerUtilFactory;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipUiFactory = $shipUiFactory;
-        $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->anomalyRepository = $anomalyRepository;
+        $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
 
         //$this->loggerUtil->init('SHOW', LoggerEnum::LEVEL_ERROR);
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowRepairOptions;
 
+use Override;
 use request;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\RepairTaskEnum;
@@ -13,20 +14,13 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowRepairOptions implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_REPAIR_OPTIONS';
+    public const string VIEW_IDENTIFIER = 'SHOW_REPAIR_OPTIONS';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private RepairUtilInterface $repairUtil;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        RepairUtilInterface $repairUtil
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->repairUtil = $repairUtil;
+    public function __construct(private ShipLoaderInterface $shipLoader, private RepairUtilInterface $repairUtil)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

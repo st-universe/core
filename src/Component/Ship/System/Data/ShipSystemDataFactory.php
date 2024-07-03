@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -21,6 +22,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
     ) {
     }
 
+    #[Override]
     public function createSystemData(
         ShipSystemTypeEnum $systemType,
         ShipWrapperFactoryInterface $shipWrapperFactory

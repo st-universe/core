@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -91,16 +92,19 @@ class KnPost implements KnPostInterface
         $this->knCharacters = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTitle(): ?string
     {
         return $this->titel;
     }
 
+    #[Override]
     public function setTitle(string $title): KnPostInterface
     {
         $this->titel = $title;
@@ -108,11 +112,13 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): KnPostInterface
     {
         $this->text = $text;
@@ -120,11 +126,13 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): KnPostInterface
     {
         $this->date = $date;
@@ -132,11 +140,13 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
+    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
+    #[Override]
     public function setUsername(string $username): KnPostInterface
     {
         $this->username = $username;
@@ -144,16 +154,19 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getdelUserId(): ?int
     {
         return $this->del_user_id;
     }
 
+    #[Override]
     public function setdelUserId(?int $userid): KnPostInterface
     {
         $this->del_user_id = $userid;
@@ -161,22 +174,26 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): KnPostInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getEditDate(): int
     {
         return $this->lastedit;
     }
 
+    #[Override]
     public function setEditDate(int $editDate): KnPostInterface
     {
         $this->lastedit = $editDate;
@@ -184,16 +201,19 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
+    #[Override]
     public function getPlotId(): ?int
     {
         return $this->plot_id;
     }
 
+    #[Override]
     public function getRpgPlot(): ?RpgPlotInterface
     {
         return $this->rpgPlot;
     }
 
+    #[Override]
     public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface
     {
         $this->rpgPlot = $rpgPlot;
@@ -201,22 +221,26 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
+    #[Override]
     public function getComments(): Collection
     {
         return $this->comments;
     }
 
+    #[Override]
     public function getRatings(): array
     {
         return $this->ratings;
     }
 
+    #[Override]
     public function setRatings(array $ratings): KnPostInterface
     {
         $this->ratings = $ratings;
         return $this;
     }
 
+    #[Override]
     public function getUrl(): string
     {
         return sprintf(
@@ -229,6 +253,7 @@ class KnPost implements KnPostInterface
     /**
      * @return Collection<int, KnCharactersInterface>
      */
+    #[Override]
     public function getKnCharacters(): Collection
     {
         return $this->knCharacters;

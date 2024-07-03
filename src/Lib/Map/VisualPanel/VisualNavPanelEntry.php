@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
+use Override;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 use Stu\Orm\Entity\ShipInterface;
 
 class VisualNavPanelEntry extends SignaturePanelEntry
 {
-    private ShipInterface $currentShip;
-
-    private bool $isOnShipLevel;
-
     public function __construct(
         int $x,
         int $y,
-        bool $isOnShipLevel,
+        private bool $isOnShipLevel,
         PanelLayers $layers,
-        ShipInterface $currentShip
+        private ShipInterface $currentShip
     ) {
         parent::__construct($x, $y, $layers);
-        $this->currentShip = $currentShip;
-        $this->isOnShipLevel = $isOnShipLevel;
     }
 
     private function isCurrentShipPosition(): bool
@@ -38,6 +33,7 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         return $this->y === $this->currentShip->getPosY();
     }
 
+    #[Override]
     public function getCssClass(): string
     {
         if ($this->isCurrentShipPosition()) {

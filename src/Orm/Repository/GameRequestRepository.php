@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameRequestInterface;
@@ -15,11 +16,13 @@ use Stu\Orm\Entity\GameRequestInterface;
  */
 final class GameRequestRepository extends EntityRepository implements GameRequestRepositoryInterface
 {
+    #[Override]
     public function prototype(): GameRequestInterface
     {
         return new GameRequest();
     }
 
+    #[Override]
     public function save(GameRequestInterface $gameRequest): void
     {
         $em = $this->getEntityManager();
@@ -27,12 +30,14 @@ final class GameRequestRepository extends EntityRepository implements GameReques
         $em->flush();
     }
 
+    #[Override]
     public function delete(GameRequestInterface $gameRequest): void
     {
         $em = $this->getEntityManager();
         $em->remove($gameRequest);
     }
 
+    #[Override]
     public function truncateAllGameRequests(): void
     {
         $this->getEntityManager()->createQuery(

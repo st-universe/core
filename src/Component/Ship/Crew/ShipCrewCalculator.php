@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Crew;
 
+use Override;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Orm\Entity\ModuleInterface;
@@ -18,14 +19,11 @@ use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
  */
 final class ShipCrewCalculator implements ShipCrewCalculatorInterface
 {
-    private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository;
-
-    public function __construct(
-        ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository
-    ) {
-        $this->shipRumpCategoryRoleCrewRepository = $shipRumpCategoryRoleCrewRepository;
+    public function __construct(private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository)
+    {
     }
 
+    #[Override]
     public function getMaxCrewCountByRump(
         ShipRumpInterface $shipRump
     ): int {
@@ -36,6 +34,7 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
         }
     }
 
+    #[Override]
     public function getCrewObj(
         ShipRumpInterface $shipRump
     ): ?ShipRumpCategoryRoleCrewInterface {
@@ -46,6 +45,7 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
             );
     }
 
+    #[Override]
     public function getMaxCrewCountByShip(
         ShipInterface $ship
     ): int {
@@ -63,6 +63,7 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
         return $crewCount;
     }
 
+    #[Override]
     public function getCrewUsage(array $modules, ShipRumpInterface $rump, UserInterface $user): int
     {
         return array_reduce(

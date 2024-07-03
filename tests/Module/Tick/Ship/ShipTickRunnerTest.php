@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mockery;
@@ -29,6 +30,7 @@ class ShipTickRunnerTest extends StuTestCase
 
     private ShipTickRunner $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipTickManager = $this->mock(ShipTickManagerInterface::class);

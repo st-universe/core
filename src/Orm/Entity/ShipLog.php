@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -42,11 +43,13 @@ class ShipLog implements ShipLogInterface
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?ShipInterface $ship = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): ShipLogInterface
     {
         $this->ship = $ship;
@@ -54,11 +57,13 @@ class ShipLog implements ShipLogInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): ShipLogInterface
     {
         $this->text = $text;
@@ -66,11 +71,13 @@ class ShipLog implements ShipLogInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): ShipLogInterface
     {
         $this->date = $date;
@@ -78,6 +85,7 @@ class ShipLog implements ShipLogInterface
         return $this;
     }
 
+    #[Override]
     public function setDeleted(int $timestamp): ShipLogInterface
     {
         $this->deleted = $timestamp;
@@ -85,6 +93,7 @@ class ShipLog implements ShipLogInterface
         return $this;
     }
 
+    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

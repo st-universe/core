@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\PirateWrathRanking;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
@@ -16,32 +17,13 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class PirateWrathRanking implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TOP_PIRATE_WRATH';
+    public const string VIEW_IDENTIFIER = 'SHOW_TOP_PIRATE_WRATH';
 
-    private DatabaseUiFactoryInterface $databaseUiFactory;
-
-    private UserRepositoryInterface $userRepository;
-
-    private PirateWrathRepositoryInterface $pirateWrathRepository;
-
-    private GradientColorInterface $gradientColor;
-
-    private HistoryRepositoryInterface $historyRepository;
-
-    public function __construct(
-        DatabaseUiFactoryInterface $databaseUiFactory,
-        PirateWrathRepositoryInterface $pirateWrathRepository,
-        GradientColorInterface $gradientColor,
-        UserRepositoryInterface $userRepository,
-        HistoryRepositoryInterface $historyRepository
-    ) {
-        $this->databaseUiFactory = $databaseUiFactory;
-        $this->pirateWrathRepository = $pirateWrathRepository;
-        $this->gradientColor = $gradientColor;
-        $this->userRepository = $userRepository;
-        $this->historyRepository = $historyRepository;
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private PirateWrathRepositoryInterface $pirateWrathRepository, private GradientColorInterface $gradientColor, private UserRepositoryInterface $userRepository, private HistoryRepositoryInterface $historyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

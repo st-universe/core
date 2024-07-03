@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -19,6 +20,7 @@ final class EnterWaypoint implements EnterWaypointInterface
     ) {
     }
 
+    #[Override]
     public function enterNextWaypoint(
         ShipInterface $ship,
         bool $isTraversing,

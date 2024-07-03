@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserLockInterface;
@@ -37,6 +38,7 @@ class UserDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
+    #[Override]
     public function setUp(): void
     {
         $this->sessionStringRepository = $this->mock(SessionStringRepositoryInterface::class);

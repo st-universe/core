@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowOfferCommodity;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
@@ -13,28 +14,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowOfferCommodity implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_OFFER_COMMODITY';
+    public const string VIEW_IDENTIFIER = 'SHOW_OFFER_COMMODITY';
 
-    private ShowOfferCommodityRequestInterface $showOfferCommodityRequest;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        ShowOfferCommodityRequestInterface $showOfferCommodityRequest,
-        TradePostRepositoryInterface $tradePostRepository,
-        TradeOfferRepositoryInterface $tradeOfferRepository,
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->showOfferCommodityRequest = $showOfferCommodityRequest;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private ShowOfferCommodityRequestInterface $showOfferCommodityRequest, private TradePostRepositoryInterface $tradePostRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $commodity = $this->commodityRepository->find($this->showOfferCommodityRequest->getCommodityId());

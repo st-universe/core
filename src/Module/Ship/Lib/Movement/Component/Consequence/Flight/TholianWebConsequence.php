@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
@@ -20,6 +21,7 @@ class TholianWebConsequence extends AbstractFlightConsequence
     ) {
     }
 
+    #[Override]
     protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

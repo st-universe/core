@@ -17,36 +17,8 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
  */
 final class ManagementListItem
 {
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private AllianceInterface $alliance;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private UserInterface $user;
-
-    private int $currentUserId;
-
-    private CrewCountRetrieverInterface $crewCountRetriever;
-
-    private CrewLimitCalculatorInterface $crewLimitCalculator;
-
-    public function __construct(
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        AllianceInterface $alliance,
-        UserInterface $user,
-        int $currentUserId,
-        CrewLimitCalculatorInterface $crewLimitCalculator,
-        CrewCountRetrieverInterface $crewCountRetriever
-    ) {
-        $this->user = $user;
-        $this->currentUserId = $currentUserId;
-        $this->alliance = $alliance;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->crewCountRetriever = $crewCountRetriever;
-        $this->crewLimitCalculator = $crewLimitCalculator;
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private AllianceInterface $alliance, private UserInterface $user, private int $currentUserId, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever)
+    {
     }
 
     /**

@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 
 final class DistributedMessageSender implements DistributedMessageSenderInterface
 {
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function distributeMessageCollection(
         MessageCollectionInterface $messageCollection,
         int $senderId = UserEnum::USER_NOONE,

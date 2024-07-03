@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Message;
 
+use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
@@ -14,11 +15,13 @@ final class MessageCollection implements MessageCollectionInterface
      */
     private array $messages = [];
 
+    #[Override]
     public function add(MessageInterface $msg): void
     {
         $this->messages[] = $msg;
     }
 
+    #[Override]
     public function getRecipientIds(): array
     {
         $recipientIds = [];
@@ -42,6 +45,7 @@ final class MessageCollection implements MessageCollectionInterface
         return $recipientIds;
     }
 
+    #[Override]
     public function getInformationDump(?int $userId = null): InformationWrapper
     {
         $result = new InformationWrapper();
@@ -64,6 +68,7 @@ final class MessageCollection implements MessageCollectionInterface
         return $result;
     }
 
+    #[Override]
     public function isEmpty(): bool
     {
         return $this->getInformationDump()->isEmpty();

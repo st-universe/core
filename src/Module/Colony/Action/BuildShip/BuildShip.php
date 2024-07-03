@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -29,64 +30,13 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class BuildShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILD_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_BUILD_SHIP';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
-
-    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ModuleRepositoryInterface $moduleRepository;
-
-    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    public function __construct(
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        ColonyLoaderInterface $colonyLoader,
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ModuleRepositoryInterface $moduleRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->buildplanModuleRepository = $buildplanModuleRepository;
-        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->moduleRepository = $moduleRepository;
-        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-        $this->colonyFunctionManager = $colonyFunctionManager;
+    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ColonyLoaderInterface $colonyLoader, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ModuleRepositoryInterface $moduleRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -289,6 +239,7 @@ final class BuildShip implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

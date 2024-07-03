@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowRegistration;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -16,28 +17,13 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
  */
 final class ShowRegistration implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_REGISTRATION';
+    public const string VIEW_IDENTIFIER = 'SHOW_REGISTRATION';
 
-    private ShowRegistrationRequestInterface $showRegistrationRequest;
-
-    private FactionRepositoryInterface $factionRepository;
-
-    private ConfigInterface $config;
-
-    private UiItemFactoryInterface $uiItemFactory;
-
-    public function __construct(
-        ShowRegistrationRequestInterface $showRegistrationRequest,
-        FactionRepositoryInterface $factionRepository,
-        UiItemFactoryInterface $uiItemFactory,
-        ConfigInterface $config
-    ) {
-        $this->showRegistrationRequest = $showRegistrationRequest;
-        $this->factionRepository = $factionRepository;
-        $this->uiItemFactory = $uiItemFactory;
-        $this->config = $config;
+    public function __construct(private ShowRegistrationRequestInterface $showRegistrationRequest, private FactionRepositoryInterface $factionRepository, private UiItemFactoryInterface $uiItemFactory, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle('Registrierung - Star Trek Universe');

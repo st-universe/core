@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -11,16 +12,12 @@ use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 
 final class ViewComponentLoader implements ViewComponentLoaderInterface
 {
-    /** @var array<int, ViewComponentProviderInterface> */
-    private array $viewComponentProviders;
-
     /** @param array<int, ViewComponentProviderInterface> $viewComponentProviders */
-    public function __construct(
-        array $viewComponentProviders
-    ) {
-        $this->viewComponentProviders = $viewComponentProviders;
+    public function __construct(private array $viewComponentProviders)
+    {
     }
 
+    #[Override]
     public function registerViewComponents(
         ModuleViewEnum $view,
         GameControllerInterface $game

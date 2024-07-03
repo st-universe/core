@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace Stu\Module\Commodity\Lib;
 
+use Override;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class CommodityCache implements CommodityCacheInterface
 {
-    private CommodityRepositoryInterface $commodityRepository;
-
     /**
      * @var array<int, CommodityInterface>|null
      */
     private ?array $commodityArray = null;
 
-    public function __construct(
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function get(int $commodityId): CommodityInterface
     {
         if ($this->commodityArray === null) {
@@ -31,6 +29,7 @@ final class CommodityCache implements CommodityCacheInterface
         return $this->commodityArray[$commodityId];
     }
 
+    #[Override]
     public function getAll(int $type = null): array
     {
         if ($this->commodityArray === null) {

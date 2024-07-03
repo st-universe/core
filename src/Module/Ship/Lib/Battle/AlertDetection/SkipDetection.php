@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -18,6 +19,7 @@ class SkipDetection implements SkipDetectionInterface
     ) {
     }
 
+    #[Override]
     public function isSkipped(
         ShipInterface $incomingShip,
         ShipInterface $alertedShip,

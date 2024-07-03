@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -41,38 +42,45 @@ class TorpedoStorage implements TorpedoStorageInterface
     #[OneToOne(targetEntity: 'Storage', mappedBy: 'torpedoStorage')]
     private StorageInterface $storage;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): TorpedoStorageInterface
     {
         $this->ship = $ship;
         return $this;
     }
 
+    #[Override]
     public function getTorpedo(): TorpedoTypeInterface
     {
         return $this->torpedo;
     }
 
+    #[Override]
     public function setTorpedo(TorpedoTypeInterface $torpedoType): TorpedoStorageInterface
     {
         $this->torpedo = $torpedoType;
         return $this;
     }
 
+    #[Override]
     public function getStorage(): StorageInterface
     {
         return $this->storage;
     }
 
+    #[Override]
     public function setStorage(StorageInterface $storage): TorpedoStorageInterface
     {
         $this->storage = $storage;

@@ -10,6 +10,12 @@ use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\Php80\Rector\Catch_\RemoveUnusedVariableInCatchRector;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Php80\Rector\FunctionLike\MixedTypeRector;
+use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
+use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 
 /**
  * Execute on command line via 'vendor/bin/rector process'
@@ -33,10 +39,21 @@ return static function (RectorConfig $rectorConfig): void {
         //SetList::CODING_STYLE,
         //SetList::DEAD_CODE,           //last 2024-07-03
         //SetList::PRIVATIZATION,       //lots of errors
-        SetList::TYPE_DECLARATION,    //last 2023-07-17
+        //SetList::TYPE_DECLARATION,    //last 2023-07-17
         //LevelSetList::UP_TO_PHP_74,   //last 2023-07-18
-        //LevelSetList::UP_TO_PHP_82,
+        //LevelSetList::UP_TO_PHP_83,
         //DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES //last 2023-12-13
+    ]);
+
+    $rectorConfig->rules([
+        AddOverrideAttributeToOverriddenMethodsRector::class,
+        AddTypeToConstRector::class,
+        RemoveUnusedVariableInCatchRector::class,
+        ClassPropertyAssignToConstructorPromotionRector::class,
+        ChangeSwitchToMatchRector::class,
+        MixedTypeRector::class
+        //FinalPrivateToPrivateVisibilityRector::class
+        //MyCLabsClassToEnumRector::class
     ]);
 
     $rectorConfig->skip([

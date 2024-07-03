@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\History\Event;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -18,6 +19,7 @@ class HistoryEntrySubscriberTest extends StuTestCase
 
     private HistoryEntrySubscriber $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);

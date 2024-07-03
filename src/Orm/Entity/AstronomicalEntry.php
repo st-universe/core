@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -56,82 +57,97 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $region;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): AstronomicalEntryInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getState(): int
     {
         return $this->state;
     }
 
+    #[Override]
     public function setState(int $state): AstronomicalEntryInterface
     {
         $this->state = $state;
         return $this;
     }
 
+    #[Override]
     public function getAstroStartTurn(): ?int
     {
         return $this->astro_start_turn;
     }
 
+    #[Override]
     public function setAstroStartTurn(?int $turn): AstronomicalEntryInterface
     {
         $this->astro_start_turn = $turn;
         return $this;
     }
 
+    #[Override]
     public function getSystem(): ?StarSystemInterface
     {
         return $this->starSystem;
     }
 
+    #[Override]
     public function setSystem(StarSystemInterface $starSystem): AstronomicalEntryInterface
     {
         $this->starSystem = $starSystem;
         return $this;
     }
 
+    #[Override]
     public function getRegion(): ?MapRegionInterface
     {
         return $this->region;
     }
 
+    #[Override]
     public function setRegion(MapRegionInterface $region): AstronomicalEntryInterface
     {
         $this->region = $region;
         return $this;
     }
 
+    #[Override]
     public function getFieldIds(): string
     {
         return $this->field_ids;
     }
 
+    #[Override]
     public function setFieldIds(string $fieldIds): AstronomicalEntryInterface
     {
         $this->field_ids = $fieldIds;
         return $this;
     }
 
+    #[Override]
     public function isMeasured(): bool
     {
         return $this->getFieldIds() === '' || $this->getFieldIds() === '0';

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -31,6 +32,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
     /** @var MockInterface&ConditionCheckResult */
     private MockInterface $conditionCheckResult;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->ship = $this->mock(ShipInterface::class);

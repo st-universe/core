@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\NewTopic;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,20 +16,13 @@ final class NewTopic implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_NEW_TOPIC';
+    public const string VIEW_IDENTIFIER = 'SHOW_NEW_TOPIC';
 
-    private NewTopicRequestInterface $newTopicRequest;
-
-    private AllianceBoardRepositoryInterface $allianceBoardRepository;
-
-    public function __construct(
-        NewTopicRequestInterface $newTopicRequest,
-        AllianceBoardRepositoryInterface $allianceBoardRepository
-    ) {
-        $this->newTopicRequest = $newTopicRequest;
-        $this->allianceBoardRepository = $allianceBoardRepository;
+    public function __construct(private NewTopicRequestInterface $newTopicRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

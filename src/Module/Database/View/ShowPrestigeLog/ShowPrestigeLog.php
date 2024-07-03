@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\ShowPrestigeLog;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -11,18 +12,15 @@ use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
 
 final class ShowPrestigeLog implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_PRESTIGELOG';
+    public const string VIEW_IDENTIFIER = 'SHOW_PRESTIGELOG';
 
-    private const DEFAULT_LIMIT = 50;
+    private const int DEFAULT_LIMIT = 50;
 
-    private PrestigeLogRepositoryInterface $prestigeLogRepository;
-
-    public function __construct(
-        PrestigeLogRepositoryInterface $prestigeLogRepository
-    ) {
-        $this->prestigeLogRepository = $prestigeLogRepository;
+    public function __construct(private PrestigeLogRepositoryInterface $prestigeLogRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $count = request::postInt('count');

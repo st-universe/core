@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Provider;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
@@ -39,6 +40,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     private ManagerProviderInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->colony = $this->mock(ColonyInterface::class);

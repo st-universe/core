@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
+use Override;
 use JBBCode\Parser;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
@@ -19,6 +20,7 @@ final class PirateLogger implements PirateLoggerInterface
     ) {
     }
 
+    #[Override]
     public function initRotating(): void
     {
         $this->logger = new Logger('KAZON');
@@ -29,6 +31,7 @@ final class PirateLogger implements PirateLoggerInterface
         );
     }
 
+    #[Override]
     public function log(string $message): void
     {
         $method = LoggerEnum::LEVEL_METHODS[LoggerEnum::LEVEL_INFO];
@@ -37,6 +40,7 @@ final class PirateLogger implements PirateLoggerInterface
         );
     }
 
+    #[Override]
     public function logf(string $information, ...$args): void
     {
         $this->log(vsprintf(

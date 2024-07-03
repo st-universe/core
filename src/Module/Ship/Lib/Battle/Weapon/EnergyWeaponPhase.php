@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
@@ -18,9 +19,10 @@ use Stu\Orm\Entity\WeaponInterface;
 //TODO unit tests
 final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeaponPhaseInterface
 {
-    public const FIRINGMODE_RANDOM = 1;
-    public const FIRINGMODE_FOCUS = 2;
+    public const int FIRINGMODE_RANDOM = 1;
+    public const int FIRINGMODE_FOCUS = 2;
 
+    #[Override]
     public function fire(
         EnergyAttackerInterface $attacker,
         BattlePartyInterface $targetPool,
@@ -93,6 +95,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         }
     }
 
+    #[Override]
     public function fireAtBuilding(
         EnergyAttackerInterface $attacker,
         PlanetFieldInterface $target,

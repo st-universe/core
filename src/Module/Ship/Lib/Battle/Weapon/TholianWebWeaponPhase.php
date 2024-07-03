@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
+use Override;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\ShipInterface;
 //TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
 {
+    #[Override]
     public function damageCapturedShip(
         ShipInterface $ship,
         ShipWrapperInterface $wrapper,

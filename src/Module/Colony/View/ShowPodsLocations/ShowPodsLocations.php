@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowPodsLocations;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -11,20 +12,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowPodsLocations implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_PODS_LOCATIONS';
+    public const string VIEW_IDENTIFIER = 'SHOW_PODS_LOCATIONS';
 
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipCrewRepository = $shipCrewRepository;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipCrewRepositoryInterface $shipCrewRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

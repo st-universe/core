@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -17,6 +18,7 @@ class ShipBuildplanDeletionHandlerTest extends StuTestCase
 
     private ShipBuildplanDeletionHandler $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipBuildplanRepository = $this->mock(ShipBuildplanRepositoryInterface::class);

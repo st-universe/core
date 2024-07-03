@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -11,18 +12,11 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
+    #[Override]
     public function delete(UserInterface $user): void
     {
         foreach ($this->allianceJobRepository->getByUser($user->getId()) as $job) {

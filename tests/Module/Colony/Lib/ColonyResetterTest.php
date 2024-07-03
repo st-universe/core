@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
@@ -91,6 +92,7 @@ class ColonyResetterTest extends StuTestCase
 
     private ColonyResetterInterface $resetter;
 
+    #[Override]
     public function setUp(): void
     {
         $this->colonyRepository = Mockery::mock(ColonyRepositoryInterface::class);

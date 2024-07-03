@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tal;
 
+use Override;
 final class TalStatusBar implements TalStatusBarInterface
 {
     private string $color = '';
@@ -16,41 +17,48 @@ final class TalStatusBar implements TalStatusBarInterface
 
     private float $sizeModifier = 1;
 
+    #[Override]
     public function setColor(string $color): TalStatusBarInterface
     {
         $this->color = $color;
         return $this;
     }
 
+    #[Override]
     public function setLabel(string $label): TalStatusBarInterface
     {
         $this->label = $label;
         return $this;
     }
 
+    #[Override]
     public function setMaxValue(int $maxValue): TalStatusBarInterface
     {
         $this->maxValue = $maxValue;
         return $this;
     }
 
+    #[Override]
     public function setValue(int $value): TalStatusBarInterface
     {
         $this->value = $value;
         return $this;
     }
 
+    #[Override]
     public function setSizeModifier(float $modifier): TalStatusBarInterface
     {
         $this->sizeModifier = $modifier;
         return $this;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->render();
     }
 
+    #[Override]
     public function render(): string
     {
         $pro = $this->maxValue === 0 ? 100 : max(0, @round((100 / $this->maxValue) * min($this->value, $this->maxValue)));

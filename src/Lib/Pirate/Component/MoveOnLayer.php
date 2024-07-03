@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -23,6 +24,7 @@ class MoveOnLayer implements MoveOnLayerInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function move(ShipWrapperInterface $wrapper, MapInterface|StarSystemMapInterface|null $target): bool
     {
         if ($target === null) {

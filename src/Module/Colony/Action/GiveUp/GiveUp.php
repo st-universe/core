@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\GiveUp;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Exception\AccessViolation;
@@ -18,32 +19,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class GiveUp implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_GIVEUP_COLONY';
+    public const string ACTION_IDENTIFIER = 'B_GIVEUP_COLONY';
 
-    private GiveUpRequestInterface $giveupRequest;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ColonyResetterInterface $colonyResetter;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ComponentLoaderInterface $componentLoader;
-
-    public function __construct(
-        GiveUpRequestInterface $giveupRequest,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonyResetterInterface $colonyResetter,
-        UserRepositoryInterface $userRepository,
-        ComponentLoaderInterface $componentLoader
-    ) {
-        $this->giveupRequest = $giveupRequest;
-        $this->colonyRepository = $colonyRepository;
-        $this->colonyResetter = $colonyResetter;
-        $this->userRepository = $userRepository;
-        $this->componentLoader = $componentLoader;
+    public function __construct(private GiveUpRequestInterface $giveupRequest, private ColonyRepositoryInterface $colonyRepository, private ColonyResetterInterface $colonyResetter, private UserRepositoryInterface $userRepository, private ComponentLoaderInterface $componentLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -81,6 +63,7 @@ final class GiveUp implements ActionControllerInterface
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

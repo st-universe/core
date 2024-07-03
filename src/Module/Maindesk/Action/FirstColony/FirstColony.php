@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\FirstColony;
 
+use Override;
 use InvalidArgumentException;
 use RuntimeException;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
@@ -20,40 +21,13 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_FIRST_COLONY';
+    public const string ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
-    private FirstColonyRequestInterface $firstColonyRequest;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    private PlanetColonizationInterface $planetColonization;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        FirstColonyRequestInterface $firstColonyRequest,
-        BuildingRepositoryInterface $buildingRepository,
-        PlanetColonizationInterface $planetColonization,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        CommodityRepositoryInterface $commodityRepository,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->firstColonyRequest = $firstColonyRequest;
-        $this->buildingRepository = $buildingRepository;
-        $this->planetColonization = $planetColonization;
-        $this->colonyRepository = $colonyRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->commodityRepository = $commodityRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private FirstColonyRequestInterface $firstColonyRequest, private BuildingRepositoryInterface $buildingRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private ColonyStorageManagerInterface $colonyStorageManager, private CommodityRepositoryInterface $commodityRepository, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -130,6 +104,7 @@ final class FirstColony implements ActionControllerInterface
         return $commodity;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

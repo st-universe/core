@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony\Component;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
@@ -27,6 +28,7 @@ class AdvanceResearchTest extends StuTestCase
 
     private ColonyTickComponentInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);

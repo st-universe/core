@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 
 final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
 {
-    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
-
-    public function __construct(
-        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
-    ) {
-        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
+    public function __construct(private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository)
+    {
     }
 
+    #[Override]
     public function checkPrivilegeFor(int $shipId, UserInterface $user): bool
     {
         $privileges = $this->dockingPrivilegeRepository->getByShip($shipId);

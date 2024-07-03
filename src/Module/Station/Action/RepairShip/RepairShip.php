@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\RepairShip;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
@@ -18,32 +19,13 @@ use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private StationUtilityInterface $stationUtility;
-
-    private StationShipRepairRepositoryInterface $stationShipRepairRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        StationUtilityInterface $stationUtility,
-        StationShipRepairRepositoryInterface $stationShipRepairRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->stationUtility = $stationUtility;
-        $this->stationShipRepairRepository = $stationShipRepairRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility, private StationShipRepairRepositoryInterface $stationShipRepairRepository, private ShipWrapperFactoryInterface $shipWrapperFactory, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShipRepair::VIEW_IDENTIFIER);
@@ -132,6 +114,7 @@ final class RepairShip implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

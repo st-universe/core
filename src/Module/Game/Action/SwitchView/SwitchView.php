@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Action\SwitchView;
 
+use Override;
 use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,8 +14,9 @@ use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 
 final class SwitchView implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SWITCH_VIEW';
+    public const string ACTION_IDENTIFIER = 'B_SWITCH_VIEW';
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $moduleView = ModuleViewEnum::from(request::getStringFatal('view'));
@@ -23,6 +25,7 @@ final class SwitchView implements ActionControllerInterface
         $game->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $moduleView);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowPartnerSites;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,16 +14,13 @@ use Stu\Module\Control\ViewControllerInterface;
  */
 final class ShowPartnerSites implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_PARTNER_SITES';
+    public const string VIEW_IDENTIFIER = 'SHOW_PARTNER_SITES';
 
-    private ConfigInterface $config;
-
-    public function __construct(
-        ConfigInterface $config
-    ) {
-        $this->config = $config;
+    public function __construct(private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle('Partnerseiten - Star Trek Universe');

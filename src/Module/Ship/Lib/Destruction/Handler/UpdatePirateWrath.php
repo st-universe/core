@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Destruction\Handler;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -22,6 +23,7 @@ class UpdatePirateWrath implements ShipDestructionHandlerInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function handleShipDestruction(
         ?ShipDestroyerInterface $destroyer,
         ShipWrapperInterface $destroyedShipWrapper,

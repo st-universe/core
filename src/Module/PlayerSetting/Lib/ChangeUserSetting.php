@@ -2,18 +2,17 @@
 
 namespace Stu\Module\PlayerSetting\Lib;
 
+use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserSettingRepositoryInterface;
 
 final class ChangeUserSetting implements ChangeUserSettingInterface
 {
-    private UserSettingRepositoryInterface $userSettingRepository;
-
-    public function __construct(UserSettingRepositoryInterface $userSettingRepository)
+    public function __construct(private UserSettingRepositoryInterface $userSettingRepository)
     {
-        $this->userSettingRepository = $userSettingRepository;
     }
 
+    #[Override]
     public function change(UserInterface $user, UserSettingEnum $setting, string $value): void
     {
         $userSetting = $user->getSettings()->get($setting->value);
@@ -31,6 +30,7 @@ final class ChangeUserSetting implements ChangeUserSettingInterface
         $this->userSettingRepository->save($userSetting);
     }
 
+    #[Override]
     public function reset(UserInterface $user, UserSettingEnum $setting): void
     {
         $userSetting = $user->getSettings()->get($setting->value);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TakeOffer;
 
+use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -20,40 +21,13 @@ use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class TakeOffer implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TAKE_OFFER';
+    public const string ACTION_IDENTIFIER = 'B_TAKE_OFFER';
 
-    private TakeOfferRequestInterface $takeOfferRequest;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private TradeTransactionRepositoryInterface $tradeTransactionRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        TakeOfferRequestInterface $takeOfferRequest,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        TradeTransactionRepositoryInterface $tradeTransactionRepository,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->takeOfferRequest = $takeOfferRequest;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->tradeTransactionRepository = $tradeTransactionRepository;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -187,6 +161,7 @@ final class TakeOffer implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

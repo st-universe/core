@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -13,21 +14,19 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public const FINALIZING_ENERGY_COST = 15;
+    public const int FINALIZING_ENERGY_COST = 15;
 
-    private AstroEntryLibInterface $astroEntryLib;
-
-    public function __construct(
-        AstroEntryLibInterface $astroEntryLib
-    ) {
-        $this->astroEntryLib = $astroEntryLib;
+    public function __construct(private AstroEntryLibInterface $astroEntryLib)
+    {
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
     }
 
+    #[Override]
     public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
@@ -50,6 +49,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         return true;
     }
 
+    #[Override]
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
@@ -60,6 +60,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
+    #[Override]
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();

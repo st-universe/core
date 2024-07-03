@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\StartResearch;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,24 +13,13 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class StartResearch implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DO_RESEARCH';
+    public const string ACTION_IDENTIFIER = 'B_DO_RESEARCH';
 
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private TechlistRetrieverInterface $techlistRetriever;
-
-    private StartResearchRequestInterface $startResearchRequest;
-
-    public function __construct(
-        ResearchedRepositoryInterface $researchedRepository,
-        TechlistRetrieverInterface $techlistRetriever,
-        StartResearchRequestInterface $startResearchRequest
-    ) {
-        $this->researchedRepository = $researchedRepository;
-        $this->techlistRetriever = $techlistRetriever;
-        $this->startResearchRequest = $startResearchRequest;
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private TechlistRetrieverInterface $techlistRetriever, private StartResearchRequestInterface $startResearchRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -62,6 +52,7 @@ final class StartResearch implements ActionControllerInterface
         $game->setView(GameController::DEFAULT_VIEW);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

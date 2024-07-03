@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\RenameBoard;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,20 +17,13 @@ final class RenameBoard implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_RENAME_BOARD';
+    public const string ACTION_IDENTIFIER = 'B_RENAME_BOARD';
 
-    private RenameBoardRequestInterface $renameBoardRequest;
-
-    private AllianceBoardRepositoryInterface $allianceBoardRepository;
-
-    public function __construct(
-        RenameBoardRequestInterface $renameBoardRequest,
-        AllianceBoardRepositoryInterface $allianceBoardRepository
-    ) {
-        $this->renameBoardRequest = $renameBoardRequest;
-        $this->allianceBoardRepository = $allianceBoardRepository;
+    public function __construct(private RenameBoardRequestInterface $renameBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -56,6 +50,7 @@ final class RenameBoard implements ActionControllerInterface
         $game->addInformation(_('Das Forum wurde umbenannt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

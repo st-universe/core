@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Destruction\Handler;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
@@ -16,6 +17,7 @@ class ColonizationShipCheck implements ShipDestructionHandlerInterface
     ) {
     }
 
+    #[Override]
     public function handleShipDestruction(
         ?ShipDestroyerInterface $destroyer,
         ShipWrapperInterface $destroyedShipWrapper,

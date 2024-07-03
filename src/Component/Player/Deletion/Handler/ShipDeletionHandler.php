@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -16,34 +17,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    private ShipRemoverInterface $shipRemover;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ShipUndockingInterface $shipUndocking;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ShipRemoverInterface $shipRemover,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ShipUndockingInterface $shipUndocking,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->shipRemover = $shipRemover;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->shipUndocking = $shipUndocking;
-        $this->entityManager = $entityManager;
+    public function __construct(private ShipRemoverInterface $shipRemover, private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private ShipWrapperFactoryInterface $shipWrapperFactory, private ShipUndockingInterface $shipUndocking, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function delete(UserInterface $user): void
     {
         foreach ($this->shipRepository->getByUser($user) as $ship) {

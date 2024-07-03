@@ -28,36 +28,8 @@ use Twig\TwigFunction;
 
 class TwigHelper
 {
-    private Environment $environment;
-
-    private Parser $parser;
-
-    private ConfigInterface $config;
-
-    private FightLibInterface $fightLib;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    private GradientColorInterface $gradientColor;
-
-    public function __construct(
-        Environment $environment,
-        Parser $parser,
-        ConfigInterface $config,
-        FightLibInterface $fightLib,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
-        GradientColorInterface $gradientColor
-    ) {
-        $this->environment = $environment;
-        $this->parser = $parser;
-        $this->config = $config;
-        $this->fightLib = $fightLib;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->gradientColor = $gradientColor;
+    public function __construct(private Environment $environment, private Parser $parser, private ConfigInterface $config, private FightLibInterface $fightLib, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private GradientColorInterface $gradientColor)
+    {
     }
 
     public function registerGlobalVariables(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -23,58 +24,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonyResetter implements ColonyResetterInterface
 {
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
-
-    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    private CrewRepositoryInterface $crewRepository;
-
-    private CrewTrainingRepositoryInterface $crewTrainingRepository;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private ColonySandboxRepositoryInterface $colonySandboxRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ColonyRepositoryInterface $colonyRepository,
-        UserRepositoryInterface $userRepository,
-        StorageRepositoryInterface $storageRepository,
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        FleetRepositoryInterface $fleetRepository,
-        CrewRepositoryInterface $crewRepository,
-        CrewTrainingRepositoryInterface $crewTrainingRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ColonySandboxRepositoryInterface $colonySandboxRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->colonyRepository = $colonyRepository;
-        $this->userRepository = $userRepository;
-        $this->storageRepository = $storageRepository;
-        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
-        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->fleetRepository = $fleetRepository;
-        $this->crewRepository = $crewRepository;
-        $this->crewTrainingRepository = $crewTrainingRepository;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->colonySandboxRepository = $colonySandboxRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private StorageRepositoryInterface $storageRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private FleetRepositoryInterface $fleetRepository, private CrewRepositoryInterface $crewRepository, private CrewTrainingRepositoryInterface $crewTrainingRepository, private ShipCrewRepositoryInterface $shipCrewRepository, private ColonySandboxRepositoryInterface $colonySandboxRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function reset(
         ColonyInterface $colony,
         bool $sendMessage = true

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowSection;
 
+use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\SanityCheckException;
@@ -16,24 +17,13 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSection implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SECTION';
+    public const string VIEW_IDENTIFIER = 'SHOW_SECTION';
 
-    private ShowSectionRequestInterface $showSectionRequest;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    private StarmapUiFactoryInterface $starmapUiFactory;
-
-    public function __construct(
-        ShowSectionRequestInterface $showSectionRequest,
-        StarmapUiFactoryInterface $starmapUiFactory,
-        LayerRepositoryInterface $layerRepository
-    ) {
-        $this->showSectionRequest = $showSectionRequest;
-        $this->layerRepository = $layerRepository;
-        $this->starmapUiFactory = $starmapUiFactory;
+    public function __construct(private ShowSectionRequestInterface $showSectionRequest, private StarmapUiFactoryInterface $starmapUiFactory, private LayerRepositoryInterface $layerRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = $this->showSectionRequest->getLayerId();

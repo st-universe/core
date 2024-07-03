@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\ShowColonyList;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -12,16 +13,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonyList implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONYLIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_COLONYLIST';
 
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

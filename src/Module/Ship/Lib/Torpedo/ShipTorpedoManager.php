@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Torpedo;
 
+use Override;
 use InvalidArgumentException;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -13,22 +14,11 @@ use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 
 final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 {
-    private ClearTorpedoInterface $clearTorpedo;
-
-    private TorpedoStorageRepositoryInterface $torpedoStorageRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        ClearTorpedoInterface $clearTorpedo,
-        TorpedoStorageRepositoryInterface $torpedoStorageRepository,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->clearTorpedo = $clearTorpedo;
-        $this->torpedoStorageRepository = $torpedoStorageRepository;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private ClearTorpedoInterface $clearTorpedo, private TorpedoStorageRepositoryInterface $torpedoStorageRepository, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function changeTorpedo(ShipWrapperInterface $wrapper, int $changeAmount, ?TorpedoTypeInterface $type = null): void
     {
         $ship = $wrapper->get();

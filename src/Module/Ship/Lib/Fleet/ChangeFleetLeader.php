@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Fleet;
 
+use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
@@ -13,22 +14,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ChangeFleetLeader implements ChangeFleetLeaderInterface
 {
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
-
-    public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository,
-        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend
-    ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->shipRepository = $shipRepository;
-        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository, private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend)
+    {
     }
 
+    #[Override]
     public function change(ShipInterface $oldLeader): void
     {
         $fleet = $oldLeader->getFleet();

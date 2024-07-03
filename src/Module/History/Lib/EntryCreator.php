@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\History\Lib;
 
+use Override;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -12,14 +13,11 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EntryCreator implements EntryCreatorInterface
 {
-    private HistoryRepositoryInterface $historyRepository;
-
-    public function __construct(
-        HistoryRepositoryInterface $historyRepository
-    ) {
-        $this->historyRepository = $historyRepository;
+    public function __construct(private HistoryRepositoryInterface $historyRepository)
+    {
     }
 
+    #[Override]
     public function addEntry(
         string $text,
         int $sourceUserId,

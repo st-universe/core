@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 
 final class ModuleValueCalculator implements ModuleValueCalculatorInterface
 {
+    #[Override]
     public function calculateModuleValue(
         ShipRumpInterface $rump,
         ModuleInterface $module,
@@ -40,6 +42,7 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         return $value;
     }
 
+    #[Override]
     public function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module): string
     {
         if ($rump->getModuleLevel() > $module->getLevel()) {
@@ -54,6 +57,7 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         return _('Normal');
     }
 
+    #[Override]
     public function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module): int
     {
         $base = $rump->getEvadeChance();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Storage;
 
+use Override;
 use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
 use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
 use Stu\Orm\Entity\CommodityInterface;
@@ -12,14 +13,11 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ShipStorageManager implements ShipStorageManagerInterface
 {
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->storageRepository = $storageRepository;
+    public function __construct(private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function lowerStorage(ShipInterface $ship, CommodityInterface $commodity, int $amount): void
     {
         $storage = $ship->getStorage();
@@ -47,6 +45,7 @@ final class ShipStorageManager implements ShipStorageManagerInterface
         $this->storageRepository->save($storageItem);
     }
 
+    #[Override]
     public function upperStorage(ShipInterface $ship, CommodityInterface $commodity, int $amount): void
     {
         $commodityId = $commodity->getId();

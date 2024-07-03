@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Destruction\Handler;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -29,6 +30,7 @@ class TransformToTrumfield implements ShipDestructionHandlerInterface
     ) {
     }
 
+    #[Override]
     public function handleShipDestruction(
         ?ShipDestroyerInterface $destroyer,
         ShipWrapperInterface $destroyedShipWrapper,

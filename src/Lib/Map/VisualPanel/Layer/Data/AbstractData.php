@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Data;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
@@ -11,25 +12,21 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
 #[MappedSuperclass]
 class AbstractData implements CellDataInterface
 {
-    #[Id]
+    public function __construct(#[Id]
     #[Column(type: 'integer')]
-    private int $x = 0;
-
-    #[Id]
+    private int $x, #[Id]
     #[Column(type: 'integer')]
-    private int $y = 0;
-
-    public function __construct(int $x, int $y)
+    private int $y)
     {
-        $this->x = $x;
-        $this->y = $y;
     }
 
+    #[Override]
     public function getPosX(): int
     {
         return $this->x;
     }
 
+    #[Override]
     public function getPosY(): int
     {
         return $this->y;

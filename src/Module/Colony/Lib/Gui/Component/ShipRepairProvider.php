@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -15,31 +16,12 @@ use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShipRepairProvider implements GuiComponentProviderInterface
 {
-    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
-
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
-
-    public function __construct(
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        OrbitShipListRetrieverInterface $orbitShipListRetriever,
-        ShipWrapperFactoryInterface $shipWrapperFactory
-    ) {
-        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->orbitShipListRetriever = $orbitShipListRetriever;
+    public function __construct(private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyLibFactoryInterface $colonyLibFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    {
     }
 
     /** @param ColonyInterface $host */
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

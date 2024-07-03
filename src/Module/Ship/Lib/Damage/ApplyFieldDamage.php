@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Damage;
 
+use Override;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
@@ -21,6 +22,7 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
     ) {
     }
 
+    #[Override]
     public function damage(
         ShipWrapperInterface $wrapper,
         int $damage,

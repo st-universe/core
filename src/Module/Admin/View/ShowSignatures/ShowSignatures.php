@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
+use Override;
 use request;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,28 +15,13 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSignatures implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'ADMIN_SHOW_SIGNATURES';
+    public const string VIEW_IDENTIFIER = 'ADMIN_SHOW_SIGNATURES';
 
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
-
-    private PanelLayerCreationInterface $panelLayerCreation;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    public function __construct(
-        FlightSignatureRepositoryInterface $flightSignatureRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        PanelLayerCreationInterface $panelLayerCreation,
-        LayerRepositoryInterface $layerRepository
-    ) {
-        $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->loggerUtilFactory = $loggerUtilFactory;
-        $this->panelLayerCreation = $panelLayerCreation;
-        $this->layerRepository = $layerRepository;
+    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private LoggerUtilFactoryInterface $loggerUtilFactory, private PanelLayerCreationInterface $panelLayerCreation, private LayerRepositoryInterface $layerRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         if (!$game->isAdmin()) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,16 +44,19 @@ class BuildingCost implements BuildingCostInterface
     #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $building;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getBuildingId(): int
     {
         return $this->buildings_id;
     }
 
+    #[Override]
     public function setBuildingId(int $buildingId): BuildingCostInterface
     {
         $this->buildings_id = $buildingId;
@@ -60,11 +64,13 @@ class BuildingCost implements BuildingCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): BuildingCostInterface
     {
         $this->commodity_id = $commodityId;
@@ -72,11 +78,13 @@ class BuildingCost implements BuildingCostInterface
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setAmount(int $amount): BuildingCostInterface
     {
         $this->count = $amount;
@@ -84,11 +92,13 @@ class BuildingCost implements BuildingCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function getHalfAmount(): int
     {
         return (int) ceil($this->getAmount() / 2);

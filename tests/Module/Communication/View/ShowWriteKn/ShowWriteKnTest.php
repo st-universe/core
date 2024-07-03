@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowWriteKn;
 
+use Override;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionSet;
 use Mockery\MockInterface;
@@ -22,6 +23,7 @@ class ShowWriteKnTest extends StuTestCase
 
     private ShowWriteKn $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->rpgPlotRepository = $this->mock(RpgPlotRepositoryInterface::class);

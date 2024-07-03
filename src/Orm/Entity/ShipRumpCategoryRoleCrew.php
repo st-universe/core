@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -54,16 +55,19 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     #[JoinColumn(name: 'rump_role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpRoleInterface $shiprumpRole;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getShipRumpCategoryId(): int
     {
         return $this->rump_category_id;
     }
 
+    #[Override]
     public function setShipRumpCategoryId(int $shipRumpCategoryId): ShipRumpCategoryRoleCrewInterface
     {
         $this->rump_category_id = $shipRumpCategoryId;
@@ -71,11 +75,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getShipRumpRoleId(): int
     {
         return $this->rump_role_id;
     }
 
+    #[Override]
     public function setShipRumpRoleId(int $shipRumpRoleId): ShipRumpCategoryRoleCrewInterface
     {
         $this->rump_role_id = $shipRumpRoleId;
@@ -83,11 +89,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getJob1Crew(): int
     {
         return $this->job_1_crew;
     }
 
+    #[Override]
     public function setJob1Crew(int $job1crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_1_crew = $job1crew;
@@ -95,11 +103,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getJob2Crew(): int
     {
         return $this->job_2_crew;
     }
 
+    #[Override]
     public function setJob2Crew(int $job2crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_2_crew = $job2crew;
@@ -107,11 +117,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getJob3Crew(): int
     {
         return $this->job_3_crew;
     }
 
+    #[Override]
     public function setJob3Crew(int $job3crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_3_crew = $job3crew;
@@ -119,11 +131,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getJob4Crew(): int
     {
         return $this->job_4_crew;
     }
 
+    #[Override]
     public function setJob4Crew(int $job4crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_4_crew = $job4crew;
@@ -131,11 +145,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getJob5Crew(): int
     {
         return $this->job_5_crew;
     }
 
+    #[Override]
     public function setJob5Crew(int $job5crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_5_crew = $job5crew;
@@ -143,11 +159,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getJob6Crew(): int
     {
         return $this->job_6_crew;
     }
 
+    #[Override]
     public function setJob6Crew(int $job6crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_6_crew = $job6crew;
@@ -155,11 +173,13 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getJob7Crew(): int
     {
         return $this->job_7_crew;
     }
 
+    #[Override]
     public function setJob7Crew(int $job7crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_7_crew = $job7crew;
@@ -167,6 +187,7 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
         return $this;
     }
 
+    #[Override]
     public function getShiprumpRole(): ShipRumpRoleInterface
     {
         return $this->shiprumpRole;

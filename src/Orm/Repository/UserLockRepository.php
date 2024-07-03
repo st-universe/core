@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserLockInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\UserLockInterface;
  */
 final class UserLockRepository extends EntityRepository implements UserLockRepositoryInterface
 {
+    #[Override]
     public function getActiveByUser(int $userId): ?UserLockInterface
     {
         return $this->getEntityManager()->createQuery(
@@ -28,6 +30,7 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
             ->getOneOrNullResult();
     }
 
+    #[Override]
     public function getActive(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -40,6 +43,7 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
         )->getResult();
     }
 
+    #[Override]
     public function save(UserLockInterface $award): void
     {
         $em = $this->getEntityManager();
@@ -47,6 +51,7 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
         $em->persist($award);
     }
 
+    #[Override]
     public function prototype(): UserLockInterface
     {
         return new UserLock();

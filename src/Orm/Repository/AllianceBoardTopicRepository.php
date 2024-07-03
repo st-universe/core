@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceBoardTopicInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\AllianceBoardTopicInterface;
  */
 final class AllianceBoardTopicRepository extends EntityRepository implements AllianceBoardTopicRepositoryInterface
 {
+    #[Override]
     public function prototype(): AllianceBoardTopicInterface
     {
         return new AllianceBoardTopic();
     }
 
+    #[Override]
     public function save(AllianceBoardTopicInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -26,6 +29,7 @@ final class AllianceBoardTopicRepository extends EntityRepository implements All
         $em->flush();
     }
 
+    #[Override]
     public function delete(AllianceBoardTopicInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class AllianceBoardTopicRepository extends EntityRepository implements All
         $em->flush();
     }
 
+    #[Override]
     public function getRecentByAlliance(int $allianceId, int $limit = 3): array
     {
         return $this->findBy(
@@ -43,11 +48,13 @@ final class AllianceBoardTopicRepository extends EntityRepository implements All
         );
     }
 
+    #[Override]
     public function getAmountByBoardId(int $boardId): int
     {
         return $this->count(['board_id' => $boardId]);
     }
 
+    #[Override]
     public function getByBoardIdOrdered(int $boardId): array
     {
         return $this->findBy(

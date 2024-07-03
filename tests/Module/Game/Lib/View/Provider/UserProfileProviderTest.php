@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use Stu\Component\Game\GameEnum;
 use JBBCode\Parser;
 use Mockery\MockInterface;
@@ -42,6 +43,7 @@ class UserProfileProviderTest extends StuTestCase
 
     private ViewComponentProviderInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->rpgPlotMemberRepository = $this->mock(RpgPlotMemberRepositoryInterface::class);

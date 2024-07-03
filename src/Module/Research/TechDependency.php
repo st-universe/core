@@ -8,15 +8,8 @@ use Stu\Orm\Entity\CommodityInterface;
 
 final class TechDependency
 {
-    private string $name;
-    private CommodityInterface $commodity;
-
-    public function __construct(
-        string $name,
-        CommodityInterface $commodity
-    ) {
-        $this->name = $name;
-        $this->commodity = $commodity;
+    public function __construct(private string $name, private CommodityInterface $commodity)
+    {
     }
 
     public function getName(): string

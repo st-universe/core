@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Edit;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,16 +15,13 @@ final class Edit implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'EDIT_ALLIANCE';
+    public const string VIEW_IDENTIFIER = 'EDIT_ALLIANCE';
 
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -57,27 +58,32 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipInterface $ship;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
+    #[Override]
     public function setShip(ShipInterface $ship): ShipyardShipQueueInterface
     {
         $this->ship = $ship;
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUserId(int $userId): ShipyardShipQueueInterface
     {
         $this->user_id = $userId;
@@ -85,11 +91,13 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
+    #[Override]
     public function setRumpId(int $shipRumpId): ShipyardShipQueueInterface
     {
         $this->rump_id = $shipRumpId;
@@ -97,11 +105,13 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
+    #[Override]
     public function setBuildtime(int $buildtime): ShipyardShipQueueInterface
     {
         $this->buildtime = $buildtime;
@@ -109,11 +119,13 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getFinishDate(): int
     {
         return $this->finish_date;
     }
 
+    #[Override]
     public function setFinishDate(int $finishDate): ShipyardShipQueueInterface
     {
         $this->finish_date = $finishDate;
@@ -121,11 +133,13 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getStopDate(): int
     {
         return $this->stop_date;
     }
 
+    #[Override]
     public function setStopDate(int $stopDate): ShipyardShipQueueInterface
     {
         $this->stop_date = $stopDate;
@@ -133,11 +147,13 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getRump(): ShipRumpInterface
     {
         return $this->shipRump;
     }
 
+    #[Override]
     public function setRump(ShipRumpInterface $shipRump): ShipyardShipQueueInterface
     {
         $this->shipRump = $shipRump;
@@ -145,11 +161,13 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getShipBuildplan(): ShipBuildplanInterface
     {
         return $this->shipBuildplan;
     }
 
+    #[Override]
     public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ShipyardShipQueueInterface
     {
         $this->shipBuildplan = $shipBuildplan;

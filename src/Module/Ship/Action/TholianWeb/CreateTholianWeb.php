@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TholianWeb;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\ShipStateEnum;
@@ -28,56 +29,13 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class CreateTholianWeb implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_WEB';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_WEB';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
-
-    private TholianWebUtilInterface $tholianWebUtil;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private StuTime $stuTime;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        InteractionCheckerInterface $interactionChecker,
-        ActivatorDeactivatorHelperInterface $helper,
-        TholianWebRepositoryInterface $tholianWebRepository,
-        TholianWebUtilInterface $tholianWebUtil,
-        ShipCreatorInterface $shipCreator,
-        PrivateMessageSenderInterface $privateMessageSender,
-        StuTime $stuTime,
-        ShipStateChangerInterface $shipStateChanger,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->interactionChecker = $interactionChecker;
-        $this->helper = $helper;
-        $this->tholianWebRepository = $tholianWebRepository;
-        $this->tholianWebUtil = $tholianWebUtil;
-        $this->shipCreator = $shipCreator;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->stuTime = $stuTime;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->entityManager = $entityManager;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private InteractionCheckerInterface $interactionChecker, private ActivatorDeactivatorHelperInterface $helper, private TholianWebRepositoryInterface $tholianWebRepository, private TholianWebUtilInterface $tholianWebUtil, private ShipCreatorInterface $shipCreator, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime, private ShipStateChangerInterface $shipStateChanger, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //TODO other web spinners in fleet should join
@@ -198,6 +156,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         return $target;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

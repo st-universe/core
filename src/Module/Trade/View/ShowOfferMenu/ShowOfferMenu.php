@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowOfferMenu;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,24 +14,13 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ShowOfferMenu implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_OFFER_MENU';
+    public const string VIEW_IDENTIFIER = 'SHOW_OFFER_MENU';
 
-    private ShowOfferMenuRequestInterface $showOfferMenuRequest;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    public function __construct(
-        ShowOfferMenuRequestInterface $showOfferMenuRequest,
-        CommodityRepositoryInterface $commodityRepository,
-        StorageRepositoryInterface $storageRepository
-    ) {
-        $this->showOfferMenuRequest = $showOfferMenuRequest;
-        $this->commodityRepository = $commodityRepository;
-        $this->storageRepository = $storageRepository;
+    public function __construct(private ShowOfferMenuRequestInterface $showOfferMenuRequest, private CommodityRepositoryInterface $commodityRepository, private StorageRepositoryInterface $storageRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

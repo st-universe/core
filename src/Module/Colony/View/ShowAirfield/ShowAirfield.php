@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowAirfield;
 
+use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
@@ -12,24 +13,13 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowAirfield implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_AIRFIELD';
+    public const string VIEW_IDENTIFIER = 'SHOW_AIRFIELD';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShowAirfieldRequestInterface $showAirfieldRequest;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ShowAirfieldRequestInterface $showAirfieldRequest,
-        ColonyGuiHelperInterface $colonyGuiHelper
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->showAirfieldRequest = $showAirfieldRequest;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowAirfieldRequestInterface $showAirfieldRequest, private ColonyGuiHelperInterface $colonyGuiHelper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

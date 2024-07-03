@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
@@ -17,50 +18,11 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ResearchStateFactory implements ResearchStateFactoryInterface
 {
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private CreateDatabaseEntryInterface $createDatabaseEntry;
-
-    private CrewCreatorInterface $crewCreator;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private EntityManagerInterface $entityManager;
-
-    private CreateUserAwardInterface $createUserAward;
-
-    public function __construct(
-        ResearchedRepositoryInterface $researchedRepository,
-        ShipRumpUserRepositoryInterface $shipRumpUserRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        CreateDatabaseEntryInterface $createDatabaseEntry,
-        CrewCreatorInterface $crewCreator,
-        ShipCreatorInterface $shipCreator,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        CreateUserAwardInterface $createUserAward,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->researchedRepository = $researchedRepository;
-        $this->shipRumpUserRepository = $shipRumpUserRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->createDatabaseEntry = $createDatabaseEntry;
-        $this->crewCreator = $crewCreator;
-        $this->shipCreator = $shipCreator;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->entityManager = $entityManager;
-        $this->createUserAward = $createUserAward;
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ShipRumpUserRepositoryInterface $shipRumpUserRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreateDatabaseEntryInterface $createDatabaseEntry, private CrewCreatorInterface $crewCreator, private ShipCreatorInterface $shipCreator, private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private CreateUserAwardInterface $createUserAward, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function createResearchState(): ResearchStateInterface
     {
         return new ResearchState(

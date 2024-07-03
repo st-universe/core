@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -26,6 +27,7 @@ class RubColonyBehaviourFest extends StuTestCase
 
     private PirateBehaviourInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);

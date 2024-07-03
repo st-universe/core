@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Commodity;
 
+use Override;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 
@@ -12,6 +13,7 @@ final class ColonyProductionSumReducer implements ColonyProductionSumReducerInte
     /**
      * @param array<int, ColonyProduction> $production
      */
+    #[Override]
     public function reduce(
         array $production
     ): int {

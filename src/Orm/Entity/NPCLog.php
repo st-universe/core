@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -32,16 +33,19 @@ class NPCLog implements NPCLogInterface
 
 
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): NPCLogInterface
     {
         $this->text = $text;
@@ -49,11 +53,13 @@ class NPCLog implements NPCLogInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): NPCLogInterface
     {
         $this->date = $date;
@@ -61,11 +67,13 @@ class NPCLog implements NPCLogInterface
         return $this;
     }
 
+    #[Override]
     public function getSourceUserId(): ?int
     {
         return $this->source_user_id;
     }
 
+    #[Override]
     public function setSourceUserId(int $sourceuserId): NPCLogInterface
     {
         $this->source_user_id = $sourceuserId;

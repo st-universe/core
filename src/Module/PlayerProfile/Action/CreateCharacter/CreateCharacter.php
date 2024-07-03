@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Action\CreateCharacter;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserCharactersRepositoryInterface;
@@ -12,22 +13,13 @@ use Laminas\Mail\Exception\RuntimeException;
 
 final class CreateCharacter implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_CHARACTER';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_CHARACTER';
 
-    private CreateCharacterRequestInterface $request;
-    private UserCharactersRepositoryInterface $userCharactersRepository;
-    private ConfigInterface $config;
-
-    public function __construct(
-        CreateCharacterRequestInterface $request,
-        UserCharactersRepositoryInterface $userCharactersRepository,
-        ConfigInterface $config
-    ) {
-        $this->request = $request;
-        $this->userCharactersRepository = $userCharactersRepository;
-        $this->config = $config;
+    public function __construct(private CreateCharacterRequestInterface $request, private UserCharactersRepositoryInterface $userCharactersRepository, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser();
@@ -96,6 +88,7 @@ final class CreateCharacter implements ActionControllerInterface
         $game->addInformation(_('Der Charakter wurde erfolgreich erstellt.'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

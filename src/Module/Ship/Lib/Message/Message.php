@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Message;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 
 final class Message implements MessageInterface
@@ -18,21 +19,25 @@ final class Message implements MessageInterface
     ) {
     }
 
+    #[Override]
     public function getSenderId(): int
     {
         return $this->senderId;
     }
 
+    #[Override]
     public function getRecipientId(): ?int
     {
         return $this->recipientId;
     }
 
+    #[Override]
     public function getMessage(): array
     {
         return $this->msg;
     }
 
+    #[Override]
     public function add(?string $msg): void
     {
         if ($msg === null) {
@@ -42,6 +47,7 @@ final class Message implements MessageInterface
         $this->msg[] = $msg;
     }
 
+    #[Override]
     public function addInformation(?string $information): InformationInterface
     {
         $this->add($information);
@@ -49,6 +55,7 @@ final class Message implements MessageInterface
         return $this;
     }
 
+    #[Override]
     public function addInformationf(string $information, ...$args): InformationInterface
     {
         $this->add(vsprintf(
@@ -59,6 +66,7 @@ final class Message implements MessageInterface
         return $this;
     }
 
+    #[Override]
     public function addMessageMerge(array $msg): void
     {
         if ($msg === []) {
@@ -68,6 +76,7 @@ final class Message implements MessageInterface
         $this->msg = array_merge($this->msg, $msg);
     }
 
+    #[Override]
     public function isEmpty(): bool
     {
         return $this->getMessage() === [];

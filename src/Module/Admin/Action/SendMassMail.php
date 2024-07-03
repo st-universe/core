@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
@@ -21,31 +22,23 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SendMassMail implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MASS_MAIL';
+    public const string ACTION_IDENTIFIER = 'B_MASS_MAIL';
 
-    private const MEDIUM_EMAIL = 1;
-    private const MEDIUM_PM = 2;
-
-    private ConfigInterface $config;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private UserRepositoryInterface $userRepository;
+    private const int MEDIUM_EMAIL = 1;
+    private const int MEDIUM_PM = 2;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ConfigInterface $config,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository,
+        private ConfigInterface $config,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->config = $config;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(MassMail::VIEW_IDENTIFIER);
@@ -90,7 +83,7 @@ final class SendMassMail implements ActionControllerInterface
                 $transport = new Sendmail();
                 $transport->send($mail);
                 $count++;
-            } catch (RuntimeException $e) {
+            } catch (RuntimeException) {
                 $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
                 $this->loggerUtil->log(sprintf(
                     "Error while sending Mass-Mail to user-ID %d! Subject: %s",
@@ -121,6 +114,7 @@ final class SendMassMail implements ActionControllerInterface
         return $count;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

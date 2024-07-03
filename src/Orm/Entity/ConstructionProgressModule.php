@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -35,27 +36,32 @@ class ConstructionProgressModule implements ConstructionProgressModuleInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ModuleInterface $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getConstructionProgress(): ConstructionProgressInterface
     {
         return $this->progress;
     }
 
+    #[Override]
     public function setConstructionProgress(ConstructionProgressInterface $progress): ConstructionProgressModuleInterface
     {
         $this->progress = $progress;
         return $this;
     }
 
+    #[Override]
     public function getModule(): ModuleInterface
     {
         return $this->module;
     }
 
+    #[Override]
     public function setModule(ModuleInterface $module): ConstructionProgressModuleInterface
     {
         $this->module = $module;

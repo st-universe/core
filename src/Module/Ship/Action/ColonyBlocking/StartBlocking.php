@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ColonyBlocking;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -18,32 +19,13 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class StartBlocking implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_BLOCKING';
+    public const string ACTION_IDENTIFIER = 'B_START_BLOCKING';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    public function __construct(
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        ShipLoaderInterface $shipLoader,
-        ColonyRepositoryInterface $colonyRepository,
-        FleetRepositoryInterface $fleetRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->colonyRepository = $colonyRepository;
-        $this->fleetRepository = $fleetRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->colonyFunctionManager = $colonyFunctionManager;
+    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private FleetRepositoryInterface $fleetRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -109,6 +91,7 @@ final class StartBlocking implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

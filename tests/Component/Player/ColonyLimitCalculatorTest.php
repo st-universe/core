@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Entity\UserInterface;
@@ -25,6 +26,7 @@ class ColonyLimitCalculatorTest extends StuTestCase
 
     private ?ColonyLimitCalculator $calculator;
 
+    #[Override]
     public function setUp(): void
     {
         $this->researchRepository = $this->mock(ResearchRepositoryInterface::class);

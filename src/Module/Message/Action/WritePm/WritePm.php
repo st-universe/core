@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\WritePm;
 
+use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,33 +16,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class WritePm implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_WRITE_PM';
+    public const string ACTION_IDENTIFIER = 'B_WRITE_PM';
 
-    private WritePmRequestInterface $writePmRequest;
-
-    private IgnoreListRepositoryInterface $ignoreListRepository;
-
-
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        WritePmRequestInterface $writePmRequest,
-        IgnoreListRepositoryInterface $ignoreListRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->writePmRequest = $writePmRequest;
-        $this->ignoreListRepository = $ignoreListRepository;
-        $this->privateMessageRepository = $privateMessageRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
+    public function __construct(private WritePmRequestInterface $writePmRequest, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageRepositoryInterface $privateMessageRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $text = $this->writePmRequest->getText();
@@ -82,6 +63,7 @@ final class WritePm implements ActionControllerInterface
         $game->setView(ModuleViewEnum::PM);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

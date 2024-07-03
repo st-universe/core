@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
@@ -37,6 +38,7 @@ class ManageBatteryTest extends StuTestCase
 
     private ManageBattery $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);

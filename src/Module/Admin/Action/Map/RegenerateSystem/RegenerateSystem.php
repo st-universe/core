@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\RegenerateSystem;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\StarSystem\StarSystemCreationInterface;
@@ -15,24 +16,13 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class RegenerateSystem implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'REGENERATE_SYSTEM';
+    public const string ACTION_IDENTIFIER = 'REGENERATE_SYSTEM';
 
-    private StarSystemRepositoryInterface $starSystemRepository;
-
-    private NamesRepositoryInterface $namesRepository;
-
-    private StarSystemCreationInterface $starSystemCreation;
-
-    public function __construct(
-        StarSystemRepositoryInterface $starSystemRepository,
-        NamesRepositoryInterface $namesRepository,
-        StarSystemCreationInterface $starSystemCreation
-    ) {
-        $this->starSystemRepository = $starSystemRepository;
-        $this->namesRepository = $namesRepository;
-        $this->starSystemCreation = $starSystemCreation;
+    public function __construct(private StarSystemRepositoryInterface $starSystemRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSystem::VIEW_IDENTIFIER);
@@ -64,6 +54,7 @@ final class RegenerateSystem implements ActionControllerInterface
         $game->addInformation('Das System wurde neu generiert.');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

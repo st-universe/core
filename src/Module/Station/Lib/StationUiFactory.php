@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
@@ -20,30 +21,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class StationUiFactory implements StationUiFactoryInterface
 {
-    private UserRepositoryInterface $userRepository;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private FactionRepositoryInterface $factionRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private PanelLayerCreationInterface $panelLayerCreation;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        FactionRepositoryInterface $factionRepository,
-        ShipRepositoryInterface $shipRepository,
-        PanelLayerCreationInterface $panelLayerCreation
-    ) {
-        $this->userRepository = $userRepository;
-        $this->allianceRepository = $allianceRepository;
-        $this->factionRepository = $factionRepository;
-        $this->shipRepository = $shipRepository;
-        $this->panelLayerCreation = $panelLayerCreation;
+    public function __construct(private UserRepositoryInterface $userRepository, private AllianceRepositoryInterface $allianceRepository, private FactionRepositoryInterface $factionRepository, private ShipRepositoryInterface $shipRepository, private PanelLayerCreationInterface $panelLayerCreation)
+    {
     }
 
+    #[Override]
     public function createSystemScanPanel(
         ShipInterface $currentShip,
         UserInterface $user,
@@ -59,6 +41,7 @@ final class StationUiFactory implements StationUiFactoryInterface
         );
     }
 
+    #[Override]
     public function createDockingPrivilegeItem(
         DockingPrivilegeInterface $dockingPrivilege
     ): DockingPrivilegeItem {

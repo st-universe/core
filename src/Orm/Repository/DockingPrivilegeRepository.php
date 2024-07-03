@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\DockingPrivilegeInterface;
  */
 final class DockingPrivilegeRepository extends EntityRepository implements DockingPrivilegeRepositoryInterface
 {
+    #[Override]
     public function prototype(): DockingPrivilegeInterface
     {
         return new DockingPrivilege();
     }
 
+    #[Override]
     public function save(DockingPrivilegeInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -25,6 +28,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(DockingPrivilegeInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -33,6 +37,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         $em->flush();
     }
 
+    #[Override]
     public function existsForTargetAndTypeAndShip(int $targetId, int $privilegeType, int $shipId): bool
     {
         return $this->count([
@@ -42,6 +47,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         ]) > 0;
     }
 
+    #[Override]
     public function getByShip(int $shipId): array
     {
         return $this->findBy([
@@ -49,6 +55,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         ]);
     }
 
+    #[Override]
     public function truncateByTypeAndTarget(int $typeId, int $targetId): void
     {
         $this->getEntityManager()

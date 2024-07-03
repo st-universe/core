@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement;
 
+use Override;
 use Stu\Lib\ShipManagement\Manager\ManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -11,18 +12,13 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 class HandleManagers implements HandleManagersInterface
 {
     /**
-     * @var array<ManagerInterface>
-     */
-    private array $managers;
-
-    /**
      * @param array<ManagerInterface> $managers
      */
-    public function __construct(array $managers)
+    public function __construct(private array $managers)
     {
-        $this->managers = $managers;
     }
 
+    #[Override]
     public function handle(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];

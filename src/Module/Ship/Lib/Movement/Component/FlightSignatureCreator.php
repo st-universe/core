@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
+use Override;
 use InvalidArgumentException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\FlightSignatureInterface;
@@ -18,21 +19,18 @@ use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 final class FlightSignatureCreator implements FlightSignatureCreatorInterface
 {
     /** @var array<int, int> */
-    private const FLIGHT_DIRECTIONS = [
+    private const array FLIGHT_DIRECTIONS = [
         ShipEnum::DIRECTION_RIGHT => ShipEnum::DIRECTION_LEFT,
         ShipEnum::DIRECTION_LEFT => ShipEnum::DIRECTION_RIGHT,
         ShipEnum::DIRECTION_TOP => ShipEnum::DIRECTION_BOTTOM,
         ShipEnum::DIRECTION_BOTTOM => ShipEnum::DIRECTION_TOP,
     ];
 
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    public function __construct(
-        FlightSignatureRepositoryInterface $flightSignatureRepository
-    ) {
-        $this->flightSignatureRepository = $flightSignatureRepository;
+    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository)
+    {
     }
 
+    #[Override]
     public function createSignatures(
         ShipInterface $ship,
         int $flightDirection,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -51,6 +52,7 @@ class ThreatReactionTest extends StuTestCase
 
     private ThreatReactionInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildOnField;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -27,52 +28,13 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class BuildOnField implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILD';
+    public const string ACTION_IDENTIFIER = 'B_BUILD';
 
-    private PlanetFieldHostProviderInterface $planetFieldHostProvider;
-
-    private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private BuildingActionInterface $buildingAction;
-
-    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
-
-    private BuildingManagerInterface $buildingManager;
-
-    public function __construct(
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        BuildingRepositoryInterface $buildingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        BuildingActionInterface $buildingAction,
-        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        BuildingManagerInterface $buildingManager
-    ) {
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
-        $this->researchedRepository = $researchedRepository;
-        $this->buildingRepository = $buildingRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->buildingAction = $buildingAction;
-        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
-        $this->buildingManager = $buildingManager;
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private ResearchedRepositoryInterface $researchedRepository, private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private BuildingActionInterface $buildingAction, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private BuildingManagerInterface $buildingManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
@@ -291,6 +253,7 @@ final class BuildOnField implements ActionControllerInterface
         return $isEnoughAvailable;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -9,16 +9,8 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 class PrivateMessageFolderItem
 {
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
-    private PrivateMessageFolderInterface $privateMessageFolder;
-
-    public function __construct(
-        PrivateMessageRepositoryInterface $privateMessageRepository,
-        PrivateMessageFolderInterface $privateMessageFolder
-    ) {
-        $this->privateMessageRepository = $privateMessageRepository;
-        $this->privateMessageFolder = $privateMessageFolder;
+    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository, private PrivateMessageFolderInterface $privateMessageFolder)
+    {
     }
 
     /**

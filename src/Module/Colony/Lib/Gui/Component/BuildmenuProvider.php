@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Game\GameEnum;
@@ -13,19 +14,12 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class BuildmenuProvider implements GuiComponentProviderInterface
 {
-    private BuildingRepositoryInterface $buildingRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    public function __construct(
-        BuildingRepositoryInterface $buildingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
-    ) {
-        $this->buildingRepository = $buildingRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
+    public function __construct(private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository)
+    {
     }
 
     /** @param ColonyInterface&PlanetFieldHostInterface $host */
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

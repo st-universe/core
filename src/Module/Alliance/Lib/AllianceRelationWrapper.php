@@ -10,16 +10,8 @@ use Stu\Orm\Entity\AllianceRelationInterface;
 
 final class AllianceRelationWrapper
 {
-    private AllianceInterface $alliance;
-
-    private AllianceRelationInterface $relation;
-
-    public function __construct(
-        AllianceInterface $alliance,
-        AllianceRelationInterface $relation
-    ) {
-        $this->alliance = $alliance;
-        $this->relation = $relation;
+    public function __construct(private AllianceInterface $alliance, private AllianceRelationInterface $relation)
+    {
     }
 
     public function getDescription(): string
@@ -53,20 +45,13 @@ final class AllianceRelationWrapper
      */
     public function getImage(): string
     {
-        switch ($this->relation->getType()) {
-            case AllianceEnum::ALLIANCE_RELATION_WAR:
-                return 'war_negative';
-            case AllianceEnum::ALLIANCE_RELATION_PEACE:
-            case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
-                return 'friendship_positive';
-            case AllianceEnum::ALLIANCE_RELATION_ALLIED:
-                return 'alliance_positive';
-            case AllianceEnum::ALLIANCE_RELATION_TRADE:
-                return 'trade_positive';
-            case AllianceEnum::ALLIANCE_RELATION_VASSAL:
-                return 'vassal_positive';
-        }
-
-        return '';
+        return match ($this->relation->getType()) {
+            AllianceEnum::ALLIANCE_RELATION_WAR => 'war_negative',
+            AllianceEnum::ALLIANCE_RELATION_PEACE, AllianceEnum::ALLIANCE_RELATION_FRIENDS => 'friendship_positive',
+            AllianceEnum::ALLIANCE_RELATION_ALLIED => 'alliance_positive',
+            AllianceEnum::ALLIANCE_RELATION_TRADE => 'trade_positive',
+            AllianceEnum::ALLIANCE_RELATION_VASSAL => 'vassal_positive',
+            default => '',
+        };
     }
 }

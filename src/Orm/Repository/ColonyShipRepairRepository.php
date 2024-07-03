@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\ColonyShipRepair;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\ColonyShipRepairInterface;
  */
 final class ColonyShipRepairRepository extends EntityRepository implements ColonyShipRepairRepositoryInterface
 {
+    #[Override]
     public function prototype(): ColonyShipRepairInterface
     {
         return new ColonyShipRepair();
     }
 
+    #[Override]
     public function getByColonyField(int $colonyId, int $fieldId): array
     {
         return $this->findBy([
@@ -27,6 +30,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         ], ['id' => 'asc']);
     }
 
+    #[Override]
     public function getByShip(int $shipId): ?ColonyShipRepairInterface
     {
         return $this->findOneBy([
@@ -34,6 +38,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         ]);
     }
 
+    #[Override]
     public function getMostRecentJobs(int $tickId): array
     {
         $rsm = new ResultSetMapping();
@@ -57,6 +62,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
             ->getResult();
     }
 
+    #[Override]
     public function save(ColonyShipRepairInterface $colonyShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -64,6 +70,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         $em->persist($colonyShipRepair);
     }
 
+    #[Override]
     public function delete(ColonyShipRepairInterface $colonyShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -72,6 +79,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         //$em->flush();
     }
 
+    #[Override]
     public function truncateByShipId(int $shipId): void
     {
         $q = $this->getEntityManager()->createQuery(

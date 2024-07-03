@@ -11,16 +11,8 @@ use Stu\Orm\Entity\FactionInterface;
  */
 class FactionItem
 {
-    private FactionInterface $faction;
-
-    private int $currentPlayerCount;
-
-    public function __construct(
-        FactionInterface $faction,
-        int $currentPlayerCount
-    ) {
-        $this->faction = $faction;
-        $this->currentPlayerCount = $currentPlayerCount;
+    public function __construct(private FactionInterface $faction, private int $currentPlayerCount)
+    {
     }
 
     /**

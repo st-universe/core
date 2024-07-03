@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Boards;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,20 +16,13 @@ final class Boards implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_BOARDS';
+    public const string VIEW_IDENTIFIER = 'SHOW_BOARDS';
 
-    private AllianceBoardRepositoryInterface $allianceBoardRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        AllianceBoardRepositoryInterface $allianceBoardRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->allianceBoardRepository = $allianceBoardRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

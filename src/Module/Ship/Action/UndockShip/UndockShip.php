@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\UndockShip;
 
+use Override;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipEnum;
@@ -16,24 +17,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class UndockShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_UNDOCK';
+    public const string ACTION_IDENTIFIER = 'B_UNDOCK';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private CancelRepairInterface $cancelRepair;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        CancelRepairInterface $cancelRepair
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->cancelRepair = $cancelRepair;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private CancelRepairInterface $cancelRepair)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -111,6 +101,7 @@ final class UndockShip implements ActionControllerInterface
         $game->addInformation('Abdockvorgang abgeschlossen');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

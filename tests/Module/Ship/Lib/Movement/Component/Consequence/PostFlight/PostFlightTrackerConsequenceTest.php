@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
@@ -33,6 +34,7 @@ class PostFlightTrackerConsequenceTest extends StuTestCase
     /** @var MockInterface&FlightRouteInterface */
     private MockInterface $flightRoute;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->trackerDeviceManager = $this->mock(TrackerDeviceManagerInterface::class);

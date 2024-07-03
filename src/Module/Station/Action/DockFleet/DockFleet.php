@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\DockFleet;
 
+use Override;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipEnum;
@@ -25,44 +26,24 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DockFleet implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DOCK_FLEET';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private CancelRepairInterface $cancelRepair;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    public const string ACTION_IDENTIFIER = 'B_DOCK_FLEET';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        InteractionCheckerInterface $interactionChecker,
-        CancelRepairInterface $cancelRepair,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ShipLoaderInterface $shipLoader,
+        private FleetRepositoryInterface $fleetRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private InteractionCheckerInterface $interactionChecker,
+        private CancelRepairInterface $cancelRepair,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->fleetRepository = $fleetRepository;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->interactionChecker = $interactionChecker;
-        $this->cancelRepair = $cancelRepair;
-        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
@@ -146,7 +127,7 @@ final class DockFleet implements ActionControllerInterface
 
             try {
                 $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-            } catch (ShipSystemException $e) {
+            } catch (ShipSystemException) {
             }
 
             $ship->setDockedTo($station);
@@ -165,6 +146,7 @@ final class DockFleet implements ActionControllerInterface
         $game->addInformationMerge($msg);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

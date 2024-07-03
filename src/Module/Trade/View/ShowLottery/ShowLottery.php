@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowLottery;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
@@ -11,20 +12,13 @@ use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 
 final class ShowLottery implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_LOTTERY';
+    public const string VIEW_IDENTIFIER = 'SHOW_LOTTERY';
 
-    private LotteryFacadeInterface $lotteryFacade;
-
-    private LotteryTicketRepositoryInterface $lotteryTicketRepository;
-
-    public function __construct(
-        LotteryFacadeInterface $lotteryFacade,
-        LotteryTicketRepositoryInterface $lotteryTicketRepository
-    ) {
-        $this->lotteryFacade = $lotteryFacade;
-        $this->lotteryTicketRepository = $lotteryTicketRepository;
+    public function __construct(private LotteryFacadeInterface $lotteryFacade, private LotteryTicketRepositoryInterface $lotteryTicketRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

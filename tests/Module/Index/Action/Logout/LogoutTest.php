@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Logout;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,6 +17,7 @@ class LogoutTest extends StuTestCase
 
     private Logout $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->session = $this->mock(SessionInterface::class);

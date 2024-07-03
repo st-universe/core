@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Override;
 use JBBCode\Parser;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
@@ -46,6 +47,7 @@ class PrivateMessageSenderTest extends StuTestCase
 
     private PrivateMessageSenderInterface $messageSender;
 
+    #[Override]
     public function setUp(): void
     {
         $this->messageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);

@@ -13,13 +13,9 @@ use Stu\Module\Tick\Ship\ShipTickRunner;
  */
 final class ShipTickCommand extends Command
 {
-    private ContainerInterface $dic;
-
     public function __construct(
-        ContainerInterface $dic
+        private ContainerInterface $dic
     ) {
-        $this->dic = $dic;
-
         parent::__construct(
             'tick:ship',
             'Runs the ship tick'

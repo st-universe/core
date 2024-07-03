@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShipStorage;
 
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -11,16 +12,13 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowShipStorage implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIPSTORAGE';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIPSTORAGE';
 
-    private ShipLoaderInterface $shipLoader;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->shipLoader = $shipLoader;
+    public function __construct(private ShipLoaderInterface $shipLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

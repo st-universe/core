@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player;
 
+use Override;
 use Stu\Orm\Entity\ColonyClassResearchInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -12,22 +13,11 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class ColonizationChecker implements ColonizationCheckerInterface
 {
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private ColonyClassResearchRepositoryInterface $colonyClassResearchRepository;
-
-    private ColonyLimitCalculatorInterface $colonyLimitCalculator;
-
-    public function __construct(
-        ResearchedRepositoryInterface $researchedRepository,
-        ColonyClassResearchRepositoryInterface $colonyClassResearchRepository,
-        ColonyLimitCalculatorInterface $colonyLimitCalculator
-    ) {
-        $this->researchedRepository = $researchedRepository;
-        $this->colonyClassResearchRepository = $colonyClassResearchRepository;
-        $this->colonyLimitCalculator = $colonyLimitCalculator;
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ColonyClassResearchRepositoryInterface $colonyClassResearchRepository, private ColonyLimitCalculatorInterface $colonyLimitCalculator)
+    {
     }
 
+    #[Override]
     public function canColonize(UserInterface $user, ColonyInterface $colony): bool
     {
         if (!$colony->isFree()) {

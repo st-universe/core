@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use Override;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Stu\Component\Map\EncodedMapInterface;
@@ -33,6 +34,7 @@ class StarmapUiFactoryTest extends StuTestCase
 
     private StarmapUiFactory $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
@@ -19,6 +20,7 @@ class OrbitShipListRetrieverTest extends StuTestCase
 
     private OrbitShipListRetriever $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Provider;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -16,31 +17,17 @@ use Stu\Orm\Entity\UserInterface;
 
 class ManagerProviderStation implements ManagerProviderInterface
 {
-    private ShipWrapperInterface $wrapper;
-
-    private CrewCreatorInterface $crewCreator;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    public function __construct(
-        ShipWrapperInterface $wrapper,
-        CrewCreatorInterface $crewCreator,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ShipStorageManagerInterface $shipStorageManager
-    ) {
-        $this->wrapper = $wrapper;
-        $this->crewCreator = $crewCreator;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->shipStorageManager = $shipStorageManager;
+    public function __construct(private ShipWrapperInterface $wrapper, private CrewCreatorInterface $crewCreator, private TroopTransferUtilityInterface $troopTransferUtility, private ShipStorageManagerInterface $shipStorageManager)
+    {
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->wrapper->get()->getUser();
     }
 
+    #[Override]
     public function getEps(): int
     {
         $eps = $this->wrapper->getEpsSystemData();
@@ -52,6 +39,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         return $eps->getEps();
     }
 
+    #[Override]
     public function lowerEps(int $amount): ManagerProviderInterface
     {
         $eps = $this->wrapper->getEpsSystemData();
@@ -65,6 +53,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         $station = $this->wrapper->get();
@@ -76,21 +65,25 @@ class ManagerProviderStation implements ManagerProviderInterface
         );
     }
 
+    #[Override]
     public function getSectorString(): string
     {
         return $this->wrapper->get()->getSectorString();
     }
 
+    #[Override]
     public function getFreeCrewAmount(): int
     {
         return $this->wrapper->get()->getExcessCrewCount();
     }
 
+    #[Override]
     public function addShipCrew(ShipInterface $ship, int $amount): void
     {
         $this->crewCreator->createShipCrew($ship, $this->wrapper->get(), $amount);
     }
 
+    #[Override]
     public function getFreeCrewStorage(): int
     {
         $station = $this->wrapper->get();
@@ -98,6 +91,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         return $this->troopTransferUtility->getFreeQuarters($station);
     }
 
+    #[Override]
     public function addCrewAssignments(array $crewAssignments): void
     {
         $station = $this->wrapper->get();
@@ -107,11 +101,13 @@ class ManagerProviderStation implements ManagerProviderInterface
         }
     }
 
+    #[Override]
     public function getStorage(): Collection
     {
         return $this->wrapper->get()->getStorage();
     }
 
+    #[Override]
     public function upperStorage(CommodityInterface $commodity, int $amount): void
     {
         $this->shipStorageManager->upperStorage(
@@ -121,6 +117,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         );
     }
 
+    #[Override]
     public function lowerStorage(CommodityInterface $commodity, int $amount): void
     {
         $this->shipStorageManager->lowerStorage(

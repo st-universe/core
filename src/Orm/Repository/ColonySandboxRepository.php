@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ColonySandboxRepository extends EntityRepository implements ColonySandboxRepositoryInterface
 {
+    #[Override]
     public function prototype(): ColonySandboxInterface
     {
         return new ColonySandbox();
     }
 
+    #[Override]
     public function save(ColonySandboxInterface $colonySandbox): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class ColonySandboxRepository extends EntityRepository implements ColonySa
         $em->persist($colonySandbox);
     }
 
+    #[Override]
     public function delete(ColonySandboxInterface $colonySandbox): void
     {
         $em = $this->getEntityManager();
@@ -35,6 +39,7 @@ final class ColonySandboxRepository extends EntityRepository implements ColonySa
         $em->remove($colonySandbox);
     }
 
+    #[Override]
     public function getByUser(UserInterface $user): array
     {
         return $this->getEntityManager()
@@ -51,6 +56,7 @@ final class ColonySandboxRepository extends EntityRepository implements ColonySa
             ->getResult();
     }
 
+    #[Override]
     public function truncateByColony(ColonyInterface $colony): void
     {
         $this->getEntityManager()

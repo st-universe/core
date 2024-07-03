@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateTopic;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,28 +19,13 @@ final class CreateTopic implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_CREATE_TOPIC';
+    public const string ACTION_IDENTIFIER = 'B_CREATE_TOPIC';
 
-    private CreateTopicRequestInterface $createTopicRequest;
-
-    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
-
-    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
-
-    private AllianceBoardRepositoryInterface $allianceBoardRepository;
-
-    public function __construct(
-        CreateTopicRequestInterface $createTopicRequest,
-        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
-        AllianceBoardRepositoryInterface $allianceBoardRepository
-    ) {
-        $this->createTopicRequest = $createTopicRequest;
-        $this->allianceBoardPostRepository = $allianceBoardPostRepository;
-        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
-        $this->allianceBoardRepository = $allianceBoardRepository;
+    public function __construct(private CreateTopicRequestInterface $createTopicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceBoardRepositoryInterface $allianceBoardRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -96,6 +82,7 @@ final class CreateTopic implements ActionControllerInterface
         $game->addInformation(_('Das Thema wurde erstellt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -12,13 +13,11 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class DriveActivatableCondition implements PreFlightConditionInterface
 {
-    private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper;
-
-    public function __construct(ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper)
+    public function __construct(private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper)
     {
-        $this->activatorDeactivatorHelper = $activatorDeactivatorHelper;
     }
 
+    #[Override]
     public function check(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

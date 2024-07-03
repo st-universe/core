@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -20,11 +21,13 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
     ) {
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_LSS;
     }
 
+    #[Override]
     public function checkDeactivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $trackerData = $wrapper->getTrackerSystemData();
@@ -38,6 +41,7 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
         return true;
     }
 
+    #[Override]
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
@@ -53,6 +57,7 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
         }
     }
 
+    #[Override]
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();

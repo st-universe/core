@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
+use Override;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
@@ -36,6 +37,7 @@ class RegisterTest extends StuTestCase
     /** @var FactionInterface&MockInterface&MockInterface */
     private MockInterface $faction;
 
+    #[Override]
     public function setUp(): void
     {
         $this->registerRequest = $this->mock(RegisterRequestInterface::class);

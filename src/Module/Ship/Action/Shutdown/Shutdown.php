@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Shutdown;
 
+use Override;
 use request;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -16,28 +17,13 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class Shutdown implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SHUTDOWN';
+    public const string ACTION_IDENTIFIER = 'B_SHUTDOWN';
 
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private AlertReactionFacadeInterface $alertReactionFacade;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    public function __construct(
-        ActivatorDeactivatorHelperInterface $helper,
-        ShipLoaderInterface $shipLoader,
-        AlertReactionFacadeInterface $alertReactionFacade,
-        ShipSystemManagerInterface $shipSystemManager
-    ) {
-        $this->helper = $helper;
-        $this->shipLoader = $shipLoader;
-        $this->alertReactionFacade = $alertReactionFacade;
-        $this->shipSystemManager = $shipSystemManager;
+    public function __construct(private ActivatorDeactivatorHelperInterface $helper, private ShipLoaderInterface $shipLoader, private AlertReactionFacadeInterface $alertReactionFacade, private ShipSystemManagerInterface $shipSystemManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -82,6 +68,7 @@ final class Shutdown implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

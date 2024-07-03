@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\SortPmCategories;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class SortPmCategories implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_PMCATEGORY_SORT';
+    public const string ACTION_IDENTIFIER = 'B_PMCATEGORY_SORT';
 
-    private SortPmCategoriesRequestInterface $sortPmCategoriesRequest;
-
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    public function __construct(
-        SortPmCategoriesRequestInterface $sortPmCategoriesRequest,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
-    ) {
-        $this->sortPmCategoriesRequest = $sortPmCategoriesRequest;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+    public function __construct(private SortPmCategoriesRequestInterface $sortPmCategoriesRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Noop::VIEW_IDENTIFIER);
@@ -41,6 +35,7 @@ final class SortPmCategories implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

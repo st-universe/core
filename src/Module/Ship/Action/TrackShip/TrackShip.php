@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TrackShip;
 
+use Override;
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,22 +16,15 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class TrackShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TRACK';
+    public const string ACTION_IDENTIFIER = 'B_TRACK';
 
-    private const MAXIMUM_TICKS = 70;
+    private const int MAXIMUM_TICKS = 70;
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->helper = $helper;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -110,6 +104,7 @@ final class TrackShip implements ActionControllerInterface
         $game->addInformation(sprintf(_('Die %s ist nun mit einem verborgenen Tracker markiert'), $target->getName()));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

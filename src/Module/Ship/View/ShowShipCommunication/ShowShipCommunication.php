@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShipCommunication;
 
+use Override;
 use JBBCode\Parser;
 use request;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,24 +15,13 @@ use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
 final class ShowShipCommunication implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIP_COMMUNICATION';
+    public const string VIEW_IDENTIFIER = 'SHOW_SHIP_COMMUNICATION';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
-
-    private Parser $bbCodeParser;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
-        Parser $bbCodeParser
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
-        $this->bbCodeParser = $bbCodeParser;
+    public function __construct(private ShipLoaderInterface $shipLoader, private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository, private Parser $bbCodeParser)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

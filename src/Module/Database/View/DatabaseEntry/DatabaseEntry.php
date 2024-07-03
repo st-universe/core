@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DatabaseEntry;
 
+use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
@@ -28,7 +29,7 @@ use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_ENTRY';
+    public const string VIEW_IDENTIFIER = 'SHOW_ENTRY';
 
     public function __construct(
         private DatabaseEntryRequestInterface $databaseEntryRequest,
@@ -44,6 +45,7 @@ final class DatabaseEntry implements ViewControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

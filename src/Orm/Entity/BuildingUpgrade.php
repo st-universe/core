@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -63,16 +64,19 @@ class BuildingUpgrade implements BuildingUpgradeInterface
         $this->upgradeCosts = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUpgradeFromBuildingId(): int
     {
         return $this->upgrade_from;
     }
 
+    #[Override]
     public function setUpgradeFromBuildingId(int $upgradeFromBuildingId): BuildingUpgradeInterface
     {
         $this->upgrade_from = $upgradeFromBuildingId;
@@ -80,11 +84,13 @@ class BuildingUpgrade implements BuildingUpgradeInterface
         return $this;
     }
 
+    #[Override]
     public function getUpgradeToBuildingId(): int
     {
         return $this->upgrade_to;
     }
 
+    #[Override]
     public function setUpgradeToBuildingId(int $upgradeToBuildingId): BuildingUpgradeInterface
     {
         $this->upgrade_to = $upgradeToBuildingId;
@@ -92,11 +98,13 @@ class BuildingUpgrade implements BuildingUpgradeInterface
         return $this;
     }
 
+    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function setResearchId(int $researchId): BuildingUpgradeInterface
     {
         $this->research_id = $researchId;
@@ -104,11 +112,13 @@ class BuildingUpgrade implements BuildingUpgradeInterface
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): BuildingUpgradeInterface
     {
         $this->description = $description;
@@ -116,11 +126,13 @@ class BuildingUpgrade implements BuildingUpgradeInterface
         return $this;
     }
 
+    #[Override]
     public function getEnergyCost(): int
     {
         return $this->getBuilding()->getEpsCost();
     }
 
+    #[Override]
     public function setEnergyCost(int $energyCost): BuildingUpgradeInterface
     {
         $this->energy_cost = $energyCost;
@@ -128,11 +140,13 @@ class BuildingUpgrade implements BuildingUpgradeInterface
         return $this;
     }
 
+    #[Override]
     public function getBuilding(): BuildingInterface
     {
         return $this->upgradeToBuilding;
     }
 
+    #[Override]
     public function getUpgradeCosts(): Collection
     {
         return $this->getBuilding()->getCosts();

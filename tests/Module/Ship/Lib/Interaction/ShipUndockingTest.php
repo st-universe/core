@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -22,6 +23,7 @@ class ShipUndockingTest extends StuTestCase
 
     private ShipUndockingInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

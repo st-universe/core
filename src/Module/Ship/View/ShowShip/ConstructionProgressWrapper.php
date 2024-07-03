@@ -8,24 +8,8 @@ use Stu\Orm\Entity\ShipInterface;
 
 class ConstructionProgressWrapper
 {
-    private ConstructionProgressInterface $progress;
-
-    private ShipInterface $station;
-
-    private int $dockedWorbeeCount;
-
-    private int $neededWorbeeCount;
-
-    public function __construct(
-        ConstructionProgressInterface $progress,
-        ShipInterface $station,
-        int $dockedWorbeeCount,
-        int $neededWorbeeCount,
-    ) {
-        $this->progress = $progress;
-        $this->station = $station;
-        $this->dockedWorbeeCount = $dockedWorbeeCount;
-        $this->neededWorbeeCount = $neededWorbeeCount;
+    public function __construct(private ConstructionProgressInterface $progress, private ShipInterface $station, private int $dockedWorbeeCount, private int $neededWorbeeCount)
+    {
     }
 
     public function isUnderConstruction(): bool

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset\User;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -43,6 +44,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager = $entityManager;
     }
 
+    #[Override]
     public function archiveBlockedUsers(): void
     {
         echo "  - archive blocked users\n";
@@ -55,6 +57,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllDatabaseUserEntries(): void
     {
         echo "  - delete all database user entries\n";
@@ -64,6 +67,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllNotes(): void
     {
         echo "  - delete all notes\n";
@@ -73,6 +77,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllPrestigeLogs(): void
     {
         echo "  - delete all prestige logs\n";
@@ -82,6 +87,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function resetNpcs(): void
     {
         echo "  - reset NPCs\n";
@@ -105,6 +111,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllUserInvitations(): void
     {
         echo "  - delete all user invitations\n";
@@ -114,6 +121,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllUserIpTableEntries(): void
     {
         echo "  - delete all user ip table entries\n";
@@ -123,6 +131,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllUserProfileVisitors(): void
     {
         echo "  - delete all user profile visitor entries\n";
@@ -132,6 +141,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deletePirateWrathEntries(): void
     {
         echo "  - delete all pirate wrath entries\n";

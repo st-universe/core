@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -52,31 +53,37 @@ class WormholeEntry implements WormholeEntryInterface
     #[JoinColumn(name: 'system_map_id', referencedColumnName: 'id')]
     private StarSystemMapInterface $systemMap;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getMap(): MapInterface
     {
         return $this->map;
     }
 
+    #[Override]
     public function getSystem(): StarSystemInterface
     {
         return $this->starSystem;
     }
 
+    #[Override]
     public function getSystemMap(): StarSystemMapInterface
     {
         return $this->systemMap;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setLastUsed(int $lastUsed): WormholeEntryInterface
     {
         $this->last_used = $lastUsed;
@@ -84,6 +91,7 @@ class WormholeEntry implements WormholeEntryInterface
         return $this;
     }
 
+    #[Override]
     public function isUsable(): bool
     {
         return $this->last_used === null || $this->cooldown === null

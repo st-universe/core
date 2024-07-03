@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -21,6 +22,7 @@ class WebEmitterSystemData extends AbstractSystemData
         parent::__construct($shipSystemRepository);
     }
 
+    #[Override]
     function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB;

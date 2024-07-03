@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -31,6 +32,7 @@ class UserSetting implements UserSettingInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function setUser(UserInterface $user): UserSettingInterface
     {
         $this->user = $user;
@@ -39,6 +41,7 @@ class UserSetting implements UserSettingInterface
         return $this;
     }
 
+    #[Override]
     public function setSetting(UserSettingEnum $setting): UserSettingInterface
     {
         $this->setting = $setting;
@@ -46,11 +49,13 @@ class UserSetting implements UserSettingInterface
         return $this;
     }
 
+    #[Override]
     public function getValue(): string
     {
         return $this->value;
     }
 
+    #[Override]
     public function setValue(string $value): UserSettingInterface
     {
         $this->value = $value;

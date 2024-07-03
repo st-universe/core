@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use RuntimeException;
@@ -39,6 +40,7 @@ class ManageReactorTest extends StuTestCase
 
     private ManageReactor $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->reactorUtil = $this->mock(ReactorUtilInterface::class);

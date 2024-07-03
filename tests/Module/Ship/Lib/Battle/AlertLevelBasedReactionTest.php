@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
@@ -30,6 +31,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     private AlertLevelBasedReactionInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

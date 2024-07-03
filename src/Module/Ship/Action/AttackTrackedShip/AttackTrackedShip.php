@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AttackTrackedShip;
 
+use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -21,7 +22,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class AttackTrackedShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ATTACK_TRACKED';
+    public const string ACTION_IDENTIFIER = 'B_ATTACK_TRACKED';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -34,6 +35,7 @@ final class AttackTrackedShip implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -141,6 +143,7 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

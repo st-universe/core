@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
@@ -15,14 +16,6 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class TradePostStorageManager implements TradePostStorageManagerInterface
 {
-    private StorageRepositoryInterface $storageRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private TradePostInterface $tradePost;
-
-    private UserInterface $user;
-
     private ?int $storageSum = null;
 
     /**
@@ -30,23 +23,17 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
      */
     private ?ArrayCollection $storage = null;
 
-    public function __construct(
-        StorageRepositoryInterface $storageRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        TradePostInterface $tradePost,
-        UserInterface $user
-    ) {
-        $this->storageRepository = $storageRepository;
-        $this->commodityRepository = $commodityRepository;
-        $this->tradePost = $tradePost;
-        $this->user = $user;
+    public function __construct(private StorageRepositoryInterface $storageRepository, private CommodityRepositoryInterface $commodityRepository, private TradePostInterface $tradePost, private UserInterface $user)
+    {
     }
 
+    #[Override]
     public function getTradePost(): TradePostInterface
     {
         return $this->tradePost;
     }
 
+    #[Override]
     public function getStorageSum(): int
     {
         if ($this->storageSum === null) {
@@ -59,11 +46,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         return $this->storageSum;
     }
 
+    #[Override]
     public function getFreeStorage(): int
     {
         return max(0, $this->tradePost->getStorage() - $this->getStorageSum());
     }
 
+    #[Override]
     public function getStorage(): Collection
     {
         if ($this->storage === null) {
@@ -77,6 +66,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         return $this->storage;
     }
 
+    #[Override]
     public function upperStorage(int $commodityId, int $amount): void
     {
         $storage = $this->getStorage();
@@ -98,6 +88,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         $this->storageRepository->save($stor);
     }
 
+    #[Override]
     public function lowerStorage(int $commodityId, int $amount): void
     {
         $storage = $this->getStorage();

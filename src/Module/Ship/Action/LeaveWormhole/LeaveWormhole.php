@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\LeaveWormhole;
 
+use Override;
 use RuntimeException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Action\MoveShip\AbstractDirectedMovement;
@@ -12,8 +13,9 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class LeaveWormhole extends AbstractDirectedMovement
 {
-    public const ACTION_IDENTIFIER = 'B_LEAVE_WORMHOLE';
+    public const string ACTION_IDENTIFIER = 'B_LEAVE_WORMHOLE';
 
+    #[Override]
     protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $ship = $wrapper->get();
@@ -31,6 +33,7 @@ final class LeaveWormhole extends AbstractDirectedMovement
         return $wormholeEntry === null;
     }
 
+    #[Override]
     protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface
     {
         $ship = $wrapper->get();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\Component;
 
+use Override;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
@@ -24,6 +25,7 @@ class ComponentLoaderTest extends StuTestCase
 
     private ComponentLoaderInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->componentProvider = $this->mock(RenderFragmentInterface::class);

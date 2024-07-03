@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -28,39 +29,12 @@ use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 //TODO unit tests
 final class RepairUtil implements RepairUtilInterface
 {
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private RepairTaskRepositoryInterface $repairTaskRepository;
-
-    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        RepairTaskRepositoryInterface $repairTaskRepository,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->repairTaskRepository = $repairTaskRepository;
-        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipSystemRepositoryInterface $shipSystemRepository, private RepairTaskRepositoryInterface $repairTaskRepository, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ShipStorageManagerInterface $shipStorageManager, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyFunctionManagerInterface $colonyFunctionManager, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
     //REPAIR STUFF
+    #[Override]
     public function determineSpareParts(ShipWrapperInterface $wrapper, bool $tickBased): array
     {
         $isRepairStationBonus = $this->isRepairStationBonus($wrapper);
@@ -135,6 +109,7 @@ final class RepairUtil implements RepairUtilInterface
         return $neededSystemComponents;
     }
 
+    #[Override]
     public function enoughSparePartsOnEntity(array $neededParts, ColonyInterface|ShipInterface $entity, ShipInterface $ship): bool
     {
         $neededSpareParts = $neededParts[CommodityTypeEnum::COMMODITY_SPARE_PART];
@@ -215,6 +190,7 @@ final class RepairUtil implements RepairUtilInterface
         );
     }
 
+    #[Override]
     public function consumeSpareParts(array $neededParts, ColonyInterface|ShipInterface $entity): void
     {
         foreach ($neededParts as $commodityKey => $amount) {
@@ -241,6 +217,7 @@ final class RepairUtil implements RepairUtilInterface
 
     //SELFREPAIR STUFF
 
+    #[Override]
     public function determineFreeEngineerCount(ShipInterface $ship): int
     {
         $engineerCount = 0;
@@ -261,6 +238,7 @@ final class RepairUtil implements RepairUtilInterface
         return $engineerCount; //$engineerOptions;
     }
 
+    #[Override]
     public function determineRepairOptions(ShipWrapperInterface $wrapper): array
     {
         $repairOptions = [];
@@ -287,6 +265,7 @@ final class RepairUtil implements RepairUtilInterface
         return $repairOptions;
     }
 
+    #[Override]
     public function createRepairTask(ShipInterface $ship, ShipSystemTypeEnum $systemType, int $repairType, int $finishTime): void
     {
         $obj = $this->repairTaskRepository->prototype();
@@ -300,6 +279,7 @@ final class RepairUtil implements RepairUtilInterface
         $this->repairTaskRepository->save($obj);
     }
 
+    #[Override]
     public function determineHealingPercentage(int $repairType): int
     {
         $percentage = 0;
@@ -315,6 +295,7 @@ final class RepairUtil implements RepairUtilInterface
         return $percentage;
     }
 
+    #[Override]
     public function instantSelfRepair(ShipInterface $ship, ShipSystemTypeEnum $systemType, int $healingPercentage): bool
     {
         return $this->internalSelfRepair(
@@ -324,6 +305,7 @@ final class RepairUtil implements RepairUtilInterface
         );
     }
 
+    #[Override]
     public function selfRepair(ShipInterface $ship, RepairTaskInterface $repairTask): bool
     {
         $systemType = $repairTask->getSystemType();
@@ -362,6 +344,7 @@ final class RepairUtil implements RepairUtilInterface
         return $result;
     }
 
+    #[Override]
     public function isRepairStationBonus(ShipWrapperInterface $wrapper): bool
     {
         $ship = $wrapper->get();
@@ -374,6 +357,7 @@ final class RepairUtil implements RepairUtilInterface
         return $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
     }
 
+    #[Override]
     public function getRepairDuration(ShipWrapperInterface $wrapper): int
     {
         $ship = $wrapper->get();
@@ -391,6 +375,7 @@ final class RepairUtil implements RepairUtilInterface
         return $ticks;
     }
 
+    #[Override]
     public function getRepairDurationPreview(ShipWrapperInterface $wrapper): int
     {
         $ship = $wrapper->get();

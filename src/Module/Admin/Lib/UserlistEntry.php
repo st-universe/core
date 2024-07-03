@@ -9,12 +9,8 @@ use Stu\Orm\Entity\UserInterface;
 
 final class UserlistEntry
 {
-    private UserInterface $user;
-
-    public function __construct(
-        UserInterface $user
-    ) {
-        $this->user = $user;
+    public function __construct(private UserInterface $user)
+    {
     }
 
     public function getUser(): UserInterface

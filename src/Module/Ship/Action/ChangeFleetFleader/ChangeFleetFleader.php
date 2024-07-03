@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ChangeFleetFleader;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ChangeFleetFleader implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_FLEET_LEADER';
+    public const string ACTION_IDENTIFIER = 'B_FLEET_LEADER';
 
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipLoaderInterface $shipLoader;
-
-    public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        ShipLoaderInterface $shipLoader
-    ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->shipLoader = $shipLoader;
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -75,6 +69,7 @@ final class ChangeFleetFleader implements ActionControllerInterface
         $game->addInformation(sprintf(_('Die %s führt nun die Flotte an'), $target->getName()));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

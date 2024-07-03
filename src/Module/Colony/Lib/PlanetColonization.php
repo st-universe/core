@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -18,38 +19,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private BuildingManagerInterface $buildingManager;
-
-    public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository,
-        UserRepositoryInterface $userRepository,
-        BuildingManagerInterface $buildingManager
-    ) {
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->commodityRepository = $commodityRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyLibFactory = $colonyLibFactory;
-        $this->colonyRepository = $colonyRepository;
-        $this->userRepository = $userRepository;
-        $this->buildingManager = $buildingManager;
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private CommodityRepositoryInterface $commodityRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyLibFactoryInterface $colonyLibFactory, private ColonyRepositoryInterface $colonyRepository, private UserRepositoryInterface $userRepository, private BuildingManagerInterface $buildingManager)
+    {
     }
 
+    #[Override]
     public function colonize(
         ColonyInterface $colony,
         int $userId,

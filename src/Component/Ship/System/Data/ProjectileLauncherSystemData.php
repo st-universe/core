@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 class ProjectileLauncherSystemData extends AbstractSystemData
 {
     public int $shieldPenetration = 0;
 
+    #[Override]
     function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TORPEDO;

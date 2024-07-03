@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
+use Override;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
@@ -29,6 +30,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

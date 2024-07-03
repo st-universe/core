@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use RuntimeException;
@@ -27,6 +28,7 @@ use Stu\Orm\Entity\MapInterface;
  */
 final class MapRepository extends EntityRepository implements MapRepositoryInterface
 {
+    #[Override]
     public function getAmountByLayer(LayerInterface $layer): int
     {
         return $this->count([
@@ -34,6 +36,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ]);
     }
 
+    #[Override]
     public function getAllOrdered(int $layerId): array
     {
         return $this->getEntityManager()
@@ -56,6 +59,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    #[Override]
     public function getAllWithSystem(int $layerId): array
     {
         return $this->getEntityManager()
@@ -78,6 +82,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    #[Override]
     public function getAllWithoutSystem(int $layerId): array
     {
         return $this->getEntityManager()
@@ -100,6 +105,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    #[Override]
     public function getByCoordinates(?LayerInterface $layer, int $cx, int $cy): ?MapInterface
     {
         if ($layer === null) {
@@ -113,6 +119,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ]);
     }
 
+    #[Override]
     public function getByCoordinateRange(
         int $layerId,
         int $startCx,
@@ -143,6 +150,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    #[Override]
     public function save(MapInterface $map): void
     {
         $em = $this->getEntityManager();
@@ -150,6 +158,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $em->persist($map);
     }
 
+    #[Override]
     public function getBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -187,6 +196,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
 
+    #[Override]
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -205,6 +215,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -237,6 +248,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getAllianceShipcountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -261,6 +273,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getShipShipcountLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -285,6 +298,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getUserShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -309,6 +323,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreId, ResultSetMapping $rsm): array
     {
         $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
@@ -353,6 +368,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -383,6 +399,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getUserSubspaceLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -418,6 +435,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -453,6 +471,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -492,6 +511,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
 
+    #[Override]
     public function getExplored(int $userId, int $layerId, int $startX, int $endX, int $cy): array
     {
         $rsm = new ResultSetMapping();
@@ -541,6 +561,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    #[Override]
     public function getForSubspaceEllipseCreation(): array
     {
         $rsm = new ResultSetMapping();
@@ -633,6 +654,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    #[Override]
     public function getWithEmptySystem(LayerInterface $layer): array
     {
         return $this->getEntityManager()
@@ -651,6 +673,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    #[Override]
     public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage): array
     {
         $rsm = new ResultSetMapping();
@@ -677,6 +700,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return array_map(fn (array $data) => $data['id'], $subset);
     }
 
+    #[Override]
     public function getRandomPassableUnoccupiedWithoutDamage(LayerInterface $layer, bool $isAtBorder = false): MapInterface
     {
         $rsm = new ResultSetMapping();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -47,16 +48,19 @@ class TholianWeb implements TholianWebInterface
         $this->capturedShips = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getFinishedTime(): ?int
     {
         return $this->finished_time;
     }
 
+    #[Override]
     public function setFinishedTime(?int $time): TholianWebInterface
     {
         $this->finished_time = $time;
@@ -64,6 +68,7 @@ class TholianWeb implements TholianWebInterface
         return $this;
     }
 
+    #[Override]
     public function isFinished(): bool
     {
         //uninitialized
@@ -79,16 +84,19 @@ class TholianWeb implements TholianWebInterface
         return $this->finished_time < time();
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->webShip->getUser();
     }
 
+    #[Override]
     public function getWebShip(): ShipInterface
     {
         return $this->webShip;
     }
 
+    #[Override]
     public function setWebShip(ShipInterface $webShip): TholianWebInterface
     {
         $this->webShip = $webShip;
@@ -96,11 +104,13 @@ class TholianWeb implements TholianWebInterface
         return $this;
     }
 
+    #[Override]
     public function getCapturedShips(): Collection
     {
         return $this->capturedShips;
     }
 
+    #[Override]
     public function updateFinishTime(int $time): void
     {
         $this->finished_time = $time;

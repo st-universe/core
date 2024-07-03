@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWritePm;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
@@ -16,32 +17,13 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class ShowWritePm implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'WRITE_PM';
+    public const string VIEW_IDENTIFIER = 'WRITE_PM';
 
-    private ShowWritePmRequestInterface $showWritePmRequest;
-
-    private ContactRepositoryInterface $contactRepository;
-
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
-    private PrivateMessageUiFactoryInterface $privateMessageUiFactory;
-
-    public function __construct(
-        ShowWritePmRequestInterface $showWritePmRequest,
-        ContactRepositoryInterface $contactRepository,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageUiFactoryInterface $privateMessageUiFactory,
-        PrivateMessageRepositoryInterface $privateMessageRepository
-    ) {
-        $this->showWritePmRequest = $showWritePmRequest;
-        $this->contactRepository = $contactRepository;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
-        $this->privateMessageRepository = $privateMessageRepository;
-        $this->privateMessageUiFactory = $privateMessageUiFactory;
+    public function __construct(private ShowWritePmRequestInterface $showWritePmRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory, private PrivateMessageRepositoryInterface $privateMessageRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

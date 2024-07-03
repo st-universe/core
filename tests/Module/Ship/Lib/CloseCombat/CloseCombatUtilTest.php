@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\CloseCombat;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Crew\CrewEnum;
@@ -20,6 +21,7 @@ class CloseCombatUtilTest extends StuTestCase
 
     private CloseCombatUtilInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //params

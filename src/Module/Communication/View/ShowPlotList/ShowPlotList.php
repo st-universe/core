@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowPlotList;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowPlotList implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_PLOTLIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_PLOTLIST';
 
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    public function __construct(
-        RpgPlotRepositoryInterface $rpgPlotRepository
-    ) {
-        $this->rpgPlotRepository = $rpgPlotRepository;
+    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $active_plots = [];

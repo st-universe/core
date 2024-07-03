@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
@@ -31,7 +32,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ACTIVATE_TRACTOR';
+    public const string ACTION_IDENTIFIER = 'B_ACTIVATE_TRACTOR';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -47,6 +48,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -193,6 +195,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

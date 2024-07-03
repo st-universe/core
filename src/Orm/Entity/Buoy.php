@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -46,76 +47,91 @@ class Buoy implements BuoyInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUserId(int $user_id): void
     {
         $this->user_id = $user_id;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): void
     {
         $this->text = $text;
     }
 
+    #[Override]
     public function getMapId(): ?int
     {
         return $this->map_id;
     }
 
+    #[Override]
     public function setMapId(?int $map_id): void
     {
         $this->map_id = $map_id;
     }
 
+    #[Override]
     public function getSysMapId(): ?int
     {
         return $this->sys_map_id;
     }
 
+    #[Override]
     public function setSysMapId(?int $sys_map_id): void
     {
         $this->sys_map_id = $sys_map_id;
     }
 
+    #[Override]
     public function getMap(): ?MapInterface
     {
         return $this->map;
     }
 
+    #[Override]
     public function setMap(?MapInterface $map): void
     {
         $this->map = $map;
     }
 
+    #[Override]
     public function getSystemMap(): ?StarSystemMapInterface
     {
         return $this->systemMap;
     }
 
+    #[Override]
     public function setSystemMap(?StarSystemMapInterface $systemMap): void
     {
         $this->systemMap = $systemMap;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): void
     {
         $this->user = $user;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\SearchOffers;
 
+use Override;
 use request;
 
 use Stu\Component\Game\GameEnum;
@@ -22,28 +23,13 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class SearchBoth implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TRADE_SEARCH_BOTH';
+    public const string ACTION_IDENTIFIER = 'B_TRADE_SEARCH_BOTH';
 
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    private SessionInterface $session;
-
-    public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeOfferRepositoryInterface $tradeOfferRepository,
-        CommodityRepositoryInterface $commodityRepository,
-        SessionInterface $session
-    ) {
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->commodityRepository = $commodityRepository;
-        $this->session = $session;
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository, private SessionInterface $session)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -83,6 +69,7 @@ final class SearchBoth implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

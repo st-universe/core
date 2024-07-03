@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -17,11 +18,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class KnPostRepository extends EntityRepository implements KnPostRepositoryInterface
 {
+    #[Override]
     public function prototype(): KnPostInterface
     {
         return new KnPost();
     }
 
+    #[Override]
     public function save(KnPostInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -30,6 +33,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         $em->flush();
     }
 
+    #[Override]
     public function delete(KnPostInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -37,6 +41,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         $em->remove($post);
     }
 
+    #[Override]
     public function getBy(int $offset, int $limit): array
     {
         return $this->findBy(
@@ -47,6 +52,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         );
     }
 
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -55,6 +61,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         );
     }
 
+    #[Override]
     public function getByPlot(RpgPlotInterface $plot, ?int $offset, ?int $limit): array
     {
         return $this->findBy(
@@ -65,11 +72,13 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         );
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count([]);
     }
 
+    #[Override]
     public function getAmountByPlot(int $plotId): int
     {
         return $this->count([
@@ -77,6 +86,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         ]);
     }
 
+    #[Override]
     public function getAmountSince(int $postId): int
     {
         return (int) $this->getEntityManager()
@@ -90,6 +100,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getNewerThenMark(int $mark): array
     {
         return $this->getEntityManager()
@@ -104,6 +115,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->getResult();
     }
 
+    #[Override]
     public function searchByContent(string $content): array
     {
         return $this->getEntityManager()
@@ -119,6 +131,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->getResult();
     }
 
+    #[Override]
     public function truncateAllEntities(): void
     {
         $this->getEntityManager()->createQuery(
@@ -129,6 +142,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         )->execute();
     }
 
+    #[Override]
     public function getRpgVotesTop10(): array
     {
         $rsm = new ResultSetMapping();
@@ -150,6 +164,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->getResult();
     }
 
+    #[Override]
     public function getRpgVotesOfUser(UserInterface $user): ?int
     {
         $rsm = new ResultSetMapping();

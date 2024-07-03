@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
@@ -15,22 +16,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function delete(UserInterface $user): void
     {
         $gameFallbackUser = $this->userRepository->getFallbackUser();

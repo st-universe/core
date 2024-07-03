@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceRelation;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\AllianceRelationInterface;
  */
 final class AllianceRelationRepository extends EntityRepository implements AllianceRelationRepositoryInterface
 {
+    #[Override]
     public function prototype(): AllianceRelationInterface
     {
         return new AllianceRelation();
     }
 
+    #[Override]
     public function save(AllianceRelationInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -26,6 +29,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(AllianceRelationInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -33,6 +37,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         $em->remove($post);
     }
 
+    #[Override]
     public function truncateByAlliances(AllianceInterface $alliance, AllianceInterface $opponent): void
     {
         $this->getEntityManager()
@@ -49,6 +54,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->execute();
     }
 
+    #[Override]
     public function getPendingCountByAlliances(int $allianceId, int $opponentId): int
     {
         return (int) $this->getEntityManager()
@@ -68,6 +74,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getByAlliancePair(int $allianceId, int $opponentId): array
     {
         return $this->getEntityManager()
@@ -85,6 +92,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
     }
 
 
+    #[Override]
     public function getActiveByAlliance(int $allianceId): array
     {
         return $this->getEntityManager()
@@ -102,6 +110,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->getResult();
     }
 
+    #[Override]
     public function getByAlliance(int $allianceId): array
     {
         return $this->getEntityManager()
@@ -117,6 +126,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->getResult();
     }
 
+    #[Override]
     public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelationInterface
     {
         return $this->getEntityManager()
@@ -134,6 +144,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
     }
 
 
+    #[Override]
     public function getActiveByTypeAndAlliancePair(array $typeIds, int $allianceId, int $opponentId): ?AllianceRelationInterface
     {
         return $this->getEntityManager()
@@ -151,6 +162,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->getOneOrNullResult();
     }
 
+    #[Override]
     public function truncateAllAllianceRelations(): void
     {
         $this->getEntityManager()->createQuery(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -93,16 +94,19 @@ class StarSystemMap implements StarSystemMapInterface
         $this->buoys = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getSx(): int
     {
         return $this->sx;
     }
 
+    #[Override]
     public function setSx(int $sx): StarSystemMapInterface
     {
         $this->sx = $sx;
@@ -110,16 +114,19 @@ class StarSystemMap implements StarSystemMapInterface
         return $this;
     }
 
+    #[Override]
     public function getX(): int
     {
         return $this->getSx();
     }
 
+    #[Override]
     public function getSy(): int
     {
         return $this->sy;
     }
 
+    #[Override]
     public function setSy(int $sy): StarSystemMapInterface
     {
         $this->sy = $sy;
@@ -127,21 +134,25 @@ class StarSystemMap implements StarSystemMapInterface
         return $this;
     }
 
+    #[Override]
     public function getY(): int
     {
         return $this->getSy();
     }
 
+    #[Override]
     public function getSystemId(): int
     {
         return $this->systems_id;
     }
 
+    #[Override]
     public function getSystem(): StarSystemInterface
     {
         return $this->starSystem;
     }
 
+    #[Override]
     public function setSystem(StarSystemInterface $starSystem): StarSystemMapInterface
     {
         $this->starSystem = $starSystem;
@@ -149,16 +160,19 @@ class StarSystemMap implements StarSystemMapInterface
         return $this;
     }
 
+    #[Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
+    #[Override]
     public function getFieldType(): MapFieldTypeInterface
     {
         return $this->mapFieldType;
     }
 
+    #[Override]
     public function setFieldType(MapFieldTypeInterface $mapFieldType): StarSystemMapInterface
     {
         $this->mapFieldType = $mapFieldType;
@@ -166,46 +180,55 @@ class StarSystemMap implements StarSystemMapInterface
         return $this;
     }
 
+    #[Override]
     public function getColony(): ?ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function getMapRegion(): ?MapRegionInterface
     {
         return null;
     }
 
+    #[Override]
     public function getAdministratedRegion(): ?MapRegionInterface
     {
         return null;
     }
 
+    #[Override]
     public function getInfluenceArea(): ?StarSystemInterface
     {
         return null;
     }
 
+    #[Override]
     public function getFieldStyle(): string
     {
         return "background-image: url('/assets/map/" . $this->getFieldId() . ".png'); opacity:1;";
     }
 
+    #[Override]
     public function getShips(): Collection
     {
         return $this->ships;
     }
 
+    #[Override]
     public function getSignatures(): Collection
     {
         return $this->signatures;
     }
 
+    #[Override]
     public function getAnomalies(): Collection
     {
         return $this->anomalies;
     }
 
+    #[Override]
     public function getRandomWormholeEntry(): ?WormholeEntryInterface
     {
         if ($this->wormholeEntries->isEmpty()) {
@@ -225,6 +248,7 @@ class StarSystemMap implements StarSystemMapInterface
         return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
     }
 
+    #[Override]
     public function getSectorString(): string
     {
         return SectorString::getForStarSystemMap($this);
@@ -234,6 +258,7 @@ class StarSystemMap implements StarSystemMapInterface
     /**
      * @return Collection<int, BuoyInterface>
      */
+    #[Override]
     public function getBuoys(): Collection
     {
         return $this->buoys;

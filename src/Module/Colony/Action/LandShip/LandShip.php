@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\LandShip;
 
+use Override;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -22,44 +23,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class LandShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_LAND_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_LAND_SHIP';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ClearTorpedoInterface $clearTorpedo;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        ShipRemoverInterface $shipRemover,
-        ShipLoaderInterface $shipLoader,
-        ClearTorpedoInterface $clearTorpedo,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        TroopTransferUtilityInterface $troopTransferUtility
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->shipRemover = $shipRemover;
-        $this->shipLoader = $shipLoader;
-        $this->clearTorpedo = $clearTorpedo;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private ShipRemoverInterface $shipRemover, private ShipLoaderInterface $shipLoader, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -157,6 +127,7 @@ final class LandShip implements ActionControllerInterface
         $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

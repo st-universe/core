@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Colony;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
@@ -15,22 +16,11 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
 {
-    private ColonySandboxRepositoryInterface $colonySandboxRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyLoaderInterface $colonyLoader;
-
-    public function __construct(
-        ColonySandboxRepositoryInterface $colonySandboxRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyLoaderInterface $colonyLoader
-    ) {
-        $this->colonySandboxRepository = $colonySandboxRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyLoader = $colonyLoader;
+    public function __construct(private ColonySandboxRepositoryInterface $colonySandboxRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyLoaderInterface $colonyLoader)
+    {
     }
 
+    #[Override]
     public function loadFieldViaRequestParameter(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldInterface
     {
         if (!request::has('fid')) {
@@ -49,6 +39,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
         return $field;
     }
 
+    #[Override]
     public function loadHostViaRequestParameters(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldHostInterface
     {
         if (!request::has('id')) {

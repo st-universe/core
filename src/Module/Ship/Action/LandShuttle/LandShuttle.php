@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\LandShuttle;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -19,36 +20,13 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class LandShuttle implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_LAND_SHUTTLE';
+    public const string ACTION_IDENTIFIER = 'B_LAND_SHUTTLE';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private EntityManagerInterface $entityManager;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipStorageManagerInterface $shipStorageManager,
-        EntityManagerInterface $entityManager,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ShipRemoverInterface $shipRemover,
-        InteractionCheckerInterface $interactionChecker
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->entityManager = $entityManager;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->shipRemover = $shipRemover;
-        $this->interactionChecker = $interactionChecker;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipStorageManagerInterface $shipStorageManager, private EntityManagerInterface $entityManager, private TroopTransferUtilityInterface $troopTransferUtility, private ShipRemoverInterface $shipRemover, private InteractionCheckerInterface $interactionChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -148,6 +126,7 @@ final class LandShuttle implements ActionControllerInterface
         $this->shipLoader->save($target);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

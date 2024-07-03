@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -55,16 +56,19 @@ class Terraforming implements TerraformingInterface
         $this->costs = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): TerraformingInterface
     {
         $this->description = $description;
@@ -72,11 +76,13 @@ class Terraforming implements TerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getEnergyCosts(): int
     {
         return $this->ecost;
     }
 
+    #[Override]
     public function setEnergyCosts(int $energyCosts): TerraformingInterface
     {
         $this->ecost = $energyCosts;
@@ -84,11 +90,13 @@ class Terraforming implements TerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getFromFieldTypeId(): int
     {
         return $this->v_feld;
     }
 
+    #[Override]
     public function setFromFieldTypeId(int $fromFieldTypeId): TerraformingInterface
     {
         $this->v_feld = $fromFieldTypeId;
@@ -96,11 +104,13 @@ class Terraforming implements TerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getToFieldTypeId(): int
     {
         return $this->z_feld;
     }
 
+    #[Override]
     public function setToFieldTypeId(int $toFieldTypeId): TerraformingInterface
     {
         $this->z_feld = $toFieldTypeId;
@@ -108,11 +118,13 @@ class Terraforming implements TerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getDuration(): int
     {
         return $this->duration;
     }
 
+    #[Override]
     public function setDuration(int $duration): TerraformingInterface
     {
         $this->duration = $duration;
@@ -120,17 +132,20 @@ class Terraforming implements TerraformingInterface
         return $this;
     }
 
+    #[Override]
     public function getResearchId(): ?int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function setResearchId(?int $researchId): TerraformingInterface
     {
         $this->research_id = $researchId;
         return $this;
     }
 
+    #[Override]
     public function getCosts(): Collection
     {
         return $this->costs;

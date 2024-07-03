@@ -25,15 +25,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 class DamageWrapper
 {
-    private float $netDamage = 0;
     private bool $isCrit = false;
     private bool $isShieldPenetration = false;
     private int $modificator = 100;
     private ?int $pirateWrath = null;
 
-    public function __construct(int $netDamage)
+    public function __construct(private float $netDamage)
     {
-        $this->netDamage = $netDamage;
     }
 
     private int $hull_damage_factor = 100;

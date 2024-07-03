@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreatePost;
 
+use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -14,11 +15,13 @@ class CreatePostRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
+    #[Override]
     protected function getRequestClass(): string
     {
         return CreatePostRequest::class;
     }
 
+    #[Override]
     public static function requestVarsDataProvider(): array
     {
         return [

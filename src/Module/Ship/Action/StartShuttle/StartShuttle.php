@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StartShuttle;
 
+use Override;
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
@@ -23,40 +24,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StartShuttle implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_SHUTTLE';
+    public const string ACTION_IDENTIFIER = 'B_START_SHUTTLE';
 
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ShipStorageManagerInterface $shipStorageManager;
-
-    private TroopTransferUtilityInterface $troopTransferUtility;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipLoaderInterface $shipLoader,
-        ShipCreatorInterface $shipCreator,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ShipStorageManagerInterface $shipStorageManager,
-        TroopTransferUtilityInterface $troopTransferUtility,
-        ActivatorDeactivatorHelperInterface $helper
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipLoader = $shipLoader;
-        $this->shipCreator = $shipCreator;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->shipStorageManager = $shipStorageManager;
-        $this->troopTransferUtility = $troopTransferUtility;
-        $this->helper = $helper;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipLoaderInterface $shipLoader, private ShipCreatorInterface $shipCreator, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private ShipStorageManagerInterface $shipStorageManager, private TroopTransferUtilityInterface $troopTransferUtility, private ActivatorDeactivatorHelperInterface $helper)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -188,6 +162,7 @@ final class StartShuttle implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

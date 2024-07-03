@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowAcademy;
 
+use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
@@ -12,24 +13,13 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowAcademy implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_ACADEMY';
+    public const string VIEW_IDENTIFIER = 'SHOW_ACADEMY';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    private ShowAcademyRequestInterface $showAcademyRequest;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowAcademyRequestInterface $showAcademyRequest
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
-        $this->showAcademyRequest = $showAcademyRequest;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowAcademyRequestInterface $showAcademyRequest)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

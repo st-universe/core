@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
+use Override;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonySandboxInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 final class Shipyard implements BuildingActionHandlerInterface
 {
-    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
-
-    public function __construct(
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
-    ) {
-        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
+    public function __construct(private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository)
+    {
     }
 
+    #[Override]
     public function destruct(int $buildingFunctionId, ColonyInterface $colony): void
     {
         $this->colonyShipQueueRepository->truncateByColonyAndBuildingFunction(
@@ -26,6 +24,7 @@ final class Shipyard implements BuildingActionHandlerInterface
         );
     }
 
+    #[Override]
     public function deactivate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
         if ($host instanceof ColonyInterface) {
@@ -33,6 +32,7 @@ final class Shipyard implements BuildingActionHandlerInterface
         }
     }
 
+    #[Override]
     public function activate(int $buildingFunctionId, ColonyInterface|ColonySandboxInterface $host): void
     {
         if ($host instanceof ColonyInterface) {

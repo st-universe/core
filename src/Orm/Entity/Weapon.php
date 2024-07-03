@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -45,16 +46,19 @@ class Weapon implements WeaponInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id')]
     private ModuleInterface $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): WeaponInterface
     {
         $this->name = $name;
@@ -62,11 +66,13 @@ class Weapon implements WeaponInterface
         return $this;
     }
 
+    #[Override]
     public function getVariance(): int
     {
         return $this->variance;
     }
 
+    #[Override]
     public function setVariance(int $variance): WeaponInterface
     {
         $this->variance = $variance;
@@ -74,11 +80,13 @@ class Weapon implements WeaponInterface
         return $this;
     }
 
+    #[Override]
     public function getCriticalChance(): int
     {
         return $this->critical_chance;
     }
 
+    #[Override]
     public function setCriticalChance(int $criticalChance): WeaponInterface
     {
         $this->critical_chance = $criticalChance;
@@ -86,11 +94,13 @@ class Weapon implements WeaponInterface
         return $this;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(int $type): WeaponInterface
     {
         $this->type = $type;
@@ -98,11 +108,13 @@ class Weapon implements WeaponInterface
         return $this;
     }
 
+    #[Override]
     public function getFiringMode(): int
     {
         return $this->firing_mode;
     }
 
+    #[Override]
     public function setFiringMode(int $firingMode): WeaponInterface
     {
         $this->firing_mode = $firingMode;
@@ -110,11 +122,13 @@ class Weapon implements WeaponInterface
         return $this;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): WeaponInterface
     {
         $this->module_id = $moduleId;

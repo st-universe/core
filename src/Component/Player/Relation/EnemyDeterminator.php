@@ -11,16 +11,8 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 
 class EnemyDeterminator
 {
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private ContactRepositoryInterface $contactRepository;
-
-    public function __construct(
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        ContactRepositoryInterface $contactRepository
-    ) {
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->contactRepository = $contactRepository;
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private ContactRepositoryInterface $contactRepository)
+    {
     }
 
     public function isEnemy(UserInterface $user, UserInterface $otherUser): PlayerRelationTypeEnum

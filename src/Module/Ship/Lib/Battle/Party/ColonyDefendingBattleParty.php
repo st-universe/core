@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -14,6 +15,7 @@ class ColonyDefendingBattleParty extends AbstractBattleParty implements AlertedB
         parent::__construct($leader);
     }
 
+    #[Override]
     public function initMembers(): Collection
     {
         $fleet = $this->leader->getFleetWrapper();
@@ -28,11 +30,13 @@ class ColonyDefendingBattleParty extends AbstractBattleParty implements AlertedB
         }
     }
 
+    #[Override]
     public function getAttackCause(): ShipAttackCauseEnum
     {
         return ShipAttackCauseEnum::COLONY_DEFENSE;
     }
 
+    #[Override]
     public function getAlertDescription(): string
     {
         return '[b][color=orange]Kolonie-Verteidigung[/color][/b]';

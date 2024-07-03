@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\RenewTradeLicense;
 
+use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
@@ -23,32 +24,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class RenewTradeLicense implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_RENEW_TRADELICENSE';
+    public const string ACTION_IDENTIFIER = 'B_RENEW_TRADELICENSE';
 
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-    ) {
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeCreateLicenseRepository = $tradeCreateLicenseRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -130,6 +112,7 @@ final class RenewTradeLicense implements ActionControllerInterface
         $storageManager->lowerStorage($commodityId, $costs);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

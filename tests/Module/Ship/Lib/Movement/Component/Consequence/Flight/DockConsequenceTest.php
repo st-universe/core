@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -31,6 +32,7 @@ class DockConsequenceTest extends StuTestCase
     /** @var MockInterface&FlightRouteInterface */
     private MockInterface $flightRoute;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);

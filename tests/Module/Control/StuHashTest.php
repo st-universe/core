@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
+use Override;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\StuTestCase;
@@ -14,6 +15,7 @@ class StuHashTest extends StuTestCase
 
     private MockInterface $config;
 
+    #[Override]
     public function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);

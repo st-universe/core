@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -16,6 +17,7 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class CrewTrainingRepository extends EntityRepository implements CrewTrainingRepositoryInterface
 {
+    #[Override]
     public function save(CrewTrainingInterface $researched): void
     {
         $em = $this->getEntityManager();
@@ -23,6 +25,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         $em->persist($researched);
     }
 
+    #[Override]
     public function delete(CrewTrainingInterface $researched): void
     {
         $em = $this->getEntityManager();
@@ -30,11 +33,13 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         $em->remove($researched);
     }
 
+    #[Override]
     public function prototype(): CrewTrainingInterface
     {
         return new CrewTraining();
     }
 
+    #[Override]
     public function truncateByColony(ColonyInterface $colony): void
     {
         $this->getEntityManager()
@@ -48,6 +53,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
             ->execute();
     }
 
+    #[Override]
     public function getCountByUser(UserInterface $user): int
     {
         return $this->count([
@@ -55,6 +61,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         ]);
     }
 
+    #[Override]
     public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array
     {
         return $this->getEntityManager()

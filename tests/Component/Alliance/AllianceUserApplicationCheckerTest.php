@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
@@ -22,6 +23,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
 
     private AllianceUserApplicationChecker $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->allianceJobRepository = $this->mock(AllianceJobRepositoryInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ActivateShields;
 
+use Override;
 use request;
 
 use Stu\Component\Building\BuildingEnum;
@@ -16,25 +17,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ActivateShields implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ACTIVATE_SHIELDS';
+    public const string ACTION_IDENTIFIER = 'B_ACTIVATE_SHIELDS';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-
-    private BuildingActionInterface $buildingAction;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        BuildingActionInterface $buildingAction
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->buildingAction = $buildingAction;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingActionInterface $buildingAction)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -59,6 +48,7 @@ final class ActivateShields implements ActionControllerInterface
         );
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

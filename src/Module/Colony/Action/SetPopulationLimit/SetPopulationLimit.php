@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\SetPopulationLimit;
 
+use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -15,20 +16,13 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class SetPopulationLimit implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SET_POPULATIONLIMIT';
+    public const string ACTION_IDENTIFIER = 'B_SET_POPULATIONLIMIT';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyRepositoryInterface $colonyRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyRepository = $colonyRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -55,6 +49,7 @@ final class SetPopulationLimit implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

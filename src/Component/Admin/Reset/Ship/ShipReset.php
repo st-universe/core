@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset\Ship;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -11,26 +12,11 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShipReset implements ShipResetInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->entityManager = $entityManager;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private TradePostRepositoryInterface $tradePostRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private EntityManagerInterface $entityManager)
+    {
     }
 
+    #[Override]
     public function deactivateAllTractorBeams(): void
     {
         echo "  - deactivate all tractor beams\n";
@@ -40,6 +26,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function undockAllDockedShips(): void
     {
         echo "  - undock all ships\n";
@@ -49,6 +36,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllTradeposts(): void
     {
         echo "  - deleting all tradeposts\n";
@@ -58,6 +46,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllShips(): void
     {
         echo "  - deleting all ships and stations\n";
@@ -67,6 +56,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
+    #[Override]
     public function deleteAllBuildplans(): void
     {
         echo "  - deleting all buildplans\n";

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
@@ -26,6 +27,7 @@ class CheckDestinationTest extends StuTestCase
 
     private CheckDestinationInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);

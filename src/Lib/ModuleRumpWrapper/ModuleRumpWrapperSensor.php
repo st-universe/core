@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -11,6 +12,7 @@ use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperSensor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
+    #[Override]
     public function getValue(ModuleInterface $module = null): int
     {
         $module = $module ?? current($this->getModule());
@@ -25,11 +27,13 @@ final class ModuleRumpWrapperSensor extends ModuleRumpWrapperBase implements Mod
         );
     }
 
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return ShipModuleTypeEnum::SENSOR;
     }
 
+    #[Override]
     public function apply(ShipWrapperInterface $wrapper): void
     {
         $wrapper->get()->setSensorRange($this->getValue());

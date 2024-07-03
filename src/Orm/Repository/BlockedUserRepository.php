@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\BlockedUser;
 use Stu\Orm\Entity\BlockedUserInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\BlockedUserInterface;
  */
 final class BlockedUserRepository extends EntityRepository implements BlockedUserRepositoryInterface
 {
+    #[Override]
     public function getByEmailHash(string $emailHash): ?BlockedUserInterface
     {
         return $this->findOneBy([
@@ -20,6 +22,7 @@ final class BlockedUserRepository extends EntityRepository implements BlockedUse
         ]);
     }
 
+    #[Override]
     public function getByMobileHash(string $mobileHash): ?BlockedUserInterface
     {
         return $this->findOneBy([
@@ -27,6 +30,7 @@ final class BlockedUserRepository extends EntityRepository implements BlockedUse
         ]);
     }
 
+    #[Override]
     public function save(BlockedUserInterface $blockedUser): void
     {
         $em = $this->getEntityManager();
@@ -34,6 +38,7 @@ final class BlockedUserRepository extends EntityRepository implements BlockedUse
         $em->persist($blockedUser);
     }
 
+    #[Override]
     public function prototype(): BlockedUserInterface
     {
         return new BlockedUser();

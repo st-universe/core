@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
 use Stu\Module\Tick\Lock\LockTypeEnum;
@@ -13,18 +14,11 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ColonyLoader implements ColonyLoaderInterface
 {
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private LockManagerInterface $lockManager;
-
-    public function __construct(
-        ColonyRepositoryInterface $colonyRepository,
-        LockManagerInterface $lockManager
-    ) {
-        $this->colonyRepository = $colonyRepository;
-        $this->lockManager = $lockManager;
+    public function __construct(private ColonyRepositoryInterface $colonyRepository, private LockManagerInterface $lockManager)
+    {
     }
 
+    #[Override]
     public function loadWithOwnerValidation(int $colonyId, int $userId, bool $checkForEntityLock = true): ColonyInterface
     {
         $colony = $this->loadInternal($colonyId, $checkForEntityLock);
@@ -36,6 +30,7 @@ final class ColonyLoader implements ColonyLoaderInterface
         return $colony;
     }
 
+    #[Override]
     public function load(int $colonyId, bool $checkForEntityLock = true): ColonyInterface
     {
         return $this->loadInternal($colonyId, $checkForEntityLock);

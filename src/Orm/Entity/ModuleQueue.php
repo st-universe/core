@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,27 +44,32 @@ class ModuleQueue implements ModuleQueueInterface
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ColonyInterface $colony;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
+    #[Override]
     public function setColony(ColonyInterface $colony): ModuleQueueInterface
     {
         $this->colony = $colony;
         return $this;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): ModuleQueueInterface
     {
         $this->module_id = $moduleId;
@@ -71,11 +77,13 @@ class ModuleQueue implements ModuleQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setAmount(int $amount): ModuleQueueInterface
     {
         $this->count = $amount;
@@ -83,11 +91,13 @@ class ModuleQueue implements ModuleQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildingFunction(): int
     {
         return $this->buildingfunction;
     }
 
+    #[Override]
     public function setBuildingFunction(int $buildingFunction): ModuleQueueInterface
     {
         $this->buildingfunction = $buildingFunction;
@@ -95,11 +105,13 @@ class ModuleQueue implements ModuleQueueInterface
         return $this;
     }
 
+    #[Override]
     public function getModule(): ModuleInterface
     {
         return $this->module;
     }
 
+    #[Override]
     public function setModule(ModuleInterface $module): ModuleQueueInterface
     {
         $this->module = $module;

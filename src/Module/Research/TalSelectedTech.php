@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Override;
 use Stu\Orm\Entity\ResearchedInterface;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
@@ -20,20 +21,6 @@ use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class TalSelectedTech implements TalSelectedTechInterface
 {
-    private ResearchInterface $research;
-
-    private UserInterface $currentUser;
-
-    private ResearchRepositoryInterface $researchRepository;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private ResearchDependencyRepositoryInterface $researchDependencyRepository;
-
-    private BuildingRepositoryInterface $buildingRepository;
-
-    private ConfigInterface $config;
-
     private ?ResearchedInterface $state = null;
 
     /** @var null|array<string, TechDependency> */
@@ -42,29 +29,17 @@ final class TalSelectedTech implements TalSelectedTechInterface
     /** @var null|array<string, TechDependency> */
     private ?array $dependencies = null;
 
-    public function __construct(
-        ResearchRepositoryInterface $researchRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        ResearchDependencyRepositoryInterface $researchDependencyRepository,
-        BuildingRepositoryInterface $buildingRepository,
-        ResearchInterface $research,
-        UserInterface $currentUser,
-        ConfigInterface $config
-    ) {
-        $this->researchRepository = $researchRepository;
-        $this->researchedRepository = $researchedRepository;
-        $this->researchDependencyRepository = $researchDependencyRepository;
-        $this->buildingRepository = $buildingRepository;
-        $this->research = $research;
-        $this->currentUser = $currentUser;
-        $this->config = $config;
+    public function __construct(private ResearchRepositoryInterface $researchRepository, private ResearchedRepositoryInterface $researchedRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository, private BuildingRepositoryInterface $buildingRepository, private ResearchInterface $research, private UserInterface $currentUser, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function getResearch(): ResearchInterface
     {
         return $this->research;
     }
 
+    #[Override]
     public function getResearchState(): ?ResearchedInterface
     {
         if ($this->state === null) {
@@ -76,6 +51,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->state;
     }
 
+    #[Override]
     public function getDistinctExcludeNames(): array
     {
         if ($this->excludes === null) {
@@ -99,11 +75,13 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->excludes;
     }
 
+    #[Override]
     public function hasExcludes(): bool
     {
         return $this->getDistinctExcludeNames() !== [];
     }
 
+    #[Override]
     public function getDistinctPositiveDependencyNames(): array
     {
         if ($this->dependencies === null) {
@@ -129,11 +107,13 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->dependencies;
     }
 
+    #[Override]
     public function hasPositiveDependencies(): bool
     {
         return $this->getDistinctPositiveDependencyNames() !== [];
     }
 
+    #[Override]
     public function getDonePoints(): int
     {
         $researchState = $this->getResearchState();
@@ -148,6 +128,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->research->getPoints();
     }
 
+    #[Override]
     public function isResearchFinished(): bool
     {
         $researchState = $this->getResearchState();
@@ -157,11 +138,13 @@ final class TalSelectedTech implements TalSelectedTechInterface
             : $researchState->getFinished() > 0;
     }
 
+    #[Override]
     public function getBuildings(): array
     {
         return $this->buildingRepository->getByResearch($this->getResearch());
     }
 
+    #[Override]
     public function getStatusBar(): string
     {
         $researchState = $this->getResearchState();
@@ -178,6 +161,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
             ->render();
     }
 
+    #[Override]
     public function getWikiLink(): string
     {
         return sprintf(

@@ -22,13 +22,10 @@ return [
     GameRequestSaverInterface::class => function (ContainerInterface $dic): GameRequestSaverInterface {
         $config = $dic->get(ConfigInterface::class);
 
-        switch ((string) $config->get('debug.logging.game_request_logging_adapter')) {
-            case 'database':
-                $adapter = $dic->get(DatabaseAdapter::class);
-                break;
-            default:
-                $adapter = $dic->get(LogfileAdapter::class);
-        }
+        $adapter = match ((string) $config->get('debug.logging.game_request_logging_adapter')) {
+            'database' => $dic->get(DatabaseAdapter::class),
+            default => $dic->get(LogfileAdapter::class),
+        };
 
         return new GameRequestSaver(
             $dic->get(ParameterSanitizer::class),

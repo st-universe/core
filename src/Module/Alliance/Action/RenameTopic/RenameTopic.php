@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\RenameTopic;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,20 +16,13 @@ final class RenameTopic implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_RENAME_TOPIC';
+    public const string ACTION_IDENTIFIER = 'B_RENAME_TOPIC';
 
-    private RenameTopicRequestInterface $renameTopicRequest;
-
-    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
-
-    public function __construct(
-        RenameTopicRequestInterface $renameTopicRequest,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
-    ) {
-        $this->renameTopicRequest = $renameTopicRequest;
-        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
+    public function __construct(private RenameTopicRequestInterface $renameTopicRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -53,6 +47,7 @@ final class RenameTopic implements ActionControllerInterface
         $game->addInformation(_('Das Thema wurde umbenannt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

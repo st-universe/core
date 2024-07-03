@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Event;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -22,6 +23,7 @@ class WarDeclaredEventTest extends StuTestCase
 
     private WarDeclaredEvent $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->alliance = $this->mock(AllianceInterface::class);

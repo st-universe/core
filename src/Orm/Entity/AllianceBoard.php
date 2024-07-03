@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -56,21 +57,25 @@ class AllianceBoard implements AllianceBoardInterface
         $this->posts = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getAllianceId(): int
     {
         return $this->alliance_id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): AllianceBoardInterface
     {
         $this->name = $name;
@@ -78,11 +83,13 @@ class AllianceBoard implements AllianceBoardInterface
         return $this;
     }
 
+    #[Override]
     public function getTopicCount(): int
     {
         return count($this->topics);
     }
 
+    #[Override]
     public function getPostCount(): int
     {
         return array_reduce(
@@ -92,6 +99,7 @@ class AllianceBoard implements AllianceBoardInterface
         );
     }
 
+    #[Override]
     public function getLatestPost(): ?AllianceBoardPostInterface
     {
         $post = $this->getPosts()->first();
@@ -101,16 +109,19 @@ class AllianceBoard implements AllianceBoardInterface
             : $post;
     }
 
+    #[Override]
     public function getTopics(): Collection
     {
         return $this->topics;
     }
 
+    #[Override]
     public function getAlliance(): AllianceInterface
     {
         return $this->alliance;
     }
 
+    #[Override]
     public function setAlliance(AllianceInterface $alliance): AllianceBoardInterface
     {
         $this->alliance = $alliance;
@@ -118,6 +129,7 @@ class AllianceBoard implements AllianceBoardInterface
         return $this;
     }
 
+    #[Override]
     public function getPosts(): Collection
     {
         return $this->posts;

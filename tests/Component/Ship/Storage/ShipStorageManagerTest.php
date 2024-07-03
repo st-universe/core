@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Storage;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
@@ -24,6 +25,7 @@ class ShipStorageManagerTest extends StuTestCase
 
     private ?ShipStorageManager $manager;
 
+    #[Override]
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);

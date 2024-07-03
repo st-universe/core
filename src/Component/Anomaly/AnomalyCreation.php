@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
@@ -14,18 +15,11 @@ use Stu\Orm\Repository\AnomalyTypeRepositoryInterface;
 
 final class AnomalyCreation implements AnomalyCreationInterface
 {
-    private AnomalyRepositoryInterface $anomalyRepository;
-
-    private AnomalyTypeRepositoryInterface $anomalyTypeRepository;
-
-    public function __construct(
-        AnomalyRepositoryInterface $anomalyRepository,
-        AnomalyTypeRepositoryInterface $anomalyTypeRepository
-    ) {
-        $this->anomalyRepository = $anomalyRepository;
-        $this->anomalyTypeRepository = $anomalyTypeRepository;
+    public function __construct(private AnomalyRepositoryInterface $anomalyRepository, private AnomalyTypeRepositoryInterface $anomalyTypeRepository)
+    {
     }
 
+    #[Override]
     public function create(
         AnomalyTypeEnum $type,
         MapInterface|StarSystemMapInterface $map

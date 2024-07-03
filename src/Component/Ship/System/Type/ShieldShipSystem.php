@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -15,19 +16,17 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class ShieldShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private ShipStateChangerInterface $shipStateChanger;
-
-    public function __construct(
-        ShipStateChangerInterface $shipStateChanger
-    ) {
-        $this->shipStateChanger = $shipStateChanger;
+    public function __construct(private ShipStateChangerInterface $shipStateChanger)
+    {
     }
 
+    #[Override]
     public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_SHIELDS;
     }
 
+    #[Override]
     public function checkActivationConditions(ShipWrapperInterface $wrapper, string &$reason): bool
     {
         $ship = $wrapper->get();
@@ -60,6 +59,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         return true;
     }
 
+    #[Override]
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $ship = $wrapper->get();
@@ -68,11 +68,13 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
+    #[Override]
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         $wrapper->get()->setShield(0);
     }
 
+    #[Override]
     public function handleDamage(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();

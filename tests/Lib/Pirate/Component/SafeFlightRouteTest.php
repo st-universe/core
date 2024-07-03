@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
@@ -21,6 +22,7 @@ class SafeFlightRouteTest extends StuTestCase
 
     private SafeFlightRouteInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->flightRouteFactory = $this->mock(FlightRouteFactoryInterface::class);

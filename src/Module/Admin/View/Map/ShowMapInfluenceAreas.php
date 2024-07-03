@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Image\ImageCreationInterface;
@@ -15,24 +16,13 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowMapInfluenceAreas implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_INFLUENCE_AREAS';
+    public const string VIEW_IDENTIFIER = 'SHOW_INFLUENCE_AREAS';
 
-    private MapRepositoryInterface $mapRepository;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    private ImageCreationInterface $imageCreation;
-
-    public function __construct(
-        MapRepositoryInterface $mapRepository,
-        LayerRepositoryInterface $layerRepository,
-        ImageCreationInterface $imageCreation
-    ) {
-        $this->mapRepository = $mapRepository;
-        $this->layerRepository = $layerRepository;
-        $this->imageCreation = $imageCreation;
+    public function __construct(private MapRepositoryInterface $mapRepository, private LayerRepositoryInterface $layerRepository, private ImageCreationInterface $imageCreation)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $showAllyAreas = request::getInt('showAlly');

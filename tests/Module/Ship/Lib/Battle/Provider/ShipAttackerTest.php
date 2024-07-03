@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
+use Override;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
@@ -43,6 +44,7 @@ class ShipAttackerTest extends StuTestCase
 
     private ShipAttacker $subject;
 
+    #[Override]
     public function setUp(): void
     {
         //injected

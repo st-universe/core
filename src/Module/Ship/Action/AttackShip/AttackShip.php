@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AttackShip;
 
+use Override;
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
@@ -21,7 +22,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 //TODO unit tests and request class
 final class AttackShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ATTACK_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_ATTACK_SHIP';
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -33,6 +34,7 @@ final class AttackShip implements ActionControllerInterface
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -120,6 +122,7 @@ final class AttackShip implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

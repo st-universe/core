@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -15,26 +16,11 @@ use Stu\Orm\Repository\UserLayerRepositoryInterface;
 
 final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 {
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
-    private ResearchedRepositoryInterface $researchedRepository;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    private UserLayerRepositoryInterface $userLayerRepository;
-
-    public function __construct(
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        LayerRepositoryInterface $layerRepository,
-        UserLayerRepositoryInterface $userLayerRepository
-    ) {
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
-        $this->researchedRepository = $researchedRepository;
-        $this->layerRepository = $layerRepository;
-        $this->userLayerRepository = $userLayerRepository;
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository)
+    {
     }
 
+    #[Override]
     public function createDefault(UserInterface $user): void
     {
         $this->createDefaultPmCategories($user);

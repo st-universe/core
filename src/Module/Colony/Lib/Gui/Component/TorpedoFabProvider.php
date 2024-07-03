@@ -2,20 +2,18 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class TorpedoFabProvider implements GuiComponentProviderInterface
 {
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    public function __construct(
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
-    ) {
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
+    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

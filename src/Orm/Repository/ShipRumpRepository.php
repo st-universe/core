@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -20,6 +21,7 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ShipRumpRepository extends EntityRepository implements ShipRumpRepositoryInterface
 {
+    #[Override]
     public function getGroupedInfoByUser(UserInterface $user): array
     {
         return $this->getEntityManager()
@@ -37,6 +39,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->getResult();
     }
 
+    #[Override]
     public function getBuildableByUserAndBuildingFunction(int $userId, int $buildingFunction): array
     {
         return $this->getEntityManager()
@@ -60,6 +63,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->getResult();
     }
 
+    #[Override]
     public function getBuildableByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -79,6 +83,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->getResult();
     }
 
+    #[Override]
     public function getWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()
@@ -95,6 +100,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->getResult();
     }
 
+    #[Override]
     public function getStartableByColony(int $colonyId): array
     {
         return $this->getEntityManager()
@@ -117,6 +123,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->getResult();
     }
 
+    #[Override]
     public function getList(): iterable
     {
         return $this->findBy(

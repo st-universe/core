@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Override;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
@@ -14,6 +15,7 @@ final class StuBbCodeWithImageDefinitionSet implements CodeDefinitionSet
     /** @var CodeDefinition[]|null */
     private ?array $definitions = null;
 
+    #[Override]
     public function getCodeDefinitions(): array
     {
         if ($this->definitions === null) {

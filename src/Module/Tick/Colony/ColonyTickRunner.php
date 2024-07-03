@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
+use Override;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 
@@ -12,20 +13,13 @@ use Stu\Module\Tick\TransactionTickRunnerInterface;
  */
 final class ColonyTickRunner implements TickRunnerInterface
 {
-    private const TICK_DESCRIPTION = "colonytick";
+    private const string TICK_DESCRIPTION = "colonytick";
 
-    private ColonyTickManagerInterface $colonyTickManager;
-
-    private TransactionTickRunnerInterface $transactionTickRunner;
-
-    public function __construct(
-        ColonyTickManagerInterface $colonyTickManager,
-        TransactionTickRunnerInterface $transactionTickRunner
-    ) {
-        $this->colonyTickManager = $colonyTickManager;
-        $this->transactionTickRunner = $transactionTickRunner;
+    public function __construct(private ColonyTickManagerInterface $colonyTickManager, private TransactionTickRunnerInterface $transactionTickRunner)
+    {
     }
 
+    #[Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->transactionTickRunner->runWithResetCheck(

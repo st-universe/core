@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
+use Override;
 use InvalidArgumentException;
 use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -21,46 +22,18 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 class ModuleSelector implements ModuleSelectorInterface
 {
-    private const MACRO = 'html/ship/construction/moduleSelector/selector.twig';
-    private const TEMPLATE = 'html/ajaxempty.twig';
+    private const string MACRO = 'html/ship/construction/moduleSelector/selector.twig';
+    private const string TEMPLATE = 'html/ajaxempty.twig';
 
     /** @var ModuleSelectorEntryInterface[]|null */
     private ?array $moduleSelectorEntries = null;
-    private ShipModuleTypeEnum $moduleType;
-    private ShipRumpInterface $rump;
-    private UserInterface $user;
-    private ColonyInterface|ShipInterface $host;
-    private ?ShipBuildplanInterface $buildplan;
-    private ?ModuleSelectorAddonInterface $addon;
     private ?ShipRumpModuleLevelInterface $shipRumpModuleLevel = null;
 
-    private ModuleRepositoryInterface $moduleRepository;
-    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
-
-    private TwigPageInterface $twigPage;
-
-    public function __construct(
-        ModuleRepositoryInterface $moduleRepository,
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        TwigPageInterface $twigPage,
-        ShipModuleTypeEnum $moduleType,
-        ColonyInterface|ShipInterface $host,
-        ShipRumpInterface $rump,
-        UserInterface $user,
-        ?ModuleSelectorAddonInterface $addon,
-        ?ShipBuildplanInterface $buildplan = null
-    ) {
-        $this->moduleType = $moduleType;
-        $this->rump = $rump;
-        $this->user = $user;
-        $this->host = $host;
-        $this->buildplan = $buildplan;
-        $this->moduleRepository = $moduleRepository;
-        $this->addon = $addon;
-        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
-        $this->twigPage = $twigPage;
+    public function __construct(private ModuleRepositoryInterface $moduleRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private TwigPageInterface $twigPage, private ShipModuleTypeEnum $moduleType, private ColonyInterface|ShipInterface $host, private ShipRumpInterface $rump, private UserInterface $user, private ?ModuleSelectorAddonInterface $addon, private ?ShipBuildplanInterface $buildplan = null)
+    {
     }
 
+    #[Override]
     public function isMandatory(): bool
     {
         if ($this->isSpecial()) {
@@ -71,6 +44,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $moduleLevels->{'getModuleMandatory' . $this->getModuleType()->value}() > 0;
     }
 
+    #[Override]
     public function isSpecial(): bool
     {
         return $this->getModuleType() === ShipModuleTypeEnum::SPECIAL;
@@ -81,11 +55,13 @@ class ModuleSelector implements ModuleSelectorInterface
         return new ModuleScreenTab($this);
     }
 
+    #[Override]
     public function allowMultiple(): bool
     {
         return $this->isSpecial();
     }
 
+    #[Override]
     public function render(): string
     {
         $this->twigPage->setTemplate(self::TEMPLATE);
@@ -94,26 +70,31 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->twigPage->render();
     }
 
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return $this->moduleType;
     }
 
+    #[Override]
     public function allowEmptySlot(): bool
     {
         return !$this->isSpecial() && !$this->isMandatory();
     }
 
+    #[Override]
     public function getModuleDescription(): string
     {
         return $this->getModuleType()->getDescription();
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user->getId();
     }
 
+    #[Override]
     public function getRump(): ShipRumpInterface
     {
         return $this->rump;
@@ -130,6 +111,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $shipRumpRole;
     }
 
+    #[Override]
     public function getAvailableModules(): array
     {
         if ($this->moduleSelectorEntries === null) {
@@ -172,16 +154,19 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->moduleSelectorEntries;
     }
 
+    #[Override]
     public function hasSelectedModule(): bool
     {
         return $this->getSelectedModules() !== [];
     }
 
+    #[Override]
     public function getSelectedModuleCount(): int
     {
         return count($this->getSelectedModules());
     }
 
+    #[Override]
     public function getSelectedModules(): array
     {
         return array_filter(
@@ -190,11 +175,13 @@ class ModuleSelector implements ModuleSelectorInterface
         );
     }
 
+    #[Override]
     public function getHost(): ColonyInterface|ShipInterface
     {
         return $this->host;
     }
 
+    #[Override]
     public function getBuildplan(): ?ShipBuildplanInterface
     {
         return $this->buildplan;
@@ -213,6 +200,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->shipRumpModuleLevel;
     }
 
+    #[Override]
     public function getModuleTypeLevel(): int
     {
         if ($this->isSpecial()) {
@@ -223,6 +211,7 @@ class ModuleSelector implements ModuleSelectorInterface
             ->{'getModuleLevel' . $this->getModuleType()->value}();
     }
 
+    #[Override]
     public function getAddon(): ?ModuleSelectorAddonInterface
     {
         return $this->addon;

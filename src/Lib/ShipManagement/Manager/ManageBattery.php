@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Manager;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
@@ -15,13 +16,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 class ManageBattery implements ManagerInterface
 {
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(PrivateMessageSenderInterface $privateMessageSender)
+    public function __construct(private PrivateMessageSenderInterface $privateMessageSender)
     {
-        $this->privateMessageSender = $privateMessageSender;
     }
 
+    #[Override]
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];

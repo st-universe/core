@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowWebEmitter;
 
+use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,28 +18,20 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class ShowWebEmitter implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_WEBEMITTER_AJAX';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
+    public const string VIEW_IDENTIFIER = 'SHOW_WEBEMITTER_AJAX';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        TholianWebRepositoryInterface $tholianWebRepository,
+        private ShipLoaderInterface $shipLoader,
+        private ShipRepositoryInterface $shipRepository,
+        private TholianWebRepositoryInterface $tholianWebRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->tholianWebRepository = $tholianWebRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

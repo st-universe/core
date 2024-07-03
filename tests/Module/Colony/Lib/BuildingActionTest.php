@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Building\BuildingManagerInterface;
@@ -35,6 +36,7 @@ class BuildingActionTest extends StuTestCase
     private BuildingActionInterface $subject;
 
 
+    #[Override]
     public function setUp(): void
     {
         $this->colonyStorageManager = Mockery::mock(ColonyStorageManagerInterface::class);

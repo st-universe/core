@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnPostToPlotApplication;
 use Stu\Orm\Entity\KnPostToPlotApplicationInterface;
@@ -13,11 +14,13 @@ use Stu\Orm\Entity\KnPostToPlotApplicationInterface;
  */
 final class KnPostToPlotApplicationRepository extends EntityRepository implements KnPostToPlotApplicationRepositoryInterface
 {
+    #[Override]
     public function prototype(): KnPostToPlotApplicationInterface
     {
         return new KnPostToPlotApplication();
     }
 
+    #[Override]
     public function save(KnPostToPlotApplicationInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -25,6 +28,7 @@ final class KnPostToPlotApplicationRepository extends EntityRepository implement
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(KnPostToPlotApplicationInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -33,6 +37,7 @@ final class KnPostToPlotApplicationRepository extends EntityRepository implement
         $em->flush();
     }
 
+    #[Override]
     public function getByPostAndPlot(int $postId, int $plotId): ?KnPostToPlotApplicationInterface
     {
         return $this->findOneBy(

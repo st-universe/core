@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsBidAuction;
 
+use Override;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,58 +26,19 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class DealsBidAuction implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEALS_BID_AUCTION';
+    public const string ACTION_IDENTIFIER = 'B_DEALS_BID_AUCTION';
 
-    private const BID_TYPE_FIRST = 0;
-    private const BID_TYPE_RAISE_OWN = 1;
-    private const BID_TYPE_RAISE_OTHER = 2;
-    private const BID_TYPE_REVISE = 3;
-    private const BID_TYPE_REVISE_OLD = 4;
+    private const int BID_TYPE_FIRST = 0;
+    private const int BID_TYPE_RAISE_OWN = 1;
+    private const int BID_TYPE_RAISE_OTHER = 2;
+    private const int BID_TYPE_REVISE = 3;
+    private const int BID_TYPE_REVISE_OLD = 4;
 
-    private DealsBidAuctionRequestInterface $dealsbidauctionRequest;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
-
-    private DealsRepositoryInterface $dealsRepository;
-
-    private AuctionBidRepositoryInterface $auctionBidRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private TradePostRepositoryInterface $tradepostRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private StuTime $stuTime;
-
-    public function __construct(
-        DealsBidAuctionRequestInterface $dealsbidauctionRequest,
-        TradeLibFactoryInterface $tradeLibFactory,
-        AuctionBidRepositoryInterface $auctionBidRepository,
-        DealsRepositoryInterface $dealsRepository,
-        TradePostRepositoryInterface $tradepostRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        StorageRepositoryInterface $storageRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        StuTime $stuTime
-    ) {
-        $this->dealsbidauctionRequest = $dealsbidauctionRequest;
-        $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradepostRepository = $tradepostRepository;
-        $this->dealsRepository = $dealsRepository;
-        $this->auctionBidRepository = $auctionBidRepository;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->storageRepository = $storageRepository;
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->stuTime = $stuTime;
+    public function __construct(private DealsBidAuctionRequestInterface $dealsbidauctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private AuctionBidRepositoryInterface $auctionBidRepository, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -319,18 +281,13 @@ final class DealsBidAuction implements ActionControllerInterface
 
     private function getPrestigeTemplate(int $bidType): string
     {
-        switch ($bidType) {
-            case self::BID_TYPE_FIRST:
-                return _('-%d Prestige: Eingebüßt durch Setzen eines Erstgebots bei einer Auktion des Großen Nagus');
-            case self::BID_TYPE_RAISE_OWN:
-                return _('-%d Prestige: Eingebüßt durch Erhöhen deines Maximalgebots bei einer Auktion des Großen Nagus');
-            case self::BID_TYPE_REVISE_OLD:
-                return _('%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und hast dein Prestige zurück erhalten');
-            case self::BID_TYPE_REVISE:
-                return _('-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus');
-            default:
-                return '';
-        }
+        return match ($bidType) {
+            self::BID_TYPE_FIRST => _('-%d Prestige: Eingebüßt durch Setzen eines Erstgebots bei einer Auktion des Großen Nagus'),
+            self::BID_TYPE_RAISE_OWN => _('-%d Prestige: Eingebüßt durch Erhöhen deines Maximalgebots bei einer Auktion des Großen Nagus'),
+            self::BID_TYPE_REVISE_OLD => _('%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und hast dein Prestige zurück erhalten'),
+            self::BID_TYPE_REVISE => _('-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus'),
+            default => '',
+        };
     }
 
     private function isEnoughAvailable(DealsInterface $auction, int $neededAmount, GameControllerInterface $game): bool
@@ -368,6 +325,7 @@ final class DealsBidAuction implements ActionControllerInterface
         return true;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

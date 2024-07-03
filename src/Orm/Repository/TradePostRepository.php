@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Stu\Component\Trade\TradeEnum;
@@ -23,11 +24,13 @@ use Stu\Orm\Entity\User;
  */
 final class TradePostRepository extends EntityRepository implements TradePostRepositoryInterface
 {
+    #[Override]
     public function prototype(): TradePostInterface
     {
         return new TradePost();
     }
 
+    #[Override]
     public function save(TradePostInterface $tradePost): void
     {
         $em = $this->getEntityManager();
@@ -35,6 +38,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         $em->persist($tradePost);
     }
 
+    #[Override]
     public function delete(TradePostInterface $tradePost): void
     {
         $em = $this->getEntityManager();
@@ -42,6 +46,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         $em->remove($tradePost);
     }
 
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -49,6 +54,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         );
     }
 
+    #[Override]
     public function getByUserLicense(int $userId): array
     {
         $time = time();
@@ -69,6 +75,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
+    #[Override]
     public function getByUserLicenseOnlyNPC(int $userId): array
     {
         return $this->getEntityManager()
@@ -89,6 +96,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
+    #[Override]
     public function getByUserLicenseOnlyFerg(int $userId): array
     {
         return $this->getEntityManager()
@@ -109,6 +117,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
+    #[Override]
     public function getClosestNpcTradePost(Location $location): ?TradePostInterface
     {
         $layer = $location->getLayer();
@@ -143,11 +152,12 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                     'firstUserId' => UserEnum::USER_FIRST_ID
                 ])
                 ->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             return null;
         }
     }
 
+    #[Override]
     public function getFergTradePost(
         int $tradePostId
     ): ?TradePostInterface {
@@ -156,6 +166,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         ]);
     }
 
+    #[Override]
     public function getUsersWithStorageOnTradepost(int $tradePostId): array
     {
         return $this->getEntityManager()
@@ -179,6 +190,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
+    #[Override]
     public function truncateAllTradeposts(): void
     {
         $this->getEntityManager()->createQuery(

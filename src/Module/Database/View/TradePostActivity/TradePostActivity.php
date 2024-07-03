@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\TradePostActivity;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopActivTradePost;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class TradePostActivity implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TOP_ACTIV_TRADEPOST';
+    public const string VIEW_IDENTIFIER = 'SHOW_TOP_ACTIV_TRADEPOST';
 
-    private TradeTransactionRepositoryInterface $tradeTransactionRepository;
-
-    private DatabaseUiFactoryInterface $databaseUiFactory;
-
-    public function __construct(
-        DatabaseUiFactoryInterface $databaseUiFactory,
-        TradeTransactionRepositoryInterface $tradeTransactionRepository
-    ) {
-        $this->tradeTransactionRepository = $tradeTransactionRepository;
-        $this->databaseUiFactory = $databaseUiFactory;
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private TradeTransactionRepositoryInterface $tradeTransactionRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setNavigation([

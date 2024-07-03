@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -29,6 +30,7 @@ class EpsConsequenceTest extends StuTestCase
     /** @var MockInterface&FlightRouteInterface */
     private MockInterface $flightRoute;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->ship = $this->mock(ShipInterface::class);

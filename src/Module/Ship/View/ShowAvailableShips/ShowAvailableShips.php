@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowAvailableShips;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowAvailableShips implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_AVAILABLE_SHIPS';
+    public const string VIEW_IDENTIFIER = 'SHOW_AVAILABLE_SHIPS';
 
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->shipRepository = $shipRepository;
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

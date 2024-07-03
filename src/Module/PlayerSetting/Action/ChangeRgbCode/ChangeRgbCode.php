@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeRgbCode;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,16 +13,13 @@ use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 final class ChangeRgbCode implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_USER_RGB';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_USER_RGB';
 
-    private ChangeUserSettingInterface $changerUserSetting;
-
-    public function __construct(
-        ChangeUserSettingInterface $changerUserSetting,
-    ) {
-        $this->changerUserSetting = $changerUserSetting;
+    public function __construct(private ChangeUserSettingInterface $changerUserSetting)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $value = request::postStringFatal('rgb_code');
@@ -49,6 +47,7 @@ final class ChangeRgbCode implements ActionControllerInterface
         return preg_match('/^#?(([a-f0-9]{3}){1,2})$/i', $hex);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

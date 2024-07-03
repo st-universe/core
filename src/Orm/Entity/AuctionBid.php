@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -40,17 +41,20 @@ class AuctionBid implements AuctionBidInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getAuctionId(): int
     {
         return $this->auction_id;
     }
 
 
+    #[Override]
     public function setAuctionId(int $auction_id): AuctionBidInterface
     {
         $this->auction_id = $auction_id;
@@ -58,12 +62,14 @@ class AuctionBid implements AuctionBidInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
 
+    #[Override]
     public function setUserId(int $user_id): AuctionBidInterface
     {
         $this->user_id = $user_id;
@@ -71,11 +77,13 @@ class AuctionBid implements AuctionBidInterface
         return $this;
     }
 
+    #[Override]
     public function getMaxAmount(): int
     {
         return $this->max_amount;
     }
 
+    #[Override]
     public function setMaxAmount(int $max_amount): AuctionBidInterface
     {
         $this->max_amount = $max_amount;
@@ -83,11 +91,13 @@ class AuctionBid implements AuctionBidInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): AuctionBidInterface
     {
         $this->user = $user;
@@ -95,11 +105,13 @@ class AuctionBid implements AuctionBidInterface
         return $this;
     }
 
+    #[Override]
     public function getAuction(): DealsInterface
     {
         return $this->auction;
     }
 
+    #[Override]
     public function setAuction(DealsInterface $auction): AuctionBidInterface
     {
         $this->auction = $auction;

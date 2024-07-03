@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -17,6 +18,7 @@ class PirateFlight implements PirateFlightInterface
     ) {
     }
 
+    #[Override]
     public function movePirate(ShipWrapperInterface $wrapper, FlightRouteInterface $flightRoute): void
     {
         $messages = $this->shipMover->checkAndMove(

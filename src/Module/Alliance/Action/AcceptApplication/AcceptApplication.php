@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AcceptApplication;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -20,32 +21,13 @@ final class AcceptApplication implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
+    public const string ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
 
-    private AcceptApplicationRequestInterface $acceptApplicationRequest;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        AcceptApplicationRequestInterface $acceptApplicationRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->acceptApplicationRequest = $acceptApplicationRequest;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
+    public function __construct(private AcceptApplicationRequestInterface $acceptApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Applications::VIEW_IDENTIFIER);
@@ -113,6 +95,7 @@ final class AcceptApplication implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

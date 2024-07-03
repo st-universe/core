@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
+use Override;
 use Stu\Component\Anomaly\AnomalyHandlingInterface;
 
 class AnomalyCreationCheck implements ManagerComponentInterface
@@ -10,6 +11,7 @@ class AnomalyCreationCheck implements ManagerComponentInterface
     {
     }
 
+    #[Override]
     public function work(): void
     {
         $this->anomalyHandling->createNewAnomalies();

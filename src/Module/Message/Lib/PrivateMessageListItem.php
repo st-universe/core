@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
@@ -14,36 +15,17 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class PrivateMessageListItem implements PrivateMessageListItemInterface
 {
-    private PrivateMessageRepositoryInterface $privateMessageRepository;
-
-    private ContactRepositoryInterface $contactRepository;
-
-    private IgnoreListRepositoryInterface $ignoreListRepository;
-
-    private PrivateMessageInterface $message;
-
-    private int $currentUserId;
-
     private ?UserInterface $sender = null;
 
     private ?bool $senderignore = null;
 
     private ?ContactInterface $sendercontact = null;
 
-    public function __construct(
-        PrivateMessageRepositoryInterface $privateMessageRepository,
-        ContactRepositoryInterface $contactRepository,
-        IgnoreListRepositoryInterface $ignoreListRepository,
-        PrivateMessageInterface $message,
-        int $currentUserId
-    ) {
-        $this->privateMessageRepository = $privateMessageRepository;
-        $this->contactRepository = $contactRepository;
-        $this->ignoreListRepository = $ignoreListRepository;
-        $this->message = $message;
-        $this->currentUserId = $currentUserId;
+    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository, private ContactRepositoryInterface $contactRepository, private IgnoreListRepositoryInterface $ignoreListRepository, private PrivateMessageInterface $message, private int $currentUserId)
+    {
     }
 
+    #[Override]
     public function getSender(): UserInterface
     {
         if ($this->sender === null) {
@@ -52,11 +34,13 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         return $this->sender;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->message->getDate();
     }
 
+    #[Override]
     public function isMarkableAsNew(): bool
     {
         if ($this->message->getNew() === false) {
@@ -69,6 +53,7 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         return true;
     }
 
+    #[Override]
     public function isMarkableAsReceipt(): bool
     {
         $inboxPm = $this->message->getInboxPm();
@@ -90,36 +75,43 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         return !$inboxPm->getNew();
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->message->getText();
     }
 
+    #[Override]
     public function getHref(): ?string
     {
         return $this->message->getHref();
     }
 
+    #[Override]
     public function getNew(): bool
     {
         return $this->message->getNew();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->message->getId();
     }
 
+    #[Override]
     public function displayUserLinks(): bool
     {
         return $this->getSender() && $this->getSender()->getId() !== UserEnum::USER_NOONE;
     }
 
+    #[Override]
     public function getReplied(): bool
     {
         return $this->message->getReplied();
     }
 
+    #[Override]
     public function senderIsIgnored(): bool
     {
         if ($this->senderignore === null) {
@@ -131,6 +123,7 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         return $this->senderignore;
     }
 
+    #[Override]
     public function senderIsContact(): ?ContactInterface
     {
         if ($this->sendercontact === null) {
@@ -142,6 +135,7 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         return $this->sendercontact;
     }
 
+    #[Override]
     public function hasTranslation(): bool
     {
         $text = $this->getText();

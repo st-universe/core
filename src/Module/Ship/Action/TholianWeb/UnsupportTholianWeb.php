@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TholianWeb;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
@@ -18,28 +19,20 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class UnsupportTholianWeb implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_UNSUPPORT_WEB';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private TholianWebUtilInterface $tholianWebUtil;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
+    public const string ACTION_IDENTIFIER = 'B_UNSUPPORT_WEB';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TholianWebUtilInterface $tholianWebUtil,
-        TholianWebRepositoryInterface $tholianWebRepository,
+        private ShipLoaderInterface $shipLoader,
+        private TholianWebUtilInterface $tholianWebUtil,
+        private TholianWebRepositoryInterface $tholianWebRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->tholianWebUtil = $tholianWebUtil;
-        $this->tholianWebRepository = $tholianWebRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -80,6 +73,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
         $game->addInformation("Die Unterstützung des Energienetz wurde abgebrochen");
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

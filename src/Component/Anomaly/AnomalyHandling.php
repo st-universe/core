@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Orm\Entity\AnomalyInterface;
@@ -20,6 +21,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
     ) {
     }
 
+    #[Override]
     public function processExistingAnomalies(): void
     {
         foreach ($this->anomalyRepository->findAllActive() as $anomaly) {
@@ -36,6 +38,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         }
     }
 
+    #[Override]
     public function createNewAnomalies(): void
     {
         foreach ($this->handlerList as $handler) {

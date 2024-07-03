@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
@@ -12,21 +13,11 @@ use Throwable;
 
 final class TransactionTickRunner implements TransactionTickRunnerInterface
 {
-    protected EntityManagerInterface $entityManager;
-    protected FailureEmailSenderInterface $failureEmailSender;
-
-    private GameControllerInterface $game;
-
-    public function __construct(
-        GameControllerInterface $game,
-        EntityManagerInterface $entityManager,
-        FailureEmailSenderInterface $failureEmailSender
-    ) {
-        $this->game = $game;
-        $this->entityManager = $entityManager;
-        $this->failureEmailSender = $failureEmailSender;
+    public function __construct(private GameControllerInterface $game, protected EntityManagerInterface $entityManager, protected FailureEmailSenderInterface $failureEmailSender)
+    {
     }
 
+    #[Override]
     public function runWithResetCheck(callable $fn, string $tickDescription, int $batchGroup, int $batchGroupCount): void
     {
         if (!$this->isGameStateReset()) {
@@ -66,6 +57,7 @@ final class TransactionTickRunner implements TransactionTickRunnerInterface
         }
     }
 
+    #[Override]
     public function isGameStateReset(): bool
     {
         return $this->game->getGameState() === GameEnum::CONFIG_GAMESTATE_VALUE_RESET;

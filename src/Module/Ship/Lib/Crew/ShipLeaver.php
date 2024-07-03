@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Crew;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -21,34 +22,11 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 //TODO unit tests
 final class ShipLeaver implements ShipLeaverInterface
 {
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private CrewRepositoryInterface $crewRepository;
-
-    private LaunchEscapePodsInterface $launchEscapePods;
-
-    private ShipShutdownInterface $shipShutdown;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        CrewRepositoryInterface $crewRepository,
-        LaunchEscapePodsInterface $launchEscapePods,
-        ShipShutdownInterface $shipShutdown,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->crewRepository = $crewRepository;
-        $this->launchEscapePods = $launchEscapePods;
-        $this->shipShutdown = $shipShutdown;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipCrewRepositoryInterface $shipCrewRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private CrewRepositoryInterface $crewRepository, private LaunchEscapePodsInterface $launchEscapePods, private ShipShutdownInterface $shipShutdown, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function evacuate(ShipWrapperInterface $wrapper): string
     {
         $ship = $wrapper->get();
@@ -86,6 +64,7 @@ final class ShipLeaver implements ShipLeaverInterface
         }
     }
 
+    #[Override]
     public function dumpCrewman(ShipCrewInterface $shipCrew, string $message): string
     {
         $ship = $shipCrew->getShip();

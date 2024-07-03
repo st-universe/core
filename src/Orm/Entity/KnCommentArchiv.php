@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -52,26 +53,31 @@ class KnCommentArchiv implements KnCommentArchivInterface
     private KnPostArchivInterface $post;
 
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
+    #[Override]
     public function getFormerId(): int
     {
         return $this->former_id;
     }
 
+    #[Override]
     public function getPostId(): int
     {
         return $this->post_id;
     }
 
+    #[Override]
     public function setPostId(int $postId): KnCommentArchivInterface
     {
         $this->post_id = $postId;
@@ -79,16 +85,19 @@ class KnCommentArchiv implements KnCommentArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUsername(): string
     {
         return $this->username;
     }
 
+    #[Override]
     public function setUsername(string $username): KnCommentArchivInterface
     {
         $this->username = $username;
@@ -96,11 +105,13 @@ class KnCommentArchiv implements KnCommentArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): KnCommentArchivInterface
     {
         $this->text = $text;
@@ -108,11 +119,13 @@ class KnCommentArchiv implements KnCommentArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): KnCommentArchivInterface
     {
         $this->date = $date;
@@ -120,11 +133,13 @@ class KnCommentArchiv implements KnCommentArchivInterface
         return $this;
     }
 
+    #[Override]
     public function getPosting(): KnPostArchivInterface
     {
         return $this->post;
     }
 
+    #[Override]
     public function setPosting(KnPostArchivInterface $post): KnCommentArchivInterface
     {
         $this->post = $post;
@@ -132,6 +147,7 @@ class KnCommentArchiv implements KnCommentArchivInterface
         return $this;
     }
 
+    #[Override]
     public function setDeleted(int $timestamp): KnCommentArchivInterface
     {
         $this->deleted = $timestamp;
@@ -139,6 +155,7 @@ class KnCommentArchiv implements KnCommentArchivInterface
         return $this;
     }
 
+    #[Override]
     public function isDeleted(): bool
     {
         return $this->deleted !== null;

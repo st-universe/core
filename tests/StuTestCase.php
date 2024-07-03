@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu;
 
+use Override;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -16,6 +17,7 @@ use Stu\Module\Logging\PirateLoggerInterface;
 abstract class StuTestCase extends MockeryTestCase
 {
 
+    #[Override]
     protected function tearDown(): void
     {
         request::setMockVars(null);

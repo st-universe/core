@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -69,16 +70,19 @@ class ShipBuildplan implements ShipBuildplanInterface
         $this->modules = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
+    #[Override]
     public function setRumpId(int $shipRumpId): ShipBuildplanInterface
     {
         $this->rump_id = $shipRumpId;
@@ -86,27 +90,32 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): ShipBuildplanInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): ShipBuildplanInterface
     {
         $this->name = $name;
@@ -114,11 +123,13 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
+    #[Override]
     public function setBuildtime(int $buildtime): ShipBuildplanInterface
     {
         $this->buildtime = $buildtime;
@@ -126,6 +137,7 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    #[Override]
     public function getShipCount(): int
     {
         return $this->getShiplist()->count();
@@ -139,11 +151,13 @@ class ShipBuildplan implements ShipBuildplanInterface
         return md5(implode('_', $modules) . '_' . $crewUsage);
     }
 
+    #[Override]
     public function getSignature(): ?string
     {
         return $this->signature;
     }
 
+    #[Override]
     public function setSignature(?string $signature): ShipBuildplanInterface
     {
         $this->signature = $signature;
@@ -151,11 +165,13 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    #[Override]
     public function getCrew(): int
     {
         return $this->crew;
     }
 
+    #[Override]
     public function setCrew(int $crew): ShipBuildplanInterface
     {
         $this->crew = $crew;
@@ -163,16 +179,19 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    #[Override]
     public function getShiplist(): Collection
     {
         return $this->ships;
     }
 
+    #[Override]
     public function getRump(): ShipRumpInterface
     {
         return $this->shipRump;
     }
 
+    #[Override]
     public function setRump(ShipRumpInterface $shipRump): ShipBuildplanInterface
     {
         $this->shipRump = $shipRump;
@@ -180,6 +199,7 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    #[Override]
     public function getModulesByType(ShipModuleTypeEnum $type): array
     {
         return $this->getModules()
@@ -189,6 +209,7 @@ class ShipBuildplan implements ShipBuildplanInterface
             ->toArray();
     }
 
+    #[Override]
     public function getModules(): Collection
     {
         return $this->modules;

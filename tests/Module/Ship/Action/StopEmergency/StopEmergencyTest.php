@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StopEmergency;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
@@ -32,6 +33,7 @@ class StopEmergencyTest extends StuTestCase
     /** @var MockInterface|StuTime */
     private StuTime $stuTime;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->shipLoader = $this->mock(ShipLoaderInterface::class);

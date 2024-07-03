@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RemoveWaste;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -17,32 +18,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class RemoveWaste implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_REMOVE_WASTE';
+    public const string ACTION_IDENTIFIER = 'B_REMOVE_WASTE';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
-
-    public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        CommodityRepositoryInterface $commodityRepository
-    ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
-        $this->commodityRepository = $commodityRepository;
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository, private CommodityRepositoryInterface $commodityRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -99,6 +81,7 @@ final class RemoveWaste implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

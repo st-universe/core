@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -19,6 +20,7 @@ class FleetDeletionHandlerTest extends MockeryTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
+    #[Override]
     public function setUp(): void
     {
         $this->fleetRepository = Mockery::mock(FleetRepositoryInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
+use Override;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Faction\FactionEnum;
@@ -14,18 +15,11 @@ use Stu\Orm\Entity\AllianceInterface;
  */
 final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraphAttributeConverterInterface
 {
-    private Parser $bbCodeParser;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        Parser $bbCodeParser,
-        ConfigInterface $config
-    ) {
-        $this->bbCodeParser = $bbCodeParser;
-        $this->config = $config;
+    public function __construct(private Parser $bbCodeParser, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function convertName(
         AllianceInterface $alliance
     ): string {
@@ -36,6 +30,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         );
     }
 
+    #[Override]
     public function getFrameColor(
         AllianceInterface $alliance,
         string $defaultColor = '#8b8b8b'
@@ -55,6 +50,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         return $defaultColor;
     }
 
+    #[Override]
     public function getUrl(
         AllianceInterface $alliance
     ): string {
@@ -65,6 +61,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         );
     }
 
+    #[Override]
     public function getFillColor(
         AllianceInterface $alliance
     ): string {

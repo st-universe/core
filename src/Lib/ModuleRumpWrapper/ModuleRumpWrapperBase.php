@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -12,20 +13,16 @@ use Stu\Orm\Entity\ShipRumpInterface;
 
 abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    protected ShipRumpInterface $rump;
-    private ?ShipBuildplanInterface $buildplan;
-
     /** @var null|array<int, ModuleInterface> */
     private ?array $modules = null;
 
-    public function __construct(ShipRumpInterface $rump, ?ShipBuildplanInterface $buildplan)
+    public function __construct(protected ShipRumpInterface $rump, private ?ShipBuildplanInterface $buildplan)
     {
-        $this->rump = $rump;
-        $this->buildplan = $buildplan;
     }
 
     public abstract function getModuleType(): ShipModuleTypeEnum;
 
+    #[Override]
     public function getModule(): iterable
     {
         if ($this->modules === null) {

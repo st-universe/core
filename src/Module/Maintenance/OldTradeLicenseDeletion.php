@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Maintenance;
 
+use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -11,28 +12,13 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
 final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 {
-    private const INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS = 7;
+    private const int INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS = 7;
 
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private StuTime $stuTime;
-
-    public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        StuTime $stuTime
-    ) {
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeLicenseInfoRepository = $tradeLicenseInfoRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->stuTime = $stuTime;
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime)
+    {
     }
 
+    #[Override]
     public function handle(): void
     {
         $deletedLicenses = $this->deleteExpiredLicenses();

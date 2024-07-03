@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -23,47 +24,17 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 {
-    private ShipTakeoverRepositoryInterface $shipTakeoverRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private StorageRepositoryInterface $storageRepository;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private LeaveFleetInterface $leaveFleet;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private GameControllerInterface $game;
-
-    public function __construct(
-        ShipTakeoverRepositoryInterface $shipTakeoverRepository,
-        ShipRepositoryInterface $shipRepository,
-        StorageRepositoryInterface $storageRepository,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        LeaveFleetInterface $leaveFleet,
-        EntryCreatorInterface $entryCreator,
-        PrivateMessageSenderInterface $privateMessageSender,
-        GameControllerInterface $game
-    ) {
-        $this->shipTakeoverRepository = $shipTakeoverRepository;
-        $this->shipRepository = $shipRepository;
-        $this->storageRepository = $storageRepository;
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->leaveFleet = $leaveFleet;
-        $this->entryCreator = $entryCreator;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->game = $game;
+    public function __construct(private ShipTakeoverRepositoryInterface $shipTakeoverRepository, private ShipRepositoryInterface $shipRepository, private StorageRepositoryInterface $storageRepository, private CreatePrestigeLogInterface $createPrestigeLog, private LeaveFleetInterface $leaveFleet, private EntryCreatorInterface $entryCreator, private PrivateMessageSenderInterface $privateMessageSender, private GameControllerInterface $game)
+    {
     }
 
+    #[Override]
     public function getPrestigeForBoardingAttempt(ShipInterface $target): int
     {
         return (int)ceil($this->getPrestigeForTakeover($target) / 25);
     }
 
+    #[Override]
     public function getPrestigeForTakeover(ShipInterface $target): int
     {
         $buildplan = $target->getBuildplan();
@@ -78,6 +49,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
+    #[Override]
     public function startTakeover(ShipInterface $source, ShipInterface $target, int $prestige): void
     {
         $takeover = $this->shipTakeoverRepository->prototype();
@@ -137,6 +109,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
+    #[Override]
     public function isTakeoverReady(ShipTakeoverInterface $takeover): bool
     {
         $remainingTurns = $takeover->getStartTurn() + self::TURNS_TO_TAKEOVER - $this->game->getCurrentRound()->getTurn();
@@ -185,6 +158,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
+    #[Override]
     public function cancelTakeover(
         ?ShipTakeoverInterface $takeover,
         string $cause = null,
@@ -235,6 +209,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         return $takeover->getSourceShip() === $takeover->getTargetShip()->getTractoringShip();
     }
 
+    #[Override]
     public function cancelBothTakeover(ShipInterface $ship, string $passiveCause = null): void
     {
         $this->cancelTakeover(
@@ -268,6 +243,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
+    #[Override]
     public function finishTakeover(ShipTakeoverInterface $takeover): void
     {
         $sourceUser = $takeover->getSourceShip()->getUser();

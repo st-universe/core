@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Stu\Orm\Entity\Anomaly;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\ShipInterface;
  */
 final class AnomalyRepository extends EntityRepository implements AnomalyRepositoryInterface
 {
+    #[Override]
     public function prototype(): AnomalyInterface
     {
         return new Anomaly();
     }
 
+    #[Override]
     public function save(AnomalyInterface $anomaly): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
         $em->persist($anomaly);
     }
 
+    #[Override]
     public function delete(AnomalyInterface $anomaly): void
     {
         $em = $this->getEntityManager();
@@ -38,6 +42,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     /**
      * @return array<AnomalyInterface>
      */
+    #[Override]
     public function findAllActive(): array
     {
         return $this->getEntityManager()
@@ -52,6 +57,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
             ->getResult();
     }
 
+    #[Override]
     public function getClosestAnomalyDistance(ShipInterface $ship): ?int
     {
         $map = $ship->getMap();

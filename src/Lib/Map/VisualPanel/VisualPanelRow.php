@@ -6,14 +6,11 @@ namespace Stu\Lib\Map\VisualPanel;
 
 class VisualPanelRow
 {
-    private int $y;
-
     /** @var array<VisualPanelElementInterface>  */
     private array $entries;
 
-    public function __construct(int $y)
+    public function __construct(private int $y)
     {
-        $this->y = $y;
     }
 
     public function getY(): int

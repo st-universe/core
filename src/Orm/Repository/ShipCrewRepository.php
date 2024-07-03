@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -19,11 +20,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ShipCrewRepository extends EntityRepository implements ShipCrewRepositoryInterface
 {
+    #[Override]
     public function prototype(): ShipCrewInterface
     {
         return new ShipCrew();
     }
 
+    #[Override]
     public function save(ShipCrewInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -31,6 +34,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $em->persist($post);
     }
 
+    #[Override]
     public function delete(ShipCrewInterface $post): void
     {
         $em = $this->getEntityManager();
@@ -38,6 +42,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $em->remove($post);
     }
 
+    #[Override]
     public function getByShip(int $shipId): array
     {
         return $this->findBy(
@@ -46,6 +51,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         );
     }
 
+    #[Override]
     public function getByShipAndSlot(int $shipId, int $slotId): array
     {
         return $this->findBy([
@@ -57,6 +63,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
     /**
      * @return array<array{id: int, name: string, sector: string, amount: int}>
      */
+    #[Override]
     public function getOrphanedSummaryByUserAtTradeposts(int $userId): array
     {
         $rsm = new ResultSetMapping();
@@ -81,6 +88,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getResult();
     }
 
+    #[Override]
     public function getAmountByUser(UserInterface $user): int
     {
         return $this->count([
@@ -88,6 +96,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         ]);
     }
 
+    #[Override]
     public function getByUserAtColonies(int $userId): array
     {
         return $this->getEntityManager()
@@ -104,6 +113,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getResult();
     }
 
+    #[Override]
     public function getByUserOnEscapePods(int $userId): array
     {
         return $this->getEntityManager()
@@ -129,6 +139,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getResult();
     }
 
+    #[Override]
     public function getByUserAtTradeposts(int $userId): array
     {
         return $this->getEntityManager()
@@ -145,6 +156,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getResult();
     }
 
+    #[Override]
     public function getAmountByUserOnColonies(int $userId): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -158,6 +170,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         )->setParameter('userId', $userId)->getSingleScalarResult();
     }
 
+    #[Override]
     public function getAmountByUserOnShips(UserInterface $user): int
     {
         return (int)$this->getEntityManager()
@@ -174,6 +187,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getAmountByUserAtTradeposts(UserInterface $user): int
     {
         return (int)$this->getEntityManager()
@@ -190,6 +204,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getCrewsTop10(): array
     {
         $rsm = new ResultSetMapping();
@@ -215,6 +230,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getResult();
     }
 
+    #[Override]
     public function truncateByShip(int $shipId): void
     {
         $this->getEntityManager()
@@ -228,6 +244,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->execute();
     }
 
+    #[Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()

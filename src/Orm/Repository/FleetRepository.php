@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class FleetRepository extends EntityRepository implements FleetRepositoryInterface
 {
+    #[Override]
     public function prototype(): FleetInterface
     {
         return new Fleet();
     }
 
+    #[Override]
     public function save(FleetInterface $fleet): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em->persist($fleet);
     }
 
+    #[Override]
     public function delete(FleetInterface $fleet): void
     {
         $em = $this->getEntityManager();
@@ -36,6 +40,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em->flush();
     }
 
+    #[Override]
     public function truncateByUser(UserInterface $user): void
     {
         $this->getEntityManager()->createQuery(
@@ -48,6 +53,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->execute();
     }
 
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -56,6 +62,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         );
     }
 
+    #[Override]
     public function getCountByUser(int $userId): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -69,6 +76,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getHighestSortByUser(int $userId): int
     {
         $rsm = new ResultSetMapping();
@@ -85,6 +93,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->getSingleScalarResult();
     }
 
+    #[Override]
     public function getNonNpcFleetList(): iterable
     {
         return $this->getEntityManager()
@@ -98,6 +107,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->getResult();
     }
 
+    #[Override]
     public function truncateAllFleets(): void
     {
         $this->getEntityManager()->createQuery(

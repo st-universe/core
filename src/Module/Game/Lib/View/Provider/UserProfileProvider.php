@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use request;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
@@ -29,6 +30,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
     ) {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         if (!request::has('uid')) {

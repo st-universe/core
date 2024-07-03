@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -57,16 +58,19 @@ class AllianceBoardPost implements AllianceBoardPostInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTopicId(): int
     {
         return $this->topic_id;
     }
 
+    #[Override]
     public function setTopicId(int $topicId): AllianceBoardPostInterface
     {
         $this->topic_id = $topicId;
@@ -74,11 +78,13 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this;
     }
 
+    #[Override]
     public function getBoardId(): int
     {
         return $this->board_id;
     }
 
+    #[Override]
     public function setBoardId(int $boardId): AllianceBoardPostInterface
     {
         $this->board_id = $boardId;
@@ -86,11 +92,13 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): AllianceBoardPostInterface
     {
         $this->name = $name;
@@ -98,11 +106,13 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): AllianceBoardPostInterface
     {
         $this->date = $date;
@@ -110,11 +120,13 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this;
     }
 
+    #[Override]
     public function getText(): string
     {
         return $this->text;
     }
 
+    #[Override]
     public function setText(string $text): AllianceBoardPostInterface
     {
         $this->text = $text;
@@ -122,27 +134,32 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): AllianceBoardPostInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getTopic(): AllianceBoardTopicInterface
     {
         return $this->topic;
     }
 
+    #[Override]
     public function setTopic(AllianceBoardTopicInterface $topic): AllianceBoardPostInterface
     {
         $this->topic = $topic;
@@ -150,11 +167,13 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this;
     }
 
+    #[Override]
     public function getBoard(): AllianceBoardInterface
     {
         return $this->board;
     }
 
+    #[Override]
     public function setBoard(AllianceBoardInterface $board): AllianceBoardPostInterface
     {
         $this->board = $board;
@@ -162,11 +181,13 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this;
     }
 
+    #[Override]
     public function getEditDate(): ?int
     {
         return $this->lastedit;
     }
 
+    #[Override]
     public function setEditDate(?int $editDate): AllianceBoardPostInterface
     {
         $this->lastedit = $editDate;

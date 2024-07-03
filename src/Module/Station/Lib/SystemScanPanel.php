@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
+use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Shipcount\ShipcountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
@@ -17,31 +18,23 @@ use Stu\Orm\Entity\UserInterface;
 
 class SystemScanPanel extends AbstractVisualPanel
 {
-    private ShipInterface $currentShip;
-
-    private UserInterface $user;
-
-    private StarSystemInterface $system;
-
     public function __construct(
         PanelLayerCreationInterface $panelLayerCreation,
-        ShipInterface $currentShip,
-        StarSystemInterface $system,
-        UserInterface $user,
+        private ShipInterface $currentShip,
+        private StarSystemInterface $system,
+        private UserInterface $user,
         LoggerUtilInterface $loggerUtil
     ) {
         parent::__construct($panelLayerCreation, $loggerUtil);
-
-        $this->currentShip = $currentShip;
-        $this->system = $system;
-        $this->user = $user;
     }
 
+    #[Override]
     protected function createBoundaries(): PanelBoundaries
     {
         return PanelBoundaries::fromSystem($this->system);
     }
 
+    #[Override]
     protected function loadLayers(): void
     {
         $panelLayerCreation = $this->panelLayerCreation
@@ -59,6 +52,7 @@ class SystemScanPanel extends AbstractVisualPanel
         $this->layers = $panelLayerCreation->build($this);
     }
 
+    #[Override]
     protected function getEntryCallable(): callable
     {
         return fn (int $x, int $y): SystemScanPanelEntry => new SystemScanPanelEntry(
@@ -69,6 +63,7 @@ class SystemScanPanel extends AbstractVisualPanel
         );
     }
 
+    #[Override]
     protected function getPanelViewportPercentage(): int
     {
         return 33;

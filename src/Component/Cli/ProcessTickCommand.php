@@ -13,13 +13,9 @@ use Stu\Module\Tick\Process\ProcessTickRunner;
  */
 final class ProcessTickCommand extends Command
 {
-    private ContainerInterface $dic;
-
     public function __construct(
-        ContainerInterface $dic
+        private ContainerInterface $dic
     ) {
-        $this->dic = $dic;
-
         parent::__construct(
             'tick:process',
             'Runs the process tick'

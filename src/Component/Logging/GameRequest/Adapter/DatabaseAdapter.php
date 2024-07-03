@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
+use Override;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Monolog\Level;
@@ -18,14 +19,11 @@ use Stu\Orm\Entity\GameRequestInterface;
  */
 final class DatabaseAdapter extends AbstractAdapter
 {
-    private Connection $database;
-
-    public function __construct(
-        Connection $database
-    ) {
-        $this->database = $database;
+    public function __construct(private Connection $database)
+    {
     }
 
+    #[Override]
     protected function log(
         GameRequestInterface $gameRequest,
         Level $logLevel,

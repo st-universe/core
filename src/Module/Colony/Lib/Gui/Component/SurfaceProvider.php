@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use request;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -9,14 +10,11 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class SurfaceProvider implements GuiComponentProviderInterface
 {
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
-    public function __construct(
-        ColonyLibFactoryInterface $colonyLibFactory
-    ) {
-        $this->colonyLibFactory = $colonyLibFactory;
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

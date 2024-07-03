@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Mockery\MockInterface;
@@ -25,6 +26,7 @@ class TransactionTickRunnerTest extends StuTestCase
 
     private TransactionTickRunnerInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->game = $this->mock(GameControllerInterface::class);

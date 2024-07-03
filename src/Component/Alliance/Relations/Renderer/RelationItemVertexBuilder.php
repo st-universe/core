@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
+use Override;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Stu\Orm\Entity\AllianceInterface;
@@ -13,14 +14,11 @@ use Stu\Orm\Entity\AllianceInterface;
  */
 final class RelationItemVertexBuilder implements RelationItemVertexBuilderInterface
 {
-    private AllianceDataToGraphAttributeConverterInterface $allianceDataToGraphAttributeConverter;
-
-    public function __construct(
-        AllianceDataToGraphAttributeConverterInterface $allianceDataToGraphAttributeConverter
-    ) {
-        $this->allianceDataToGraphAttributeConverter = $allianceDataToGraphAttributeConverter;
+    public function __construct(private AllianceDataToGraphAttributeConverterInterface $allianceDataToGraphAttributeConverter)
+    {
     }
 
+    #[Override]
     public function build(
         Graph $graph,
         AllianceInterface $alliance

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
+use Override;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -13,14 +14,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
  */
 final class OrbitShipListRetriever implements OrbitShipListRetrieverInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->shipRepository = $shipRepository;
+    public function __construct(private ShipRepositoryInterface $shipRepository)
+    {
     }
 
+    #[Override]
     public function retrieve(ColonyInterface $colony): array
     {
         $result = [];

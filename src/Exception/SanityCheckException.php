@@ -6,14 +6,9 @@ namespace Stu\Exception;
 
 final class SanityCheckException extends StuException
 {
-    private ?string $actionIdentifier;
-    private ?string $viewIdentifier;
-
-    public function __construct($message = "", ?string $actionIdentifier = null, ?string $viewIdentifier = null)
+    public function __construct($message = "", private ?string $actionIdentifier = null, private ?string $viewIdentifier = null)
     {
         $this->message = $message;
-        $this->actionIdentifier = $actionIdentifier;
-        $this->viewIdentifier = $viewIdentifier;
     }
 
     public function getActionIdentifier(): ?string

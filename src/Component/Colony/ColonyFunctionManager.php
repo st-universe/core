@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -14,20 +15,17 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
  */
 final class ColonyFunctionManager implements ColonyFunctionManagerInterface
 {
-    public const STATE_DISABLED = 0;
-    public const STATE_ENABLED = 1;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
+    public const int STATE_DISABLED = 0;
+    public const int STATE_ENABLED = 1;
 
     /** @var array<int, array<int, bool>> */
     private array $hasActiveBuildingByColonyAndFunction = [];
 
-    public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository
-    ) {
-        $this->planetFieldRepository = $planetFieldRepository;
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository)
+    {
     }
 
+    #[Override]
     public function hasActiveFunction(
         PlanetFieldHostInterface $host,
         int $functionId,
@@ -39,6 +37,7 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
         return $this->hasActiveBuildingWithFunction($host, $functionId);
     }
 
+    #[Override]
     public function hasFunction(
         PlanetFieldHostInterface $host,
         int $functionId
@@ -46,6 +45,7 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
         return $this->hasBuildingWithFunction($host, $functionId, [self::STATE_DISABLED, self::STATE_ENABLED]);
     }
 
+    #[Override]
     public function getBuildingWithFunctionCount(
         PlanetFieldHostInterface $host,
         int $functionId,

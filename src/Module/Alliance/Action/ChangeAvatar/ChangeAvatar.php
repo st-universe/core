@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
+use Override;
 use Exception;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
@@ -19,24 +20,13 @@ final class ChangeAvatar implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
+    public const string ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        AllianceActionManagerInterface $allianceActionManager,
-        AllianceRepositoryInterface $allianceRepository,
-        ConfigInterface $config
-    ) {
-        $this->allianceActionManager = $allianceActionManager;
-        $this->allianceRepository = $allianceRepository;
-        $this->config = $config;
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -72,7 +62,7 @@ final class ChangeAvatar implements ActionControllerInterface
 
         try {
             $img = imagecreatefrompng($file['tmp_name']);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
@@ -129,6 +119,7 @@ final class ChangeAvatar implements ActionControllerInterface
         $game->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

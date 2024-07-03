@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\PriorizeFleet;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -11,20 +12,13 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class PriorizeFleet implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_FLEET_UP';
+    public const string ACTION_IDENTIFIER = 'B_FLEET_UP';
 
-    private PriorizeFleetRequestInterface $priorizeFleetRequest;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    public function __construct(
-        PriorizeFleetRequestInterface $priorizeFleetRequest,
-        FleetRepositoryInterface $fleetRepository
-    ) {
-        $this->priorizeFleetRequest = $priorizeFleetRequest;
-        $this->fleetRepository = $fleetRepository;
+    public function __construct(private PriorizeFleetRequestInterface $priorizeFleetRequest, private FleetRepositoryInterface $fleetRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $fleet = $this->fleetRepository->find($this->priorizeFleetRequest->getFleetId());
@@ -39,6 +33,7 @@ final class PriorizeFleet implements ActionControllerInterface
         $game->addInformation(_('Die Flotte wurde nach oben sortiert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

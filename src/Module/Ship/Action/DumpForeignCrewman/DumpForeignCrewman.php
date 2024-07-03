@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DumpForeignCrewman;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,28 +17,20 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class DumpForeignCrewman implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DUMP_CREWMAN';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private ShipLeaverInterface $shipLeaver;
+    public const string ACTION_IDENTIFIER = 'B_DUMP_CREWMAN';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipLeaverInterface $shipLeaver,
+        private ShipLoaderInterface $shipLoader,
+        private ShipCrewRepositoryInterface $shipCrewRepository,
+        private ShipLeaverInterface $shipLeaver,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipLeaver = $shipLeaver;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
@@ -86,6 +79,7 @@ final class DumpForeignCrewman implements ActionControllerInterface
         $game->addInformation($survivalMessage);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\ColonizationShip;
 
+use Override;
 use InvalidArgumentException;
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
@@ -16,20 +17,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonizationShip implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_COLONIZATION_SHIP';
+    public const string ACTION_IDENTIFIER = 'B_COLONIZATION_SHIP';
 
-    private ShipCreatorInterface $shipCreator;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        ShipCreatorInterface $shipCreator,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->shipCreator = $shipCreator;
-        $this->userRepository = $userRepository;
+    public function __construct(private ShipCreatorInterface $shipCreator, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -134,6 +128,7 @@ final class ColonizationShip implements ActionControllerInterface
         throw new InvalidArgumentException('faction is not configured');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

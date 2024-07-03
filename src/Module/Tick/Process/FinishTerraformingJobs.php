@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Override;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -14,22 +15,11 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishTerraformingJobs implements ProcessTickHandlerInterface
 {
-    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
-
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function work(): void
     {
         $result = $this->colonyTerraformingRepository->getFinishedJobs();

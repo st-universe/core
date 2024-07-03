@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Auxiliary;
 
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
@@ -14,30 +15,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipShutdown implements ShipShutdownInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private LeaveFleetInterface $leaveFleet;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private ShipUndockingInterface $shipUndocking;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        LeaveFleetInterface $leaveFleet,
-        ShipStateChangerInterface $shipStateChanger,
-        ShipUndockingInterface $shipUndocking
-    ) {
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->leaveFleet = $leaveFleet;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->shipUndocking = $shipUndocking;
+    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private LeaveFleetInterface $leaveFleet, private ShipStateChangerInterface $shipStateChanger, private ShipUndockingInterface $shipUndocking)
+    {
     }
 
+    #[Override]
     public function shutdown(ShipWrapperInterface $wrapper, bool $doLeaveFleet = false): void
     {
         $this->shipSystemManager->deactivateAll($wrapper);

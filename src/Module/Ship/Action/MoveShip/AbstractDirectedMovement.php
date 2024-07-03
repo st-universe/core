@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\MoveShip;
 
+use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,38 +20,15 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 abstract class AbstractDirectedMovement implements ActionControllerInterface
 {
-    protected MoveShipRequestInterface $moveShipRequest;
-
-    protected FlightRouteFactoryInterface $flightRouteFactory;
-
-    protected RandomSystemEntryInterface $randomSystemEntry;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipMoverInterface $shipMover;
-
-    private DistributedMessageSenderInterface $distributedMessageSender;
-
-    public function __construct(
-        MoveShipRequestInterface $moveShipRequest,
-        ShipLoaderInterface $shipLoader,
-        ShipMoverInterface $shipMover,
-        FlightRouteFactoryInterface $flightRouteFactory,
-        RandomSystemEntryInterface $randomSystemEntry,
-        DistributedMessageSenderInterface $distributedMessageSender
-    ) {
-        $this->moveShipRequest = $moveShipRequest;
-        $this->shipLoader = $shipLoader;
-        $this->shipMover = $shipMover;
-        $this->flightRouteFactory = $flightRouteFactory;
-        $this->randomSystemEntry = $randomSystemEntry;
-        $this->distributedMessageSender = $distributedMessageSender;
+    public function __construct(protected MoveShipRequestInterface $moveShipRequest, private ShipLoaderInterface $shipLoader, private ShipMoverInterface $shipMover, protected FlightRouteFactoryInterface $flightRouteFactory, protected RandomSystemEntryInterface $randomSystemEntry, private DistributedMessageSenderInterface $distributedMessageSender)
+    {
     }
 
     abstract protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool;
 
     abstract protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface;
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -87,6 +65,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

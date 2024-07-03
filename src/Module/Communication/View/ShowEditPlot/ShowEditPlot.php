@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowEditPlot;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowEditPlot implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_EDIT_PLOT';
+    public const string VIEW_IDENTIFIER = 'SHOW_EDIT_PLOT';
 
-    private ShowEditPlotRequestInterface $showEditPlotRequest;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    public function __construct(
-        ShowEditPlotRequestInterface $showEditPlotRequest,
-        RpgPlotRepositoryInterface $rpgPlotRepository
-    ) {
-        $this->showEditPlotRequest = $showEditPlotRequest;
-        $this->rpgPlotRepository = $rpgPlotRepository;
+    public function __construct(private ShowEditPlotRequestInterface $showEditPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         /** @var RpgPlotInterface $plot */

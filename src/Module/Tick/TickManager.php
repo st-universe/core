@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick;
 
+use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -14,34 +15,20 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TickManager implements TickManagerInterface
 {
-    private GameTurnRepositoryInterface $gameTurnRepository;
-
-    private UserLockRepositoryInterface $userLockRepository;
-
-    private GameTurnStatsRepositoryInterface $gameTurnStatsRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        GameTurnRepositoryInterface $gameTurnRepository,
-        UserLockRepositoryInterface $userLockRepository,
-        GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
-        UserRepositoryInterface $userRepository,
-        KnPostRepositoryInterface $knPostRepository,
+        private GameTurnRepositoryInterface $gameTurnRepository,
+        private UserLockRepositoryInterface $userLockRepository,
+        private GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
+        private UserRepositoryInterface $userRepository,
+        private KnPostRepositoryInterface $knPostRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->gameTurnRepository = $gameTurnRepository;
-        $this->userLockRepository = $userLockRepository;
-        $this->gameTurnStatsRepository = $gameTurnStatsRepository;
-        $this->userRepository = $userRepository;
-        $this->knPostRepository = $knPostRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function work(): void
     {
         $turn = $this->gameTurnRepository->getCurrent();

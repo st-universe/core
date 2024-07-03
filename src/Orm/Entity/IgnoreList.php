@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -40,26 +41,31 @@ class IgnoreList implements IgnoreListInterface
     #[JoinColumn(name: 'recipient', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $opponent;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getRecipientId(): int
     {
         return $this->recipient;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): IgnoreListInterface
     {
         $this->date = $date;
@@ -67,22 +73,26 @@ class IgnoreList implements IgnoreListInterface
         return $this;
     }
 
+    #[Override]
     public function getRecipient(): UserInterface
     {
         return $this->opponent;
     }
 
+    #[Override]
     public function setRecipient(UserInterface $recipient): IgnoreListInterface
     {
         $this->opponent = $recipient;
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): IgnoreListInterface
     {
         $this->user = $user;

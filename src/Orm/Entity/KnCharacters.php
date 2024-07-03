@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -37,49 +38,58 @@ class KnCharacters implements KnCharactersInterface
     private UserCharactersInterface $userCharacters;
 
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getKnId(): int
     {
         return $this->knId;
     }
 
+    #[Override]
     public function setKnId(int $knId): KnCharactersInterface
     {
         $this->knId = $knId;
         return $this;
     }
 
+    #[Override]
     public function getCharacterId(): int
     {
         return $this->characterId;
     }
 
+    #[Override]
     public function setCharacterId(int $characterId): KnCharactersInterface
     {
         $this->characterId = $characterId;
         return $this;
     }
 
+    #[Override]
     public function getKnPost(): KnPostInterface
     {
         return $this->knPost;
     }
 
+    #[Override]
     public function setKnPost(KnPostInterface $knPost): KnCharactersInterface
     {
         $this->knPost = $knPost;
         return $this;
     }
 
+    #[Override]
     public function getUserCharacters(): UserCharactersInterface
     {
         return $this->userCharacters;
     }
 
+    #[Override]
     public function setUserCharacters(UserCharactersInterface $userCharacters): KnCharactersInterface
     {
         $this->userCharacters = $userCharacters;

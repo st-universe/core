@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -46,6 +47,7 @@ final class ShipCreator implements ShipCreatorInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function createBy(
         int $userId,
         int $shipRumpId,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CreateBuildplan;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 
 use request;
@@ -29,42 +30,21 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class CreateBuildplan implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BUILDPLAN_SAVE';
-
-    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
-
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    private ModuleRepositoryInterface $moduleRepository;
-
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    private EntityManagerInterface $entityManager;
+    public const string ACTION_IDENTIFIER = 'B_BUILDPLAN_SAVE';
 
     private LoggerUtilInterface $loggerUtil;
 
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
-
-    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
-
     public function __construct(
-        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ModuleRepositoryInterface $moduleRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
-        EntityManagerInterface $entityManager,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
+        private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        private BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        private ModuleRepositoryInterface $moduleRepository,
+        private ShipRumpRepositoryInterface $shipRumpRepository,
+        private EntityManagerInterface $entityManager,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->buildplanModuleRepository = $buildplanModuleRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->moduleRepository = $moduleRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
-        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->shipCrewCalculator = $shipCrewCalculator;
-        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
     }
 
     private function exitOnError(GameControllerInterface $game): void
@@ -72,6 +52,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -249,6 +230,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $this->loggerUtil->log('K');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

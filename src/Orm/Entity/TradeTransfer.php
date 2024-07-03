@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,16 +44,19 @@ class TradeTransfer implements TradeTransferInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTradePostId(): int
     {
         return $this->posts_id;
     }
 
+    #[Override]
     public function setTradePostId(int $tradePostId): TradeTransferInterface
     {
         $this->posts_id = $tradePostId;
@@ -60,27 +64,32 @@ class TradeTransfer implements TradeTransferInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): TradeTransferInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setAmount(int $amount): TradeTransferInterface
     {
         $this->count = $amount;
@@ -88,11 +97,13 @@ class TradeTransfer implements TradeTransferInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;
     }
 
+    #[Override]
     public function setDate(int $date): TradeTransferInterface
     {
         $this->date = $date;
@@ -100,11 +111,13 @@ class TradeTransfer implements TradeTransferInterface
         return $this;
     }
 
+    #[Override]
     public function getTradePost(): TradePostInterface
     {
         return $this->tradePost;
     }
 
+    #[Override]
     public function setTradePost(TradePostInterface $tradePost): TradeTransferInterface
     {
         $this->tradePost = $tradePost;

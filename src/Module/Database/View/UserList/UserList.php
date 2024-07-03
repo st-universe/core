@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\UserList;
 
+use Override;
 use JBBCode\Parser;
 use request;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,37 +14,26 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserList implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SETTLERLIST';
+    public const string VIEW_IDENTIFIER = 'SHOW_SETTLERLIST';
 
-    private const SORT_FIELD_MAP = [
+    private const array SORT_FIELD_MAP = [
         'id' => 'id',
         'fac' => 'race',
         'alliance' => 'allys_id',
     ];
 
-    private const SORT_ORDER_MAP = [
+    private const array SORT_ORDER_MAP = [
         'up' => 'DESC',
         'down' => 'ASC',
     ];
 
-    private const LIST_LIMIT = 25;
+    private const int LIST_LIMIT = 25;
 
-    private UserListRequestInterface $userListRequest;
-
-    private UserRepositoryInterface $userRepository;
-
-    private Parser $parser;
-
-    public function __construct(
-        UserListRequestInterface $userListRequest,
-        UserRepositoryInterface $userRepository,
-        Parser $parser
-    ) {
-        $this->userListRequest = $userListRequest;
-        $this->userRepository = $userRepository;
-        $this->parser = $parser;
+    public function __construct(private UserListRequestInterface $userListRequest, private UserRepositoryInterface $userRepository, private Parser $parser)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $sort_field = $this->userListRequest->getSortField();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -38,16 +39,19 @@ class Commodity implements CommodityInterface
     #[Column(type: 'boolean')]
     private bool $bound = false;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): CommodityInterface
     {
         $this->name = $name;
@@ -55,11 +59,13 @@ class Commodity implements CommodityInterface
         return $this;
     }
 
+    #[Override]
     public function getSort(): int
     {
         return $this->sort;
     }
 
+    #[Override]
     public function setSort(int $sort): CommodityInterface
     {
         $this->sort = $sort;
@@ -67,11 +73,13 @@ class Commodity implements CommodityInterface
         return $this;
     }
 
+    #[Override]
     public function getView(): bool
     {
         return $this->view;
     }
 
+    #[Override]
     public function setView(bool $view): CommodityInterface
     {
         $this->view = $view;
@@ -79,11 +87,13 @@ class Commodity implements CommodityInterface
         return $this;
     }
 
+    #[Override]
     public function getType(): int
     {
         return $this->type;
     }
 
+    #[Override]
     public function setType(int $typeId): CommodityInterface
     {
         $this->type = $typeId;
@@ -91,11 +101,13 @@ class Commodity implements CommodityInterface
         return $this;
     }
 
+    #[Override]
     public function isTradeable(): bool
     {
         return $this->isBeamable() && $this->npc_commodity === false;
     }
 
+    #[Override]
     public function isBeamable(UserInterface $user = null, UserInterface $targetUser = null): bool
     {
         $isBound = $user !== null && $targetUser !== null && $this->isBoundToAccount() && $user !== $targetUser;
@@ -103,26 +115,31 @@ class Commodity implements CommodityInterface
         return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD && $this->getView() === true && !$isBound;
     }
 
+    #[Override]
     public function isSaveable(): bool
     {
         return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
     }
 
+    #[Override]
     public function isBoundToAccount(): bool
     {
         return $this->bound;
     }
 
+    #[Override]
     public function isShuttle(): bool
     {
         return in_array(intdiv($this->getId(), 10) * 10, CommodityTypeEnum::BASE_IDS_SHUTTLE);
     }
 
+    #[Override]
     public function isWorkbee(): bool
     {
         return intdiv($this->getId(), 10) * 10 === CommodityTypeEnum::BASE_ID_WORKBEE;
     }
 
+    #[Override]
     public function isBouy(): bool
     {
         return $this->getId() === CommodityTypeEnum::BASE_ID_BUOY;
@@ -131,12 +148,14 @@ class Commodity implements CommodityInterface
     /**
      * @deprecated
      */
+    #[Override]
     public function isIllegal(int $network): bool
     {
         // @todo remove
         return false;
     }
 
+    #[Override]
     public function getTransferCount(): int
     {
         // @todo Anzahl Waren pro Energieeinheit

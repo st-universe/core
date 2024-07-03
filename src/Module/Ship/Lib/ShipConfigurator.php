@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -18,42 +19,11 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 class ShipConfigurator implements ShipConfiguratorInterface
 {
-    private ShipWrapperInterface $wrapper;
-
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
-
-    private ShipTorpedoManagerInterface $torpedoManager;
-
-    private CrewCreatorInterface $crewCreator;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper;
-
-    private GameControllerInterface $game;
-
-    public function __construct(
-        ShipWrapperInterface $wrapper,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        ShipTorpedoManagerInterface $torpedoManager,
-        CrewCreatorInterface $crewCreator,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipRepositoryInterface $shipRepository,
-        ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
-        GameControllerInterface $game
-    ) {
-        $this->wrapper = $wrapper;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
-        $this->torpedoManager = $torpedoManager;
-        $this->crewCreator = $crewCreator;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipRepository = $shipRepository;
-        $this->activatorDeactivatorHelper = $activatorDeactivatorHelper;
-        $this->game = $game;
+    public function __construct(private ShipWrapperInterface $wrapper, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private ShipTorpedoManagerInterface $torpedoManager, private CrewCreatorInterface $crewCreator, private ShipCrewRepositoryInterface $shipCrewRepository, private ShipRepositoryInterface $shipRepository, private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper, private GameControllerInterface $game)
+    {
     }
 
+    #[Override]
     public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipConfiguratorInterface
     {
         $this->wrapper->get()->setLocation($location);
@@ -61,6 +31,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function loadEps(int $percentage): ShipConfiguratorInterface
     {
         $epsSystem = $this->wrapper->getEpsSystemData();
@@ -74,6 +45,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function loadBattery(int $percentage): ShipConfiguratorInterface
     {
         $epsSystem = $this->wrapper->getEpsSystemData();
@@ -87,6 +59,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function loadReactor(int $percentage): ShipConfiguratorInterface
     {
         $reactor = $this->wrapper->getReactorWrapper();
@@ -97,6 +70,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function loadWarpdrive(int $percentage): ShipConfiguratorInterface
     {
         $warpdrive = $this->wrapper->getWarpDriveSystemData();
@@ -109,6 +83,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function maxOutSystems(): ShipConfiguratorInterface
     {
         $this->loadEps(100)
@@ -123,6 +98,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function createCrew(): ShipConfiguratorInterface
     {
         $ship = $this->wrapper->get();
@@ -146,6 +122,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function setAlertState(ShipAlertStateEnum $alertState): ShipConfiguratorInterface
     {
         $this->activatorDeactivatorHelper->setAlertState(
@@ -157,6 +134,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function setTorpedo(int $torpedoTypeId = null): ShipConfiguratorInterface
     {
         $ship = $this->wrapper->get();
@@ -191,6 +169,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function setShipName(string $name): ShipConfiguratorInterface
     {
         $ship = $this->wrapper->get();
@@ -199,6 +178,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
         return $this;
     }
 
+    #[Override]
     public function finishConfiguration(): ShipWrapperInterface
     {
         $this->shipRepository->save($this->wrapper->get());

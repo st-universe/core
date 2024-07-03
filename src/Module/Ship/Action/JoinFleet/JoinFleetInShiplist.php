@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\JoinFleet;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -11,8 +12,9 @@ use Stu\Module\Ship\View\ShowInformation\ShowInformation;
 
 final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_JOIN_FLEET';
+    public const string ACTION_IDENTIFIER = 'B_JOIN_FLEET';
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $chosenShipIds = request::postArray('chosen');
@@ -27,6 +29,7 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
         $game->addExecuteJS('refreshShiplistSingles();');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

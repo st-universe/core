@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowSectorScan;
 
+use Override;
 use request;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
@@ -17,13 +18,7 @@ use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SECTOR_SCAN';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    private EncodedMapInterface $encodedMap;
+    public const string VIEW_IDENTIFIER = 'SHOW_SECTOR_SCAN';
 
     /** @var array<int> */
     private array $fadedSignaturesUncloaked = [];
@@ -31,16 +26,11 @@ final class ShowSectorScan implements ViewControllerInterface
     /** @var array<int> */
     private array $fadedSignaturesCloaked = [];
 
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        FlightSignatureRepositoryInterface $flightSignatureRepository,
-        EncodedMapInterface $encodedMap,
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->encodedMap = $encodedMap;
+    public function __construct(private ShipLoaderInterface $shipLoader, private FlightSignatureRepositoryInterface $flightSignatureRepository, private EncodedMapInterface $encodedMap)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

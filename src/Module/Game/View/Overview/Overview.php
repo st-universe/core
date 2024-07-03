@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\View\Overview;
 
+use Override;
 use request;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,13 +14,14 @@ use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'OVERVIEW';
+    public const string VIEW_IDENTIFIER = 'OVERVIEW';
 
     public function __construct(
         private ViewComponentLoaderInterface $viewComponentLoader,
     ) {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $moduleView = $this->getModuleView($game);

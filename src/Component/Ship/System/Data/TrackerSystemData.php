@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
@@ -25,6 +26,7 @@ class TrackerSystemData extends AbstractSystemData
         parent::__construct($shipSystemRepository);
     }
 
+    #[Override]
     function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TRACKER;

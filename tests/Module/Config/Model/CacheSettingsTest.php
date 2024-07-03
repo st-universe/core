@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Config\Model;
 
+use Override;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,6 +19,7 @@ class CacheSettingsTest extends StuTestCase
     /** @var MockObject|CacheSettings */
     private CacheSettings $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);

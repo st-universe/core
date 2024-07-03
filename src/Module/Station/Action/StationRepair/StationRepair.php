@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\StationRepair;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,20 +15,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StationRepair implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_STATION_REPAIR';
+    public const string ACTION_IDENTIFIER = 'B_STATION_REPAIR';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -54,6 +48,7 @@ final class StationRepair implements ActionControllerInterface
         $this->shipRepository->save($station);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

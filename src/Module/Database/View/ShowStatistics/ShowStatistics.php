@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\ShowStatistics;
 
+use Override;
 use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
@@ -18,11 +19,11 @@ use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 
 final class ShowStatistics implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_STATISTICS';
+    public const string VIEW_IDENTIFIER = 'SHOW_STATISTICS';
 
-    private const ENTRY_COUNT = 10;
+    private const int ENTRY_COUNT = 10;
 
-    private const PERIODS = [
+    private const array PERIODS = [
         [
             'divisor' => 1,
             'text' => 'Tick'
@@ -44,18 +45,11 @@ final class ShowStatistics implements ViewControllerInterface
     private int $minY;
     private int $maxY;
 
-    private GameTurnStatsRepositoryInterface $gameTurnStatsRepository;
-
-    private ImageCreationInterface $imageCreation;
-
-    public function __construct(
-        GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
-        ImageCreationInterface $imageCreation
-    ) {
-        $this->gameTurnStatsRepository = $gameTurnStatsRepository;
-        $this->imageCreation = $imageCreation;
+    public function __construct(private GameTurnStatsRepositoryInterface $gameTurnStatsRepository, private ImageCreationInterface $imageCreation)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $period = request::getInt('period');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
 use Stu\Orm\Entity\MapInterface;
@@ -14,18 +15,11 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class CheckDestination implements CheckDestinationInterface
 {
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    public function __construct(
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
+    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
+    {
     }
 
+    #[Override]
     public function validate(
         ShipInterface $ship,
         int $destinationX,

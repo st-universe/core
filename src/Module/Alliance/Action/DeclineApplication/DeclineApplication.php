@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeclineApplication;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -18,28 +19,13 @@ final class DeclineApplication implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_DECLINE_APPLICATION';
+    public const string ACTION_IDENTIFIER = 'B_DECLINE_APPLICATION';
 
-    private DeclineApplicationRequestInterface $declineApplicationRequest;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        DeclineApplicationRequestInterface $declineApplicationRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->declineApplicationRequest = $declineApplicationRequest;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private DeclineApplicationRequestInterface $declineApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -71,6 +57,7 @@ final class DeclineApplication implements ActionControllerInterface
         $game->addInformation(_('Die Bewerbung wurde abgelehnt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

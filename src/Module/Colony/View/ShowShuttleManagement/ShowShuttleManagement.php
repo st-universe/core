@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShuttleManagement;
 
+use Override;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
@@ -17,36 +18,22 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowShuttleManagement implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHUTTLE_MANAGEMENT';
-
-    private ShowShuttleManagementRequestInterface $request;
-
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private InteractionCheckerInterface $interactionChecker;
+    public const string VIEW_IDENTIFIER = 'SHOW_SHUTTLE_MANAGEMENT';
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShowShuttleManagementRequestInterface $request,
-        ColonyLoaderInterface $colonyLoader,
-        ShipRepositoryInterface $shipRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        InteractionCheckerInterface $interactionChecker,
+        private ShowShuttleManagementRequestInterface $request,
+        private ColonyLoaderInterface $colonyLoader,
+        private ShipRepositoryInterface $shipRepository,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private InteractionCheckerInterface $interactionChecker,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->request = $request;
-        $this->colonyLoader = $colonyLoader;
-        $this->shipRepository = $shipRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->interactionChecker = $interactionChecker;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation($this->request->getColonyId(), $game->getUser()->getId());

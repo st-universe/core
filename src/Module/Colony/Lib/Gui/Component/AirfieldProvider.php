@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -9,14 +10,11 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class AirfieldProvider implements GuiComponentProviderInterface
 {
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
-    public function __construct(
-        ShipRumpRepositoryInterface $shipRumpRepository
-    ) {
-        $this->shipRumpRepository = $shipRumpRepository;
+    public function __construct(private ShipRumpRepositoryInterface $shipRumpRepository)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game

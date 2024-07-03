@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,55 +40,65 @@ class UserLock implements UserLockInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setUserId(?int $userId): UserLockInterface
     {
         $this->user_id = $userId;
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getUser(): ?UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(?UserInterface $user): UserLockInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function setFormerUserId(?int $userId): UserLockInterface
     {
         $this->former_user_id = $userId;
         return $this;
     }
 
+    #[Override]
     public function getRemainingTicks(): int
     {
         return $this->remaining_ticks;
     }
 
+    #[Override]
     public function setRemainingTicks(int $count): UserLockInterface
     {
         $this->remaining_ticks = $count;
         return $this;
     }
 
+    #[Override]
     public function getReason(): string
     {
         return $this->reason;
     }
 
+    #[Override]
     public function setReason(string $reason): UserLockInterface
     {
         $this->reason = $reason;

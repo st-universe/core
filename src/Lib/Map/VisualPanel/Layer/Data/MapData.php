@@ -10,14 +10,10 @@ use Doctrine\ORM\Mapping\Entity;
 #[Entity]
 class MapData extends AbstractData
 {
-    #[Column(type: 'integer')]
-    private int $type = 0;
-
-    public function __construct(int $x, int $y, int $type)
+    public function __construct(int $x, int $y, #[Column(type: 'integer')]
+    private int $type)
     {
         parent::__construct($x, $y);
-
-        $this->type = $type;
     }
 
     public function getMapfieldType(): int

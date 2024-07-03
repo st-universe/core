@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
  */
 final class ShipRumpCategoryRoleCrewRepository extends EntityRepository implements ShipRumpCategoryRoleCrewRepositoryInterface
 {
+    #[Override]
     public function getByShipRumpCategoryAndRole(
         int $shipRumpCategoryId,
         int $shipRumpRoleId

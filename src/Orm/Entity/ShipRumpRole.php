@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -22,6 +23,7 @@ class ShipRumpRole implements ShipRumpRoleInterface
     #[Column(type: 'string')]
     private string $name = '';
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -40,16 +41,19 @@ class TerraformingCost implements TerraformingCostInterface
     #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TerraformingInterface $terraforming;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getTerraformingId(): int
     {
         return $this->terraforming_id;
     }
 
+    #[Override]
     public function setTerraformingId(int $terraformingId): TerraformingCostInterface
     {
         $this->terraforming_id = $terraformingId;
@@ -57,11 +61,13 @@ class TerraformingCost implements TerraformingCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): TerraformingCostInterface
     {
         $this->commodity_id = $commodityId;
@@ -69,11 +75,13 @@ class TerraformingCost implements TerraformingCostInterface
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setAmount(int $amount): TerraformingCostInterface
     {
         $this->count = $amount;
@@ -81,11 +89,13 @@ class TerraformingCost implements TerraformingCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
     }
 
+    #[Override]
     public function getTerraforming(): TerraformingInterface
     {
         return $this->terraforming;

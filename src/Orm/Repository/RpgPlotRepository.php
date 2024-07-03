@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\RpgPlot;
@@ -16,6 +17,7 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class RpgPlotRepository extends EntityRepository implements RpgPlotRepositoryInterface
 {
+    #[Override]
     public function getByFoundingUser(int $userId): array
     {
         return $this->findBy([
@@ -23,11 +25,13 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         ]);
     }
 
+    #[Override]
     public function prototype(): RpgPlotInterface
     {
         return new RpgPlot();
     }
 
+    #[Override]
     public function save(RpgPlotInterface $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -35,6 +39,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em->persist($rpgPlot);
     }
 
+    #[Override]
     public function delete(RpgPlotInterface $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -42,6 +47,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em->remove($rpgPlot);
     }
 
+    #[Override]
     public function getActiveByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -58,6 +64,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->getResult();
     }
 
+    #[Override]
     public function getByUser(UserInterface $user): array
     {
         return $this->getEntityManager()
@@ -74,6 +81,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->getResult();
     }
 
+    #[Override]
     public function getEmptyOldPlots(int $maxAge): array
     {
         return $this->getEntityManager()
@@ -93,11 +101,13 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->getResult();
     }
 
+    #[Override]
     public function getOrderedList(): array
     {
         return $this->findBy([], ['start_date' => 'asc']);
     }
 
+    #[Override]
     public function truncateAllEntities(): void
     {
         $this->getEntityManager()->createQuery(

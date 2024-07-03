@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\KnPostPreview;
 
+use Override;
 use JBBCode\Parser;
 use request;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
@@ -13,20 +14,13 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class KnPostPreview implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_PREVIEW_KN';
+    public const string ACTION_IDENTIFIER = 'B_PREVIEW_KN';
 
-    private AddKnPostRequestInterface $request;
-
-    private Parser $bbcodeParser;
-
-    public function __construct(
-        AddKnPostRequestInterface $request,
-        Parser $bbcodeParser
-    ) {
-        $this->request = $request;
-        $this->bbcodeParser = $bbcodeParser;
+    public function __construct(private AddKnPostRequestInterface $request, private Parser $bbcodeParser)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $title = $this->request->getTitle();
@@ -45,6 +39,7 @@ final class KnPostPreview implements ActionControllerInterface
         $game->setView(ShowWriteKn::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

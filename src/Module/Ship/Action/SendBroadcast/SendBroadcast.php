@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SendBroadcast;
 
+use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,28 +18,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SendBroadcast implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SEND_BROADCAST';
+    public const string ACTION_IDENTIFIER = 'B_SEND_BROADCAST';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ColonyRepositoryInterface $colonyRepository,
-        ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->colonyRepository = $colonyRepository;
-        $this->shipRepository = $shipRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipLoaderInterface $shipLoader, private ColonyRepositoryInterface $colonyRepository, private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship = $this->shipLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
@@ -108,6 +94,7 @@ final class SendBroadcast implements ActionControllerInterface
         return $result;
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

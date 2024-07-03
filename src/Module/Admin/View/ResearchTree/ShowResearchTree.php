@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ResearchTree;
 
+use Override;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
@@ -18,20 +19,13 @@ use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 
 final class ShowResearchTree implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_RESEARCH_TREE';
+    public const string VIEW_IDENTIFIER = 'SHOW_RESEARCH_TREE';
 
-    private FactionRepositoryInterface $factionRepository;
-
-    private ResearchDependencyRepositoryInterface $researchDependencyRepository;
-
-    public function __construct(
-        FactionRepositoryInterface $factionRepository,
-        ResearchDependencyRepositoryInterface $researchDependencyRepository,
-    ) {
-        $this->factionRepository = $factionRepository;
-        $this->researchDependencyRepository = $researchDependencyRepository;
+    public function __construct(private FactionRepositoryInterface $factionRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         // only Admins can show it

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\BasicTrade;
@@ -16,11 +17,13 @@ use Stu\Orm\Entity\TradePost;
  */
 final class BasicTradeRepository extends EntityRepository implements BasicTradeRepositoryInterface
 {
+    #[Override]
     public function prototype(): BasicTradeInterface
     {
         return new BasicTrade();
     }
 
+    #[Override]
     public function save(BasicTradeInterface $basicTrade): void
     {
         $em = $this->getEntityManager();
@@ -28,6 +31,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
         $em->persist($basicTrade);
     }
 
+    #[Override]
     public function getBasicTrades(int $userId): array
     {
         return $this->getEntityManager()->createQuery(
@@ -50,6 +54,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
         ])->getResult();
     }
 
+    #[Override]
     public function getByUniqId(string $uniqId): ?BasicTradeInterface
     {
         return $this->findOneBy([
@@ -57,6 +62,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
         ]);
     }
 
+    #[Override]
     public function isNewest(BasicTradeInterface $basicTrade): bool
     {
         return $this->getEntityManager()->createQuery(
@@ -74,6 +80,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
         ])->getSingleScalarResult() === 0;
     }
 
+    #[Override]
     public function getLatestRates(BasicTradeInterface $basicTrade): array
     {
         return $this->getEntityManager()
@@ -94,6 +101,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
             ->getResult();
     }
 
+    #[Override]
     public function truncateAllBasicTrades(): void
     {
         $this->getEntityManager()->createQuery(

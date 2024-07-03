@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,29 +18,14 @@ final class CreateAlliance implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_CREATE_ALLIANCE';
-
-    private CreateAllianceRequestInterface $createAllianceRequest;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private UserRepositoryInterface $userRepository;
+    public const string ACTION_IDENTIFIER = 'B_CREATE_ALLIANCE';
 
 
-    public function __construct(
-        CreateAllianceRequestInterface $createAllianceRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->createAllianceRequest = $createAllianceRequest;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceRepository = $allianceRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private CreateAllianceRequestInterface $createAllianceRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceRepositoryInterface $allianceRepository, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -83,6 +69,7 @@ final class CreateAlliance implements ActionControllerInterface
         $game->addInformation('Die Allianz wurde gegründet');
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

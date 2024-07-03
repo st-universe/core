@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -29,11 +30,13 @@ class PirateWrath implements PirateWrathInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): PirateWrathInterface
     {
         $this->user = $user;
@@ -42,11 +45,13 @@ class PirateWrath implements PirateWrathInterface
         return $this;
     }
 
+    #[Override]
     public function getWrath(): int
     {
         return $this->wrath;
     }
 
+    #[Override]
     public function setWrath(int $wrath): PirateWrathInterface
     {
         $this->wrath = $wrath;
@@ -54,11 +59,13 @@ class PirateWrath implements PirateWrathInterface
         return $this;
     }
 
+    #[Override]
     public function getProtectionTimeout(): ?int
     {
         return $this->protection_timeout;
     }
 
+    #[Override]
     public function setProtectionTimeout(?int $timestamp): PirateWrathInterface
     {
         $this->protection_timeout = $timestamp;

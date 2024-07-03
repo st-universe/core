@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeleteBoard;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,20 +17,13 @@ final class DeleteBoard implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_DELETE_BOARD';
+    public const string ACTION_IDENTIFIER = 'B_DELETE_BOARD';
 
-    private DeleteBoardRequestInterface $deleteBoardRequest;
-
-    private AllianceBoardRepositoryInterface $allianceBoardRepository;
-
-    public function __construct(
-        DeleteBoardRequestInterface $deleteBoardRequest,
-        AllianceBoardRepositoryInterface $allianceBoardRepository
-    ) {
-        $this->deleteBoardRequest = $deleteBoardRequest;
-        $this->allianceBoardRepository = $allianceBoardRepository;
+    public function __construct(private DeleteBoardRequestInterface $deleteBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -47,6 +41,7 @@ final class DeleteBoard implements ActionControllerInterface
         $game->setView(Boards::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

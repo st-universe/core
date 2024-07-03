@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -13,26 +14,11 @@ use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 
 final class FinishShipBuildJobs implements ProcessTickHandlerInterface
 {
-    private ShipCreatorInterface $shipCreator;
-
-    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
-
-    private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    public function __construct(
-        ShipCreatorInterface $shipCreator,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
-        PrivateMessageSenderInterface $privateMessageSender
-    ) {
-        $this->shipCreator = $shipCreator;
-        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
-        $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
-        $this->privateMessageSender = $privateMessageSender;
+    public function __construct(private ShipCreatorInterface $shipCreator, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository, private PrivateMessageSenderInterface $privateMessageSender)
+    {
     }
 
+    #[Override]
     public function work(): void
     {
         $queue = $this->colonyShipQueueRepository->getFinishedJobs();

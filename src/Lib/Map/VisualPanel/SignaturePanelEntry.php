@@ -8,22 +8,10 @@ use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 
 class SignaturePanelEntry implements VisualPanelElementInterface
 {
-    protected int $x;
-
-    protected int $y;
-
-    protected PanelLayers $layers;
-
     private string $cssClass = 'lss';
 
-    public function __construct(
-        int $x,
-        int $y,
-        PanelLayers $layers,
-    ) {
-        $this->x = $x;
-        $this->y = $y;
-        $this->layers = $layers;
+    public function __construct(protected int $x, protected int $y, protected PanelLayers $layers)
+    {
     }
 
     /** @return array<string> */

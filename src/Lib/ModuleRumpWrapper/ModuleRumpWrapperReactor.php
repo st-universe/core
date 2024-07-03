@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
@@ -12,6 +13,7 @@ use Stu\Orm\Entity\ModuleInterface;
 
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
+    #[Override]
     public function getValue(ModuleInterface $module = null): int
     {
         $module = $module ?? current($this->getModule());
@@ -26,11 +28,13 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         );
     }
 
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return ShipModuleTypeEnum::REACTOR;
     }
 
+    #[Override]
     public function apply(ShipWrapperInterface $wrapper): void
     {
         $reactorWrapper = $wrapper->getReactorWrapper();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -42,6 +43,7 @@ class StationUtilityTest extends StuTestCase
 
     private StationUtilityInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->shipBuildplanRepository = $this->mock(ShipBuildplanRepositoryInterface::class);

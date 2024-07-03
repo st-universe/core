@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowSearchResult;
 
+use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\ModuleViewEnum;
@@ -14,26 +15,15 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowPostSearchResult implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_POST_SEARCH';
+    public const string VIEW_IDENTIFIER = 'SHOW_POST_SEARCH';
 
-    public const MINIMUM_SEARCH_WORD_LENGTH = 3;
+    public const int MINIMUM_SEARCH_WORD_LENGTH = 3;
 
-    private ShowSearchResultRequestInterface $showSearchResultRequest;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    private KnFactoryInterface $knFactory;
-
-    public function __construct(
-        ShowSearchResultRequestInterface $showSearchResultRequest,
-        KnPostRepositoryInterface $knPostRepository,
-        KnFactoryInterface $knFactory
-    ) {
-        $this->showSearchResultRequest = $showSearchResultRequest;
-        $this->knPostRepository = $knPostRepository;
-        $this->knFactory = $knFactory;
+    public function __construct(private ShowSearchResultRequestInterface $showSearchResultRequest, private KnPostRepositoryInterface $knPostRepository, private KnFactoryInterface $knFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

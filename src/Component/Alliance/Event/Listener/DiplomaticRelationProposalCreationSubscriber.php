@@ -16,16 +16,8 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
  */
 final class DiplomaticRelationProposalCreationSubscriber
 {
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
     /**

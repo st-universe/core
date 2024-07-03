@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
+use Override;
 use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
@@ -22,6 +23,7 @@ class FlightSignatureCreatorTest extends StuTestCase
 
     private FlightSignatureCreator $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->flightSignatureRepository = $this->mock(FlightSignatureRepositoryInterface::class);

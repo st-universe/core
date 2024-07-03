@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib;
 
+use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
@@ -11,14 +12,11 @@ use Stu\Module\Game\Lib\Component\ComponentLoaderInterface;
 
 final class GameSetup implements GameSetupInterface
 {
-    private ComponentLoaderInterface $componentLoader;
-
-    public function __construct(
-        ComponentLoaderInterface $componentLoader
-    ) {
-        $this->componentLoader = $componentLoader;
+    public function __construct(private ComponentLoaderInterface $componentLoader)
+    {
     }
 
+    #[Override]
     public function setTemplateAndComponents(string $viewTemplate, GameControllerInterface $game): void
     {
         $game->setTemplateFile(ModuleViewEnum::GAME->getTemplate());

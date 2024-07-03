@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\MapInterface;
@@ -23,6 +24,7 @@ class EnterWaypointTest extends StuTestCase
 
     private EnterWaypointInterface $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->wormholeEntryRepository = $this->mock(WormholeEntryRepositoryInterface::class);

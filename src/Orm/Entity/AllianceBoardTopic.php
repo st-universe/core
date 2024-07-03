@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -71,16 +72,19 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         $this->posts = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getBoardId(): int
     {
         return $this->board_id;
     }
 
+    #[Override]
     public function setBoardId(int $boardId): AllianceBoardTopicInterface
     {
         $this->board_id = $boardId;
@@ -88,16 +92,19 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $this;
     }
 
+    #[Override]
     public function getAllianceId(): int
     {
         return $this->alliance_id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): AllianceBoardTopicInterface
     {
         $this->name = $name;
@@ -105,11 +112,13 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $this;
     }
 
+    #[Override]
     public function getLastPostDate(): int
     {
         return $this->last_post_date;
     }
 
+    #[Override]
     public function setLastPostDate(int $lastPostDate): AllianceBoardTopicInterface
     {
         $this->last_post_date = $lastPostDate;
@@ -117,16 +126,19 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $this;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getSticky(): bool
     {
         return $this->sticky;
     }
 
+    #[Override]
     public function setSticky(bool $sticky): AllianceBoardTopicInterface
     {
         $this->sticky = $sticky;
@@ -134,17 +146,20 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $this;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): AllianceBoardTopicInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getPages(): ?array
     {
         $postCount = count($this->getPosts());
@@ -160,11 +175,13 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $pages;
     }
 
+    #[Override]
     public function getPostCount(): int
     {
         return count($this->posts);
     }
 
+    #[Override]
     public function getLatestPost(): ?AllianceBoardPostInterface
     {
         $post = $this->getPosts()->first();
@@ -174,11 +191,13 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
             : $post;
     }
 
+    #[Override]
     public function getBoard(): AllianceBoardInterface
     {
         return $this->board;
     }
 
+    #[Override]
     public function setBoard(AllianceBoardInterface $board): AllianceBoardTopicInterface
     {
         $this->board = $board;
@@ -186,16 +205,19 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $this;
     }
 
+    #[Override]
     public function getPosts(): Collection
     {
         return $this->posts;
     }
 
+    #[Override]
     public function getAlliance(): AllianceInterface
     {
         return $this->alliance;
     }
 
+    #[Override]
     public function setAlliance(AllianceInterface $alliance): AllianceBoardTopicInterface
     {
         $this->alliance = $alliance;

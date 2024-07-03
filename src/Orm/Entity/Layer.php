@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -48,31 +49,37 @@ class Layer implements LayerInterface
     private ?AwardInterface $award = null;
 
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function getWidth(): int
     {
         return $this->width;
     }
 
+    #[Override]
     public function getHeight(): int
     {
         return $this->height;
     }
 
+    #[Override]
     public function isHidden(): bool
     {
         return $this->is_hidden;
     }
 
+    #[Override]
     public function isFinished(): bool
     {
         if ($this->is_finished === null) {
@@ -82,6 +89,7 @@ class Layer implements LayerInterface
         return $this->is_finished;
     }
 
+    #[Override]
     public function isEncoded(): bool
     {
         if ($this->is_encoded === null) {
@@ -91,26 +99,31 @@ class Layer implements LayerInterface
         return $this->is_encoded;
     }
 
+    #[Override]
     public function getAward(): ?AwardInterface
     {
         return $this->award;
     }
 
+    #[Override]
     public function getSectorsHorizontal(): int
     {
         return (int)ceil($this->getWidth() / MapEnum::FIELDS_PER_SECTION);
     }
 
+    #[Override]
     public function getSectorsVertical(): int
     {
         return (int)ceil($this->getHeight() / MapEnum::FIELDS_PER_SECTION);
     }
 
+    #[Override]
     public function getSectorCount(): int
     {
         return $this->getSectorsVertical() * $this->getSectorsHorizontal();
     }
 
+    #[Override]
     public function getSectorId(int $mapCx, int $mapCy): int
     {
         return $mapCx + ($mapCy - 1) * $this->getSectorsHorizontal();

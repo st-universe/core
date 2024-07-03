@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Override;
 use JBBCode\Parser;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
@@ -17,36 +18,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ClearFaultyBBCodes implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CORRUPT_BBCODES';
+    public const string ACTION_IDENTIFIER = 'B_CORRUPT_BBCODES';
 
-    private UserRepositoryInterface $userRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private FleetRepositoryInterface $fleetRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private Parser $bbCodeParser;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        ShipRepositoryInterface $shipRepository,
-        FleetRepositoryInterface $fleetRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        Parser $bbCodeParser
-    ) {
-        $this->userRepository = $userRepository;
-        $this->shipRepository = $shipRepository;
-        $this->fleetRepository = $fleetRepository;
-        $this->colonyRepository = $colonyRepository;
-        $this->allianceRepository = $allianceRepository;
-        $this->bbCodeParser = $bbCodeParser;
+    public function __construct(private UserRepositoryInterface $userRepository, private ShipRepositoryInterface $shipRepository, private FleetRepositoryInterface $fleetRepository, private ColonyRepositoryInterface $colonyRepository, private AllianceRepositoryInterface $allianceRepository, private Parser $bbCodeParser)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -133,6 +111,7 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
         $game->addInformation("Allianznamen wurde bereinigt!");
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

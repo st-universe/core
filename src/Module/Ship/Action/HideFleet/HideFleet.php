@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\HideFleet;
 
+use Override;
 use request;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -12,16 +13,13 @@ use Stu\Module\Ship\View\Noop\Noop;
 
 final class HideFleet implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_HIDE_FLEET';
+    public const string ACTION_IDENTIFIER = 'B_HIDE_FLEET';
 
-    private SessionInterface $session;
-
-    public function __construct(
-        SessionInterface $session
-    ) {
-        $this->session = $session;
+    public function __construct(private SessionInterface $session)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $fleetId = request::getIntFatal('fleet');
@@ -29,6 +27,7 @@ final class HideFleet implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

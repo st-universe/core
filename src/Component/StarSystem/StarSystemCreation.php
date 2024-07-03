@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\StarSystem;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Colony\ColonyCreationInterface;
 use Stu\Component\Colony\ColonyTypeEnum;
@@ -26,46 +27,25 @@ use Stu\StarsystemGenerator\SystemMapDataInterface;
 //TODO unit tests
 final class StarSystemCreation implements StarSystemCreationInterface
 {
-    private StarSystemRepositoryInterface $starSystemRepository;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
-
-    private StarsystemGeneratorInterface $starsystemGenerator;
-
-    private ColonyCreationInterface $colonyCreation;
-
-    private StuRandom $stuRandom;
-
     private LoggerUtilInterface $loggerUtil;
 
     /** @var array<int, MapFieldTypeInterface> */
     private array $fieldTypeCache = [];
 
     public function __construct(
-        StarSystemRepositoryInterface $starSystemRepository,
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
-        StarsystemGeneratorInterface $starsystemGenerator,
-        ColonyCreationInterface $colonyCreation,
-        StuRandom $stuRandom,
+        private StarSystemRepositoryInterface $starSystemRepository,
+        private MapRepositoryInterface $mapRepository,
+        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
+        private StarsystemGeneratorInterface $starsystemGenerator,
+        private ColonyCreationInterface $colonyCreation,
+        private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->starSystemRepository = $starSystemRepository;
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
-        $this->starsystemGenerator = $starsystemGenerator;
-        $this->colonyCreation = $colonyCreation;
-        $this->stuRandom = $stuRandom;
-
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function recreateStarSystem(MapInterface $map, string $randomSystemName): ?StarSystemInterface
     {
         //$this->loggerUtil->init('SysGen', LoggerEnum::LEVEL_ERROR);

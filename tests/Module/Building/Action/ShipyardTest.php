@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -19,6 +20,7 @@ class ShipyardTest extends StuTestCase
 
     private Shipyard $shipyard;
 
+    #[Override]
     public function setUp(): void
     {
         $this->colonyShipQueueRepository = Mockery::mock(ColonyShipQueueRepositoryInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\Researched;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\Researched;
  */
 final class BuildingUpgradeRepository extends EntityRepository implements BuildingUpgradeRepositoryInterface
 {
+    #[Override]
     public function getByBuilding(int $buildingId, int $userId): array
     {
         return $this->getEntityManager()

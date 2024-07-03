@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\AddDockPrivilege;
 
+use Override;
 use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,32 +18,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddDockPrivilege implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ADD_DOCKPRIVILEGE';
+    public const string ACTION_IDENTIFIER = 'B_ADD_DOCKPRIVILEGE';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private FactionRepositoryInterface $factionRepository;
-
-    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        FactionRepositoryInterface $factionRepository,
-        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->factionRepository = $factionRepository;
-        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
-        $this->allianceRepository = $allianceRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(private ShipLoaderInterface $shipLoader, private FactionRepositoryInterface $factionRepository, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository, private AllianceRepositoryInterface $allianceRepository, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -99,6 +81,7 @@ final class AddDockPrivilege implements ActionControllerInterface
         }
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

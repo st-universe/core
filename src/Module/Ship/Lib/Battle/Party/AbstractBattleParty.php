@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
@@ -27,16 +28,19 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     /** @return Collection<int, ShipWrapperInterface> */
     protected abstract function initMembers(): Collection;
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function getLeader(): ShipWrapperInterface
     {
         return $this->leader;
     }
 
+    #[Override]
     public function getActiveMembers(bool $canFire = false, bool $filterDisabled = true): Collection
     {
         if ($this->members === null) {
@@ -50,6 +54,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         );
     }
 
+    #[Override]
     public function getRandomActiveMember(): ShipWrapperInterface
     {
         $activeMembers = $this->getActiveMembers();
@@ -61,12 +66,14 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         return $randomActiveMember;
     }
 
+    #[Override]
     public function isDefeated(): bool
     {
         return $this->getActiveMembers()->isEmpty();
     }
 
 
+    #[Override]
     public function isBase(): bool
     {
         return $this->isBase;
@@ -80,11 +87,13 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         return new ArrayCollection([$wrapper->get()->getId() => $wrapper]);
     }
 
+    #[Override]
     public function count(): int
     {
         return $this->getActiveMembers()->count();
     }
 
+    #[Override]
     public function getPrivateMessageType(): PrivateMessageFolderTypeEnum
     {
         return $this->isBase()

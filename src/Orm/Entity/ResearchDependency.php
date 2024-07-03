@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -39,16 +40,19 @@ class ResearchDependency implements ResearchDependencyInterface
     #[JoinColumn(name: 'depends_on', referencedColumnName: 'id')]
     private ResearchInterface $research_depends_on;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function setResearchId(int $researchId): ResearchDependencyInterface
     {
         $this->research_id = $researchId;
@@ -56,11 +60,13 @@ class ResearchDependency implements ResearchDependencyInterface
         return $this;
     }
 
+    #[Override]
     public function getDependsOn(): int
     {
         return $this->depends_on;
     }
 
+    #[Override]
     public function setDependsOn(int $dependsOn): ResearchDependencyInterface
     {
         $this->depends_on = $dependsOn;
@@ -68,11 +74,13 @@ class ResearchDependency implements ResearchDependencyInterface
         return $this;
     }
 
+    #[Override]
     public function getMode(): ResearchModeEnum
     {
         return $this->mode;
     }
 
+    #[Override]
     public function setMode(ResearchModeEnum $mode): ResearchDependencyInterface
     {
         $this->mode = $mode;
@@ -80,11 +88,13 @@ class ResearchDependency implements ResearchDependencyInterface
         return $this;
     }
 
+    #[Override]
     public function getResearch(): ResearchInterface
     {
         return $this->research;
     }
 
+    #[Override]
     public function getResearchDependOn(): ResearchInterface
     {
         return $this->research_depends_on;

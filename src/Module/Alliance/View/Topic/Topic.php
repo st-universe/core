@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Topic;
 
+use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,33 +18,18 @@ final class Topic implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_TOPIC';
+    public const string VIEW_IDENTIFIER = 'SHOW_TOPIC';
 
     /**
      * @var int
      */
-    public const ALLIANCEBOARDLIMITER = 20;
+    public const int ALLIANCEBOARDLIMITER = 20;
 
-    private TopicRequestInterface $topicRequest;
-
-    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
-
-    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    public function __construct(
-        TopicRequestInterface $topicRequest,
-        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
-        AllianceActionManagerInterface $allianceActionManager
-    ) {
-        $this->topicRequest = $topicRequest;
-        $this->allianceBoardPostRepository = $allianceBoardPostRepository;
-        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
-        $this->allianceActionManager = $allianceActionManager;
+    public function __construct(private TopicRequestInterface $topicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceActionManagerInterface $allianceActionManager)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPageInterface;
@@ -15,14 +16,11 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ServertimeFragment implements RenderFragmentInterface
 {
-    private ConfigInterface $config;
-
-    public function __construct(
-        ConfigInterface $config
-    ) {
-        $this->config = $config;
+    public function __construct(private ConfigInterface $config)
+    {
     }
 
+    #[Override]
     public function render(
         UserInterface $user,
         TalPageInterface|TwigPageInterface $page,

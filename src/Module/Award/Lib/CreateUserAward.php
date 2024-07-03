@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Award\Lib;
 
+use Override;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\AwardInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -11,18 +12,11 @@ use Stu\Orm\Repository\UserAwardRepositoryInterface;
 
 final class CreateUserAward implements CreateUserAwardInterface
 {
-    private UserAwardRepositoryInterface $userAwardRepository;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    public function __construct(
-        UserAwardRepositoryInterface $userAwardRepository,
-        CreatePrestigeLogInterface $createPrestigeLog
-    ) {
-        $this->userAwardRepository = $userAwardRepository;
-        $this->createPrestigeLog = $createPrestigeLog;
+    public function __construct(private UserAwardRepositoryInterface $userAwardRepository, private CreatePrestigeLogInterface $createPrestigeLog)
+    {
     }
 
+    #[Override]
     public function createAwardForUser(UserInterface $user, AwardInterface $award): void
     {
         //check if user already has award in case of category updates

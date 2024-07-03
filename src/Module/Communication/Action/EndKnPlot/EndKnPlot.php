@@ -4,26 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EndKnPlot;
 
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EndKnPlot implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_END_PLOT';
+    public const string ACTION_IDENTIFIER = 'B_END_PLOT';
 
-    private EndKnPlotRequestInterface $endKnPlotRequest;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
-    public function __construct(
-        EndKnPlotRequestInterface $endKnPlotRequest,
-        RpgPlotRepositoryInterface $rpgPlotRepository
-    ) {
-        $this->endKnPlotRequest = $endKnPlotRequest;
-        $this->rpgPlotRepository = $rpgPlotRepository;
+    public function __construct(private EndKnPlotRequestInterface $endKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $plot = $this->rpgPlotRepository->find($this->endKnPlotRequest->getPlotId());
@@ -40,6 +34,7 @@ final class EndKnPlot implements ActionControllerInterface
         $game->addInformation(_('Der Plot wurde beendet'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

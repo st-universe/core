@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Applications;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -16,20 +17,13 @@ final class Applications implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
+    public const string VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    public function __construct(
-        AllianceActionManagerInterface $allianceActionManager,
-        AllianceJobRepositoryInterface $allianceJobRepository
-    ) {
-        $this->allianceActionManager = $allianceActionManager;
-        $this->allianceJobRepository = $allianceJobRepository;
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceJobRepositoryInterface $allianceJobRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Management;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
@@ -16,24 +17,13 @@ final class Management implements ViewControllerInterface
     /**
      * @var string
      */
-    public const VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
+    public const string VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
 
-    private UserRepositoryInterface $userRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private AllianceUiFactoryInterface $allianceUiFactory;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        AllianceUiFactoryInterface $allianceUiFactory
-    ) {
-        $this->userRepository = $userRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->allianceUiFactory = $allianceUiFactory;
+    public function __construct(private UserRepositoryInterface $userRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceUiFactoryInterface $allianceUiFactory)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

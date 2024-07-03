@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\AccessViolation;
@@ -20,32 +21,13 @@ final class PromotePlayer implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_PROMOTE_USER';
+    public const string ACTION_IDENTIFIER = 'B_PROMOTE_USER';
 
-    private PromotePlayerRequestInterface $promotePlayerRequest;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private UserRepositoryInterface $userRepository;
-
-    public function __construct(
-        PromotePlayerRequestInterface $promotePlayerRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->promotePlayerRequest = $promotePlayerRequest;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->userRepository = $userRepository;
+    public function __construct(private PromotePlayerRequestInterface $promotePlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -152,6 +134,7 @@ final class PromotePlayer implements ActionControllerInterface
         $game->addInformation(_('Das Mitglied wurde befördert'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Data\AbstractReactorSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
@@ -20,6 +21,7 @@ class ReactorWrapperTest extends StuTestCase
 
     private ReactorWrapperInterface $subject;
 
+    #[Override]
     public function setUp(): void
     {
         $this->wrapper = $this->mock(ShipWrapperInterface::class);

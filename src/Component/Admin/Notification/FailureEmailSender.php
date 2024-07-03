@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Notification;
 
+use Override;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
@@ -14,16 +15,14 @@ use Stu\Module\Logging\LoggerUtilInterface;
 
 final class FailureEmailSender implements FailureEmailSenderInterface
 {
-    private ConfigInterface $config;
-
     private LoggerUtilInterface $loggerUtil;
 
-    public function __construct(ConfigInterface $config, LoggerUtilFactoryInterface $loggerUtilFactory)
+    public function __construct(private ConfigInterface $config, LoggerUtilFactoryInterface $loggerUtilFactory)
     {
-        $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    #[Override]
     public function sendMail(string $subject, string $message): void
     {
         $mail = new Message();
@@ -35,7 +34,7 @@ final class FailureEmailSender implements FailureEmailSenderInterface
         try {
             $transport = new Sendmail();
             $transport->send($mail);
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf(
                 "Error while sending failure E-Mail to admin! Subject: %s, Message: %s",

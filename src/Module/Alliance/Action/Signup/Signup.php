@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\Signup;
 
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Exception\AccessViolation;
@@ -18,32 +19,13 @@ final class Signup implements ActionControllerInterface
     /**
      * @var string
      */
-    public const ACTION_IDENTIFIER = 'B_SIGNUP_ALLIANCE';
+    public const string ACTION_IDENTIFIER = 'B_SIGNUP_ALLIANCE';
 
-    private SignupRequestInterface $signupRequest;
-
-    private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
-
-    public function __construct(
-        SignupRequestInterface $signupRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker
-    ) {
-        $this->signupRequest = $signupRequest;
-        $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceRepository = $allianceRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
+    public function __construct(private SignupRequestInterface $signupRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceRepositoryInterface $allianceRepository, private PrivateMessageSenderInterface $privateMessageSender, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -78,6 +60,7 @@ final class Signup implements ActionControllerInterface
         $game->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

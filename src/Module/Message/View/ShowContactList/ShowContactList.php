@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowContactList;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -11,15 +12,13 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class ShowContactList implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_CONTACTLIST';
-    private ContactRepositoryInterface $contactRepository;
+    public const string VIEW_IDENTIFIER = 'SHOW_CONTACTLIST';
 
-    public function __construct(
-        ContactRepositoryInterface $contactRepository
-    ) {
-        $this->contactRepository = $contactRepository;
+    public function __construct(private ContactRepositoryInterface $contactRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

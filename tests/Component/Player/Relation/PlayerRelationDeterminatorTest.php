@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Relation;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
@@ -24,6 +25,7 @@ class PlayerRelationDeterminatorTest extends StuTestCase
     /** @var MockInterface&UserInterface */
     private MockInterface $opponent;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->friendDeterminator = $this->mock(FriendDeterminator::class);

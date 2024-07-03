@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,16 +44,19 @@ class ModuleCost implements ModuleCostInterface
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $module;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getModuleId(): int
     {
         return $this->module_id;
     }
 
+    #[Override]
     public function setModuleId(int $moduleId): ModuleCostInterface
     {
         $this->module_id = $moduleId;
@@ -60,11 +64,13 @@ class ModuleCost implements ModuleCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodityId(): int
     {
         return $this->commodity_id;
     }
 
+    #[Override]
     public function setCommodityId(int $commodityId): ModuleCostInterface
     {
         $this->commodity_id = $commodityId;
@@ -72,11 +78,13 @@ class ModuleCost implements ModuleCostInterface
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->count;
     }
 
+    #[Override]
     public function setAmount(int $amount): ModuleCostInterface
     {
         $this->count = $amount;
@@ -84,6 +92,7 @@ class ModuleCost implements ModuleCostInterface
         return $this;
     }
 
+    #[Override]
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;

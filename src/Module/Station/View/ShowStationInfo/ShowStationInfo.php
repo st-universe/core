@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowStationInfo;
 
+use Override;
 use request;
 use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
@@ -13,20 +14,13 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ShowStationInfo implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_STATION_INFO';
+    public const string VIEW_IDENTIFIER = 'SHOW_STATION_INFO';
 
-    private StationUtilityInterface $stationUtility;
-
-    private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
-
-    public function __construct(
-        StationUtilityInterface $stationUtility,
-        ShipRumpUserRepositoryInterface $shipRumpUserRepository
-    ) {
-        $this->stationUtility = $stationUtility;
-        $this->shipRumpUserRepository = $shipRumpUserRepository;
+    public function __construct(private StationUtilityInterface $stationUtility, private ShipRumpUserRepositoryInterface $shipRumpUserRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateVar('ERROR', true);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
+use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,31 +15,16 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class Register implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_SEND_REGISTRATION';
+    public const string ACTION_IDENTIFIER = 'B_SEND_REGISTRATION';
 
-    private RegisterRequestInterface $registerRequest;
-
-    private FactionRepositoryInterface $factionRepository;
-
-    private PlayerCreatorInterface $playerCreator;
-
-    private ConfigInterface $config;
-
-    public function __construct(
-        RegisterRequestInterface $registerRequest,
-        FactionRepositoryInterface $factionRepository,
-        PlayerCreatorInterface $playerCreator,
-        ConfigInterface $config
-    ) {
-        $this->registerRequest = $registerRequest;
-        $this->factionRepository = $factionRepository;
-        $this->playerCreator = $playerCreator;
-        $this->config = $config;
+    public function __construct(private RegisterRequestInterface $registerRequest, private FactionRepositoryInterface $factionRepository, private PlayerCreatorInterface $playerCreator, private ConfigInterface $config)
+    {
     }
 
     /**
      * @todo add registration without sms
      */
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         if (!$this->config->get('game.registration.enabled')) {
@@ -90,6 +76,7 @@ final class Register implements ActionControllerInterface
         $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

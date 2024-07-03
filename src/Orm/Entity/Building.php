@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -108,192 +109,227 @@ class Building implements BuildingInterface
         $this->possibleFieldTypes = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): BuildingInterface
     {
         $this->name = $name;
         return $this;
     }
 
+    #[Override]
     public function getStorage(): int
     {
         return $this->lager;
     }
 
+    #[Override]
     public function setStorage(int $storage): BuildingInterface
     {
         $this->lager = $storage;
         return $this;
     }
 
+    #[Override]
     public function getEpsStorage(): int
     {
         return $this->eps;
     }
 
+    #[Override]
     public function setEpsStorage(int $epsStorage): BuildingInterface
     {
         $this->eps = $epsStorage;
         return $this;
     }
 
+    #[Override]
     public function getEpsCost(): int
     {
         return $this->eps_cost;
     }
 
+    #[Override]
     public function setEpsCost(int $epsCost): BuildingInterface
     {
         $this->eps_cost = $epsCost;
         return $this;
     }
 
+    #[Override]
     public function getEpsProduction(): int
     {
         return $this->eps_proc;
     }
 
+    #[Override]
     public function setEpsProduction(int $epsProduction): BuildingInterface
     {
         $this->eps_proc = $epsProduction;
         return $this;
     }
 
+    #[Override]
     public function getHousing(): int
     {
         return $this->bev_pro;
     }
 
+    #[Override]
     public function setHousing(int $housing): BuildingInterface
     {
         $this->bev_pro = $housing;
         return $this;
     }
 
+    #[Override]
     public function getWorkers(): int
     {
         return $this->bev_use;
     }
 
+    #[Override]
     public function setWorkers(int $workers): BuildingInterface
     {
         $this->bev_use = $workers;
         return $this;
     }
 
+    #[Override]
     public function getIntegrity(): int
     {
         return $this->integrity;
     }
 
+    #[Override]
     public function setIntegrity(int $integrity): BuildingInterface
     {
         $this->integrity = $integrity;
         return $this;
     }
 
+    #[Override]
     public function getResearchId(): int
     {
         return $this->research_id;
     }
 
+    #[Override]
     public function setResearchId(int $researchId): BuildingInterface
     {
         $this->research_id = $researchId;
         return $this;
     }
 
+    #[Override]
     public function getView(): bool
     {
         return $this->view;
     }
 
+    #[Override]
     public function setView(bool $view): BuildingInterface
     {
         $this->view = $view;
         return $this;
     }
 
+    #[Override]
     public function getBuildtime(): int
     {
         return $this->buildtime;
     }
 
+    #[Override]
     public function setBuildtime(int $buildtime): BuildingInterface
     {
         $this->buildtime = $buildtime;
         return $this;
     }
 
+    #[Override]
     public function getLimit(): int
     {
         return $this->blimit;
     }
 
+    #[Override]
     public function setLimit(int $limit): BuildingInterface
     {
         $this->blimit = $limit;
         return $this;
     }
 
+    #[Override]
     public function getLimitColony(): int
     {
         return $this->bclimit;
     }
 
+    #[Override]
     public function setLimitColony(int $limitColony): BuildingInterface
     {
         $this->bclimit = $limitColony;
         return $this;
     }
 
+    #[Override]
     public function getIsActivateable(): bool
     {
         return $this->is_activateable;
     }
 
+    #[Override]
     public function setIsActivateable(bool $isActivateable): BuildingInterface
     {
         $this->is_activateable = $isActivateable;
         return $this;
     }
 
+    #[Override]
     public function getBmCol(): int
     {
         return $this->bm_col;
     }
 
+    #[Override]
     public function setBmCol(int $buildmenuColumn): BuildingInterface
     {
         $this->bm_col = $buildmenuColumn;
         return $this;
     }
 
+    #[Override]
     public function isActivateable(): bool
     {
         return $this->getIsActivateable();
     }
 
+    #[Override]
     public function isViewable(): bool
     {
         return $this->getView();
     }
 
+    #[Override]
     public function getBuildingType(): int
     {
         // return 0 for now
         return 0;
     }
 
+    #[Override]
     public function getEpsProductionCss(): string
     {
         if ($this->getEpsProduction() < 0) {
@@ -305,26 +341,31 @@ class Building implements BuildingInterface
         return '';
     }
 
+    #[Override]
     public function hasLimit(): bool
     {
         return $this->getLimit() > 0;
     }
 
+    #[Override]
     public function hasLimitColony(): bool
     {
         return $this->getLimitColony() > 0;
     }
 
+    #[Override]
     public function getBuildableFields(): Collection
     {
         return $this->possibleFieldTypes;
     }
 
+    #[Override]
     public function getCosts(): Collection
     {
         return $this->costs;
     }
 
+    #[Override]
     public function getCommodities(): Collection
     {
         return $this->commodities;
@@ -333,16 +374,19 @@ class Building implements BuildingInterface
     /**
      * @return Collection<int, BuildingFunctionInterface>
      */
+    #[Override]
     public function getFunctions(): Collection
     {
         return $this->functions;
     }
 
+    #[Override]
     public function isRemovable(): bool
     {
         return $this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_CENTRAL) === false;
     }
 
+    #[Override]
     public function getShieldCapacity(): ?int
     {
         if ($this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR) === true) {

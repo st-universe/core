@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Game\TimeConstants;
@@ -15,11 +16,13 @@ use Stu\Orm\Entity\TradeTransactionInterface;
  */
 final class TradeTransactionRepository extends EntityRepository implements TradeTransactionRepositoryInterface
 {
+    #[Override]
     public function prototype(): TradeTransactionInterface
     {
         return new TradeTransaction();
     }
 
+    #[Override]
     public function save(TradeTransactionInterface $tradeTransaction): void
     {
         $em = $this->getEntityManager();
@@ -27,6 +30,7 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
         $em->persist($tradeTransaction);
     }
 
+    #[Override]
     public function getTradePostsTop10(): array
     {
         $rsm = new ResultSetMapping();
@@ -49,6 +53,7 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
             ->getResult();
     }
 
+    #[Override]
     public function truncateAllTradeTransactions(): void
     {
         $this->getEntityManager()->createQuery(

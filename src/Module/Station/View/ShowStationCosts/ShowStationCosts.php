@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowStationCosts;
 
+use Override;
 use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,20 +13,13 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowStationCosts implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_STATION_COSTS';
+    public const string VIEW_IDENTIFIER = 'SHOW_STATION_COSTS';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private StationUtilityInterface $stationUtility;
-
-    public function __construct(
-        ShipLoaderInterface $shipLoader,
-        StationUtilityInterface $stationUtility
-    ) {
-        $this->shipLoader = $shipLoader;
-        $this->stationUtility = $stationUtility;
+    public function __construct(private ShipLoaderInterface $shipLoader, private StationUtilityInterface $stationUtility)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateVar('ERROR', true);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -66,11 +67,13 @@ class GameRequest implements GameRequestInterface
     /** @var array<Throwable> */
     private array $errors = [];
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function setUserId(?UserInterface $user): GameRequestInterface
     {
         if ($user !== null) {
@@ -79,24 +82,28 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
+    #[Override]
     public function setTurnId(GameTurnInterface $turn): GameRequestInterface
     {
         $this->turn_id = $turn->getId();
         return $this;
     }
 
+    #[Override]
     public function setTime(int $time): GameRequestInterface
     {
         $this->time = $time;
         return $this;
     }
 
+    #[Override]
     public function setModule(string $module): GameRequestInterface
     {
         $this->module = $module;
         return $this;
     }
 
+    #[Override]
     public function setAction(string $action): GameRequestInterface
     {
         $this->action = $action;
@@ -105,12 +112,14 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
+    #[Override]
     public function setActionMs(int $actionMs): GameRequestInterface
     {
         $this->action_ms = $actionMs;
         return $this;
     }
 
+    #[Override]
     public function setView(string $view): GameRequestInterface
     {
         $this->view = $view;
@@ -119,18 +128,21 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
+    #[Override]
     public function setViewMs(int $viewMs): GameRequestInterface
     {
         $this->view_ms = $viewMs;
         return $this;
     }
 
+    #[Override]
     public function setRenderMs(int $renderMs): GameRequestInterface
     {
         $this->render_ms = $renderMs;
         return $this;
     }
 
+    #[Override]
     public function setParameterArray(array $parameter): GameRequestInterface
     {
         $this->params = (string) json_encode($parameter, JSON_PRETTY_PRINT);
@@ -138,61 +150,73 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
+    #[Override]
     public function getParameterArray(): array
     {
         return $this->parameterArray;
     }
 
+    #[Override]
     public function getUserId(): ?int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function getTurnId(): int
     {
         return $this->turn_id;
     }
 
+    #[Override]
     public function getTime(): int
     {
         return $this->time;
     }
 
+    #[Override]
     public function getModule(): ?string
     {
         return $this->module;
     }
 
+    #[Override]
     public function getAction(): ?string
     {
         return $this->action;
     }
 
+    #[Override]
     public function getActionMs(): ?int
     {
         return $this->action_ms;
     }
 
+    #[Override]
     public function getView(): ?string
     {
         return $this->view;
     }
 
+    #[Override]
     public function getViewMs(): ?int
     {
         return $this->view_ms;
     }
 
+    #[Override]
     public function getRenderMs(): ?int
     {
         return $this->render_ms;
     }
 
+    #[Override]
     public function getRequestId(): string
     {
         return $this->requestId;
     }
 
+    #[Override]
     public function setRequestId(string $requestId): GameRequestInterface
     {
         $this->requestId = $requestId;
@@ -200,6 +224,7 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
+    #[Override]
     public function addError(Throwable $error): GameRequestInterface
     {
         $this->errors[] = $error;
@@ -207,6 +232,7 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
+    #[Override]
     public function getErrors(): array
     {
         return $this->errors;

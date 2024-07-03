@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Transfer;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
@@ -27,41 +28,25 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class Transfer implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_TRANSFER';
-
-    private ShipLoaderInterface $shipLoader;
-
-    private TransferTargetLoaderInterface $transferTargetLoader;
-
-    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
+    public const string ACTION_IDENTIFIER = 'B_TRANSFER';
 
     private LoggerUtilInterface $logger;
-
-    /** @var array<TransferStrategyInterface> */
-    private array $transferStrategies;
 
     /** @param array<TransferStrategyInterface> $transferStrategies */
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        TransferTargetLoaderInterface $transferTargetLoader,
-        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        PrivateMessageSenderInterface $privateMessageSender,
+        private ShipLoaderInterface $shipLoader,
+        private TransferTargetLoaderInterface $transferTargetLoader,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        array $transferStrategies
+        private array $transferStrategies
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->transferTargetLoader = $transferTargetLoader;
-        $this->playerRelationDeterminator = $playerRelationDeterminator;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->transferStrategies = $transferStrategies;
-
         $this->logger = $loggerUtilFactory->getLoggerUtil();
         //$this->logger->init('TRANSFER', LoggerEnum::LEVEL_ERROR);
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -194,6 +179,7 @@ final class Transfer implements ActionControllerInterface
         return $this->transferStrategies[$transferType->value];
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

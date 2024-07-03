@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -33,44 +34,52 @@ class PrestigeLog implements PrestigeLogInterface
     #[Column(type: 'integer')]
     private int $date;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
+    #[Override]
     public function setUserId(int $userId): PrestigeLogInterface
     {
         $this->user_id = $userId;
         return $this;
     }
 
+    #[Override]
     public function getAmount(): int
     {
         return $this->amount;
     }
 
+    #[Override]
     public function setAmount(int $amount): PrestigeLogInterface
     {
         $this->amount = $amount;
         return $this;
     }
 
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(string $description): PrestigeLogInterface
     {
         $this->description = $description;
         return $this;
     }
 
+    #[Override]
     public function setDate(int $date): PrestigeLogInterface
     {
         $this->date = $date;
@@ -78,6 +87,7 @@ class PrestigeLog implements PrestigeLogInterface
         return $this;
     }
 
+    #[Override]
     public function getDate(): int
     {
         return $this->date;

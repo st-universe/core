@@ -2,28 +2,22 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
+use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 
 final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
 {
-    private TorpedoHullRepositoryInterface $torpedoHullRepository;
-
-    private GradientColorInterface $gradientColor;
-
     /** @var array<int>|null */
     private ?array $interval = null;
 
-    public function __construct(
-        TorpedoHullRepositoryInterface $torpedoHullRepository,
-        GradientColorInterface $gradientColor
-    ) {
-        $this->torpedoHullRepository = $torpedoHullRepository;
-        $this->gradientColor = $gradientColor;
+    public function __construct(private TorpedoHullRepositoryInterface $torpedoHullRepository, private GradientColorInterface $gradientColor)
+    {
     }
 
     //public function calculateGradientColor(int $modificator): string
+    #[Override]
     public function getModificators(ModuleInterface $module): array
     {
         if ($this->interval === null) {

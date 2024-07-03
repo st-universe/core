@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -37,60 +38,71 @@ class UserCharacters implements UserCharactersInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $former_user_id = null;
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): UserCharactersInterface
     {
         $this->user = $user;
         return $this;
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->name;
     }
 
+    #[Override]
     public function setName(string $name): UserCharactersInterface
     {
         $this->name = $name;
         return $this;
     }
 
+    #[Override]
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    #[Override]
     public function setDescription(?string $description): UserCharactersInterface
     {
         $this->description = $description;
         return $this;
     }
 
+    #[Override]
     public function getAvatar(): ?string
     {
         return $this->avatar;
     }
 
+    #[Override]
     public function setAvatar(?string $avatar): UserCharactersInterface
     {
         $this->avatar = $avatar;
         return $this;
     }
 
+    #[Override]
     public function getFormerUserId(): ?int
     {
         return $this->former_user_id;
     }
 
+    #[Override]
     public function setFormerUserId(?int $formerUserId): UserCharactersInterface
     {
         $this->former_user_id = $formerUserId;

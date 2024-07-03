@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -19,6 +20,7 @@ use Stu\Orm\Entity\ResearchInterface;
  */
 final class BuildingRepository extends EntityRepository implements BuildingRepositoryInterface
 {
+    #[Override]
     public function getBuildmenuBuildings(
         PlanetFieldHostInterface $host,
         int $userId,
@@ -76,6 +78,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
             ->getResult();
     }
 
+    #[Override]
     public function getByResearch(ResearchInterface $research): array
     {
         return $this->findBy(

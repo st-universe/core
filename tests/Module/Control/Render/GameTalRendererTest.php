@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render;
 
+use Override;
 use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
@@ -23,6 +24,7 @@ class GameTalRendererTest extends StuTestCase
 
     private GameTalRenderer $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);

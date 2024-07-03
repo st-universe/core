@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Override;
 use Stu\Module\Building\Action\BuildingActionHandlerInterface;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingInterface;
@@ -15,14 +16,11 @@ use Stu\Orm\Entity\ColonySandboxInterface;
  */
 final class BuildingPostAction implements BuildingPostActionInterface
 {
-    private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper;
-
-    public function __construct(
-        BuildingFunctionActionMapperInterface $buildingFunctionActionMapper
-    ) {
-        $this->buildingFunctionActionMapper = $buildingFunctionActionMapper;
+    public function __construct(private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper)
+    {
     }
 
+    #[Override]
     public function handleDeactivation(
         BuildingInterface $building,
         ColonyInterface|ColonySandboxInterface $host
@@ -35,6 +33,7 @@ final class BuildingPostAction implements BuildingPostActionInterface
         );
     }
 
+    #[Override]
     public function handleActivation(
         BuildingInterface $building,
         ColonyInterface|ColonySandboxInterface $host

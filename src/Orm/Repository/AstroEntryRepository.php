@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Override;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
@@ -14,11 +15,13 @@ use Stu\Orm\Entity\ShipInterface;
  */
 final class AstroEntryRepository extends EntityRepository implements AstroEntryRepositoryInterface
 {
+    #[Override]
     public function prototype(): AstronomicalEntryInterface
     {
         return new AstronomicalEntry();
     }
 
+    #[Override]
     public function getByShipLocation(ShipInterface $ship, bool $showOverSystem = true): ?AstronomicalEntryInterface
     {
         $system = $ship->getSystem();
@@ -36,6 +39,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         );
     }
 
+    #[Override]
     public function save(AstronomicalEntryInterface $entry): void
     {
         $em = $this->getEntityManager();
@@ -43,6 +47,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         $em->persist($entry);
     }
 
+    #[Override]
     public function truncateAllAstroEntries(): void
     {
         $this->getEntityManager()->createQuery(

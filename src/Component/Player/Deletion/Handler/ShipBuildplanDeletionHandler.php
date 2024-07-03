@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
@@ -12,14 +13,11 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
  */
 final class ShipBuildplanDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-
-    public function __construct(
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
-    ) {
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
+    public function __construct(private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
+    {
     }
 
+    #[Override]
     public function delete(UserInterface $user): void
     {
         foreach ($this->shipBuildplanRepository->getByUser($user->getId()) as $shipBuildplan) {

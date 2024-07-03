@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\RpgRanking;
 
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
@@ -12,20 +13,13 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class RpgRanking implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_TOP_RPG';
+    public const string VIEW_IDENTIFIER = 'SHOW_TOP_RPG';
 
-    private DatabaseUiFactoryInterface $databaseUiFactory;
-
-    private KnPostRepositoryInterface $knPostRepository;
-
-    public function __construct(
-        DatabaseUiFactoryInterface $databaseUiFactory,
-        KnPostRepositoryInterface $knPostRepository
-    ) {
-        $this->databaseUiFactory = $databaseUiFactory;
-        $this->knPostRepository = $knPostRepository;
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private KnPostRepositoryInterface $knPostRepository)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

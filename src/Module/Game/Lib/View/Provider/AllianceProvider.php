@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Override;
 use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
@@ -22,34 +23,11 @@ use Stu\Component\Game\GameEnum;
 
 final class AllianceProvider implements ViewComponentProviderInterface
 {
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceActionManagerInterface $allianceActionManager;
-
-    private AllianceRepositoryInterface $allianceRepository;
-
-    private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
-
-    private AllianceDescriptionRendererInterface $allianceDescriptionRenderer;
-
-    private AllianceUiFactoryInterface $allianceUiFactory;
-
-    public function __construct(
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager,
-        AllianceRepositoryInterface $allianceRepository,
-        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker,
-        AllianceDescriptionRendererInterface $allianceDescriptionRenderer,
-        AllianceUiFactoryInterface $allianceUiFactory
-    ) {
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceActionManager = $allianceActionManager;
-        $this->allianceRepository = $allianceRepository;
-        $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
-        $this->allianceDescriptionRenderer = $allianceDescriptionRenderer;
-        $this->allianceUiFactory = $allianceUiFactory;
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker, private AllianceDescriptionRendererInterface $allianceDescriptionRenderer, private AllianceUiFactoryInterface $allianceUiFactory)
+    {
     }
 
+    #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

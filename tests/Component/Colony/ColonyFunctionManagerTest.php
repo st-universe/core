@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
+use Override;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -16,6 +17,7 @@ class ColonyFunctionManagerTest extends StuTestCase
 
     private ColonyFunctionManager $subject;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);

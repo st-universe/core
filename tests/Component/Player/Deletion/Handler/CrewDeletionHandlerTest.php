@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -25,6 +26,7 @@ class CrewDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
+    #[Override]
     public function setUp(): void
     {
         $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);

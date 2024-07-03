@@ -2,30 +2,24 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
+use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
 final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 {
-    private WeaponShieldRepositoryInterface $weaponShieldRepository;
-
-    private GradientColorInterface $gradientColor;
-
     /** @var array<int>|null */
     private ?array $interval = null;
 
-    public function __construct(
-        WeaponShieldRepositoryInterface $weaponShieldRepository,
-        GradientColorInterface $gradientColor
-    ) {
-        $this->weaponShieldRepository = $weaponShieldRepository;
-        $this->gradientColor = $gradientColor;
+    public function __construct(private WeaponShieldRepositoryInterface $weaponShieldRepository, private GradientColorInterface $gradientColor)
+    {
     }
 
     /**
      * return array<int, array{factionId: int, gradientColor: string, modificator: int}>
      */
+    #[Override]
     public function getModificators(ModuleInterface $module): array
     {
         /** @var array<int, int[]> */

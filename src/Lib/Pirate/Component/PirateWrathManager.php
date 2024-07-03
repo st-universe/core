@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Pirate\Component;
 
+use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
@@ -34,11 +35,13 @@ class PirateWrathManager implements PirateWrathManagerInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[Override]
     public function increaseWrathViaTrigger(UserInterface $user, PirateReactionTriggerEnum $reactionTrigger): void
     {
         $this->increaseWrath($user, $reactionTrigger->getWrath());
     }
 
+    #[Override]
     public function increaseWrath(UserInterface $user, int $amount): void
     {
         if (
@@ -113,6 +116,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         );
     }
 
+    #[Override]
     public function decreaseWrath(UserInterface $user, int $amount): void
     {
         if (
@@ -147,6 +151,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         );
     }
 
+    #[Override]
     public function setProtectionTimeoutFromPrestige(UserInterface $user, int $prestige, GameControllerInterface $game): void
     {
         $wrath = $this->getPirateWrathOfUser($user);

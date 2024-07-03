@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Nbs;
 
+use Override;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,23 +18,17 @@ use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
 final class NbsUtility implements NbsUtilityInterface
 {
-    private TachyonScanRepositoryInterface $tachyonScanRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        TachyonScanRepositoryInterface $tachyonScanRepository,
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->tachyonScanRepository = $tachyonScanRepository;
-        $this->shipRepository = $shipRepository;
+    public function __construct(private TachyonScanRepositoryInterface $tachyonScanRepository, private ShipRepositoryInterface $shipRepository)
+    {
     }
 
+    #[Override]
     public function isTachyonActive(ShipInterface $ship): bool
     {
         return $this->tachyonScanRepository->isTachyonScanActiveByShipLocationAndOwner($ship);
     }
 
+    #[Override]
     public function setNbsTemplateVars(
         ShipInterface $ship,
         GameControllerInterface $game,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
+use Override;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
@@ -19,6 +20,7 @@ final class KnBbCodeDefinitionSet implements CodeDefinitionSet
     /**
      * @return CodeDefinition[]
      */
+    #[Override]
     public function getCodeDefinitions(): array
     {
         if ($this->definitions === null) {

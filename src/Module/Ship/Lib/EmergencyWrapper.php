@@ -10,20 +10,8 @@ use Stu\Orm\Entity\UserInterface;
 
 final class EmergencyWrapper
 {
-    private SpacecraftEmergencyInterface $emergency;
-
-    private UserInterface $user;
-
-    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
-
-    public function __construct(
-        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        SpacecraftEmergencyInterface $emergency,
-        UserInterface $user
-    ) {
-        $this->playerRelationDeterminator = $playerRelationDeterminator;
-        $this->emergency = $emergency;
-        $this->user = $user;
+    public function __construct(private PlayerRelationDeterminatorInterface $playerRelationDeterminator, private SpacecraftEmergencyInterface $emergency, private UserInterface $user)
+    {
     }
 
     public function get(): SpacecraftEmergencyInterface

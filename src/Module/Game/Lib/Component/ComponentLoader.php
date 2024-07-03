@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\Component;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
@@ -14,9 +15,6 @@ use Stu\Module\Twig\TwigPageInterface;
 
 final class ComponentLoader implements ComponentLoaderInterface
 {
-    /** @var array<int, RenderFragmentInterface> */
-    private array $componentProviders;
-
     /** @var array<string, ComponentUpdate> */
     private array $componentUpdates = [];
 
@@ -24,13 +22,12 @@ final class ComponentLoader implements ComponentLoaderInterface
     private array $neededComponents = [];
 
     /** @param array<int, RenderFragmentInterface> $componentProviders */
-    public function __construct(
-        array $componentProviders
-    ) {
-        $this->componentProviders = $componentProviders;
+    public function __construct(private array $componentProviders)
+    {
     }
 
 
+    #[Override]
     public function addComponentUpdate(ComponentEnum $component, bool $isInstantUpdate = true): void
     {
         if (!array_key_exists($component->value, $this->componentUpdates)) {
@@ -41,6 +38,7 @@ final class ComponentLoader implements ComponentLoaderInterface
     /** 
      * Adds the execute javascript after render.
      */
+    #[Override]
     public function loadComponentUpdates(GameControllerInterface $game): void
     {
         foreach ($this->componentUpdates as $update) {
@@ -80,6 +78,7 @@ final class ComponentLoader implements ComponentLoaderInterface
         ), GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 
+    #[Override]
     public function registerComponent(ComponentEnum $component): void
     {
         if (!in_array($component, $this->neededComponents)) {
@@ -87,6 +86,7 @@ final class ComponentLoader implements ComponentLoaderInterface
         }
     }
 
+    #[Override]
     public function loadRegisteredComponents(
         TwigPageInterface $twigPage,
         GameControllerInterface $game

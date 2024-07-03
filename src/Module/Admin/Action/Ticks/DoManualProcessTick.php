@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
+use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
@@ -12,24 +13,16 @@ use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 
 final class DoManualProcessTick implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_PROCESS_TICK';
-
-    private EntityManagerInterface $entityManager;
-
-    /** @var list<ProcessTickHandlerInterface> */
-    private array $tickHandler;
+    public const string ACTION_IDENTIFIER = 'B_PROCESS_TICK';
 
     /**
      * @param list<ProcessTickHandlerInterface> $tickHandler
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        array $tickHandler
-    ) {
-        $this->entityManager = $entityManager;
-        $this->tickHandler = $tickHandler;
+    public function __construct(private EntityManagerInterface $entityManager, private array $tickHandler)
+    {
     }
 
+    #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -49,6 +42,7 @@ final class DoManualProcessTick implements ActionControllerInterface
         $game->addInformation("Der Process-Tick wurde durchgeführt!");
     }
 
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

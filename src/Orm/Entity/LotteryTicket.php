@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -41,11 +42,13 @@ class LotteryTicket implements LotteryTicketInterface
         return $this->id;
     }
 
+    #[Override]
     public function getUser(): UserInterface
     {
         return $this->user;
     }
 
+    #[Override]
     public function setUser(UserInterface $user): LotteryTicketInterface
     {
         $this->user = $user;
@@ -54,11 +57,13 @@ class LotteryTicket implements LotteryTicketInterface
         return $this;
     }
 
+    #[Override]
     public function getPeriod(): string
     {
         return $this->period;
     }
 
+    #[Override]
     public function setPeriod(string $period): LotteryTicketInterface
     {
         $this->period = $period;
@@ -66,6 +71,7 @@ class LotteryTicket implements LotteryTicketInterface
         return $this;
     }
 
+    #[Override]
     public function setIsWinner(bool $isWinner): bool
     {
         return $this->is_winner = $isWinner;

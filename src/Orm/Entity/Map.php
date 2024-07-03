@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -143,167 +144,198 @@ class Map implements MapInterface
         $this->buoys = new ArrayCollection();
     }
 
+    #[Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Override]
     public function getCx(): int
     {
         return $this->cx;
     }
 
+    #[Override]
     public function setCx(int $cx): MapInterface
     {
         $this->cx = $cx;
         return $this;
     }
 
+    #[Override]
     public function getX(): int
     {
         return $this->getCx();
     }
 
+    #[Override]
     public function getCy(): int
     {
         return $this->cy;
     }
 
+    #[Override]
     public function setCy(int $cy): MapInterface
     {
         $this->cy = $cy;
         return $this;
     }
 
+    #[Override]
     public function getY(): int
     {
         return $this->getCy();
     }
 
+    #[Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
+    #[Override]
     public function setFieldId(int $fieldId): MapInterface
     {
         $this->field_id = $fieldId;
         return $this;
     }
 
+    #[Override]
     public function getSystemsId(): ?int
     {
         return $this->systems_id;
     }
 
+    #[Override]
     public function setSystemsId(?int $systems_id): MapInterface
     {
         $this->systems_id = $systems_id;
         return $this;
     }
 
+    #[Override]
     public function getSystemTypeId(): ?int
     {
         return $this->system_type_id;
     }
 
+    #[Override]
     public function setSystemTypeId(?int $system_type_id): MapInterface
     {
         $this->system_type_id = $system_type_id;
         return $this;
     }
 
+    #[Override]
     public function getInfluenceAreaId(): ?int
     {
         return $this->influence_area_id;
     }
 
+    #[Override]
     public function setInfluenceAreaId(?int $influenceAreaId): MapInterface
     {
         $this->influence_area_id = $influenceAreaId;
         return $this;
     }
 
+    #[Override]
     public function getBordertypeId(): ?int
     {
         return $this->bordertype_id;
     }
 
+    #[Override]
     public function setBordertypeId(?int $bordertype_id): MapInterface
     {
         $this->bordertype_id = $bordertype_id;
         return $this;
     }
 
+    #[Override]
     public function getRegionId(): ?int
     {
         return $this->region_id;
     }
 
+    #[Override]
     public function setRegionId(?int $region_id): MapInterface
     {
         $this->region_id = $region_id;
         return $this;
     }
 
+    #[Override]
     public function getAdminRegionId(): ?int
     {
         return $this->admin_region_id;
     }
 
+    #[Override]
     public function setAdminRegionId(?int $admin_region_id): MapInterface
     {
         $this->admin_region_id = $admin_region_id;
         return $this;
     }
 
+    #[Override]
     public function getLayer(): LayerInterface
     {
         return $this->layer;
     }
 
+    #[Override]
     public function getSystem(): ?StarSystemInterface
     {
         return $this->starSystem;
     }
 
+    #[Override]
     public function setSystem(StarSystemInterface $starSystem): MapInterface
     {
         $this->starSystem = $starSystem;
         return $this;
     }
 
+    #[Override]
     public function getInfluenceArea(): ?StarSystemInterface
     {
         return $this->influenceArea;
     }
 
+    #[Override]
     public function setInfluenceArea(?StarSystemInterface $influenceArea): MapInterface
     {
         $this->influenceArea = $influenceArea;
         return $this;
     }
 
+    #[Override]
     public function getFieldType(): MapFieldTypeInterface
     {
         return $this->mapFieldType;
     }
 
+    #[Override]
     public function getStarSystemType(): ?StarSystemTypeInterface
     {
         return $this->starSystemType;
     }
 
+    #[Override]
     public function getMapBorderType(): ?MapBorderTypeInterface
     {
         return $this->mapBorderType;
     }
 
+    #[Override]
     public function getMapRegion(): ?MapRegionInterface
     {
         return $this->mapRegion;
     }
 
+    #[Override]
     public function getAdministratedRegion(): ?MapRegionInterface
     {
         return $this->administratedRegion;
@@ -318,22 +350,26 @@ class Map implements MapInterface
         return 'border: 1px solid ' . $borderType->getColor();
     }
 
+    #[Override]
     public function getShips(): Collection
     {
         return $this->ships
             ->filter(fn (ShipInterface $ship): bool => $ship->getStarsystemMap() === null);
     }
 
+    #[Override]
     public function getAnomalies(): Collection
     {
         return $this->anomalies;
     }
 
+    #[Override]
     public function getSignatures(): Collection
     {
         return $this->signatures;
     }
 
+    #[Override]
     public function getRandomWormholeEntry(): ?WormholeEntryInterface
     {
         if ($this->wormholeEntries->isEmpty()) {
@@ -353,6 +389,7 @@ class Map implements MapInterface
         return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
     }
 
+    #[Override]
     public function getSectorString(): string
     {
         return SectorString::getForMap($this);
@@ -361,6 +398,7 @@ class Map implements MapInterface
     /**
      * @return Collection<int, BuoyInterface>
      */
+    #[Override]
     public function getBuoys(): Collection
     {
         return $this->buoys;
