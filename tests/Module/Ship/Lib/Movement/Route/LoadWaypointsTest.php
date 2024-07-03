@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
-use Override;
 use InvalidArgumentException;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;

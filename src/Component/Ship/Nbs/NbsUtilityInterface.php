@@ -17,6 +17,6 @@ interface NbsUtilityInterface
         GameControllerInterface $game,
         ?SessionInterface $session,
         bool $tachyonActive,
-        MapInterface|StarSystemMapInterface $field = null
+        MapInterface|StarSystemMapInterface|null $field = null
     ): void;
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Image;
 
-use Override;
 use Amenadiel\JpGraph\Graph\Graph;
+use Override;
 use RuntimeException;
 
 final class ImageCreation implements ImageCreationInterface

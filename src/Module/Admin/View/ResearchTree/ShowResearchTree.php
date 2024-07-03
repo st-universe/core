@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ResearchTree;
 
-use Override;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
+use Override;
 use request;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;

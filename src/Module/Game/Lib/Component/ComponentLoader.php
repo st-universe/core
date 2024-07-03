@@ -35,7 +35,7 @@ final class ComponentLoader implements ComponentLoaderInterface
         }
     }
 
-    /** 
+    /**
      * Adds the execute javascript after render.
      */
     #[Override]

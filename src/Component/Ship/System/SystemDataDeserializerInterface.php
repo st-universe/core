@@ -9,7 +9,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface SystemDataDeserializerInterface
 {
-
     /**
      * @template T
      * @param class-string<T> $className

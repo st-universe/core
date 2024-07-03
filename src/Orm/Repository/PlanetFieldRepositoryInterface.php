@@ -79,7 +79,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
 
     /**
      * @param array<int> $excludedFields
-     * 
+     *
      * @return array<PlanetFieldInterface>
      */
     public function getWorkerConsumingByColonyAndState(

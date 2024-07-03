@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\LayerInterface;

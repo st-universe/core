@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
-use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;

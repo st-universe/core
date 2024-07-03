@@ -11,7 +11,6 @@ use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 
 final class ShipAttackPreparation implements ShipAttackPreparationInterface
 {
-
     public function __construct(
         private FightLibInterface $fightLib,
         private MessageFactoryInterface $messageFactory

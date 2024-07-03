@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Request;
 
-use Override;
 use MPScholten\RequestParser\Config;
 use MPScholten\RequestParser\RequestParser;
 use MPScholten\RequestParser\RequestParserFactory;
+use Override;
 
 final class CustomRequestParserFactory implements RequestParserFactory
 {
@@ -26,7 +26,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     public function createQueryParser(): RequestParser
     {
         return new RequestParser(
-            fn($parameterName) => $this->request[$parameterName] ?? null,
+            fn ($parameterName) => $this->request[$parameterName] ?? null,
             $this->config
         );
     }
@@ -35,7 +35,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     public function createBodyParser(): RequestParser
     {
         return new RequestParser(
-            fn($parameterName) => $this->request[$parameterName] ?? null,
+            fn ($parameterName) => $this->request[$parameterName] ?? null,
             $this->config
         );
     }

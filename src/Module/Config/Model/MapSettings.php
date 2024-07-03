@@ -3,6 +3,7 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+
 final class MapSettings extends AbstractSettings implements MapSettingsInterface
 {
     private const string CONFIG_PATH = 'map';

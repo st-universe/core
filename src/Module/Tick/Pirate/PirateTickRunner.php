@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Pirate;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;

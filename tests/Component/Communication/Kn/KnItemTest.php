@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use Override;
 use JBBCode\Parser;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ShipSystemRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,7 +12,9 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Orm\Repository\ShipSystemRepository;
 
 #[Table(name: 'stu_ship_system')]
 #[Index(name: 'ship_system_ship_idx', columns: ['ship_id'])]

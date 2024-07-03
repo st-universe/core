@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;

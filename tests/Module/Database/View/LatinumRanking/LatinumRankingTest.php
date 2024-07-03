@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\LatinumRanking;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -76,7 +76,7 @@ class LatinumRankingTest extends StuTestCase
             ->with('html/database.xhtml/top_lat_user')
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('NAGUS_LIST', Mockery::on(fn(Traversable $list): bool => iterator_to_array($list) === [[
+            ->with('NAGUS_LIST', Mockery::on(fn (Traversable $list): bool => iterator_to_array($list) === [[
                 'user' => $user,
                 'amount' => $amount
             ]]))

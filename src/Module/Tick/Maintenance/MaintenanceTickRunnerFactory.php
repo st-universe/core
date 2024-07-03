@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Maintenance;
 
-use Override;
 use Doctrine\DBAL\Connection;
+use Override;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;

@@ -2,8 +2,8 @@
 
 namespace Stu\Lib;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 
 final class ParserWithImage implements ParserWithImageInterface
 {

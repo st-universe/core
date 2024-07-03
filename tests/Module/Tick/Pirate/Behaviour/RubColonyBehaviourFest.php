@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;

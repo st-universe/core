@@ -11,8 +11,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -87,7 +87,8 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
                 $this->leaveFleet->leaveFleet($ship);
 
                 if (!array_key_exists($userId, $pms)) {
-                    $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());;
+                    $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());
+                    ;
                 }
 
                 $pms[$userId] .= sprintf('Die %s hat die Flotte %s verlassen' . "\n", $ship->getName(), $fleetName);

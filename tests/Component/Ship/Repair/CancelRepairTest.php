@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;

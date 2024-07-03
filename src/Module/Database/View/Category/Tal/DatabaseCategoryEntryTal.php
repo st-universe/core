@@ -29,7 +29,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
      * @see \Stu\Module\Database\View\DatabaseEntry\DatabaseEntry
      */
     #[Override]
-    public function getObject() : mixed
+    public function getObject(): mixed
     {
         return match ($this->databaseEntry->getCategory()->getId()) {
             DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM => $this->starSystemRepository->find($this->databaseEntry->getObjectId()),

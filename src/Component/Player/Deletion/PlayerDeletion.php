@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;

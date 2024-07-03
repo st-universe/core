@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Lib\Damage;
 
 use Override;
 use Stu\Lib\DamageWrapper;
-use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;

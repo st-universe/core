@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC;
 
-use Stu\Module\NPC\Action\CommodityCheat;
-use Stu\Module\NPC\View\Overview\Overview;
-use Stu\Module\NPC\View\NPCLog\NPCLog;
-use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Control\GameController;
-
+use Stu\Module\NPC\Action\CommodityCheat;
+use Stu\Module\NPC\View\NPCLog\NPCLog;
+use Stu\Module\NPC\View\Overview\Overview;
+use Stu\Module\NPC\View\ShowTools\ShowTools;
 
 use function DI\autowire;
-use function DI\get;
 
 return [
     'NPC_ACTIONS' => [CommodityCheat::ACTION_IDENTIFIER => autowire(CommodityCheat::class)],

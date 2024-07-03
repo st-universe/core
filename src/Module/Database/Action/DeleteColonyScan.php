@@ -8,8 +8,8 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
+use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 
 final class DeleteColonyScan implements ActionControllerInterface
 {

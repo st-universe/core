@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu;
 
 use Override;
+
 /**
  * @template TRequestClass of object
  */

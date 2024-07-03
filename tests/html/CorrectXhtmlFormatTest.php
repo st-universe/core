@@ -9,10 +9,9 @@ use Stu\StuTestCase;
 
 class CorrectXhtmlFormatTest extends StuTestCase
 {
-
     /**
      * Returns an array of twig file paths.
-     * 
+     *
      *  @return array<string> */
     public static function xhtmlFilePathDataProvider(): array
     {

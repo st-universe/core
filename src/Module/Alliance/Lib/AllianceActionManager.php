@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 use RuntimeException;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Ship\ShipEnum;

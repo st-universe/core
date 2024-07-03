@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Orm\Entity\AwardInterface;

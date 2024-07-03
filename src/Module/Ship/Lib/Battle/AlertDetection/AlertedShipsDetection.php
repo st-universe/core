@@ -2,10 +2,10 @@
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
-use Override;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 class AlertedShipsDetection implements AlertedShipsDetectionInterface

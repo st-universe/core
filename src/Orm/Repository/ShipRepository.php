@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -503,7 +503,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface $field = null
+        MapInterface|StarSystemMapInterface|null $field = null
     ): array {
 
         $rsm = new ResultSetMapping();
@@ -562,8 +562,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.id != :ignoreId
                 %s
                 ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
-                $map === null ? 'IS NULL' :  '= :mapId',
-                $systemMap === null ? 'IS NULL' :  '= :systemMapId',
+                $map === null ? 'IS NULL' : '= :mapId',
+                $systemMap === null ? 'IS NULL' : '= :systemMapId',
                 $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
             $rsm
@@ -591,7 +591,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ShipInterface $ship,
         array $types,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface $field = null
+        MapInterface|StarSystemMapInterface|null $field = null
     ): array {
 
         $rsm = new ResultSetMapping();
@@ -646,8 +646,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.type IN (:types)
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
-                $map === null ? 'IS NULL' :  '= :mapId',
-                $systemMap === null ? 'IS NULL' :  '= :systemMapId',
+                $map === null ? 'IS NULL' : '= :mapId',
+                $systemMap === null ? 'IS NULL' : '= :systemMapId',
                 $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
             $rsm

@@ -17,7 +17,7 @@ class WarpDriveSystemData extends AbstractSystemData
     public bool $autoCarryOver = false;
 
     #[Override]
-    function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }

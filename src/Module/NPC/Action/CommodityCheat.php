@@ -6,12 +6,12 @@ namespace Stu\Module\NPC\Action;
 
 use Override;
 use request;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Exception\ShipDoesNotExistException;
-use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 

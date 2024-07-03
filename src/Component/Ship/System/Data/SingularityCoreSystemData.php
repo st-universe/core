@@ -11,7 +11,7 @@ use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 class SingularityCoreSystemData extends AbstractReactorSystemData
 {
     #[Override]
-    function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_SINGULARITY_REACTOR;
     }

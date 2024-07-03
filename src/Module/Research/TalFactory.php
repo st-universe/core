@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;

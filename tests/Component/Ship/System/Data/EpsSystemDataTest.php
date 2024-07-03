@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Data;
 
-use Override;
 use Mockery\MockInterface;
-use Stu\Component\Ship\System\Data\EpsSystemData;
+use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;

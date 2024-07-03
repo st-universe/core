@@ -6,7 +6,6 @@ namespace Stu\Component\StarSystem;
 
 use Override;
 use RuntimeException;
-use Stu\Component\StarSystem\StarSystemCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -46,7 +45,7 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
                 break;
             }
 
-            $this->starSystemCreation->recreateStarSystem($map,  $randomNames[$count]->getName());
+            $this->starSystemCreation->recreateStarSystem($map, $randomNames[$count]->getName());
             $count++;
         }
 

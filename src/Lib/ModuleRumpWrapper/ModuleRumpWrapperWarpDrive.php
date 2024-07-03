@@ -14,7 +14,7 @@ use Stu\Orm\Entity\ModuleInterface;
 final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
     #[Override]
-    public function getValue(ModuleInterface $module = null): int
+    public function getValue(?ModuleInterface $module = null): int
     {
         $module ??= current($this->getModule());
         if ($module === false) {

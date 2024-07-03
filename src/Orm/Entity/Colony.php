@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ColonyRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -19,11 +17,13 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Repository\ColonyRepository;
 
 #[Table(name: 'stu_colonies')]
 #[Index(name: 'colony_user_idx', columns: ['user_id'])]

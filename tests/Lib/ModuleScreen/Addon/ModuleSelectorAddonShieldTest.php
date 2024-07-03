@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\WeaponShieldInterface;

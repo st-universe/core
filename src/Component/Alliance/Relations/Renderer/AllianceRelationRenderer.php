@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
-use Override;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use Stu\Orm\Entity\AllianceInterface;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
-use Override;
 use InvalidArgumentException;
+use Override;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\MapInterface;

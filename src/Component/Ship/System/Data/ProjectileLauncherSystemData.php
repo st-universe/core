@@ -12,7 +12,7 @@ class ProjectileLauncherSystemData extends AbstractSystemData
     public int $shieldPenetration = 0;
 
     #[Override]
-    function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_TORPEDO;
     }

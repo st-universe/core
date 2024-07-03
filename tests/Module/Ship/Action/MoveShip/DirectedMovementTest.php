@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\MoveShip;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;

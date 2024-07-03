@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\StuTestCase;

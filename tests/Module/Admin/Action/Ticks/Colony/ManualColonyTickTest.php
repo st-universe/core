@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Config\Model\ColonySettings;
 use Stu\Module\Config\StuConfigInterface;

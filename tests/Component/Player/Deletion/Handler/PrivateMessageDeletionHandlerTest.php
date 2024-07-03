@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Component\Player\Deletion\Handler;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;

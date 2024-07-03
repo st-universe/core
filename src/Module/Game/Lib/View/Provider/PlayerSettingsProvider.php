@@ -9,7 +9,6 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 
 final class PlayerSettingsProvider implements ViewComponentProviderInterface
 {

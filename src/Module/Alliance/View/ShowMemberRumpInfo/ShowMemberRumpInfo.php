@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\ShowMemberRumpInfo;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 use request;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;

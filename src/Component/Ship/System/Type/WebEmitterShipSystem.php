@@ -9,8 +9,8 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {

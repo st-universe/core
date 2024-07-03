@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Override;
 use JBBCode\InputValidator;
 use JBBCode\validators\UrlValidator;
+use Override;
 
 final class StuBbCodeImageValidator implements InputValidator
 {

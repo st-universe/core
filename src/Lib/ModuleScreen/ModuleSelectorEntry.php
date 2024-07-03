@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use Override;
-use request;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -18,7 +17,6 @@ use Stu\Orm\Entity\UserInterface;
 
 final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
 {
-
     public function __construct(
         private ModuleSelectorInterface $moduleSelector,
         private ModuleInterface $module,

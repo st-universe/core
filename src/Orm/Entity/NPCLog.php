@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\NPCLogRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
-
+use Override;
+use Stu\Orm\Repository\NPCLogRepository;
 
 #[Table(name: 'stu_npc_log')]
 #[Entity(repositoryClass: NPCLogRepository::class)]

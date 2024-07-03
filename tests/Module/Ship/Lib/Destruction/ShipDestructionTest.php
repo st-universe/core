@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Destruction;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Destruction\Handler\ShipDestructionHandlerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;

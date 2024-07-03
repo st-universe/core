@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Provider;
 
-use Override;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -18,7 +17,6 @@ use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\StuTestCase;
 
 class ManagerProviderColonyTest extends StuTestCase

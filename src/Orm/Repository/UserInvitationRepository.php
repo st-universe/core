@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use DateTimeInterface;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserInvitationInterface;

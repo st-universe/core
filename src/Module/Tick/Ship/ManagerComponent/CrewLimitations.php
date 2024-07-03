@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship\ManagerComponent;
 
-use Override;
 use InvalidArgumentException;
+use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -14,7 +14,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Tick\Ship\ManagerComponent\ManagerComponentInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

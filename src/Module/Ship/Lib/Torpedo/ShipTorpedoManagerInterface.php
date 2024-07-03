@@ -10,6 +10,6 @@ interface ShipTorpedoManagerInterface
     public function changeTorpedo(
         ShipWrapperInterface $wrapper,
         int $changeAmount,
-        TorpedoTypeInterface $type = null
+        ?TorpedoTypeInterface $type = null
     ): void;
 }

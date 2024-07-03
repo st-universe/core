@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Logout;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;

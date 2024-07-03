@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ShipCrewRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -15,7 +13,9 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Override;
 use Stu\Component\Crew\CrewEnum;
+use Stu\Orm\Repository\ShipCrewRepository;
 
 //TODO RENAME to CrewAssignment, indices, repo and stuff
 #[Table(name: 'stu_crew_assign')]

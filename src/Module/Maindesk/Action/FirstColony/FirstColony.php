@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\FirstColony;
 
-use Override;
 use InvalidArgumentException;
+use Override;
 use RuntimeException;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
 {

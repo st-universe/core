@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
-use Override;
 use Exception;
 use Noodlehaus\ConfigInterface;
+use Override;
 use RuntimeException;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;

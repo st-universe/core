@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -101,7 +101,7 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
         $user->shouldReceive('setPassword')
-            ->with(Mockery::on(fn(string $passwordHash): bool => password_verify($password, $passwordHash)))
+            ->with(Mockery::on(fn (string $passwordHash): bool => password_verify($password, $passwordHash)))
             ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()

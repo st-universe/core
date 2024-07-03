@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
-use Override;
 use JBBCode\Parser;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
+use Override;
 use Stu\Module\Config\StuConfigInterface;
 
 final class PirateLogger implements PirateLoggerInterface

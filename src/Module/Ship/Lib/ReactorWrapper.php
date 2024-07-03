@@ -13,7 +13,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
     private ?int $epsProduction = null;
     private ?int $warpdriveProduction = null;
 
-    //effective values    
+    //effective values
     private ?int $effectiveEpsProduction = null;
     private ?int $effectiveWarpDriveProduction = null;
 
@@ -197,6 +197,6 @@ final class ReactorWrapper implements ReactorWrapperInterface
 
         $percentage = $load / $this->getCapacity();
 
-        return $percentage > 0.3 ? "" :  "color: yellow;";
+        return $percentage > 0.3 ? "" : "color: yellow;";
     }
 }

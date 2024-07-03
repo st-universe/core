@@ -139,7 +139,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface $field = null
+        MapInterface|StarSystemMapInterface|null $field = null
     ): array;
 
     /**
@@ -151,7 +151,7 @@ interface ShipRepositoryInterface extends ObjectRepository
         ShipInterface $ship,
         array $types,
         bool $showCloaked = false,
-        MapInterface|StarSystemMapInterface $field = null
+        MapInterface|StarSystemMapInterface|null $field = null
     ): array;
 
     public function isCloakedShipAtShipLocation(

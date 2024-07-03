@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;

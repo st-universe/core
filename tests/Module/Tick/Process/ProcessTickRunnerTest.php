@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\StuTestCase;
 

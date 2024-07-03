@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
+use Override;
 use request;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Control\ActionControllerInterface;

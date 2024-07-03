@@ -77,7 +77,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
     {
         return array_reduce(
             $this->getStorage(),
-            fn(int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
+            fn (int $value, StorageInterface $storage): int => $value + $storage->getAmount(),
             0
         );
     }

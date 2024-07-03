@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 use Stu\StuTestCase;

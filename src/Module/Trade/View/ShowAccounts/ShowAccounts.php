@@ -26,7 +26,7 @@ final class ShowAccounts implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $list = array_map(
-            fn(TradePostInterface $tradePost): TradeAccountTalInterface => $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId),
+            fn (TradePostInterface $tradePost): TradeAccountTalInterface => $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId),
             $this->tradePostRepository->getByUserLicense($userId)
         );
 

@@ -3,16 +3,16 @@
 namespace Stu\Module\Tick\Pirate;
 
 use Override;
-use Stu\Module\Control\StuRandom;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
+use Stu\Module\Control\StuRandom;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class PirateTick implements PirateTickInterface
 {

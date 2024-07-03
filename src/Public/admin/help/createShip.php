@@ -7,11 +7,11 @@ use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Repository\LayerRepositoryInterface;
 
 @session_start();
 

@@ -11,6 +11,6 @@ interface DistributedMessageSenderInterface
         MessageCollectionInterface $messageCollection,
         int $senderId = UserEnum::USER_NOONE,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-        string $header = null
+        ?string $header = null
     ): void;
 }

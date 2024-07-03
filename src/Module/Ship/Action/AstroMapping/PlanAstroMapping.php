@@ -16,8 +16,8 @@ use Stu\Orm\Entity\AstronomicalEntryInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class PlanAstroMapping implements ActionControllerInterface
 {

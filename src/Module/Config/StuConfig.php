@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Config;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Module\Config\Model\CacheSettings;
 use Stu\Module\Config\Model\CacheSettingsInterface;
 use Stu\Module\Config\Model\DbSettings;

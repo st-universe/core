@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
-use Override;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Monolog\Level;
+use Override;
 use request;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameRequestInterface;

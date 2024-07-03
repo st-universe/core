@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
-use Override;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Override;
 use Stu\Module\Config\StuConfigInterface;
 
 final class LoggerUtil implements LoggerUtilInterface

@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerProfile;
 
 use Stu\Module\Control\GameController;
-use Stu\Module\Game\View\Overview\Overview;
-use Stu\Module\PlayerProfile\Action\CreateCharacter\CreateCharacter;
-use Stu\Module\PlayerProfile\Action\CreateCharacter\CreateCharacterRequest;
-use Stu\Module\PlayerProfile\Action\CreateCharacter\CreateCharacterRequestInterface;
-use Stu\Module\PlayerProfile\Action\ChangeCharacter\ChangeCharacter;
-use Stu\Module\PlayerProfile\Action\ChangeCharacter\ChangeCharacterRequest;
-use Stu\Module\PlayerProfile\Action\ChangeCharacter\ChangeCharacterRequestInterface;
-use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacter;
-use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequest;
-use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequestInterface;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurface;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequest;
 use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequestInterface;
+use Stu\Module\Game\View\Overview\Overview;
+use Stu\Module\PlayerProfile\Action\ChangeCharacter\ChangeCharacter;
+use Stu\Module\PlayerProfile\Action\ChangeCharacter\ChangeCharacterRequest;
+use Stu\Module\PlayerProfile\Action\ChangeCharacter\ChangeCharacterRequestInterface;
+use Stu\Module\PlayerProfile\Action\CreateCharacter\CreateCharacter;
+use Stu\Module\PlayerProfile\Action\CreateCharacter\CreateCharacterRequest;
+use Stu\Module\PlayerProfile\Action\CreateCharacter\CreateCharacterRequestInterface;
+use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacter;
+use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequest;
+use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequestInterface;
 
 
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistration;

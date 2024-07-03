@@ -1,14 +1,26 @@
 <?php
 
+/**
+ * Execute on command line via 'vendor/bin/php-cs-fixer fix'
+ */
 $finder = PhpCsFixer\Finder::create()
-    ->in(['src', 'tests'])
+    ->in([
+        'src/admin', 
+        'src/Component', 
+        'src/Config', 
+        'src/Exception', 
+        'src/Lib', 
+        'src/Module', 
+        'src/Orm', 
+        'tests'
+        ])
     ->exclude(['Public/assets']);
 $config = new PhpCsFixer\Config();
 $config->setRules(
     [
         '@DoctrineAnnotation' => true,
         '@PSR12' => true,
-        '@PHP82Migration' => true,
+        '@PHP84Migration' => true,
         'array_syntax' => ['syntax' => 'short'],
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline',

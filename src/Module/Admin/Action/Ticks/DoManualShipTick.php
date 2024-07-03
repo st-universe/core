@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use request;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Module\Admin\View\Ticks\ShowTicks;

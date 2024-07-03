@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrestigeLogInterface;
 use Stu\Orm\Entity\UserInterface;

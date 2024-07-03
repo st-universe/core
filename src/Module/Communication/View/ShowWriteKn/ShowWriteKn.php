@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowWriteKn;
 
-use Override;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionSet;
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;

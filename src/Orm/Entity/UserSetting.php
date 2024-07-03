@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserSettingRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
+use Stu\Orm\Repository\UserSettingRepository;
 
 #[Table(name: 'stu_user_setting')]
 #[Entity(repositoryClass: UserSettingRepository::class)]

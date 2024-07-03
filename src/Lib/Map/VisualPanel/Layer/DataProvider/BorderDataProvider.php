@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider;
 
-use Override;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 

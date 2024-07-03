@@ -25,7 +25,7 @@ final class TradePostActivity implements ViewControllerInterface
         $game->setNavigation([
             [
                 'url' => 'database.php',
-                'title' =>'Datenbank'
+                'title' => 'Datenbank'
             ],
             [
                 'url' => sprintf('database.php?%s=1', static::VIEW_IDENTIFIER),

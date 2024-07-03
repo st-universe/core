@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Override;
+
 class SourceAndTargetWrappers implements SourceAndTargetWrappersInterface
 {
     private ?ShipWrapperInterface $target = null;

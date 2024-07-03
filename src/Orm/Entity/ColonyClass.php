@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ColonyClassRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -16,8 +14,10 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyTypeEnum;
+use Stu\Orm\Repository\ColonyClassRepository;
 
 #[Table(name: 'stu_colonies_classes')]
 #[Entity(repositoryClass: ColonyClassRepository::class)]

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
-use Override;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Entity\AllianceInterface;
 

@@ -17,7 +17,7 @@ class ShieldSystemData extends AbstractSystemData
     }
 
     #[Override]
-    function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_SHIELDS;
     }

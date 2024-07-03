@@ -8,7 +8,6 @@ use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertDetectionInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AlertedBattlePartyInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Party\IncomingBattleParty;

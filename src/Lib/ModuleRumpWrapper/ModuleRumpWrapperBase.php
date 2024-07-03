@@ -20,7 +20,7 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
     {
     }
 
-    public abstract function getModuleType(): ShipModuleTypeEnum;
+    abstract public function getModuleType(): ShipModuleTypeEnum;
 
     #[Override]
     public function getModule(): iterable

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ModuleRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -19,8 +17,10 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Orm\Repository\ModuleRepository;
 
 #[Table(name: 'stu_modules')]
 #[Index(name: 'ship_rump_role_type_idx', columns: ['rumps_role_id', 'type'])]

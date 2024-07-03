@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Building\Action\BuildingActionHandlerInterface;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingFunctionInterface;

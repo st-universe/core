@@ -6,7 +6,6 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\KnCharacters;
 use Stu\Orm\Entity\KnCharactersInterface;
 
-
 /**
  * @extends ObjectRepository<KnCharacters>
  */

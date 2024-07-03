@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\System\Data\AbstractReactorSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;

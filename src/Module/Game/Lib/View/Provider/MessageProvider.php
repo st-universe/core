@@ -7,6 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\Component\ComponentEnum;
@@ -21,7 +22,6 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
-use Stu\Component\Game\GameEnum;
 
 final class MessageProvider implements ViewComponentProviderInterface
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\DatabaseEntry;

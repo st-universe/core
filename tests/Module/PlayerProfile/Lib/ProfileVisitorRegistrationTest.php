@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Lib;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserProfileVisitorInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;

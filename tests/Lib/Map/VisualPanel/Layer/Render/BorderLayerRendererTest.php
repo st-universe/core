@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
@@ -49,8 +49,8 @@ class BorderLayerRendererTest extends StuTestCase
      */
     public function testRenderExpectDefaultBorderColorWhenShipIsNotNull(
         ?bool $isOnShipLevel,
-        int $shipX = null,
-        int $shipY = null,
+        ?int $shipX = null,
+        ?int $shipY = null,
         string $expected = 'border:1px solid #2d2d2d;'
     ): void {
         $borderData = $this->mock(BorderData::class);
@@ -99,8 +99,8 @@ class BorderLayerRendererTest extends StuTestCase
      */
     public function testRenderExpectBorderOfUserAllyOrFaction(
         ?string $factionColor,
-        string $allyColor = null,
-        string $userColor = null,
+        ?string $allyColor = null,
+        ?string $userColor = null,
         string $expected = 'border:1px solid #2d2d2d;'
     ): void {
         $borderData = $this->mock(BorderData::class);

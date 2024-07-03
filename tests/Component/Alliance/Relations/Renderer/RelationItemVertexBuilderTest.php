@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
-use Override;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\StuTestCase;
 

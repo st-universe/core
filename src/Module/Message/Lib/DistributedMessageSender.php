@@ -19,7 +19,7 @@ final class DistributedMessageSender implements DistributedMessageSenderInterfac
         MessageCollectionInterface $messageCollection,
         int $senderId = UserEnum::USER_NOONE,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-        string $header = null
+        ?string $header = null
     ): void {
         foreach ($messageCollection->getRecipientIds() as $recipientId) {
             $informations = $messageCollection->getInformationDump($recipientId);

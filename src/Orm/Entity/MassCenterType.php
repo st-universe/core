@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -13,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 
 #[Table(name: 'stu_mass_center_type')]
 #[Index(name: 'mass_center_field_type_idx', columns: ['first_field_type_id'])]

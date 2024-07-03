@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Iterator;
+use Override;
 
 /**
  * @implements Iterator<ShipNfsItem>
- * 
+ *
  */
 final class ShipNfsIterator implements Iterator
 {

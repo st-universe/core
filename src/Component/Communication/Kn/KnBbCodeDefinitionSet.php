@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use Override;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
+use Override;
 
 /**
  * Defines all bbcode definitions available in the kn

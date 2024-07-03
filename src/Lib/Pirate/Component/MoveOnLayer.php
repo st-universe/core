@@ -5,9 +5,8 @@ namespace Stu\Lib\Pirate\Component;
 use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 

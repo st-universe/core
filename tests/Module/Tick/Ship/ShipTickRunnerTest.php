@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\StuTestCase;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Diplomatic;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\AllianceRelationInterface;

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Config\Model;
 
-use Override;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
-use Stu\Module\Config\StuConfigException;
 use Stu\StuTestCase;
 
 class MapSettingsTest extends StuTestCase

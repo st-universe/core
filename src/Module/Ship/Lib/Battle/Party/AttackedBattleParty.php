@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class AttackedBattleParty extends AbstractBattleParty

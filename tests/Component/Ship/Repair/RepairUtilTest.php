@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;

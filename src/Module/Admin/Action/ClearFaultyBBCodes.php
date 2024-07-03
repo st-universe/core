@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;

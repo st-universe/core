@@ -6,7 +6,6 @@ namespace Stu\Lib\Map\VisualPanel;
 
 use Mockery\MockInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
-use Stu\Lib\Map\VisualPanel\SignaturePanelEntry;
 use Stu\StuTestCase;
 
 class SignaturePanelEntryTest extends StuTestCase

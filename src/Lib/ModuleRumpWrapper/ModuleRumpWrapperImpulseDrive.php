@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ModuleInterface;
 final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
     #[Override]
-    public function getValue(ModuleInterface $module = null): int
+    public function getValue(?ModuleInterface $module = null): int
     {
         $moduleValueCalculator = new ModuleValueCalculator();
 

@@ -10,7 +10,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 class AlertedShipInformation implements AlertedShipInformationInterface
 {
-
     #[Override]
     public function addAlertedShipsInfo(
         ShipInterface $incomingShip,

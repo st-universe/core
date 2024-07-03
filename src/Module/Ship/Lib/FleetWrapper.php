@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 

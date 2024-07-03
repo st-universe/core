@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\BuildingUpgradeRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -17,6 +15,8 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\BuildingUpgradeRepository;
 
 #[Table(name: 'stu_buildings_upgrades')]
 #[Index(name: 'upgrade_from_research_idx', columns: ['upgrade_from', 'research_id'])]

@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Control\StuTime;

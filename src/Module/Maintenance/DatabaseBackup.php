@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 
 final class DatabaseBackup implements MaintenanceHandlerInterface
 {

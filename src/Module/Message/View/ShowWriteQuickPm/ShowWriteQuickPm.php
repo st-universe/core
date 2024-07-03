@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
-use Override;
 use InvalidArgumentException;
 use JBBCode\Parser;
+use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

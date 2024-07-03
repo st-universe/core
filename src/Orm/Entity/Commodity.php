@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\CommodityRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\CommodityRepository;
 
 #[Table(name: 'stu_commodity')]
 #[Entity(repositoryClass: CommodityRepository::class)]
@@ -109,7 +109,7 @@ class Commodity implements CommodityInterface
     }
 
     #[Override]
-    public function isBeamable(UserInterface $user = null, UserInterface $targetUser = null): bool
+    public function isBeamable(?UserInterface $user = null, ?UserInterface $targetUser = null): bool
     {
         $isBound = $user !== null && $targetUser !== null && $this->isBoundToAccount() && $user !== $targetUser;
 

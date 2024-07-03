@@ -9,7 +9,7 @@ use RuntimeException;
  */
 class StuRandom
 {
-    public function rand(int $min, int $max, bool $useStandardNormalDistribution = false, int $mean = null): int
+    public function rand(int $min, int $max, bool $useStandardNormalDistribution = false, ?int $mean = null): int
     {
         if ($useStandardNormalDistribution) {
             return $this->generateRandomValueStandardNormalDistribution($min, $max, $mean);

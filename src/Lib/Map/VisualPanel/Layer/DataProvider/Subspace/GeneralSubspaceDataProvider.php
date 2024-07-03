@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
-use Override;
 use Crunz\Exception\NotImplementedException;
+use Override;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 
 final class GeneralSubspaceDataProvider extends AbstractSubspaceDataProvider

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;

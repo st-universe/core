@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Override;
 use Mockery;
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;

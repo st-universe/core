@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tal;
 
 use Override;
+
 final class TalStatusBar implements TalStatusBarInterface
 {
     private string $color = '';

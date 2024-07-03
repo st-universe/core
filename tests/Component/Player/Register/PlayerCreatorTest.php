@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
@@ -190,7 +190,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('setPassword')
-            ->with(Mockery::on(fn(string $passwordParam): bool => password_verify($password, $passwordParam)))
+            ->with(Mockery::on(fn (string $passwordParam): bool => password_verify($password, $passwordParam)))
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('getId')

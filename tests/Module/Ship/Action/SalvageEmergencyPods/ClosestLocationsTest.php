@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;

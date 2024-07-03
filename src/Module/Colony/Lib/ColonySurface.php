@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;

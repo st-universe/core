@@ -2,17 +2,17 @@
 
 namespace Stu\Lib\Pirate;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\PirateSetupInterface;
@@ -83,7 +83,7 @@ class PirateCreation implements PirateCreationInterface
     }
 
     #[Override]
-    public function createPirateFleet(ShipInterface $supportCaller = null): FleetInterface
+    public function createPirateFleet(?ShipInterface $supportCaller = null): FleetInterface
     {
         $pirateUser = $this->userRepository->find(UserEnum::USER_NPC_KAZON);
         if ($pirateUser === null) {

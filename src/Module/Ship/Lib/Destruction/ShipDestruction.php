@@ -12,7 +12,6 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipDestruction implements ShipDestructionInterface
 {
-
     /**
      * @param array<ShipDestructionHandlerInterface> $destructionHandlers
      */

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
-use Override;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;

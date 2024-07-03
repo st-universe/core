@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Override;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Orm\Entity\UserInterface;
 
 final class RegistrationEmailSender implements RegistrationEmailSenderInterface

@@ -3,6 +3,7 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+
 final class DebugSettings extends AbstractSettings implements DebugSettingsInterface
 {
     private const string CONFIG_PATH = 'debug';

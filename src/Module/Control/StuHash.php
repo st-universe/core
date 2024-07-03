@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Control;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 
 final class StuHash implements StuHashInterface
 {

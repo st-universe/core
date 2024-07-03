@@ -7,7 +7,6 @@ namespace Stu\Lib\Map\VisualPanel;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
-use Stu\Lib\Map\VisualPanel\VisualPanelRow;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 abstract class AbstractVisualPanel implements PanelAttributesInterface
@@ -29,13 +28,13 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
     {
     }
 
-    protected abstract function createBoundaries(): PanelBoundaries;
+    abstract protected function createBoundaries(): PanelBoundaries;
 
-    protected abstract function loadLayers(): void;
+    abstract protected function loadLayers(): void;
 
-    protected abstract function getEntryCallable(): callable;
+    abstract protected function getEntryCallable(): callable;
 
-    protected abstract function getPanelViewportPercentage(): int;
+    abstract protected function getPanelViewportPercentage(): int;
 
     /**
      * @return array<int>

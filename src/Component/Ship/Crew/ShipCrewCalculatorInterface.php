@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Crew;
 
-use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;

@@ -6,7 +6,6 @@ namespace Stu\Module\Tick\Process;
 
 use Override;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;

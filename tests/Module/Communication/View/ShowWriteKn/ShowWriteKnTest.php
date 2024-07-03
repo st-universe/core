@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowWriteKn;
 
-use Override;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionSet;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;

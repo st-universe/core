@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Stu;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\StuTestCase;
 
 abstract class ActionControllerTestCase extends StuTestCase
 {

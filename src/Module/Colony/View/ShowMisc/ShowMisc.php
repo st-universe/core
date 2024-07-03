@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\View\ShowMisc;
 use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 

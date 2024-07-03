@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\StuTestCase;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\RpgPlotArchivRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -16,7 +14,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-
+use Override;
+use Stu\Orm\Repository\RpgPlotArchivRepository;
 
 #[Table(name: 'stu_plots_archiv')]
 #[Index(name: 'rpg_plot_archiv_end_date_idx', columns: ['end_date'])]

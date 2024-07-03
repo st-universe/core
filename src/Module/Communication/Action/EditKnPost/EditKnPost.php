@@ -6,19 +6,19 @@ namespace Stu\Module\Communication\Action\EditKnPost;
 
 use Override;
 use Stu\Exception\AccessViolation;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\KnCharactersInterface;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Repository\KnCharactersRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
-use Stu\Orm\Repository\KnCharactersRepositoryInterface;
 use Stu\Orm\Repository\UserCharactersRepositoryInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\KnCharactersInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 
 final class EditKnPost implements ActionControllerInterface
 {
@@ -69,7 +69,7 @@ final class EditKnPost implements ActionControllerInterface
 
         $href = sprintf('comm.php?%s=1&id=%d', ShowSingleKn::VIEW_IDENTIFIER, $post->getId());
         $currentCharacterEntities = $this->knCharactersRepository->findBy(['knPost' => $post]);
-        $currentCharacterIds = array_map(fn(KnCharactersInterface $character): int => $character->getUserCharacters()->getId(), $currentCharacterEntities);
+        $currentCharacterIds = array_map(fn (KnCharactersInterface $character): int => $character->getUserCharacters()->getId(), $currentCharacterEntities);
 
 
         $newCharacterIdsInput = $this->editKnPostRequest->getCharacterIds();

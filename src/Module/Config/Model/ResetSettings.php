@@ -3,6 +3,7 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+
 final class ResetSettings extends AbstractSettings implements ResetSettingsInterface
 {
     private const string CONFIG_PATH = 'reset';

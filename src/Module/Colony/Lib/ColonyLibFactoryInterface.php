@@ -79,6 +79,6 @@ interface ColonyLibFactoryInterface
      */
     public function createColonyPopulationCalculator(
         PlanetFieldHostInterface $host,
-        array $production = null
+        ?array $production = null
     ): ColonyPopulationCalculatorInterface;
 }

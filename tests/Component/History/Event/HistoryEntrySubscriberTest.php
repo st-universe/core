@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\History\Event;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Orm\Entity\AllianceInterface;

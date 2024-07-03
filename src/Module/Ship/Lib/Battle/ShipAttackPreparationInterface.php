@@ -9,7 +9,6 @@ use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 
 interface ShipAttackPreparationInterface
 {
-
     public function getReady(
         BattlePartyInterface $attackers,
         BattlePartyInterface $defenders,

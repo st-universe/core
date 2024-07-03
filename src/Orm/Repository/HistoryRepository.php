@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Component\History\HistoryTypeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\HistoryInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 /**
  * @extends EntityRepository<History>

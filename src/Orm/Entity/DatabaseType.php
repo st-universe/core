@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\DatabaseTypeRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\DatabaseTypeRepository;
 
 #[Table(name: 'stu_database_types', options: ['engine' => 'InnoDB'])]
 #[Entity(repositoryClass: DatabaseTypeRepository::class)]

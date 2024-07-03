@@ -8,7 +8,7 @@ use Stu\Orm\Entity\BuildingUpgradeInterface;
 
 /**
  * @extends ObjectRepository<BuildingUpgrade>
- * 
+ *
  * @method null|BuildingUpgradeInterface find($id)
  */
 interface BuildingUpgradeRepositoryInterface extends ObjectRepository

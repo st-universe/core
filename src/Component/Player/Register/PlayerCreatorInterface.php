@@ -23,7 +23,7 @@ interface PlayerCreatorInterface
         string $emailAddress,
         FactionInterface $faction,
         string $password,
-        string $mobile = null,
-        string $smsCode = null
+        ?string $mobile = null,
+        ?string $smsCode = null
     ): UserInterface;
 }

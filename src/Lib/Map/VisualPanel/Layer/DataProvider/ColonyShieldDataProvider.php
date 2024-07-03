@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider;
 
-use Override;
 use Crunz\Exception\NotImplementedException;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\ColonyShieldData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 

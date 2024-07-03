@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render;
 
-use Override;
-use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;

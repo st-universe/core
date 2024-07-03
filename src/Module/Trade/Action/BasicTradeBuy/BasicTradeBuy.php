@@ -13,7 +13,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\BasicTradeItem;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 

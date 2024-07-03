@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

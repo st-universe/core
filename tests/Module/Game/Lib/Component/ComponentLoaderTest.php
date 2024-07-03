@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\Component;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Render\Fragments\RenderFragmentInterface;
 use Stu\Module\Twig\TwigPageInterface;

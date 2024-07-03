@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

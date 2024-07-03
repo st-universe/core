@@ -12,7 +12,7 @@ interface ComponentLoaderInterface
      */
     public function addComponentUpdate(ComponentEnum $component, bool $isInstantUpdate = true): void;
 
-    /** 
+    /**
      * Adds the execute javascript after render.
      */
     public function loadComponentUpdates(GameControllerInterface $game): void;

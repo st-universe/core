@@ -10,7 +10,7 @@ use Stu\Orm\Entity\ModuleInterface;
 final class ModuleRumpWrapperSpecial extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
     #[Override]
-    public function getValue(ModuleInterface $module = null): int
+    public function getValue(?ModuleInterface $module = null): int
     {
         return 0;
     }

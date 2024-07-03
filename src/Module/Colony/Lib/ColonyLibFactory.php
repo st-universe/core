@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyPopulationCalculator;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
@@ -211,7 +211,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     #[Override]
     public function createColonyPopulationCalculator(
         PlanetFieldHostInterface $host,
-        array $production = null
+        ?array $production = null
     ): ColonyPopulationCalculatorInterface {
 
         return new ColonyPopulationCalculator(

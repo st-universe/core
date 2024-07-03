@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use request;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
