@@ -8,9 +8,9 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -21,9 +21,9 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     public function fire(
         ProjectileAttackerInterface $attacker,
         BattlePartyInterface $targetPool,
-        ShipAttackCauseEnum $attackCause
-    ): array {
-        $messages = [];
+        ShipAttackCauseEnum $attackCause,
+        MessageCollectionInterface $messages
+    ): void {
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
             if ($targetPool->isDefeated()) {
@@ -53,8 +53,8 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $attacker->lowerTorpedoCount(1);
             $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
 
-            $message = new Message($attacker->getUser()->getId(), $target->getUser()->getId());
-            $messages[] = $message;
+            $message = $this->messageFactory->createMessage($attacker->getUser()->getId(), $target->getUser()->getId());
+            $messages->add($message);
 
             $message->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
 
@@ -83,8 +83,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 );
             }
         }
-
-        return $messages;
     }
 
     public function fireAtBuilding(

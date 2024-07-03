@@ -13,6 +13,7 @@ use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterfac
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\StuTestCase;
@@ -20,7 +21,9 @@ use Stu\StuTestCase;
 class TholianWebConsequenceTest extends StuTestCase
 {
     /** @var MockInterface&TholianWebUtilInterface */
-    private MockInterface $tholianWebUtil;
+    private $tholianWebUtil;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private FlightConsequenceInterface $subject;
 
@@ -36,6 +39,7 @@ class TholianWebConsequenceTest extends StuTestCase
     protected function setUp(): void
     {
         $this->tholianWebUtil = $this->mock(TholianWebUtilInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -45,7 +49,10 @@ class TholianWebConsequenceTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
 
-        $this->subject = new TholianWebConsequence($this->tholianWebUtil);
+        $this->subject = new TholianWebConsequence(
+            $this->tholianWebUtil,
+            $this->messageFactory
+        );
     }
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
@@ -67,6 +74,7 @@ class TholianWebConsequenceTest extends StuTestCase
     public function testTriggerExpectNothingWhenNoWeb(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -86,8 +94,14 @@ class TholianWebConsequenceTest extends StuTestCase
             ->andReturn(null);
 
         $messages->shouldReceive('add')
-            ->with(Mockery::any())
+            ->with($message)
             ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
+
 
         $this->subject->trigger(
             $this->wrapper,
@@ -100,6 +114,7 @@ class TholianWebConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $web = $this->mock(TholianWebInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -124,8 +139,13 @@ class TholianWebConsequenceTest extends StuTestCase
             ->andReturn(true);
 
         $messages->shouldReceive('add')
-            ->with(Mockery::any())
+            ->with($message)
             ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
 
         $this->subject->trigger(
             $this->wrapper,
@@ -138,6 +158,7 @@ class TholianWebConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $web = $this->mock(TholianWebInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -165,17 +186,18 @@ class TholianWebConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+            ->with($message)
+            ->once();
 
-                if ($m->getRecipientId() === 123) {
-                    $message = $m;
-                    return true;
-                }
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
 
-                return false;
-            }));
+        $message->shouldReceive('add')
+            ->with('Die SHIP ist einem unfertigen Energienetz entkommen')
+            ->once();
 
         $this->tholianWebUtil->shouldReceive('releaseShipFromWeb')
             ->with($this->wrapper)
@@ -187,14 +209,12 @@ class TholianWebConsequenceTest extends StuTestCase
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP ist einem unfertigen Energienetz entkommen'], $message->getMessage());
     }
 
     public function testTriggerExpectReleaseWhenSpinningWeb(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $web = $this->mock(TholianWebInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -217,17 +237,18 @@ class TholianWebConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+            ->with($message)
+            ->once();
 
-                if ($m->getRecipientId() === 123) {
-                    $message = $m;
-                    return true;
-                }
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
 
-                return false;
-            }));
+        $message->shouldReceive('add')
+            ->with('Die SHIP hat die Unterstützung des Energienetzes abgebrochen')
+            ->once();
 
         $this->tholianWebUtil->shouldReceive('releaseWebHelper')
             ->with($this->wrapper)
@@ -238,7 +259,5 @@ class TholianWebConsequenceTest extends StuTestCase
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP hat die Unterstützung des Energienetzes abgebrochen'], $message->getMessage());
     }
 }

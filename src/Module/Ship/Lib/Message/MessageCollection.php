@@ -19,13 +19,6 @@ final class MessageCollection implements MessageCollectionInterface
         $this->messages[] = $msg;
     }
 
-    public function addMultiple(array $messages): void
-    {
-        foreach ($messages as $msg) {
-            $this->messages[] = $msg;
-        }
-    }
-
     public function getRecipientIds(): array
     {
         $recipientIds = [];

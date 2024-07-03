@@ -7,8 +7,8 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -18,16 +18,11 @@ use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
 {
-    private AstroEntryRepositoryInterface $astroEntryRepository;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
     public function __construct(
-        AstroEntryRepositoryInterface $astroEntryRepository,
-        CreatePrestigeLogInterface $createPrestigeLog
+        private AstroEntryRepositoryInterface $astroEntryRepository,
+        private CreatePrestigeLogInterface $createPrestigeLog,
+        private MessageFactoryInterface $messageFactory
     ) {
-        $this->astroEntryRepository = $astroEntryRepository;
-        $this->createPrestigeLog = $createPrestigeLog;
     }
 
     protected function triggerSpecific(
@@ -53,7 +48,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
 
         $fieldId = $ship->getCurrentMapField()->getId();
 
-        $message = new Message(null, $ship->getUser()->getId());
+        $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
         $messages->add($message);
 
         if ($astroEntry->getState() === AstronomicalMappingEnum::PLANNED) {

@@ -8,9 +8,9 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
@@ -24,10 +24,9 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     public function fire(
         EnergyAttackerInterface $attacker,
         BattlePartyInterface $targetPool,
-        ShipAttackCauseEnum $attackCause
-    ): array {
-        $messages = [];
-
+        ShipAttackCauseEnum $attackCause,
+        MessageCollectionInterface $messages
+    ): void {
 
         $phaserVolleys = $attacker->getPhaserVolleys();
         for ($i = 1; $i <= $phaserVolleys; $i++) {
@@ -49,8 +48,8 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $target = $targetWrapper->get();
 
-            $message = new Message($attacker->getUser()->getId(), $target->getUser()->getId());
-            $messages[] = $message;
+            $message = $this->messageFactory->createMessage($attacker->getUser()->getId(), $target->getUser()->getId());
+            $messages->add($message);
 
             $message->add(sprintf(
                 "Die %s feuert mit einem %s auf die %s",
@@ -92,8 +91,6 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 }
             }
         }
-
-        return $messages;
     }
 
     public function fireAtBuilding(

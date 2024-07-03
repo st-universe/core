@@ -14,9 +14,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollection;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -28,44 +28,18 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 {
     public const MASS_CALCULATION_THRESHOLD = 33_333_333;
 
-    private MapRepositoryInterface $mapRepository;
-
-    private StarSystemMapRepositoryInterface $starSystemMapRepository;
-
-    private AnomalyCreationInterface $anomalyCreation;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
-    private ApplyDamageInterface $applyDamage;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private DistributedMessageSenderInterface $distributedMessageSender;
-
-    private StuRandom $stuRandom;
-
     public function __construct(
-        MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository,
-        AnomalyCreationInterface $anomalyCreation,
-        ShipRepositoryInterface $shipRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        ApplyDamageInterface $applyDamage,
-        PrivateMessageSenderInterface $privateMessageSender,
-        DistributedMessageSenderInterface $distributedMessageSender,
-        StuRandom $stuRandom
+        private MapRepositoryInterface $mapRepository,
+        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private AnomalyCreationInterface $anomalyCreation,
+        private ShipRepositoryInterface $shipRepository,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private ApplyDamageInterface $applyDamage,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private DistributedMessageSenderInterface $distributedMessageSender,
+        private StuRandom $stuRandom,
+        private MessageFactoryInterface $messageFactory
     ) {
-        $this->mapRepository = $mapRepository;
-        $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->anomalyCreation = $anomalyCreation;
-        $this->shipRepository = $shipRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->applyDamage = $applyDamage;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->distributedMessageSender = $distributedMessageSender;
-        $this->stuRandom = $stuRandom;
     }
 
     public function checkForCreation(): void
@@ -98,7 +72,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $messagesForShips = new MessageCollection();
         $messagesForBases = new MessageCollection();
 
-        $intro = new Message(
+        $intro = $this->messageFactory->createMessage(
             UserEnum::USER_NOONE,
             null
         );
@@ -125,7 +99,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 continue;
             }
 
-            $message = new Message(UserEnum::USER_NOONE, $spacecraft->getUser()->getId());
+            $message = $this->messageFactory->createMessage(UserEnum::USER_NOONE, $spacecraft->getUser()->getId());
             $message->add($spacecraft->getName());
 
             if ($shieldSystem->getMode() > ShipSystemModeEnum::MODE_OFF) {

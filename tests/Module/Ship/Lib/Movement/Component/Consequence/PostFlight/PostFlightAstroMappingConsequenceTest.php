@@ -11,6 +11,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -26,10 +27,11 @@ use Stu\StuTestCase;
 class PostFlightAstroMappingConsequenceTest extends StuTestCase
 {
     /** @var MockInterface&AstroEntryRepositoryInterface */
-    private MockInterface $astroEntryRepository;
-
+    private $astroEntryRepository;
     /** @var MockInterface&CreatePrestigeLogInterface */
-    private MockInterface $createPrestigeLog;
+    private $createPrestigeLog;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private FlightConsequenceInterface $subject;
 
@@ -46,6 +48,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     {
         $this->astroEntryRepository = $this->mock(AstroEntryRepositoryInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -57,7 +60,8 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $this->subject = new PostFlightAstroMappingConsequence(
             $this->astroEntryRepository,
-            $this->createPrestigeLog
+            $this->createPrestigeLog,
+            $this->messageFactory
         );
     }
 
@@ -158,12 +162,12 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     public function testTriggerExpectArrivingWaypoint(): void
     {
-
         $map = $this->mock(MapInterface::class);
         $user = $this->mock(UserInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
         $astroLab = $this->mock(AstroLaboratorySystemData::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
             ->withNoArgs()
@@ -241,23 +245,25 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             )
             ->once();
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
-
-                $message = $m;
-
-                return $m->getRecipientId() === 123;
-            }))
+            ->with($message)
             ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
+
+        $message->shouldReceive('add')
+            ->with('Die SHIP hat einen Kartographierungs-Messpunkt erreicht: SECTOR')
+            ->once()
+            ->andReturn($message);
 
         $this->subject->trigger(
             $this->wrapper,
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP hat einen Kartographierungs-Messpunkt erreicht: SECTOR'], $message->getMessage());
     }
 
     public function testTriggerExpectMeasured(): void
@@ -268,6 +274,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
         $astroLab = $this->mock(AstroLaboratorySystemData::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
             ->withNoArgs()
@@ -348,23 +355,25 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->once();
 
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
-
-                $message = $m;
-
-                return $m->getRecipientId() === 123;
-            }))
+            ->with($message)
             ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
+
+        $message->shouldReceive('add')
+            ->with('Die SHIP hat alle Kartographierungs-Messpunkte erreicht')
+            ->once()
+            ->andReturn($message);
 
         $this->subject->trigger(
             $this->wrapper,
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP hat alle Kartographierungs-Messpunkte erreicht'], $message->getMessage());
     }
 
     public function testTriggerExpectCancelOfFinalizing(): void
@@ -374,6 +383,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $astroEntry = $this->mock(AstronomicalEntryInterface::class);
         $astroLab = $this->mock(AstroLaboratorySystemData::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->wrapper->shouldReceive('getAstroLaboratorySystemData')
             ->withNoArgs()
@@ -448,23 +458,24 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->with($astroEntry)
             ->once();
 
-        $message = null;
-
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
-
-                $message = $m;
-
-                return $m->getRecipientId() === 123;
-            }))
+            ->with($message)
             ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
+
+        $message->shouldReceive('add')
+            ->with('Die SHIP hat das Finalisieren der Kartographierung abgebrochen')
+            ->once()
+            ->andReturn($message);
 
         $this->subject->trigger(
             $this->wrapper,
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP hat das Finalisieren der Kartographierung abgebrochen'], $message->getMessage());
     }
 }

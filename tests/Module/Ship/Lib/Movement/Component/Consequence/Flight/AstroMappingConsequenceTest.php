@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -19,7 +20,9 @@ use Stu\StuTestCase;
 class AstroMappingConsequenceTest extends StuTestCase
 {
     /** @var MockInterface&AstroEntryLibInterface */
-    private MockInterface $astroEntryLib;
+    private $astroEntryLib;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private FlightConsequenceInterface $subject;
 
@@ -35,6 +38,7 @@ class AstroMappingConsequenceTest extends StuTestCase
     protected function setUp(): void
     {
         $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -45,7 +49,8 @@ class AstroMappingConsequenceTest extends StuTestCase
             ->andReturn($this->ship);
 
         $this->subject = new AstroMappingConsequence(
-            $this->astroEntryLib
+            $this->astroEntryLib,
+            $this->messageFactory
         );
     }
 
@@ -88,6 +93,7 @@ class AstroMappingConsequenceTest extends StuTestCase
     public function testTriggerExpectCancelWhenFinalizing(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -106,17 +112,14 @@ class AstroMappingConsequenceTest extends StuTestCase
             ->once()
             ->andReturn('SHIP');
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+            ->with($message)
+            ->once();
 
-                if ($m->getRecipientId() === 123) {
-                    $message = $m;
-                    return true;
-                }
-
-                return false;
-            }));
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123, ['Die SHIP hat die Kartographierung abgebrochen'])
+            ->once()
+            ->andReturn($message);
 
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->wrapper)
@@ -127,7 +130,5 @@ class AstroMappingConsequenceTest extends StuTestCase
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP hat die Kartographierung abgebrochen'], $message->getMessage());
     }
 }

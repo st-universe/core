@@ -3,14 +3,18 @@
 namespace Stu\Module\Ship\Lib\Movement;
 
 use InvalidArgumentException;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Orm\Entity\ShipInterface;
 
 //TODO unit tests
 final class ShipMovementInformationAdder implements ShipMovementInformationAdderInterface
 {
+    public function __construct(private MessageFactoryInterface $messageFactory)
+    {
+    }
+
     public function reachedDestination(
         ShipInterface $ship,
         bool $isFleetMode,
@@ -21,7 +25,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         $name = $isFleetMode ? 'Flotte' : $ship->getName();
         $routeModeValue = $routeMode->value;
 
-        $message = new Message();
+        $message = $this->messageFactory->createMessage();
         $messages->add($message);
 
         switch ($routeMode) {
@@ -90,7 +94,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         $name = $isFleetMode ? 'gesamte Flotte' : $leadShipName;
         $routeModeValue = $routeMode->value;
 
-        $message = new Message();
+        $message = $this->messageFactory->createMessage();
         $messages->add($message);
 
         switch ($routeMode) {
@@ -161,7 +165,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
     ): void {
         $tractoredShipName = $tractoredShip->getName();
 
-        $message = new Message(
+        $message = $this->messageFactory->createMessage(
             $ship->getUser()->getId(),
             $tractoredShip->getUser()->getId()
         );

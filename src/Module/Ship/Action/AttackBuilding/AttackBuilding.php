@@ -16,12 +16,12 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
-use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -31,8 +31,6 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 final class AttackBuilding implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ATTACK_BUILDING';
-
-    private InformationWrapper $informations;
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
@@ -46,9 +44,9 @@ final class AttackBuilding implements ActionControllerInterface
         private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private AttackerProviderFactoryInterface $attackerProviderFactory,
-        private BattlePartyFactoryInterface $battlePartyFactory
+        private BattlePartyFactoryInterface $battlePartyFactory,
+        private MessageFactoryInterface $messageFactory
     ) {
-        $this->informations = new InformationWrapper();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -110,6 +108,8 @@ final class AttackBuilding implements ActionControllerInterface
 
         $incomingBattleParty = $this->battlePartyFactory->createIncomingBattleParty($wrapper);
 
+        $informations = new InformationWrapper();
+
         // DEFENDING FLEETS
         foreach ($colony->getDefenders() as $fleet) {
             $colonyDefendingBattleParty = $this->battlePartyFactory->createColonyDefendingBattleParty($fleet->getLeadShip());
@@ -117,7 +117,7 @@ final class AttackBuilding implements ActionControllerInterface
             $this->alertReactionFacade->performAttackCycle(
                 $colonyDefendingBattleParty,
                 $incomingBattleParty,
-                $this->informations
+                $informations
             );
         }
 
@@ -129,16 +129,19 @@ final class AttackBuilding implements ActionControllerInterface
         );
         $defendingPhalanx =  $this->attackerProviderFactory->getEnergyPhalanxAttacker($colony);
 
+        $messageCollection = $this->messageFactory->createMessageCollection();
+
         for ($i = 0; $i < $count; $i++) {
 
             if ($incomingBattleParty->isDefeated()) {
                 break;
             }
-            $this->addMessageMerge($this->energyWeaponPhase->fire(
+            $this->energyWeaponPhase->fire(
                 $defendingPhalanx,
                 $incomingBattleParty,
-                ShipAttackCauseEnum::COLONY_DEFENSE
-            ));
+                ShipAttackCauseEnum::COLONY_DEFENSE,
+                $messageCollection
+            );
         }
 
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
@@ -152,12 +155,15 @@ final class AttackBuilding implements ActionControllerInterface
             if ($incomingBattleParty->isDefeated()) {
                 break;
             }
-            $this->addMessageMerge($this->projectileWeaponPhase->fire(
+            $this->projectileWeaponPhase->fire(
                 $defendingPhalanx,
                 $incomingBattleParty,
-                ShipAttackCauseEnum::COLONY_DEFENSE
-            ));
+                ShipAttackCauseEnum::COLONY_DEFENSE,
+                $messageCollection
+            );
         }
+
+        $informations->addInformationWrapper($messageCollection->getInformationDump());
 
         // OFFENSE OF ATTACKING SHIPS
         $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
@@ -173,13 +179,13 @@ final class AttackBuilding implements ActionControllerInterface
             $shipAttacker = $this->attackerProviderFactory->getShipAttacker($attackerWrapper);
 
             if ($isOrbitField) {
-                $this->informations->addInformationWrapper($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField));
+                $informations->addInformationWrapper($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField));
 
                 if ($field->getIntegrity() === 0) {
                     break;
                 }
             }
-            $this->informations->addInformationWrapper($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count));
+            $informations->addInformationWrapper($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count));
 
             if ($field->getIntegrity() === 0) {
                 break;
@@ -192,7 +198,7 @@ final class AttackBuilding implements ActionControllerInterface
             _("Kampf in Sektor %s, Kolonie %s\n%s"),
             $ship->getSectorString(),
             $colony->getName(),
-            $this->informations->getInformationsAsString()
+            $informations->getInformationsAsString()
         );
         $this->privateMessageSender->send(
             $userId,
@@ -202,26 +208,16 @@ final class AttackBuilding implements ActionControllerInterface
         );
 
         if ($ship->isDestroyed()) {
-            $game->addInformationWrapper($this->informations);
+            $game->addInformationWrapper($informations);
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         if ($isFleetAttack) {
             $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $this->informations->getInformations());
+            $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->addInformationWrapper($this->informations);
-        }
-    }
-
-    /**
-     * @param MessageInterface[] $messages
-     */
-    private function addMessageMerge(array $messages): void
-    {
-        foreach ($messages as $message) {
-            $this->informations->addInformationArray($message->getMessage());
+            $game->addInformationWrapper($informations);
         }
     }
 

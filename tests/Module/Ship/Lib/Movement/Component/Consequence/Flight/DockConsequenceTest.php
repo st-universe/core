@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -16,6 +17,9 @@ use Stu\StuTestCase;
 
 class DockConsequenceTest extends StuTestCase
 {
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
+
     private FlightConsequenceInterface $subject;
 
     /** @var MockInterface&ShipInterface */
@@ -29,6 +33,8 @@ class DockConsequenceTest extends StuTestCase
 
     protected function setUp(): void
     {
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
+
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->flightRoute = $this->mock(FlightRouteInterface::class);
@@ -37,7 +43,7 @@ class DockConsequenceTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
 
-        $this->subject = new DockConsequence();
+        $this->subject = new DockConsequence($this->messageFactory);
     }
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
@@ -79,6 +85,7 @@ class DockConsequenceTest extends StuTestCase
     public function testTriggerExpectUndockingWhenShipDocked(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -104,29 +111,29 @@ class DockConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+            ->with($message)
+            ->once();
 
-                if ($m->getRecipientId() === 123) {
-                    $message = $m;
-                    return true;
-                }
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
 
-                return false;
-            }));
+        $message->shouldReceive('add')
+            ->with('Die SHIP wurde abgedockt')
+            ->once();
 
         $this->subject->trigger(
             $this->wrapper,
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP wurde abgedockt'], $message->getMessage());
     }
     public function testTriggerExpectUndockingWhenShipDockedAndTractored(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -152,24 +159,23 @@ class DockConsequenceTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+            ->with($message)
+            ->once();
 
-                if ($m->getRecipientId() === 123) {
-                    $message = $m;
-                    return true;
-                }
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
 
-                return false;
-            }));
+        $message->shouldReceive('add')
+            ->with('Die SHIP wurde abgedockt')
+            ->once();
 
         $this->subject->trigger(
             $this->wrapper,
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die SHIP wurde abgedockt'], $message->getMessage());
     }
 }

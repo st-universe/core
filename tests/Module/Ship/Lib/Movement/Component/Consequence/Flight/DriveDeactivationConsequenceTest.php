@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -19,7 +20,9 @@ use Stu\StuTestCase;
 class DriveDeactivationConsequenceTest extends StuTestCase
 {
     /** @var MockInterface&ShipSystemManagerInterface */
-    private MockInterface $shipSystemManager;
+    private $shipSystemManager;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private FlightConsequenceInterface $subject;
 
@@ -35,6 +38,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
     protected function setUp(): void
     {
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -45,7 +49,8 @@ class DriveDeactivationConsequenceTest extends StuTestCase
             ->andReturn($this->ship);
 
         $this->subject = new DriveDeactivationConsequence(
-            $this->shipSystemManager
+            $this->shipSystemManager,
+            $this->messageFactory
         );
     }
 
@@ -108,6 +113,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
         bool $isSystemActive = null,
     ): void {
         $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -147,13 +153,22 @@ class DriveDeactivationConsequenceTest extends StuTestCase
                 ->with($this->wrapper, $systemId, true)
                 ->once();
 
-            $message = null;
             $messages->shouldReceive('add')
-                ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+                ->with($message)
+                ->once();
 
-                    $message = $m;
-                    return true;
-                }));
+            $this->messageFactory->shouldReceive('createMessage')
+                ->withNoArgs()
+                ->once()
+                ->andReturn($message);
+
+            $message->shouldReceive('add')
+                ->with(sprintf(
+                    'Die SHIP deaktiviert %s %s',
+                    $systemId === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
+                    $systemId->getDescription()
+                ))
+                ->once();
         }
 
         $this->subject->trigger(
@@ -161,16 +176,5 @@ class DriveDeactivationConsequenceTest extends StuTestCase
             $this->flightRoute,
             $messages
         );
-
-        if ($hasShipSystem && $isSystemActive) {
-            $this->assertEquals(
-                [sprintf(
-                    'Die SHIP deaktiviert %s %s',
-                    $systemId === ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL ? 'die' : 'den',
-                    $systemId->getDescription()
-                )],
-                $message->getMessage()
-            );
-        }
     }
 }

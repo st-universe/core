@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Lib\Battle\Weapon;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
@@ -17,6 +16,9 @@ use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
+use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -28,22 +30,19 @@ use Stu\StuTestCase;
 class EnergyWeaponPhaseTest extends StuTestCase
 {
     /** @var MockInterface|WeaponRepositoryInterface */
-    protected MockInterface $weaponRepository;
-
+    protected $weaponRepository;
     /** @var MockInterface|EntryCreatorInterface */
-    protected MockInterface $entryCreator;
-
+    protected $entryCreator;
     /** @var MockInterface|ApplyDamageInterface */
-    protected MockInterface $applyDamage;
-
+    protected $applyDamage;
     /** @var MockInterface|BuildingManagerInterface */
-    protected MockInterface $buildingManager;
-
+    protected $buildingManager;
     /** @var MockInterface|ShipDestructionInterface */
-    private MockInterface $shipDestruction;
-
+    private $shipDestruction;
     /** @var MockInterface|StuRandom */
-    private MockInterface $stuRandom;
+    private $stuRandom;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private EnergyWeaponPhaseInterface $subject;
 
@@ -54,6 +53,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);
         $this->buildingManager = $this->mock(BuildingManagerInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
         $this->shipDestruction = $this->mock(ShipDestructionInterface::class);
 
         $this->subject = new EnergyWeaponPhase(
@@ -61,6 +61,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
             $this->applyDamage,
             $this->buildingManager,
             $this->stuRandom,
+            $this->messageFactory,
             $this->shipDestruction,
             $this->initLoggerUtil()
         );
@@ -76,6 +77,8 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $targetUser = $this->mock(UserInterface::class);
         $targetRump = $this->mock(ShipRumpInterface::class);
         $targetPool = $this->mock(BattlePartyInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $targetId = 42;
 
@@ -198,17 +201,30 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->andReturn(0);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::any(), $targetWrapper, Mockery::any());
+            ->with(Mockery::any(), $targetWrapper, $message);
 
         $this->shipDestruction->shouldReceive('destroy')
             ->with(
                 $attacker,
                 $targetWrapper,
                 ShipDestructionCauseEnum::SHIP_FIGHT,
-                Mockery::any()
+                $message
             )
             ->once();
 
-        $this->subject->fire($attacker, $targetPool, ShipAttackCauseEnum::SHIP_FIGHT);
+        $messages->shouldReceive('add')
+            ->with($message)
+            ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(888, 999)
+            ->once()
+            ->andReturn($message);
+
+        $message->shouldReceive('add')
+            ->with('Die ATTACKER feuert mit einem WEAPON auf die TARGET')
+            ->once();
+
+        $this->subject->fire($attacker, $targetPool, ShipAttackCauseEnum::SHIP_FIGHT, $messages);
     }
 }

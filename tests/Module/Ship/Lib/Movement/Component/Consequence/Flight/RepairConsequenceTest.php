@@ -8,6 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -18,7 +19,9 @@ use Stu\StuTestCase;
 class RepairConsequenceTest extends StuTestCase
 {
     /** @var MockInterface&CancelRepairInterface */
-    private MockInterface $cancelRepair;
+    private $cancelRepair;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private FlightConsequenceInterface $subject;
 
@@ -34,6 +37,7 @@ class RepairConsequenceTest extends StuTestCase
     protected function setUp(): void
     {
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -43,7 +47,10 @@ class RepairConsequenceTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
 
-        $this->subject = new RepairConsequence($this->cancelRepair);
+        $this->subject = new RepairConsequence(
+            $this->cancelRepair,
+            $this->messageFactory
+        );
     }
 
     public function testTriggerExpectNothingWhenShipDestroyed(): void
@@ -85,6 +92,7 @@ class RepairConsequenceTest extends StuTestCase
     public function testTriggerExpectCancelWhenUnderRepair(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
@@ -107,24 +115,23 @@ class RepairConsequenceTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+            ->with($message)
+            ->once();
 
-                if ($m->getRecipientId() === 123) {
-                    $message = $m;
-                    return true;
-                }
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
 
-                return false;
-            }));
+        $message->shouldReceive('add')
+            ->with('Die Reparatur der SHIP wurde abgebrochen')
+            ->once();
 
         $this->subject->trigger(
             $this->wrapper,
             $this->flightRoute,
             $messages
         );
-
-        $this->assertEquals(['Die Reparatur der SHIP wurde abgebrochen'], $message->getMessage());
     }
 }
