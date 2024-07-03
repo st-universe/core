@@ -85,7 +85,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         $isForeignShip = $userId !== $ship->getUser()->getId();
 
         $commodities = request::postArray('shuttles');
-        if (empty($commodities)) {
+        if ($commodities === []) {
             return;
         }
 
@@ -165,7 +165,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
         $game->addInformationWrapper($informations);
 
-        if ($isForeignShip && !empty($informations->getInformations())) {
+        if ($isForeignShip && $informations->getInformations() !== []) {
             $pm = sprintf(
                 _("Die Kolonie %s des Spielers %s transferiert Shuttles in Sektor %d|%d\n%s"),
                 $colony->getName(),

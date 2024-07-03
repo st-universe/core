@@ -231,7 +231,7 @@ final class RepairActions implements ManagerComponentInterface
         $ship = $wrapper->get();
 
         $damagedSystems = $wrapper->getDamagedSystems();
-        if (!empty($damagedSystems)) {
+        if ($damagedSystems !== []) {
             $firstSystem = $damagedSystems[0];
             $firstSystem->setStatus(100);
 

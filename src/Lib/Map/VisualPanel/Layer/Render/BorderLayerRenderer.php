@@ -50,17 +50,17 @@ final class BorderLayerRenderer implements LayerRendererInterface
             $this->currentShip->getLSSmode() == ShipLSSModeEnum::LSS_BORDER
         ) {
             $factionColor = $data->getFactionColor();
-            if (!empty($factionColor)) {
+            if ($factionColor !== null && $factionColor !== '' && $factionColor !== '0') {
                 return $factionColor;
             }
 
             $allyColor = $data->getAllyColor();
-            if (!empty($allyColor)) {
+            if ($allyColor !== null && $allyColor !== '' && $allyColor !== '0') {
                 return $allyColor;
             }
 
             $userColor = $data->getUserColor();
-            if (!empty($userColor)) {
+            if ($userColor !== null && $userColor !== '' && $userColor !== '0') {
                 return $userColor;
             }
         }
@@ -71,7 +71,7 @@ final class BorderLayerRenderer implements LayerRendererInterface
     private function isCurrentShipPosition(BorderData $data, ShipInterface $currentShip): bool
     {
         return $this->isOnShipLevel === true
-            && $data->getPosX() == $currentShip->getPosX()
-            && $data->getPosY() == $currentShip->getPosY();
+            && $data->getPosX() === $currentShip->getPosX()
+            && $data->getPosY() === $currentShip->getPosY();
     }
 }

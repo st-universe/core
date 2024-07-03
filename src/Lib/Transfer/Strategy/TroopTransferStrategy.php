@@ -156,11 +156,9 @@ class TroopTransferStrategy implements TransferStrategyInterface
         $ship = $wrapper->get();
         $user = $ship->getUser();
 
-        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-            if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-                $informations->addInformation(_("Die Truppenquartiere sind zerstört"));
-                return;
-            }
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+            $informations->addInformation(_("Die Truppenquartiere sind zerstört"));
+            return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
@@ -285,14 +283,10 @@ class TroopTransferStrategy implements TransferStrategyInterface
             $this->transferUtility->getFreeQuarters($ship)
         );
 
-        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-            if (
-                $amount > 0
-                && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)
-            ) {
-                throw new SystemNotActivatableException();
-            }
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($amount > 0
+        && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+        && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))) {
+            throw new SystemNotActivatableException();
         }
 
         $crewAssignments = $colony->getCrewAssignments();
@@ -378,13 +372,9 @@ class TroopTransferStrategy implements TransferStrategyInterface
             return 0;
         }
 
-        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-            if (
-                $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations)
-            ) {
-                throw new SystemNotActivatableException();
-            }
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+        && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))) {
+            throw new SystemNotActivatableException();
         }
 
         $array = $target->getCrewAssignments()->getValues();

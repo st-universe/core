@@ -35,11 +35,7 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         if ($this->x !== $this->currentShip->getPosX()) {
             return false;
         }
-        if ($this->y !== $this->currentShip->getPosY()) {
-            return false;
-        }
-
-        return true;
+        return $this->y === $this->currentShip->getPosY();
     }
 
     public function getCssClass(): string

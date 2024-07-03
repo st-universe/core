@@ -59,7 +59,7 @@ final class ShowAstroEntry implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/astroentries');
 
         $system = null;
-        if ($isSystem) {
+        if ($isSystem !== 0) {
             $system = $ship->getSystem();
             if ($system === null) {
                 $system = $ship->isOverSystem();

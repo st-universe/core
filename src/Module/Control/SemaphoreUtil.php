@@ -31,7 +31,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     public function getSemaphore(int $key)
     {
         if (!$this->isSemaphoreUsageActive()) {
-            return;
+            return null;
         }
 
         $semaphore = sem_get(

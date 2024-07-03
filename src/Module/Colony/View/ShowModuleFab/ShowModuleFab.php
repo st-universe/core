@@ -170,7 +170,7 @@ final class ShowModuleFab implements ViewControllerInterface
         foreach ($buildplanModules as $buildplanId => $modulesByType) {
             foreach ($modulesByType as $type => $levels) {
                 foreach ($levels as $level => $modules) {
-                    if (empty($modules)) {
+                    if ($modules === []) {
                         unset($buildplanModules[$buildplanId][$type][$level]);
                     }
                 }

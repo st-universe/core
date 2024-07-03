@@ -403,7 +403,7 @@ final class ShipTick implements ShipTickInterface, ManagerComponentInterface
 
         //repair station systems
         $damagedSystems = $wrapper->getDamagedSystems();
-        if (!empty($damagedSystems)) {
+        if ($damagedSystems !== []) {
             $firstSystem = $damagedSystems[0];
             $firstSystem->setStatus(100);
 

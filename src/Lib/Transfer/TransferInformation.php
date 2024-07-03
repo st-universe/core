@@ -35,14 +35,8 @@ class TransferInformation
 
     public function isCommodityTransferPossible(bool $isOtherTypeRequired = true): bool
     {
-        if (
-            $isOtherTypeRequired
-            && $this->currentType === TransferTypeEnum::COMMODITIES
-        ) {
-            return false;
-        }
-
-        return true;
+        return !($isOtherTypeRequired
+        && $this->currentType === TransferTypeEnum::COMMODITIES);
     }
 
     public function isCrewTransferPossible(bool $isOtherTypeRequired = true): bool

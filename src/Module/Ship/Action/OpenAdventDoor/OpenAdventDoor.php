@@ -92,11 +92,9 @@ final class OpenAdventDoor implements ActionControllerInterface
             $this->nicholasPresent($game);
             $this->createOpenedAdventDoor($user);
             return;
-        } else {
-            if ($openedDoors > 0) {
-                $game->addInformation("Du hast heute bereits ein Türchen geöffnet");
-                return;
-            }
+        } elseif ($openedDoors > 0) {
+            $game->addInformation("Du hast heute bereits ein Türchen geöffnet");
+            return;
         }
 
         if ($ship->getStorageSum() === $ship->getMaxStorage()) {

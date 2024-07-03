@@ -162,8 +162,8 @@ final class ShowSensorScan implements ViewControllerInterface
 
         $game->setTemplateVar('MAPFIELD', $mapField);
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId, $sysid !== 0));
-        $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
-        $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
+        $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
+        $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->fadedSignaturesCloaked === [] ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('ERROR', false);
     }

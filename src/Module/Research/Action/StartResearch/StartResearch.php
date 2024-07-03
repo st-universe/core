@@ -53,7 +53,7 @@ final class StartResearch implements ActionControllerInterface
 
         $this->researchedRepository->save($researched);
 
-        if (empty($researches)) {
+        if ($researches === []) {
             $game->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
         } else {
             $game->addInformation(sprintf(_('%s wird als nächstes erforscht'), $research->getName()));

@@ -72,7 +72,7 @@ final class TrainCrew implements ActionControllerInterface
         }
 
         $count = request::postStringFatal('crewcount');
-        if ($count == 'm') {
+        if ($count === 'm') {
             $count = $trainableCrewPerTick;
         } elseif ($count > $trainableCrewPerTick) {
             $count = $trainableCrewPerTick;

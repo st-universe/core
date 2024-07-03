@@ -28,7 +28,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
         $user = $game->getUser();
         $type = HistoryTypeEnum::tryFrom(request::indInt('htype')) ?? HistoryTypeEnum::SHIP;
         $count = request::indInt('hcount');
-        if (!$count) {
+        if ($count === 0) {
             $count = self::LIMIT;
         }
         $search = request::indString('hsearch');

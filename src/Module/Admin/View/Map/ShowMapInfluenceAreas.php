@@ -103,9 +103,9 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
                                 $blue = hexdec($ret[3]);
                             }
                             if (
-                                !is_integer($red) || $red < 1 || $red > 255
-                                || !is_integer($green) || $green < 1 || $green > 255
-                                || !is_integer($blue) || $blue < 1 || $blue > 255
+                                !is_int($red) || $red < 1 || $red > 255
+                                || !is_int($green) || $green < 1 || $green > 255
+                                || !is_int($blue) || $blue < 1 || $blue > 255
                             ) {
                                 throw new RuntimeException('rgb range exception');
                             }

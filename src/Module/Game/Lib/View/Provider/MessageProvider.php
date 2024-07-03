@@ -80,16 +80,16 @@ final class MessageProvider implements ViewComponentProviderInterface
             throw new RuntimeException('this should not happen');
         }
 
-        if ($mark % static::PMLIMITER != 0 || $mark < 0) {
+        if ($mark % self::PMLIMITER != 0 || $mark < 0) {
             $mark = 0;
         }
         $maxcount = $this->privateMessageRepository->getAmountByFolder($category);
-        $maxpage = ceil($maxcount / static::PMLIMITER);
-        $curpage = floor($mark / static::PMLIMITER);
+        $maxpage = ceil($maxcount / self::PMLIMITER);
+        $curpage = floor($mark / self::PMLIMITER);
         $pmNavigation = [];
         if ($curpage != 0) {
             $pmNavigation[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $pmNavigation[] = ["page" => "<", "mark" => ($mark - static::PMLIMITER), "cssclass" => "pages"];
+            $pmNavigation[] = ["page" => "<", "mark" => ($mark - self::PMLIMITER), "cssclass" => "pages"];
         }
         for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
             if ($i > $maxpage || $i < 1) {
@@ -97,13 +97,13 @@ final class MessageProvider implements ViewComponentProviderInterface
             }
             $pmNavigation[] = [
                 "page" => $i,
-                "mark" => ($i * static::PMLIMITER - static::PMLIMITER),
+                "mark" => ($i * self::PMLIMITER - self::PMLIMITER),
                 "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")
             ];
         }
         if ($curpage + 1 !== $maxpage) {
-            $pmNavigation[] = ["page" => ">", "mark" => ($mark + static::PMLIMITER), "cssclass" => "pages"];
-            $pmNavigation[] = ["page" => ">>", "mark" => $maxpage * static::PMLIMITER - static::PMLIMITER, "cssclass" => "pages"];
+            $pmNavigation[] = ["page" => ">", "mark" => ($mark + self::PMLIMITER), "cssclass" => "pages"];
+            $pmNavigation[] = ["page" => ">>", "mark" => $maxpage * self::PMLIMITER - self::PMLIMITER, "cssclass" => "pages"];
         }
 
         $game->appendNavigationPart(
@@ -126,7 +126,7 @@ final class MessageProvider implements ViewComponentProviderInterface
                     $userId,
                     $category->getId(),
                     $mark,
-                    static::PMLIMITER
+                    self::PMLIMITER
                 )
             )
         );

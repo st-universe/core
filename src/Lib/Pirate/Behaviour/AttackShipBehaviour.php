@@ -57,7 +57,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
 
-        if (empty($filteredTargets)) {
+        if ($filteredTargets === []) {
             return null;
         }
 

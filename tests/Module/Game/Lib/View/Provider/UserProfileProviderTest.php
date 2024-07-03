@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Stu\Component\Game\GameEnum;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use request;
@@ -187,7 +188,7 @@ class UserProfileProviderTest extends StuTestCase
             ->andReturn([$friend]);
 
         $game->shouldReceive('addExecuteJS')
-            ->with("initTranslations();", \Stu\Component\Game\GameEnum::JS_EXECUTION_AFTER_RENDER)
+            ->with("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER)
             ->once();
 
         $colonyScan->shouldReceive('getColonyUserId')

@@ -104,7 +104,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
 
         $crewmanPerUser = $this->determineCrewmanPerUser($target);
-        if (empty($crewmanPerUser)) {
+        if ($crewmanPerUser === []) {
             return;
         }
 

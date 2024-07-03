@@ -41,7 +41,7 @@ final class ResearchFragment implements RenderFragmentInterface
         $researchStatusBar = '';
         $currentResearch = $this->researchedRepository->getCurrentResearch($user);
 
-        if (!empty($currentResearch)) {
+        if ($currentResearch !== []) {
             $research = current($currentResearch)->getResearch();
             $researchPoints = $research->getPoints();
 

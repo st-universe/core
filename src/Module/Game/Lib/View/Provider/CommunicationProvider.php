@@ -44,7 +44,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
             $mark = 0;
         }
 
-        if (request::getInt('user_mark')) {
+        if (request::getInt('user_mark') !== 0) {
             $mark = (int) floor($newKnPostCount / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
         }
 

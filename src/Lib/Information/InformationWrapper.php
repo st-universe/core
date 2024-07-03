@@ -84,6 +84,6 @@ class InformationWrapper implements InformationInterface
 
     public function isEmpty(): bool
     {
-        return empty($this->getInformations());
+        return $this->getInformations() === [];
     }
 }

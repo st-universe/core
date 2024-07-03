@@ -120,11 +120,7 @@ class PirateCreation implements PirateCreationInterface
     /** @return array<ShipInterface> */
     private function createShips(PirateSetupInterface $pirateSetup, ?ShipInterface $supportCaller): array
     {
-        if ($supportCaller === null) {
-            $randomLocation = $this->getRandomMapLocation();
-        } else {
-            $randomLocation = $supportCaller->getCurrentMapField();
-        }
+        $randomLocation = $supportCaller === null ? $this->getRandomMapLocation() : $supportCaller->getCurrentMapField();
 
         $randomAlertLevel = ShipAlertStateEnum::getRandomAlertLevel();
 
@@ -140,7 +136,7 @@ class PirateCreation implements PirateCreationInterface
             for ($i = 0; $i < $setupBuildplan->getAmount(); $i++) {
 
                 $mostUnusedNames = $this->namesRepository->mostUnusedNames();
-                if (count($mostUnusedNames) > 0) {
+                if ($mostUnusedNames !== []) {
                     $selectedNameEntry = $mostUnusedNames[array_rand($mostUnusedNames)];
                     $shipName = $selectedNameEntry->getName();
                     $selectedNameEntry->setCount($selectedNameEntry->getCount() + 1);

@@ -49,10 +49,8 @@ class PirateNavigation implements PirateNavigationInterface
             }
         }
 
-        if ($targetSystem !== null) {
-            if (!$this->navigateIntoSystem($leadWrapper, $targetSystem)) {
-                return false;
-            }
+        if ($targetSystem !== null && !$this->navigateIntoSystem($leadWrapper, $targetSystem)) {
+            return false;
         }
 
         if ($target instanceof StarSystemInterface) {
@@ -61,11 +59,9 @@ class PirateNavigation implements PirateNavigationInterface
 
         // move to target
         $currentLocation = $leadShip->getCurrentMapField();
-        if ($currentLocation !== $target) {
-            if (!$this->moveOnLayer->move($leadWrapper, $target)) {
-                $this->logger->log('    did not reach target');
-                return false;
-            }
+        if ($currentLocation !== $target && !$this->moveOnLayer->move($leadWrapper, $target)) {
+            $this->logger->log('    did not reach target');
+            return false;
         }
 
         return true;

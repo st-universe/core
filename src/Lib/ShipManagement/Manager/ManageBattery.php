@@ -67,7 +67,7 @@ class ManageBattery implements ManagerInterface
         EpsSystemData $epsSystem,
         ManagerProviderInterface $managerProvider
     ): int {
-        if ($value == 'm') {
+        if ($value === 'm') {
             $load = $epsSystem->getMaxBattery() - $epsSystem->getBattery();
         } else {
             $load = (int) $value;

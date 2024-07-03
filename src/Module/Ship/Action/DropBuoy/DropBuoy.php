@@ -79,7 +79,7 @@ final class DropBuoy implements ActionControllerInterface
             return;
         }
 
-        if (empty($text)) {
+        if ($text === '' || $text === '0') {
             $game->addInformation(_("Der Text darf nicht leer sein"));
             return;
         }

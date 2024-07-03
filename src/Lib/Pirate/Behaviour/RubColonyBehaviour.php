@@ -53,7 +53,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $leadShip = $leadWrapper->get();
 
         $targets = $this->colonyRepository->getPirateTargets($leadShip);
-        if (empty($targets)) {
+        if ($targets === []) {
             $this->logger->log('    no colony targets in reach');
             return PirateBehaviourEnum::FLY;
         }
@@ -93,7 +93,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
 
-            if (empty($filteredColonyStorage)) {
+            if ($filteredColonyStorage === []) {
                 $this->logger->log('    no beamable storage on colony');
                 return;
             }

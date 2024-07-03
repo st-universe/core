@@ -134,6 +134,6 @@ class AstronomicalEntry implements AstronomicalEntryInterface
 
     public function isMeasured(): bool
     {
-        return empty($this->getFieldIds());
+        return $this->getFieldIds() === '' || $this->getFieldIds() === '0';
     }
 }

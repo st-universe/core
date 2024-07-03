@@ -71,12 +71,12 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
         $round = 0;
-        while (!empty($allMapWithoutSystem)) {
+        while ($allMapWithoutSystem !== []) {
             $round++;
             $this->loggerUtil->log(sprintf('round: %d', $round));
             $this->shuffle_assoc($this->spreader);
 
-            if (empty($this->spreader)) {
+            if ($this->spreader === []) {
                 break;
             }
 
@@ -99,7 +99,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
                     break;
                 }
 
-                if (empty($allMapWithoutSystem)) {
+                if ($allMapWithoutSystem === []) {
                     break;
                 }
 

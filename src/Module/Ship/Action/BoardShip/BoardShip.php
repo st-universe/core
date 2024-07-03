@@ -228,7 +228,7 @@ final class BoardShip implements ActionControllerInterface
 
         if (empty($combatGroupAttacker)) {
             $message->add('Der Enterversuch ist gescheitert');
-        } else if ($target->getCrewAssignments()->isEmpty()) {
+        } elseif ($target->getCrewAssignments()->isEmpty()) {
             $message->add(sprintf(
                 'Die Crew der %s wurde getötet. Übernahme kann nun erfolgen.',
                 $target->getName()

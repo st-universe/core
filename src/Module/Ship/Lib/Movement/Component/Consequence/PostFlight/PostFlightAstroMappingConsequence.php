@@ -57,7 +57,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
 
             $key = array_search($fieldId, $idsToMap);
 
-            if (is_integer($key)) {
+            if (is_int($key)) {
                 unset($idsToMap[$key]);
 
                 if (empty($idsToMap)) {

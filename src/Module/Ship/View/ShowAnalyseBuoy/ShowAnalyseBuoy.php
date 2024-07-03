@@ -36,11 +36,7 @@ final class ShowAnalyseBuoy implements ViewControllerInterface
 
         $game->setTemplateVar('ERROR', true);
 
-        if ($buoy !== null) {
-            $amplitude = $buoy->getId() * $buoy->getUserId();
-        } else {
-            $amplitude = 0;
-        }
+        $amplitude = $buoy !== null ? $buoy->getId() * $buoy->getUserId() : 0;
         $wavelength = ceil($amplitude / 2);
 
         $game->setTemplateVar('AMPLITUDE', $amplitude);
