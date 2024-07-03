@@ -26,7 +26,7 @@ class KnFactoryTest extends StuTestCase
     /**
      * @var null|KnFactory
      */
-    private $factory;
+    private KnFactoryInterface $factory;
 
     public function setUp(): void
     {

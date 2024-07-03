@@ -250,6 +250,6 @@ final class FlightRoute implements FlightRouteInterface
         $destination = $this->waypoints->last();
 
         return $destination instanceof MapInterface
-            && $destination->getShips()->exists(fn (int $key, ShipInterface $ship) => $ship->getTradePost() !== null);
+            && $destination->getShips()->exists(fn (int $key, ShipInterface $ship): bool => $ship->getTradePost() !== null);
     }
 }

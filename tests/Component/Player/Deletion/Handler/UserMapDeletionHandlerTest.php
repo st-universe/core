@@ -25,10 +25,7 @@ class UserMapDeletionHandlerTest extends StuTestCase
      */
     private $userLayerRepository;
 
-    /**
-     * @var null|UserMapDeletionHandler
-     */
-    private $handler;
+    private PlayerDeletionHandlerInterface $handler;
 
     public function setUp(): void
     {

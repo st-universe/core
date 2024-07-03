@@ -67,7 +67,7 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
     {
         return array_reduce(
             $modules,
-            fn (int $value, ModuleInterface $module) => $value + $module->getCrewByFactionAndRumpLvl(
+            fn (int $value, ModuleInterface $module): int => $value + $module->getCrewByFactionAndRumpLvl(
                 $user->getFaction(),
                 $rump
             ),

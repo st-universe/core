@@ -90,7 +90,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
         );
     }
 
-    public static function provideTriggerData()
+    public static function provideTriggerData(): array
     {
         return [
             [true, false, ShipSystemTypeEnum::SYSTEM_WARPDRIVE, false],

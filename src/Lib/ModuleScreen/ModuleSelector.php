@@ -186,7 +186,7 @@ class ModuleSelector implements ModuleSelectorInterface
     {
         return array_filter(
             $this->getAvailableModules(),
-            fn (ModuleSelectorEntryInterface $entry) => $entry->isChosen()
+            fn (ModuleSelectorEntryInterface $entry): bool => $entry->isChosen()
         );
     }
 

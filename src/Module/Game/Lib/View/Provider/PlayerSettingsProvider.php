@@ -23,7 +23,7 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
         );
 
 
-        $filteredViews = array_filter(ModuleViewEnum::cases(), function (ModuleViewEnum $case) use ($game) {
+        $filteredViews = array_filter(ModuleViewEnum::cases(), function (ModuleViewEnum $case) use ($game): bool {
 
             if (in_array($case, [ModuleViewEnum::GAME, ModuleViewEnum::INDEX, ModuleViewEnum::NOTES])) {
                 return false;

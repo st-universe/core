@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
@@ -56,7 +57,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
 
             $actualCrewUsage = $this->shipCrewCalculator->getCrewUsage(
                 array_map(
-                    fn (BuildplanModuleInterface $buildplanModule) => $buildplanModule->getModule(),
+                    fn (BuildplanModuleInterface $buildplanModule): ModuleInterface => $buildplanModule->getModule(),
                     $buildplan->getModules()->toArray()
                 ),
                 $buildplan->getRump(),

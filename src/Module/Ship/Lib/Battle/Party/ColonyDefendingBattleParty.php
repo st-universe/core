@@ -24,7 +24,7 @@ class ColonyDefendingBattleParty extends AbstractBattleParty implements AlertedB
 
             // only uncloaked ships enter fight
             return $fleet->getShipWrappers()
-                ->filter(fn (ShipWrapperInterface $wrapper) => !$wrapper->get()->getCloakState());
+                ->filter(fn (ShipWrapperInterface $wrapper): bool => !$wrapper->get()->getCloakState());
         }
     }
 

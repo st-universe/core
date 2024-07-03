@@ -100,7 +100,7 @@ class ShipWrapperTest extends StuTestCase
         $this->assertEquals($hullSystemData, $hull);
     }
 
-    public static function getStateIconAndTitleForActiveRepairProvider()
+    public static function getStateIconAndTitleForActiveRepairProvider(): array
     {
         return [
             [false, "Schiffscrew repariert die Station"],
@@ -128,7 +128,7 @@ class ShipWrapperTest extends StuTestCase
         $this->assertEquals($expectedTitle, $title);
     }
 
-    public static function getStateIconAndTitleForPassiveRepairProvider()
+    public static function getStateIconAndTitleForPassiveRepairProvider(): array
     {
         return [
             [false, "Schiff wird repariert (noch 42 Runden)"],

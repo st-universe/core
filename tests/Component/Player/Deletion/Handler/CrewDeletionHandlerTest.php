@@ -23,10 +23,7 @@ class CrewDeletionHandlerTest extends StuTestCase
      */
     private $crewRepository;
 
-    /**
-     * @var null|CrewDeletionHandler
-     */
-    private $handler;
+    private PlayerDeletionHandlerInterface $handler;
 
     public function setUp(): void
     {

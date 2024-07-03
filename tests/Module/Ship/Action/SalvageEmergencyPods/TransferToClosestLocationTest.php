@@ -48,7 +48,7 @@ class TransferToClosestLocationTest extends StuTestCase
         );
     }
 
-    public static function transferTestData()
+    public static function transferTestData(): array
     {
         return [
             //?coloDistance, ?coloName, ?coloSector, ?stationDistance, ?stationName, ?stationSector, tradePostDistance, tradePostName, tradePostSector, expectedMessage
@@ -203,7 +203,7 @@ class TransferToClosestLocationTest extends StuTestCase
         ?ColonyInterface $closestColony,
         ?ShipInterface $closestStation,
         TradePostInterface $closestTradepost
-    ) {
+    ): void {
         $user = $this->mock(UserInterface::class);
         $otherUser = $this->mock(UserInterface::class);
 

@@ -89,7 +89,7 @@ class EnergyPhalanxTest extends StuTestCase
         $this->assertSame($user, $result);
     }
 
-    public static function provideGetNameData()
+    public static function provideGetNameData(): array
     {
         return [['Orbitale Disruptorphalanx', 2], ['Orbitale Disruptorphalanx', 3], ['Orbitale Phaserphalanx', 1]];
     }
@@ -97,7 +97,7 @@ class EnergyPhalanxTest extends StuTestCase
     /**
      * @dataProvider provideGetNameData
      */
-    public function testGetName($expected, $faction): void
+    public function testGetName(string $expected, int $faction): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')
             ->withNoArgs()
@@ -116,7 +116,7 @@ class EnergyPhalanxTest extends StuTestCase
         $this->assertTrue($result);
     }
 
-    public static function provideHitChanceData()
+    public static function provideHitChanceData(): array
     {
         return [[2, 67], [3, 67], [1, 86]];
     }
@@ -124,7 +124,7 @@ class EnergyPhalanxTest extends StuTestCase
     /**
      * @dataProvider provideHitChanceData
      */
-    public function testGetHitChance($faction, $expected): void
+    public function testGetHitChance(int $faction, int $expected): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')
             ->withNoArgs()
@@ -136,7 +136,7 @@ class EnergyPhalanxTest extends StuTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public static function provideGetWeaponModuleData()
+    public static function provideGetWeaponModuleData(): array
     {
         return [[2, 3], [3, 3], [1, 1]];
     }
@@ -144,7 +144,7 @@ class EnergyPhalanxTest extends StuTestCase
     /**
      * @dataProvider provideGetWeaponModuleData
      */
-    public function testGetWeaponModuleExpectModuleWhenModuleExistent($faction, $moduleId): void
+    public function testGetWeaponModuleExpectModuleWhenModuleExistent(int $faction, int $moduleId): void
     {
         $module = $this->mock(ModuleInterface::class);
 
@@ -180,7 +180,7 @@ class EnergyPhalanxTest extends StuTestCase
         $this->subject->getWeaponModule();
     }
 
-    public static function provideGetEnergyWeaponBaseDamageData()
+    public static function provideGetEnergyWeaponBaseDamageData(): array
     {
         return [[180, 2], [180, 3], [250, 1]];
     }
@@ -188,7 +188,7 @@ class EnergyPhalanxTest extends StuTestCase
     /**
      * @dataProvider provideGetEnergyWeaponBaseDamageData
      */
-    public function testGetEnergyWeaponBaseDamage($expected, $faction): void
+    public function testGetEnergyWeaponBaseDamage(int $expected, int $faction): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')
             ->withNoArgs()
@@ -200,7 +200,7 @@ class EnergyPhalanxTest extends StuTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public static function provideGetPhaserVolleysData()
+    public static function provideGetPhaserVolleysData(): array
     {
         return [[5, 2], [5, 3], [3, 1]];
     }
@@ -208,7 +208,7 @@ class EnergyPhalanxTest extends StuTestCase
     /**
      * @dataProvider provideGetPhaserVolleysData
      */
-    public function testGetPhaserVolleys($expected, $faction): void
+    public function testGetPhaserVolleys(int $expected, int $faction): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')
             ->withNoArgs()

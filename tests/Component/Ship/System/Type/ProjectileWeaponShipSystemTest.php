@@ -14,10 +14,7 @@ use Stu\StuTestCase;
 
 class ProjectileWeaponShipSystemTest extends StuTestCase
 {
-    /**
-     * @var ProjectileWeaponShipSystem|null
-     */
-    private $system;
+    private ProjectileWeaponShipSystem $system;
 
     private ShipWrapperInterface $wrapper;
     private ShipInterface $ship;

@@ -45,7 +45,7 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn (ShipInterface $target) =>
+            fn (ShipInterface $target): bool =>
             $this->interactionChecker->checkPosition($leadShip, $target)
                 && $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && !$target->getUser()->isProtectedAgainstPirates()
@@ -69,7 +69,7 @@ class RageBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn (ShipInterface $a, ShipInterface $b) =>
+            fn (ShipInterface $a, ShipInterface $b): int =>
             $this->fightLib->calculateHealthPercentage($a) -  $this->fightLib->calculateHealthPercentage($b)
         );
 

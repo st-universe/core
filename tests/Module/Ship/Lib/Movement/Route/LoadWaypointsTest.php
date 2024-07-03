@@ -34,7 +34,7 @@ class LoadWaypointsTest extends StuTestCase
         );
     }
 
-    public function testLoadExpectExceptionWhenCalledWithDifferentTypes1()
+    public function testLoadExpectExceptionWhenCalledWithDifferentTypes1(): void
     {
         static::expectExceptionMessage('start and destination have different type');
         static::expectException(InvalidArgumentException::class);
@@ -45,7 +45,7 @@ class LoadWaypointsTest extends StuTestCase
         );
     }
 
-    public function testLoadExpectExceptionWhenCalledWithDifferentTypes2()
+    public function testLoadExpectExceptionWhenCalledWithDifferentTypes2(): void
     {
         static::expectExceptionMessage('start and destination have different type');
         static::expectException(InvalidArgumentException::class);
@@ -56,7 +56,7 @@ class LoadWaypointsTest extends StuTestCase
         );
     }
 
-    public static function provideTestLoadForMapFieldsData()
+    public static function provideTestLoadForMapFieldsData(): array
     {
         return [
             //startX, destX, startY,  destY, sortAscending?
@@ -120,7 +120,7 @@ class LoadWaypointsTest extends StuTestCase
         $this->assertEquals(1, $result->count());
     }
 
-    public static function provideTestLoadForSystemMapFieldsData()
+    public static function provideTestLoadForSystemMapFieldsData(): array
     {
         return [
             //startX, destX, startY,  destY, sortAscending?

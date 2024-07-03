@@ -31,9 +31,9 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->sets([
         //SetList::CODE_QUALITY,        //last 2024-07-03
         //SetList::CODING_STYLE,
-        SetList::DEAD_CODE,           //last 2024-07-03
+        //SetList::DEAD_CODE,           //last 2024-07-03
         //SetList::PRIVATIZATION,       //lots of errors
-        //SetList::TYPE_DECLARATION,    //last 2023-07-17
+        SetList::TYPE_DECLARATION,    //last 2023-07-17
         //LevelSetList::UP_TO_PHP_74,   //last 2023-07-18
         //LevelSetList::UP_TO_PHP_82,
         //DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES //last 2023-12-13

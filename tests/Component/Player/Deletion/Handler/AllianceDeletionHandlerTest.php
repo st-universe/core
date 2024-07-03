@@ -26,10 +26,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
      */
     private $allianceActionManager;
 
-    /**
-     * @var null|AllianceDeletionHandler
-     */
-    private $handler;
+    private PlayerDeletionHandlerInterface $handler;
 
     public function setUp(): void
     {

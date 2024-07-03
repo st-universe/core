@@ -19,7 +19,7 @@ class UpdateFlightDirectionTest extends StuTestCase
         $this->subject = new UpdateFlightDirection();
     }
 
-    public static function provideTestUpdateData()
+    public static function provideTestUpdateData(): array
     {
         return [
             //startX, startY, destX, destY, exception?, flightDirection

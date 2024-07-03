@@ -230,7 +230,7 @@ final class DatabaseEntry implements ViewControllerInterface
     {
         return array_filter(
             $colonyScans,
-            fn (ColonyScanInterface $scan) => $scan->getColony()->getSystemsId() === $systemId
+            fn (ColonyScanInterface $scan): bool => $scan->getColony()->getSystemsId() === $systemId
         );
     }
 }

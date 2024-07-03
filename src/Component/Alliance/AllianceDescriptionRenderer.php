@@ -53,7 +53,7 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
         /** @var string $description */
         $description = preg_replace_callback(
             '#\$(ALLIANCE_[^\s]+)#',
-            static function ($match) use ($replacementVars, $alliance): string {
+            static function (array $match) use ($replacementVars, $alliance): string {
                 $replacer = $replacementVars[$match[1]] ?? null;
                 if ($replacer !== null) {
                     return $replacer($alliance);

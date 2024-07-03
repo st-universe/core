@@ -37,7 +37,7 @@ class CheckDestinationTest extends StuTestCase
         );
     }
 
-    public static function provideValidateForMapDestinationData()
+    public static function provideValidateForMapDestinationData(): array
     {
         return [
             //startX, startY, destX, destY, layerW, layerH, sanity?, finalX, finalY, result?
@@ -137,7 +137,7 @@ class CheckDestinationTest extends StuTestCase
         }
     }
 
-    public static function provideValidateForSystemMapDestinationData()
+    public static function provideValidateForSystemMapDestinationData(): array
     {
         return [
             //startX, startY, destX, destY, systemW, systemH, sanity?, finalX, finalY, result?

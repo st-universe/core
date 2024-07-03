@@ -24,10 +24,7 @@ use Stu\StuTestCase;
 
 class NearFieldScannerShipSystemTest extends StuTestCase
 {
-    /**
-     * @var null|LongRangeScannerShipSystem
-     */
-    private $system;
+    private NearFieldScannerShipSystem $system;
 
     /**
      * @var AstroEntryLibInterface|MockInterface
@@ -61,7 +58,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         );
     }
 
-    public static function provideCheckActivationConditionsReturnsFalseIfNoColonyData()
+    public static function provideCheckActivationConditionsReturnsFalseIfNoColonyData(): array
     {
         return [
             [false, false, false, 'noch keine Kolonie kolonisiert wurde'],

@@ -61,7 +61,7 @@ class SystemScanPanel extends AbstractVisualPanel
 
     protected function getEntryCallable(): callable
     {
-        return fn (int $x, int $y) => new SystemScanPanelEntry(
+        return fn (int $x, int $y): SystemScanPanelEntry => new SystemScanPanelEntry(
             $x,
             $y,
             $this->layers,

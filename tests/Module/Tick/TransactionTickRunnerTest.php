@@ -45,7 +45,7 @@ class TransactionTickRunnerTest extends StuTestCase
             ->once()
             ->andReturn(GameEnum::CONFIG_GAMESTATE_VALUE_RESET);
 
-        $this->subject->runWithResetCheck(fn () => true, "", 1, 2);
+        $this->subject->runWithResetCheck(fn (): bool => true, "", 1, 2);
     }
 
     public function testRunWithResetCheckExpectRollbackWhenExceptionOccurs(): void

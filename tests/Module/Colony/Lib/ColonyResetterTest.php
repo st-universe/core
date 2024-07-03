@@ -89,10 +89,7 @@ class ColonyResetterTest extends StuTestCase
      */
     private $privateMessageSender;
 
-    /**
-     * @var null|ColonyResetter
-     */
-    private $resetter;
+    private ColonyResetterInterface $resetter;
 
     public function setUp(): void
     {

@@ -22,10 +22,7 @@ use Stu\StuTestCase;
 
 class LongRangeScannerShipSystemTest extends StuTestCase
 {
-    /**
-     * @var null|LongRangeScannerShipSystem
-     */
-    private $system;
+    private LongRangeScannerShipSystem $system;
 
     /**
      * @var null|AstroEntryLibInterface|MockInterface

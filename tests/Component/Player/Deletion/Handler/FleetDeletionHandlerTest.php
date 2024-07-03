@@ -17,10 +17,7 @@ class FleetDeletionHandlerTest extends MockeryTestCase
      */
     private $fleetRepository;
 
-    /**
-     * @var null|FleetDeletionHandler
-     */
-    private $handler;
+    private PlayerDeletionHandlerInterface $handler;
 
     public function setUp(): void
     {

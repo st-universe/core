@@ -34,7 +34,7 @@ class EnterWaypointTest extends StuTestCase
         );
     }
 
-    public function testEnterNextWaypointExpectLocationUpdateWhenOnMap()
+    public function testEnterNextWaypointExpectLocationUpdateWhenOnMap(): void
     {
         $ship = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(MapInterface::class);
@@ -51,7 +51,7 @@ class EnterWaypointTest extends StuTestCase
         );
     }
 
-    public function testEnterNextWaypointExpectWormholeEntryUsing()
+    public function testEnterNextWaypointExpectWormholeEntryUsing(): void
     {
         $ship = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(MapInterface::class);
@@ -82,7 +82,7 @@ class EnterWaypointTest extends StuTestCase
         );
     }
 
-    public function testEnterNextWaypointExpectLocationUpdateWhenOnSystemMap()
+    public function testEnterNextWaypointExpectLocationUpdateWhenOnSystemMap(): void
     {
         $ship = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(StarSystemMapInterface::class);
@@ -99,7 +99,7 @@ class EnterWaypointTest extends StuTestCase
         );
     }
 
-    public function testEnterNextWaypointExpectFlightDirectionUpdateAndSignatureCreationWhenTraversing()
+    public function testEnterNextWaypointExpectFlightDirectionUpdateAndSignatureCreationWhenTraversing(): void
     {
         $ship = $this->mock(ShipInterface::class);
         $waypoint = $this->mock(StarSystemMapInterface::class);

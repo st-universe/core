@@ -34,7 +34,7 @@ class ShipAttackPreparationTest extends StuTestCase
         );
     }
 
-    public static function provideGetReadyData()
+    public static function provideGetReadyData(): array
     {
         return [
             [false],

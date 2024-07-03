@@ -41,14 +41,16 @@ class PreFlightConditionsCheck implements PreFlightConditionsCheckInterface
 
         array_walk(
             $this->conditions,
-            fn (PreFlightConditionInterface $condition) => array_walk(
-                $wrappers,
-                fn (ShipWrapperInterface $wrapper) => $condition->check(
-                    $wrapper,
-                    $flightRoute,
-                    $conditionCheckResult
-                )
-            )
+            function (PreFlightConditionInterface $condition) use ($wrappers, $flightRoute, $conditionCheckResult) {
+                array_walk(
+                    $wrappers,
+                    fn (ShipWrapperInterface $wrapper) => $condition->check(
+                        $wrapper,
+                        $flightRoute,
+                        $conditionCheckResult
+                    )
+                );
+            }
         );
 
         return $conditionCheckResult;

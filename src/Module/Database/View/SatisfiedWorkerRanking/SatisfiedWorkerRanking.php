@@ -65,7 +65,7 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
 
     private function retrieveEmployerList(): callable
     {
-        return fn () => array_map(
+        return fn (): array => array_map(
             fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string)$data['satisfied']),
             $this->colonyRepository->getSatisfiedWorkerTop10()
         );

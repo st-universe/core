@@ -58,7 +58,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
         $flightRoute = $this->safeFlightRoute->getSafeFlightRoute(
             $leadShip,
-            fn () => $this->getCoordinate($leadShip, $currentLocation)
+            fn (): Coordinate => $this->getCoordinate($leadShip, $currentLocation)
         );
         if ($flightRoute === null) {
             $this->logger->log('    no safe flight route found');

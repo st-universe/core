@@ -73,7 +73,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 
         return array_reduce(
             $buildplan->getModules()->toArray(),
-            fn (int $value, BuildplanModuleInterface $buildplanModule) => $value + $buildplanModule->getModule()->getLevel() * self::BOARDING_PRESTIGE_PER_MODULE_LEVEL,
+            fn (int $value, BuildplanModuleInterface $buildplanModule): int => $value + $buildplanModule->getModule()->getLevel() * self::BOARDING_PRESTIGE_PER_MODULE_LEVEL,
             self::BOARDING_PRESTIGE_PER_TRY
         );
     }

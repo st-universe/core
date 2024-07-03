@@ -104,7 +104,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
     {
         return array_filter(
             $colonyScans,
-            fn (ColonyScanInterface $scan) => $scan->getColonyUserId() === $user->getId()
+            fn (ColonyScanInterface $scan): bool => $scan->getColonyUserId() === $user->getId()
         );
     }
 }

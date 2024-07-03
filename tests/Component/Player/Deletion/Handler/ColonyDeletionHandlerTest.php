@@ -25,10 +25,7 @@ class ColonyDeletionHandlerTest extends StuTestCase
      */
     private $colonyRepository;
 
-    /**
-     * @var null|ColonyDeletionHandler
-     */
-    private $handler;
+    private PlayerDeletionHandlerInterface $handler;
 
     public function setUp(): void
     {

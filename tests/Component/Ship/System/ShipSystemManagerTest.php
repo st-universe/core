@@ -53,12 +53,9 @@ class ShipSystemManagerTest extends StuTestCase
      */
     private $stuTimeMock;
 
-    private $system_id = ShipSystemTypeEnum::SYSTEM_EPS;
+    private ShipSystemTypeEnum $system_id = ShipSystemTypeEnum::SYSTEM_EPS;
 
-    /**
-     * @var ShipSystemManager|null
-     */
-    private $manager;
+    private ShipSystemManagerInterface $manager;
 
     public function setUp(): void
     {
@@ -320,7 +317,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->andReturn($energyCosts);
         $this->systemType->shouldReceive('checkActivationConditions')->with(
             $this->wrapper,
-            Mockery::on(function (&$reason) {
+            Mockery::on(function (&$reason): bool {
                 $reason = 'reason';
                 return true;
             })
@@ -686,7 +683,7 @@ class ShipSystemManagerTest extends StuTestCase
 
         $this->systemType->shouldReceive('checkDeactivationConditions')->with(
             $this->wrapper,
-            Mockery::on(function (&$reason) {
+            Mockery::on(function (&$reason): bool {
                 $reason = 'reason';
                 return true;
             })

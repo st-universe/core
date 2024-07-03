@@ -38,7 +38,7 @@ final class CommodityCache implements CommodityCacheInterface
         }
 
         if ($type !== null) {
-            return array_filter($this->commodityArray, fn (CommodityInterface $commodity) => $commodity->getType() === $type);
+            return array_filter($this->commodityArray, fn (CommodityInterface $commodity): bool => $commodity->getType() === $type);
         }
 
         return $this->commodityArray;

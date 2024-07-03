@@ -647,11 +647,11 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
     {
         return array_reduce(
             array_map(
-                fn (ShipModuleTypeEnum $type) =>
+                fn (ShipModuleTypeEnum $type): string =>
                 sprintf('getModuleMandatory%d', $type->value),
-                array_filter(ShipModuleTypeEnum::cases(), fn (ShipModuleTypeEnum $type) => !$type->isSpecialSystemType())
+                array_filter(ShipModuleTypeEnum::cases(), fn (ShipModuleTypeEnum $type): bool => !$type->isSpecialSystemType())
             ),
-            fn (int $value, string $method) => $value + $this->$method() ? 1 : 0,
+            fn (int $value, string $method): int => $value + $this->$method() ? 1 : 0,
             0
         );
     }
