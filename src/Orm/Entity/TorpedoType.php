@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TorpedoTypeRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +21,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_torpedo_types')]
 #[Index(name: 'torpedo_type_research_idx', columns: ['research_id'])]
 #[Index(name: 'level_idx', columns: ['level'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TorpedoTypeRepository')]
+#[Entity(repositoryClass: TorpedoTypeRepository::class)]
 class TorpedoType implements TorpedoTypeInterface
 {
     #[Id]

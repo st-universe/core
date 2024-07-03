@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\FleetRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_fleets')]
 #[Index(name: 'fleet_user_idx', columns: ['user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\FleetRepository')]
+#[Entity(repositoryClass: FleetRepository::class)]
 class Fleet implements FleetInterface
 {
     #[Id]

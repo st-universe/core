@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\HistoryRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Stu\Component\History\HistoryTypeEnum;
 
 #[Table(name: 'stu_history')]
 #[Index(name: 'type_idx', columns: ['type'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\HistoryRepository')]
+#[Entity(repositoryClass: HistoryRepository::class)]
 class History implements HistoryInterface
 {
     #[Id]

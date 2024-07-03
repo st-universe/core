@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AuctionBidRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_auction_bid')]
 #[Index(name: 'auction_bid_sort_idx', columns: ['max_amount'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AuctionBidRepository')]
+#[Entity(repositoryClass: AuctionBidRepository::class)]
 class AuctionBid implements AuctionBidInterface
 {
     #[Id]

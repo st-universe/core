@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\GameTurnRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_game_turns')]
 #[Index(name: 'turn_idx', columns: ['turn'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\GameTurnRepository')]
+#[Entity(repositoryClass: GameTurnRepository::class)]
 class GameTurn implements GameTurnInterface
 {
     #[Id]

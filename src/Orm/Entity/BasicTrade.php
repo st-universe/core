@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BasicTradeRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_basic_trade')]
 #[Index(name: 'base_trade_idx', columns: ['faction_id', 'commodity_id', 'date_ms'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BasicTradeRepository')]
+#[Entity(repositoryClass: BasicTradeRepository::class)]
 class BasicTrade implements BasicTradeInterface
 {
     #[Id]

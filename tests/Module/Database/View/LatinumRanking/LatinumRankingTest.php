@@ -76,12 +76,10 @@ class LatinumRankingTest extends StuTestCase
             ->with('html/database.xhtml/top_lat_user')
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('NAGUS_LIST', Mockery::on(function (Traversable $list) use ($user, $amount): bool {
-                return iterator_to_array($list) === [[
-                    'user' => $user,
-                    'amount' => $amount
-                ]];
-            }))
+            ->with('NAGUS_LIST', Mockery::on(fn(Traversable $list): bool => iterator_to_array($list) === [[
+                'user' => $user,
+                'amount' => $amount
+            ]]))
             ->once();
 
         $this->subject->handle($game);

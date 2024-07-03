@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildplanModuleRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 
 #[Table(name: 'stu_buildplans_modules')]
 #[UniqueConstraint(name: 'buildplan_module_type_idx', columns: ['buildplan_id', 'module_type', 'module_special'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildplanModuleRepository')]
+#[Entity(repositoryClass: BuildplanModuleRepository::class)]
 class BuildplanModule implements BuildplanModuleInterface
 {
     #[Id]

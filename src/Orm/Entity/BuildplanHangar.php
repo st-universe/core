@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildplanHangarRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[Table(name: 'stu_buildplans_hangar')]
 #[UniqueConstraint(name: 'rump_idx', columns: ['rump_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildplanHangarRepository')]
+#[Entity(repositoryClass: BuildplanHangarRepository::class)]
 class BuildplanHangar implements BuildplanHangarInterface
 {
     #[Id]

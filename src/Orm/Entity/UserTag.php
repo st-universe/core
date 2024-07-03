@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserTagRepository;
 use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_user_tag')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserTagRepository')]
+#[Entity(repositoryClass: UserTagRepository::class)]
 class UserTag implements UserTagInterface
 {
     #[Id]

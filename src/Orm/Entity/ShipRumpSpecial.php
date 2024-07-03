@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipRumpSpecialRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_rumps_specials')]
 #[Index(name: 'rump_special_ship_rump_idx', columns: ['rumps_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpSpecialRepository')]
+#[Entity(repositoryClass: ShipRumpSpecialRepository::class)]
 class ShipRumpSpecial implements ShipRumpSpecialInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\RpgPlotRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +21,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_plots')]
 #[Index(name: 'rpg_plot_end_date_idx', columns: ['end_date'])]
 #[Index(name: 'rpg_plot_user_idx', columns: ['user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\RpgPlotRepository')]
+#[Entity(repositoryClass: RpgPlotRepository::class)]
 class RpgPlot implements RpgPlotInterface
 {
     #[Id]

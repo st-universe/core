@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ModuleSpecialRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 
 #[Table(name: 'stu_modules_specials')]
 #[Index(name: 'module_special_module_idx', columns: ['module_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleSpecialRepository')]
+#[Entity(repositoryClass: ModuleSpecialRepository::class)]
 class ModuleSpecial implements ModuleSpecialInterface
 {
     #[Id]

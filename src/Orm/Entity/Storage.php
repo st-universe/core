@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\StorageRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -23,7 +24,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Index(name: 'storage_torpedo_idx', columns: ['torpedo_storage_id'])]
 #[Index(name: 'storage_tradepost_idx', columns: ['tradepost_id'])]
 #[Index(name: 'storage_tradeoffer_idx', columns: ['tradeoffer_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\StorageRepository')]
+#[Entity(repositoryClass: StorageRepository::class)]
 class Storage implements StorageInterface
 {
     #[Id]
@@ -60,7 +61,7 @@ class Storage implements StorageInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildingFunctionRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_buildings_functions')]
 #[Index(name: 'building_function_building_idx', columns: ['buildings_id'])]
 #[Index(name: 'building_function_function_idx', columns: ['function'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingFunctionRepository')]
+#[Entity(repositoryClass: BuildingFunctionRepository::class)]
 class BuildingFunction implements BuildingFunctionInterface
 {
     #[Id]

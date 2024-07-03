@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipBuildplanRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 
 #[Table(name: 'stu_buildplans')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipBuildplanRepository')]
+#[Entity(repositoryClass: ShipBuildplanRepository::class)]
 class ShipBuildplan implements ShipBuildplanInterface
 {
     #[Id]

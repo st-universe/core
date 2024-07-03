@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\PrivateMessageRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_pms')]
 #[Index(name: 'recipient_folder_idx', columns: ['recip_user', 'cat_id'])]
 #[Index(name: 'correspondence', columns: ['recip_user', 'send_user'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\PrivateMessageRepository')]
+#[Entity(repositoryClass: PrivateMessageRepository::class)]
 class PrivateMessage implements PrivateMessageInterface
 {
     #[Id]
@@ -70,10 +71,10 @@ class PrivateMessage implements PrivateMessageInterface
 
     #[OneToOne(targetEntity: 'PrivateMessage', inversedBy: 'outboxPm')]
     #[JoinColumn(name: 'inbox_pm_id', referencedColumnName: 'id')]
-    private ?PrivateMessageInterface $inboxPm;
+    private ?PrivateMessageInterface $inboxPm = null;
 
     #[OneToOne(targetEntity: 'PrivateMessage', mappedBy: 'inboxPm')]
-    private ?PrivateMessageInterface $outboxPm;
+    private ?PrivateMessageInterface $outboxPm = null;
 
     #[Override]
     public function getId(): int

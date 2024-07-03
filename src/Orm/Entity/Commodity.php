@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\CommodityRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Commodity\CommodityTypeEnum;
 
 #[Table(name: 'stu_commodity')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\CommodityRepository')]
+#[Entity(repositoryClass: CommodityRepository::class)]
 class Commodity implements CommodityInterface
 {
     #[Id]

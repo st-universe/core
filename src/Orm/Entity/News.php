@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\NewsRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_news')]
 #[Index(name: 'news_date_idx', columns: ['date'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\NewsRepository')]
+#[Entity(repositoryClass: NewsRepository::class)]
 class News implements NewsInterface
 {
     #[Id]

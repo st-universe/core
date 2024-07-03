@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\StarSystemTypeRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -19,7 +20,7 @@ use RuntimeException;
 #[Table(name: 'stu_system_types')]
 #[Index(name: 'starsystem_mass_center_1_idx', columns: ['first_mass_center_id'])]
 #[Index(name: 'starsystem_mass_center_2_idx', columns: ['second_mass_center_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\StarSystemTypeRepository')]
+#[Entity(repositoryClass: StarSystemTypeRepository::class)]
 class StarSystemType implements StarSystemTypeInterface
 {
     #[Id]

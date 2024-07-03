@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\StarSystemMapRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +24,7 @@ use Stu\Lib\SectorString;
 
 #[Table(name: 'stu_sys_map')]
 #[UniqueConstraint(name: 'system_coordinates_idx', columns: ['sx', 'sy', 'systems_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\StarSystemMapRepository')]
+#[Entity(repositoryClass: StarSystemMapRepository::class)]
 class StarSystemMap implements StarSystemMapInterface
 {
     #[Id]

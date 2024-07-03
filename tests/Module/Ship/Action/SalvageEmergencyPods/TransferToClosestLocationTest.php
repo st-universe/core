@@ -228,8 +228,8 @@ class TransferToClosestLocationTest extends StuTestCase
             ->andReturn($otherUser);
 
         $minDistance = min(
-            $coloDistance === null ? PHP_INT_MAX : $coloDistance,
-            $stationDistance === null ? PHP_INT_MAX : $stationDistance,
+            $coloDistance ?? PHP_INT_MAX,
+            $stationDistance ?? PHP_INT_MAX,
             $tradePostDistance
         );
 

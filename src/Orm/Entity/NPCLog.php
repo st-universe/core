@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\NPCLogRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 
 
 #[Table(name: 'stu_npc_log')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\NPCLogRepository')]
+#[Entity(repositoryClass: NPCLogRepository::class)]
 class NPCLog implements NPCLogInterface
 {
     #[Id]

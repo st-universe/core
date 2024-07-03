@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipLogRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_ship_log')]
 #[Index(name: 'ship_log_ship_idx', columns: ['ship_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipLogRepository')]
+#[Entity(repositoryClass: ShipLogRepository::class)]
 class ShipLog implements ShipLogInterface
 {
     #[Id]

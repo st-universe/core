@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -46,7 +47,7 @@ use Stu\Module\Ship\Lib\Battle\FightLib;
 #[Index(name: 'ship_user_idx', columns: ['user_id'])]
 #[Index(name: 'ship_tractored_idx', columns: ['tractored_ship_id'])]
 #[Index(name: 'ship_influence_area_idx', columns: ['influence_area_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRepository')]
+#[Entity(repositoryClass: ShipRepository::class)]
 class Ship implements ShipInterface
 {
     #[Id]

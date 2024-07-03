@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\FlightSignatureRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Index(name: 'flight_sig_map_idx', columns: ['map_id'])]
 #[Index(name: 'flight_sig_starsystem_map_idx', columns: ['starsystem_map_id'])]
 #[Index(name: 'flight_sig_sensor_result_idx', columns: ['from_direction', 'to_direction', 'time'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\FlightSignatureRepository')]
+#[Entity(repositoryClass: FlightSignatureRepository::class)]
 class FlightSignature implements FlightSignatureInterface
 {
     #[Id]

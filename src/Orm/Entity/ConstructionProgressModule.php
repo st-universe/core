@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ConstructionProgressModuleRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_progress_module')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ConstructionProgressModuleRepository')]
+#[Entity(repositoryClass: ConstructionProgressModuleRepository::class)]
 class ConstructionProgressModule implements ConstructionProgressModuleInterface
 {
     #[Id]

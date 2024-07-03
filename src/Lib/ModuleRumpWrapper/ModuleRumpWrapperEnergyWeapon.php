@@ -15,7 +15,7 @@ final class ModuleRumpWrapperEnergyWeapon extends ModuleRumpWrapperBase implemen
     #[Override]
     public function getValue(ModuleInterface $module = null): int
     {
-        $module = $module ?? current($this->getModule());
+        $module ??= current($this->getModule());
         if ($module === false) {
             return 0;
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\FactionRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_factions')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\FactionRepository')]
+#[Entity(repositoryClass: FactionRepository::class)]
 class Faction implements FactionInterface
 {
     #[Id]
@@ -64,13 +65,13 @@ class Faction implements FactionInterface
     #[JoinColumn(name: 'start_map_id', referencedColumnName: 'id')]
     private ?MapInterface $start_map = null;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'positive_effect_primary_commodity_id', referencedColumnName: 'id')]
-    private ?CommodityInterface $primaryEffectCommodity;
+    private ?CommodityInterface $primaryEffectCommodity = null;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'positive_effect_secondary_commodity_id', referencedColumnName: 'id')]
-    private ?CommodityInterface $secondaryEffectCommodity;
+    private ?CommodityInterface $secondaryEffectCommodity = null;
 
     #[Override]
     public function getId(): int

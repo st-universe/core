@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TradeTransactionRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_trade_transaction')]
 #[Index(name: 'trade_transaction_date_tradepost_idx', columns: ['date', 'tradepost_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TradeTransactionRepository')]
+#[Entity(repositoryClass: TradeTransactionRepository::class)]
 class TradeTransaction implements TradeTransactionInterface
 {
     #[Id]

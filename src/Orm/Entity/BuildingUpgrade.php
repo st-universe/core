@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildingUpgradeRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_buildings_upgrades')]
 #[Index(name: 'upgrade_from_research_idx', columns: ['upgrade_from', 'research_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingUpgradeRepository')]
+#[Entity(repositoryClass: BuildingUpgradeRepository::class)]
 class BuildingUpgrade implements BuildingUpgradeInterface
 {
     #[Id]

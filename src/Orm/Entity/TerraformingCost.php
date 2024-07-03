@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TerraformingCostRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_terraforming_cost')]
 #[Index(name: 'terraforming_idx', columns: ['terraforming_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TerraformingCostRepository')]
+#[Entity(repositoryClass: TerraformingCostRepository::class)]
 class TerraformingCost implements TerraformingCostInterface
 {
     #[Id]
@@ -33,11 +34,11 @@ class TerraformingCost implements TerraformingCostInterface
     #[Column(type: 'integer')]
     private int $count = 0;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Terraforming')]
+    #[ManyToOne(targetEntity: Terraforming::class)]
     #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TerraformingInterface $terraforming;
 

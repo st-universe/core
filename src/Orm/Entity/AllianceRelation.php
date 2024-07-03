@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AllianceRelationRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Stu\Component\Alliance\AllianceEnum;
 
 #[Table(name: 'stu_alliances_relations')]
 #[Index(name: 'alliance_relation_idx', columns: ['alliance_id', 'recipient'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceRelationRepository')]
+#[Entity(repositoryClass: AllianceRelationRepository::class)]
 class AllianceRelation implements AllianceRelationInterface
 {
     #[Id]

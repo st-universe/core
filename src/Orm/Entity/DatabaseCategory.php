@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\DatabaseCategoryRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_database_categories')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseCategoryRepository')]
+#[Entity(repositoryClass: DatabaseCategoryRepository::class)]
 class DatabaseCategory implements DatabaseCategoryInterface
 {
     #[Id]
@@ -47,7 +48,7 @@ class DatabaseCategory implements DatabaseCategoryInterface
     /**
      * @var ArrayCollection<int, DatabaseEntryInterface>
      */
-    #[OneToMany(targetEntity: 'Stu\Orm\Entity\DatabaseEntry', mappedBy: 'category')]
+    #[OneToMany(targetEntity: DatabaseEntry::class, mappedBy: 'category')]
     #[OrderBy(['sort' => 'ASC'])]
     private Collection $entries;
 

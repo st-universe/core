@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildingUpgradeCostRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_buildings_upgrades_cost')]
 #[Index(name: 'buildings_upgrades_idx', columns: ['buildings_upgrades_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingUpgradeCostRepository')]
+#[Entity(repositoryClass: BuildingUpgradeCostRepository::class)]
 class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 {
     #[Id]
@@ -33,11 +34,11 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
     #[Column(type: 'integer')]
     private int $amount;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\BuildingUpgrade')]
+    #[ManyToOne(targetEntity: BuildingUpgrade::class)]
     #[JoinColumn(name: 'buildings_upgrades_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private BuildingUpgradeInterface $upgrade;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\CrewRaceRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_crew_race')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\CrewRaceRepository')]
+#[Entity(repositoryClass: CrewRaceRepository::class)]
 class CrewRace implements CrewRaceInterface
 {
     #[Id]
@@ -37,7 +38,7 @@ class CrewRace implements CrewRaceInterface
     #[Column(type: 'string')]
     private string $define = '';
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Faction')]
+    #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private FactionInterface $faction;
 

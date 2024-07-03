@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ModuleCostRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_modules_cost')]
 #[Index(name: 'module_cost_module_idx', columns: ['module_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleCostRepository')]
+#[Entity(repositoryClass: ModuleCostRepository::class)]
 class ModuleCost implements ModuleCostInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\KnCharactersRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 
 
 #[Table(name: "stu_kn_characters")]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\KnCharactersRepository')]
+#[Entity(repositoryClass: KnCharactersRepository::class)]
 class KnCharacters implements KnCharactersInterface
 {
     #[Id]

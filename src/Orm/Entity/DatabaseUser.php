@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\DatabaseUserRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[Table(name: 'stu_database_user', options: ['engine' => 'InnoDB'])]
 #[UniqueConstraint(name: 'entry_user_idx', columns: ['database_id', 'user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseUserRepository')]
+#[Entity(repositoryClass: DatabaseUserRepository::class)]
 class DatabaseUser implements DatabaseUserInterface
 {
     #[Id]
@@ -33,7 +34,7 @@ class DatabaseUser implements DatabaseUserInterface
     #[Column(type: 'integer')]
     private int $date;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\DatabaseEntry')]
+    #[ManyToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
     private DatabaseEntryInterface $databaseEntry;
 

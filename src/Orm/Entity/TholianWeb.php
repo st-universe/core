@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TholianWebRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_tholian_web')]
 #[Index(name: 'tholian_web_ship_idx', columns: ['ship_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TholianWebRepository')]
+#[Entity(repositoryClass: TholianWebRepository::class)]
 class TholianWeb implements TholianWebInterface
 {
     #[Id]

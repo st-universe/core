@@ -31,11 +31,11 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
     #[Column(type: 'integer')]
     private int $count = 0;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\TorpedoType')]
+    #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'torpedo_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private TorpedoTypeInterface $torpedoType;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipyardShipQueueRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_shipyard_shipqueue')]
 #[Index(name: 'shipyard_shipqueue_user_idx', columns: ['user_id'])]
 #[Index(name: 'shipyard_shipqueue_finish_date_idx', columns: ['finish_date'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipyardShipQueueRepository')]
+#[Entity(repositoryClass: ShipyardShipQueueRepository::class)]
 class ShipyardShipQueue implements ShipyardShipQueueInterface
 {
     #[Id]

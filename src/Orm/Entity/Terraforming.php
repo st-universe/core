@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TerraformingRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 #[Table(name: 'stu_terraforming')]
 #[Index(name: 'terraforming_research_idx', columns: ['research_id'])]
 #[UniqueConstraint(name: 'field_transformation_idx', columns: ['v_feld', 'z_feld'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TerraformingRepository')]
+#[Entity(repositoryClass: TerraformingRepository::class)]
 class Terraforming implements TerraformingInterface
 {
     #[Id]

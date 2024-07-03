@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TorpedoHullRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_torpedo_hull')]
 #[Index(name: 'torpedo_hull_module_idx', columns: ['module_id'])]
 #[Index(name: 'torpedo_hull_torpedo_idx', columns: ['torpedo_type'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TorpedoHullRepository')]
+#[Entity(repositoryClass: TorpedoHullRepository::class)]
 class TorpedoHull implements TorpedoHullInterface
 {
     #[Id]

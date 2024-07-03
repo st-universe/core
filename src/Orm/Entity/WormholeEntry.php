@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\WormholeEntryRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
 #[Table(name: 'stu_wormhole_entry')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\WormholeEntryRepository')]
+#[Entity(repositoryClass: WormholeEntryRepository::class)]
 class WormholeEntry implements WormholeEntryInterface
 {
     #[Id]

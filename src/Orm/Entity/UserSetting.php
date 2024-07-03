@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserSettingRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 #[Table(name: 'stu_user_setting')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserSettingRepository')]
+#[Entity(repositoryClass: UserSettingRepository::class)]
 class UserSetting implements UserSettingInterface
 {
     #[Id]

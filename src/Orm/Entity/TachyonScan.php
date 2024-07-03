@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TachyonScanRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Index(name: 'tachyon_scan_user_idx', columns: ['user_id'])]
 #[Index(name: 'tachyon_scan_map_idx', columns: ['map_id'])]
 #[Index(name: 'tachyon_scan_sysmap_idx', columns: ['starsystem_map_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TachyonScanRepository')]
+#[Entity(repositoryClass: TachyonScanRepository::class)]
 class TachyonScan implements TachyonScanInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ResearchDependencyRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Research\ResearchModeEnum;
 
 #[Table(name: 'stu_research_dependencies')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ResearchDependencyRepository')]
+#[Entity(repositoryClass: ResearchDependencyRepository::class)]
 class ResearchDependency implements ResearchDependencyInterface
 {
     #[Id]
@@ -32,11 +33,11 @@ class ResearchDependency implements ResearchDependencyInterface
     #[Column(type: 'smallint', enumType: ResearchModeEnum::class)]
     private ResearchModeEnum $mode;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Research')]
+    #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
     private ResearchInterface $research;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Research')]
+    #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'depends_on', referencedColumnName: 'id')]
     private ResearchInterface $research_depends_on;
 

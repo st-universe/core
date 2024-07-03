@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\RpgPlotArchivRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 #[Index(name: 'rpg_plot_archiv_end_date_idx', columns: ['end_date'])]
 #[UniqueConstraint(name: 'unique_plot_id', columns: ['id'])]
 #[UniqueConstraint(name: 'unique_former_id', columns: ['former_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\RpgPlotArchivRepository')]
+#[Entity(repositoryClass: RpgPlotArchivRepository::class)]
 class RpgPlotArchiv implements RpgPlotArchivInterface
 {
     #[Id]

@@ -15,7 +15,7 @@ final class ModuleRumpWrapperSensor extends ModuleRumpWrapperBase implements Mod
     #[Override]
     public function getValue(ModuleInterface $module = null): int
     {
-        $module = $module ?? current($this->getModule());
+        $module ??= current($this->getModule());
         if ($module === false) {
             return 0;
         }

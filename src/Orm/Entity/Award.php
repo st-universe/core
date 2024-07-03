@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AwardRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_award')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AwardRepository')]
+#[Entity(repositoryClass: AwardRepository::class)]
 class Award implements AwardInterface
 {
     #[Id]

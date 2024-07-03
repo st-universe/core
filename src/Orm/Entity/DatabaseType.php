@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\DatabaseTypeRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_database_types', options: ['engine' => 'InnoDB'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseTypeRepository')]
+#[Entity(repositoryClass: DatabaseTypeRepository::class)]
 class DatabaseType implements DatabaseTypeInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\WeaponShieldRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_weapon_shield')]
 #[Index(name: 'weapon_shield_module_idx', columns: ['module_id'])]
 #[Index(name: 'weapon_shield_weapon_idx', columns: ['weapon_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\WeaponShieldRepository')]
+#[Entity(repositoryClass: WeaponShieldRepository::class)]
 class WeaponShield implements WeaponShieldInterface
 {
     #[Id]

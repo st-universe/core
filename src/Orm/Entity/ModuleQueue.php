@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ModuleQueueRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_modules_queue')]
 #[Index(name: 'module_queue_colony_module_idx', columns: ['colony_id', 'module_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleQueueRepository')]
+#[Entity(repositoryClass: ModuleQueueRepository::class)]
 class ModuleQueue implements ModuleQueueInterface
 {
     #[Id]

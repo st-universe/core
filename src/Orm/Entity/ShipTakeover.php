@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipTakeoverRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_ship_takeover')]
 #[Index(name: 'ship_takeover_source_idx', columns: ['source_ship_id'])]
 #[Index(name: 'ship_takeover_target_idx', columns: ['target_ship_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipTakeoverRepository')]
+#[Entity(repositoryClass: ShipTakeoverRepository::class)]
 class ShipTakeover implements ShipTakeoverInterface
 {
     #[Id]

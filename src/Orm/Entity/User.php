@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,7 +30,7 @@ use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
 #[Table(name: 'stu_user')]
 #[Index(name: 'user_alliance_idx', columns: ['allys_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserRepository')]
+#[Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AllianceJobRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_alliances_jobs')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceJobRepository')]
+#[Entity(repositoryClass: AllianceJobRepository::class)]
 class AllianceJob implements AllianceJobInterface
 {
     #[Id]

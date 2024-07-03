@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\MapBorderTypeRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_map_bordertypes')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\MapBorderTypeRepository')]
+#[Entity(repositoryClass: MapBorderTypeRepository::class)]
 class MapBorderType implements MapBorderTypeInterface
 {
     #[Id]

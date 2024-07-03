@@ -81,9 +81,7 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getIdleRegistrations')
             ->with(
-                Mockery::on(function ($value): bool {
-                    return $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION;
-                })
+                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION)
             )
             ->once()
             ->andReturn([$idlePlayer]);
@@ -94,12 +92,8 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getDeleteable')
             ->with(
-                Mockery::on(function ($value): bool {
-                    return $value === time() - PlayerDeletion::USER_IDLE_TIME;
-                }),
-                Mockery::on(function ($value): bool {
-                    return $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION;
-                }),
+                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME),
+                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION),
                 [101]
             )
             ->once()

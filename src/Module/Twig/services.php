@@ -31,7 +31,7 @@ return [
             );
         }
 
-        $loader = new FilesystemLoader($templatePath ? $templatePath : []);
+        $loader = new FilesystemLoader($templatePath ?: []);
 
         return new Environment($loader, [
             'cache' => $cache,

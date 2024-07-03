@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\MapRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -33,7 +34,7 @@ use Stu\Lib\SectorString;
 #[Index(name: 'map_bordertype_idx', columns: ['bordertype_id'])]
 #[Index(name: 'map_admin_region_idx', columns: ['admin_region_id'])]
 #[UniqueConstraint(name: 'map_coordinate_idx', columns: ['layer_id', 'cx', 'cy'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\MapRepository')]
+#[Entity(repositoryClass: MapRepository::class)]
 class Map implements MapInterface
 {
     #[Id]
@@ -89,7 +90,7 @@ class Map implements MapInterface
 
     #[ManyToOne(targetEntity: 'StarSystemType')]
     #[JoinColumn(name: 'system_type_id', referencedColumnName: 'id')]
-    private ?StarSystemTypeInterface $starSystemType;
+    private ?StarSystemTypeInterface $starSystemType = null;
 
     #[ManyToOne(targetEntity: 'MapBorderType')]
     #[JoinColumn(name: 'bordertype_id', referencedColumnName: 'id')]

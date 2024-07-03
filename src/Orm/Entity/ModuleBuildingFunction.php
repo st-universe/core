@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ModuleBuildingFunctionRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_modules_buildingfunction')]
 #[Index(name: 'module_buildingfunction_idx', columns: ['module_id', 'buildingfunction'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleBuildingFunctionRepository')]
+#[Entity(repositoryClass: ModuleBuildingFunctionRepository::class)]
 class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
 {
     #[Id]

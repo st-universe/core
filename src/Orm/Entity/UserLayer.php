@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserLayerRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
 #[Table(name: 'stu_user_layer')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserLayerRepository')]
+#[Entity(repositoryClass: UserLayerRepository::class)]
 class UserLayer implements UserLayerInterface
 {
     #[Id]

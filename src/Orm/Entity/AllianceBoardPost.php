@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AllianceBoardPostRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_alliance_posts')]
 #[Index(name: 'topic_date_idx', columns: ['topic_id', 'date'])]
 #[Index(name: 'board_date_idx', columns: ['board_id', 'date'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceBoardPostRepository')]
+#[Entity(repositoryClass: AllianceBoardPostRepository::class)]
 class AllianceBoardPost implements AllianceBoardPostInterface
 {
     #[Id]

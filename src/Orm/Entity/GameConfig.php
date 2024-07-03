@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\GameConfigRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_game_config')]
 #[Index(name: 'option_idx', columns: ['option'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\GameConfigRepository')]
+#[Entity(repositoryClass: GameConfigRepository::class)]
 class GameConfig implements GameConfigInterface
 {
     public const TABLE_NAME = 'stu_game_config';

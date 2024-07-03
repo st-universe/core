@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TradeOfferRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_trade_offers')]
 #[Index(name: 'trade_post_user_idx', columns: ['posts_id', 'user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TradeOfferRepository')]
+#[Entity(repositoryClass: TradeOfferRepository::class)]
 class TradeOffer implements TradeOfferInterface
 {
     #[Id]
