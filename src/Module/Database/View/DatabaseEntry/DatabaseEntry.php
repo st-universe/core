@@ -95,7 +95,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $game->setTemplateVar('ENTRY', $entry);
     }
 
-    protected function addSpecialVars(GameControllerInterface $game, DatabaseEntryInterface $entry): void
+    private function addSpecialVars(GameControllerInterface $game, DatabaseEntryInterface $entry): void
     {
         $entry_object_id = $entry->getObjectId();
 

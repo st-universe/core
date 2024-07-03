@@ -24,18 +24,18 @@ final class FleetWrapper implements FleetWrapperInterface
     #[Override]
     public function getLeadWrapper(): ShipWrapperInterface
     {
-        return $this->shipWrapperFactory->wrapShip($this->get()->getLeadShip());
+        return $this->shipWrapperFactory->wrapShip($this->fleet->getLeadShip());
     }
 
     #[Override]
     public function getShipWrappers(): Collection
     {
-        return $this->shipWrapperFactory->wrapShips($this->get()->getShips()->toArray());
+        return $this->shipWrapperFactory->wrapShips($this->fleet->getShips()->toArray());
     }
 
     #[Override]
     public function isForeignFleet(): bool
     {
-        return !$this->isSingleShips && $this->get()->getUser() !== $this->game->getUser();
+        return !$this->isSingleShips && $this->fleet->getUser() !== $this->game->getUser();
     }
 }

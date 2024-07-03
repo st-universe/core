@@ -79,6 +79,6 @@ final class Message implements MessageInterface
     #[Override]
     public function isEmpty(): bool
     {
-        return $this->getMessage() === [];
+        return $this->msg === [];
     }
 }

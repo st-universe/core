@@ -187,7 +187,7 @@ final class FlightRoute implements FlightRouteInterface
     #[Override]
     public function isImpulseDriveNeeded(): bool
     {
-        $routeMode = $this->getRouteMode();
+        $routeMode = $this->routeMode;
 
         if (
             $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY
@@ -203,7 +203,7 @@ final class FlightRoute implements FlightRouteInterface
     #[Override]
     public function isWarpDriveNeeded(): bool
     {
-        $routeMode = $this->getRouteMode();
+        $routeMode = $this->routeMode;
 
         if (
             $routeMode === RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT
@@ -219,7 +219,7 @@ final class FlightRoute implements FlightRouteInterface
     #[Override]
     public function isTranswarpCoilNeeded(): bool
     {
-        return $this->getRouteMode() === RouteModeEnum::ROUTE_MODE_TRANSWARP;
+        return $this->routeMode === RouteModeEnum::ROUTE_MODE_TRANSWARP;
     }
 
     #[Override]

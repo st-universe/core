@@ -13,7 +13,7 @@ use Iterator;
  */
 final class ShipNfsIterator implements Iterator
 {
-    protected int $position = 0;
+    private int $position = 0;
 
     /** @param array<TShipItemInterface> $ships */
     public function __construct(private array $ships, private int $userId)
