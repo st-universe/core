@@ -23,12 +23,12 @@ final class AllianceMemberWrapper
 
     public function isFounder(): bool
     {
-        return $this->getUser()->getId() === $this->getAlliance()->getFounder()->getUserId();
+        return $this->user->getId() === $this->alliance->getFounder()->getUserId();
     }
 
     public function getUserId(): int
     {
-        return $this->getUser()->getId();
+        return $this->user->getId();
     }
 
     public function getOnlineStateCssClass(): string

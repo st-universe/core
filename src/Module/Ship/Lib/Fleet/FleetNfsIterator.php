@@ -16,7 +16,7 @@ use Stu\Orm\Entity\ShipInterface;
  */
 final class FleetNfsIterator implements Iterator
 {
-    protected int $position = 0;
+    private int $position = 0;
 
     /** @var array<int, array<TFleetShipItemInterface>> */
     private array $fleets = [];

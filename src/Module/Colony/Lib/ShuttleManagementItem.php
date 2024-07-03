@@ -38,7 +38,7 @@ final class ShuttleManagementItem
 
     public function getMaxUnits(): int
     {
-        return $this->getCurrentLoad() + $this->getColonyLoad();
+        return $this->currentLoad + $this->colonyLoad;
     }
 
     public function getCommodityId(): int

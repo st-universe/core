@@ -141,7 +141,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
     #[Override]
     public function getBuildings(): array
     {
-        return $this->buildingRepository->getByResearch($this->getResearch());
+        return $this->buildingRepository->getByResearch($this->research);
     }
 
     #[Override]

@@ -87,11 +87,11 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
-        if ($this->get()->getFleet() === null) {
+        if ($this->ship->getFleet() === null) {
             return null;
         }
 
-        return $this->shipWrapperFactory->wrapFleet($this->get()->getFleet());
+        return $this->shipWrapperFactory->wrapFleet($this->ship->getFleet());
     }
 
     #[Override]
@@ -113,14 +113,14 @@ final class ShipWrapper implements ShipWrapperInterface
     {
         $result = 0;
 
-        foreach ($this->shipSystemManager->getActiveSystems($this->get()) as $shipSystem) {
+        foreach ($this->shipSystemManager->getActiveSystems($this->ship) as $shipSystem) {
             $result += $this->shipSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
 
-        if ($this->get()->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
+        if ($this->ship->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
             $result += ShipStateChangerInterface::ALERT_YELLOW_EPS_USAGE;
         }
-        if ($this->get()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+        if ($this->ship->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
             $result += ShipStateChangerInterface::ALERT_RED_EPS_USAGE;
         }
 
@@ -141,7 +141,7 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getReactorWrapper(): ?ReactorWrapperInterface
     {
         if ($this->reactorWrapper === null) {
-            $ship = $this->get();
+            $ship = $this->ship;
             $reactorSystemData = null;
 
 
@@ -193,7 +193,7 @@ final class ShipWrapper implements ShipWrapperInterface
     {
         $damagedSystems = [];
         $prioArray = [];
-        foreach ($this->get()->getSystems() as $system) {
+        foreach ($this->ship->getSystems() as $system) {
             if ($system->getStatus() < 100) {
                 $damagedSystems[] = $system;
                 $prioArray[$system->getSystemType()->value] = $this->shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
@@ -217,25 +217,25 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function isOwnedByCurrentUser(): bool
     {
-        return $this->game->getUser() === $this->get()->getUser();
+        return $this->game->getUser() === $this->ship->getUser();
     }
 
     #[Override]
     public function canLandOnCurrentColony(): bool
     {
-        if ($this->get()->getRump()->getCommodity() === null) {
+        if ($this->ship->getRump()->getCommodity() === null) {
             return false;
         }
-        if ($this->get()->isShuttle()) {
+        if ($this->ship->isShuttle()) {
             return false;
         }
 
-        $currentColony = $this->get()->getStarsystemMap() !== null ? $this->get()->getStarsystemMap()->getColony() : null;
+        $currentColony = $this->ship->getStarsystemMap() !== null ? $this->ship->getStarsystemMap()->getColony() : null;
 
         if ($currentColony === null) {
             return false;
         }
-        if ($currentColony->getUser() !== $this->get()->getUser()) {
+        if ($currentColony->getUser() !== $this->ship->getUser()) {
             return false;
         }
 
@@ -247,15 +247,15 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function canBeRepaired(): bool
     {
-        if ($this->get()->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN) {
+        if ($this->ship->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN) {
             return false;
         }
 
-        if ($this->get()->getShieldState()) {
+        if ($this->ship->getShieldState()) {
             return false;
         }
 
-        if ($this->get()->getCloakState()) {
+        if ($this->ship->getCloakState()) {
             return false;
         }
 
@@ -263,13 +263,13 @@ final class ShipWrapper implements ShipWrapperInterface
             return true;
         }
 
-        return $this->get()->getHull() < $this->get()->getMaxHull();
+        return $this->ship->getHull() < $this->ship->getMaxHull();
     }
 
     #[Override]
     public function canFire(): bool
     {
-        $ship = $this->get();
+        $ship = $this->ship;
         if (!$ship->getNbs()) {
             return false;
         }
@@ -320,7 +320,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getTractoredShipWrapper(): ?ShipWrapperInterface
     {
-        $tractoredShip = $this->get()->getTractoredShip();
+        $tractoredShip = $this->ship->getTractoredShip();
         if ($tractoredShip === null) {
             return null;
         }
@@ -331,7 +331,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getTractoringShipWrapper(): ?ShipWrapperInterface
     {
-        $tractoringShip = $this->get()->getTractoringShip();
+        $tractoringShip = $this->ship->getTractoringShip();
         if ($tractoringShip === null) {
             return null;
         }
@@ -342,7 +342,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getDockedToShipWrapper(): ?ShipWrapperInterface
     {
-        $dockedTo = $this->get()->getDockedTo();
+        $dockedTo = $this->ship->getDockedTo();
         if ($dockedTo === null) {
             return null;
         }
@@ -353,7 +353,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getStateIconAndTitle(): ?array
     {
-        $ship = $this->get();
+        $ship = $this->ship;
 
         $state = $ship->getState();
 
@@ -409,7 +409,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getTakeoverTicksLeft(ShipTakeoverInterface $takeover = null): int
     {
-        $takeover ??= $this->get()->getTakeoverActive();
+        $takeover ??= $this->ship->getTakeoverActive();
         if ($takeover === null) {
             throw new RuntimeException('should not call when active takeover is null');
         }
@@ -422,7 +422,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function canBeScrapped(): bool
     {
-        $ship = $this->get();
+        $ship = $this->ship;
 
         return $ship->isBase() && $ship->getState() !== ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING;
     }
@@ -430,7 +430,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getCrewStyle(): string
     {
-        $ship = $this->get();
+        $ship = $this->ship;
         $excessCrew = $ship->getExcessCrewCount();
 
         if ($excessCrew === 0) {
@@ -527,7 +527,7 @@ final class ShipWrapper implements ShipWrapperInterface
     private function getSpecificShipSystem(ShipSystemTypeEnum $systemType, string $className)
     {
         return $this->systemDataDeserializer->getSpecificShipSystem(
-            $this->get(),
+            $this->ship,
             $systemType,
             $className,
             $this->shipSystemDataCache,

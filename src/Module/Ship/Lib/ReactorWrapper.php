@@ -126,19 +126,19 @@ final class ReactorWrapper implements ReactorWrapperInterface
     #[Override]
     public function getCapacity(): int
     {
-        return $this->get()->getCapacity();
+        return $this->reactorSystemData->getCapacity();
     }
 
     #[Override]
     public function getOutput(): int
     {
-        return $this->get()->getOutput();
+        return $this->reactorSystemData->getOutput();
     }
 
     #[Override]
     public function setOutput(int $output): ReactorWrapperInterface
     {
-        $this->get()->setOutput($output)->update();
+        $this->reactorSystemData->setOutput($output)->update();
 
         return $this;
     }
@@ -156,13 +156,13 @@ final class ReactorWrapper implements ReactorWrapperInterface
     #[Override]
     public function getLoad(): int
     {
-        return $this->get()->getLoad();
+        return $this->reactorSystemData->getLoad();
     }
 
     #[Override]
     public function setLoad(int $load): ReactorWrapperInterface
     {
-        $this->get()->setLoad($load)->update();
+        $this->reactorSystemData->setLoad($load)->update();
 
         return $this;
     }
@@ -170,7 +170,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
     #[Override]
     public function changeLoad(int $amount): ReactorWrapperInterface
     {
-        $this->get()->setLoad($this->get()->getLoad() + $amount)->update();
+        $this->reactorSystemData->setLoad($this->reactorSystemData->getLoad() + $amount)->update();
 
         return $this;
     }
@@ -178,7 +178,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
     #[Override]
     public function isHealthy(): bool
     {
-        return $this->wrapper->get()->isSystemHealthy($this->get()->getSystemType());
+        return $this->wrapper->get()->isSystemHealthy($this->reactorSystemData->getSystemType());
     }
 
     #[Override]

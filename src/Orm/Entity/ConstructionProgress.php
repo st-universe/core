@@ -55,11 +55,6 @@ class ConstructionProgress implements ConstructionProgressInterface
         return $this->id;
     }
 
-    private function getShipId(): int
-    {
-        return $this->ship_id;
-    }
-
     #[Override]
     public function getShip(): ShipInterface
     {
@@ -97,6 +92,6 @@ class ConstructionProgress implements ConstructionProgressInterface
     #[Override]
     public function __toString(): string
     {
-        return sprintf('constructionProgress, shipId: %d', $this->getShipId());
+        return sprintf('constructionProgress, shipId: %d', $this->ship_id);
     }
 }

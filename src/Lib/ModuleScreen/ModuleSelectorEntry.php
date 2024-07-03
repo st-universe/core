@@ -60,7 +60,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     public function getStoredAmount(): int
     {
         /** @var StorageInterface|null */
-        $storage = $this->host->getStorage()->get($this->getModule()->getCommodityId());
+        $storage = $this->host->getStorage()->get($this->module->getCommodityId());
 
         if ($storage === null) {
             return 0;
@@ -78,16 +78,16 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     #[Override]
     public function getNeededCrew(): int
     {
-        return $this->getModule()->getCrewByFactionAndRumpLvl($this->user->getFaction(), $this->rump);
+        return $this->module->getCrewByFactionAndRumpLvl($this->user->getFaction(), $this->rump);
     }
 
     #[Override]
     public function getValue(): int
     {
-        return $this->getModule()
+        return $this->module
             ->getType()
             ->getModuleRumpWrapperCallable()($this->rump, $this->buildplan)
-            ->getValue($this->getModule());
+            ->getValue($this->module);
     }
 
     #[Override]
@@ -113,6 +113,6 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
             return [];
         }
 
-        return $addon->getModificators($this->getModule());
+        return $addon->getModificators($this->module);
     }
 }
