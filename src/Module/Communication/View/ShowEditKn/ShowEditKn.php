@@ -63,7 +63,7 @@ final class ShowEditKn implements ViewControllerInterface
             $game->setPageTitle(_('Beitrag bearbeiten'));
 
             $characterEntities = $this->knCharactersRepository->findBy(['knPost' => $post->getId()]);
-            $characterIds = array_map(function ($characterEntity) {
+            $characterIds = array_map(function ($characterEntity): int {
                 return $characterEntity->getUserCharacters()->getId();
             }, $characterEntities);
             $characterIdsString = implode(',', $characterIds);

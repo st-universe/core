@@ -33,7 +33,7 @@ final class CloseCombatUtil implements CloseCombatUtilInterface
 
         return array_reduce(
             $combatGroup,
-            fn (int $value, ShipCrewInterface $shipCrew)
+            fn (int $value, ShipCrewInterface $shipCrew): int
             => $value + CrewEnum::CREW_FIGHT_CAPABILITIES[$shipCrew->getCrew()->getType()] * $factionCombatScore,
             0
         );

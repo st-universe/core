@@ -38,7 +38,7 @@ class PlayerRelationDeterminatorTest extends StuTestCase
         $this->opponent = $this->mock(UserInterface::class);
     }
 
-    public static function provideIsFriendData()
+    public static function provideIsFriendData(): array
     {
         return [
             [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::NONE, false],
@@ -74,7 +74,7 @@ class PlayerRelationDeterminatorTest extends StuTestCase
         );
     }
 
-    public static function provideIsEnemyData()
+    public static function provideIsEnemyData(): array
     {
         return [
             [PlayerRelationTypeEnum::NONE, PlayerRelationTypeEnum::NONE, false],

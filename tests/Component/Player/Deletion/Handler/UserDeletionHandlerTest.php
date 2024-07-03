@@ -35,10 +35,7 @@ class UserDeletionHandlerTest extends StuTestCase
      */
     private $userLockRepository;
 
-    /**
-     * @var null|UserDeletionHandler
-     */
-    private $handler;
+    private PlayerDeletionHandlerInterface $handler;
 
     public function setUp(): void
     {

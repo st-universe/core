@@ -19,7 +19,7 @@ class AlertedShipInformationTest extends StuTestCase
         $this->subject = new AlertedShipInformation();
     }
 
-    public static function provideAddAlertedShipsInfoData()
+    public static function provideAddAlertedShipsInfoData(): array
     {
         return [
             [ShipAlertStateEnum::ALERT_YELLOW, false, 'In Sektor 5|9 befindet sich 1 Flotte(n) auf [b][color=yellow]Alarm-Gelb![/color][/b]'],

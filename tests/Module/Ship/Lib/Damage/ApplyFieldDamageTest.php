@@ -117,12 +117,12 @@ class ApplyFieldDamageTest extends StuTestCase
             ->andReturn($tractoredShip);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
+            ->with(Mockery::on(function (DamageWrapper $damageWrapper): bool {
                 return $damageWrapper->getNetDamage() == 42;
             }), $this->wrapper, $message)
             ->once();
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
+            ->with(Mockery::on(function (DamageWrapper $damageWrapper): bool {
                 return $damageWrapper->getNetDamage() == 42;
             }), $tractoredShipWrapper, $tmessage)
             ->once();
@@ -195,7 +195,7 @@ class ApplyFieldDamageTest extends StuTestCase
             ->andReturn(null);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
+            ->with(Mockery::on(function (DamageWrapper $damageWrapper): bool {
                 return $damageWrapper->getNetDamage() == 100;
             }), $this->wrapper, $message)
             ->once();

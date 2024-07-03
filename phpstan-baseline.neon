@@ -149,11 +149,6 @@ parameters:
 			path: src/Lib/ModuleScreen/ModuleScreenTab.php
 
 		-
-			message: "#^Method NavPanel\\:\\:getShip\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanel.php
-
-		-
 			message: "#^Property Stu\\\\Lib\\\\Request\\\\CustomRequestParserFactory\\:\\:\\$config has no type specified\\.$#"
 			count: 1
 			path: src/Lib/Request/CustomRequestParserFactory.php
@@ -1000,11 +995,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:getSemaphore\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Control/SemaphoreUtil.php
 

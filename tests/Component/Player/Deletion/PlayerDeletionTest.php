@@ -43,10 +43,7 @@ class PlayerDeletionTest extends StuTestCase
      */
     private $deletionHandler;
 
-    /**
-     * @var null|PlayerDeletion
-     */
-    private $playerDeletion;
+    private PlayerDeletionInterface $playerDeletion;
 
     public function setUp(): void
     {

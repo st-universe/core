@@ -17,10 +17,7 @@ use Stu\StuTestCase;
 
 class CloakShipSystemTest extends StuTestCase
 {
-    /**
-     * @var null|CloakShipSystem
-     */
-    private $system;
+    private CloakShipSystem $system;
 
     /**
      * @var null|MockInterface|ShipStateChangerInterface

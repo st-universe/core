@@ -55,10 +55,7 @@ class PlayerCreatorTest extends MockeryTestCase
      */
     private $entityManager;
 
-    /**
-     * @var null|PlayerCreator
-     */
-    private $creator;
+    private PlayerCreatorInterface $creator;
 
     public function setUp(): void
     {

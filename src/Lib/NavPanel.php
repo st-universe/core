@@ -8,14 +8,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 class NavPanel
 {
-    private ShipInterface $ship;
-
-    public function __construct(ShipInterface $ship)
+    public function __construct(private ShipInterface $ship)
     {
-        $this->ship = $ship;
     }
 
-    public function getShip()
+    public function getShip(): ShipInterface
     {
         return $this->ship;
     }
@@ -23,15 +20,9 @@ class NavPanel
     /** @return array{cx: int, cy: int} */
     public function getShipPosition(): array
     {
-        if ($this->getShip()->getSystem() !== null) {
-            return [
-                "cx" => $this->getShip()->getSX(),
-                "cy" => $this->getShip()->getSY()
-            ];
-        }
         return [
-            "cx" => $this->getShip()->getMap()->getCx(),
-            "cy" => $this->getShip()->getMap()->getCy()
+            "cx" => $this->getShip()->getPosX(),
+            "cy" => $this->getShip()->getPosY()
         ];
     }
 
@@ -48,6 +39,9 @@ class NavPanel
         }
 
         $layer = $this->getShip()->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
         return [
             "mx" => $layer->getWidth(),
             "my" => $layer->getHeight()

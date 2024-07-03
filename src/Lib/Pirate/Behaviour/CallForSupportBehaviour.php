@@ -72,7 +72,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $filteredFriends = array_filter(
             $friends,
-            fn (ShipInterface $friend) =>
+            fn (ShipInterface $friend): bool =>
             !$friend->isDestroyed()
                 && $friend->isFleetLeader()
                 && $friend->getCurrentMapField() !== $leadShip->getCurrentMapField()
@@ -80,7 +80,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredFriends,
-            fn (ShipInterface $a, ShipInterface $b) =>
+            fn (ShipInterface $a, ShipInterface $b): int =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 

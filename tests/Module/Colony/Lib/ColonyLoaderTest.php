@@ -34,10 +34,7 @@ class ColonyLoaderTest extends StuTestCase
     private int $colonyId = 42;
     private int $userId = 5;
 
-    /**
-     * @var null|ColonyLoader
-     */
-    private $subject;
+    private ColonyLoaderInterface $subject;
 
 
     public function setUp(): void

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use SysvSemaphore;
 use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
@@ -28,7 +29,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function getSemaphore(int $key)
+    public function getSemaphore(int $key): ?SysvSemaphore
     {
         if (!$this->isSemaphoreUsageActive()) {
             return null;

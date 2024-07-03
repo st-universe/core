@@ -133,7 +133,7 @@ class ProjectilePhalanxTest extends StuTestCase
         $this->assertEquals(0, $result);
     }
 
-    public static function provideGetTorpedoStateData()
+    public static function provideGetTorpedoStateData(): array
     {
         return [[false, 0], [true, 1]];
     }
@@ -141,7 +141,7 @@ class ProjectilePhalanxTest extends StuTestCase
     /**
      * @dataProvider provideGetTorpedoStateData
      */
-    public function testGetTorpedoState($expected, $count): void
+    public function testGetTorpedoState(bool $expected, int $count): void
     {
         $torpedo = $this->mock(TorpedoTypeInterface::class);
         $storage = $this->mock(StorageInterface::class);

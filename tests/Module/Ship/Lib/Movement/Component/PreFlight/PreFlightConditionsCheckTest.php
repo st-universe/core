@@ -19,7 +19,7 @@ use function DI\get;
  */
 class PreFlightConditionsCheckTest extends StuTestCase
 {
-    public static function provideCheckPreconditionsData()
+    public static function provideCheckPreconditionsData(): array
     {
         return [
             [true],
@@ -44,7 +44,7 @@ class PreFlightConditionsCheckTest extends StuTestCase
         $conditionCheckResult = null;
 
         $condition1->shouldReceive('check')
-            ->with($wrapper1, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult) {
+            ->with($wrapper1, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult): bool {
                 if ($conditionCheckResult === null) {
                     $conditionCheckResult = $ccr;
                     return true;
@@ -55,19 +55,19 @@ class PreFlightConditionsCheckTest extends StuTestCase
             ->once()
             ->andReturn(false);
         $condition1->shouldReceive('check')
-            ->with($wrapper2, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult) {
+            ->with($wrapper2, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult): bool {
                 return $ccr === $conditionCheckResult;
             }))
             ->once()
             ->andReturn(false);
         $condition2->shouldReceive('check')
-            ->with($wrapper1, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult) {
+            ->with($wrapper1, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult): bool {
                 return $ccr === $conditionCheckResult;
             }))
             ->once()
             ->andReturn(false);
         $condition2->shouldReceive('check')
-            ->with($wrapper2, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult) {
+            ->with($wrapper2, $flightRoute, Mockery::on(function (ConditionCheckResult $ccr) use (&$conditionCheckResult): bool {
                 return $ccr === $conditionCheckResult;
             }))
             ->once()

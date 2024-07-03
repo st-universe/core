@@ -50,10 +50,7 @@ class ShipDeletionHandlerTest extends StuTestCase
      */
     private $entityManager;
 
-    /**
-     * @var null|ShipDeletionHandler
-     */
-    private $handler;
+    private PlayerDeletionHandlerInterface $handler;
 
     public function setUp(): void
     {

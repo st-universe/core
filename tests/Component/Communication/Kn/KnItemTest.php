@@ -34,10 +34,7 @@ class KnItemTest extends StuTestCase
      */
     private $currentUser;
 
-    /**
-     * @var null|KnItem
-     */
-    private $item;
+    private KnItemInterface $item;
 
     public function setUp(): void
     {

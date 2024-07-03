@@ -80,7 +80,7 @@ class VisualNavPanel extends AbstractVisualPanel
 
     protected function getEntryCallable(): callable
     {
-        return fn (int $x, int $y) => new VisualNavPanelEntry(
+        return fn (int $x, int $y): VisualNavPanelEntry => new VisualNavPanelEntry(
             $x,
             $y,
             $this->isOnShipLevel(),

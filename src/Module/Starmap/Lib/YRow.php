@@ -95,10 +95,10 @@ class YRow
 
             if ($this->system instanceof StarSystemInterface) {
                 $this->fields = array_map(
-                    fn (StarSystemMapInterface $systemMap) => $this->mapSystemMapToMapData($systemMap),
+                    fn (StarSystemMapInterface $systemMap): MapData => $this->mapSystemMapToMapData($systemMap),
                     array_filter(
                         $this->system->getFields()->toArray(),
-                        fn (StarSystemMapInterface $systemMap) => $systemMap->getSy() === $this->row
+                        fn (StarSystemMapInterface $systemMap): bool => $systemMap->getSy() === $this->row
                     )
                 );
             } else {
@@ -130,7 +130,7 @@ class YRow
     /**
      * @return int
      */
-    public function getRow()
+    public function getRow(): int
     {
         return $this->row;
     }

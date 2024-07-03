@@ -200,7 +200,7 @@ final class ShipCreator implements ShipCreatorInterface
     /**
      * @param array<int, null|ModuleInterface> $systems
      */
-    private function addSpecialSystems(ModuleInterface $module, &$systems): void
+    private function addSpecialSystems(ModuleInterface $module, array &$systems): void
     {
         $moduleSpecials = $this->moduleSpecialRepository->getByModule($module->getId());
 

@@ -28,7 +28,7 @@ class AttackedBattleParty extends AbstractBattleParty
 
             // only uncloaked defenders fight
             $uncloakedDefenders = $spacecrafts
-                ->filter(fn (ShipWrapperInterface $wrapper) => !$wrapper->get()->getCloakState());
+                ->filter(fn (ShipWrapperInterface $wrapper): bool => !$wrapper->get()->getCloakState());
 
             // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
             return $uncloakedDefenders->isEmpty()
@@ -48,9 +48,9 @@ class AttackedBattleParty extends AbstractBattleParty
     private function addDockedTo(Collection $spacecrafts): void
     {
         $dockedTo = $spacecrafts
-            ->filter(fn (ShipWrapperInterface $wrapper) => $wrapper->getDockedToShipWrapper() !== null)
-            ->map(fn (ShipWrapperInterface $wrapper) => $wrapper->getDockedToShipWrapper())
-            ->filter(fn (ShipWrapperInterface $dockedTo) => !$dockedTo->get()->getUser()->isNpc());
+            ->filter(fn (ShipWrapperInterface $wrapper): bool => $wrapper->getDockedToShipWrapper() !== null)
+            ->map(fn (ShipWrapperInterface $wrapper): ?ShipWrapperInterface => $wrapper->getDockedToShipWrapper())
+            ->filter(fn (ShipWrapperInterface $dockedTo): bool => !$dockedTo->get()->getUser()->isNpc());
 
         /** @var ShipWrapperInterface $wrapper */
         foreach ($dockedTo as $wrapper) {

@@ -34,7 +34,7 @@ class PanelLayers
     public function getRenderedCellLayers(int $x, int $y): array
     {
         return array_map(
-            fn (PanelLayer $layer) => $layer->renderCell($x, $y, $this->panel),
+            fn (PanelLayer $layer): string => $layer->renderCell($x, $y, $this->panel),
             $this->layers
         );
     }

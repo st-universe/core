@@ -49,7 +49,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn (ShipInterface $target) =>
+            fn (ShipInterface $target): bool =>
             $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && ($target === $triggerShip
                     || $this->targetHasEnoughPrestige($piratePrestige, $target))
@@ -63,7 +63,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn (ShipInterface $a, ShipInterface $b) =>
+            fn (ShipInterface $a, ShipInterface $b): int =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
@@ -90,7 +90,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         if ($fleet !== null) {
             return array_reduce(
                 $fleet->getShips()->toArray(),
-                fn (int $value, ShipInterface $fleetShip) => $value + $fleetShip->getRump()->getPrestige(),
+                fn (int $value, ShipInterface $fleetShip): int => $value + $fleetShip->getRump()->getPrestige(),
                 0
             );
         }

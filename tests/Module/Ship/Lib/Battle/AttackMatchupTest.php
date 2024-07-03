@@ -153,7 +153,7 @@ class AttackMatchupTest extends StuTestCase
         $this->assertEquals($defenderBattleParty, $matchup->getDefenders());
     }
 
-    public static function provideGetMatchupExpectRandomShooterIfBothSidesReadyData()
+    public static function provideGetMatchupExpectRandomShooterIfBothSidesReadyData(): array
     {
         return [[1], [2]];
     }

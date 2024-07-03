@@ -45,7 +45,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
         $this->subject = new EnoughWarpdriveCondition();
     }
 
-    public static function provideCheckWarpdriveWhenEnoughWarpdriveData()
+    public static function provideCheckWarpdriveWhenEnoughWarpdriveData(): array
     {
         return [
             [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],
@@ -108,7 +108,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
         );
     }
 
-    public static function provideCheckWarpdriveWhenNotEnoughWarpdriveData()
+    public static function provideCheckWarpdriveWhenNotEnoughWarpdriveData(): array
     {
         return [
             [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],

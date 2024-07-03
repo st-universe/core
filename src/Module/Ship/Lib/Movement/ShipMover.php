@@ -81,7 +81,7 @@ final class ShipMover implements ShipMoverInterface
                 break;
             }
 
-            $activeWrappers = $wrappers->filter(fn (ShipWrapperInterface $wrapper) => !$wrapper->get()->isDestroyed());
+            $activeWrappers = $wrappers->filter(fn (ShipWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed());
 
             // check all flight pre conditions
             $conditionCheckResult = $this->preFlightConditionsCheck->checkPreconditions(
@@ -255,6 +255,6 @@ final class ShipMover implements ShipMoverInterface
      */
     private function areAllShipsDestroyed(Collection $wrappers): bool
     {
-        return !$wrappers->exists(fn (int $key, ShipWrapperInterface $wrapper) => !$wrapper->get()->isDestroyed());
+        return !$wrappers->exists(fn (int $key, ShipWrapperInterface $wrapper): bool => !$wrapper->get()->isDestroyed());
     }
 }

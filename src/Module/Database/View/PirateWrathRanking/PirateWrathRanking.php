@@ -59,7 +59,7 @@ final class PirateWrathRanking implements ViewControllerInterface
         $game->showMacro('html/database.xhtml/top_pirate_wrath_user');
         $wrathList = $this->pirateWrathRepository->getPirateWrathTop10();
         $wrathData = array_map(
-            function ($wrathEntity) {
+            function ($wrathEntity): array {
                 $userId = $wrathEntity->getUser()->getId();
                 $wrath = $wrathEntity->getWrath();
 

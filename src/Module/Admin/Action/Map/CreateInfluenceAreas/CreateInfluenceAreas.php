@@ -169,7 +169,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     /**
      * @param array<int, array<int, MapInterface>> $array
      */
-    private function shuffle_assoc(&$array): bool
+    private function shuffle_assoc(array &$array): bool
     {
         $keys = array_keys($array);
 

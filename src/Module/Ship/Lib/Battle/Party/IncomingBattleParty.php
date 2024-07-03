@@ -22,7 +22,7 @@ class IncomingBattleParty extends AbstractBattleParty
 
         // filter warped and cloaked
         return $result
-            ->filter(fn (ShipWrapperInterface $wrapper) =>
+            ->filter(fn (ShipWrapperInterface $wrapper): bool =>
             !$wrapper->get()->getCloakState() && !$wrapper->get()->isWarped());
     }
 }

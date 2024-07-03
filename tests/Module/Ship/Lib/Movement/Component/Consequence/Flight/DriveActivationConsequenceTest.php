@@ -90,7 +90,7 @@ class DriveActivationConsequenceTest extends StuTestCase
         );
     }
 
-    public static function provideTriggerData()
+    public static function provideTriggerData(): array
     {
         return [
             [true, false, false, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE],

@@ -130,7 +130,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->assertEquals(57, $result);
     }
 
-    public static function startTakeoverTestData()
+    public static function startTakeoverTestData(): array
     {
         return [
             [false, "Die SHIP von Spieler USER hat mit der Übernahme der TARGET begonnen.\n\n\nÜbernahme erfolgt in 10 Runden."],

@@ -34,7 +34,7 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
                 $this->modules = [];
             } else {
                 $this->modules = array_map(
-                    fn (BuildplanModuleInterface $buildplanModule)
+                    fn (BuildplanModuleInterface $buildplanModule): ModuleInterface
                     => $buildplanModule->getModule(),
                     $buildplan->getModulesByType($this->getModuleType())
                 );

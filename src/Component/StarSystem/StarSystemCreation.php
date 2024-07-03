@@ -170,7 +170,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
          */
         $systemMapsWithoutColony = array_filter(
             $starSystem->getFields()->toArray(),
-            fn (StarSystemMapInterface $systemMap) => $systemMap->getFieldType()->getColonyClass() !== null
+            fn (StarSystemMapInterface $systemMap): bool => $systemMap->getFieldType()->getColonyClass() !== null
         );
 
         foreach ($systemMapsWithoutColony as $systemMap) {

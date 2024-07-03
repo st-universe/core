@@ -78,7 +78,7 @@ class EpsConsequenceTest extends StuTestCase
         );
     }
 
-    public static function provideTriggerData()
+    public static function provideTriggerData(): array
     {
         return [
             [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],

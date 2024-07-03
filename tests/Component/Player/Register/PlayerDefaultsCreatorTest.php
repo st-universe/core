@@ -43,10 +43,7 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
      */
     private $userLayerRepository;
 
-    /**
-     * @var null|PlayerDefaultsCreator
-     */
-    private $defaultsCreator;
+    private PlayerDefaultsCreatorInterface $defaultsCreator;
 
     public function setUp(): void
     {
@@ -75,7 +72,7 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
 
         $defaultCategoryCount = count(array_filter(
             PrivateMessageFolderTypeEnum::cases(),
-            fn (PrivateMessageFolderTypeEnum $case) => $case->isDefault()
+            fn (PrivateMessageFolderTypeEnum $case): bool => $case->isDefault()
         ));
 
         $this->privateMessageFolderRepository->shouldReceive('prototype')

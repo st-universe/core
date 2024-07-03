@@ -39,7 +39,7 @@ class DriveActivatableConditionTest extends StuTestCase
         $this->subject = new DriveActivatableCondition($this->activatorDeactivatorHelper);
     }
 
-    public static function provideCheckData()
+    public static function provideCheckData(): array
     {
         return [
             [true, false, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE],

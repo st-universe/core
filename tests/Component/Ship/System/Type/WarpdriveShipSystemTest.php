@@ -33,8 +33,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     /** @var null|MockInterface|ShipSystemManagerInterface */
     private $managerMock;
 
-    /** @var null|WarpdriveShipSystem */
-    private $system;
+    private WarpdriveShipSystem $system;
 
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;

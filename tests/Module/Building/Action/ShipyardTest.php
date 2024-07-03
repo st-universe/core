@@ -17,10 +17,7 @@ class ShipyardTest extends StuTestCase
      */
     private $colonyShipQueueRepository;
 
-    /**
-     * @var null|Shipyard
-     */
-    private $shipyard;
+    private Shipyard $shipyard;
 
     public function setUp(): void
     {

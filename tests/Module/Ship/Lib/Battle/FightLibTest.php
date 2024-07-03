@@ -744,7 +744,7 @@ class FightLibTest extends StuTestCase
         $this->assertTrue($result);
     }
 
-    public static function provideGetAttackersAndDefendersData()
+    public static function provideGetAttackersAndDefendersData(): array
     {
         return [
             [ShipWrapperInterface::class, 1, 1, false],

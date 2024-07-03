@@ -18,10 +18,7 @@ use Stu\StuTestCase;
 
 class ShieldShipSystemTest extends StuTestCase
 {
-    /**
-     * @var ShieldShipSystem|null
-     */
-    private $system;
+    private ShieldShipSystem $system;
 
     /**
      * @var ShipStateChangerInterface|MockInterface

@@ -23,7 +23,7 @@ class SystemLayerRendererTest extends StuTestCase
         $this->subject = new SystemLayerRenderer();
     }
 
-    public static function provideGetBackgroundImageData()
+    public static function provideGetBackgroundImageData(): array
     {
         return [
             [1, 2, '0201'],

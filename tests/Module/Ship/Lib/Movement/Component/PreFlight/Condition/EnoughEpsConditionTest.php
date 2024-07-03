@@ -52,7 +52,7 @@ class EnoughEpsConditionTest extends StuTestCase
         $this->subject = new EnoughEpsCondition($this->shipSystemManager);
     }
 
-    public static function provideCheckWhenSystemInstalledData()
+    public static function provideCheckWhenSystemInstalledData(): array
     {
         return [
             [true, false, false, false, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
@@ -112,7 +112,7 @@ class EnoughEpsConditionTest extends StuTestCase
         $this->subject->check($this->wrapper, $this->flightRoute, $this->conditionCheckResult);
     }
 
-    public static function provideCheckWhenSystemNotInstalledData()
+    public static function provideCheckWhenSystemNotInstalledData(): array
     {
         return [
             [true, false, false,  ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE],
@@ -150,7 +150,7 @@ class EnoughEpsConditionTest extends StuTestCase
         $this->subject->check($this->wrapper, $this->flightRoute, $this->conditionCheckResult);
     }
 
-    public static function provideCheckFlightCostForRouteModeData()
+    public static function provideCheckFlightCostForRouteModeData(): array
     {
         return [
             [RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY],

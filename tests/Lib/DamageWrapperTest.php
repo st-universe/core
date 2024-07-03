@@ -17,7 +17,7 @@ class DamageWrapperTest extends StuTestCase
         $this->subject = new DamageWrapper(0);
     }
 
-    public static function provideGetDamageRelativeForDamageModeShieldsData()
+    public static function provideGetDamageRelativeForDamageModeShieldsData(): array
     {
         return [
             //netDamage, isPhaser, modificator, targetShields, mode, expectedShieldDamage, leftNetDamage
@@ -58,7 +58,7 @@ class DamageWrapperTest extends StuTestCase
         $this->assertEquals($leftNetDamage, $this->subject->getNetDamage());
     }
 
-    public static function provideGetDamageRelativeForDamageModeHullData()
+    public static function provideGetDamageRelativeForDamageModeHullData(): array
     {
         return [
             //netDamage, isTorpedo, modificator, mode, expectedHullDamage
