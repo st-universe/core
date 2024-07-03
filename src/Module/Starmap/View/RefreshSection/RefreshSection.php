@@ -17,20 +17,11 @@ final class RefreshSection implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'REFRESH_SECTION';
 
-    private ShowSectionRequestInterface $request;
-
-    private LayerRepositoryInterface $layerRepository;
-
-    private StarmapUiFactoryInterface $starmapUiFactory;
-
     public function __construct(
-        ShowSectionRequestInterface $request,
-        StarmapUiFactoryInterface $starmapUiFactory,
-        LayerRepositoryInterface $layerRepository
+        private ShowSectionRequestInterface $request,
+        private StarmapUiFactoryInterface $starmapUiFactory,
+        private LayerRepositoryInterface $layerRepository
     ) {
-        $this->request = $request;
-        $this->layerRepository = $layerRepository;
-        $this->starmapUiFactory = $starmapUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void

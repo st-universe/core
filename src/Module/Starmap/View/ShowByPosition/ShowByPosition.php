@@ -56,10 +56,10 @@ final class ShowByPosition implements ViewControllerInterface
         );
 
         $game->addExecuteJS(sprintf(
-            "registerNavKeys('%s.php', '%s', '%s', false, false);",
+            "registerNavKeys('%s.php', '%s', '%s');",
             ModuleViewEnum::MAP->value,
             RefreshSection::VIEW_IDENTIFIER,
-            'html/starmapSectionTable.twig'
+            'html/map/starmapSectionTable.twig'
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
 
         $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
