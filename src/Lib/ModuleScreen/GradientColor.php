@@ -14,21 +14,21 @@ final class GradientColor implements GradientColorInterface
         $percent = 100 / $diff * ($modificator - $lowestValue);
 
         // Konvertiere die Hex-Farbcodes in RGB-Werte
-        $rgb1 = static::hexToRgb($color1);
-        $rgb2 = static::hexToRgb($color2);
-        $rgb3 = static::hexToRgb($color3);
+        $rgb1 = $this->hexToRgb($color1);
+        $rgb2 = $this->hexToRgb($color2);
+        $rgb3 = $this->hexToRgb($color3);
 
         // Verteile den Prozentwert zwischen den Farben
         if ($percent <= 50) {
             $gradientPercent = $percent * 2;
-            $gradientRgb = static::calculateGradientRgb($rgb1, $rgb2, $gradientPercent);
+            $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $gradientPercent);
         } else {
             $gradientPercent = (($percent - 50) * 2);
-            $gradientRgb = static::calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
+            $gradientRgb = $this->calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
         }
 
         // Konvertiere den RGB-Wert zurück in einen Hex-Farbcode
-        $gradientColor = static::rgbToHex($gradientRgb);
+        $gradientColor = $this->rgbToHex($gradientRgb);
 
         return $gradientColor;
     }
@@ -36,7 +36,7 @@ final class GradientColor implements GradientColorInterface
     /**
      * @return array<int, int|float>
      */
-    private static function hexToRgb(string $color): array
+    private function hexToRgb(string $color): array
     {
         $color = ltrim($color, '#');
         $length = strlen($color);
@@ -62,7 +62,7 @@ final class GradientColor implements GradientColorInterface
      *
      * @return array<int>
      */
-    private static function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
+    private function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
         $r = (int) ($rgb1[0] + ($rgb2[0] - $rgb1[0]) * $percent / 100);
         $g = (int) ($rgb1[1] + ($rgb2[1] - $rgb1[1]) * $percent / 100);
@@ -74,7 +74,7 @@ final class GradientColor implements GradientColorInterface
     /**
      * @param array<mixed> $rgb
      */
-    private static function rgbToHex(array $rgb): string
+    private function rgbToHex(array $rgb): string
     {
         $r = str_pad(dechex((int) $rgb[0]), 2, '0', STR_PAD_LEFT);
         $g = str_pad(dechex((int) $rgb[1]), 2, '0', STR_PAD_LEFT);

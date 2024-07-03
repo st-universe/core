@@ -80,8 +80,8 @@ final class ShowSectorScan implements ViewControllerInterface
         }
 
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $ship->getSystem() !== null, $userId));
-        $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
-        $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
+        $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
+        $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->fadedSignaturesCloaked === [] ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('MAP_PATH', $this->getMapPath($ship));
         $game->setTemplateVar('BUOYS', $ship->getCurrentMapField()->getBuoys());

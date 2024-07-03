@@ -326,7 +326,7 @@ final class ColonyTick implements ColonyTickInterface
             $deactivatedFields
         );
 
-        return empty($fields) ? null : current($fields);
+        return $fields === [] ? null : current($fields);
     }
 
     /**

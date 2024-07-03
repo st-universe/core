@@ -140,30 +140,26 @@ final class BuildOnField implements ActionControllerInterface
             $building = $alt_building->getAlternativeBuilding();
         }
 
-        if ($field->hasBuilding()) {
-            if ($host instanceof ColonyInterface) {
-                if (!$this->checkBuildingCosts($host, $building, $field, $game)) {
-                    return;
-                } elseif ($host->getEps() < $building->getEpsCost()) {
-                    $game->addInformationf(
-                        _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
-                        $building->getEpsCost(),
-                        $host->getEps()
-                    );
-                    return;
-                } elseif ($host->getEps() > $host->getMaxEps() - $field->getBuilding()->getEpsStorage() && $host->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()) {
-                    $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
-                    return;
-                } else {
-                    $this->buildingAction->remove($field, $game);
-                }
+        if ($field->hasBuilding() && $host instanceof ColonyInterface) {
+            if (!$this->checkBuildingCosts($host, $building, $field, $game)) {
+                return;
+            } elseif ($host->getEps() < $building->getEpsCost()) {
+                $game->addInformationf(
+                    _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
+                    $building->getEpsCost(),
+                    $host->getEps()
+                );
+                return;
+            } elseif ($host->getEps() > $host->getMaxEps() - $field->getBuilding()->getEpsStorage() && $host->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()) {
+                $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
+                return;
+            } else {
+                $this->buildingAction->remove($field, $game);
             }
         }
 
-        if ($host instanceof ColonyInterface) {
-            if (!$this->doColonyChecksAndConsume($field, $building, $host, $game)) {
-                return;
-            }
+        if ($host instanceof ColonyInterface && !$this->doColonyChecksAndConsume($field, $building, $host, $game)) {
+            return;
         }
 
         $field->setBuilding($building);

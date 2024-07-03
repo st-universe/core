@@ -61,7 +61,7 @@ final class PlanAstroMapping implements ActionControllerInterface
             return;
         }
 
-        if ($this->astroEntryRepository->getByShipLocation($ship, false)) {
+        if ($this->astroEntryRepository->getByShipLocation($ship, false) !== null) {
             return;
         }
 

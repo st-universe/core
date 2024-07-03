@@ -76,7 +76,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
     {
         $field = $pods->getCurrentMapField();
 
-        if ($field->getFieldType()->getSpecialDamage()) {
+        if ($field->getFieldType()->getSpecialDamage() !== 0) {
             $met = 'fly' . $ship->getFlightDirection();
             $newXY = $this->$met($pods);
 

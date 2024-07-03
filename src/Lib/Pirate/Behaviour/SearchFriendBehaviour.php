@@ -47,7 +47,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         $this->logger->logf('    number of friends in reach: %d', count($filteredFriends));
 
-        if (empty($filteredFriends)) {
+        if ($filteredFriends === []) {
             return PirateBehaviourEnum::HIDE;
         }
 

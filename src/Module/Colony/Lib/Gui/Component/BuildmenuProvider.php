@@ -35,7 +35,7 @@ final class BuildmenuProvider implements GuiComponentProviderInterface
         if ($fieldType !== null) {
             $game->addExecuteJS(sprintf('fieldType = %d;', $fieldType), GameEnum::JS_EXECUTION_AJAX_UPDATE);
         } else {
-            $game->addExecuteJS(sprintf('fieldType = null;'), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+            $game->addExecuteJS('fieldType = null;', GameEnum::JS_EXECUTION_AJAX_UPDATE);
         }
 
         foreach (BuildMenuEnum::BUILDMENU_IDS as $id) {

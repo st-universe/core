@@ -35,12 +35,12 @@ final class CreateCharacter implements ActionControllerInterface
         $description = $this->request->getDescription();
         $avatarFile = $this->request->getAvatar();
 
-        if (empty($name)) {
+        if ($name === '' || $name === '0') {
             $game->addInformation(_('Der Charaktername darf nicht leer sein.'));
             return;
         }
 
-        if (empty($description)) {
+        if ($description === '' || $description === '0') {
             $game->addInformation(_('Die Beschreibung darf nicht leer sein.'));
             return;
         }

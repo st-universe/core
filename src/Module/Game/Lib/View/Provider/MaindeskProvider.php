@@ -199,7 +199,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
     {
         $emergencies = $this->spacecraftEmergencyRepository->getActive();
 
-        if (empty($emergencies)) {
+        if ($emergencies === []) {
             return;
         }
 

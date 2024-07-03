@@ -42,24 +42,24 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
 
     public function getDescription(int $fieldTypeId): string
     {
-        if (!$this->cache->hasItem(static::CACHE_KEY_NAME)) {
-            $this->fillCache(static::CACHE_KEY_NAME, 'getDescription');
+        if (!$this->cache->hasItem(self::CACHE_KEY_NAME)) {
+            $this->fillCache(self::CACHE_KEY_NAME, 'getDescription');
         }
 
-        return $this->cache->getItem(static::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
+        return $this->cache->getItem(self::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
     }
 
     public function getCategory(int $fieldTypeId): int
     {
-        if (!$this->cache->hasItem(static::CACHE_KEY_CATEGORY)) {
-            $this->fillCache(static::CACHE_KEY_CATEGORY, 'getCategory');
+        if (!$this->cache->hasItem(self::CACHE_KEY_CATEGORY)) {
+            $this->fillCache(self::CACHE_KEY_CATEGORY, 'getCategory');
         }
 
         if ($fieldTypeId === 1000) {
             return 0;
         }
 
-        $result = $this->cache->getItem(static::CACHE_KEY_CATEGORY)->get()[$fieldTypeId];
+        $result = $this->cache->getItem(self::CACHE_KEY_CATEGORY)->get()[$fieldTypeId];
 
         if ($result === null) {
             $this->loggerUtil->init('CACHE', LoggerEnum::LEVEL_ERROR);
@@ -104,7 +104,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
 
         $cacheItem = new CacheItem($cacheKey);
         $cacheItem->set($cacheData);
-        $cacheItem->expiresAfter(static::CACHE_TTL);
+        $cacheItem->expiresAfter(self::CACHE_TTL);
 
         $this->cache->save($cacheItem);
     }

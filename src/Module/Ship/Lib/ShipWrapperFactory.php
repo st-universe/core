@@ -65,7 +65,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     public function wrapShipsAsFleet(array $ships, bool $isSingleShips = false): FleetWrapperInterface
     {
-        if (empty($ships)) {
+        if ($ships === []) {
             throw new InvalidArgumentException('ship array should not be empty');
         }
 

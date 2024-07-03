@@ -70,12 +70,10 @@ class SystemLayerRendererTest extends StuTestCase
 
         $result = $this->subject->render($mapData, $this->panel);
 
-        $expected = sprintf(
-            '<img src="/assets/map/starmap/0201.png"
+        $expected = '<img src="/assets/map/starmap/0201.png"
                         style="z-index: 1; H+W; opacity:1;" />
             <img src="/assets/map/3.png" class="lssSubspaceOverShield"
-                        style="z-index: 2; H+W; opacity:2;" />'
-        );
+                        style="z-index: 2; H+W; opacity:2;" />';
 
         $this->assertEquals(
             preg_replace('/\s+/', '', $expected),

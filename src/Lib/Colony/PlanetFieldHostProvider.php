@@ -34,7 +34,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
     public function loadFieldViaRequestParameter(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldInterface
     {
         if (!request::has('fid')) {
-            throw new RuntimeException(sprintf('request param "fid" is missing'));
+            throw new RuntimeException('request param "fid" is missing');
         }
 
         $fid = request::indInt('fid');
@@ -52,10 +52,10 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
     public function loadHostViaRequestParameters(UserInterface $user, bool $checkForEntityLock = true): PlanetFieldHostInterface
     {
         if (!request::has('id')) {
-            throw new RuntimeException(sprintf('request param "id" is missing'));
+            throw new RuntimeException('request param "id" is missing');
         }
         if (!request::has('hosttype')) {
-            throw new RuntimeException(sprintf('request param "hosttype" is missing'));
+            throw new RuntimeException('request param "hosttype" is missing');
         }
 
         $id = request::indInt('id');

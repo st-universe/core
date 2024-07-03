@@ -38,7 +38,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
 
         $incomingShip = $incomingShipWrapper->get();
         $alertedBattleParties = $this->alertDetection->detectAlertedBattleParties($incomingShip, $informations, $tractoringShip);
-        if (empty($alertedBattleParties)) {
+        if ($alertedBattleParties === []) {
             return;
         }
 

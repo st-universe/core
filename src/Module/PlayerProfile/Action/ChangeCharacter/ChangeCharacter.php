@@ -44,7 +44,7 @@ final class ChangeCharacter implements ActionControllerInterface
         $avatarFile = $this->request->getAvatar();
 
 
-        if (empty($name) || empty($description)) {
+        if ($name === '' || $name === '0' || ($description === '' || $description === '0')) {
             $game->addInformation(_('Name und Beschreibung dürfen nicht leer sein.'));
             return;
         }

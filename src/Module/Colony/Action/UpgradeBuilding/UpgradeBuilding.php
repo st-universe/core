@@ -97,10 +97,8 @@ final class UpgradeBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($host instanceof ColonyInterface) {
-            if (!$this->doColonyCheckAndConsumeEnergy($upgrade, $host, $game)) {
-                return;
-            }
+        if ($host instanceof ColonyInterface && !$this->doColonyCheckAndConsumeEnergy($upgrade, $host, $game)) {
+            return;
         }
 
         // Check for alternative building

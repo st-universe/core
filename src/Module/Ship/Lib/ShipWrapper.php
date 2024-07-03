@@ -246,7 +246,7 @@ final class ShipWrapper implements ShipWrapperInterface
             return false;
         }
 
-        if (!empty($this->getDamagedSystems())) {
+        if ($this->getDamagedSystems() !== []) {
             return true;
         }
 

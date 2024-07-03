@@ -67,9 +67,9 @@ final class UserList implements ViewControllerInterface
         $search = request::indString('search');
 
         $user_list = $this->userRepository->getList(
-            static::SORT_FIELD_MAP[$sort_field],
-            static::SORT_ORDER_MAP[$sort_order],
-            $search !== false ? null : static::LIST_LIMIT,
+            self::SORT_FIELD_MAP[$sort_field],
+            self::SORT_ORDER_MAP[$sort_order],
+            $search !== false ? null : self::LIST_LIMIT,
             $pagination
         );
 
@@ -99,16 +99,16 @@ final class UserList implements ViewControllerInterface
     private function getUserListNavigation(): array
     {
         $mark = $this->userListRequest->getPagination();
-        if ($mark % static::LIST_LIMIT != 0 || $mark < 0) {
+        if ($mark % self::LIST_LIMIT != 0 || $mark < 0) {
             $mark = 0;
         }
         $maxcount = $this->userRepository->getActiveAmount();
-        $maxpage = ceil($maxcount / static::LIST_LIMIT);
-        $curpage = floor($mark / static::LIST_LIMIT);
+        $maxpage = ceil($maxcount / self::LIST_LIMIT);
+        $curpage = floor($mark / self::LIST_LIMIT);
         $ret = [];
         if ($curpage != 0) {
             $ret[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $ret[] = ["page" => "<", "mark" => ($mark - static::LIST_LIMIT), "cssclass" => "pages"];
+            $ret[] = ["page" => "<", "mark" => ($mark - self::LIST_LIMIT), "cssclass" => "pages"];
         }
         for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
             if ($i > $maxpage || $i < 1) {
@@ -116,15 +116,15 @@ final class UserList implements ViewControllerInterface
             }
             $ret[] = [
                 "page" => $i,
-                "mark" => ($i * static::LIST_LIMIT - static::LIST_LIMIT),
+                "mark" => ($i * self::LIST_LIMIT - self::LIST_LIMIT),
                 "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages"),
             ];
         }
         if ($curpage + 1 !== $maxpage) {
-            $ret[] = ["page" => ">", "mark" => ($mark + static::LIST_LIMIT), "cssclass" => "pages"];
+            $ret[] = ["page" => ">", "mark" => ($mark + self::LIST_LIMIT), "cssclass" => "pages"];
             $ret[] = [
                 "page" => ">>",
-                "mark" => $maxpage * static::LIST_LIMIT - static::LIST_LIMIT,
+                "mark" => $maxpage * self::LIST_LIMIT - self::LIST_LIMIT,
                 "cssclass" => "pages",
             ];
         }

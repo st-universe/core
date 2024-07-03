@@ -61,15 +61,10 @@ class SkipDetection implements SkipDetectionInterface
         if ($holdingWeb !== null && $holdingWeb->isFinished()) {
             return true;
         }
-
-        if ($this->skipDueToPirateProtection(
+        return $this->skipDueToPirateProtection(
             $incomingShipUser,
             $alertedShip
-        )) {
-            return true;
-        }
-
-        return false;
+        );
     }
 
     private function skipDueToPirateProtection(
@@ -89,14 +84,8 @@ class SkipDetection implements SkipDetectionInterface
 
         //players don't attack pirates if protection is active
         $pirateWrath = $alertShip->getUser()->getPirateWrath();
-        if (
-            $incomingShipUser->getId() === UserEnum::USER_NPC_KAZON
-            && $pirateWrath !== null
-            && $pirateWrath->getProtectionTimeout() > $this->stuTime->time()
-        ) {
-            return true;
-        }
-
-        return false;
+        return $incomingShipUser->getId() === UserEnum::USER_NPC_KAZON
+        && $pirateWrath !== null
+        && $pirateWrath->getProtectionTimeout() > $this->stuTime->time();
     }
 }

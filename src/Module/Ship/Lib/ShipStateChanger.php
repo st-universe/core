@@ -54,20 +54,11 @@ final class ShipStateChanger implements ShipStateChangerInterface
         //repair stuff
         if ($ship->isUnderRepair()) {
             $this->cancelRepair->cancelRepair($ship);
-        }
-
-        //mapping stuff
-        else if ($currentState === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
+        } elseif ($currentState === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
             $this->astroEntryLib->cancelAstroFinalizing($wrapper);
-        }
-
-        //web spinning
-        elseif ($currentState === ShipStateEnum::SHIP_STATE_WEB_SPINNING) {
+        } elseif ($currentState === ShipStateEnum::SHIP_STATE_WEB_SPINNING) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
-        }
-
-        //active takeover
-        elseif ($currentState === ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER) {
+        } elseif ($currentState === ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER) {
             $this->shipTakeoverManager->cancelTakeover(
                 $ship->getTakeoverActive(),
                 null,

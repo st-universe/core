@@ -28,7 +28,7 @@ final class AdvanceResearch implements ColonyTickComponentInterface
     public function work(ColonyInterface $colony, array &$production): void
     {
         $researches = $this->researchedRepository->getCurrentResearch($colony->getUser());
-        $currentResearch = empty($researches) ? null : current($researches);
+        $currentResearch = $researches === [] ? null : current($researches);
         $waitingResearch = count($researches) > 1 ? $researches[1] : null;
 
         if ($currentResearch === null) {

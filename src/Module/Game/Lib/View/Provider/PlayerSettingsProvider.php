@@ -32,11 +32,7 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
             if ($case === ModuleViewEnum::ADMIN && !$game->isAdmin()) {
                 return false;
             }
-
-            if ($case === ModuleViewEnum::NPC && !$game->isNpc()) {
-                return false;
-            }
-            return true;
+            return !($case === ModuleViewEnum::NPC && !$game->isNpc());
         });
 
 

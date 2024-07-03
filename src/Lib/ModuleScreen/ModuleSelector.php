@@ -174,7 +174,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function hasSelectedModule(): bool
     {
-        return !empty($this->getSelectedModules());
+        return $this->getSelectedModules() !== [];
     }
 
     public function getSelectedModuleCount(): int

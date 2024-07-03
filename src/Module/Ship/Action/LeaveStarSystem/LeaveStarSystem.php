@@ -25,11 +25,7 @@ final class LeaveStarSystem extends AbstractDirectedMovement
 
         //the destination map field
         $outerMap = $starsystemMap->getSystem()->getMap();
-        if ($outerMap === null) {
-            return true;
-        }
-
-        return false;
+        return $outerMap === null;
     }
 
     protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface

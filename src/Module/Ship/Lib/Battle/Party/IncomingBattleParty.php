@@ -18,11 +18,7 @@ class IncomingBattleParty extends AbstractBattleParty
     {
         $fleet = $this->leader->getFleetWrapper();
 
-        if ($fleet === null) {
-            $result = $this->createSingleton($this->leader);
-        } else {
-            $result = $fleet->getShipWrappers();
-        }
+        $result = $fleet === null ? $this->createSingleton($this->leader) : $fleet->getShipWrappers();
 
         // filter warped and cloaked
         return $result

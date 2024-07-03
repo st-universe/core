@@ -1545,7 +1545,7 @@ class Ship implements ShipInterface
 
     public function hasStoredBuoy(): bool
     {
-        return !empty($this->getStoredBuoy());
+        return $this->getStoredBuoy() !== [];
     }
 
 

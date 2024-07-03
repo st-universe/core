@@ -79,12 +79,14 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         $fleetWrapper = $wrapper->getFleetWrapper();
         if (request::postInt('isfleet') && $fleetWrapper !== null) {
             foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-                $this->transferPerShip(
+                if (!$this->transferPerShip(
                     $isUnload,
                     $wrapper,
                     $target,
                     $informations
-                ) || $hasTransfered = $hasTransfered;
+                )) {
+                    $hasTransfered = $hasTransfered;
+                }
             }
         } else {
             $hasTransfered =  $this->transferPerShip($isUnload, $wrapper, $target, $informations);
@@ -167,14 +169,16 @@ class CommodityTransferStrategy implements TransferStrategyInterface
                 continue;
             }
 
-            $this->beamUtil->transferCommodity(
+            if (!$this->beamUtil->transferCommodity(
                 $commodityId,
                 $gcount[$key],
                 $wrapper,
                 $isUnload ? $ship : $target,
                 $transferTarget,
                 $informations
-            ) || $hasTransfered = $hasTransfered;
+            )) {
+                $hasTransfered = $hasTransfered;
+            }
         }
 
         return $hasTransfered;

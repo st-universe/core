@@ -65,7 +65,7 @@ class ConditionCheckResult
             return false;
         }
 
-        return !$this->isFixedFleetMode || empty($this->blockedShipIds);
+        return !$this->isFixedFleetMode || $this->blockedShipIds === [];
     }
 
     public function isNotBlocked(ShipInterface $ship): bool

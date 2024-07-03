@@ -119,7 +119,7 @@ final class CreateTholianWeb implements ActionControllerInterface
             }
         }
 
-        if (empty($possibleCatches)) {
+        if ($possibleCatches === []) {
             $game->addInformation("Es konnten keine Ziele erfasst werden");
             return;
         }

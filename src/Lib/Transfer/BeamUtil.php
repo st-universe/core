@@ -61,7 +61,7 @@ final class BeamUtil implements BeamUtilInterface
 
         if ($wantedAmount === "max") {
             $amount = $sourceStorage->getAmount();
-        } else if (!is_numeric($wantedAmount)) {
+        } elseif (!is_numeric($wantedAmount)) {
             return false;
         } else {
             $amount =  (int)$wantedAmount;

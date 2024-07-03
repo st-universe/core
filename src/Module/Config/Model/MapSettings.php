@@ -10,9 +10,7 @@ final class MapSettings extends AbstractSettings implements MapSettingsInterface
     public function getEncryptionKey(): ?string
     {
         if ($this->exists(self::SETTING_ENCRYPTION_KEY)) {
-            $key = $this->getStringConfigValue(self::SETTING_ENCRYPTION_KEY);
-
-            return $key;
+            return $this->getStringConfigValue(self::SETTING_ENCRYPTION_KEY);
         }
 
         return null;

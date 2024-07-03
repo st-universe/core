@@ -178,7 +178,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
             }
 
             $torpedoTypes = $this->torpedoTypeRepository->getByLevel($torpedoLevel);
-            if (empty($torpedoTypes)) {
+            if ($torpedoTypes === []) {
                 return $this;
             }
             shuffle($torpedoTypes);

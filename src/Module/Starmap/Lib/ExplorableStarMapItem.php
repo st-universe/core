@@ -187,7 +187,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     {
         if ($this->hide === true) {
             $imageUrl = '0.png';
-        } else if ($this->layer->isEncoded()) {
+        } elseif ($this->layer->isEncoded()) {
             $imageUrl = $this->encodedMap->getEncodedMapPath($this->getFieldId(), $this->getLayer());
         } else {
             $imageUrl = sprintf('%d/%d.png', $this->getLayer()->getId(), $this->getFieldId());

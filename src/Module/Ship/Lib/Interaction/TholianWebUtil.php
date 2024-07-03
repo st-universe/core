@@ -121,7 +121,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
 
         //remove web if lost
-        if (empty($currentSpinnerSystems)) {
+        if ($currentSpinnerSystems === []) {
             $this->releaseAllShips($web, $wrapper->getShipWrapperFactory());
             $this->removeWeb($web);
         } else {

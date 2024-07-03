@@ -39,7 +39,7 @@ class CloseCombatUtilTest extends StuTestCase
 
         $result = $this->subject->getCombatGroup($this->ship);
 
-        $this->assertTrue(empty($result));
+        $this->assertTrue($result === []);
     }
 
     public function testGetCombatGroupWithOnlyOneCrewmann(): void
@@ -55,7 +55,7 @@ class CloseCombatUtilTest extends StuTestCase
 
         $result = $this->subject->getCombatGroup($this->ship);
 
-        $this->assertFalse(empty($result));
+        $this->assertFalse($result === []);
         $this->assertTrue($result[0] === $shipCrew1);
     }
 

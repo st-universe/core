@@ -155,7 +155,7 @@ final class CreateModules implements ActionControllerInterface
             foreach ($prod as $msg) {
                 $game->addInformation($msg);
             }
-        } elseif (!empty($prod)) {
+        } elseif ($prod !== []) {
             foreach ($prod as $msg) {
                 $game->addInformation($msg);
             }

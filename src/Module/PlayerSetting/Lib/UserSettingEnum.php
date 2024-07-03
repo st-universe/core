@@ -23,13 +23,7 @@ enum UserSettingEnum: string
      */
     public function isDistinctSetting(): bool
     {
-        if (
-            $this === self::AVATAR
-            || $this === self::RGB_CODE
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this === self::AVATAR
+        || $this === self::RGB_CODE;
     }
 }
