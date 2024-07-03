@@ -8,15 +8,16 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class ApplyFieldDamage implements ApplyFieldDamageInterface
 {
     public function __construct(
         private ApplyDamageInterface $applyDamage,
-        private ShipDestructionInterface $shipDestruction
+        private ShipDestructionInterface $shipDestruction,
+        private MessageFactoryInterface $messageFactory
     ) {
     }
 
@@ -59,7 +60,7 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
     ): void {
         $ship = $wrapper->get();
 
-        $message = new Message(null, $ship->getUser()->getId());
+        $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
         $messages->add($message);
 
         $shipName = $ship->getName();

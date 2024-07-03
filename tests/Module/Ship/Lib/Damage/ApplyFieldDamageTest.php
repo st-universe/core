@@ -12,6 +12,7 @@ use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -20,10 +21,11 @@ use Stu\StuTestCase;
 class ApplyFieldDamageTest extends StuTestCase
 {
     /** @var MockInterface&ApplyDamageInterface */
-    private MockInterface $applyDamage;
-
+    private $applyDamage;
     /** @var MockInterface&ShipDestructionInterface */
-    private MockInterface $shipDestruction;
+    private $shipDestruction;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private ApplyFieldDamageInterface $subject;
 
@@ -37,6 +39,7 @@ class ApplyFieldDamageTest extends StuTestCase
     {
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);
         $this->shipDestruction = $this->mock(ShipDestructionInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -47,18 +50,20 @@ class ApplyFieldDamageTest extends StuTestCase
 
         $this->subject = new ApplyFieldDamage(
             $this->applyDamage,
-            $this->shipDestruction
+            $this->shipDestruction,
+            $this->messageFactory
         );
     }
 
     public function testDamageDoesAbsolutDamageToShipAndTractoredShip(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $informations = $this->mock(InformationWrapper::class);
-        $Tinformations = $this->mock(InformationWrapper::class);
 
         $tractoredShip = $this->mock(ShipInterface::class);
         $tractoredShipWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $message = $this->mock(MessageInterface::class);
+        $tmessage = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -114,49 +119,36 @@ class ApplyFieldDamageTest extends StuTestCase
         $this->applyDamage->shouldReceive('damage')
             ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
                 return $damageWrapper->getNetDamage() == 42;
-            }), $this->wrapper, Mockery::any())
-            ->once()
-            ->andReturn($informations);
+            }), $this->wrapper, $message)
+            ->once();
         $this->applyDamage->shouldReceive('damage')
             ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
                 return $damageWrapper->getNetDamage() == 42;
-            }), $tractoredShipWrapper, Mockery::any())
-            ->once()
-            ->andReturn($Tinformations);
+            }), $tractoredShipWrapper, $tmessage)
+            ->once();
 
-        /** 
-        $informations->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(['APPLY_DAMAGE_INFOS']);
-        $Tinformations->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(['T_APPLY_DAMAGE_INFOS']);*/
-
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
-
-                if ($m->getRecipientId() === 666) {
-                    $message = $m;
-                    return true;
-                }
-
-                return false;
-            }));
-
-        $Tmessage = null;
+            ->with($message)
+            ->once();
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$Tmessage) {
+            ->with($tmessage)
+            ->once();
 
-                if ($m->getRecipientId() === 667) {
-                    $Tmessage = $m;
-                    return true;
-                }
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 666)
+            ->once()
+            ->andReturn($message);
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 667)
+            ->once()
+            ->andReturn($tmessage);
 
-                return false;
-            }));
+        $message->shouldReceive('add')
+            ->with('CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt')
+            ->once();
+        $tmessage->shouldReceive('add')
+            ->with('CAUSE: Die TSHIP wurde in Sektor 23|34 beschädigt')
+            ->once();
 
         $this->subject->damage(
             $this->wrapper,
@@ -165,22 +157,12 @@ class ApplyFieldDamageTest extends StuTestCase
             'CAUSE',
             $messages
         );
-
-        $this->assertEquals([
-            'CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt'
-            //,'APPLY_DAMAGE_INFOS'
-        ], $message->getMessage());
-
-        $this->assertEquals([
-            'CAUSE: Die TSHIP wurde in Sektor 23|34 beschädigt'
-            //,'T_APPLY_DAMAGE_INFOS'
-        ], $Tmessage->getMessage());
     }
 
     public function testDamageDoesPercentageDamageToShipAndDestroys(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
-        $informations = $this->mock(InformationWrapper::class);
+        $message = $this->mock(MessageInterface::class);
 
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -215,23 +197,21 @@ class ApplyFieldDamageTest extends StuTestCase
         $this->applyDamage->shouldReceive('damage')
             ->with(Mockery::on(function (DamageWrapper $damageWrapper) {
                 return $damageWrapper->getNetDamage() == 100;
-            }), $this->wrapper, Mockery::any())
+            }), $this->wrapper, $message)
             ->once();
 
-        /**
-        $informations->shouldReceive('getInformations')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(['APPLY_DAMAGE_INFOS']); */
-
-        $message = null;
         $messages->shouldReceive('add')
-            ->with(Mockery::on(function (MessageInterface $m) use (&$message) {
+            ->with($message)
+            ->once();
 
-                $message = $m;
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 666)
+            ->once()
+            ->andReturn($message);
 
-                return $m->getRecipientId() === 666;
-            }));
+        $message->shouldReceive('add')
+            ->with('CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt')
+            ->once();
 
         $this->shipDestruction->shouldReceive('destroy')
             ->with(
@@ -249,10 +229,5 @@ class ApplyFieldDamageTest extends StuTestCase
             'CAUSE',
             $messages
         );
-
-        $this->assertEquals([
-            'CAUSE: Die SHIP wurde in Sektor 22|33 beschädigt'
-            //,'APPLY_DAMAGE_INFOS'
-        ], $message->getMessage());
     }
 }

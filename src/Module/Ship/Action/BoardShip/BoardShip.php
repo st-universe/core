@@ -22,9 +22,9 @@ use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipInteractionEnum;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollection;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -38,68 +38,24 @@ final class BoardShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BOARD_SHIP';
 
-    private CrewRepositoryInterface $crewRepository;
-
-    private ShipCrewRepositoryInterface $shipCrewRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ShipLoaderInterface $shipLoader;
-
-    private InteractionCheckerInterface $interactionChecker;
-
-    private NbsUtilityInterface $nbsUtility;
-
-    private CloseCombatUtilInterface $closeCombatUtil;
-
-    private ThreatReactionInterface $threatReaction;
-
-    private FightLibInterface $fightLib;
-
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private ShipShutdownInterface $shipShutdown;
-
-    private ShipTakeoverManagerInterface $shipTakeoverManager;
-
-    private CreatePrestigeLogInterface $createPrestigeLog;
-
-    private DistributedMessageSenderInterface $distributedMessageSender;
-
-    private StuRandom $stuRandom;
-
     public function __construct(
-        CrewRepositoryInterface $crewRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        UserRepositoryInterface $userRepository,
-        ShipLoaderInterface $shipLoader,
-        InteractionCheckerInterface $interactionChecker,
-        NbsUtilityInterface $nbsUtility,
-        CloseCombatUtilInterface $closeCombatUtil,
-        ThreatReactionInterface $threatReaction,
-        FightLibInterface $fightLib,
-        ShipStateChangerInterface $shipStateChanger,
-        ShipShutdownInterface $shipShutdown,
-        ShipTakeoverManagerInterface $shipTakeoverManager,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        DistributedMessageSenderInterface $distributedMessageSender,
-        StuRandom $stuRandom
+        private  CrewRepositoryInterface $crewRepository,
+        private ShipCrewRepositoryInterface $shipCrewRepository,
+        private UserRepositoryInterface $userRepository,
+        private ShipLoaderInterface $shipLoader,
+        private InteractionCheckerInterface $interactionChecker,
+        private NbsUtilityInterface $nbsUtility,
+        private CloseCombatUtilInterface $closeCombatUtil,
+        private ThreatReactionInterface $threatReaction,
+        private FightLibInterface $fightLib,
+        private ShipStateChangerInterface $shipStateChanger,
+        private ShipShutdownInterface $shipShutdown,
+        private ShipTakeoverManagerInterface $shipTakeoverManager,
+        private CreatePrestigeLogInterface $createPrestigeLog,
+        private DistributedMessageSenderInterface $distributedMessageSender,
+        private MessageFactoryInterface $messageFactory,
+        private StuRandom $stuRandom
     ) {
-        $this->crewRepository = $crewRepository;
-        $this->shipCrewRepository = $shipCrewRepository;
-        $this->userRepository = $userRepository;
-        $this->shipLoader = $shipLoader;
-        $this->interactionChecker = $interactionChecker;
-        $this->nbsUtility = $nbsUtility;
-        $this->closeCombatUtil = $closeCombatUtil;
-        $this->threatReaction = $threatReaction;
-        $this->fightLib = $fightLib;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->shipShutdown = $shipShutdown;
-        $this->shipTakeoverManager = $shipTakeoverManager;
-        $this->createPrestigeLog = $createPrestigeLog;
-        $this->distributedMessageSender = $distributedMessageSender;
-        $this->stuRandom = $stuRandom;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -235,7 +191,7 @@ final class BoardShip implements ActionControllerInterface
         $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($target);
 
         $messages = new MessageCollection();
-        $message = new Message($userId, $targetUserId, [sprintf(
+        $message = $this->messageFactory->createMessage($userId, $targetUserId, [sprintf(
             'Die %s entsendet ein Enterkommando auf die %s',
             $ship->getName(),
             $target->getName()
@@ -267,7 +223,7 @@ final class BoardShip implements ActionControllerInterface
             );
         }
 
-        $message = new Message($userId, $targetUserId);
+        $message = $this->messageFactory->createMessage($userId, $targetUserId);
         $messages->add($message);
 
         if (empty($combatGroupAttacker)) {
@@ -330,7 +286,7 @@ final class BoardShip implements ActionControllerInterface
             $killedShipCrew = $this->getKilledCrew($attackers, $wrapper);
         }
 
-        $message = new Message();
+        $message = $this->messageFactory->createMessage();
         $message->add(sprintf(
             '%s %s von der %s wurde im Kampf getötet',
             $killedShipCrew->getCrew()->getTypeDescription(),

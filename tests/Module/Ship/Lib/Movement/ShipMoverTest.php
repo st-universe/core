@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
 use Mockery\MockInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
+use Stu\Module\Ship\Lib\Message\MessageInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMovementInformationAdderInterface;
@@ -22,19 +25,17 @@ use Stu\StuTestCase;
 class ShipMoverTest extends StuTestCase
 {
     /** @var MockInterface&ShipRepositoryInterface */
-    private MockInterface $shipRepository;
-
+    private $shipRepository;
     /** @var MockInterface&ShipMovementInformationAdderInterface */
-    private MockInterface $shipMovementInformationAdder;
-
+    private $shipMovementInformationAdder;
     /** @var MockInterface&PreFlightConditionsCheckInterface */
-    private MockInterface $preFlightConditionsCheck;
-
+    private $preFlightConditionsCheck;
     /** @var MockInterface&LeaveFleetInterface */
-    private MockInterface $leaveFleet;
-
+    private $leaveFleet;
     /** @var MockInterface&AlertReactionFacadeInterface */
-    private MockInterface $alertReactionFacade;
+    private $alertReactionFacade;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private ShipMoverInterface $subject;
 
@@ -45,13 +46,15 @@ class ShipMoverTest extends StuTestCase
         $this->preFlightConditionsCheck = $this->mock(PreFlightConditionsCheckInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
         $this->alertReactionFacade = $this->mock(AlertReactionFacadeInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->subject = new ShipMover(
             $this->shipRepository,
             $this->shipMovementInformationAdder,
             $this->preFlightConditionsCheck,
             $this->leaveFleet,
-            $this->alertReactionFacade
+            $this->alertReactionFacade,
+            $this->messageFactory
         );
     }
 
@@ -123,6 +126,15 @@ class ShipMoverTest extends StuTestCase
             ->with($wrapper, [12345 => $wrapper], $flightRoute, false)
             ->once()
             ->andReturn($conditionCheckResult);
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(UserEnum::USER_NOONE, null, ['Der Weiterflug wurde aus folgenden Gründen abgebrochen:'])
+            ->once()
+            ->andReturn($this->mock(MessageInterface::class));
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(UserEnum::USER_NOONE, null, ['FAILURE'])
+            ->once()
+            ->andReturn($this->mock(MessageInterface::class));
 
 
         $this->subject->checkAndMove($wrapper, $flightRoute);

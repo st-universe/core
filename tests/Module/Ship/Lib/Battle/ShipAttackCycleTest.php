@@ -14,6 +14,8 @@ use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ShipAttacker;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\StuTestCase;
 
@@ -31,6 +33,8 @@ class ShipAttackCycleTest extends StuTestCase
     private $battlePartyFactory;
     /** @var MockInterface|ShipAttackPreparationInterface */
     private $shipAttackPreparation;
+    /** @var MockInterface|MessageFactoryInterface */
+    private $messageFactory;
 
     private ShipAttackCycleInterface $subject;
 
@@ -42,6 +46,7 @@ class ShipAttackCycleTest extends StuTestCase
         $this->attackMatchup = $this->mock(AttackMatchupInterface::class);
         $this->battlePartyFactory = $this->mock(BattlePartyFactoryInterface::class);
         $this->shipAttackPreparation = $this->mock(ShipAttackPreparationInterface::class);
+        $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->subject = new ShipAttackCycle(
             $this->energyWeaponPhase,
@@ -49,12 +54,14 @@ class ShipAttackCycleTest extends StuTestCase
             $this->attackerProviderFactory,
             $this->attackMatchup,
             $this->battlePartyFactory,
-            $this->shipAttackPreparation
+            $this->shipAttackPreparation,
+            $this->messageFactory
         );
     }
 
     public function testCycleExpectFirstAndSecondStrike(): void
     {
+        $messages = $this->mock(MessageCollectionInterface::class);
         $attacker = $this->mock(ShipWrapperInterface::class);
         $attackers = $this->mock(BattlePartyInterface::class);
         $roundBasedAttackers = $this->mock(RoundBasedBattleParty::class);
@@ -100,13 +107,11 @@ class ShipAttackCycleTest extends StuTestCase
             ->andReturn($shipAttacker);
 
         $this->energyWeaponPhase->shouldReceive('fire')
-            ->with($shipAttacker, $defenders, ShipAttackCauseEnum::BOARD_SHIP)
-            ->once()
-            ->andReturn([new Message(1, 2, ['energy'])]);
+            ->with($shipAttacker, $defenders, ShipAttackCauseEnum::BOARD_SHIP, $messages)
+            ->once();
         $this->projectileWeaponPhase->shouldReceive('fire')
-            ->with($shipAttacker, $defenders, ShipAttackCauseEnum::BOARD_SHIP)
-            ->once()
-            ->andReturn([new Message(1, 2, ['projectile'])]);
+            ->with($shipAttacker, $defenders, ShipAttackCauseEnum::BOARD_SHIP, $messages)
+            ->once();
 
         $roundBasedAttackers->shouldReceive('saveActiveMembers')
             ->withNoArgs()
@@ -115,8 +120,11 @@ class ShipAttackCycleTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $collection = $this->subject->cycle($attackers, $defenders, ShipAttackCauseEnum::BOARD_SHIP);
+        $this->messageFactory->shouldReceive('createMessageCollection')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($messages);
 
-        $this->assertEquals(['energy', 'projectile'], $collection->getInformationDump()->getInformations());
+        $collection = $this->subject->cycle($attackers, $defenders, ShipAttackCauseEnum::BOARD_SHIP);
     }
 }

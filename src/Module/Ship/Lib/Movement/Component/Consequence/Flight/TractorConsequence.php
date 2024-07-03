@@ -7,30 +7,21 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
-use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class TractorConsequence extends AbstractFlightConsequence
 {
-    private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
-
     public function __construct(
-        TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
-        ShipSystemManagerInterface $shipSystemManager,
-        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend
+        private TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        private ShipSystemManagerInterface $shipSystemManager,
+        private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
+        private MessageFactoryInterface $messageFactory
     ) {
-        $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
     }
 
     protected function triggerSpecific(
@@ -46,7 +37,7 @@ class TractorConsequence extends AbstractFlightConsequence
             return;
         }
 
-        $message = new Message();
+        $message = $this->messageFactory->createMessage();
         $messages->add($message);
 
         $tractoredShipFleet = $tractoredShip->getFleet();
@@ -75,11 +66,6 @@ class TractorConsequence extends AbstractFlightConsequence
             return;
         }
 
-        // cancel colony block or defend of tractored ship fleet
-        $informations = new InformationWrapper();
-
-        $this->cancelColonyBlockOrDefend->work($ship, $informations, true);
-
-        $message->addMessageMerge($informations->getInformations());
+        $this->cancelColonyBlockOrDefend->work($ship, $message, true);
     }
 }

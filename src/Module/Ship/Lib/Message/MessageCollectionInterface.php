@@ -9,12 +9,6 @@ interface MessageCollectionInterface
     public function add(MessageInterface $msg): void;
 
     /**
-     * @param MessageInterface[] $messages
-     */
-    //TODO use InformationWrapper
-    public function addMultiple(array $messages): void;
-
-    /**
      * @return array<int>
      */
     public function getRecipientIds(): array;

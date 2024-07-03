@@ -8,9 +8,9 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollection;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\PreFlightConditionsCheckInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -27,14 +27,15 @@ final class ShipMover implements ShipMoverInterface
         private ShipMovementInformationAdderInterface $shipMovementInformationAdder,
         private PreFlightConditionsCheckInterface $preFlightConditionsCheck,
         private LeaveFleetInterface $leaveFleet,
-        private AlertReactionFacadeInterface $alertReactionFacade
+        private AlertReactionFacadeInterface $alertReactionFacade,
+        private MessageFactoryInterface $messageFactory
     ) {
         $this->messages = new MessageCollection();
     }
 
     private function addInformation(string $value): void
     {
-        $this->messages->add(new Message(UserEnum::USER_NOONE, null, [$value]));
+        $this->addInformationMerge([$value]);
     }
 
     /**
@@ -42,7 +43,7 @@ final class ShipMover implements ShipMoverInterface
      */
     private function addInformationMerge(array $value): void
     {
-        $this->messages->add(new Message(UserEnum::USER_NOONE, null, $value));
+        $this->messages->add($this->messageFactory->createMessage(UserEnum::USER_NOONE, null, $value));
     }
 
     public function checkAndMove(

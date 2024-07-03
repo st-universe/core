@@ -5,32 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Message;
 
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 final class Message implements MessageInterface
 {
     /**
-     * @var array<string>
-     */
-    private array $msg = [];
-
-    private int $senderId;
-
-    private ?int $recipientId;
-
-    /**
-     * @param array<string>|null $msg
+     * @param array<string> $msg
      */
     public function __construct(
-        ?int $senderId = null,
-        ?int $recipientId = null,
-        ?array $msg = null
+        private int $senderId,
+        private ?int $recipientId,
+        private array $msg = []
     ) {
-        $this->senderId = $senderId ?? UserEnum::USER_NOONE;
-        $this->recipientId = $recipientId;
-        if ($msg !== null) {
-            $this->msg = $msg;
-        }
     }
 
     public function getSenderId(): int

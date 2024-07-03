@@ -271,6 +271,8 @@ use Stu\Module\Ship\Lib\Interaction\ThreatReaction;
 use Stu\Module\Ship\Lib\Interaction\ThreatReactionInterface;
 use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManager;
 use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactory;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\AstroMappingConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DockConsequence;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight\DriveActivationConsequence;
@@ -333,6 +335,7 @@ use function DI\autowire;
 use function DI\get;
 
 return [
+    MessageFactoryInterface::class => autowire(MessageFactory::class),
     ShipMoverInterface::class => autowire(ShipMover::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     InteractionCheckerInterface::class => autowire(InteractionChecker::class),

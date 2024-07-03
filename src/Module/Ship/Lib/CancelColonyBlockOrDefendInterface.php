@@ -2,14 +2,14 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface CancelColonyBlockOrDefendInterface
 {
     public function work(
         ShipInterface $ship,
-        InformationWrapper $informations,
+        InformationInterface $informations,
         bool $isTraktor = false
     ): void;
 }

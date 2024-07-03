@@ -27,6 +27,6 @@ interface ApplyDamageInterface
         ShipWrapperInterface $wrapper,
         ShipSystemInterface $system,
         int $dmg,
-        InformationWrapper $informationWrapper
+        InformationInterface $informations
     ): bool;
 }

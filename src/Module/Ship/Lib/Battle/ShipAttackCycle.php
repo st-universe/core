@@ -6,11 +6,11 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
-use Stu\Module\Ship\Lib\Message\MessageCollection;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 
 final class ShipAttackCycle implements ShipAttackCycleInterface
 {
@@ -21,7 +21,8 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         private AttackerProviderFactoryInterface $attackerProviderFactory,
         private AttackMatchupInterface $attackMatchup,
         private BattlePartyFactoryInterface $battlePartyFactory,
-        private ShipAttackPreparationInterface $shipAttackPreparation
+        private ShipAttackPreparationInterface $shipAttackPreparation,
+        private MessageFactoryInterface $messageFactory
     ) {
     }
 
@@ -31,7 +32,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         ShipAttackCauseEnum $attackCause
     ): MessageCollectionInterface {
 
-        $messages = new MessageCollection();
+        $messages = $this->messageFactory->createMessageCollection();
         $isOneWay = $attackCause->isOneWay();
 
         $this->shipAttackPreparation->getReady($attackers, $defenders, $isOneWay, $messages);
@@ -57,17 +58,19 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
             $shipAttacker = $this->attackerProviderFactory->getShipAttacker($matchup->getAttacker());
 
-            $messages->addMultiple($this->energyWeaponPhase->fire(
+            $this->energyWeaponPhase->fire(
                 $shipAttacker,
                 $targetBattleParty,
-                $attackCause
-            ));
+                $attackCause,
+                $messages
+            );
 
-            $messages->addMultiple($this->projectileWeaponPhase->fire(
+            $this->projectileWeaponPhase->fire(
                 $shipAttacker,
                 $targetBattleParty,
-                $attackCause
-            ));
+                $attackCause,
+                $messages
+            );
         }
 
         $attackersRoundBasedBattleParty->saveActiveMembers();

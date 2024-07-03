@@ -75,7 +75,8 @@ class MessageCollectionTest extends StuTestCase
             ->once()
             ->andReturn(['message2-a', 'message2-b']);
 
-        $this->subject->addMultiple([$message1, $message2]);
+        $this->subject->add($message1);
+        $this->subject->add($message2);
 
         $result = $this->subject->getInformationDump();
 
@@ -163,7 +164,7 @@ class MessageCollectionTest extends StuTestCase
 
     public function testIsEmptyExpectFalseWhenNotEmpty(): void
     {
-        $this->subject->add(new Message(null, null, ['foo']));
+        $this->subject->add(new Message(1, null, ['foo']));
 
         $result = $this->subject->isEmpty();
 
@@ -172,7 +173,7 @@ class MessageCollectionTest extends StuTestCase
 
     public function testIsEmptyExpectTrueWhenEmpty(): void
     {
-        $this->subject->add(new Message());
+        $this->subject->add(new Message(1, null));
 
         $result = $this->subject->isEmpty();
 

@@ -21,19 +21,6 @@ class MessageTest extends StuTestCase
         );
     }
 
-    public function testConstructor(): void
-    {
-        $this->subject = new Message(
-            $this->senderId,
-            $this->recipientId,
-            ['foo']
-        );
-
-        $msg = $this->subject->getMessage();
-
-        $this->assertEquals(['foo'], $msg);
-    }
-
     public function testGetSenderId(): void
     {
         $result = $this->subject->getSenderId();

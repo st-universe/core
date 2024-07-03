@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -15,23 +15,17 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterface
 {
-    private FleetRepositoryInterface $fleetRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        FleetRepositoryInterface $fleetRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
+        private FleetRepositoryInterface $fleetRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->fleetRepository = $fleetRepository;
-        $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function work(ShipInterface $ship, InformationWrapper $informations, bool $isTraktor = false): void
+    public function work(ShipInterface $ship, InformationInterface $informations, bool $isTraktor = false): void
     {
         $this->loggerUtil->log('A');
         $target = $isTraktor ? $ship->getTractoredShip() : $ship;

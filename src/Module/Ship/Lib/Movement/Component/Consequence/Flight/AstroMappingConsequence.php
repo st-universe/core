@@ -6,19 +6,18 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class AstroMappingConsequence extends AbstractFlightConsequence
 {
-    private AstroEntryLibInterface $astroEntryLib;
-
-    public function __construct(AstroEntryLibInterface $astroEntryLib)
-    {
-        $this->astroEntryLib = $astroEntryLib;
+    public function __construct(
+        private AstroEntryLibInterface $astroEntryLib,
+        private MessageFactoryInterface $messageFactory
+    ) {
     }
 
     protected function triggerSpecific(
@@ -30,7 +29,7 @@ class AstroMappingConsequence extends AbstractFlightConsequence
         $ship = $wrapper->get();
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING) {
-            $message = new Message(
+            $message = $this->messageFactory->createMessage(
                 null,
                 $ship->getUser()->getId(),
                 [sprintf('Die %s hat die Kartographierung abgebrochen', $ship->getName())]

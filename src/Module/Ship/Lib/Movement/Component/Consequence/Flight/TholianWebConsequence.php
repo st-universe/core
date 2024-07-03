@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 
 class TholianWebConsequence extends AbstractFlightConsequence
 {
-    private TholianWebUtilInterface $tholianWebUtil;
-
-    public function __construct(TholianWebUtilInterface $tholianWebUtil)
-    {
-        $this->tholianWebUtil = $tholianWebUtil;
+    public function __construct(
+        private TholianWebUtilInterface $tholianWebUtil,
+        private MessageFactoryInterface $messageFactory
+    ) {
     }
 
     protected function triggerSpecific(
@@ -29,7 +28,7 @@ class TholianWebConsequence extends AbstractFlightConsequence
 
         $ship = $wrapper->get();
 
-        $message = new Message(null, $ship->getUser()->getId());
+        $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
         $messages->add($message);
 
         //web spinning
