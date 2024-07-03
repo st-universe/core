@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\PlanetFieldRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,9 +12,11 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use RuntimeException;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
+use Stu\Orm\Repository\PlanetFieldRepository;
 
 #[Table(name: 'stu_colonies_fielddata')]
 #[Index(name: 'colony_field_idx', columns: ['colonies_id', 'field_id'])]

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;

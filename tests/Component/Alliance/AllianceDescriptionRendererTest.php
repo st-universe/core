@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
-use Override;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Orm\Entity\AllianceInterface;

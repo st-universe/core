@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;

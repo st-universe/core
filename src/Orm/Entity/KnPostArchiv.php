@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\KnPostArchivRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -18,8 +16,10 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Override;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
+use Stu\Orm\Repository\KnPostArchivRepository;
 
 #[Table(name: 'stu_kn_archiv')]
 #[Index(name: 'plot_archiv_idx', columns: ['plot_id'])]

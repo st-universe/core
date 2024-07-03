@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Fleet;
 
-use Override;
 use Iterator;
+use Override;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 /**
  * @implements Iterator<FleetNfsItem>
- * 
+ *
  */
 final class FleetNfsIterator implements Iterator
 {

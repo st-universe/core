@@ -8,18 +8,17 @@ use Override;
 use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
-use Stu\Component\Game\GameEnum;
 
 final class AllianceProvider implements ViewComponentProviderInterface
 {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Override;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
-use Stu\Component\Ship\ShipModuleTypeEnum;
 
 final class ModuleValueCalculator implements ModuleValueCalculatorInterface
 {

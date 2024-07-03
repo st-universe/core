@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 
 #[Table(name: 'stu_rumps_module_special')]
 #[Index(name: 'rump_module_special_ship_rump_idx', columns: ['rump_id'])]

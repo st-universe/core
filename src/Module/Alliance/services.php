@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
-use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayerRequest;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequestInterface;
@@ -47,6 +46,7 @@ use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopic;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopicRequest;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopicRequestInterface;
 use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayer;
+use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayerRequest;
 use Stu\Module\Alliance\Action\EditDetails\EditDetails;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequest;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequestInterface;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Tal\StatusBarColorEnum;

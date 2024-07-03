@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Ship\Lib\Movement;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
@@ -223,7 +223,7 @@ final class ShipMover implements ShipMoverInterface
 
     /**
      * @param Collection<int, ShipWrapperInterface> $wrappers
-     * 
+     *
      * @return array<ShipInterface>
      */
     private function initTractoredShips(Collection $wrappers): array

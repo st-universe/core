@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\CancelResearch;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use request;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;

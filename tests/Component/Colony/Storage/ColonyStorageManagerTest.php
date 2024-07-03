@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Storage;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Colony\Storage\Exception\CommodityMissingException;
 use Stu\Component\Colony\Storage\Exception\QuantityTooSmallException;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;

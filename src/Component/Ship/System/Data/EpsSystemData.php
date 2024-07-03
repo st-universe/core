@@ -21,7 +21,7 @@ class EpsSystemData extends AbstractSystemData
     public bool $reloadBattery = false;
 
     #[Override]
-    function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_EPS;
     }

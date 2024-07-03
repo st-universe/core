@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\AllianceJobRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\AllianceJobRepository;
 
 #[Table(name: 'stu_alliances_jobs')]
 #[Entity(repositoryClass: AllianceJobRepository::class)]

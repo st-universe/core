@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Lock;
 
-use Override;
 use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
+use Override;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\StuTestCase;
 

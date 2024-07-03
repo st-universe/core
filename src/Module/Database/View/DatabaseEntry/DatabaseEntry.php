@@ -128,8 +128,7 @@ final class DatabaseEntry implements ViewControllerInterface
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
 
                 $renderer = new SystemLayerRenderer();
-                $panel = new class() implements PanelAttributesInterface
-                {
+                $panel = new class () implements PanelAttributesInterface {
                     public function getHeightAndWidth(): string
                     {
                         return 'height: 30px; width: 30px;';
@@ -225,7 +224,7 @@ final class DatabaseEntry implements ViewControllerInterface
 
     /**
      * @param array<int, ColonyScanInterface> $colonyScans
-     * 
+     *
      * @return array<int, ColonyScanInterface>
      */
     private function filterBySystem(array $colonyScans, int $systemId): array

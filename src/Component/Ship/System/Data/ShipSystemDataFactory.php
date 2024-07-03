@@ -14,7 +14,6 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
 {
-
     public function __construct(
         private ShipRepositoryInterface $shipRepository,
         private ShipSystemRepositoryInterface $shipSystemRepository,

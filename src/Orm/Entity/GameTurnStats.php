@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\GameTurnStatsRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,6 +12,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\GameTurnStatsRepository;
 
 #[Table(name: 'stu_game_turn_stats')]
 #[Index(name: 'game_turn_stats_turn_idx', columns: ['turn_id'])]

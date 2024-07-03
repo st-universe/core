@@ -2,10 +2,10 @@
 
 namespace Stu\Component\Communication\Kn;
 
+use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Entity\KnCharactersInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\KnCharactersInterface;
-use Doctrine\Common\Collections\Collection;
 
 interface KnItemInterface
 {

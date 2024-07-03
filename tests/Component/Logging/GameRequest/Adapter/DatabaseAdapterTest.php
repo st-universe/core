@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
-use Override;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Mockery\MockInterface;
 use Monolog\Logger;
+use Override;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\StuTestCase;

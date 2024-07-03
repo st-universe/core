@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;

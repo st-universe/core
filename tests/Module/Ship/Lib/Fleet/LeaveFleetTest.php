@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Fleet;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

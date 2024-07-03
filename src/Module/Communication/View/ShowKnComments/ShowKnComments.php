@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

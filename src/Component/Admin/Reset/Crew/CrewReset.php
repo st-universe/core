@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset\Crew;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 
 final class CrewReset implements CrewResetInterface

@@ -2,9 +2,9 @@
 
 namespace Stu\Component\Ship\System;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
 use JsonMapper\JsonMapperInterface;
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -12,7 +12,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 class SystemDataDeserializer implements SystemDataDeserializerInterface
 {
-
     public function __construct(
         private ShipSystemDataFactoryInterface $shipSystemDataFactory,
         private JsonMapperInterface $jsonMapper

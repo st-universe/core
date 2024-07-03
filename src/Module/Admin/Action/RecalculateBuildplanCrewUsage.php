@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action;
 
 use Override;
-use Stu\Orm\Entity\ModuleInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,6 +13,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\BuildplanModuleInterface;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 

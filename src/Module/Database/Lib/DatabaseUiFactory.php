@@ -61,7 +61,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
     public function createDatabaseTopListWithPoints(
         int $userId,
         string $points,
-        int $time = null
+        ?int $time = null
     ): DatabaseTopListWithPoints {
         return new DatabaseTopListWithPoints(
             $this->userRepository,

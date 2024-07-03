@@ -6,12 +6,12 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Override;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Ship\Lib\Interaction\TholianWebUtilInterface;
-use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 
 class TholianWebConsequence extends AbstractFlightConsequence
 {

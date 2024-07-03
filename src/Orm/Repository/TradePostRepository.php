@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Override;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\Map\Location;
 use Stu\Module\PlayerSetting\Lib\UserEnum;

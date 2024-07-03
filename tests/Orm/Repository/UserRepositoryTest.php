@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;

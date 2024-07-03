@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\KnPostInterface;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\ShipCountData;
 use Stu\Orm\Entity\ShipInterface;

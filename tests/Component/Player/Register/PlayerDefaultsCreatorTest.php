@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Override;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\LayerInterface;

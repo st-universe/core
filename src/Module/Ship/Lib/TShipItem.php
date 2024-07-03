@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Override;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 
 #[Entity]

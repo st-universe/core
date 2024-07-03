@@ -28,7 +28,7 @@ abstract class AbstractFlightConsequence implements FlightConsequenceInterface
         );
     }
 
-    protected abstract function triggerSpecific(
+    abstract protected function triggerSpecific(
         ShipWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
         MessageCollectionInterface $messages

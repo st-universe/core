@@ -12,12 +12,12 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
-use Override;
 use JBBCode\Parser;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\UserInterface;

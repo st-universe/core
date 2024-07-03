@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\CloseCombat;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\FactionInterface;

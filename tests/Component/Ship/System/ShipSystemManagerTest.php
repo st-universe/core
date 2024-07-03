@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;

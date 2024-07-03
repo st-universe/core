@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Override;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
 use JBBCode\validators\CssColorValidator;
+use Override;
 
 final class StuBbCodeDefinitionSet implements CodeDefinitionSet
 {

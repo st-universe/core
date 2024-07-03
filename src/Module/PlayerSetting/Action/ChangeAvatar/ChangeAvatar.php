@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
-use Override;
 use Exception;
 use GdImage;
 use Noodlehaus\ConfigInterface;
+use Override;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

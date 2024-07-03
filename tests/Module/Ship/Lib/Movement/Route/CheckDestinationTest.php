@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
 use Stu\Orm\Entity\LayerInterface;

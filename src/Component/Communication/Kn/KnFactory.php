@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;

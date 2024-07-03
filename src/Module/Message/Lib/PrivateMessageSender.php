@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Override;
 use InvalidArgumentException;
 use JBBCode\Parser;
 use Laminas\Mail\Exception\RuntimeException;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuTime;
@@ -45,7 +45,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $recipientId,
         string|InformationWrapper $information,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-        string $href = null,
+        ?string $href = null,
         bool $isRead = false
     ): void {
         if ($senderId === $recipientId) {
@@ -149,7 +149,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         string $text,
         ?string $href,
         bool $new,
-        PrivateMessageInterface $inboxPm = null
+        ?PrivateMessageInterface $inboxPm = null
     ): PrivateMessageInterface {
         $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $folderType);
 

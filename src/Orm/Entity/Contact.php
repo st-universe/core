@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ContactRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,7 +12,9 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Module\Message\Lib\ContactListModeEnum;
+use Stu\Orm\Repository\ContactRepository;
 
 #[Table(name: 'stu_contactlist')]
 #[Index(name: 'user_pair_idx', columns: ['user_id', 'recipient'])]

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;

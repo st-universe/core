@@ -24,7 +24,7 @@ abstract class AbstractSettings implements SettingsInterface
         return $this->config;
     }
 
-    protected function getIntegerConfigValue(string $setting, int $default = null): int
+    protected function getIntegerConfigValue(string $setting, ?int $default = null): int
     {
         $path = $this->getSettingPath($setting);
         $value = $this->getConfigValue($path, $default);
@@ -36,7 +36,7 @@ abstract class AbstractSettings implements SettingsInterface
         return (int)$value;
     }
 
-    protected function getStringConfigValue(string $setting, string $default = null): string
+    protected function getStringConfigValue(string $setting, ?string $default = null): string
     {
         $path = $this->getSettingPath($setting);
         $value = $this->getConfigValue($path, $default);
@@ -48,7 +48,7 @@ abstract class AbstractSettings implements SettingsInterface
         return $value;
     }
 
-    protected function getBooleanConfigValue(string $setting, bool $default = null): bool
+    protected function getBooleanConfigValue(string $setting, ?bool $default = null): bool
     {
         $path = $this->getSettingPath($setting);
         $value = $this->getConfigValue($path, $default);
@@ -65,7 +65,7 @@ abstract class AbstractSettings implements SettingsInterface
      *
      * @return array<string>
      */
-    protected function getArrayConfigValue(string $setting, array $default = null): array
+    protected function getArrayConfigValue(string $setting, ?array $default = null): array
     {
         $path = $this->getSettingPath($setting);
 
@@ -104,7 +104,7 @@ abstract class AbstractSettings implements SettingsInterface
      *
      * @return array<string>
      */
-    private function getConfigArray(string $path, array $default = null): array
+    private function getConfigArray(string $path, ?array $default = null): array
     {
         $value = $this->getConfig()->get($path);
 

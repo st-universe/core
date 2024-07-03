@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditDetails;
 
-use Override;
 use JBBCode\Parser;
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Lib\CleanTextUtils;

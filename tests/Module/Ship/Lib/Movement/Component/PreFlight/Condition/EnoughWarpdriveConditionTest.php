@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -67,10 +67,10 @@ class EnoughWarpdriveConditionTest extends StuTestCase
      */
     public function testCheckWarpdriveWhenEnoughWarpdrive(
         RouteModeEnum $routeMode,
-        string $nextWaypointClass = null,
-        bool $hasWarpdrive = null,
-        bool $isTractoring = null,
-        int $expectedCost = null
+        ?string $nextWaypointClass = null,
+        ?bool $hasWarpdrive = null,
+        ?bool $isTractoring = null,
+        ?int $expectedCost = null
     ): void {
         $warpdriveSystem = $this->mock(WarpDriveSystemData::class);
 
@@ -130,10 +130,10 @@ class EnoughWarpdriveConditionTest extends StuTestCase
      */
     public function testCheckWarpdriveWhenNotEnoughWarpdrive(
         RouteModeEnum $routeMode,
-        string $nextWaypointClass = null,
-        bool $hasWarpdrive = null,
-        bool $isTractoring = null,
-        int $expectedCost = null
+        ?string $nextWaypointClass = null,
+        ?bool $hasWarpdrive = null,
+        ?bool $isTractoring = null,
+        ?int $expectedCost = null
     ): void {
         $warpdriveSystem = $this->mock(WarpDriveSystemData::class);
 

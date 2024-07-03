@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageFolder;

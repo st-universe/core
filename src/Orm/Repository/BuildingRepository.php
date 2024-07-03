@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
@@ -26,8 +26,8 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         int $userId,
         int $buildMenu,
         int $offset,
-        int $commodityId = null,
-        int $fieldType = null
+        ?int $commodityId = null,
+        ?int $fieldType = null
     ): array {
 
         $commodityFilter = $commodityId === null ? '' : sprintf(

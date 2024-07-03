@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use JBBCode\Parser;
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -23,7 +23,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 {
-
     public function __construct(
         private ShipSystemManagerInterface $shipSystemManager,
         private ColonyLibFactoryInterface $colonyLibFactory,

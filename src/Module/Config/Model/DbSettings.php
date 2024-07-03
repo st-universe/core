@@ -3,6 +3,7 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+
 final class DbSettings extends AbstractSettings implements DbSettingsInterface
 {
     private const string CONFIG_PATH = 'db';

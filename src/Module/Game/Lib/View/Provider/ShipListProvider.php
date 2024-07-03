@@ -9,11 +9,10 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Orm\Repository\BuoyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\BuoyRepositoryInterface;
 
 final class ShipListProvider implements ViewComponentProviderInterface
 {

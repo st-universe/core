@@ -10,13 +10,11 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
-use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
-use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -40,7 +38,7 @@ final class ShipAttackCore implements ShipAttackCoreInterface
         bool &$isFleetFight,
         InformationWrapper $informations
     ): void {
-        $wrapper = $sourceWrapper instanceof ShipWrapperInterface ?  $sourceWrapper : $sourceWrapper->getLeadWrapper();
+        $wrapper = $sourceWrapper instanceof ShipWrapperInterface ? $sourceWrapper : $sourceWrapper->getLeadWrapper();
         $ship = $wrapper->get();
 
         $target = $targetWrapper->get();
@@ -122,7 +120,7 @@ final class ShipAttackCore implements ShipAttackCoreInterface
      */
     private function getAttackersAndDefenders(ShipWrapperInterface|FleetWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): array
     {
-        $ship = $wrapper instanceof ShipWrapperInterface ?  $wrapper->get() : $wrapper->get()->getLeadShip();
+        $ship = $wrapper instanceof ShipWrapperInterface ? $wrapper->get() : $wrapper->get()->getLeadShip();
 
         [$attacker, $defender, $isFleetFight] = $this->fightLib->getAttackersAndDefenders($wrapper, $targetWrapper, $this->battlePartyFactory);
 

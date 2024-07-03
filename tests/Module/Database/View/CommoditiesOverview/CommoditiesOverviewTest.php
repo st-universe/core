@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\CommoditiesOverview;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\Lib\StorageWrapper;

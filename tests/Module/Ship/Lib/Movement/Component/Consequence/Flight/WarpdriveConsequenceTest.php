@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
@@ -99,9 +99,9 @@ class WarpdriveConsequenceTest extends StuTestCase
      */
     public function testTrigger(
         RouteModeEnum $routeMode,
-        string $nextWaypointClass = null,
-        bool $isTractoring = null,
-        int $expectedCost = null
+        ?string $nextWaypointClass = null,
+        ?bool $isTractoring = null,
+        ?int $expectedCost = null
     ): void {
         $messages = $this->mock(MessageCollectionInterface::class);
         $warpDriveSystem = $this->mock(WarpDriveSystemData::class);

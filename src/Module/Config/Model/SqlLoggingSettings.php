@@ -3,6 +3,7 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+
 final class SqlLoggingSettings extends AbstractSettings implements SqlLoggingSettingsInterface
 {
     private const string CONFIG_PATH = 'sqlLogging';

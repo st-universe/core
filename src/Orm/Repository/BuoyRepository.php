@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Orm\Entity\Buoy;
 use Stu\Orm\Entity\BuoyInterface;
-
 
 /**
  * @extends EntityRepository<Buoy>

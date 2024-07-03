@@ -74,7 +74,7 @@ final class CrewCreator implements CrewCreatorInterface
     public function createShipCrew(
         ShipInterface $ship,
         ColonyInterface|ShipInterface $crewProvider,
-        int $amount = null
+        ?int $amount = null
     ): void {
         $crewToSetup = $amount ?? $ship->getBuildPlan()->getCrew();
 

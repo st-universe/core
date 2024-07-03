@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\ResetPassword;
 
-use Override;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

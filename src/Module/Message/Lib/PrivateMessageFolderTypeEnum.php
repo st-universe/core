@@ -6,10 +6,10 @@ namespace Stu\Module\Message\Lib;
 
 enum PrivateMessageFolderTypeEnum: int
 {
-        //default
+    //default
     case DEFAULT_OWN = 0;
 
-        //special categories
+    //special categories
     case SPECIAL_MAIN = 1;
     case SPECIAL_SHIP = 2;
     case SPECIAL_COLONY = 3;

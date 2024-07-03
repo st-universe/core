@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use JBBCode\Parser;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;

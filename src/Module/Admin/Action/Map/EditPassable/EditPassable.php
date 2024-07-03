@@ -8,8 +8,8 @@ use Override;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class EditPassable implements ActionControllerInterface
 {

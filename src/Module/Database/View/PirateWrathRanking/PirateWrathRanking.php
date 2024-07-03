@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\PirateWrathRanking;
 
 use Override;
+use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
-use Stu\Lib\ModuleScreen\GradientColorInterface;
-use Stu\Orm\Repository\PirateWrathRepositoryInterface;
-use Stu\Orm\Entity\PirateWrathInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\PirateWrathInterface;
+use Stu\Orm\Repository\HistoryRepositoryInterface;
+use Stu\Orm\Repository\PirateWrathRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PirateWrathRanking implements ViewControllerInterface
 {

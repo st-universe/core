@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\ShowStatistics;
 
-use Override;
 use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
+use Override;
 use request;
 use Stu\Component\Image\ImageCreationInterface;
 use Stu\Module\Control\GameControllerInterface;

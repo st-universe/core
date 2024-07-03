@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
-use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;

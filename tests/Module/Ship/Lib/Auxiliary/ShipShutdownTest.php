@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Auxiliary;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;

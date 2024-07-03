@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\TradeLicenseInfoRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,6 +12,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\TradeLicenseInfoRepository;
 
 #[Table(name: 'stu_trade_license_info')]
 #[Index(name: 'trade_license_info_post_idx', columns: ['posts_id'])]

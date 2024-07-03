@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\CancelResearch;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use request;
-use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Override;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
-use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserSetting;
 use Stu\Orm\Repository\UserSettingRepositoryInterface;

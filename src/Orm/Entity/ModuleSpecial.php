@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ModuleSpecialRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,7 +12,9 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Orm\Repository\ModuleSpecialRepository;
 
 #[Table(name: 'stu_modules_specials')]
 #[Index(name: 'module_special_module_idx', columns: ['module_id'])]

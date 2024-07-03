@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ShipManagement\Provider;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;

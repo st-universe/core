@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\OpenedAdventDoorRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\OpenedAdventDoorRepository;
 
 #[Table(name: 'stu_opened_advent_door')]
 #[Entity(repositoryClass: OpenedAdventDoorRepository::class)]

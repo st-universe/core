@@ -10,7 +10,6 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
-use Stu\Module\Ship\Lib\Crew\LaunchEscapePodsInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;

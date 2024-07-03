@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Tick\Colony;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
+use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingManagerInterface;

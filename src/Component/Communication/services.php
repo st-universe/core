@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Communication;
 
 use JBBCode\Parser;
-use Psr\Container\ContainerInterface;
 use Stu\Component\Communication\Kn\KnBbCodeDefinitionSet;
 use Stu\Component\Communication\Kn\KnFactory;
 use Stu\Component\Communication\Kn\KnFactoryInterface;

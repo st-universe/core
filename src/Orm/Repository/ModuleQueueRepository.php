@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleQueueInterface;

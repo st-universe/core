@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCauseEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 

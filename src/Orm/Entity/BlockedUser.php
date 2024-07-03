@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\BlockedUserRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\BlockedUserRepository;
 
 #[Table(name: 'stu_blocked_user')]
 #[Entity(repositoryClass: BlockedUserRepository::class)]

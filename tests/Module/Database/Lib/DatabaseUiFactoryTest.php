@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

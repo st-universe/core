@@ -110,9 +110,11 @@ final class ShowField implements ViewControllerInterface
         }
         $game->setTemplateVar(
             'HAS_UPGRADE_OR_TERRAFORMING_OPTION',
-            (!$field->isUnderConstruction()
+            (
+                !$field->isUnderConstruction()
                 && $upgradeOptions !== []
-            ) || ($terraformingOptions !== []
+            ) || (
+                $terraformingOptions !== []
                 && !$field->hasBuilding()
             )
         );

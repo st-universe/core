@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
-use Override;
 use Crunz\Exception\NotImplementedException;
+use Override;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
 {
-    public function __construct( #
+    public function __construct(#
         private int $shipId,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository

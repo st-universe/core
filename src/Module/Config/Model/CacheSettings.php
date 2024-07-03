@@ -3,6 +3,7 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+
 final class CacheSettings extends AbstractSettings implements CacheSettingsInterface
 {
     private const string CONFIG_PATH = 'cache';

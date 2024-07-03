@@ -34,7 +34,7 @@ final class NbsUtility implements NbsUtilityInterface
         GameControllerInterface $game,
         ?SessionInterface $session,
         bool $tachyonActive,
-        MapInterface|StarSystemMapInterface $field = null
+        MapInterface|StarSystemMapInterface|null $field = null
     ): void {
         if ($ship->getNbs() || $field !== null) {
             $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(

@@ -3,7 +3,6 @@
 namespace Stu\Module\Control;
 
 use Override;
-use SysvSemaphore;
 use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
@@ -11,6 +10,7 @@ use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use SysvSemaphore;
 
 final class SemaphoreUtil implements SemaphoreUtilInterface
 {
@@ -34,7 +34,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $semaphore = sem_get(
             $key,
             1,
-            0666,
+            0o666,
             SemaphoreConstants::AUTO_RELEASE_SEMAPHORES
         );
 

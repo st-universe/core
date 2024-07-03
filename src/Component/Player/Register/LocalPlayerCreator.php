@@ -19,8 +19,8 @@ final class LocalPlayerCreator extends PlayerCreator
         string $emailAddress,
         FactionInterface $faction,
         string $password,
-        string $mobile = null,
-        string $smsCode = null
+        ?string $mobile = null,
+        ?string $smsCode = null
     ): UserInterface {
         $player = $this->userRepository->prototype();
         $player->setLogin($loginName);

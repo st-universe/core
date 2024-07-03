@@ -43,7 +43,7 @@ final class ResearchRanking implements ViewControllerInterface
                 $userPoints = (int)$data['points'];
             }
         }
-        $game->setTemplateVar('USER_POINTS',  $userPoints);
+        $game->setTemplateVar('USER_POINTS', $userPoints);
 
         $game->setTemplateVar(
             'RESEARCH_LIST',

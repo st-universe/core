@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;

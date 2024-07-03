@@ -10,7 +10,6 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
 use Stu\Orm\Entity\TradeOfferInterface;

@@ -7,7 +7,6 @@ use Stu\Orm\Entity\ColonyInterface;
 
 interface ColonyTickComponentInterface
 {
-
     /**
      * @param array<int, ColonyProduction> $production
      */

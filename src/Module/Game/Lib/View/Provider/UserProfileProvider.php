@@ -6,18 +6,17 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Override;
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
+use Stu\Orm\Entity\ColonyScanInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Component\Game\GameEnum;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\ColonyScanInterface;
 
 final class UserProfileProvider implements ViewComponentProviderInterface
 {
@@ -99,7 +98,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
     /**
      * @param array<int, ColonyScanInterface> $colonyScans
-     * 
+     *
      * @return array<int, ColonyScanInterface>
      */
     private function filterByUser(array $colonyScans, UserInterface $user): array

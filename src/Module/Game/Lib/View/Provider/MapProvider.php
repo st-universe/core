@@ -9,7 +9,6 @@ use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class MapProvider implements ViewComponentProviderInterface

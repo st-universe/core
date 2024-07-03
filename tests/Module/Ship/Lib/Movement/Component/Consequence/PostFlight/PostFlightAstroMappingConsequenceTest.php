@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\PostFlight;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;

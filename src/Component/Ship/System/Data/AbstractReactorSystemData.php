@@ -9,14 +9,14 @@ abstract class AbstractReactorSystemData extends AbstractSystemData
     public int $output = 0;
     public int $load = 0;
 
-    public abstract function getIcon(): string;
+    abstract public function getIcon(): string;
 
-    public abstract function getLoadUnits(): int;
+    abstract public function getLoadUnits(): int;
 
     /** @return array<int, int> */
-    public abstract function getLoadCost(): array;
+    abstract public function getLoadCost(): array;
 
-    public abstract function getCapacity(): int;
+    abstract public function getCapacity(): int;
 
     /**
      * proportional to reactor system status

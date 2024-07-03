@@ -135,7 +135,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
     }
 
     #[Override]
-    public function setTorpedo(int $torpedoTypeId = null): ShipConfiguratorInterface
+    public function setTorpedo(?int $torpedoTypeId = null): ShipConfiguratorInterface
     {
         $ship = $this->wrapper->get();
         if ($ship->getMaxTorpedos() === 0) {

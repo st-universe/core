@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Crew;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\ShipInterface;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\Overview;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;

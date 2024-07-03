@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
-use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Orm\Entity\UserInterface;
 
 interface KnCommentTalInterface

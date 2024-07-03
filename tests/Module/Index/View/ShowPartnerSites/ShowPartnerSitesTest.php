@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowPartnerSites;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
 

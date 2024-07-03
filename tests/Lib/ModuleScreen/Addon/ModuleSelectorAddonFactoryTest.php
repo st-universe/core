@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;

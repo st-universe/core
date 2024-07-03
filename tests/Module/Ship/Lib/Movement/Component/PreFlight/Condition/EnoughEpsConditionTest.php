@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -172,11 +172,11 @@ class EnoughEpsConditionTest extends StuTestCase
      */
     public function testCheckFlightCostForRouteMode(
         RouteModeEnum $routeMode,
-        string $nextWaypointClass = null,
-        bool $hasImpulse = null,
-        int $flightCost = null,
-        int $tractorCost = null,
-        int $expectedCost = null
+        ?string $nextWaypointClass = null,
+        ?bool $hasImpulse = null,
+        ?int $flightCost = null,
+        ?int $tractorCost = null,
+        ?int $expectedCost = null
     ): void {
         $epsSystem = $this->mock(EpsSystemData::class);
 

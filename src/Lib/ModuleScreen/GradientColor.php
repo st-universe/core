@@ -3,6 +3,7 @@
 namespace Stu\Lib\ModuleScreen;
 
 use Override;
+
 final class GradientColor implements GradientColorInterface
 {
     #[Override]

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use Override;
+use Doctrine\Common\Collections\Collection;
 use JBBCode\Parser;
+use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
@@ -13,8 +14,6 @@ use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
-
 
 final class KnItem implements KnItemInterface
 {

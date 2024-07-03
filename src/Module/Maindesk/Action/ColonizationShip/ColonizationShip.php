@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\ColonizationShip;
 
-use Override;
 use InvalidArgumentException;
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Exception\AccessViolation;

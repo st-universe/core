@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony\Component;
 
-use Override;
-use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Research\ResearchStateFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;

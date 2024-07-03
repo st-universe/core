@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipInterface;

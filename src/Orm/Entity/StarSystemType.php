@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\StarSystemTypeRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -15,7 +13,9 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use RuntimeException;
+use Stu\Orm\Repository\StarSystemTypeRepository;
 
 #[Table(name: 'stu_system_types')]
 #[Index(name: 'starsystem_mass_center_1_idx', columns: ['first_mass_center_id'])]

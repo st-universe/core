@@ -8,7 +8,6 @@ use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
-use Stu\Module\Message\View\ShowContactModeSwitch\ShowContactModeSwitchRequestInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class ShowContactModeSwitch implements ViewControllerInterface

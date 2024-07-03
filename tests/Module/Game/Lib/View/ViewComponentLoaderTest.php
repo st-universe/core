@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use RuntimeException;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;

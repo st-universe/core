@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShip;
 
-use Override;
 use NavPanel;
+use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\TradeLicenseRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,8 +12,10 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
+use Stu\Orm\Repository\TradeLicenseRepository;
 
 #[Table(name: 'stu_trade_license')]
 #[Index(name: 'user_trade_post_idx', columns: ['user_id', 'posts_id'])]

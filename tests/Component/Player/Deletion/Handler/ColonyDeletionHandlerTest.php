@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;

@@ -2,9 +2,9 @@
 
 namespace Stu\Lib\Mail;
 
-use Override;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
+use Override;
 
 class MailFactory implements MailFactoryInterface
 {

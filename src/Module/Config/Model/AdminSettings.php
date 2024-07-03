@@ -3,6 +3,7 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+
 final class AdminSettings extends AbstractSettings implements AdminSettingsInterface
 {
     private const string CONFIG_PATH = 'admin';

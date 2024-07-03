@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset\Trade;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;

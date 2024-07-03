@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -19,6 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Map\MapEnum;
@@ -27,6 +26,7 @@ use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
+use Stu\Orm\Repository\UserRepository;
 
 #[Table(name: 'stu_user')]
 #[Index(name: 'user_alliance_idx', columns: ['allys_id'])]

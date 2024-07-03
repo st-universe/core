@@ -161,7 +161,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     #[Override]
     public function cancelTakeover(
         ?ShipTakeoverInterface $takeover,
-        string $cause = null,
+        ?string $cause = null,
         bool $force = false
     ): void {
 
@@ -210,7 +210,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     }
 
     #[Override]
-    public function cancelBothTakeover(ShipInterface $ship, string $passiveCause = null): void
+    public function cancelBothTakeover(ShipInterface $ship, ?string $passiveCause = null): void
     {
         $this->cancelTakeover(
             $ship->getTakeoverActive()

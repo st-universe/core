@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Storage;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
 use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
 use Stu\Orm\Entity\CommodityInterface;

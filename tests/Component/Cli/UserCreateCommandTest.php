@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Cli;
 
-use Override;
 use Ahc\Cli\Application;
 use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
 use Stu\Component\Faction\FactionEnum;

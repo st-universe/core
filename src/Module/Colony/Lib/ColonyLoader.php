@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\Lib;
 use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\EntityLockedException;
-use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 

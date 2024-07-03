@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
-use Override;
-use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;

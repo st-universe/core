@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Override;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\Map;

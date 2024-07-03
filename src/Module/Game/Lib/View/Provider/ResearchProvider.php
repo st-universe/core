@@ -6,7 +6,6 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Override;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 
 final class ResearchProvider implements ViewComponentProviderInterface

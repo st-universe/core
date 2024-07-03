@@ -14,7 +14,6 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 

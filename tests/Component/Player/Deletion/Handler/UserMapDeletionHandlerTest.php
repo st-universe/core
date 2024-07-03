@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserLayerInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;

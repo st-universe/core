@@ -3,8 +3,8 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\UserInterface;
 
 interface PirateWrathManagerInterface
 {

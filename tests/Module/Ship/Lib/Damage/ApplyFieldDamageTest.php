@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Damage;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\DamageWrapper;
-use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Ship\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionCauseEnum;
 use Stu\Module\Ship\Lib\Destruction\ShipDestructionInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -119,10 +117,10 @@ class ApplyFieldDamageTest extends StuTestCase
             ->andReturn($tractoredShip);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(fn(DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $this->wrapper, $message)
+            ->with(Mockery::on(fn (DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $this->wrapper, $message)
             ->once();
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(fn(DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $tractoredShipWrapper, $tmessage)
+            ->with(Mockery::on(fn (DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $tractoredShipWrapper, $tmessage)
             ->once();
 
         $messages->shouldReceive('add')
@@ -193,7 +191,7 @@ class ApplyFieldDamageTest extends StuTestCase
             ->andReturn(null);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(fn(DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 100), $this->wrapper, $message)
+            ->with(Mockery::on(fn (DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 100), $this->wrapper, $message)
             ->once();
 
         $messages->shouldReceive('add')

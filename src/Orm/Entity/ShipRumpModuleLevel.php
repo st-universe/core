@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ShipRumpModuleLevelRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepository;
 
 #[Table(name: 'stu_rumps_module_level')]
 #[Index(name: 'rump_module_level_ship_rump_idx', columns: ['rump_id'])]

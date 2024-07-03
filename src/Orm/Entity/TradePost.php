@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\TradePostRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -19,7 +17,9 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Repository\TradePostRepository;
 
 #[Table(name: 'stu_trade_posts')]
 #[Index(name: 'trade_network_idx', columns: ['trade_network'])]

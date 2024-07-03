@@ -16,8 +16,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
          * @var BuildingFunctionInterface[]
          */
         private array $buildingfunctionIds
-    )
-    {
+    ) {
     }
 
     #[Override]

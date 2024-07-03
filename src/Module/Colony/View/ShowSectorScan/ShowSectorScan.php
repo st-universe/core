@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowSectorScan;
 
 use Override;
-use Stu\Orm\Entity\StarSystemMapInterface;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 

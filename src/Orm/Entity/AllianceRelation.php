@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\AllianceRelationRepository;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -14,7 +12,9 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Orm\Repository\AllianceRelationRepository;
 
 #[Table(name: 'stu_alliances_relations')]
 #[Index(name: 'alliance_relation_idx', columns: ['alliance_id', 'recipient'])]
@@ -150,7 +150,7 @@ class AllianceRelation implements AllianceRelationInterface
     }
 
     #[Override]
-    public function getTypeDescription() : string
+    public function getTypeDescription(): string
     {
         return match ($this->getType()) {
             AllianceEnum::ALLIANCE_RELATION_WAR => 'Krieg',

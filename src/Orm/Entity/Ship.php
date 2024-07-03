@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ShipRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -19,6 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\MapEnum;
@@ -37,6 +36,7 @@ use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\FightLib;
+use Stu\Orm\Repository\ShipRepository;
 
 #[Table(name: 'stu_ships')]
 #[Index(name: 'ship_fleet_idx', columns: ['fleets_id'])]

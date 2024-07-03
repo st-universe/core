@@ -127,9 +127,9 @@ final class BeamUtil implements BeamUtilInterface
         ShipInterface|ColonyInterface $source
     ): void {
         if ($source instanceof ShipInterface) {
-            $this->shipStorageManager->lowerStorage($source, $commodity,  $amount);
+            $this->shipStorageManager->lowerStorage($source, $commodity, $amount);
         } else {
-            $this->colonyStorageManager->lowerStorage($source, $commodity,  $amount);
+            $this->colonyStorageManager->lowerStorage($source, $commodity, $amount);
         }
     }
 
@@ -139,9 +139,9 @@ final class BeamUtil implements BeamUtilInterface
         ShipInterface|ColonyInterface $target
     ): void {
         if ($target instanceof ShipInterface) {
-            $this->shipStorageManager->upperStorage($target, $commodity,  $amount);
+            $this->shipStorageManager->upperStorage($target, $commodity, $amount);
         } else {
-            $this->colonyStorageManager->upperStorage($target, $commodity,  $amount);
+            $this->colonyStorageManager->upperStorage($target, $commodity, $amount);
         }
     }
 

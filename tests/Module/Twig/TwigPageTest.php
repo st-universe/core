@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Twig\TwigPage;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\StuTestCase;

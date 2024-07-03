@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Shields;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;

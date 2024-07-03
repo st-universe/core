@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Entity\FactionInterface;

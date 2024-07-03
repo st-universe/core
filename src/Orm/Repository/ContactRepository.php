@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\ContactInterface;

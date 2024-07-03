@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AlertStateBattleParty;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;

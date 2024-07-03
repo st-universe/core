@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
-use Override;
 use InvalidArgumentException;
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;

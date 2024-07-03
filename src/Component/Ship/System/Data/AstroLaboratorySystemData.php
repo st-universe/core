@@ -12,7 +12,7 @@ class AstroLaboratorySystemData extends AbstractSystemData
     public ?int $astroStartTurn = null;
 
     #[Override]
-    function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
     }

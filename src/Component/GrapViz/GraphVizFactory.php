@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\GrapViz;
 
-use Override;
 use Fhaculty\Graph\Graph;
 use Graphp\GraphViz\GraphViz;
+use Override;
 
 /**
  * Creates graphviz related items

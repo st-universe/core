@@ -10,5 +10,5 @@ interface PirateCreationInterface
     /** @return array<FleetInterface> */
     public function createPirateFleetsIfNeeded(): array;
 
-    public function createPirateFleet(ShipInterface $supportCaller = null): FleetInterface;
+    public function createPirateFleet(?ShipInterface $supportCaller = null): FleetInterface;
 }

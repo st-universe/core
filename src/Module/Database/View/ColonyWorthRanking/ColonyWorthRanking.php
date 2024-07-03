@@ -92,7 +92,7 @@ final class ColonyWorthRanking implements ViewControllerInterface
             $userNetWorthArray[$userId] *= 100;
 
             if ($userId === $currentUser->getId()) {
-                $game->setTemplateVar('USER_POINTS',  $this->floatPointsToPercentageString($userNetWorthArray[$userId]));
+                $game->setTemplateVar('USER_POINTS', $this->floatPointsToPercentageString($userNetWorthArray[$userId]));
             }
         }
 

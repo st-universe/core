@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
-use Stu\Orm\Entity\MapBorderType;
-use Stu\Orm\Entity\StarSystem;
-use Stu\Orm\Entity\MapRegion;
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Override;
+use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapBorderTypeInterface;
+use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\MapRegionInterface;
+use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 
 #[Entity]

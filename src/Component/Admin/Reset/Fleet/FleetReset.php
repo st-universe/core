@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset\Fleet;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class FleetReset implements FleetResetInterface

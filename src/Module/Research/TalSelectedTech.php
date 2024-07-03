@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Override;
-use Stu\Orm\Entity\ResearchedInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use RuntimeException;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ResearchDependencyInterface;
+use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;

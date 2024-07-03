@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPageInterface;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\StuTestCase;
 

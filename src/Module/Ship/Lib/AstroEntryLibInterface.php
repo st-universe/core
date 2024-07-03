@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Ship\Lib;
 
-
 interface AstroEntryLibInterface
 {
     public function cancelAstroFinalizing(ShipWrapperInterface $wrapper): void;

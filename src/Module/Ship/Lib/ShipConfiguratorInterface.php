@@ -23,7 +23,7 @@ interface ShipConfiguratorInterface
 
     public function setAlertState(ShipAlertStateEnum $alertState): ShipConfiguratorInterface;
 
-    public function setTorpedo(int $torpedoTypeId = null): ShipConfiguratorInterface;
+    public function setTorpedo(?int $torpedoTypeId = null): ShipConfiguratorInterface;
 
     public function maxOutSystems(): ShipConfiguratorInterface;
 

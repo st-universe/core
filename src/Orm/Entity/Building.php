@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\BuildingRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -16,8 +14,9 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Component\Building\BuildingEnum;
-
+use Stu\Orm\Repository\BuildingRepository;
 
 #[Table(name: 'stu_buildings')]
 #[Index(name: 'eps_production_idx', columns: ['eps_proc'])]

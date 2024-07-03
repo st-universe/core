@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
-use Override;
 use Exception;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
+use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\StuTestCase;

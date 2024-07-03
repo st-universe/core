@@ -11,8 +11,7 @@ final class GraphInfo
         /** @var PlotInfo[] */
         private array $plotInfos,
         public bool $yAxisStartAtZero = false
-    )
-    {
+    ) {
     }
 
     /**

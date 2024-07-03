@@ -2,9 +2,9 @@
 
 namespace Stu\Component\Cache;
 
-use Override;
 use Cache\Adapter\Redis\RedisCachePool;
 use Exception;
+use Override;
 use Psr\Cache\CacheItemPoolInterface;
 use Redis;
 use Stu\Module\Config\StuConfigInterface;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\MapRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -20,8 +18,10 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\SectorString;
+use Stu\Orm\Repository\MapRepository;
 
 #[Table(name: 'stu_map')]
 #[Index(name: 'coordinates_idx', columns: ['cx', 'cy'])]

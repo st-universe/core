@@ -149,7 +149,7 @@ return [
         $parser->addCodeDefinitionSet(new StuBbCodeWithImageDefinitionSet());
         return new ParserWithImage($parser);
     },
-    JsonMapperInterface::class => fn(): JsonMapperInterface => (new JsonMapperFactory())->bestFit(),
+    JsonMapperInterface::class => fn (): JsonMapperInterface => (new JsonMapperFactory())->bestFit(),
     Ubench::class => function (): Ubench {
         $bench = new Ubench();
         $bench->start();

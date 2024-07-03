@@ -7,15 +7,14 @@ namespace Stu\Module\Ship\Lib\Battle;
 use Override;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
-use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 
 final class ShipAttackCycle implements ShipAttackCycleInterface
 {
-
     public function __construct(
         private EnergyWeaponPhaseInterface $energyWeaponPhase,
         private ProjectileWeaponPhaseInterface $projectileWeaponPhase,

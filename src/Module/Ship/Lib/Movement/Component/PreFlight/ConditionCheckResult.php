@@ -38,7 +38,7 @@ class ConditionCheckResult
                 !$this->isFixedFleetMode
                 && $ship !== $this->leader->get()
             ) {
-                $this->leaveFleet($ship,);
+                $this->leaveFleet($ship, );
             }
         }
     }

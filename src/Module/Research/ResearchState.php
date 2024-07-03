@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;

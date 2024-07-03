@@ -7,7 +7,6 @@ use Stu\Component\Anomaly\AnomalyHandlingInterface;
 
 class AnomalyProcessing implements ManagerComponentInterface
 {
-
     public function __construct(private AnomalyHandlingInterface $anomalyHandling)
     {
     }

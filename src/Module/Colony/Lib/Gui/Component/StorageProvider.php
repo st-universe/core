@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
+use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;

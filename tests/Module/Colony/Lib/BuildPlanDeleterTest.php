@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;

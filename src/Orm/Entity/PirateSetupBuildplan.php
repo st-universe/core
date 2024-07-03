@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Orm\Entity\ShipBuildplanInterface;
+use Override;
 
 #[Table(name: 'stu_pirate_setup_buildplan')]
 #[Entity()]

@@ -30,7 +30,7 @@ final class MapSectionHelper
         LayerInterface $layer,
         int $currentSection,
         bool $isMapEditor = false,
-        int $direction = null
+        ?int $direction = null
     ): int {
         //$this->loggerUtil->init('MSH', LoggerEnum::LEVEL_ERROR);
 

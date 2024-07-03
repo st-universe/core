@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowDeals;
 
 use Override;
-use Stu\Module\Control\StuTime;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\PirateWrathInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use Stu\Orm\Entity\PirateWrathInterface;
 
 final class ShowDeals implements ViewControllerInterface
 {

@@ -14,7 +14,6 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class RepairConsequence extends AbstractFlightConsequence
 {
-
     public function __construct(
         private CancelRepairInterface $cancelRepair,
         private MessageFactoryInterface $messageFactory

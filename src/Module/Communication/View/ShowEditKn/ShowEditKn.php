@@ -10,9 +10,9 @@ use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Repository\KnCharactersRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
-use Stu\Orm\Repository\KnCharactersRepositoryInterface;
 
 final class ShowEditKn implements ViewControllerInterface
 {
@@ -49,7 +49,7 @@ final class ShowEditKn implements ViewControllerInterface
             $game->setPageTitle(_('Beitrag bearbeiten'));
 
             $characterEntities = $this->knCharactersRepository->findBy(['knPost' => $post->getId()]);
-            $characterIds = array_map(fn($characterEntity): int => $characterEntity->getUserCharacters()->getId(), $characterEntities);
+            $characterIds = array_map(fn ($characterEntity): int => $characterEntity->getUserCharacters()->getId(), $characterEntities);
             $characterIdsString = implode(',', $characterIds);
 
             $game->setTemplateVar('CHARACTER_IDS_STRING', $characterIdsString);

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JBBCode\Parser;
+use Override;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
@@ -407,7 +407,7 @@ final class ShipWrapper implements ShipWrapperInterface
     }
 
     #[Override]
-    public function getTakeoverTicksLeft(ShipTakeoverInterface $takeover = null): int
+    public function getTakeoverTicksLeft(?ShipTakeoverInterface $takeover = null): int
     {
         $takeover ??= $this->ship->getTakeoverActive();
         if ($takeover === null) {

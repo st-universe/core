@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Information;
 
 use Override;
+
 class InformationWrapper implements InformationInterface
 {
     /**

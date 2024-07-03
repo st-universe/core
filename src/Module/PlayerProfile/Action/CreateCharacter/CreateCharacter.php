@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Action\CreateCharacter;
 
+use Laminas\Mail\Exception\RuntimeException;
+use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserCharactersRepositoryInterface;
-use Noodlehaus\ConfigInterface;
-use Laminas\Mail\Exception\RuntimeException;
 
 final class CreateCharacter implements ActionControllerInterface
 {
@@ -67,7 +67,7 @@ final class CreateCharacter implements ActionControllerInterface
         $uploadDir = $this->config->get('game.character_avatar_path');
         $uploadPath = $uploadDir . '/' . $imageNameWithExtension;
 
-        if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
+        if (!is_dir($uploadDir) && !mkdir($uploadDir, 0o777, true) && !is_dir($uploadDir)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $uploadDir));
         }
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\SessionStringRepository;
-use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,6 +13,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Override;
+use Stu\Orm\Repository\SessionStringRepository;
 
 #[Table(name: 'stu_session_strings')]
 #[Index(name: 'session_string_user_idx', columns: ['sess_string', 'user_id'])]

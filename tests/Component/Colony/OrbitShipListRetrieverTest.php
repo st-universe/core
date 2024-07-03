@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;

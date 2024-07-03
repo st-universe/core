@@ -2,10 +2,9 @@
 
 namespace Stu\Module\Control;
 
-use Override;
-use Throwable;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Game\GameEnum;
@@ -51,6 +50,7 @@ use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Throwable;
 use Ubench;
 
 final class GameController implements GameControllerInterface

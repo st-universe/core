@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipStateEnum;

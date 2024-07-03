@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Ship\Lib\Movement;
 
-use Override;
 use InvalidArgumentException;
+use Override;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;

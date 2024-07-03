@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 
 final class IdleUserDeletion implements MaintenanceHandlerInterface

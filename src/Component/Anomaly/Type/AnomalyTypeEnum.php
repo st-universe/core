@@ -6,10 +6,10 @@ namespace Stu\Component\Anomaly\Type;
 
 enum AnomalyTypeEnum: int
 {
-        // anomaly types
+    // anomaly types
     case SUBSPACE_ELLIPSE = 1;
 
-        // special anomalies
+    // special anomalies
     case SPECIAL_ADVENT_DOOR = 1001;
 
     public function getTemplate(): string

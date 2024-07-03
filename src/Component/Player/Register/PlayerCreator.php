@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
+use Override;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\MobileNumberInvalidException;
@@ -88,8 +88,8 @@ class PlayerCreator implements PlayerCreatorInterface
         string $emailAddress,
         FactionInterface $faction,
         string $password,
-        string $mobile = null,
-        string $smsCode = null
+        ?string $mobile = null,
+        ?string $smsCode = null
     ): UserInterface {
         $player = $this->userRepository->prototype();
         $player->setLogin($loginName);

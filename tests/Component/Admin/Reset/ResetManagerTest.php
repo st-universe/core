@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
-use Override;
 use Ahc\Cli\IO\Interactor;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
@@ -13,6 +12,7 @@ use Exception;
 use Mockery;
 use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
+use Override;
 use Stu\Component\Admin\Reset\Alliance\AllianceResetInterface;
 use Stu\Component\Admin\Reset\Communication\KnResetInterface;
 use Stu\Component\Admin\Reset\Communication\PmResetInterface;

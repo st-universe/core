@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
-use Override;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\GameControllerInterface;

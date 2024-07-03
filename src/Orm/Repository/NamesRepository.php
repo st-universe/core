@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\ORM\EntityRepository;
-use Stu\Orm\Entity\Names;
+use Override;
 use Stu\Component\Game\NameTypeEnum;
+use Stu\Orm\Entity\Names;
 use Stu\Orm\Entity\NamesInterface;
 use Stu\Orm\Entity\StarSystem;
 
@@ -16,7 +16,6 @@ use Stu\Orm\Entity\StarSystem;
  */
 final class NamesRepository extends EntityRepository implements NamesRepositoryInterface
 {
-
     #[Override]
     public function save(NamesInterface $name): void
     {

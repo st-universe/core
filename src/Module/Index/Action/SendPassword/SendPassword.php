@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\SendPassword;
 
-use Override;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuHashInterface;

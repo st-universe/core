@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Interaction;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Lib\Information\InformationWrapper;

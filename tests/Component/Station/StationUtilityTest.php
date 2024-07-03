@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;

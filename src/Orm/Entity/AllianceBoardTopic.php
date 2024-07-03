@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\AllianceBoardTopicRepository;
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -18,7 +16,9 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Override;
 use Stu\Module\Alliance\View\Topic\Topic;
+use Stu\Orm\Repository\AllianceBoardTopicRepository;
 
 #[Table(name: 'stu_alliance_topics')]
 #[Index(name: 'recent_topics_idx', columns: ['alliance_id', 'last_post_date'])]

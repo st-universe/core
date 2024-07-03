@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Override;
 use JBBCode\Parser;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Override;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;

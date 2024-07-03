@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Battle\Party\RoundBasedBattleParty;
-use Stu\Module\Ship\Lib\Message\Message;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ShipAttacker;
 use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;

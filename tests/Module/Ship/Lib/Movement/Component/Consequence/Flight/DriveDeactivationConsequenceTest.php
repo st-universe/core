@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
-use Override;
-use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -112,7 +111,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
         bool $isWarpdriveNeeded,
         ShipSystemTypeEnum $systemId,
         bool $hasShipSystem,
-        bool $isSystemActive = null,
+        ?bool $isSystemActive = null,
     ): void {
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);

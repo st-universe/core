@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
-use Override;
 use JBBCode\Parser;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -81,7 +81,7 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getIdleRegistrations')
             ->with(
-                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION)
+                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_REGISTRATION)
             )
             ->once()
             ->andReturn([$idlePlayer]);
@@ -92,8 +92,8 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getDeleteable')
             ->with(
-                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME),
-                Mockery::on(fn($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION),
+                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME),
+                Mockery::on(fn ($value): bool => $value === time() - PlayerDeletion::USER_IDLE_TIME_VACATION),
                 [101]
             )
             ->once()

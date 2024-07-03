@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Ship\Lib\Battle\Party;
 
-use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use RuntimeException;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -26,7 +26,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     }
 
     /** @return Collection<int, ShipWrapperInterface> */
-    protected abstract function initMembers(): Collection;
+    abstract protected function initMembers(): Collection;
 
     #[Override]
     public function getUser(): UserInterface

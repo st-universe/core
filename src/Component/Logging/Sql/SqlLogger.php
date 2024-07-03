@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\Sql;
 
-use Override;
-use Stringable;
 use Monolog\Level;
+use Override;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
+use Stringable;
 
 final class SqlLogger extends AbstractLogger
 {

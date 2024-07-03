@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Override;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +11,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Doctrine\ORM\UnitOfWork;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameConfigInterface;

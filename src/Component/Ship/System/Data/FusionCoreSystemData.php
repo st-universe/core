@@ -11,7 +11,7 @@ use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 class FusionCoreSystemData extends AbstractReactorSystemData
 {
     #[Override]
-    function getSystemType(): ShipSystemTypeEnum
+    public function getSystemType(): ShipSystemTypeEnum
     {
         return ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR;
     }

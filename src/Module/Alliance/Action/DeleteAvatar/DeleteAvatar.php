@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeleteAvatar;
 
-use Override;
 use Noodlehaus\ConfigInterface;
+use Override;
 use RuntimeException;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;

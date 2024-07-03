@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player;
 
-use Override;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\ColonyClassResearchInterface;

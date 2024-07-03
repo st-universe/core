@@ -2,7 +2,6 @@
 
 namespace Stu\Module\History\Lib;
 
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;

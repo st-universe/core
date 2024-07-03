@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Event\Listener;
 
-use Override;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
