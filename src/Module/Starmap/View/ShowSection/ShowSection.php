@@ -10,6 +10,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
+use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
@@ -49,8 +50,8 @@ final class ShowSection implements ViewControllerInterface
             throw new SanityCheckException('User tried to access an unseen layer');
         }
 
-        $game->setTemplateVar('TABLE_MACRO', 'html/starmapSectionTable.twig');
-        $game->setViewTemplate('html/starmapSection.twig');
+        $game->setTemplateVar('TABLE_MACRO', 'html/map/starmapSectionTable.twig');
+        $game->setViewTemplate('html/map/starmapSection.twig');
         $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
         $game->setPageTitle(_('Sektion anzeigen'));
 
@@ -73,11 +74,11 @@ final class ShowSection implements ViewControllerInterface
         );
 
         $game->addExecuteJS(sprintf(
-            "registerNavKeys('%s.php', '%s', '%s', false, true);",
+            "registerNavKeys('%s.php', '%s', '%s');",
             ModuleViewEnum::MAP->value,
-            self::VIEW_IDENTIFIER,
-            'html/starmapSectionTable.twig'
-        ), GameEnum::JS_EXECUTION_AFTER_RENDER);
+            RefreshSection::VIEW_IDENTIFIER,
+            'html/map/starmapSectionTable.twig'
+        ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
 
         $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
     }

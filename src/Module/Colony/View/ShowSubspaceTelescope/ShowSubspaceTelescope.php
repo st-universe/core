@@ -22,24 +22,13 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SUBSPACE_TELESCOPE';
 
-    private ColonyLoaderInterface $colonyLoader;
-
-    private ColonyGuiHelperInterface $colonyGuiHelper;
-
-    private StarmapUiFactoryInterface $starmapUiFactory;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper,
-        StarmapUiFactoryInterface $starmapUiFactory,
-        ColonyFunctionManagerInterface $colonyFunctionManager
+        private ColonyLoaderInterface $colonyLoader,
+        private ColonyGuiHelperInterface $colonyGuiHelper,
+        private StarmapUiFactoryInterface $starmapUiFactory,
+        private ColonyFunctionManagerInterface $colonyFunctionManager
     ) {
-        $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
-        $this->starmapUiFactory = $starmapUiFactory;
-        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -66,13 +55,12 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
         $layer = $system->getLayer();
 
         $game->addExecuteJS(sprintf(
-            "registerNavKeys('%s.php', '%s', '%s', false);",
-            ModuleViewEnum::COLONY->value,
+            "registerNavKeys('%s.php', '%s', '%s');",
+            ModuleViewEnum::MAP->value,
             RefreshSection::VIEW_IDENTIFIER,
             'html/colony/telescopeSectionTable.twig'
         ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
 
-        $game->addExecuteJS("updateNavigation();", GameEnum::JS_EXECUTION_AFTER_RENDER);
         $game->addExecuteJS(
             sprintf(
                 'setColonyMapCoordinates(%d, %d);',

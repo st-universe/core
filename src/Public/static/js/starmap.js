@@ -3,7 +3,7 @@ var currentModule = '';
 var currentView = '';
 var currentMacro = '';
 
-function registerNavKeys(module, view, macro, isRedirect, isInnerContent) {
+function registerNavKeys(module, view, macro, isRedirect) {
 
 	if (navKeysRegistered) {
 		return;
@@ -16,16 +16,16 @@ function registerNavKeys(module, view, macro, isRedirect, isInnerContent) {
 	document.addEventListener("keydown", (event) => {
 
 		if (event.key === "ArrowUp") {
-			refreshMapSection(4, isRedirect, isInnerContent);
+			refreshMapSection(4, isRedirect);
 		}
 		if (event.key === "ArrowDown") {
-			refreshMapSection(2, isRedirect, isInnerContent);
+			refreshMapSection(2, isRedirect);
 		}
 		if (event.key === "ArrowLeft") {
-			refreshMapSection(1, isRedirect, isInnerContent);
+			refreshMapSection(1, isRedirect);
 		}
 		if (event.key === "ArrowRight") {
-			refreshMapSection(3, isRedirect, isInnerContent);
+			refreshMapSection(3, isRedirect);
 		}
 	});
 
@@ -79,22 +79,7 @@ function setVisibility(id, style) {
 	}
 }
 
-function refreshMapContent(direction) {
-
-	if (!isDirectionAllowed(direction)) {
-		return;
-	}
-
-	params = `section=${currentSection}&layerid=${currentLayerId}&direction=${direction}&macro=${currentMacro}`;
-	switchInnerContent(currentView, 'Sektion anzeigen', params, currentModule);
-}
-
-function refreshMapSection(direction, isRedirect, isInnerContent) {
-
-	if (isInnerContent) {
-		refreshMapContent(direction);
-		return;
-	}
+function refreshMapSection(direction, isRedirect) {
 
 	if (!isDirectionAllowed(direction)) {
 		return;
