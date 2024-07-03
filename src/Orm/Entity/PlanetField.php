@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\PlanetFieldRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -23,7 +24,7 @@ use Stu\Module\Tal\TalStatusBar;
 #[Index(name: 'colony_building_active_idx', columns: ['colonies_id', 'buildings_id', 'aktiv'])]
 #[Index(name: 'sandbox_building_active_idx', columns: ['colony_sandbox_id', 'buildings_id', 'aktiv'])]
 #[Index(name: 'active_idx', columns: ['aktiv'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\PlanetFieldRepository')]
+#[Entity(repositoryClass: PlanetFieldRepository::class)]
 class PlanetField implements PlanetFieldInterface
 {
     #[Id]
@@ -291,7 +292,7 @@ class PlanetField implements PlanetFieldInterface
             throw new RuntimeException('this should not happen');
         }
 
-        return $colony === null ? $sandbox : $colony;
+        return $colony ?? $sandbox;
     }
 
     #[Override]

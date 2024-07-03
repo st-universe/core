@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\NamesRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\NameTypeEnum;
 
 #[Table(name: 'stu_names')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\NamesRepository')]
+#[Entity(repositoryClass: NamesRepository::class)]
 class Names implements NamesInterface
 {
     #[Id]
@@ -25,7 +26,7 @@ class Names implements NamesInterface
     private string $name;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $count;
+    private ?int $count = null;
 
     #[Column(type: 'integer', enumType: NameTypeEnum::class)]
     private NameTypeEnum $type;

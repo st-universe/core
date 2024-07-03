@@ -229,7 +229,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
         $firstId = $massCenterType->getFirstFieldType()->getId();
 
-        for ($i = 0; $i < (int)pow($massCenterType->getSize(), 2); $i++) {
+        for ($i = 0; $i < (int)$massCenterType->getSize() ** 2; $i++) {
             $result[] = $firstId + $i;
         }
 

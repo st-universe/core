@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use Stu\Orm\Entity\MapBorderType;
+use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Entity\MapRegion;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -57,15 +60,15 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     #[Column(type: 'string', nullable: true)]
     private ?string $region_description = null;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\MapBorderType')]
+    #[ManyToOne(targetEntity: MapBorderType::class)]
     #[JoinColumn(name: 'bordertype_id', referencedColumnName: 'id')]
     private ?MapBorderTypeInterface $mapBorderType = null;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\StarSystem')]
+    #[ManyToOne(targetEntity: StarSystem::class)]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\MapRegion')]
+    #[ManyToOne(targetEntity: MapRegion::class)]
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
     private ?MapRegionInterface $adminRegion = null;
 

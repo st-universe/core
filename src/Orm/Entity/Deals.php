@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\DealsRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 
 #[Table(name: 'stu_deals')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\DealsRepository')]
+#[Entity(repositoryClass: DealsRepository::class)]
 class Deals implements DealsInterface
 {
     #[Id]

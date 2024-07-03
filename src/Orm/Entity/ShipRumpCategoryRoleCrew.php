@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_rumps_cat_role_crew')]
 #[Index(name: 'ship_rump_category_role_idx', columns: ['rump_category_id', 'rump_role_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepository')]
+#[Entity(repositoryClass: ShipRumpCategoryRoleCrewRepository::class)]
 class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
 {
     #[Id]

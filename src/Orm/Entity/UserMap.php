@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserMapRepository;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_user_map')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserMapRepository')]
+#[Entity(repositoryClass: UserMapRepository::class)]
 class UserMap implements UserMapInterface
 {
     #[Id]

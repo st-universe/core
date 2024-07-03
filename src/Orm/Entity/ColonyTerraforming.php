@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ColonyTerraformingRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_colonies_terraforming')]
 #[Index(name: 'colony_idx', columns: ['colonies_id'])]
 #[Index(name: 'finished_idx', columns: ['finished'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyTerraformingRepository')]
+#[Entity(repositoryClass: ColonyTerraformingRepository::class)]
 class ColonyTerraforming implements ColonyTerraformingInterface
 {
     #[Id]

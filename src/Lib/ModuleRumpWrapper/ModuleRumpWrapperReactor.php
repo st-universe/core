@@ -16,7 +16,7 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
     #[Override]
     public function getValue(ModuleInterface $module = null): int
     {
-        $module = $module ?? current($this->getModule());
+        $module ??= current($this->getModule());
         if ($module === false) {
             return 0;
         }

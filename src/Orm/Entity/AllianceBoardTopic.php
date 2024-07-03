@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AllianceBoardTopicRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +23,7 @@ use Stu\Module\Alliance\View\Topic\Topic;
 #[Table(name: 'stu_alliance_topics')]
 #[Index(name: 'recent_topics_idx', columns: ['alliance_id', 'last_post_date'])]
 #[Index(name: 'ordered_topics_idx', columns: ['board_id', 'last_post_date'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceBoardTopicRepository')]
+#[Entity(repositoryClass: AllianceBoardTopicRepository::class)]
 class AllianceBoardTopic implements AllianceBoardTopicInterface
 {
     #[Id]

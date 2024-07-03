@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\RpgPlotMemberRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[Table(name: 'stu_plots_members')]
 #[UniqueConstraint(name: 'plot_user_idx', columns: ['plot_id', 'user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\RpgPlotMemberRepository')]
+#[Entity(repositoryClass: RpgPlotMemberRepository::class)]
 class RpgPlotMember implements RpgPlotMemberInterface
 {
     #[Id]

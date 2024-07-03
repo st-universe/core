@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TradeShoutboxRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_trade_shoutbox')]
 #[Index(name: 'trade_network_date_idx', columns: ['trade_network_id', 'date'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TradeShoutboxRepository')]
+#[Entity(repositoryClass: TradeShoutboxRepository::class)]
 class TradeShoutbox implements TradeShoutboxInterface
 {
     #[Id]

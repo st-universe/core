@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildingCostRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_buildings_cost')]
 #[Index(name: 'building_cost_building_idx', columns: ['buildings_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingCostRepository')]
+#[Entity(repositoryClass: BuildingCostRepository::class)]
 class BuildingCost implements BuildingCostInterface
 {
     #[Id]

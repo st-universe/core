@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ColonyScanRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_colony_scan')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyScanRepository')]
+#[Entity(repositoryClass: ColonyScanRepository::class)]
 class ColonyScan implements ColonyScanInterface
 {
     #[Id]

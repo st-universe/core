@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\PartnerSiteRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_partnersite')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\PartnerSiteRepository')]
+#[Entity(repositoryClass: PartnerSiteRepository::class)]
 class PartnerSite implements PartnerSiteInterface
 {
     #[Id]

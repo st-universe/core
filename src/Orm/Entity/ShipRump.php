@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipRumpRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +22,7 @@ use Stu\Component\Ship\ShipRumpEnum;
 #[Table(name: 'stu_rumps')]
 #[Index(name: 'rump_category_idx', columns: ['category_id'])]
 #[Index(name: 'rump_role_idx', columns: ['role_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpRepository')]
+#[Entity(repositoryClass: ShipRumpRepository::class)]
 class ShipRump implements ShipRumpInterface
 {
     #[Id]

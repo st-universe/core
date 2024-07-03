@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\SpacecraftEmergencyRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_spacecraft_emergency')]
 #[Index(name: 'spacecraft_emergency_ship_idx', columns: ['ship_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\SpacecraftEmergencyRepository')]
+#[Entity(repositoryClass: SpacecraftEmergencyRepository::class)]
 class SpacecraftEmergency implements SpacecraftEmergencyInterface
 {
     #[Id]

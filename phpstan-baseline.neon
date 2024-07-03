@@ -2029,6 +2029,14 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
+			message: """
+				#^Fetching class constant class of deprecated class Stu\\\\Orm\\\\Repository\\\\GameRequestRepository\\:
+				Use logfile logging$#
+			"""
+			count: 1
+			path: src/Orm/Entity/GameRequest.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPost.php
@@ -2247,14 +2255,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, non\\-falsy\\-string given\\.$#"
 			count: 1
 			path: src/Orm/Repository/UserMapRepository.php
-
-		-
-			message: """
-				#^Return type of anonymous function has typehint with deprecated class Stu\\\\Orm\\\\Repository\\\\GameRequestRepository\\:
-				Use logfile logging$#
-			"""
-			count: 1
-			path: src/Orm/Repository/services.php
 
 		-
 			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\:\\:save\\(\\)\\.$#"

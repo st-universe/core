@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\CrewRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Crew\CrewEnum;
 
 #[Table(name: 'stu_crew')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\CrewRepository')]
+#[Entity(repositoryClass: CrewRepository::class)]
 class Crew implements CrewInterface
 {
     #[Id]

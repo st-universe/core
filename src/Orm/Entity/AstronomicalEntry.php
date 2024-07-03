@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AstroEntryRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Index(name: 'astro_entry_user_idx', columns: ['user_id'])]
 #[Index(name: 'astro_entry_star_system_idx', columns: ['systems_id'])]
 #[Index(name: 'astro_entry_map_region_idx', columns: ['region_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AstroEntryRepository')]
+#[Entity(repositoryClass: AstroEntryRepository::class)]
 class AstronomicalEntry implements AstronomicalEntryInterface
 {
     #[Id]
@@ -50,12 +51,12 @@ class AstronomicalEntry implements AstronomicalEntryInterface
 
     #[ManyToOne(targetEntity: 'StarSystem')]
     #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
-    private ?StarSystemInterface $starSystem;
+    private ?StarSystemInterface $starSystem = null;
 
 
     #[ManyToOne(targetEntity: 'MapRegion')]
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
-    private ?MapRegionInterface $region;
+    private ?MapRegionInterface $region = null;
 
     #[Override]
     public function getId(): int

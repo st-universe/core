@@ -190,9 +190,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('setPassword')
-            ->with(Mockery::on(function (string $passwordParam) use ($password): bool {
-                return password_verify($password, $passwordParam);
-            }))
+            ->with(Mockery::on(fn(string $passwordParam): bool => password_verify($password, $passwordParam)))
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('getId')

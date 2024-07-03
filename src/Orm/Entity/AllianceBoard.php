@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AllianceBoardRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +21,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_alliance_boards')]
 #[Index(name: 'alliance_idx', columns: ['alliance_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceBoardRepository')]
+#[Entity(repositoryClass: AllianceBoardRepository::class)]
 class AllianceBoard implements AllianceBoardInterface
 {
     #[Id]

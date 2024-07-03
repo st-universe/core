@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipCrewRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -23,7 +24,7 @@ use Stu\Component\Crew\CrewEnum;
 #[Index(name: 'ship_crew_tradepost_idx', columns: ['tradepost_id'])]
 #[Index(name: 'ship_crew_user_idx', columns: ['user_id'])]
 #[UniqueConstraint(name: 'ship_crew_crew_idx', columns: ['crew_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipCrewRepository')]
+#[Entity(repositoryClass: ShipCrewRepository::class)]
 class ShipCrew implements ShipCrewInterface
 {
     #[Id]

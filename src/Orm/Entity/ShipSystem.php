@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipSystemRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -21,7 +22,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 #[Index(name: 'ship_system_type_idx', columns: ['system_type'])]
 #[Index(name: 'ship_system_module_idx', columns: ['module_id'])]
 #[Index(name: 'ship_system_mode_idx', columns: ['mode'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipSystemRepository')]
+#[Entity(repositoryClass: ShipSystemRepository::class)]
 class ShipSystem implements ShipSystemInterface
 {
     #[Id]

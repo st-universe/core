@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\KnPostArchivRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 #[Index(name: 'plot_archiv_idx', columns: ['plot_id'])]
 #[Index(name: 'kn_post_archiv_date_idx', columns: ['date'])]
 #[UniqueConstraint(name: 'unique_kn_archiv_former_id', columns: ['former_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\KnPostArchivRepository')]
+#[Entity(repositoryClass: KnPostArchivRepository::class)]
 class KnPostArchiv implements KnPostArchivInterface
 {
     #[Id]
@@ -39,7 +40,7 @@ class KnPostArchiv implements KnPostArchivInterface
     private int $former_id;
 
     #[Column(type: 'string', nullable: true)]
-    private ?string $titel;
+    private ?string $titel = null;
 
     #[Column(type: 'text')]
     private string $text = '';

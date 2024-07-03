@@ -101,9 +101,7 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
         $user->shouldReceive('setPassword')
-            ->with(Mockery::on(function (string $passwordHash) use ($password): bool {
-                return password_verify($password, $passwordHash);
-            }))
+            ->with(Mockery::on(fn(string $passwordHash): bool => password_verify($password, $passwordHash)))
             ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()

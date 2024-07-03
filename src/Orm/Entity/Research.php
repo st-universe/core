@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ResearchRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Colony\ColonyTypeEnum;
 
 #[Table(name: 'stu_research')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ResearchRepository')]
+#[Entity(repositoryClass: ResearchRepository::class)]
 class Research implements ResearchInterface
 {
     #[Id]
@@ -62,7 +63,7 @@ class Research implements ResearchInterface
     #[Column(type: 'smallint', nullable: true)]
     private ?int $upper_limit_colony_amount = null;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Commodity')]
+    #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private CommodityInterface $commodity;
 

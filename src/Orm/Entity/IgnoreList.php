@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\IgnoreListRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_ignorelist')]
 #[Index(name: 'user_recipient_idx', columns: ['user_id', 'recipient'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\IgnoreListRepository')]
+#[Entity(repositoryClass: IgnoreListRepository::class)]
 class IgnoreList implements IgnoreListInterface
 {
     #[Id]

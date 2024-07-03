@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildingCommodityRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_buildings_commodity')]
 #[Index(name: 'building_commodity_building_idx', columns: ['buildings_id'])]
 #[Index(name: 'commodity_count_idx', columns: ['commodity_id', 'count'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingCommodityRepository')]
+#[Entity(repositoryClass: BuildingCommodityRepository::class)]
 class BuildingCommodity implements BuildingCommodityInterface
 {
     #[Id]

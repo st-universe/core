@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AnomalyTypeRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 
 #[Table(name: 'stu_anomaly_type')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AnomalyTypeRepository')]
+#[Entity(repositoryClass: AnomalyTypeRepository::class)]
 class AnomalyType implements AnomalyTypeInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\KnCommentRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_kn_comments')]
 #[Index(name: 'kn_comment_post_idx', columns: ['post_id'])]
 #[Index(name: 'kn_comment_user_idx', columns: ['user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\KnCommentRepository')]
+#[Entity(repositoryClass: KnCommentRepository::class)]
 class KnComment implements KnCommentInterface
 {
     #[Id]

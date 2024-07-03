@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ModuleRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +24,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 #[Table(name: 'stu_modules')]
 #[Index(name: 'ship_rump_role_type_idx', columns: ['rumps_role_id', 'type'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ModuleRepository')]
+#[Entity(repositoryClass: ModuleRepository::class)]
 class Module implements ModuleInterface
 {
     #[Id]

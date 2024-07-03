@@ -409,7 +409,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getTakeoverTicksLeft(ShipTakeoverInterface $takeover = null): int
     {
-        $takeover = $takeover ?? $this->get()->getTakeoverActive();
+        $takeover ??= $this->get()->getTakeoverActive();
         if ($takeover === null) {
             throw new RuntimeException('should not call when active takeover is null');
         }

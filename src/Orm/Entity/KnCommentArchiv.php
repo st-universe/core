@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\KnCommentArchivRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[Table(name: 'stu_kn_comments_archiv')]
 #[UniqueConstraint(name: 'unique_comments_former_id', columns: ['former_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\KnCommentArchivRepository')]
+#[Entity(repositoryClass: KnCommentArchivRepository::class)]
 class KnCommentArchiv implements KnCommentArchivInterface
 {
     #[Id]

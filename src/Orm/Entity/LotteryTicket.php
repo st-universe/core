@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\LotteryTicketRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_lottery_ticket')]
 #[Index(name: 'lottery_ticket_period_idx', columns: ['period'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\LotteryTicketRepository')]
+#[Entity(repositoryClass: LotteryTicketRepository::class)]
 class LotteryTicket implements LotteryTicketInterface
 {
     #[Id]

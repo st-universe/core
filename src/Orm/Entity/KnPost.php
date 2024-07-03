@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\KnPostRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,7 +26,7 @@ use Stu\Orm\Entity\KnCharactersInterface;
 #[Index(name: 'plot_idx', columns: ['plot_id'])]
 #[Index(name: 'kn_post_date_idx', columns: ['date'])]
 #[Index(name: 'kn_post_user_idx', columns: ['user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\KnPostRepository')]
+#[Entity(repositoryClass: KnPostRepository::class)]
 class KnPost implements KnPostInterface
 {
     #[Id]

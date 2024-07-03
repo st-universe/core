@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\PlanetFieldTypeBuildingRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_field_build')]
 #[Index(name: 'type_building_idx', columns: ['type', 'buildings_id'])]
 #[Index(name: 'type_building_research_idx', columns: ['type', 'research_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\PlanetFieldTypeBuildingRepository')]
+#[Entity(repositoryClass: PlanetFieldTypeBuildingRepository::class)]
 class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ColonyClassResearchRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 //TODO rename table and column planet_type_id
 #[Table(name: 'stu_planet_type_research')]
 #[Index(name: 'planet_type_idx', columns: ['planet_type_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyClassResearchRepository')]
+#[Entity(repositoryClass: ColonyClassResearchRepository::class)]
 class ColonyClassResearch implements ColonyClassResearchInterface
 {
     #[Id]

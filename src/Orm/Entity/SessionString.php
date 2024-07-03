@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\SessionStringRepository;
 use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_session_strings')]
 #[Index(name: 'session_string_user_idx', columns: ['sess_string', 'user_id'])]
 #[Index(name: 'session_string_date_idx', columns: ['date'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\SessionStringRepository')]
+#[Entity(repositoryClass: SessionStringRepository::class)]
 class SessionString implements SessionStringInterface
 {
     #[Id]

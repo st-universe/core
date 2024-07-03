@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipRumpModuleLevelRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +16,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 
 #[Table(name: 'stu_rumps_module_level')]
 #[Index(name: 'rump_module_level_ship_rump_idx', columns: ['rump_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpModuleLevelRepository')]
+#[Entity(repositoryClass: ShipRumpModuleLevelRepository::class)]
 class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
 {
     #[Id]

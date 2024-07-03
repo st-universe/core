@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\DatabaseEntryRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_database_entrys', options: ['engine' => 'InnoDB'])]
 #[Index(name: 'database_entry_category_id_idx', columns: ['category_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\DatabaseEntryRepository')]
+#[Entity(repositoryClass: DatabaseEntryRepository::class)]
 class DatabaseEntry implements DatabaseEntryInterface
 {
     #[Id]
@@ -42,11 +43,11 @@ class DatabaseEntry implements DatabaseEntryInterface
     #[Column(type: 'integer')]
     private int $object_id;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\DatabaseType')]
+    #[ManyToOne(targetEntity: DatabaseType::class)]
     #[JoinColumn(name: 'type', referencedColumnName: 'id')]
     private DatabaseTypeInterface $type_object;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\DatabaseCategory', inversedBy: 'entries')]
+    #[ManyToOne(targetEntity: DatabaseCategory::class, inversedBy: 'entries')]
     #[JoinColumn(name: 'category_id', referencedColumnName: 'id')]
     private DatabaseCategoryInterface $category;
 

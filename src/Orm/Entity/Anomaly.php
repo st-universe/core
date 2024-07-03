@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AnomalyRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -20,7 +21,7 @@ use Stu\Lib\Map\Location;
 #[Index(name: 'anomaly_map_idx', columns: ['map_id'])]
 #[Index(name: 'anomaly_starsystem_map_idx', columns: ['starsystem_map_id'])]
 #[Index(name: 'anomaly_remaining_idx', columns: ['remaining_ticks'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AnomalyRepository')]
+#[Entity(repositoryClass: AnomalyRepository::class)]
 class Anomaly implements AnomalyInterface
 {
     #[Id]

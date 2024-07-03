@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\OpenedAdventDoorRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_opened_advent_door')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\OpenedAdventDoorRepository')]
+#[Entity(repositoryClass: OpenedAdventDoorRepository::class)]
 class OpenedAdventDoor implements OpenedAdventDoorInterface
 {
     #[Id]

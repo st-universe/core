@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TradePostRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +24,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 #[Table(name: 'stu_trade_posts')]
 #[Index(name: 'trade_network_idx', columns: ['trade_network'])]
 #[Index(name: 'trade_post_ship_idx', columns: ['ship_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TradePostRepository')]
+#[Entity(repositoryClass: TradePostRepository::class)]
 class TradePost implements TradePostInterface
 {
     #[Id]

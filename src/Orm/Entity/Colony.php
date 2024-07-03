@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ColonyRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,7 +29,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 #[Index(name: 'colony_user_idx', columns: ['user_id'])]
 #[Index(name: 'colony_classes_idx', columns: ['colonies_classes_id'])]
 #[Index(name: 'colony_sys_map_idx', columns: ['starsystem_map_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyRepository')]
+#[Entity(repositoryClass: ColonyRepository::class)]
 class Colony implements ColonyInterface
 {
     #[Id]

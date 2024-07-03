@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\PirateSetupRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_pirate_setup')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\PirateSetupRepository')]
+#[Entity(repositoryClass: PirateSetupRepository::class)]
 class PirateSetup implements PirateSetupInterface
 {
     #[Id]

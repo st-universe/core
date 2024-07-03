@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ConstructionProgressRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_construction_progress')]
 #[Index(name: 'construction_progress_ship_idx', columns: ['ship_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ConstructionProgressRepository')]
+#[Entity(repositoryClass: ConstructionProgressRepository::class)]
 class ConstructionProgress implements ConstructionProgressInterface
 {
     #[Id]

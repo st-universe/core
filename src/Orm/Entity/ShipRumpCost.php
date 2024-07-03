@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ShipRumpCostRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_rump_costs')]
 #[Index(name: 'rump_cost_ship_rump_idx', columns: ['rump_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ShipRumpCostRepository')]
+#[Entity(repositoryClass: ShipRumpCostRepository::class)]
 class ShipRumpCost implements ShipRumpCostInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ColonyShipQueueRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Index(name: 'colony_shipqueue_building_function_idx', columns: ['colony_id', 'building_function_id'])]
 #[Index(name: 'colony_shipqueue_user_idx', columns: ['user_id'])]
 #[Index(name: 'colony_shipqueue_finish_date_idx', columns: ['finish_date'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyShipQueueRepository')]
+#[Entity(repositoryClass: ColonyShipQueueRepository::class)]
 class ColonyShipQueue implements ColonyShipQueueInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\GameRequestRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -19,7 +20,7 @@ use Throwable;
  **/
 #[Table(name: 'stu_game_request')]
 #[Index(name: 'game_request_idx', columns: ['user_id', 'action', 'view'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\GameRequestRepository')]
+#[Entity(repositoryClass: GameRequestRepository::class)]
 class GameRequest implements GameRequestInterface
 {
     public const TABLE_NAME = 'stu_game_request';

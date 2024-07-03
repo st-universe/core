@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\NoteRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_notes')]
 #[Index(name: 'note_user_idx', columns: ['user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\NoteRepository')]
+#[Entity(repositoryClass: NoteRepository::class)]
 class Note implements NoteInterface
 {
     #[Id]

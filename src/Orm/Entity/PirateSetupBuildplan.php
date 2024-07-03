@@ -32,7 +32,7 @@ class PirateSetupBuildplan implements PirateSetupBuildplanInterface
     #[JoinColumn(name: 'pirate_setup_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PirateSetupInterface $setup;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\ShipBuildplan')]
+    #[ManyToOne(targetEntity: ShipBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipBuildplanInterface $buildplan;
 

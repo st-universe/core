@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\StarSystemRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_systems')]
 #[Index(name: 'coordinate_idx', columns: ['cx', 'cy'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\StarSystemRepository')]
+#[Entity(repositoryClass: StarSystemRepository::class)]
 class StarSystem implements StarSystemInterface
 {
     #[Id]

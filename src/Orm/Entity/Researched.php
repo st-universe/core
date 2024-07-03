@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ResearchedRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_researched')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ResearchedRepository')]
+#[Entity(repositoryClass: ResearchedRepository::class)]
 class Researched implements ResearchedInterface
 {
     #[Id]
@@ -34,7 +35,7 @@ class Researched implements ResearchedInterface
     #[Column(type: 'integer')]
     private int $finished = 0;
 
-    #[ManyToOne(targetEntity: 'Stu\Orm\Entity\Research')]
+    #[ManyToOne(targetEntity: Research::class)]
     #[JoinColumn(name: 'research_id', referencedColumnName: 'id')]
     private ResearchInterface $research;
 

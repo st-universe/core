@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ContactRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Stu\Module\Message\Lib\ContactListModeEnum;
 
 #[Table(name: 'stu_contactlist')]
 #[Index(name: 'user_pair_idx', columns: ['user_id', 'recipient'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ContactRepository')]
+#[Entity(repositoryClass: ContactRepository::class)]
 class Contact implements ContactInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AllianceRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 
 #[Table(name: 'stu_alliances')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\AllianceRepository')]
+#[Entity(repositoryClass: AllianceRepository::class)]
 class Alliance implements AllianceInterface
 {
     #[Id]

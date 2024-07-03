@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserIpTableRepository;
 use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
@@ -20,7 +21,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Index(name: 'iptable_start_idx', columns: ['startDate'])]
 #[Index(name: 'iptable_end_idx', columns: ['endDate'])]
 #[Index(name: 'iptable_ip_idx', columns: ['ip'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserIpTableRepository')]
+#[Entity(repositoryClass: UserIpTableRepository::class)]
 class UserIpTable implements UserIpTableInterface
 {
     #[Id]

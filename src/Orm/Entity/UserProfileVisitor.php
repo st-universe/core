@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserProfileVisitorRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_user_profile_visitors')]
 #[Index(name: 'user_profile_visitor_user_idx', columns: ['user_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserProfileVisitorRepository')]
+#[Entity(repositoryClass: UserProfileVisitorRepository::class)]
 class UserProfileVisitor implements UserProfileVisitorInterface
 {
     #[Id]

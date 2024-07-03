@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\UserInvitationRepository;
 use Override;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'stu_user_invitations')]
 #[Index(name: 'user_invitation_user_idx', columns: ['user_id'])]
 #[Index(name: 'user_invitation_token_idx', columns: ['token'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserInvitationRepository')]
+#[Entity(repositoryClass: UserInvitationRepository::class)]
 class UserInvitation implements UserInvitationInterface
 {
     #[Id]

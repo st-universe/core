@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\DockingPrivilegeRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_dockingrights')]
 #[Index(name: 'dockingrights_ship_idx', columns: ['ships_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\DockingPrivilegeRepository')]
+#[Entity(repositoryClass: DockingPrivilegeRepository::class)]
 class DockingPrivilege implements DockingPrivilegeInterface
 {
     #[Id]

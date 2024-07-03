@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\PrivateMessageFolderRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,7 +18,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 
 #[Table(name: 'stu_pm_cats')]
 #[Index(name: 'user_special_idx', columns: ['user_id', 'special'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\PrivateMessageFolderRepository')]
+#[Entity(repositoryClass: PrivateMessageFolderRepository::class)]
 class PrivateMessageFolder implements PrivateMessageFolderInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ColonyClassRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyTypeEnum;
 
 #[Table(name: 'stu_colonies_classes')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonyClassRepository')]
+#[Entity(repositoryClass: ColonyClassRepository::class)]
 class ColonyClass implements ColonyClassInterface
 {
     #[Id]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ColonySandboxRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +23,7 @@ use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Admin\View\Sandbox\ShowColonySandbox;
 
 #[Table(name: 'stu_colony_sandbox')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\ColonySandboxRepository')]
+#[Entity(repositoryClass: ColonySandboxRepository::class)]
 class ColonySandbox implements ColonySandboxInterface, PlanetFieldHostInterface
 {
     #[Id]

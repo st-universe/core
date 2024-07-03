@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildingRepository;
 use Override;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +23,7 @@ use Stu\Component\Building\BuildingEnum;
 #[Index(name: 'eps_production_idx', columns: ['eps_proc'])]
 #[Index(name: 'buildmenu_column_idx', columns: ['bm_col'])]
 #[Index(name: 'building_research_idx', columns: ['research_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\BuildingRepository')]
+#[Entity(repositoryClass: BuildingRepository::class)]
 class Building implements BuildingInterface
 {
     #[Id]

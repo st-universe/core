@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\TradeLicenseInfoRepository;
 use Override;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 
 #[Table(name: 'stu_trade_license_info')]
 #[Index(name: 'trade_license_info_post_idx', columns: ['posts_id'])]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\TradeLicenseInfoRepository')]
+#[Entity(repositoryClass: TradeLicenseInfoRepository::class)]
 class TradeLicenseInfo implements TradeLicenseInfoInterface
 {
     #[Id]
