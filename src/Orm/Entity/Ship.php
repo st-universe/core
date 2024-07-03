@@ -131,9 +131,6 @@ class Ship implements ShipInterface
     #[Column(type: 'smallint', enumType: ShipStateEnum::class)]
     private ShipStateEnum $state = ShipStateEnum::SHIP_STATE_NONE;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $astro_start_turn = null;
-
     #[Column(type: 'boolean')]
     private bool $is_fleet_leader = false;
 
@@ -739,11 +736,6 @@ class Ship implements ShipInterface
     {
         return $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
             || $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE;
-    }
-
-    public function getAstroStartTurn(): ?int
-    {
-        return $this->astro_start_turn;
     }
 
     public function getIsFleetLeader(): bool
