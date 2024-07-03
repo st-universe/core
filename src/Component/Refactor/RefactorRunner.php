@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Refactor;
 
-use RuntimeException;
+use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperProjectileWeapon;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -20,22 +20,27 @@ final class RefactorRunner
     {
         foreach ($this->shipRepository->findAll() as $ship) {
 
-            $astroStartTurn = $ship->getAstroStartTurn();
-            if ($astroStartTurn === null) {
+            $wrapper = $this->shipWrapperFactory
+                ->wrapShip($ship);
+
+            $launcher = $wrapper
+                ->getProjectileLauncherSystemData();
+
+            if ($launcher === null) {
                 continue;
             }
 
-            $astroLab = $this->shipWrapperFactory
-                ->wrapShip($ship)
-                ->getAstroLaboratorySystemData();
-
-            if ($astroLab === null) {
-                throw new RuntimeException('this should not happen');
+            $buildplan = $ship->getBuildplan();
+            if ($buildplan === null) {
+                continue;
             }
 
-            $astroLab
-                ->setAstroStartTurn($astroStartTurn)
-                ->update();
+            $unit = new ModuleRumpWrapperProjectileWeapon(
+                $ship->getRump(),
+                $buildplan
+            );
+
+            $unit->apply($wrapper);
         }
     }
 }
