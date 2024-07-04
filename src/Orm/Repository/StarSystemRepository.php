@@ -148,8 +148,8 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 'SELECT ss FROM %s ss
                 JOIN %s m
                 WITH ss.id = m.systems_id
-                WHERE ss.cx BETWEEN :minX AND :maxX
-                AND ss.cy BETWEEN :minY AND :maxY
+                WHERE m.cx BETWEEN :minX AND :maxX
+                AND m.cy BETWEEN :minY AND :maxY
                 AND m.layer_id = :layerId',
                 StarSystem::class,
                 Map::class

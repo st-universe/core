@@ -293,8 +293,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 WITH c.user_id = u.id
                 LEFT JOIN %s w
                 WITH u.id = w.user_id
-                WHERE s.cx BETWEEN :minX AND :maxX
-                AND s.cy BETWEEN :minY AND :maxY
+                WHERE m.cx BETWEEN :minX AND :maxX
+                AND m.cy BETWEEN :minY AND :maxY
                 AND m.layer_id = :layer
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive

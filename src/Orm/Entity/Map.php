@@ -158,13 +158,6 @@ class Map implements MapInterface
     }
 
     #[Override]
-    public function setCx(int $cx): MapInterface
-    {
-        $this->cx = $cx;
-        return $this;
-    }
-
-    #[Override]
     public function getX(): int
     {
         return $this->getCx();
@@ -174,13 +167,6 @@ class Map implements MapInterface
     public function getCy(): int
     {
         return $this->cy;
-    }
-
-    #[Override]
-    public function setCy(int $cy): MapInterface
-    {
-        $this->cy = $cy;
-        return $this;
     }
 
     #[Override]

@@ -46,6 +46,7 @@ class DistanceCalculation implements DistanceCalculationInterface
         int $x2,
         int $y2
     ): int {
+
         if ($this->isInSameSystem($system1, $system2)) {
             return $this->calculateDistance($x1, $x2, $y1, $y2, 1);
         }
@@ -105,12 +106,21 @@ class DistanceCalculation implements DistanceCalculationInterface
     }
 
     private function calculateDistance(
-        int $x1,
-        int $x2,
-        int $y1,
-        int $y2,
+        ?int $x1,
+        ?int $x2,
+        ?int $y1,
+        ?int $y2,
         int $multiplier
     ): int {
+        if (
+            $x1 === null
+            || $x2 === null
+            || $y1 === null
+            || $y2 === null
+        ) {
+            return PHP_INT_MAX;
+        }
+
         return (abs($x1 - $x2) + abs($y1 - $y2)) * $multiplier;
     }
 }

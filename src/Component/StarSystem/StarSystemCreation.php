@@ -81,7 +81,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         );
 
         $starSystem = $this->getStarSystem($map);
-        $this->initializeStarSystem($systemType, $map, $starSystem, $systemMapData, $randomSystemName);
+        $this->initializeStarSystem($systemType, $starSystem, $systemMapData, $randomSystemName);
         $this->starSystemRepository->save($starSystem);
 
         return $starSystem;
@@ -89,13 +89,10 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
     private function initializeStarSystem(
         StarSystemTypeInterface $systemType,
-        MapInterface $map,
         StarSystemInterface $starSystem,
         SystemMapDataInterface $mapData,
         string $randomSystemName
     ): void {
-        $starSystem->setCx($map->getCx());
-        $starSystem->setCy($map->getCy());
         $starSystem->setType($systemType);
         $starSystem->setName($randomSystemName);
         $starSystem->setMaxX($mapData->getWidth());

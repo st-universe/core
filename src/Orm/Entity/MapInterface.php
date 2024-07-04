@@ -12,13 +12,9 @@ interface MapInterface
 
     public function getCx(): int;
 
-    public function setCx(int $cx): MapInterface;
-
     public function getY(): int;
 
     public function getCy(): int;
-
-    public function setCy(int $cy): MapInterface;
 
     public function getFieldId(): int;
 
