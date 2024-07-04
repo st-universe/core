@@ -19,13 +19,15 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class DemotePlayer implements ActionControllerInterface
 {
-    /**
-     * @var string
-     */
     public const string ACTION_IDENTIFIER = 'B_DEMOTE_USER';
 
-    public function __construct(private DemotePlayerRequestInterface $promotePlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        private DemotePlayerRequestInterface $demotePlayerRequest,
+        private AllianceJobRepositoryInterface $allianceJobRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository
+    ) {
     }
 
     /**
@@ -37,7 +39,7 @@ final class DemotePlayer implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
         $alliance = $user->getAlliance();
-        $playerId = $this->promotePlayerRequest->getPlayerId();
+        $playerId = $this->demotePlayerRequest->getPlayerId();
 
         if ($alliance === null) {
             throw new AccessViolation();
