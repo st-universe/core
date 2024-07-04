@@ -30,12 +30,12 @@ class StarSystem implements StarSystemInterface
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    //TODO remove cx and cy, use coords of $map
-    #[Column(type: 'smallint')]
-    private int $cx = 0;
+    //TODO remove cx and cy
+    #[Column(type: 'smallint', nullable: true)]
+    private ?int $cx = null;
 
-    #[Column(type: 'smallint')]
-    private int $cy = 0;
+    #[Column(type: 'smallint', nullable: true)]
+    private ?int $cy = null;
 
     #[Column(type: 'integer')]
     private int $type = 0;
@@ -91,31 +91,25 @@ class StarSystem implements StarSystemInterface
     }
 
     #[Override]
-    public function getCx(): int
+    public function getCx(): ?int
     {
-        return $this->cx;
+        $map = $this->map;
+        if ($map !== null) {
+            return $map->getCx();
+        }
+
+        return null;
     }
 
     #[Override]
-    public function setCx(int $cx): StarSystemInterface
+    public function getCy(): ?int
     {
-        $this->cx = $cx;
+        $map = $this->map;
+        if ($map !== null) {
+            return $map->getCy();
+        }
 
-        return $this;
-    }
-
-    #[Override]
-    public function getCy(): int
-    {
-        return $this->cy;
-    }
-
-    #[Override]
-    public function setCy(int $cy): StarSystemInterface
-    {
-        $this->cy = $cy;
-
-        return $this;
+        return null;
     }
 
     #[Override]

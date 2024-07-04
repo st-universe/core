@@ -1256,14 +1256,12 @@ class Ship implements ShipInterface
             return null;
         }
 
-        $field = $this->getCurrentMapField();
+        $location = $this->getLocation();
 
-        if ($field instanceof MapInterface) {
-            $cx = $field->getCx();
-            $cy = $field->getCy();
-        } else {
-            $cx = $field->getSystem()->getCx();
-            $cy = $field->getSystem()->getCy();
+        $cx = $location->getCx();
+        $cy = $location->getCy();
+        if ($cx === null || $cy === null) {
+            return null;
         }
 
         return $layer->getSectorId($this->getMapCX($cx), $this->getMapCY($cy));

@@ -8,13 +8,9 @@ interface StarSystemInterface
 {
     public function getId(): int;
 
-    public function getCx(): int;
+    public function getCx(): ?int;
 
-    public function setCx(int $cx): StarSystemInterface;
-
-    public function getCy(): int;
-
-    public function setCy(int $cy): StarSystemInterface;
+    public function getCy(): ?int;
 
     public function getType(): StarSystemTypeInterface;
 
