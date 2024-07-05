@@ -40,6 +40,28 @@ Code:
 - php generator/field_generator/generator.php
 - rsync -rv --delete-after --exclude=dist --exclude=".git" . /path/to/stuniverse-source/assets/
 
+## DB-Änderungen via Doctrine-Migrations
+
+- Entities editieren und danach Proxies generieren:
+
+```shell
+bin/doctrine orm:generate-proxies
+```
+
+- DB-Änderungen generieren:
+
+```shell
+vendor/bin/doctrine-migrations diff
+```
+
+- DB-Änderungen einspielen:
+
+```shell
+vendor/bin/doctrine-migrations migrate --all-or-nothing --allow-no-migration --quiet -vv
+```
+
+- Änderungen der Entities zusammen mit den Migration PHPs einchecken
+
 ## DB-Dump aus Backups einspielen
 
 - aktuelles Schema umbenennen, z.B. in 'stuDamaged'
