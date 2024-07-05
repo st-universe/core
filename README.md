@@ -18,7 +18,7 @@ composer, git.
 - make dev-serve
 - Use the cli command to create a new user `./bin/cli user:create --help`
 
-Danach sollte die Software via http://localhost:1337 erreichbar sein, ggf. kann
+Danach sollte die Software via <http://localhost:1337> erreichbar sein, ggf. kann
 es sein, dass der Hostname (stu-db) nicht aufgelöst werden kann. In diesem
 Fall muss für die im `docker-compose.yml` File hinterlegte IP ein Eintrag in
 der Hosts-Datei des Betriebssystems gemacht werden.

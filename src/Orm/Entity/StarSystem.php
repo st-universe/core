@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
@@ -21,7 +20,6 @@ use Override;
 use Stu\Orm\Repository\StarSystemRepository;
 
 #[Table(name: 'stu_systems')]
-#[Index(name: 'coordinate_idx', columns: ['cx', 'cy'])]
 #[Entity(repositoryClass: StarSystemRepository::class)]
 class StarSystem implements StarSystemInterface
 {
@@ -29,13 +27,6 @@ class StarSystem implements StarSystemInterface
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
-
-    //TODO remove cx and cy
-    #[Column(type: 'smallint', nullable: true)]
-    private ?int $cx = null;
-
-    #[Column(type: 'smallint', nullable: true)]
-    private ?int $cy = null;
 
     #[Column(type: 'integer')]
     private int $type = 0;
