@@ -7,7 +7,7 @@ namespace Stu\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version1 extends AbstractMigration
+final class Version20240705092745_StarSystem extends AbstractMigration
 {
     public function getDescription(): string
     {
