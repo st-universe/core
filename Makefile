@@ -1,5 +1,5 @@
 # DEFAULT
-PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs migrateDatabase showDatabaseChanges
+PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs migrateDatabase
 
 SUITE=
 
@@ -46,11 +46,11 @@ clearCache:force
 	bin/doctrine orm:clear-cache:metadata
 	bin/doctrine orm:clear-cache:query
 
-migrateDatabase:force
-	bin/doctrine orm:schema-tool:update --force
-	bin/doctrine orm:generate-proxies
+generateMigrations:force
+	vendor/bin/doctrine-migrations diff
 
-showDatabaseChanges:force
-	bin/doctrine orm:schema-tool:update --dump-sql
+migrateDatabase:force
+	vendor/bin/doctrine-migrations migrate --all-or-nothing --allow-no-migration --quiet -vv
+	bin/doctrine orm:generate-proxies
 
 force:
