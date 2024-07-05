@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Control;
 
-use DateTimeImmutable;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -471,7 +471,7 @@ final class GameController implements GameControllerInterface
 
         $sessionStringEntry = $this->sessionStringRepository->prototype();
         $sessionStringEntry->setUser($this->getUser());
-        $sessionStringEntry->setDate(new DateTimeImmutable());
+        $sessionStringEntry->setDate(new DateTime());
         $sessionStringEntry->setSessionString($string);
 
         $this->sessionStringRepository->save($sessionStringEntry);

@@ -2,7 +2,7 @@
 
 namespace Stu\Lib;
 
-use DateTimeImmutable;
+use DateTime;
 use Override;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
@@ -148,7 +148,7 @@ final class Session implements SessionInterface
         $ipTableEntry->setIp((string) getenv('REMOTE_ADDR'));
         $ipTableEntry->setSessionId((string) session_id());
         $ipTableEntry->setUserAgent((string) getenv('HTTP_USER_AGENT'));
-        $ipTableEntry->setStartDate(new DateTimeImmutable());
+        $ipTableEntry->setStartDate(new DateTime());
 
         $this->userIpTableRepository->save($ipTableEntry);
 
@@ -236,7 +236,7 @@ final class Session implements SessionInterface
         $ipTableEntry->setIp(getenv('REMOTE_ADDR'));
         $ipTableEntry->setSessionId(session_id());
         $ipTableEntry->setUserAgent(getenv('HTTP_USER_AGENT'));
-        $ipTableEntry->setStartDate(new DateTimeImmutable());
+        $ipTableEntry->setStartDate(new DateTime());
 
         $this->userIpTableRepository->save($ipTableEntry);
     }
@@ -262,7 +262,7 @@ final class Session implements SessionInterface
 
         $ipTableEntry = $this->userIpTableRepository->findBySessionId(session_id());
         if ($ipTableEntry !== null) {
-            $ipTableEntry->setEndDate(new DateTimeImmutable());
+            $ipTableEntry->setEndDate(new DateTime());
 
             $this->userIpTableRepository->save($ipTableEntry);
         }
