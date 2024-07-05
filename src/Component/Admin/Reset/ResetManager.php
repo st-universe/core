@@ -30,6 +30,9 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Throwable;
 
+/**
+ * TODO: clear stu_opened_advent_door
+ */
 final class ResetManager implements ResetManagerInterface
 {
     public function __construct(
