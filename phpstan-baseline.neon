@@ -1964,21 +1964,6 @@ parameters:
 			path: src/Orm/Entity/AllianceBoard.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$date_ms type mapping mismatch\\: database can contain string\\|null but property expects int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$id type mapping mismatch\\: database can contain string but property expects int\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$buildings_upgrades_id type mapping mismatch\\: database can contain string but property expects int\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:getDefaultTorpedoTypeId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
