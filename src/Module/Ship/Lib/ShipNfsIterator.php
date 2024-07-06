@@ -15,7 +15,7 @@ final class ShipNfsIterator implements Iterator
 {
     private int $position = 0;
 
-    /** @param array<TShipItemInterface> $ships */
+    /** @param array<TSpacecraftItemInterface> $ships */
     public function __construct(private array $ships, private int $userId)
     {
     }
