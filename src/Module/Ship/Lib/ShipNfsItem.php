@@ -14,7 +14,7 @@ use Stu\Module\Ship\Lib\Battle\FightLib;
 
 final class ShipNfsItem
 {
-    public function __construct(private TShipItemInterface $item, private int $userId)
+    public function __construct(private TSpacecraftItemInterface $item, private int $userId)
     {
     }
 
@@ -83,8 +83,7 @@ final class ShipNfsItem
     }
     public function isTrumfield(): bool
     {
-        return $this->item->getRumpCategoryId() === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;
-        ;
+        return $this->item->getRumpCategoryId() === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;;
     }
     public function isShuttle(): bool
     {

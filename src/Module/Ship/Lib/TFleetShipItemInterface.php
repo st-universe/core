@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-interface TFleetShipItemInterface extends TShipItemInterface
+interface TFleetShipItemInterface extends TSpacecraftItemInterface
 {
     public function getFleetName(): string;
 

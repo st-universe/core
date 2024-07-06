@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Override;
 
 #[Entity]
-class TFleetShipItem extends TShipItem implements TFleetShipItemInterface
+class TFleetShipItem extends TSpacecraftItem implements TFleetShipItemInterface
 {
     #[Column(type: 'string')]
     private string $fleet_name = '';

@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\SpacecraftTypeEnum;
 
-interface TShipItemInterface
+interface TSpacecraftItemInterface
 {
     public function getShipId(): int;
 

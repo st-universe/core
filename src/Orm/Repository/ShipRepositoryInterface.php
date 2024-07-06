@@ -5,7 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
-use Stu\Module\Ship\Lib\TShipItemInterface;
+use Stu\Module\Ship\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
@@ -145,7 +145,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $types
      *
-     * @return array<TShipItemInterface>
+     * @return array<TSpacecraftItemInterface>
      */
     public function getSingleShipScannerResults(
         ShipInterface $ship,
