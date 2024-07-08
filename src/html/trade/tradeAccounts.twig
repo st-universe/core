@@ -1,0 +1,131 @@
+{% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+
+{% extends "html/sitedefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+{% for data in ACCOUNTS %}
+{% set ship = data.getShip %}
+<form action="trade.php" method="post">
+	<table class="tcal">
+		<tr>
+			<th colspan="4">{{ data.getTradePostName|bbcode }}</th>
+			{% if data.getTradePostbyUser %}
+			<th style="width: 15%;">
+				<input type="hidden" name="posts_id" value="{{ data.getId }}" />
+				<input type="text" name="newtradepostname" style="width: 150px;" value="{{ data.getTradePostName }}" />
+				<button type="submit" name="B_TRADEPOST_CHANGE_NAME" value="Name ändern" title="Name ändern">
+					<img src="assets/buttons/knedit2.png" alt="Name ändern" />
+				</button>
+			</th>
+			{% else %}
+			<th></th>
+			{% endif %}
+		</tr>
+		<tr>
+			<td rowspan="6">
+				{{ shipimagewithoutwarp(ship) }}
+			</td>
+			<td rowspan="6" style="width: 30%;">
+				<div style="font-weight: bold">
+					Waren lagernd
+				</div>
+				{% for stor in data.getStorage %}
+				<div style="float: left; width: 100px;">
+					<a href="javascript:void(0);" onclick="showTradeOfferMenu({{ stor.getId }})"
+						style="display: block; padding: 4px;" class="tradebutton">
+						<img src="assets/commodities/{{ stor.getCommodity.getId }}.png"
+							title="{{ stor.getCommodity.getName }}" /> {{ stor.getAmount }}
+					</a>
+				</div>
+				{% endfor %}
+			</td>
+			<td rowspan="6" style="width: 30%;">
+				<div style="font-weight: bold;">
+					Waren in Angeboten
+				</div>
+				{% for stor in data.getOfferStorage %}
+				<div style="float: left; width: 100px;">
+					<a href="javascript:void(0);"
+						onclick="showTradeOfferByCommodity({{ data.getId }}, {{ stor.commodity_id }})"
+						style="display: block; padding: 4px;" class="tradebutton">
+						<img src="assets/commodities/{{ stor.commodity_id }}.png" title="{{ stor.commodity_name }}" />
+						{{ stor.amount }}
+					</a>
+				</div>
+				{% endfor %}
+			</td>
+			<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
+			<td style="width: 200px;">{{ ship.getSectorString }} <a href="javascript:void(0);"
+					onclick="openShiplist({{ data.getId }})"><img src="assets/navigation/menu_ships0.png"
+						style="width: 20px;" title="Schiffe vor Ort anzeigen." /></a></td>
+
+		</tr>
+		<tr>
+			<td class="darkbg">Handelsnetz</td>
+			<td>
+				{% if data.getTradePostIsNPC %}
+				<img src="assets/rassen/{{ data.getTradeNetwork }}s.png" />
+				{% endif %}
+				<a href="javascript:void(0);" onclick="openShoutbox({{ data.getTradeNetwork }});">
+					Schwarzes Brett
+				</a>
+			</td>
+		</tr>
+		{% if data.getTradePostIsNPC %}
+		<tr>
+			<td class="darkbg">Transferkapazität</td>
+			<td>
+				{{ data.getFreeTransferCapacity }}
+				({{ data.getTransferCapacity }} pro Tag)
+			</td>
+		</tr>
+		{% endif %}
+		<tr>
+			<td class="darkbg">Lagerraum</td>
+			<td>
+				{% if data.isOverStorage %}
+				<span class="negative">{{ data.getStorageSum }}</span>
+				{% else %}
+				<span class="positive">{{ data.getStorageSum }}</span>
+				{% endif %}
+				({{ data.getStorageCapacity }} pro Siedler)
+			</td>
+		</tr>
+		<tr>
+			<td class="darkbg">Ausgestellte Lizenzen</td>
+			<td>
+				{{ data.getLicenseCount }}
+				(<a href="javascript:void(0)" onclick="showTradeLicenseList(this, {{ data.getId }});">
+					Liste anzeigen
+				</a>)
+			</td>
+		</tr>
+		<tr>
+			<td class="darkbg">Handelslizenz Gebühren</td>
+			<td>
+				{% if data.getTradePostbyUser %}
+				<span>
+					<a href="javascript:void(0)" onclick="showLicenseMenu({{ data.getId }});">Bearbeiten</a>
+				</span>
+				{% else %}
+				<span>
+					<a href="javascript:void(0)" onclick="showLicenseInfo({{ data.getId }});">Anzeigen</a>
+				</span>
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+</form>
+<br />
+{% endfor %}
+{% if not ACCOUNTS %}
+<div class="box">
+	<div class="box_title">Meldung</div>
+	<div class="box_body">
+		<span>Keine Warenkonten vorhanden</span>
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}

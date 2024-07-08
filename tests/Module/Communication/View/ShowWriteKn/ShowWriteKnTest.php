@@ -48,8 +48,8 @@ class ShowWriteKnTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('setTemplateFile')
-            ->with('html/writekn.xhtml')
+        $game->shouldReceive('setViewTemplate')
+            ->with('html/communication/writeKn.twig')
             ->once();
         $game->shouldReceive('appendNavigationPart')
             ->with('comm.php', 'KommNet')

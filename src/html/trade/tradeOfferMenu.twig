@@ -1,0 +1,33 @@
+<br />
+<div style="width: 400px;">
+    <table class="tcal">
+        <tr>
+            {% if IS_NPC_POST %}
+            <td style="width: 50%;" class="selected" id="tradeoffermenunewoffer">
+                <a class="tradebutton" href="javascript:void(0);" style="display: block;"
+                    onclick="showOfferMenuNewOffer({{ STOR.getId }});">
+                    Angebot erstellen
+                </a>
+            </td>
+            {% else %}
+            <td style=" display: block;">Angebot erstellen</td>
+            {% endif %}
+            {% if IS_NPC_POST %}
+            <td id="tradeoffermenutransfer">
+                <a class="tradebutton" href="javascript:void(0);" style="display: block;"
+                    onclick="showOfferMenuTransfer({{ STOR.getId }});">
+                    Transferieren
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+    </table>
+    <br />
+    <form method="post" action="trade.php">
+        <input type="hidden" name="ggid" value="{{ STOR.getCommodityId }}" />
+        <input type="hidden" name="storid" value="{{ STOR.getId }}" />
+        <div id="tradeoffermenucontent">
+            {% include 'html/trade/newOfferMenu/newOffer.twig' %}
+        </div>
+    </form>
+</div>

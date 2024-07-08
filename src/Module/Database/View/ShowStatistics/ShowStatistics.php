@@ -94,7 +94,7 @@ final class ShowStatistics implements ViewControllerInterface
             _('Statistiken')
         );
         $game->setPageTitle(_('/ Statistiken'));
-        $game->setTemplateFile('html/statistics.xhtml');
+        $game->setViewTemplate('html/statistics.twig');
 
         $game->setTemplateVar('GRAPHS', $imageSources);
     }

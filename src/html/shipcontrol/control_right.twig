@@ -100,7 +100,7 @@
             <select name="transwarplayer">
                 {% for userlayer in userLayers %}
                 {% set selected = userlayer.getLayer == ship.getLayer %}
-                <option value="{{ userlayer.getLayer.getId }}" selected=" {{ selected }}">
+                <option value="{{ userlayer.getLayer.getId }}" selected="{{ selected }}">
                     {{ userlayer.getLayer.getName }}</option>
                 {% endfor %}
             </select>

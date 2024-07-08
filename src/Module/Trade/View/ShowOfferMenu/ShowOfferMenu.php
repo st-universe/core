@@ -37,7 +37,7 @@ final class ShowOfferMenu implements ViewControllerInterface
 
         $commodityList = $this->commodityRepository->getTradeable();
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradeoffermenu');
+        $game->setMacroInAjaxWindow('html/trade/tradeOfferMenu.twig');
         $game->setPageTitle(sprintf(
             _('Management %s'),
             $storage->getCommodity()->getName()

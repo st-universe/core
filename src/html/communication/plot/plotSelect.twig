@@ -1,0 +1,13 @@
+<select name="plotid" style="width: 500px;">
+    <option value="0">------------------------------</option>
+    {% for plot in ACTIVE_RPG_PLOTS %}
+    {% if PLOT_ID %}
+    {% set selected = PLOT_ID == plot.getId ? 'selected="1"' : '' %}
+    {% else %}
+    {% set selected = POST.getPlotId == plot.getId ? 'selected="1"' : '' %}
+    {% endif %}
+    <option value="{{ plot.getId}}" {{ selected }}>
+        {{ plot.getTitle }}
+    </option>
+    {% endfor %}
+</select>

@@ -50,7 +50,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             }
         }
 
-        $game->showMacro('html/trademacros.xhtml/newoffermenu_transfer');
+        $game->showMacro('html/trade/newOfferMenu/transfer.twig');
         $game->setPageTitle(sprintf(
             _('Management %s'),
             $storage->getCommodity()->getName()

@@ -1,0 +1,39 @@
+<form method="post" action="trade.php">
+    {% if LICENSEINFO %}
+    <table class="tcal">
+        <input type="hidden" name="postid" value="{{ LICENSEINFO.getTradepost.getId }}" />
+        <input type="hidden" name="renewlicense" value="1" />
+        <tr>
+            <td style="vertical-align: middle;">Verlangte Ware</td>
+            <td> <img src="assets/commodities/{{ LICENSEINFO.getCommodityId }}.png"
+                    title="{{ LICENSEINFO.getCommodity.getName }}" />
+                {{ LICENSEINFO.getAmount }}
+            </td>
+        </tr>
+        {% if CURRENTLICENSE %}
+        <tr>
+            <td style="vertical-align: middle;">Laufzeit in Tagen</td>
+            <td>
+                {{ LICENSEINFO.getDays }}
+                {% if CURRENTLICENSE %}
+                <span>
+                    ({{ CURRENTLICENSE.getRemainingFullDays }} übrig)
+                </span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td style="vertical-align: middle;">Lizenzgebühr zuletzt geändert</td>
+            <td>
+                {{ LICENSEINFO.getDate|stuDate }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" class="button" value="Lizenz verlängern" name="B_RENEW_TRADELICENSE" />
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+</form>

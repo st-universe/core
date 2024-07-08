@@ -8,8 +8,8 @@
             </tr>
             <tr>
                 <td style="width: 50%;">
-                    <input type="text" style="width: 75%;" name="uname" value="{{ REAL_USER.getName }}" value="runtime"
-                        class="text" maxlength="255" />
+                    <input type="text" style="width: 75%;" name="uname" value="{{ REAL_USER.getName }}" class="text"
+                        maxlength="255" />
                     <input type="submit" name="B_CHANGE_NAME" value="ändern" class="button" />
                 </td>
                 <td style="width: 50%;">Vorschau: {{ REAL_USER.getName|bbcode }}
@@ -223,14 +223,14 @@
                     {% else %}
                     <input type="checkbox" name="show_pirate_history_entrys" value="1" />
                     {% endif %}
-                    </td>
-                    <td>
-                        Zeigt einträge in der History an die durch Interaktion mit dem
-                        Piraten NPC entstanden sind.
-                    </td>
-                    </tr>
-                    <tr>
-                        <td>
+                </td>
+                <td>
+                    Zeigt einträge in der History an die durch Interaktion mit dem
+                    Piraten NPC entstanden sind.
+                </td>
+            </tr>
+            <tr>
+                <td>
                     {% set defaultView = REAL_USER.getDefaultView %}
                     <select name="default_view">
                         <option value="0">----------------------</option>

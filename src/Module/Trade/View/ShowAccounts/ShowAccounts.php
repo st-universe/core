@@ -39,7 +39,7 @@ final class ShowAccounts implements ViewControllerInterface
             _('Warenkonten')
         );
         $game->setPageTitle(_('/ Handel'));
-        $game->setTemplateFile('html/tradeaccounts.xhtml');
+        $game->setTemplateFile('html/trade/tradeAccounts.twig');
 
         $game->setTemplateVar('ACCOUNTS', $list);
     }

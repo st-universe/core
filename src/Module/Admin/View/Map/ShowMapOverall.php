@@ -53,7 +53,6 @@ final class ShowMapOverall implements ViewControllerInterface
             }
             $borderType = $data->getMapBorderType();
             if ($borderType !== null) {
-                $border = imagecreatetruecolor(15, 15);
                 $var = $borderType->getColor();
                 $arr = sscanf($var, '#%2x%2x%2x');
                 $red = $arr[0];
@@ -64,11 +63,12 @@ final class ShowMapOverall implements ViewControllerInterface
                     || !$green || $green < 1 || $green > 255
                     || !$blue || $blue < 1 || $blue > 255
                 ) {
-                    throw new RuntimeException('rgb range exception');
+                    throw new RuntimeException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
                 }
+                $border = imagecreatetruecolor(15, 15);
                 $col = imagecolorallocate($border, $red, $green, $blue);
                 if (!$col) {
-                    throw new RuntimeException('color range exception');
+                    throw new RuntimeException(sprintf('color range exception, col: %d', $col));
                 }
                 imagefill($border, 0, 0, $col);
                 imagecopy($img, $border, $curx, $cury, 0, 0, 15, 15);
