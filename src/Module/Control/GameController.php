@@ -627,7 +627,7 @@ final class GameController implements GameControllerInterface
             $this->setViewTemplate('html/ship/ship.twig');
         } catch (ItemNotFoundException) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
-            $this->setTemplateFile('html/notfound.xhtml');
+            $this->setTemplateFile('html/notFound.twig');
         } catch (UnallowedUplinkOperation) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
