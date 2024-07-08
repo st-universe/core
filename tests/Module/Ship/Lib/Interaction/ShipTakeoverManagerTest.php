@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -140,9 +141,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider startTakeoverTestData
-     */
+    #[DataProvider('startTakeoverTestData')]
     public function testStartTakeover(bool $isTargetInFleet, string $expectedMessage): void
     {
         $takeover = $this->mock(ShipTakeoverInterface::class);

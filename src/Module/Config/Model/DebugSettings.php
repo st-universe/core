@@ -3,11 +3,10 @@
 namespace Stu\Module\Config\Model;
 
 use Override;
+use Stu\Module\Config\StuConfigSettingEnum;
 
 final class DebugSettings extends AbstractSettings implements DebugSettingsInterface
 {
-    private const string CONFIG_PATH = 'debug';
-
     private const string SETTING_DEBUG_MODE = 'debug_mode';
     private const string SETTING_LOGFILE_PATH = 'logfile_path';
     private const string SETTING_LOGLEVEL = 'loglevel';
@@ -15,30 +14,24 @@ final class DebugSettings extends AbstractSettings implements DebugSettingsInter
     #[Override]
     public function isDebugMode(): bool
     {
-        return $this->getBooleanConfigValue(self::SETTING_DEBUG_MODE, true);
+        return $this->settingsCore->getBooleanConfigValue(self::SETTING_DEBUG_MODE, true);
     }
 
     #[Override]
     public function getLogfilePath(): string
     {
-        return $this->getStringConfigValue(self::SETTING_LOGFILE_PATH);
+        return $this->settingsCore->getStringConfigValue(self::SETTING_LOGFILE_PATH);
     }
 
     #[Override]
     public function getLoglevel(): int
     {
-        return $this->getIntegerConfigValue(self::SETTING_LOGLEVEL);
+        return $this->settingsCore->getIntegerConfigValue(self::SETTING_LOGLEVEL);
     }
 
     #[Override]
     public function getSqlLoggingSettings(): SqlLoggingSettingsInterface
     {
-        return new SqlLoggingSettings($this->getPath(), $this->getConfig());
-    }
-
-    #[Override]
-    public function getConfigPath(): string
-    {
-        return self::CONFIG_PATH;
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::SQL_LOGGING, $this);
     }
 }

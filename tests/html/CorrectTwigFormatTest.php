@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\html;
 
 use DirectoryIterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\StuTestCase;
 
 class CorrectTwigFormatTest extends StuTestCase
@@ -29,9 +30,7 @@ class CorrectTwigFormatTest extends StuTestCase
     }
 
 
-    /**
-     * @dataProvider twigFilePathDataProvider
-     */
+    #[DataProvider('twigFilePathDataProvider')]
     public function testNoBlankBetweenCurlyBraces(string $path): void
     {
         $content = file_get_contents($path);

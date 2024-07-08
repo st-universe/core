@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Stu;
 
 use MPScholten\RequestParser\NotFoundException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 trait RequiredRequestTestCaseTrait
 {
     abstract public static function requiredRequestVarsDataProvider(): array;
 
-    /**
-     * @dataProvider requiredRequestVarsDataProvider
-     */
+    #[DataProvider('requiredRequestVarsDataProvider')]
     public function testRequiredRequestVars(
         string $methodName
     ): void {

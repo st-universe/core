@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\html;
 
 use DirectoryIterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\StuTestCase;
 
 class CorrectXhtmlFormatTest extends StuTestCase
@@ -28,9 +29,7 @@ class CorrectXhtmlFormatTest extends StuTestCase
         return $result;
     }
 
-    /**
-     * @dataProvider xhtmlFilePathDataProvider
-     */
+    #[DataProvider('xhtmlFilePathDataProvider')]
     public function testNoBlankBetweenCurlyBraces(string $path): void
     {
         $content = file_get_contents($path);

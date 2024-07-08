@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Stu\StuTestCase;
 
 class MapSettingsTest extends StuTestCase
 {
-    /** @var MockInterface|ConfigInterface */
-    private ConfigInterface $config;
+    /** @var MockInterface|SettingsCoreInterface */
+    private $settingsCore;
+    /** @var MockInterface|SettingsCacheInterface */
+    private $cache;
 
     /** @var MockObject|MapSettings */
     private MapSettings $subject;
@@ -21,16 +22,17 @@ class MapSettingsTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->config = $this->mock(ConfigInterface::class);
+        $this->settingsCore = $this->mock(SettingsCoreInterface::class);
+        $this->cache = $this->mock(SettingsCacheInterface::class);
 
-        $this->subject = new MapSettings('game', $this->config);
+        $this->subject = new MapSettings(null, $this->settingsCore, $this->cache);
     }
 
     public function testGetEncryptionKeyExpectNullWhenNotPresent(): void
     {
-        $this->config->shouldReceive('get')
-            ->with('game.map.encryptionKey')
-            ->andReturn(null);
+        $this->settingsCore->shouldReceive('exists')
+            ->with('encryptionKey')
+            ->andReturn(false);
 
         $key = $this->subject->getEncryptionKey();
 
@@ -39,8 +41,12 @@ class MapSettingsTest extends StuTestCase
 
     public function testGetEncryptionKeyExpectStringWhenPresent(): void
     {
-        $this->config->shouldReceive('get')
-            ->with('game.map.encryptionKey')
+        $this->settingsCore->shouldReceive('exists')
+            ->with('encryptionKey')
+            ->andReturn(true);
+
+        $this->settingsCore->shouldReceive('getStringConfigValue')
+            ->with('encryptionKey')
             ->andReturn("KEY");
 
         $key = $this->subject->getEncryptionKey();

@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
@@ -94,9 +95,7 @@ class WarpdriveConsequenceTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTriggerData
-     */
+    #[DataProvider('provideTriggerData')]
     public function testTrigger(
         RouteModeEnum $routeMode,
         ?string $nextWaypointClass = null,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib;
 
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\StuTestCase;
@@ -32,9 +33,7 @@ class DamageWrapperTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetDamageRelativeForDamageModeShieldsData
-     */
+    #[DataProvider('provideGetDamageRelativeForDamageModeShieldsData')]
     public function testGetDamageRelativeForDamageModeShields(
         int $netDamage,
         bool $isPhaser,
@@ -72,9 +71,7 @@ class DamageWrapperTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetDamageRelativeForDamageModeHullData
-     */
+    #[DataProvider('provideGetDamageRelativeForDamageModeHullData')]
     public function testGetDamageRelativeForDamageModeHull(
         int $netDamage,
         bool $isTorpedo,

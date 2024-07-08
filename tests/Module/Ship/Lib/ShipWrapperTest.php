@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AstroLaboratorySystemData;
@@ -110,9 +111,7 @@ class ShipWrapperTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider getStateIconAndTitleForActiveRepairProvider
-     */
+    #[DataProvider('getStateIconAndTitleForActiveRepairProvider')]
     public function testGetStateIconAndTitleForActiveRepair(bool $isBase, string $expectedTitle): void
     {
         $this->ship->shouldReceive('getState')
@@ -138,9 +137,7 @@ class ShipWrapperTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider getStateIconAndTitleForPassiveRepairProvider
-     */
+    #[DataProvider('getStateIconAndTitleForPassiveRepairProvider')]
     public function testGetStateIconAndTitleForPassiveRepair(bool $isBase, string $expectedTitle): void
     {
         $this->ship->shouldReceive('getState')

@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
@@ -69,10 +70,9 @@ class DirectedMovementTest extends StuTestCase
     }
 
     /**
-     * @dataProvider moveDataProvider
-     *
      * @param class-string $className
      */
+    #[DataProvider('moveDataProvider')]
     public function testHandle(
         string $className,
         int $shipPosX,

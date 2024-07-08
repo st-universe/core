@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle\Provider;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -96,9 +97,7 @@ class EnergyPhalanxTest extends StuTestCase
         return [['Orbitale Disruptorphalanx', 2], ['Orbitale Disruptorphalanx', 3], ['Orbitale Phaserphalanx', 1]];
     }
 
-    /**
-     * @dataProvider provideGetNameData
-     */
+    #[DataProvider('provideGetNameData')]
     public function testGetName(string $expected, int $faction): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')
@@ -123,9 +122,7 @@ class EnergyPhalanxTest extends StuTestCase
         return [[2, 67], [3, 67], [1, 86]];
     }
 
-    /**
-     * @dataProvider provideHitChanceData
-     */
+    #[DataProvider('provideHitChanceData')]
     public function testGetHitChance(int $faction, int $expected): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')
@@ -143,9 +140,7 @@ class EnergyPhalanxTest extends StuTestCase
         return [[2, 3], [3, 3], [1, 1]];
     }
 
-    /**
-     * @dataProvider provideGetWeaponModuleData
-     */
+    #[DataProvider('provideGetWeaponModuleData')]
     public function testGetWeaponModuleExpectModuleWhenModuleExistent(int $faction, int $moduleId): void
     {
         $module = $this->mock(ModuleInterface::class);
@@ -187,9 +182,7 @@ class EnergyPhalanxTest extends StuTestCase
         return [[180, 2], [180, 3], [250, 1]];
     }
 
-    /**
-     * @dataProvider provideGetEnergyWeaponBaseDamageData
-     */
+    #[DataProvider('provideGetEnergyWeaponBaseDamageData')]
     public function testGetEnergyWeaponBaseDamage(int $expected, int $faction): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')
@@ -207,9 +200,7 @@ class EnergyPhalanxTest extends StuTestCase
         return [[5, 2], [5, 3], [3, 1]];
     }
 
-    /**
-     * @dataProvider provideGetPhaserVolleysData
-     */
+    #[DataProvider('provideGetPhaserVolleysData')]
     public function testGetPhaserVolleys(int $expected, int $faction): void
     {
         $this->colony->shouldReceive('getUser->getFactionId')

@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use InvalidArgumentException;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -69,9 +70,7 @@ class LoadWaypointsTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestLoadForMapFieldsData
-     */
+    #[DataProvider('provideTestLoadForMapFieldsData')]
     public function testLoadForMapFields(
         int $startX,
         int $destX,
@@ -133,9 +132,7 @@ class LoadWaypointsTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestLoadForSystemMapFieldsData
-     */
+    #[DataProvider('provideTestLoadForSystemMapFieldsData')]
     public function testLoadForSystemMapFields(
         int $startX,
         int $destX,

@@ -2,52 +2,48 @@
 
 namespace Stu\Module\Config;
 
-use Noodlehaus\ConfigInterface;
 use Override;
-use Stu\Module\Config\Model\CacheSettings;
 use Stu\Module\Config\Model\CacheSettingsInterface;
-use Stu\Module\Config\Model\DbSettings;
 use Stu\Module\Config\Model\DbSettingsInterface;
-use Stu\Module\Config\Model\DebugSettings;
 use Stu\Module\Config\Model\DebugSettingsInterface;
-use Stu\Module\Config\Model\GameSettings;
 use Stu\Module\Config\Model\GameSettingsInterface;
-use Stu\Module\Config\Model\ResetSettings;
 use Stu\Module\Config\Model\ResetSettingsInterface;
+use Stu\Module\Config\Model\SettingsCacheInterface;
 
 final class StuConfig implements StuConfigInterface
 {
-    public function __construct(private ConfigInterface $config)
-    {
+    public function __construct(
+        private SettingsCacheInterface $settingsCache
+    ) {
     }
 
     #[Override]
     public function getCacheSettings(): CacheSettingsInterface
     {
-        return new CacheSettings(null, $this->config);
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::CACHE, null);
     }
 
     #[Override]
     public function getDbSettings(): DbSettingsInterface
     {
-        return new DbSettings(null, $this->config);
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::DB, null);
     }
 
     #[Override]
     public function getDebugSettings(): DebugSettingsInterface
     {
-        return new DebugSettings(null, $this->config);
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::DEBUG, null);
     }
 
     #[Override]
     public function getGameSettings(): GameSettingsInterface
     {
-        return new GameSettings(null, $this->config);
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::GAME, null);
     }
 
     #[Override]
     public function getResetSettings(): ResetSettingsInterface
     {
-        return new ResetSettings(null, $this->config);
+        return $this->settingsCache->getSettings(StuConfigSettingEnum::RESET, null);
     }
 }

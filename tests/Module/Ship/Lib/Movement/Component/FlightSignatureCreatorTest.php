@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -69,9 +70,7 @@ class FlightSignatureCreatorTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider directionDataProvider
-     */
+    #[DataProvider('directionDataProvider')]
     public function testCreateSignaturesCreatesForMapFields(
         int $fromDirection,
         int $toDirection
@@ -182,9 +181,7 @@ class FlightSignatureCreatorTest extends StuTestCase
         );
     }
 
-    /**
-     * @dataProvider directionDataProvider
-     */
+    #[DataProvider('directionDataProvider')]
     public function testCreateSignaturesCreatesForSystemMapFields(
         int $fromDirection,
         int $toDirection

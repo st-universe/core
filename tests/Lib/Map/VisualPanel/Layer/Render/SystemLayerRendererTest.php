@@ -6,9 +6,11 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\StuTestCase;
+use tidy;
 
 class SystemLayerRendererTest extends StuTestCase
 {
@@ -35,9 +37,7 @@ class SystemLayerRendererTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetBackgroundImageData
-     */
+    #[DataProvider('provideGetBackgroundImageData')]
     public function testRenderExpectBackgroundOnly(
         int $x,
         int $y,
@@ -58,7 +58,7 @@ class SystemLayerRendererTest extends StuTestCase
             $expectedBackGroundId
         );
 
-        $this->assertEquals($expected, $result);
+        $this->assertXmlStringEqualsXmlString($expected, $result);
     }
 
     public function testRenderExpectBackgroundPlusFieldImage(): void

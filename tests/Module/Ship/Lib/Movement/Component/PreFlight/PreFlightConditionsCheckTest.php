@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight;
 
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Stu\Config\Init;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
@@ -15,8 +17,9 @@ use Stu\StuTestCase;
 use function DI\get;
 
 /**
- * @runTestsInSeparateProcesses Avoid global settings to cause trouble within other tests
+ * Avoid global settings to cause trouble within other tests
  */
+#[RunTestsInSeparateProcesses]
 class PreFlightConditionsCheckTest extends StuTestCase
 {
     public static function provideCheckPreconditionsData(): array
@@ -27,9 +30,7 @@ class PreFlightConditionsCheckTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckPreconditionsData
-     */
+    #[DataProvider('provideCheckPreconditionsData')]
     public function testCheckPreconditions(bool $isFixedFleetMode): void
     {
         $leaveFleet = $this->mock(LeaveFleetInterface::class);

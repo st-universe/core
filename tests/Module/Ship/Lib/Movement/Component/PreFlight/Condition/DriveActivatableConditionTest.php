@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -50,9 +51,7 @@ class DriveActivatableConditionTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckData
-     */
+    #[DataProvider('provideCheckData')]
     public function testCheck(
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,

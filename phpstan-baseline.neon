@@ -874,6 +874,51 @@ parameters:
 			path: src/Module/Communication/View/ShowKnComments/ShowKnComments.php
 
 		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\DebugSettings\\:\\:getSqlLoggingSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\SqlLoggingSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/Model/DebugSettings.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\GameSettings\\:\\:getAdminSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\AdminSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/Model/GameSettings.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\GameSettings\\:\\:getColonySettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\ColonySettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/Model/GameSettings.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\Model\\\\GameSettings\\:\\:getMapSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\MapSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/Model/GameSettings.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\StuConfig\\:\\:getCacheSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\CacheSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/StuConfig.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\StuConfig\\:\\:getDbSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\DbSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/StuConfig.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\StuConfig\\:\\:getDebugSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\DebugSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/StuConfig.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\StuConfig\\:\\:getGameSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\GameSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/StuConfig.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Config\\\\StuConfig\\:\\:getResetSettings\\(\\) should return Stu\\\\Module\\\\Config\\\\Model\\\\ResetSettingsInterface but returns Stu\\\\Module\\\\Config\\\\Model\\\\SettingsInterface\\.$#"
+			count: 1
+			path: src/Module/Config/StuConfig.php
+
+		-
 			message: "#^Cannot call method getReason\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php

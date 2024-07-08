@@ -6,6 +6,7 @@ namespace Stu\Component\Player\Relation;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
@@ -53,9 +54,7 @@ class PlayerRelationDeterminatorTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideIsFriendData
-     */
+    #[DataProvider('provideIsFriendData')]
     public function testIsFriend(
         PlayerRelationTypeEnum $friendRelation,
         PlayerRelationTypeEnum $enemyRelation,
@@ -89,9 +88,7 @@ class PlayerRelationDeterminatorTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideIsEnemyData
-     */
+    #[DataProvider('provideIsEnemyData')]
     public function testIsEnemy(
         PlayerRelationTypeEnum $friendRelation,
         PlayerRelationTypeEnum $enemyRelation,

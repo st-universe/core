@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
@@ -44,9 +45,7 @@ class ShipAttackPreparationTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetReadyData
-     */
+    #[DataProvider('provideGetReadyData')]
     public function testGetReady(bool $isOneWay): void
     {
         $attackers = $this->mock(BattlePartyInterface::class);

@@ -6,6 +6,7 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
@@ -44,9 +45,7 @@ class BorderLayerRendererTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider parameterExpectDefaultBorderColorWhenShipIsNotNullDataProvider
-     */
+    #[DataProvider('parameterExpectDefaultBorderColorWhenShipIsNotNullDataProvider')]
     public function testRenderExpectDefaultBorderColorWhenShipIsNotNull(
         ?bool $isOnShipLevel,
         ?int $shipX = null,
@@ -94,9 +93,7 @@ class BorderLayerRendererTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider parameterExpectBorderOfUserAllyOrFactionDataProvider
-     */
+    #[DataProvider('parameterExpectBorderOfUserAllyOrFactionDataProvider')]
     public function testRenderExpectBorderOfUserAllyOrFaction(
         ?string $factionColor,
         ?string $allyColor = null,
