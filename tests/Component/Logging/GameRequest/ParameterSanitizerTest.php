@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\GameRequest;
 
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\StuTestCase;
 
@@ -18,9 +19,7 @@ class ParameterSanitizerTest extends StuTestCase
         $this->subject = new ParameterSanitizer();
     }
 
-    /**
-     * @dataProvider parameterDataProvider
-     */
+    #[DataProvider('parameterDataProvider')]
     public function testSanitizeCleans(
         array $parameter,
         array $expected

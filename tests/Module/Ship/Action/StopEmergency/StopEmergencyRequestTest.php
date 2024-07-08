@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\StopEmergency;
 
 use Override;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
 /**
  * @extends RequestTestCase<StopEmergencyRequest>
  *
- * @runTestsInSeparateProcesses
  */
+#[RunTestsInSeparateProcesses]
 class StopEmergencyRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;

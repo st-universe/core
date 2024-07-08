@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu;
 
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @template TRequestClass of object
@@ -40,9 +41,7 @@ abstract class RequestTestCase extends StuTestCase
 
     abstract public static function requestVarsDataProvider(): array;
 
-    /**
-     * @dataProvider requestVarsDataProvider
-     */
+    #[DataProvider('requestVarsDataProvider')]
     public function testRequestVars(
         string $methodName,
         string $paramName,

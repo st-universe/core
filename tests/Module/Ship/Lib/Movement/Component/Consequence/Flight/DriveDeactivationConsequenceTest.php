@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -103,9 +104,7 @@ class DriveDeactivationConsequenceTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTriggerData
-     */
+    #[DataProvider('provideTriggerData')]
     public function testTrigger(
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,

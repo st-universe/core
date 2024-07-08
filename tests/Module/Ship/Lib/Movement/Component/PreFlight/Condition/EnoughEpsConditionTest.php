@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -65,9 +66,7 @@ class EnoughEpsConditionTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckWhenSystemInstalledData
-     */
+    #[DataProvider('provideCheckWhenSystemInstalledData')]
     public function testCheckWhenSystemInstalled(
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
@@ -123,9 +122,7 @@ class EnoughEpsConditionTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckWhenSystemNotInstalledData
-     */
+    #[DataProvider('provideCheckWhenSystemNotInstalledData')]
     public function testCheckWhenSystemNotInstalled(
         bool $isImpulsNeeded,
         bool $isWarpdriveNeeded,
@@ -167,9 +164,7 @@ class EnoughEpsConditionTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckFlightCostForRouteModeData
-     */
+    #[DataProvider('provideCheckFlightCostForRouteModeData')]
     public function testCheckFlightCostForRouteMode(
         RouteModeEnum $routeMode,
         ?string $nextWaypointClass = null,

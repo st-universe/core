@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\Battle\Party\RoundBasedBattleParty;
@@ -160,9 +161,7 @@ class AttackMatchupTest extends StuTestCase
         return [[1], [2]];
     }
 
-    /**
-     * @dataProvider provideGetMatchupExpectRandomShooterIfBothSidesReadyData
-     */
+    #[DataProvider('provideGetMatchupExpectRandomShooterIfBothSidesReadyData')]
     public function testGetMatchupExpectRandomShooterIfBothSidesReady(int $randomNumber): void
     {
         $attackers = $this->mock(RoundBasedBattleParty::class);

@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle\Provider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -140,9 +141,7 @@ class ProjectilePhalanxTest extends StuTestCase
         return [[false, 0], [true, 1]];
     }
 
-    /**
-     * @dataProvider provideGetTorpedoStateData
-     */
+    #[DataProvider('provideGetTorpedoStateData')]
     public function testGetTorpedoState(bool $expected, int $count): void
     {
         $torpedo = $this->mock(TorpedoTypeInterface::class);

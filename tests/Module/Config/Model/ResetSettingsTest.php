@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use Override;
 use PHPUnit\Framework\MockObject\MockObject;
-use Stu\Module\Config\StuConfigException;
 use Stu\StuTestCase;
 
 class ResetSettingsTest extends StuTestCase
 {
-    /** @var MockInterface|ConfigInterface */
-    private ConfigInterface $config;
+    /** @var MockInterface|SettingsCoreInterface */
+    private $settingsCore;
+    /** @var MockInterface|SettingsCacheInterface */
+    private $cache;
 
     /** @var MockObject|ResetSettings */
     private ResetSettings $subject;
@@ -22,45 +22,21 @@ class ResetSettingsTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->config = $this->mock(ConfigInterface::class);
+        $this->settingsCore = $this->mock(SettingsCoreInterface::class);
+        $this->cache = $this->mock(SettingsCacheInterface::class);
 
-        $this->subject = new ResetSettings(null, $this->config);
+        $this->subject = new ResetSettings(null, $this->settingsCore, $this->cache);
     }
 
-    public function testGetDelayInSecondsExpectConfigValueWhenPresent(): void
+    public function testGetDelayInSeconds(): void
     {
-        $this->config->shouldReceive('get')
-            ->with('reset.delay_in_seconds')
+        $this->settingsCore->shouldReceive('getIntegerConfigValue')
+            ->with('delay_in_seconds', 5)
             ->once()
             ->andReturn(15);
 
         $result = $this->subject->getDelayInSeconds();
 
         $this->assertEquals(15, $result);
-    }
-
-    public function testGetDelayInSecondsExpectDefaultWhenNotPresent(): void
-    {
-        $this->config->shouldReceive('get')
-            ->with('reset.delay_in_seconds')
-            ->once()
-            ->andReturn(null);
-
-        $result = $this->subject->getDelayInSeconds();
-
-        $this->assertEquals(5, $result);
-    }
-
-    public function testGetDelayInSecondsExpectErrorWhenNotAnInteger(): void
-    {
-        static::expectExceptionMessage('The value "foo" with path "reset.delay_in_seconds" is no valid integer.');
-        static::expectException(StuConfigException::class);
-
-        $this->config->shouldReceive('get')
-            ->with('reset.delay_in_seconds')
-            ->once()
-            ->andReturn('foo');
-
-        $this->subject->getDelayInSeconds();
     }
 }

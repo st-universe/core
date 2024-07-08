@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Auxiliary;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
@@ -59,7 +60,7 @@ class ShipShutdownTest extends StuTestCase
         return [[null], [true], [false]];
     }
 
-    /** @dataProvider parameterDataProvider */
+    #[DataProvider('parameterDataProvider')]
     public function testShutdown(?bool $doLeaveFleet): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);

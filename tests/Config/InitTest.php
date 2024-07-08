@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Stu\StuTestCase;
 
 /**
- * @runTestsInSeparateProcesses Avoid global settings to cause trouble within other tests
+ * Avoid global settings to cause trouble within other tests
  */
+#[RunTestsInSeparateProcesses]
 class InitTest extends StuTestCase
 {
     public function testInitCallsGivenCallable(): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Map;
 
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -56,9 +57,7 @@ class DistanceCalculationTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider shipToShipDistanceTestData
-     */
+    #[DataProvider('shipToShipDistanceTestData')]
     public function testShipToShipDistance(
         ?int $ship1systemX,
         ?int $ship1systemY,
@@ -115,9 +114,7 @@ class DistanceCalculationTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider shipToColonyDistanceTestData
-     */
+    #[DataProvider('shipToColonyDistanceTestData')]
     public function testShipToColonyDistance(
         ?int $shipSystemX,
         ?int $shipSystemY,

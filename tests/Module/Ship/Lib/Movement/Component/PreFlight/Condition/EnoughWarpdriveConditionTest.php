@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\System\Data\WarpDriveSystemData;
 use Stu\Module\Ship\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
@@ -62,9 +63,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckWarpdriveWhenEnoughWarpdriveData
-     */
+    #[DataProvider('provideCheckWarpdriveWhenEnoughWarpdriveData')]
     public function testCheckWarpdriveWhenEnoughWarpdrive(
         RouteModeEnum $routeMode,
         ?string $nextWaypointClass = null,
@@ -125,9 +124,7 @@ class EnoughWarpdriveConditionTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckWarpdriveWhenNotEnoughWarpdriveData
-     */
+    #[DataProvider('provideCheckWarpdriveWhenNotEnoughWarpdriveData')]
     public function testCheckWarpdriveWhenNotEnoughWarpdrive(
         RouteModeEnum $routeMode,
         ?string $nextWaypointClass = null,

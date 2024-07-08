@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\AlertDetection;
 
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AlertStateBattleParty;
@@ -31,9 +32,7 @@ class AlertedShipInformationTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAddAlertedShipsInfoData
-     */
+    #[DataProvider('provideAddAlertedShipsInfoData')]
     public function testAddAlertedShipsInfo(
         ShipAlertStateEnum $alertState,
         bool $isSingleton,

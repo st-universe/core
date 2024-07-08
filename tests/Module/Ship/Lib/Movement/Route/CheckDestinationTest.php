@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
 use Stu\Orm\Entity\LayerInterface;
@@ -57,9 +58,7 @@ class CheckDestinationTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideValidateForMapDestinationData
-     */
+    #[DataProvider('provideValidateForMapDestinationData')]
     public function testValidateForMapDestination(
         int $startX,
         int $startY,
@@ -157,9 +156,7 @@ class CheckDestinationTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideValidateForSystemMapDestinationData
-     */
+    #[DataProvider('provideValidateForSystemMapDestinationData')]
     public function testValidateForSystemMapDestination(
         int $startX,
         int $startY,

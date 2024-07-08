@@ -34,6 +34,10 @@ use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Lib\StuBbCodeWithImageDefinitionSet;
+use Stu\Module\Config\Model\SettingsCache;
+use Stu\Module\Config\Model\SettingsCacheInterface;
+use Stu\Module\Config\Model\SettingsFactory;
+use Stu\Module\Config\Model\SettingsFactoryInterface;
 use Stu\Module\Config\StuConfig;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameController;
@@ -55,6 +59,8 @@ return [
             ]
         );
     },
+    SettingsFactoryInterface::class => autowire(SettingsFactory::class),
+    SettingsCacheInterface::class => autowire(SettingsCache::class),
     StuConfigInterface::class => autowire(StuConfig::class),
     CacheProviderInterface::class => autowire(CacheProvider::class),
     CacheItemPoolInterface::class => function (ContainerInterface $c): CacheItemPoolInterface {

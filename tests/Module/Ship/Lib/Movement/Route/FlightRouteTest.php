@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use RuntimeException;
 use Stu\Config\Init;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
@@ -22,8 +23,9 @@ use Stu\StuTestCase;
 use function DI\get;
 
 /**
- * @runTestsInSeparateProcesses Avoid global settings to cause trouble within other tests
+ * Avoid global settings to cause trouble within other tests
  */
+#[RunTestsInSeparateProcesses]
 class FlightRouteTest extends StuTestCase
 {
     /** @var MockInterface&CheckDestinationInterface */

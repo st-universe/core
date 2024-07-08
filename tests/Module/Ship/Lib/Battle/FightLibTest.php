@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -755,9 +756,7 @@ class FightLibTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetAttackersAndDefendersData
-     */
+    #[DataProvider('provideGetAttackersAndDefendersData')]
     public function testGetAttackersAndDefenders(
         string $className,
         int $attackersCount,

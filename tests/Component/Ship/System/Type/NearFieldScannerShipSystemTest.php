@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System\Type;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
@@ -69,9 +70,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCheckActivationConditionsReturnsFalseIfNoColonyData
-     */
+    #[DataProvider('provideCheckActivationConditionsReturnsFalseIfNoColonyData')]
     public function testCheckActivationConditions(bool $hasColony, bool $isNpc, bool $expectedResult, ?string $expectedReason): void
     {
         $this->ship->shouldReceive('getUser->hasColony')
