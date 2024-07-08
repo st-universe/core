@@ -32,7 +32,7 @@ final class ShowStationCosts implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Baukosten'));
-        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/stationcost');
+        $game->setMacroInAjaxWindow('html/station/stationCost.twig');
 
         $userId = $game->getUser()->getId();
 

@@ -6,69 +6,6 @@
   <script src="${THIS/getJavascriptPath}/js/station.js"></script>
   <script src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
 </metal:block>
-<metal:macro metal:define-macro="stationcost">
-  <tal:block tal:condition="not:ERROR">
-    <table class="tcal">
-      <tr>
-        <td colspan="2" style="width: 250px;">Bauzeit in Ticks</td>
-        <td style="width: 100px; text-align: center;"><span tal:replace="PLAN/getRump/getBuildtime">DURATION</span></td>
-      </tr>
-      <tr>
-        <td colspan="2" style="width: 250px;">Benötigte angedockte Workbees</td>
-        <td style="color: ${WORKBEECOLOR}; width: 100px; text-align: center;"><span
-            tal:replace="DOCKED">DOCKED</span>/<span tal:replace="PLAN/getRump/getNeededWorkbees">WORKBEES</span>
-        </td>
-      </tr>
-      <tr>
-        <th style="width: 50px;">Modul</th>
-        <th style="width: 100px;">Level</th>
-        <th style="width: 100px;">Anzahl</th>
-      </tr>
-      <tr style="text-align: center;" tal:repeat="mod MODS">
-        <td><img src="assets/commodities/${mod/getCommodityId}.png" title="${mod/getName}" /></td>
-        <td><span tal:replace="mod/getLevel">LEVEL</span></td>
-        <td style="color: ${mod/getColor}"><span tal:replace="mod/getStoredAmount">CURRENT</span>/<span
-            tal:replace="mod/getNeededAmount">NEEDED</span>
-        </td>
-      </tr>
-    </table>
-  </tal:block>
-</metal:macro>
-<metal:macro metal:define-macro="stationinfo">
-  <tal:block tal:condition="not:ERROR">
-    <table class="tcal" tal:define="rump PLAN/getRump">
-      <tr>
-        <td><img src="assets/ships/${rump/getId}.png" title="${rump/getName}" /></td>
-        <td>
-          <div style="padding-left: 5px; float: left; width: 205px">
-            <div class="divhead">Informationen (Basis-Werte)</div>
-            <div class="divbody">
-              <span>Limit pro Spieler:</span> ${LIMIT}<br />
-              <span>baubar:</span> ${LOCATION}<br />
-              <span></span><br />
-              <span>Crewanzahl:</span> ${PLAN/getCrew}<br />
-              <span>Hüllenpunkte:</span> ${rump/getBaseHull}<br />
-              <span>Schildpunkte:</span> ${rump/getBaseShield}<br />
-              <span>EPS:</span> ${rump/getBaseEps}<br />
-              <span>Reaktorleistung:</span> ${rump/getBaseReactor}<br />
-              <span>Sensorreichtweite:</span> ${rump/getBaseSensorRange}<br />
-              <span>Trefferchance (eff.):</span> ${rump/getHitChance}%<br />
-              <span>Energiewaffenschaden:</span> ${rump/getBaseDamage}<br />
-              <span>Energiewaffen-Salven:</span> ${rump/getPhaserVolleys}<br />
-              <span>Torpedolevel</span>: ${rump/getTorpedoLevel}<br />
-              <span>Torpedo-Salven</span>: ${rump/getTorpedoVolleys}<br />
-              <span>Torpedolagerraum</span>: ${rump/getBaseTorpedoStorage}<br />
-              <span>Beam-Faktor</span>: ${rump/getBeamFactor}<br />
-              <span>Lagerraum:</span> ${rump/getStorage}<br />
-              <span>Shuttlekapazität:</span> ${rump/getShuttleSlots}<br />
-              <span>Andockplätze:</span> ${rump/getDockingSlots}<br />
-            </div>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </tal:block>
-</metal:macro>
 <metal:block metal:define-macro="shiplist">
   <ul>
     <tal:block tal:repeat="wrapper WRAPPERS">
@@ -76,51 +13,5 @@
     </tal:block>
   </ul>
 </metal:block>
-<metal:macro metal:define-macro="shuttlemanagement">
-  <form action="station.php" method="post" tal:define="SHIP WRAPPER/get">
-    <input type="hidden" name="id" tal:attributes="value STATION/getId" />
-    <input type="hidden" name="sid" tal:attributes="value SHIP/getId" />
-    <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-    <tal:block tal:condition="not:ERROR">
-      <table class="tcal" tal:condition="AVAILABLE_SHUTTLES">
-        <tr>
-          <th>Shuttle-Typ</th>
-          <th colspan="3">Menge</th>
-        </tr>
-        <tr tal:repeat="data AVAILABLE_SHUTTLES">
-          <td>
-            <img src="assets/commodities/${data/getCommodityId}.png" title="${data/getCommodityName}" />
-          </td>
-          <td>
-            <a tal:condition="WRAPPER/isOwnedByCurrentUser" href="javascript:void(0);"
-              onclick="decreaseShuttleAmount(${data/getCommodityId});">
-              <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
-          </td>
-          <td>
-            <input type="hidden" name="shuttles[]" tal:attributes="value data/getCommodityId" />
-            <input readonly="readonly" type="text" id="shuttleAmount_${data/getCommodityId}"
-              tal:attributes="value data/getCurrentLoad" name="shuttlecount[${data/getCommodityId}]" size="2" />
-          </td>
-          <td>
-            <a href="javascript:void(0);"
-              onclick="increaseShuttleAmount(${data/getCommodityId}, ${data/getMaxUnits}, ${SHIP/getRump/getShuttleSlots});">
-              <img src="assets/buttons/b_up1.png" title="Anzahl erhöhen" /></a>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"></td>
-          <td>
-            <span>Summe:</span>
-          </td>
-          <td>
-            <span id="storedshuttles" tal:content="CURRENTLY_STORED">SUM</span>/<span
-              tal:replace="SHIP/getRump/getShuttleSlots"></span>
-          </td>
-        </tr>
-      </table>
-      <input type="submit" style="cursor: pointer;" name="B_MANAGE_STATION_SHUTTLES" value="Transfer starten" />
-    </tal:block>
-  </form>
-</metal:macro>
 
 </html>

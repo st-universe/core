@@ -22,7 +22,7 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManageShuttles implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_MANAGE_STATION_SHUTTLES';
+    public const string ACTION_IDENTIFIER = 'B_MANAGE_SHUTTLES';
 
     public function __construct(private ShipLoaderInterface $shipLoader, private PrivateMessageSenderInterface $privateMessageSender, private ShipStorageManagerInterface $shipStorageManager, private CommodityRepositoryInterface $commodityRepository, private InteractionCheckerInterface $interactionChecker)
     {

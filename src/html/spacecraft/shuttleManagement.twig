@@ -1,0 +1,49 @@
+{% set SHIP = WRAPPER.get %}
+
+<form action="{{ MODULE_VIEW.value }}.php" method="post">
+    <input type="hidden" name="id" value="{{ MANAGER.getId }}" />
+    <input type="hidden" name="sid" value="{{ SHIP.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    {% if not ERROR and AVAILABLE_SHUTTLES %}
+    <table class="tcal">
+        <tr>
+            <th>Shuttle-Typ</th>
+            <th colspan="3">Menge</th>
+        </tr>
+        {% for data in AVAILABLE_SHUTTLES %}
+        {% set commodityId = data.getCommodityId %}
+        <tr>
+            <td>
+                <img src="assets/commodities/{{ commodityId }}.png" title="{{ data.getCommodityName }}" />
+            </td>
+            <td>
+                {% if WRAPPER.isOwnedByCurrentUser %}
+                <a href="javascript:void(0);" onclick="decreaseShuttleAmount({{ commodityId }});">
+                    <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
+                {% endif %}
+            </td>
+            <td>
+                <input type="hidden" name="shuttles[]" value="{{ commodityId }}" />
+                <input readonly="readonly" type="text" id="shuttleAmount_{{ commodityId }}"
+                    value="{{ data.getCurrentLoad }}" name="shuttlecount[{{ commodityId }}]" size="2" />
+            </td>
+            <td>
+                <a href="javascript:void(0);"
+                    onclick="increaseShuttleAmount({{ commodityId }}, {{ data.getMaxUnits }}, {{ SHIP.getRump.getShuttleSlots }});">
+                    <img src="assets/buttons/b_up1.png" title="Anzahl erhöhen" /></a>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2"></td>
+            <td>
+                <span>Summe:</span>
+            </td>
+            <td>
+                <span id="storedshuttles">{{ CURRENTLY_STORED }}</span>/{{ SHIP.getRump.getShuttleSlots }}
+            </td>
+        </tr>
+    </table>
+    <input type="submit" style="cursor: pointer;" name="B_MANAGE_SHUTTLES" value="Transfer starten" />
+    {% endif %}
+</form>
