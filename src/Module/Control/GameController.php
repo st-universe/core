@@ -19,7 +19,6 @@ use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
-use Stu\Exception\TickGameStateException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\Information\InformationInterface;
@@ -599,11 +598,6 @@ final class GameController implements GameControllerInterface
             if ($e->getMessage() !== '') {
                 $this->setTemplateVar('REASON', $e->getMessage());
             }
-        } catch (TickGameStateException) {
-            $this->setPageTitle(_('Rundenwechsel aktiv'));
-            $this->setTemplateFile('html/tick.xhtml');
-
-            $this->setTemplateVar('THIS', $this);
         } catch (MaintenanceGameStateException) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/index/maintenance.twig');
@@ -688,9 +682,6 @@ final class GameController implements GameControllerInterface
                 throw new AccountNotVerifiedException();
             }
             $gameState = $this->getGameState();
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
-                throw new TickGameStateException();
-            }
 
             if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->isAdmin()) {
                 throw new MaintenanceGameStateException();
