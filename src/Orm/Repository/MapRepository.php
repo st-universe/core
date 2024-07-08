@@ -579,6 +579,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                             ON ca.ship_id = s.id
                                             WHERE s.user_id >= :firstUserId
                                             AND s.state != :state
+                                            AND s.starsystem_map_id IS NULL
                                             AND NOT EXISTS (SELECT ss.id
                                                             FROM stu_ship_system ss
                                                             WHERE ss.ship_id = s.id
