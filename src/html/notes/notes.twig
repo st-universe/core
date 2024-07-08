@@ -1,0 +1,52 @@
+{% extends "html/singleWindow.twig" %}
+
+{% block body %}
+<script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
+{% include 'html/breadcrumb.twig' %}
+<form action="notes.php" method="post" id="note_form">
+	<input type="hidden" name="delnotes" id="delnotes" value="" />
+	<table class="tcal">
+		<tr>
+			<th>Notiz</th>
+			<th style="width: 120px; text-align: center;">Datum</th>
+			<th></th>
+			<th style="width: 20px;"></th>
+		</tr>
+		{% if NOTE_LIST %}
+		{% for note in NOTE_LIST %}
+		{% set noteId = note.getId %}
+		<tr>
+			<td>
+				<a href="notes.php?SHOW_NOTE=1&note={{ noteId }}">{{ note.getTitle }}</a>
+			</td>
+			<td style="text-align: center;">{{ note.getDate|stuDateTime }}</td>
+			<td style="width: 20px;">
+				<a href="notes.php?B_DELETE_NOTES=1&delnotes={{ noteId }}&sstr={{ SESSIONSTRING }}"
+					onmouseover="cp('note{{ noteId }}','buttons/x2')" onmouseout="cp('note{{ noteId }}','buttons/x1')">
+					<img src="/assets/buttons/x1.png" name="note{{ noteId }}" />
+				</a>
+			</td>
+			<td style="text-align: center;">
+				<input type="checkbox" name="marked_notes[]" value="{{ noteId }}"
+					onclick="$('delnotes').value = nodelistToString(document.getElementById('note_form').elements['marked_notes[]']);" />
+			</td>
+		</tr>
+		{% endfor %}
+		{% else %}
+		<tr>
+			<td colspan="4" style="text-align: center">Keine Notizen vorhanden</td>
+		</tr>
+		{% endif %}
+		<tr>
+			<td colspan="3" style="text-align: center;">
+				<input type="submit" style="cursor: pointer" id="SHOW_NEW_NOTE" name="SHOW_NEW_NOTE"
+					value="Neue Notiz" />
+			</td>
+			<td>
+				<input type="submit" style="cursor: pointer" id="B_DELETE_NOTES" name="B_DELETE_NOTES"
+					value="löschen" />
+			</td>
+		</tr>
+	</table>
+</form>
+{% endblock %}

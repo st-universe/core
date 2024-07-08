@@ -333,37 +333,6 @@
 
   </html>
 </metal:block>
-<metal:block metal:define-macro="singlewindow">
-  <html lang="de">
-
-  <head>
-    <meta charset="utf-8" />
-    <script src="/static/js/prototype.js"></script>
-    <script src="/static/js/scriptaculous.js"></script>
-    <script src="/static/js/default.js"></script>
-    <title tal:content="structure THIS/getPageTitle">TITLE</title>
-    <script>
-      var gfx_path = '/assets';
-    </script>
-    <script src="/static/js/overlib.js"></script>
-    <script src="/static/js/drag.js"></script>
-    <script src="/static/js/overlib_exclusive.js"></script>
-    <link rel="STYLESHEET" type="text/css" href="/static/css/${THIS/getUser/getCss}.css" />
-    <link rel="STYLESHEET" type="text/css" href="${THIS/getJavascriptPath}/css/stu.css" />
-    <link rel="alternate" type="application/atom+xml" title="Atom-Datei" href="http://stuniverse.de/static/kn.xml" />
-    <link rel="shortcut icon" href="/assets/favicon.ico" />
-  </head>
-
-  <body>
-    <div>
-      <metal:block metal:define-slot="content">
-        ...
-      </metal:block>
-    </div>
-  </body>
-
-  </html>
-</metal:block>
 
 <metal:block metal:define-macro="navigation_item">
   <tal:block tal:define="linkid string:nav_item_${icon_url}">

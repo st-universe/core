@@ -1,0 +1,31 @@
+{% extends "html/singleWindow.twig" %}
+
+{% block body %}
+<script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
+{% include 'html/breadcrumb.twig' %}
+<form action="notes.php" method="post">
+	<input type="hidden" name="SHOW_NOTE" value="1" />
+	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+	{% if not IS_NEW %}
+	<input type="hidden" name="note" value="{{ NOTE.getId }}" />
+	{% endif %}
+	<table class="tcal">
+		<tr>
+			<th>Titel</th>
+			<td>
+				<input type="text" name="title" value="{{ NOTE.getTitle }}" style="width: 100%;" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<textarea name="text" style="width: 100%; height: 400px;">{{ NOTE.getText }}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align: center;">
+				<input type="submit" name="B_SAVE_NOTE" value="Speichern" />
+			</td>
+		</tr>
+	</table>
+</form>
+{% endblock %}
