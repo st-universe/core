@@ -70,7 +70,7 @@ class ShowRegistrationTest extends StuTestCase
             ->with('Registrierung - Star Trek Universe')
             ->once();
         $game->shouldReceive('setTemplateFile')
-            ->with('html/registration.xhtml')
+            ->with('html/index/registration.twig')
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with('REGISTRATION_POSSIBLE', true)

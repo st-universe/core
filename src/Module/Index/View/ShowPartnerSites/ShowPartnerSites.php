@@ -24,7 +24,7 @@ final class ShowPartnerSites implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle('Partnerseiten - Star Trek Universe');
-        $game->setTemplateFile('html/index_partner_sites.xhtml');
+        $game->setTemplateFile('html/index/partnerSites.twig');
 
         $game->setTemplateVar('PARTNERSITES', $this->getPartnerSites());
     }

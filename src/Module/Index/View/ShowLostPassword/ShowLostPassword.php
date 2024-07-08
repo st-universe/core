@@ -15,7 +15,7 @@ final class ShowLostPassword implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/index_lostpassword.xhtml');
+        $game->setTemplateFile('html/index/lostPassword.twig');
         $game->setPageTitle(_('Passwort vergessen - Star Trek Universe'));
     }
 }

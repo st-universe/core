@@ -47,7 +47,7 @@ class ShowPartnerSitesTest extends StuTestCase
             ->with('Partnerseiten - Star Trek Universe')
             ->once();
         $game->shouldReceive('setTemplateFile')
-            ->with('html/index_partner_sites.xhtml')
+            ->with('html/index/partnerSites.twig')
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with(

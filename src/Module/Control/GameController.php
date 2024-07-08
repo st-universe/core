@@ -590,11 +590,11 @@ final class GameController implements GameControllerInterface
         } catch (UserLockedException $e) {
             $this->loginError = $e->getMessage();
 
-            $this->setTemplateFile('html/accountlocked.xhtml');
+            $this->setTemplateFile('html/index/accountLocked.twig');
             $this->setTemplateVar('THIS', $this);
             $this->setTemplateVar('REASON', $e->getDetails());
         } catch (AccountNotVerifiedException $e) {
-            $this->setTemplateFile('html/smsverification.xhtml');
+            $this->setTemplateFile('html/index/smsVerification.twig');
             $this->setTemplateVar('THIS', $this);
             if ($e->getMessage() !== '') {
                 $this->setTemplateVar('REASON', $e->getMessage());
@@ -606,17 +606,17 @@ final class GameController implements GameControllerInterface
             $this->setTemplateVar('THIS', $this);
         } catch (MaintenanceGameStateException) {
             $this->setPageTitle(_('Wartungsmodus'));
-            $this->setTemplateFile('html/maintenance.xhtml');
+            $this->setTemplateFile('html/index/maintenance.twig');
 
             $this->setTemplateVar('THIS', $this);
         } catch (ResetGameStateException) {
             $this->setPageTitle(_('Resetmodus'));
-            $this->setTemplateFile('html/gamereset.xhtml');
+            $this->setTemplateFile('html/index/gameReset.twig');
 
             $this->setTemplateVar('THIS', $this);
         } catch (RelocationGameStateException) {
             $this->setPageTitle(_('Umzugsmodus'));
-            $this->setTemplateFile('html/relocation.xhtml');
+            $this->setTemplateFile('html/index/relocation.twig');
 
             $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException) {

@@ -1,0 +1,100 @@
+{% extends "html/index/indexDefaults.twig" %}
+
+{% block body %}
+<form action="/index.php" method="post" onsubmit="checkSubmit({{ IS_SMS_REGISTRATION }}); return false;"
+	id="registerform">
+	<input type="hidden" name="factionid" id="factionid" value="0" />
+	<div style="display: inline-block; width: 300px; padding-right: 5px;">
+		<div class="divhead">Loginname</div>
+		<div class="divbody">
+			<input type="text" class="text" size="25" name="loginname" id="loginname"
+				onblur="checkLogin(this, this.value)" />
+			<span id="loginerror" style="display: none; color: #FF0000;">Fehler</span>
+			<span id="loginok" style="display: none; color: Green;">OK</span>
+			<div id="logindup" style="color: #FFAA00; display: none;">Dieser Loginname ist bereits registriert
+			</div>
+			<div style="font-size: 80%; padding-top: 5px;">Minimum 6 Buchstaben/Zahlen</div>
+		</div>
+		<br />
+		<div class="divhead">E-Mail Adresse</div>
+		<div class="divbody">
+			<input type="text" class="text" size="25" name="email" id="email" onblur="checkEmail(this, this.value)" />
+			<span id="emailerror" style="display: none; color: #FF0000;">Fehler</span>
+			<span id="emailok" style="display: none; color: Green;">OK</span>
+			<div id="emaildup" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist bereits
+				registriert</div>
+			<div id="emailblk" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist blockiert</div>
+		</div>
+		<br />
+		{% if IS_SMS_REGISTRATION %}
+		<div class="divhead">Mobilfunknummer zur SMS Verifikation (DE/AT/CH)<img
+				title="z.B. 176 55555, 170666666 oder 1501234567 (ohne führende Null)" src="assets/buttons/info2.png"
+				style="height:16px;" /></div>
+		<div class="divbody">
+			<select selected="true" id="countryCodeSelect" name="countrycode" onchange="updateMobileValue()">
+				<option value="+49">(DE) +49</option>
+				<option value="+43">(AT) +43</option>
+				<option value="+41">(CH) +41</option>
+			</select>
+			<input type="text" class="text" size="25" name="mobile" id="mobile"
+				oninput="checkMobile(this, this.value); updateMobileValue()" />
+			<span id="mobileerror" style="display: none; color: #FF0000;">Fehler</span>
+			<span id="mobileok" style="display: none; color: Green;">OK</span>
+			<div id="mobiledup" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist bereits
+				registriert</div>
+			<div id="mobileucp" style="color: #FFAA00; display: none;">Nur +49, +43 und +41 werden
+				unterstützt (DE/AT/CH)</div>
+			<div id="mobileupd" style="color: #FFAA00; display: none;">Format ungültig, Beispiele bei Info-?
+				beachten</div>
+			<div id="mobileblk" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist blockiert
+			</div>
+			<br />
+			<br />
+			Deine Nummer: <div name="combinedMobileValue" id="combinedMobileValue"></div>
+		</div>
+		{% endif %}
+		<br />
+		<div class="divhead">Regeln</div>
+		<div class="divbody">
+			<input type="checkbox" onclick="$('asberror').hide()" id="asb" name="asb" />Ich habe die
+			<a href="{{ WIKI }}/index.php?title=Spielregeln" target="_blank"
+				style="text-decoration: underline">Spielregeln</a> und den
+			<a href="/?SHOW_INFOS=1" target="_blank" style="text-decoration: underline">Datenschutzhinweis</a>
+			gelesen und bin damit einverstanden.
+			<div id="asberror" style="display:none; color: #FF0000">Die Spielregeln/der Datenschutzhinweis
+				wurde(n) nicht akzeptiert</div>
+		</div>
+		<br />
+		{% if REGISTRATION_POSSIBLE %}
+		<input type="submit" name="B_SEND_REGISTRATION" value="Registrieren" class="button" />
+		{% else %}
+		<div class="divhead">Hinweis</div>
+		<div class="divbody">Im Moment sind leider keine weiteren Anmeldungen möglich</div>
+		{% endif %}
+	</div>
+	<div style="vertical-align: top; display: inline-block; width: 355px;">
+		<div class="divhead">Gewählte Fraktion</div>
+		<div class="divbody" id="ch_faction">
+			Keine
+		</div>
+		<br />
+		<br />
+		<div id="factionerror" style="display:none; color: #FF0000">Es wurde keine Fraktion gewählt</div>
+		<div class="divhead">Fraktion wählen</div>
+		{% for faction in POSSIBLE_FACTIONS %}
+		{% set factionId = faction.getId %}
+		{% if faction.hasFreePlayerSlots %}
+		<div class="divbody" style="display: block; cursor: pointer; background-color: {{ faction.getColor }}"
+			onclick="toggleFaction({{ factionId }}); selectFaction({{ factionId }});">
+			{% include 'html/index/factionEntry.twig' %}
+		</div>
+		{% else %}
+		<div class="divbody" style="display: block; cursor: pointer; background-color: {{ faction.getColor }}"
+			onclick="toggleFaction({{ factionId }})">
+			{% include 'html/index/factionEntry.twig' %}
+		</div>
+		{% endif %}
+		{% endfor %}
+	</div>
+</form>
+{% endblock %}
