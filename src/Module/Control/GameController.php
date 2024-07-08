@@ -585,7 +585,7 @@ final class GameController implements GameControllerInterface
         } catch (LoginException $e) {
             $this->loginError = $e->getMessage();
             $this->setTemplateVar('THIS', $this);
-            $this->setTemplateFile('html/index.xhtml');
+            $this->setTemplateFile('html/index/index.twig');
         } catch (UserLockedException $e) {
             $this->loginError = $e->getMessage();
 
