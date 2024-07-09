@@ -13,18 +13,18 @@ use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 
-final class TalFactory implements TalFactoryInterface
+final class SelectedTechFactory implements SelectedTechFactoryInterface
 {
     public function __construct(private ResearchRepositoryInterface $researchRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository, private ResearchedRepositoryInterface $researchedRepository, private BuildingRepositoryInterface $buildingRepository, private ConfigInterface $config)
     {
     }
 
     #[Override]
-    public function createTalSelectedTech(
+    public function createSelectedTech(
         ResearchInterface $research,
         UserInterface $currentUser
-    ): TalSelectedTechInterface {
-        return new TalSelectedTech(
+    ): SelectedTechInterface {
+        return new SelectedTech(
             $this->researchRepository,
             $this->researchedRepository,
             $this->researchDependencyRepository,

@@ -8,7 +8,7 @@ use Override;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Research\TalFactoryInterface;
+use Stu\Module\Research\SelectedTechFactoryInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -16,7 +16,7 @@ final class ShowResearch implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RESEARCH';
 
-    public function __construct(private ShowResearchRequestInterface $showResearchRequest, private TechlistRetrieverInterface $techlistRetriever, private ResearchedRepositoryInterface $researchedRepository, private TalFactoryInterface $talFactory)
+    public function __construct(private ShowResearchRequestInterface $showResearchRequest, private TechlistRetrieverInterface $techlistRetriever, private ResearchedRepositoryInterface $researchedRepository, private SelectedTechFactoryInterface $talFactory)
     {
     }
 
@@ -40,7 +40,7 @@ final class ShowResearch implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/research/researchDetails.twig');
         $game->setTemplateVar(
             'TAL_RESEARCH',
-            $this->talFactory->createTalSelectedTech($research, $game->getUser())
+            $this->talFactory->createSelectedTech($research, $game->getUser())
         );
     }
 }

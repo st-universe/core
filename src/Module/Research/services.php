@@ -17,7 +17,7 @@ use Stu\Module\Research\View\ShowResearch\ShowResearchRequestInterface;
 use function DI\autowire;
 
 return [
-    TalFactoryInterface::class => autowire(TalFactory::class),
+    SelectedTechFactoryInterface::class => autowire(SelectedTechFactory::class),
     TechlistRetrieverInterface::class => autowire(TechlistRetriever::class),
     ShowResearchRequestInterface::class => autowire(ShowResearchRequest::class),
     StartResearchRequestInterface::class => autowire(StartResearchRequest::class),

@@ -6,7 +6,7 @@ use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
 
-interface TalSelectedTechInterface
+interface SelectedTechInterface
 {
     public function getResearch(): ResearchInterface;
 

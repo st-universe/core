@@ -18,7 +18,7 @@ use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 
-final class TalSelectedTech implements TalSelectedTechInterface
+final class SelectedTech implements SelectedTechInterface
 {
     private ?ResearchedInterface $state = null;
 
