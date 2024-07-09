@@ -17,7 +17,7 @@ use Stu\Module\Colony\Lib\Gui\GuiComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Module\Database\View\Category\Tal\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -25,7 +25,7 @@ final class ShowColony implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONY';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowColonyRequestInterface $showColonyRequest, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory)
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowColonyRequestInterface $showColonyRequest, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory)
     {
     }
 
@@ -101,7 +101,7 @@ final class ShowColony implements ViewControllerInterface
             $game->getSessionString()
         ));
 
-        $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $user);
+        $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($colony->getSystem()->getDatabaseEntry(), $user);
         $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
 
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);

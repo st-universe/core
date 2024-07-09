@@ -14,7 +14,7 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
-final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
+final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapperInterface
 {
     public function __construct(private DatabaseUserRepositoryInterface $databaseUserRepository, private DatabaseEntryInterface $databaseEntry, private StarSystemRepositoryInterface $starSystemRepository, private ShipRepositoryInterface $shipRepository, private ColonyClassRepositoryInterface $colonyClassRepository, private UserInterface $user)
     {

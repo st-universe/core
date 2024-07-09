@@ -6,15 +6,15 @@ use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 
-interface DatabaseCategoryTalFactoryInterface
+interface DatabaseCategoryWrapperFactoryInterface
 {
-    public function createDatabaseCategoryTal(
+    public function createDatabaseCategoryWrapper(
         DatabaseCategoryInterface $databaseCategory,
         UserInterface $user
-    ): DatabaseCategoryTalInterface;
+    ): DatabaseCategoryWrapperInterface;
 
-    public function createDatabaseCategoryEntryTal(
+    public function createDatabaseCategoryEntryWrapper(
         DatabaseEntryInterface $databaseEntry,
         UserInterface $user
-    ): DatabaseCategoryEntryTalInterface;
+    ): DatabaseCategoryEntryWrapperInterface;
 }

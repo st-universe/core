@@ -13,18 +13,18 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
-final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInterface
+final class DatabaseCategoryWrapperFactory implements DatabaseCategoryWrapperFactoryInterface
 {
     public function __construct(private DatabaseUserRepositoryInterface $databaseUserRepository, private StarSystemRepositoryInterface $starSystemRepository, private ColonyClassRepositoryInterface $colonyClassRepositoryInterface, private ShipRepositoryInterface $shipRepository)
     {
     }
 
     #[Override]
-    public function createDatabaseCategoryTal(
+    public function createDatabaseCategoryWrapper(
         DatabaseCategoryInterface $databaseCategory,
         UserInterface $user
-    ): DatabaseCategoryTalInterface {
-        return new DatabaseCategoryTal(
+    ): DatabaseCategoryWrapperInterface {
+        return new DatabaseCategoryWrapper(
             $this,
             $databaseCategory,
             $user
@@ -32,11 +32,11 @@ final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInte
     }
 
     #[Override]
-    public function createDatabaseCategoryEntryTal(
+    public function createDatabaseCategoryEntryWrapper(
         DatabaseEntryInterface $databaseEntry,
         UserInterface $user
-    ): DatabaseCategoryEntryTalInterface {
-        return new DatabaseCategoryEntryTal(
+    ): DatabaseCategoryEntryWrapperInterface {
+        return new DatabaseCategoryEntryWrapper(
             $this->databaseUserRepository,
             $databaseEntry,
             $this->starSystemRepository,

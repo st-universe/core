@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Database\View\Category\Tal;
 
-interface DatabaseCategoryTalInterface
+interface DatabaseCategoryWrapperInterface
 {
     public function isCategoryStarSystems(): bool;
 

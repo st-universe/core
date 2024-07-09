@@ -13,8 +13,8 @@ use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Module\Database\View\Category\Tal\DatabaseCategoryWrapperFactory;
+use Stu\Module\Database\View\Category\Tal\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Database\View\ColonyProductionWorthRanking\ColonyProductionWorthRanking;
 use Stu\Module\Database\View\ColonyWorthRanking\ColonyWorthRanking;
 use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
@@ -47,7 +47,7 @@ use function DI\autowire;
 
 return [
     CreateDatabaseEntryInterface::class => autowire(CreateDatabaseEntry::class),
-    DatabaseCategoryTalFactoryInterface::class => autowire(DatabaseCategoryTalFactory::class),
+    DatabaseCategoryWrapperFactoryInterface::class => autowire(DatabaseCategoryWrapperFactory::class),
     DatabaseEntryRequestInterface::class => autowire(DatabaseEntryRequest::class),
     CategoryRequestInterface::class => autowire(CategoryRequest::class),
     ShowColonySurfaceRequestInterface::class => autowire(ShowColonySurfaceRequest::class),

@@ -10,9 +10,9 @@ use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 
-final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
+final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
 {
-    public function __construct(private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory, private DatabaseCategoryInterface $databaseCategory, private UserInterface $user)
+    public function __construct(private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private DatabaseCategoryInterface $databaseCategory, private UserInterface $user)
     {
     }
 
@@ -61,7 +61,7 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
     public function getEntries(): array
     {
         return array_map(
-            fn (DatabaseEntryInterface $entry): DatabaseCategoryEntryTalInterface => $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($entry, $this->user),
+            fn (DatabaseEntryInterface $entry): DatabaseCategoryEntryWrapperInterface => $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($entry, $this->user),
             $this->databaseCategory->getEntries()
         );
     }

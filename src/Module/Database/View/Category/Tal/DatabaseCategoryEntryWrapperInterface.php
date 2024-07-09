@@ -6,7 +6,7 @@ use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
-interface DatabaseCategoryEntryTalInterface
+interface DatabaseCategoryEntryWrapperInterface
 {
     /**
      * @return null|StarSystemInterface|ShipInterface|ColonyClassInterface
