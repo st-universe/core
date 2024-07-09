@@ -7,7 +7,7 @@ namespace Stu\Module\Tal;
 /**
  * Creates tal component classes (like the status bar)
  */
-interface TalComponentFactoryInterface
+interface StatusBarFactoryInterface
 {
     public function createStatusBar(): StatusBarInterface;
 }

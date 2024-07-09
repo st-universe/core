@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalComponentFactoryInterface;
+use Stu\Module\Tal\StatusBarFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Tal\StatusBarInterface;
 use Stu\Orm\Entity\ResearchedInterface;
@@ -23,7 +23,7 @@ class ResearchFragmentTest extends StuTestCase
     /** @var ResearchedRepositoryInterface&MockInterface  */
     private MockInterface $researchedRepository;
 
-    /** @var TalComponentFactoryInterface&MockInterface */
+    /** @var StatusBarFactoryInterface&MockInterface */
     private MockInterface $talComponentFactory;
 
     /** @var MockInterface&BuildingCommodityRepositoryInterface */
@@ -35,7 +35,7 @@ class ResearchFragmentTest extends StuTestCase
     protected function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
-        $this->talComponentFactory = $this->mock(TalComponentFactoryInterface::class);
+        $this->talComponentFactory = $this->mock(StatusBarFactoryInterface::class);
         $this->buildingCommodityRepository = $this->mock(BuildingCommodityRepositoryInterface::class);
 
         $this->subject = new ResearchFragment(

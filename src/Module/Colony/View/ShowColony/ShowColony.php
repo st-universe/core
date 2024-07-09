@@ -101,8 +101,11 @@ final class ShowColony implements ViewControllerInterface
             $game->getSessionString()
         ));
 
-        $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($colony->getSystem()->getDatabaseEntry(), $user);
-        $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
+        $databaseEntry = $colony->getSystem()->getDatabaseEntry();
+        if ($databaseEntry !== null) {
+            $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($databaseEntry, $user);
+            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
+        }
 
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
 

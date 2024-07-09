@@ -7,14 +7,14 @@ namespace Stu\Module\Tal;
 use Override;
 use Stu\StuTestCase;
 
-class TalComponentFactoryTest extends StuTestCase
+class StatusBarFactoryTest extends StuTestCase
 {
-    private TalComponentFactory $subject;
+    private StatusBarFactory $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->subject = new TalComponentFactory();
+        $this->subject = new StatusBarFactory();
     }
 
     public function testCreateStatusBarReturnsInstance(): void

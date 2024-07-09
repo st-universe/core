@@ -16,6 +16,7 @@ interface DatabaseCategoryWrapperInterface
 
     public function displayDefaultList(): bool;
 
+    /** @return array<int, DatabaseCategoryEntryWrapperInterface> */
     public function getEntries(): array;
 
     public function getId(): int;

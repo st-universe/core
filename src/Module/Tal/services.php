@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-use Stu\Module\Tal\TalComponentFactory;
-use Stu\Module\Tal\TalComponentFactoryInterface;
+use Stu\Module\Tal\StatusBarFactory;
+use Stu\Module\Tal\StatusBarFactoryInterface;
 
 use function DI\autowire;
 
 return [
-    TalComponentFactoryInterface::class => autowire(TalComponentFactory::class),
+    StatusBarFactoryInterface::class => autowire(StatusBarFactory::class),
 ];
