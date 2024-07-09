@@ -10,9 +10,6 @@
     onmouseout="cp('${handle}','buttons/info1', 'png');"><img src="/assets/buttons/info1.png"
       tal:attributes="name handle" title="Siedlerprofil ansehen" /></a>
 </tal:block>
-<tal:block metal:define-macro="ignoretext">
-  <span style="color: #c37700;">Sieder wird ignoriert</span>
-</tal:block>
 <metal:block metal:define-macro="userinfo">
   <span tal:replace="structure bbcode:user/getName">USER</span> (<span tal:replace="user/getId">ID</span>)
   <img src="/assets/buttons/rpg${user/getRpgBehavior/value}.png" title="${user/getRpgBehavior/getDescription}" />
