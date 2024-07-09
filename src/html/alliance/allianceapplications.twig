@@ -1,0 +1,18 @@
+{% from 'html/macros.twig' import  userbox %}
+{% block body %}
+    <div style="width: 450px;" class="divhead">Folgende Siedler haben sich beworben</div>
+    {% if not APPLICATIONS %}
+        <div style="width: 450px;" class="divbody darkbg">Keine Bewerbungen vorhanden</div>
+    {% endif %}
+    <div style="width: 450px; clear: both;">
+        {% for appl in APPLICATIONS %}
+            <div style="float: left; width: 340px;">
+                {{ userbox(appl.getUser) }}
+            </div>
+            <div style="float: left; padding-left: 10px; text-align: center; width: 110px">
+                <a href="alliance.php?SHOW_APPLICATIONS=1&B_ACCEPT_APPLICATION=1&aid={{ appl.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Annehmen</a>
+                <a href="alliance.php?SHOW_APPLICATIONS=1&B_DECLINE_APPLICATION=1&aid={{ appl.getId }}&sstr={{ SESSIONSTRING }}" style="margin-top: 10px;" class="linkbutton">Ablehnen</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

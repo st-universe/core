@@ -63,8 +63,8 @@ class DiplomaticRelationsTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
-        $game->shouldReceive('setTemplateFile')
-            ->with('html/alliance_diplomatic_relations.xhtml')
+        $game->shouldReceive('setViewTemplate')
+            ->with('html/alliance/alliance_diplomatic_relations.twig')
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with(

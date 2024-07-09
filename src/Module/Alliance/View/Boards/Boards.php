@@ -42,7 +42,7 @@ final class Boards implements ViewControllerInterface
             'alliance.php?SHOW_BOARDS=1',
             _('Forum')
         );
-        $game->setTemplateFile('html/allianceboard.xhtml');
+        $game->setViewTemplate('html/alliance/allianceboard.twig');
 
         $game->setTemplateVar(
             'BOARDS',

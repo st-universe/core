@@ -1,0 +1,16 @@
+{% block body %}
+    <form method="post" action="alliance.php">
+        <input type="hidden" name="bid" value="{{ BOARD_ID }}" />
+        <input type="hidden" name="tid" value="{{ TOPIC.getId }}" />
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <div class="divhead">Thema</div>
+        <div class="divbody">{{ TOPIC.getName }}</div>
+        <br />
+        <div class="divhead">Text</div>
+        <div class="divbody">
+            <textarea name="ttext" style="width: 100%; height: 300px"></textarea>
+        </div>
+        <br />
+        <input type="submit" class="button" value="Beitrag erstellen" name="B_CREATE_POSTING" />
+    </form>
+{% endblock %}
