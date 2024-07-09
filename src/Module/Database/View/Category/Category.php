@@ -49,7 +49,7 @@ final class Category implements ViewControllerInterface
                 $category_description
             )
         );
-        $game->setTemplateFile('html/databasecategory.xhtml');
+        $game->setViewTemplate('html/database/databasecategory.twig');
         $game->setTemplateVar(
             'CATEGORY',
             $this->databaseCategoryTalFactory->createDatabaseCategoryTal($category, $game->getUser())

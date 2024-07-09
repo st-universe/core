@@ -32,7 +32,7 @@ final class ShowColonyList implements ViewControllerInterface
                 $state
             ));
         }
-        $game->setTemplateFile("html/maindesk_colonylist.xhtml");
+        $game->setViewTemplate("html/maindesk/colonylist.twig");
         $game->setPageTitle("Kolonie gründen");
         $game->appendNavigationPart(
             sprintf(

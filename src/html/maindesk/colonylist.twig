@@ -1,0 +1,70 @@
+{% block body %}
+    <div style="display: grid; grid-template-columns: 1fr 300px; grid-column-gap: 5px;">
+        <div>
+            <table class="tcal">
+                <tr>
+                    <th>Planet für die Erste Kolonie wählen</th>
+                </tr>
+                <tr>
+                    <td class="colonylist">
+                        {% for colony in FREE_PLANET_LIST %}
+                            <div onclick="goToUrl('maindesk.php?SHOW_COLONYLIST=1&B_FIRST_COLONY=1&id={{ colony.getId }}')"
+                                 class="row{{ loop.index0 is odd ? 'odd' : 'even' }} divbody"
+                                 style="cursor: pointer; display: block; float: left; width: 300px;">
+                                <div style="display: table-cell;">
+                                    <img src="assets/planets/{{ colony.getColonyClassId }}.png" />
+                                </div>
+                                <div style="vertical-align: middle; display: table-cell;">
+                                    <div style="font-size: 120%">{{ colony.getPlanetName }}</div>
+                                    <div>
+                                        <img src="assets/map/systemtypes/{{ colony.getSystem.getSystemType.getId }}.png"
+                                             style="width: 15px; height: 15px;" />
+                                        {{ colony.getSystem.getName }}-<span>System</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <div class="box">
+                <div class="box_title">Planetentypen</div>
+                <div class="box_body">
+                    <div>Für einen erfolgreichen Spielstart ist es wichtig, den grundlegenden Unterschied der Planetentypen zu kennen.</div>
+                    <div>Grundsätzlich sind alle Planeten in dieser Liste für den Spielstart geeignet und befinden sich im Kerngebiet der gewählten Fraktion.</div>
+                    <div style="padding-top: 20px;">
+                        <div style="display: table-cell;">
+                            <img src="assets/planets/201.png" />
+                        </div>
+                        <div style="vertical-align: middle; display: table-cell;">
+                            <div style="font-size: 120%">M-Klasse</div>
+                            <div>Ausgewogene Mischung aus Ebenen, Wüsten, Wasserflächen und Wäldern</div>
+                        </div>
+                    </div>
+                    <div style="padding-top: 20px;">
+                        <div style="display: table-cell;">
+                            <img src="assets/planets/203.png" />
+                        </div>
+                        <div style="vertical-align: middle; display: table-cell;">
+                            <div style="font-size: 120%">L-Klasse</div>
+                            <div>Stark bewaldet mit vielen Ebenen und Sümpfen.</div>
+                        </div>
+                    </div>
+                    <div style="padding-top: 20px;">
+                        <div style="display: table-cell;">
+                            <img src="assets/planets/205.png" />
+                        </div>
+                        <div style="vertical-align: middle; display: table-cell;">
+                            <div style="font-size: 120%">O-Klasse</div>
+                            <div>Wasserreich, wenig Berge und keine Wüsten</div>
+                        </div>
+                    </div>
+                    <br />
+                    <p>Weitere Informationen zu den Planetentypen findest Du in unserem <a href="https://wiki.stuniverse.de/index.php?title=Planeten" target="_blank">Wiki</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

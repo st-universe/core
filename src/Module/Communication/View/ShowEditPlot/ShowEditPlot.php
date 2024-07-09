@@ -28,7 +28,7 @@ final class ShowEditPlot implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setTemplateFile('html/editplot.xhtml');
+        $game->setViewTemplate('html/communication/plot/editPlot.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart(
             sprintf('comm.php?%s=1&plotid=%d', static::VIEW_IDENTIFIER, $plot->getId()),

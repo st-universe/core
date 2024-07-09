@@ -1,0 +1,48 @@
+
+{% block body %}
+    <script src="{{ javascriptPath }}/js/comm.js"></script>
+    {% if POST %}
+        <form action="comm.php" method="POST">
+            <input type="hidden" name="EDIT_KN" value="1" />
+            <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+            <input type="hidden" name="knid" value="{{ POST.getId }}" />
+            <table class="tcal">
+                <tr>
+                    <td>
+                        <div id="writekntitle" class="selected" style="float: left; width: 100px; padding: 5px;">Titel</div>
+                        <div id="writekntitleinput" style="clear: both; margin: 5px;">
+                            <input type="text" name="title" style="width: 100%;" value="{{ POST.getTitle|raw }}" />
+                        </div>
+                        {% if POST.getPlotId %}
+                            <div id="writeknplot" class="selected" style="float: left; width: 100px; padding: 5px;">Plot</div>
+                            <br style="clear: both;" />
+                            <div id="writeknplotselect" style="margin: 5px;">
+                                <select name="plotid" style="width: 500px;">
+                                    <option value="0">------------------------------</option>
+                                    {% for plot in activeRpgPlots %}
+                                        <option value="{{ plot.getId }}" {% if POST.getPlotId == plot.getId %}selected{% endif %}>
+                                            {{ plot.getTitle|raw }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Text</th>
+                </tr>
+                <tr>
+                    <td><textarea name="text" style="width: 100%; height: 300px;">{{ POST.getText|raw }}</textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Character IDs (mit Komma getrennt): </span>
+                        <input type="text" name="characterids" placeholder="Character ID's" style="width: 150px;" value="{{ characterIdsString }}" />
+                        <input type="submit" name="B_EDIT_KN" value="Editieren" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    {% endif %}
+{% endblock %}
