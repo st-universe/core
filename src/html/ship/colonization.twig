@@ -6,7 +6,7 @@
                 {% if not field.isColonizeAble %}
                 <img src="assets/generated/fields/{{ field.getDayNightPrefix }}{{ field.getFieldType }}.png" title="{{ field|planetFieldTitle }}" style="width: 40px; height: 40px;" />
                 {% else %}
-                <a href="?id={{ SHIP.getId }}&B_COLONIZE=1&colid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ sstr }}">
+                <a href="?id={{ SHIP.getId }}&B_COLONIZE=1&colid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ SESSIONSTRING }}">
                     <img src="assets/generated/fields/{{ field.getDayNightPrefix }}{{ field.getFieldType }}.png" title="{{ field|planetFieldTitle }}" style="width: 40px; height: 40px;" />
                 </a>
                 {% endif %}
