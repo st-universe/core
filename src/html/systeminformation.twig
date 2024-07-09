@@ -1,3 +1,10 @@
+{% if EXECUTEJSBEFORERENDER %}
+    <script>
+        {% for item in EXECUTEJSBEFORERENDER %}
+            {{ item|raw }}
+        {% endfor %}
+    </script>
+{% endif %}
 <div id="result">
     <table class="use">
         <tr>

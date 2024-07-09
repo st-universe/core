@@ -620,7 +620,7 @@ final class GameController implements GameControllerInterface
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
             if (request::isAjaxRequest()) {
-                $this->setMacroInAjaxWindow('html/sitemacros.xhtml/systeminformation');
+                $this->setMacroInAjaxWindow('html/systeminformation.twig');
             } else {
                 $this->setViewTemplate('html/ship/ship.twig');
             }

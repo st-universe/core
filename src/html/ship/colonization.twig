@@ -1,0 +1,26 @@
+<div style="{{ SURFACE.getSurfaceTileStyle }}">
+    {% for field in SURFACE.getSurface %}
+    <div class="{{ field.getCssClass }}" style="width: 40px; height: 40px;">
+        <div>
+            <div>
+                {% if not field.isColonizeAble %}
+                <img src="assets/generated/fields/{{ field.getDayNightPrefix }}{{ field.getFieldType }}.png" title="{{ field|planetFieldTitle }}" style="width: 40px; height: 40px;" />
+                {% else %}
+                <a href="?id={{ SHIP.getId }}&B_COLONIZE=1&colid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ sstr }}">
+                    <img src="assets/generated/fields/{{ field.getDayNightPrefix }}{{ field.getFieldType }}.png" title="{{ field|planetFieldTitle }}" style="width: 40px; height: 40px;" />
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if currentColony.getColonyClass.getColonizeableFields %}
+<br />
+<div class="divhead">Kolonisierbare Felder</div>
+<div class="divbody">
+    {% for field in currentColony.getColonyClass.getColonizeableFields %}
+    <img src="assets/generated/fields/t{{ field }}.png" />
+    {% endfor %}
+</div>
+{% endif %}
