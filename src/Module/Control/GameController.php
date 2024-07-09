@@ -196,11 +196,8 @@ final class GameController implements GameControllerInterface
     {
         $this->macro = $macro;
 
-        if (str_ends_with($macro, '.twig')) {
-            $this->setTemplateFile('html/ajaxwindow.twig');
-        } else {
-            $this->setTemplateFile('html/ajaxwindow.xhtml');
-        }
+
+        $this->setTemplateFile('html/ajaxwindow.twig');
     }
 
     #[Override]
@@ -210,11 +207,7 @@ final class GameController implements GameControllerInterface
 
         $this->macro = $macro;
 
-        if (str_ends_with($macro, '.twig')) {
-            $this->setTemplateFile('html/ajaxempty.twig');
-        } else {
-            $this->setTemplateFile('html/ajaxempty.xhtml');
-        }
+        $this->setTemplateFile('html/ajaxempty.twig');
     }
 
     #[Override]
