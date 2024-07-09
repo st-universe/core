@@ -56,7 +56,7 @@
                 <div style="float: left; width: 250px; position: relative;">
                     <div class="sidebar_box_header">Spielstatus</div>
                     <div class="sidebar_box_content">
-                        <div id="gamestate_{{ THIS.getGameState }}">{{ THIS.getGameStateTextual }}</div>
+                        <div id="gamestate_{{ GAME_STATS.gameState }}">{{ GAME_STATS.gameStateTextual }}</div>
                     </div>
                     <br />
                     {% if THIS.hasUser %}
@@ -107,9 +107,9 @@
                     <br />
                     <div class="sidebar_box_header">Statistiken</div>
                     <div class="sidebar_box_content">
-                        Spieler: {{ THIS.getGameStats.player }}<br />
-                        Online: {{ THIS.getGameStats.playeronline }}<br />
-                        Runde: {{ THIS.getCurrentRound.getTurn }}<br />
+                        Spieler: {{ GAME_STATS.player }}<br />
+                        Online: {{ GAME_STATS.playeronline }}<br />
+                        Runde: {{ GAME_STATS.currentTurn }}<br />
                     </div>
                     <br />
                     <div class="sidebar_box_header">Links</div>

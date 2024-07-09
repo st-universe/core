@@ -56,6 +56,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('ISNPC', $game->isNpc());
         $twigPage->setVar('ISADMIN', $game->isAdmin());
         $twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
+        $twigPage->setVar('GAME_STATS', $game->getGameStats());
 
         if ($game->hasUser()) {
             $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);

@@ -798,9 +798,11 @@ final class GameController implements GameControllerInterface
     {
         if ($this->gameStats === null) {
             $this->gameStats = [
-                'turn' => $this->getCurrentRound(),
+                'currentTurn' => $this->getCurrentRound()->getTurn(),
                 'player' => $this->userRepository->getActiveAmount(),
                 'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
+                'gameState' => $this->getGameState(),
+                'gameStateTextual' => $this->getGameStateTextual()
             ];
         }
         return $this->gameStats;
