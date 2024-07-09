@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\View\Category\Tal;
+namespace Stu\Module\Database\View\Category\Wrapper;
 
 use Override;
 use Stu\Orm\Entity\DatabaseCategoryInterface;

@@ -20,7 +20,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryWrapperFactoryInterface;
+use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;

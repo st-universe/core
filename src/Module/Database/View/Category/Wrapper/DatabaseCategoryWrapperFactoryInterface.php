@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Database\View\Category\Tal;
+namespace Stu\Module\Database\View\Category\Wrapper;
 
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;

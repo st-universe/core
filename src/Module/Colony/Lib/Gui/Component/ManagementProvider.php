@@ -10,7 +10,7 @@ use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryWrapperFactoryInterface;
+use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;

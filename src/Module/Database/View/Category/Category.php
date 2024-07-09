@@ -7,7 +7,7 @@ namespace Stu\Module\Database\View\Category;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryWrapperFactoryInterface;
+use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
