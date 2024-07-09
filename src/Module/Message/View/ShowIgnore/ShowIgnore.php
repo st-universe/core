@@ -15,6 +15,6 @@ final class ShowIgnore implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->showMacro('html/macros.xhtml/ignoretext');
+        $game->showMacro('html/communication/ignoretext.twig');
     }
 }

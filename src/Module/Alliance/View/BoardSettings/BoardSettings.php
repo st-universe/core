@@ -32,7 +32,7 @@ final class BoardSettings implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Forum bearbeiten'));
-        $game->setMacroInAjaxWindow('html/alliancemacros.xhtml/board_settings');
+        $game->setMacroInAjaxWindow('html/alliance/allianceboardsettings.twig');
         $game->setTemplateVar('BOARD', $board);
     }
 }
