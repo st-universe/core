@@ -959,22 +959,12 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getGameStats\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameStats type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -1010,11 +1000,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getGameConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getGameStats\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 

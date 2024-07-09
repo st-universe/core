@@ -121,6 +121,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function triggerEvent(object $event): void;
 
+    /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
     public function getGameStats(): array;
 
     public function getGameStateTextual(): string;

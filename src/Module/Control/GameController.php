@@ -86,6 +86,7 @@ final class GameController implements GameControllerInterface
     /** @var array<int, mixed> $viewContext */
     private array $viewContext = [];
 
+    /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
     private ?array $gameStats = null;
 
     private string $loginError = '';

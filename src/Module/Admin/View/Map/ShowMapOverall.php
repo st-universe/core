@@ -59,9 +59,9 @@ final class ShowMapOverall implements ViewControllerInterface
                 $green = $arr[1];
                 $blue = $arr[2];
                 if (
-                    !$red || $red < 1 || $red > 255
-                    || !$green || $green < 1 || $green > 255
-                    || !$blue || $blue < 1 || $blue > 255
+                    !$red || $red < 0 || $red > 255
+                    || !$green || $green < 0 || $green > 255
+                    || !$blue || $blue < 0 || $blue > 255
                 ) {
                     throw new RuntimeException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
                 }
