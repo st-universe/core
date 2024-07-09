@@ -194,3 +194,20 @@ updateSelectedShipId('{{ id }}');"
 href="javascript:void(0);"
 onClick = "switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '/colony.php');"
 {% endmacro %}
+
+{% macro commoditySelection(name, commodityId, amount) %}
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 20px;">
+        <img src="/assets/commodities/{{ commodityId }}.png"
+          onclick="this.closest('tr').querySelector('.commodityAmount').value={{ amount }}" style="cursor: pointer;" title="{{ name }}" />
+      </td>
+      <td style="width: 60px; vertical-align: middle;">
+        {{ amount }}
+      </td>
+      <td>
+        <input type="text" size="3" name="count[]" class="commodityAmount" />
+      </td>
+    </tr>
+  </table>
+{% endmacro %}

@@ -44,7 +44,7 @@ final class ShowBeamTo implements ViewControllerInterface
             return;
         }
 
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/show_ship_beamto');
+        $game->setMacroInAjaxWindow('html/colony/component/showShipBeamTo.twig');
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('COLONY', $colony);
     }

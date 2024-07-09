@@ -42,7 +42,7 @@ final class ShowBasicTrade implements ViewControllerInterface
             _('Basishandel')
         );
         $game->setPageTitle(_('/ Handel'));
-        $game->setTemplateFile('html/basictrades.xhtml');
+        $game->setViewTemplate('html/trade/basictrades.twig');
 
         $game->setTemplateVar('ACCOUNTS', $basicTradeAccounts);
     }
