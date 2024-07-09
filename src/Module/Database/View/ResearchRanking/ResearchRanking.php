@@ -34,7 +34,7 @@ final class ResearchRanking implements ViewControllerInterface
             'Die 10 besten Forscher'
         );
         $game->setPageTitle('/ Datenbank / Die 10 besten Forscher');
-        $game->showMacro('html/database.xhtml/top_research_user');
+        $game->setViewTemplate('html/database/highscores/topResearch.twig');
 
         $userPoints = 0;
         $list = $this->researchedRepository->getResearchedPoints();

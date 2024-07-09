@@ -1,91 +1,4 @@
 <html xmlns:stu="stu">
-<metal:macro metal:define-macro="top_discover_user">
-	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-		<tal:block metal:fill-slot="body">
-			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div class="statisticsToplist">
-				<div phptal:cache="1h">
-					<ul class="statistics">
-						<li tal:repeat="entry DISCOVERER_LIST">
-							<div class="userGrid">
-								<div class="placement">
-									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
-								</div>
-								<div class="userprofile">
-									<metal:macro metal:use-macro="macros.xhtml/useravatar"
-										tal:define="USER entry/getUser" />
-								</div>
-								<div class="userName" tal:content="structure bbcode:entry/getUser/getName">USER</div>
-								<div tal:attributes="title datetime:entry/getTime">
-									Punkte: <span tal:content="entry/getPoints">AMOUNT</span>
-								</div>
-								<div>
-									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow"
-										tal:define="id entry/getUser/getId" />
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div>
-					<h1>Entdecker</h1>
-					<p>In dieser Liste werden die 10 Spieler mit den meisten Entdeckungen im Spiel aufgeführt.</p>
-					<p>Zu Entdeckungen zählen Sternensysteme, Schiffs-Typen, Handelsposten uvm., die unter anderem durch
-						das Scannen bestimmer Objekte erlangt
-						und danach im <a href="/database.php">Datenbank-Bereich</a> eingesehen werden können.</p>
-					<br />
-					<p>Dein eigener Punktestand: <span tal:replace="USER_COUNT">POINTS</span></p>
-					<br />
-					<p>Diese Liste wird jede Stunde aktualisiert.</p>
-				</div>
-			</div>
-		</tal:block>
-	</tal:block>
-</metal:macro>
-<metal:macro metal:define-macro="top_research_user">
-	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-		<tal:block metal:fill-slot="body">
-			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div class="statisticsToplist">
-				<div phptal:cache="1h">
-					<ul class="statistics">
-						<li tal:repeat="entry RESEARCH_LIST">
-							<div class="userGrid">
-								<div class="placement">
-									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
-								</div>
-								<div class="userprofile">
-									<metal:macro metal:use-macro="macros.xhtml/useravatar"
-										tal:define="USER entry/getUser" />
-								</div>
-								<div class="userName" tal:content="structure bbcode:entry/getUser/getName">USER</div>
-								<div tal:attributes="title datetime:entry/getTime">
-									Punkte: <span tal:content="entry/getPoints">AMOUNT</span>
-								</div>
-								<div>
-									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow"
-										tal:define="id entry/getUser/getId" />
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div>
-					<h1>Entdecker</h1>
-					<p>In dieser Liste werden die 10 Spieler mit dem höchsten Forschungsstand im Spiel aufgeführt.</p>
-					<p>Forschungspunkte (Level 1) bringen einen Punkt.</p>
-					<p>Forschungspunkte (Level 2) bringen zwei Punkte.</p>
-					<p>Forschungspunkte (Level 3) bringen drei Punkte.</p>
-					<p>Alle fortgeschrittenen Forschungspunkte bringen vier Punkte.</p>
-					<br />
-					<p>Dein eigener Punktestand: ${USER_POINTS}</p>
-					<br />
-					<p>Diese Liste wird jede Stunde aktualisiert.</p>
-				</div>
-			</div>
-		</tal:block>
-	</tal:block>
-</metal:macro>
 <metal:macro metal:define-macro="top_rpg_user">
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
@@ -127,47 +40,54 @@
 	</tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="top_pirate_wrath_user">
-    <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-        <tal:block metal:fill-slot="body">
-            <tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-            <div class="statisticsToplist">
-                <div phptal:cache="1h">
-                    <ul class="statistics">
-                        <li tal:repeat="entry PIRATE_WRATH_LIST">
-                            <div class="userGrid">
-                                <div class="placement">
-                                    <span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
-                                </div>
-                                <div class="userprofile">
-                                    <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER entry/user" />
-                                </div>
-                                <div class="userName" tal:content="structure bbcode:entry/user/getName">USER</div>
-                                <div tal:condition="entry/entry/getGradientColor">
-                                    <div style="width: 20px; height: 20px; background-color: ${entry/entry/getGradientColor}; border: 1px solid black;"></div>
-                                </div>
-                                <div>
-                                    <tal:macro metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id entry/user/getId" />
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h1>Feinde der Kazon</h1>
-                    <p>In dieser Liste werden die 10 Spieler mit den höchsten Kazon-Modifikatoren geführt. Der Modfikator steigt, wenn ein Spieler ein Schiff der Kazon zerstört.
-						Zerstören die Kazon jedoch ein Schiff des Siedlers, so sinkt er wieder ab. Außerdem sinkt der Modifikator um 2% jede Nacht.
-						Der Modifikator hat Auswirkung auf die Kampfstärke der Kazon Piraten sowie über die Länge des Nicht Angriffspaktes den man beim großen Nagus erhandeln kann.
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<div class="statisticsToplist">
+				<div phptal:cache="1h">
+					<ul class="statistics">
+						<li tal:repeat="entry PIRATE_WRATH_LIST">
+							<div class="userGrid">
+								<div class="placement">
+									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+								</div>
+								<div class="userprofile">
+									<metal:macro metal:use-macro="macros.xhtml/useravatar"
+										tal:define="USER entry/user" />
+								</div>
+								<div class="userName" tal:content="structure bbcode:entry/user/getName">USER</div>
+								<div tal:condition="entry/entry/getGradientColor">
+									<div
+										style="width: 20px; height: 20px; background-color: ${entry/entry/getGradientColor}; border: 1px solid black;">
+									</div>
+								</div>
+								<div>
+									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow"
+										tal:define="id entry/user/getId" />
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h1>Feinde der Kazon</h1>
+					<p>In dieser Liste werden die 10 Spieler mit den höchsten Kazon-Modifikatoren geführt. Der
+						Modfikator steigt, wenn ein Spieler ein Schiff der Kazon zerstört.
+						Zerstören die Kazon jedoch ein Schiff des Siedlers, so sinkt er wieder ab. Außerdem sinkt der
+						Modifikator um 2% jede Nacht.
+						Der Modifikator hat Auswirkung auf die Kampfstärke der Kazon Piraten sowie über die Länge des
+						Nicht Angriffspaktes den man beim großen Nagus erhandeln kann.
 					</p>
-                    <br />
-                    <p>Dein eigener Modifikator: <span tal:replace="USER_WRATH">POINTS</span>%</p>
+					<br />
+					<p>Dein eigener Modifikator: <span tal:replace="USER_WRATH">POINTS</span>%</p>
 					<p>Zerstörte Piratenschiffe: <span tal:replace="DESTROYED_PIRATES">PIRATES</span></p>
 					<p>Durch die Piraten zerstörte Schiffe: <span tal:replace="DESTROYED_BY_PIRATES">OWNSHIPS</span></p>
-                    <br />
-                    <p>Diese Liste wird jede Stunde aktualisiert.</p>
-                </div>
-            </div>
-        </tal:block>
-    </tal:block>
+					<br />
+					<p>Diese Liste wird jede Stunde aktualisiert.</p>
+				</div>
+			</div>
+		</tal:block>
+	</tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="top_flights_user">
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">

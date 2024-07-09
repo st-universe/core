@@ -1,0 +1,38 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
+
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in DISCOVERER_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        {{ userAvatar(entry.getUser) }}
+                    </div>
+                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div title="{{ entry.getTime|stuDateTime }}">
+                        Punkte: {{ entry.getPoints }}
+                    </div>
+                    <div>
+                        {{ pmWindow(USER, entry.getUser.getId) }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Entdecker</h1>
+        <p>In dieser Liste werden die 10 Spieler mit den meisten Entdeckungen im Spiel aufgeführt.</p>
+        <p>Zu Entdeckungen zählen Sternensysteme, Schiffs-Typen, Handelsposten uvm., die unter anderem durch
+            das Scannen bestimmer Objekte erlangt
+            und danach im <a href="/database.php">Datenbank-Bereich</a> eingesehen werden können.</p>
+        <br />
+        <p>Dein eigener Punktestand: {{ USER_COUNT }}</p>
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>
