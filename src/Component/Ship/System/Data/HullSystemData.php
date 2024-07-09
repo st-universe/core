@@ -24,7 +24,7 @@ class HullSystemData extends AbstractSystemData
 
     public function getHullStatusBar(): string
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Hülle'),
             $this->ship->getHull(),
             $this->ship->getMaxHull(),
@@ -35,7 +35,7 @@ class HullSystemData extends AbstractSystemData
 
     public function getHullStatusBarBig(): string
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Hülle'),
             $this->ship->getHull(),
             $this->ship->getMaxHull(),

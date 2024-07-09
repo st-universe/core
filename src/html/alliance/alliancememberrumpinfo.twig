@@ -1,67 +1,73 @@
-    {% if not ERROR %}
-        <table class="tcal">
-            {% for wrapper in WRAPPERS %}
-                {% set ship = wrapper.get %}
-                <tr>
-                    <td>
-                        <span>{{ ship.getSectorString }}</span>
-                    </td>
-                    <td style="background-color: #000000 ! important">
-                        <div style="width: 100%">
-                            <div style="width: 33%; float: left;">
-                                <table class="tcal">
-                                    <tr>
-                                        <th style="width: 20px; text-align: center;">
-                                            <img src="assets/buttons/modul_1.png" />
-                                        </th>
-                                        <td style="vertical-align: middle; text-align: center;">
-                                            {{ wrapper.getHullSystemData.getHullStatusBarBig }}
-                                        </td>
-                                        <td style="text-align: center; width: 60px;">
-                                            {{ ship.getHull }}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            {% set shields = wrapper.getShieldSystemData %}
-                            {% if shields %}
-                                <div style="width: 33%; float: left;">
-                                    <table class="tcal">
-                                        <tr>
-                                            <th style="width: 20px; text-align: center;">
-                                                <img src="assets/buttons/modul_2.png" />
-                                            </th>
-                                            <td style="text-align: center; vertical-align: middle;">
-                                                <span>{{ shields.getShieldStatusBarBig }}</span>
-                                            </td>
-                                            <td style="text-align: center; width: 60px;">
-                                                {{ ship.getShield }}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            {% endif %}
-                            {% set eps = wrapper.getEpsSystemData %}
-                            {% if eps %}
-                                <div style="width: 33%; float: left;">
-                                    <table class="tcal">
-                                        <tr>
-                                            <th style="text-align: center; width: 20px;">
-                                                <img src="assets/buttons/modul_8.png" />
-                                            </th>
-                                            <td style="vertical-align: middle; text-align: center;">
-                                                <span>{{ eps.getEpsStatusBarBig }}</span>
-                                            </td>
-                                            <td style="text-align: center; width: 60px;">
-                                                {{ eps.getEps }}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
+{% if not ERROR %}
+<table class="tcal">
+    {% for wrapper in WRAPPERS %}
+    {% set ship = wrapper.get %}
+    <tr>
+        <td>
+            <span>{{ ship.getSectorString }}</span>
+        </td>
+        <td style="background-color: #000000 ! important">
+            <div style="width: 100%">
+                <div style="width: 33%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th style="width: 20px; text-align: center;">
+                                <img src="assets/buttons/modul_1.png" />
+                            </th>
+                            <td style="vertical-align: middle; text-align: center;">
+                                {% autoescape false %}
+                                {{ wrapper.getHullSystemData.getHullStatusBarBig }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ ship.getHull }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% set shields = wrapper.getShieldSystemData %}
+                {% if shields %}
+                <div style="width: 33%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th style="width: 20px; text-align: center;">
+                                <img src="assets/buttons/modul_2.png" />
+                            </th>
+                            <td style="text-align: center; vertical-align: middle;">
+                                {% autoescape false %}
+                                {{ shields.getShieldStatusBarBig }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ ship.getShield }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+                {% set eps = wrapper.getEpsSystemData %}
+                {% if eps %}
+                <div style="width: 33%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th style="text-align: center; width: 20px;">
+                                <img src="assets/buttons/modul_8.png" />
+                            </th>
+                            <td style="vertical-align: middle; text-align: center;">
+                                {% autoescape false %}
+                                {{ eps.getEpsStatusBarBig }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ eps.getEps }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}

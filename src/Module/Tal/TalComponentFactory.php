@@ -12,8 +12,8 @@ use Override;
 final class TalComponentFactory implements TalComponentFactoryInterface
 {
     #[Override]
-    public function createTalStatusBar(): TalStatusBarInterface
+    public function createStatusBar(): StatusBarInterface
     {
-        return new TalStatusBar();
+        return new StatusBar();
     }
 }

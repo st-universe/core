@@ -17,11 +17,11 @@ class TalComponentFactoryTest extends StuTestCase
         $this->subject = new TalComponentFactory();
     }
 
-    public function testCreateTalStatusBarReturnsInstance(): void
+    public function testCreateStatusBarReturnsInstance(): void
     {
         static::assertInstanceOf(
-            TalStatusBar::class,
-            $this->subject->createTalStatusBar()
+            StatusBar::class,
+            $this->subject->createStatusBar()
         );
     }
 }

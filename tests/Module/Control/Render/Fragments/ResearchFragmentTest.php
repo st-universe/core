@@ -10,7 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalComponentFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
-use Stu\Module\Tal\TalStatusBarInterface;
+use Stu\Module\Tal\StatusBarInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -74,7 +74,7 @@ class ResearchFragmentTest extends StuTestCase
         $talPage = $this->mock(TalPageInterface::class);
         $currentResearch = $this->mock(ResearchedInterface::class);
         $waitingResearch = $this->mock(ResearchedInterface::class);
-        $talStatusBar = $this->mock(TalStatusBarInterface::class);
+        $statusBar = $this->mock(StatusBarInterface::class);
         $research = $this->mock(ResearchInterface::class);
 
         $points = 666;
@@ -110,28 +110,28 @@ class ResearchFragmentTest extends StuTestCase
             ->once()
             ->andReturn($alreadyResearchedPoints);
 
-        $this->talComponentFactory->shouldReceive('createTalStatusBar')
+        $this->talComponentFactory->shouldReceive('createStatusBar')
             ->withNoArgs()
             ->once()
-            ->andReturn($talStatusBar);
+            ->andReturn($statusBar);
 
-        $talStatusBar->shouldReceive('setColor')
+        $statusBar->shouldReceive('setColor')
             ->with(StatusBarColorEnum::STATUSBAR_BLUE)
             ->once()
             ->andReturnSelf();
-        $talStatusBar->shouldReceive('setLabel')
+        $statusBar->shouldReceive('setLabel')
             ->with('Forschung')
             ->once()
             ->andReturnSelf();
-        $talStatusBar->shouldReceive('setMaxValue')
+        $statusBar->shouldReceive('setMaxValue')
             ->with($points)
             ->once()
             ->andReturnSelf();
-        $talStatusBar->shouldReceive('setValue')
+        $statusBar->shouldReceive('setValue')
             ->with($points - $alreadyResearchedPoints)
             ->once()
             ->andReturnSelf();
-        $talStatusBar->shouldReceive('setSizeModifier')
+        $statusBar->shouldReceive('setSizeModifier')
             ->with(2)
             ->once()
             ->andReturnSelf();
@@ -140,7 +140,7 @@ class ResearchFragmentTest extends StuTestCase
             ->with('CURRENT_RESEARCH', $currentResearch)
             ->once();
         $talPage->shouldReceive('setVar')
-            ->with('CURRENT_RESEARCH_STATUS', $talStatusBar)
+            ->with('CURRENT_RESEARCH_STATUS', $statusBar)
             ->once();
         $talPage->shouldReceive('setVar')
             ->with('WAITING_RESEARCH', $waitingResearch)

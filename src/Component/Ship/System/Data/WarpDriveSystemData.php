@@ -107,7 +107,7 @@ class WarpDriveSystemData extends AbstractSystemData
 
     public function getWarpDriveStatusBar(): string
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Warpantrieb'),
             $this->getWarpDrive(),
             $this->getMaxWarpDrive(),
@@ -118,7 +118,7 @@ class WarpDriveSystemData extends AbstractSystemData
 
     public function getWarpDriveStatusBarBig(): string
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Warpantrieb'),
             $this->getWarpDrive(),
             $this->getMaxWarpDrive(),

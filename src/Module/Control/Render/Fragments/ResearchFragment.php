@@ -38,7 +38,7 @@ final class ResearchFragment implements RenderFragmentInterface
 
             $researchStatusBar = $this
                 ->talComponentFactory
-                ->createTalStatusBar()
+                ->createStatusBar()
                 ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
                 ->setLabel('Forschung')
                 ->setMaxValue($researchPoints)

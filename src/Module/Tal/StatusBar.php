@@ -6,7 +6,7 @@ namespace Stu\Module\Tal;
 
 use Override;
 
-final class TalStatusBar implements TalStatusBarInterface
+final class StatusBar implements StatusBarInterface
 {
     private string $color = '';
 
@@ -19,35 +19,35 @@ final class TalStatusBar implements TalStatusBarInterface
     private float $sizeModifier = 1;
 
     #[Override]
-    public function setColor(string $color): TalStatusBarInterface
+    public function setColor(string $color): StatusBarInterface
     {
         $this->color = $color;
         return $this;
     }
 
     #[Override]
-    public function setLabel(string $label): TalStatusBarInterface
+    public function setLabel(string $label): StatusBarInterface
     {
         $this->label = $label;
         return $this;
     }
 
     #[Override]
-    public function setMaxValue(int $maxValue): TalStatusBarInterface
+    public function setMaxValue(int $maxValue): StatusBarInterface
     {
         $this->maxValue = $maxValue;
         return $this;
     }
 
     #[Override]
-    public function setValue(int $value): TalStatusBarInterface
+    public function setValue(int $value): StatusBarInterface
     {
         $this->value = $value;
         return $this;
     }
 
     #[Override]
-    public function setSizeModifier(float $modifier): TalStatusBarInterface
+    public function setSizeModifier(float $modifier): StatusBarInterface
     {
         $this->sizeModifier = $modifier;
         return $this;

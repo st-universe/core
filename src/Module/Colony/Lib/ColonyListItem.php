@@ -9,7 +9,7 @@ use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalStatusBar;
+use Stu\Module\Tal\StatusBar;
 use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -192,7 +192,7 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getStorageStatusBar(): string
     {
-        return (new TalStatusBar())
+        return (new StatusBar())
             ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
             ->setLabel(_('Lager'))
             ->setMaxValue($this->colony->getMaxStorage())
@@ -203,7 +203,7 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getEpsStatusBar(): string
     {
-        return (new TalStatusBar())
+        return (new StatusBar())
             ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
             ->setLabel(_('Energie'))
             ->setMaxValue($this->colony->getMaxEps())

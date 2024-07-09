@@ -9,5 +9,5 @@ namespace Stu\Module\Tal;
  */
 interface TalComponentFactoryInterface
 {
-    public function createTalStatusBar(): TalStatusBarInterface;
+    public function createStatusBar(): StatusBarInterface;
 }

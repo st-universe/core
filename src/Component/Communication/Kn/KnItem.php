@@ -9,7 +9,7 @@ use JBBCode\Parser;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalStatusBar;
+use Stu\Module\Tal\StatusBar;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -172,7 +172,7 @@ final class KnItem implements KnItemInterface
             return '';
         }
 
-        return (new TalStatusBar())
+        return (new StatusBar())
             ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
             ->setLabel(_('Bewertung'))
             ->setMaxValue($ratingAmount)

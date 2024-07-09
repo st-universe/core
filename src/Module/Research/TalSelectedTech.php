@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalStatusBar;
+use Stu\Module\Tal\StatusBar;
 use Stu\Orm\Entity\ResearchDependencyInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
@@ -151,7 +151,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
             throw new RuntimeException('can not call when no researchState present');
         }
 
-        return (new TalStatusBar())
+        return (new StatusBar())
             ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
             ->setLabel(_('Forschung'))
             ->setMaxValue($this->research->getPoints())
