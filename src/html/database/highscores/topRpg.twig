@@ -1,0 +1,35 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
+
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in PRESTIGE_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        {{ userAvatar(entry.getUser) }}
+                    </div>
+                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div>
+                        Rating: {{ entry.getPoints }}
+                    </div>
+                    <div>
+                        {{ pmWindow(USER, entry.getUser.getId) }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>RPG-Schreiber</h1>
+        <p>In dieser Liste werden die 10 Spieler mit der besten RPG-Bewertung im Spiel aufgeführt.</p>
+        <br />
+        <p>Dein eigener Punktestand: {{ USER_COUNT }}</p>
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>

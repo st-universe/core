@@ -37,7 +37,7 @@ final class CommoditiesOverview implements ViewControllerInterface
         ]);
 
         $game->setPageTitle('/ Datenbank / Warenübersicht');
-        $game->showMacro('html/database.xhtml/commodities_overview');
+        $game->setViewTemplate('html/database/commoditiesOverview.twig');
         $game->setTemplateVar(
             'COMMODITIES_LIST',
             array_map(

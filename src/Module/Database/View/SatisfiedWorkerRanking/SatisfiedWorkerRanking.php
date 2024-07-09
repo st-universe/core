@@ -15,6 +15,8 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
+//TODO use 'composer require twig/cache-extra'
+// see https://twig.symfony.com/doc/3.x/tags/cache.html
 final class SatisfiedWorkerRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SATISFIED_WORKER';
@@ -44,24 +46,19 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
             ]
         ]);
         $game->setPageTitle('/ Datenbank / Die Top 10 besten Arbeitgeber');
-        $game->showMacro('html/database.xhtml/top_employer');
+        $game->setViewTemplate('html/database/highscores/topEmployers.twig');
 
         $game->setTemplateVar('USER_ID', $game->getUser()->getId());
 
         $game->setTemplateVar(
             'EMPLOYER_LIST',
-            $this->retrieveEmployerList()
+            array_map(
+                fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string)$data['satisfied']),
+                $this->colonyRepository->getSatisfiedWorkerTop10()
+            )
         );
 
         $this->setPointsForUser($game);
-    }
-
-    private function retrieveEmployerList(): callable
-    {
-        return fn (): array => array_map(
-            fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string)$data['satisfied']),
-            $this->colonyRepository->getSatisfiedWorkerTop10()
-        );
     }
 
     private function setPointsForUser(GameControllerInterface $game): void

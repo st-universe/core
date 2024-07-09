@@ -33,7 +33,7 @@ final class ColonyWorthRanking implements ViewControllerInterface
             ]
         ]);
         $game->setPageTitle('/ Datenbank / Die Top 10 der Architekten');
-        $game->showMacro('html/database.xhtml/top_architects');
+        $game->setViewTemplate('html/database/highscores/topArchitects.twig');
 
         $netWorthPerUserArray = $this->getNetWorthPerUser($game);
 

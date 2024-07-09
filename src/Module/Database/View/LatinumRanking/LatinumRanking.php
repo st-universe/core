@@ -37,7 +37,7 @@ final class LatinumRanking implements ViewControllerInterface
             ]
         ]);
         $game->setPageTitle('/ Datenbank / Die 10 Söhne des Nagus');
-        $game->showMacro('html/database.xhtml/top_lat_user');
+        $game->setViewTemplate('html/database/highscores/topLatinum.twig');
 
         $game->setTemplateVar('NAGUS_LIST', $this->getTop10());
     }

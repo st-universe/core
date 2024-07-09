@@ -72,8 +72,8 @@ class LatinumRankingTest extends StuTestCase
         $game->shouldReceive('setPageTitle')
             ->with('/ Datenbank / Die 10 Söhne des Nagus')
             ->once();
-        $game->shouldReceive('showMacro')
-            ->with('html/database.xhtml/top_lat_user')
+        $game->shouldReceive('setViewTemplate')
+            ->with('html/database/highscores/topLatinum.twig')
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with('NAGUS_LIST', Mockery::on(fn (Traversable $list): bool => iterator_to_array($list) === [[

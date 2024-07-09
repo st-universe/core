@@ -41,8 +41,9 @@ final class ShowPrestigeLog implements ViewControllerInterface
             _('Prestigehistorie')
         );
         $game->setPageTitle(_('/ Datenbank / Prestigehistorie'));
-        $game->showMacro('html/database.xhtml/prestige_log');
+        $game->setViewTemplate('html/database/prestigeLog.twig');
 
+        $game->setTemplateVar('USER_PRESTIGE', $game->getUser()->getPrestige());
         $game->setTemplateVar('COUNT', $count);
         $game->setTemplateVar('LOGS', $this->prestigeLogRepository->getPrestigeHistory($game->getUser(), $count));
     }

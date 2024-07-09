@@ -1,0 +1,39 @@
+<form method="post" action="database.php">
+    <div>
+        <div style="float:left; padding-right: 5px; width: 5vw;">
+            <div class="box">
+                <div class="box_title">Prestige</div>
+                <div class="box_body" style="vertical-align: middle; text-align: center;">
+                    {{ USER_PRESTIGE }}
+                </div>
+            </div>
+        </div>
+        <div class="box" style="float:left;">
+            <div class="box_title">Anzahl</div>
+            <div class="box_body">
+                <input type="text" size="3" name="count" value="{{ COUNT }}" />
+                <input type="submit" name="SHOW_PRESTIGELOG" class="button" value="Aktualisieren" />
+            </div>
+        </div>
+        <div style="float:left; width: 90vw; padding-top:5px;">
+            <table class="tcal">
+                <tr>
+                    <th>Eintrag</th>
+                    <th>Datum</th>
+                </tr>
+                {% if LOGS %}
+                {% for entry in LOGS %}
+                <tr>
+                    <td>{{ entry.getDescription|bbcode }}</td>
+                    <td>{{ entry.getDate|stuDateTime }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="2">Keine Einträge vorhanden</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</form>

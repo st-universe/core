@@ -1,0 +1,42 @@
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in FLIGHTS_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        <img src="assets/rassen/{{ entry.getFaction }}kn.png" />
+                    </div>
+                    <div class="userName">
+                        Unbekannt
+                    </div>
+                    <div>
+                        <img src="assets/buttons/menu_ships0.png" title="Anzahl Felder / Schiffe" />
+                        {{ entry.getSignatures }} / {{ entry.getShipCount }}
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Vielflieger</h1>
+        <p>In dieser Liste werden die 10 Spieler mit den meisten Flugbewegungen in den letzten 48 Stunden
+            aufgeführt.</p>
+        <p>Die erste Zahl steht für die insgesamt geflogenen Felder, die zweite Zahl für die Anzahl der
+            beteiligten Schiffe.</p>
+        <p>Da es sich dabei um sensible Informationen handelt, werden keine Spielernamen angezeigt. Zudem
+            zählen Flugbewegungen
+            getarnter Schiffe nicht hinzu.</p>
+        <br />
+        <p>Dein eigener Punktestand: {{ USER_POINTS }}</p>
+        <br />
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>
