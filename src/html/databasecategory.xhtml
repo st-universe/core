@@ -15,7 +15,8 @@
 			<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 				<tal:block tal:condition="data/wasDiscovered">
 					<td>
-						<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+						<a href="javascript:void(0);"
+							onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=${CATEGORY/getId}&ent=${data/getId}', 'database.php');"
 							tal:content="data/getDescription">NAME</a>
 					</td>
 					<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
@@ -38,7 +39,8 @@
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered" tal:define="system data/getObject">
 				<td>
-					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+					<a href="javascript:void(0);"
+						onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=${CATEGORY/getId}&ent=${data/getId}');"
 						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
@@ -66,7 +68,8 @@
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered">
 				<td>
-					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+					<a href="javascript:void(0);"
+						onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=${CATEGORY/getId}&ent=${data/getId}');"
 						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
@@ -96,7 +99,8 @@
 					<img src="assets/ships/${data/getObjectId}.png" />
 				</td>
 				<td>
-					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+					<a href="javascript:void(0);"
+						onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=${CATEGORY/getId}&ent=${data/getId}');"
 						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
@@ -126,7 +130,8 @@
 					<img src="assets/planets/${data/getObject/getId}.png" tal:condition="not:data/getObject/hasRing" />
 				</td>
 				<td>
-					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+					<a href="javascript:void(0);"
+						onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=${CATEGORY/getId}&ent=${data/getId}');"
 						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td><span tal:condition="data/getObject/isPlanet">Planet</span><span
@@ -156,7 +161,8 @@
 					<img src="assets/map/systemtypes/${data/getObjectId}.png" />
 				</td>
 				<td>
-					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+					<a href="javascript:void(0);"
+						onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=${CATEGORY/getId}&ent=${data/getId}');"
 						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>

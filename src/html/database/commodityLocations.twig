@@ -1,0 +1,109 @@
+{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+
+{% if COLONY_LOCATIONS %}
+<table class="use" style="width: 500px;">
+    <tr>
+        <th>Anzahl</th>
+        <th>auf Kolonie</th>
+    </tr>
+    {% for storageWrapper in COLONY_LOCATIONS %}
+    {% set colony = storageWrapper.getColony %}
+    {% set colonyClass = colony.getColonyClass %}
+    <tr>
+        <td>{{ storageWrapper.getAmount }}</td>
+        <td>
+            <a href="colony.php?SHOW_COLONY=1&id={{ colony.getId }}">
+                {% if colonyClass.hasRing %}
+                <div class="planet_ring" style="background-image: url(/assets/planets/{{ colonyClass.getId }}.png)">
+                    <img src="/assets/planets/{{ colonyClass.getId }}r.png" />
+                </div>
+                {% else %}
+                <img src="/assets/planets/{{ colonyClass.getId }}.png" />
+                {% endif %}
+                {{ colony.getName|bbcode }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% if SHIP_LOCATIONS %}
+<table class="use" style="width: 500px;">
+    <tr>
+        <th>Anzahl</th>
+        <th>auf Schiff</th>
+    </tr>
+    {% for storageWrapper in SHIP_LOCATIONS %}
+    {% set ship = storageWrapper.getShip %}
+    <tr>
+        <td>{{ storageWrapper.getAmount }}</td>
+        <td>
+            <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}">
+                {{ shipImageWithoutWarp(ship) }}
+                {{ ship.getName|bbcode }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% if TORPEDO_LOCATIONS %}
+<table class="use" style="width: 500px;">
+    <tr>
+        <th>Anzahl</th>
+        <th>geladene Torpedos</th>
+    </tr>
+    {% for storageWrapper in TORPEDO_LOCATIONS %}
+    {% set ship = storageWrapper.getShip %}
+    <tr>
+        <td>{{ storageWrapper.getAmount }}</td>
+        <td>
+            <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}">
+                {{ shipImageWithoutWarp(ship) }}
+                {{ ship.getName|bbcode }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% if POST_LOCATIONS or OFFER_LOCATIONS %}
+<table class="use" style="width: 500px;">
+    {% if POST_LOCATIONS %}
+    <tr>
+        <th>Anzahl</th>
+        <th>im Lager der Warenbörse</th>
+    </tr>
+    {% for storageWrapper in POST_LOCATIONS %}
+    {% set ship = storageWrapper.getTradepost.getShip %}
+    <tr>
+        <td>{{ storageWrapper.getAmount }}</td>
+        <td>
+            <a href="trade.php?SHOW_ACCOUNTS=1">
+                {{ shipImageWithoutWarp(ship) }}
+                {{ ship.getName|bbcode }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+    {% if OFFER_LOCATIONS %}
+    <tr>
+        <th>Anzahl</th>
+        <th>in Angeboten an der Warenbörse</th>
+    </tr>
+    {% for storageWrapper in OFFER_LOCATIONS %}
+    {% set ship = storageWrapper.getTradepost.getShip %}
+    <tr>
+        <td>{{ storageWrapper.getAmount }}</td>
+        <td>
+            <a href="trade.php?SHOW_ACCOUNTS=1">
+                {{ shipImageWithoutWarp(ship) }}
+                {{ ship.getName|bbcode }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>
+{% endif %}

@@ -1,0 +1,88 @@
+<div style="display: table-cell">
+    <table class="use">
+        <tr>
+            <th></th>
+            {% for x in DATA.xaxis %}
+            <th class="cen">{{ x }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in DATA.fields %}
+        <tr>
+            <th>{{ loop.index }}</th>
+            {% for field in row %}
+            <td class="lss">
+                <div class="imgOverlayText" style="height: 30px; width: 30px;">
+                    <span>
+                        {% autoescape false %}
+                        {{ field.rendered }}
+                        {% endautoescape %}
+                    </span>
+                    {% if field.showPm %}
+                    <a href="javascript:void(0);" onclick="openPmWindow({{ USER.getId }}, {{ field.colony.getId }},1,5)"
+                        title="Nachricht an {{ field.colony.getUser.getName|bbcode2txt }} verfassen"><img
+                            class="lssColoShield" src="assets/map/pm.png" style="z-index: 3;" /></a>
+                    {% endif %}
+                </div>
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div style="width: 200px; padding-left: 5px;display: table-cell; width: 150px; vertical-align:top;">
+    <div class="divhead" style="width: 200px;">{{ SYSTEM.getName }}</div>
+    <div class="divbody">
+        {% if not SYSTEM.isWormhole%}
+        <img src="assets/map/systemtypes/{{ SYSTEM.getSystemType.getId }}.png" /><br />
+        {% endif %}
+        <span>Typ</span>: {{ SYSTEM.getSystemType.getDescription }}<br />
+        {% if not SYSTEM.isWormhole%}
+        <span>Koordinaten</span>:
+        {{ SYSTEM.getCx }}|{{ SYSTEM.getCy }}<br />
+        {% endif %}
+    </div>
+</div>
+<div style="width: 600px; padding-left: 5px;display: table-cell; width: 300px; vertical-align:top;">
+    {% if COLONYSCANLIST %}
+    <table class="use" style="width: 600px;">
+        <tr>
+            <th></th>
+            <th>Koloniename</th>
+            <th>Besitzer</th>
+            <th>Koordinaten</th>
+            <th>Letzter Scan</th>
+            <th>Scanner</th>
+            <th></th>
+        </tr>
+        {% for csl in COLONYSCANLIST %}
+        {% set scanId = csl.getId %}
+        {% set colony = csl.getColony %}
+        <tr id="colonyScan_{{ scanId }}">
+            <td>
+                <a href="javascript:void(0);" onclick="showColonySurface({{ scanId }};">
+                    <img src="assets/planets/{{ colony.getColonyClassId }}.png" />
+                </a>
+            </td>
+            <td>{{ csl.getColonyName|bbcode }}</td>
+            <td>{{ csl.getColonyUserName|bbcode }}</td>
+            <td>{{ colony.getSx }}|{{ colony.getSy }}</td>
+            <td>{{ csl.getDate|stuDateTime }}</td>
+            <td>{{ csl.getUser.getName|bbcode }}</td>
+            <td>
+                {% if csl.isAbandoned %}
+                <span style="color: orange;">wurde verlassen</span><br />
+                {% endif %}
+                {% if csl.getUserId == USER.getId %}
+                <a href="javascript:void(0)" onclick="deleteColonyScan({{ scanId }});"
+                    onmouseover="cp('delColScan{{ scanId }}','buttons/x2')"
+                    onmouseout="cp('delColScan{{ scanId }}','buttons/x1')">
+                    <img src="assets/buttons/x1.png" name="delColScan{{ scanId }}" title="Scan Löschen" />
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>

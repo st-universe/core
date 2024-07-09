@@ -1,11 +1,4 @@
 <html xmlns:stu="stu">
-<metal:macro metal:define-macro="colonyimage_base">
-  <div tal:condition="colony/getColonyClass/hasRing" class="planet_ring"
-    style="background-image: url(/assets/planets/${colony/getColonyClass/getId}.png)">
-    <img src="/assets/planets/${colony/getColonyClass/getId}r.png" />
-  </div>
-  <img src="/assets/planets/${colony/getColonyClass/getId}.png" tal:condition="not:colony/getColonyClass/hasRing" />
-</metal:macro>
 <metal:macro metal:define-macro="hiddencolonyid" phptal:cache="1m per COLONY/getId">
   <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
 </metal:macro>

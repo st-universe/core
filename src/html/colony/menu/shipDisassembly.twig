@@ -1,7 +1,7 @@
 {% embed "html/colony/menu/container.twig" %}
 
 {% block containment %}
-{% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
 
 <input type="hidden" name="SHOW_SHIP_DISASSEMBLY" value="1" />
 
@@ -17,7 +17,7 @@
     <tr class="row">
         <td>
             <input type="hidden" name="ships[]" value="{{ ship.getId }}" />
-            {{ shipimagewithoutwarp(ship) }}
+            {{ shipImageWithoutWarp(ship) }}
         </td>
         <td class="break-word">{{ ship.getName|bbcode }}</td>
         <td>
