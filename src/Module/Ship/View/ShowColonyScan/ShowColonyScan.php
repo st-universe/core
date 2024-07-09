@@ -35,7 +35,6 @@ final class ShowColonyScan implements ViewControllerInterface
         $game->setTemplateVar('ERROR', true);
 
         $game->setPageTitle(_('Kolonie scannen'));
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/colonyscan');
 
         $userId = $game->getUser()->getId();
 
@@ -95,6 +94,7 @@ final class ShowColonyScan implements ViewControllerInterface
         $game->setTemplateVar('ERROR', false);
 
         $this->createColonyScan($game->getUser(), $colony);
+        $game->setMacroInAjaxWindow('html/ship/colonyscan.twig');
     }
 
     private function createColonyScan(UserInterface $user, ColonyInterface $colony): void
