@@ -24,8 +24,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function setTemplateFile(string $tpl): void;
 
-    public function setMacroAndTemplate(string $macro, string $tpl): void;
-
     public function setMacroInAjaxWindow(string $macro): void;
 
     public function showMacro(string $macro): void;

@@ -29,7 +29,6 @@ use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
-use Stu\Module\Control\Render\GameTalRendererInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
@@ -37,7 +36,6 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameRequestInterface;
@@ -61,8 +59,6 @@ final class GameController implements GameControllerInterface
     private const string GAME_VERSION_DEV = 'dev';
 
     private LoggerUtilInterface $loggerUtil;
-
-    private bool $isTwig = false;
 
     private InformationWrapper $gameInformations;
 
@@ -102,7 +98,6 @@ final class GameController implements GameControllerInterface
     public function __construct(
         private SessionInterface $session,
         private SessionStringRepositoryInterface $sessionStringRepository,
-        private TalPageInterface $talPage,
         private TwigPageInterface $twigPage,
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private StuConfigInterface $stuConfig,
@@ -113,7 +108,6 @@ final class GameController implements GameControllerInterface
         private Ubench $benchmark,
         private CreateDatabaseEntryInterface $createDatabaseEntry,
         private GameRequestRepositoryInterface $gameRequestRepository,
-        private GameTalRendererInterface $gameTalRenderer,
         private GameTwigRendererInterface $gameTwigRenderer,
         private UuidGeneratorInterface $uuidGenerator,
         private EventDispatcherInterface $eventDispatcher,
@@ -175,27 +169,13 @@ final class GameController implements GameControllerInterface
     {
         $this->loggerUtil->log(sprintf('setTemplateFile: %s', $template));
 
-        if (str_ends_with($template, '.twig')) {
-            $this->isTwig = true;
-            $this->twigPage->setTemplate($template);
-        } else {
-            $this->isTwig = false;
-            $this->talPage->setTemplate($template);
-        }
-    }
-
-    #[Override]
-    public function setMacroAndTemplate(string $macro, string $tpl): void
-    {
-        $this->macro = $macro;
-        $this->setTemplateFile($tpl);
+        $this->twigPage->setTemplate($template);
     }
 
     #[Override]
     public function setMacroInAjaxWindow(string $macro): void
     {
         $this->macro = $macro;
-
 
         $this->setTemplateFile('html/ajaxwindow.twig');
     }
@@ -289,7 +269,6 @@ final class GameController implements GameControllerInterface
     public function setTemplateVar(string $key, $variable): void
     {
         $this->twigPage->setVar($key, $variable);
-        $this->talPage->setVar($key, $variable);
     }
 
     #[Override]
@@ -628,10 +607,10 @@ final class GameController implements GameControllerInterface
             throw $e;
         }
 
-        $isTemplateSet = $this->isTwig ? $this->twigPage->isTemplateSet() : $this->talPage->isTemplateSet();
+        $isTemplateSet = $this->twigPage->isTemplateSet();
 
         if (!$isTemplateSet) {
-            $this->loggerUtil->init('tal', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init('template', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET'));
             $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
             $this->loggerUtil->init('stu');
@@ -644,7 +623,7 @@ final class GameController implements GameControllerInterface
         // RENDER!
         $startTime = hrtime(true);
 
-        $renderResult = $this->isTwig ? $this->gameTwigRenderer->render($this, $user, $this->twigPage) : $this->gameTalRenderer->render($this, $user, $this->talPage);
+        $renderResult = $this->gameTwigRenderer->render($this, $user, $this->twigPage);
 
         $renderMs = hrtime(true) - $startTime;
 

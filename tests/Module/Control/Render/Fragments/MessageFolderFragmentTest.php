@@ -10,7 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -41,7 +41,7 @@ class MessageFolderFragmentTest extends StuTestCase
     public function testRenderRendersFolderListWithoutStation(): void
     {
         $user = $this->mock(UserInterface::class);
-        $talPage = $this->mock(TalPageInterface::class);
+        $twigPage = $this->mock(TwigPageInterface::class);
         $folder = $this->mock(PrivateMessageFolderInterface::class);
         $folderItem = $this->mock(PrivateMessageFolderItem::class);
 
@@ -76,7 +76,7 @@ class MessageFolderFragmentTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        $talPage->shouldReceive('setVar')
+        $twigPage->shouldReceive('setVar')
             ->with(
                 'PM_NAVLET',
                 [
@@ -89,13 +89,13 @@ class MessageFolderFragmentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
+        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
     }
 
     public function testRenderRendersFolderListWithStation(): void
     {
         $user = $this->mock(UserInterface::class);
-        $talPage = $this->mock(TalPageInterface::class);
+        $twigPage = $this->mock(TwigPageInterface::class);
         $folder = $this->mock(PrivateMessageFolderInterface::class);
         $folderItem = $this->mock(PrivateMessageFolderItem::class);
 
@@ -131,7 +131,7 @@ class MessageFolderFragmentTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $talPage->shouldReceive('setVar')
+        $twigPage->shouldReceive('setVar')
             ->with(
                 'PM_NAVLET',
                 [
@@ -145,6 +145,6 @@ class MessageFolderFragmentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
+        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
     }
 }

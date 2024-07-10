@@ -1729,16 +1729,6 @@ parameters:
 			path: src/Module/Station/View/ShowSystemSensorScan/ShowSystemSensorScan.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Tal\\\\TalPage\\:\\:setVar\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Tal/TalPage.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tal\\\\TalPageInterface\\:\\:setVar\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Tal/TalPageInterface.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Tick/Process/FinishBuildJobs.php
