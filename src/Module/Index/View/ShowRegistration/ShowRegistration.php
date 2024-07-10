@@ -28,7 +28,7 @@ final class ShowRegistration implements ViewControllerInterface
     {
         $game->setPageTitle('Registrierung - Star Trek Universe');
 
-        $game->setTemplateFile('html/registration.xhtml');
+        $game->setTemplateFile('html/index/registration.twig');
         $game->setTemplateVar('REGISTRATION_POSSIBLE', $this->config->get('game.registration.enabled'));
         $game->setTemplateVar('IS_SMS_REGISTRATION', $this->config->get('game.registration.sms_code_verification.enabled'));
         $game->setTemplateVar('TOKEN', $this->showRegistrationRequest->getToken());

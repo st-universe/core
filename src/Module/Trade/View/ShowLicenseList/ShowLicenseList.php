@@ -22,7 +22,7 @@ final class ShowLicenseList implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicenselist');
+        $game->setMacroInAjaxWindow('html/trade/license/list.twig');
         $game->setPageTitle(_('Liste ausgestellter Handelslizenzen'));
 
         $tradepost = $this->tradePostRepository->find($this->showLicenseListRequest->getTradePostId());

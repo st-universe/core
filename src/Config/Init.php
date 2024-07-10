@@ -7,7 +7,6 @@ namespace Stu\Config;
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Tal\TalHelper;
 use Stu\Module\Twig\TwigHelper;
 
 /**
@@ -71,7 +70,7 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Module/Ship/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Starmap/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Station/services.php');
-        $builder->addDefinitions(__DIR__ . '/../Module/Tal/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Module/Template/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Tick/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Trade/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Twig/services.php');
@@ -85,9 +84,6 @@ final class Init
         $container->get(ErrorHandler::class)->register($registerErrorHandlers);
 
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->getGameSettings()->getWebroot());
-
-        // PHPTAL
-        TalHelper::register($container);
 
         // TWIG
         $twigHelper = $container->get(TwigHelper::class);

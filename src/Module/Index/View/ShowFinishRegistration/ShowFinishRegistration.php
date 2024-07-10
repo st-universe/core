@@ -16,6 +16,6 @@ final class ShowFinishRegistration implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Registrierung abgeschlossen - Star Trek Universe'));
-        $game->setTemplateFile('html/registration_end.xhtml');
+        $game->setTemplateFile('html/index/registrationEnd.twig');
     }
 }

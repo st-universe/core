@@ -33,7 +33,7 @@ final class CrewRanking implements ViewControllerInterface
             ]
         ]);
         $game->setPageTitle('/ Datenbank / Die Top 10 der Ausbilder');
-        $game->showMacro('html/database.xhtml/top_crew_user');
+        $game->setViewTemplate('html/database/highscores/topCrew.twig');
 
         $game->setTemplateVar(
             'CREWS_LIST',

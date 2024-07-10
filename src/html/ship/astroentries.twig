@@ -1,0 +1,9 @@
+<div id="astroentries">
+    <div style="display: grid; grid-template-columns: {{ GRID_COLUMNS }}; color: #dddddd;">
+        {% for field in FIELDS %}
+        <div style="margin: 1px;" class="cfu">
+            <span>{{ field.getSectorString }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>

@@ -9,13 +9,10 @@ use Stu\Module\Control\Render\Fragments\MessageFolderFragment;
 use Stu\Module\Control\Render\Fragments\ResearchFragment;
 use Stu\Module\Control\Render\Fragments\ServertimeFragment;
 use Stu\Module\Control\Render\Fragments\UserFragment;
-use Stu\Module\Control\Render\GameTalRenderer;
-use Stu\Module\Control\Render\GameTalRendererInterface;
 use Stu\Module\Control\Render\GameTwigRenderer;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 
 use function DI\autowire;
-use function DI\get;
 
 return [
     SemaphoreUtilInterface::class => autowire(SemaphoreUtil::class),
@@ -29,10 +26,5 @@ return [
         autowire(ServertimeFragment::class),
         autowire(UserFragment::class),
     ],
-    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
-    GameTalRendererInterface::class => autowire(GameTalRenderer::class)
-        ->constructorParameter(
-            'renderFragments',
-            get('renderFragments')
-        ),
+    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class)
 ];

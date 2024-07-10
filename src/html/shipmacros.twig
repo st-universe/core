@@ -33,7 +33,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro shipimagewithoutwarp(ship) %}
+{% macro shipImageWithoutWarp(ship) %}
 {% if ship.isTrumfield %}
 <img src="/assets/ships/wrack/{{ ship.getFormerRumpId }}.png" title="{{ ship.getRumpName }}" />
 {% else %}
@@ -353,10 +353,10 @@
 <td style="{{ nbsItem.getHoldingWebBackgroundStyle }}" class="nbsshipimage">
     {% if nbsItem.isOwnedByCurrentUser %}
     <a {{ onClickShip(nbsItem) }}>
-        {{ _self.shipimagewithoutwarp(nbsItem) }}
+        {{ _self.shipImageWithoutWarp(nbsItem) }}
     </a>
     {% else %}
-    {{ _self.shipimagewithoutwarp(nbsItem) }}
+    {{ _self.shipImageWithoutWarp(nbsItem) }}
     {% endif %}
 </td>
 <td>

@@ -65,7 +65,7 @@ final class Relations implements ViewControllerInterface
             'alliance.php?SHOW_RELATIONS=1',
             _('Diplomatie')
         );
-        $game->setTemplateFile('html/alliancerelations.xhtml');
+        $game->setViewTemplate('html/alliance/alliancerelations.twig');
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('RELATIONS', $relations);
         $game->setTemplateVar('POSSIBLE_RELATION_TYPES', $possibleRelationTypes);

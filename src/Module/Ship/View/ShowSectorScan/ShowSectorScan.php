@@ -36,7 +36,7 @@ final class ShowSectorScan implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $game->setPageTitle("Sektor Scan");
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/sectorscan');
+        $game->setMacroInAjaxWindow('html/ship/sectorscan.twig');
         $game->setTemplateVar('ERROR', true);
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(

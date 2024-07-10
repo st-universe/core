@@ -1,0 +1,10 @@
+<input type="hidden" name="network" id="network" value="{{ NETWORK }}" />
+<div id="shoutbox_list">
+    {% include 'html/trade/shoutBoxEntries.twig' %}
+</div>
+<br />
+<div class="divhead">Nachricht schreiben</div>
+<div class="divbody">
+    <input type="text" style="width: 500px;" name="shoutboxentry" id="shoutboxentry" maxlength="200" /> <input
+        type="button" class="button" value="Absenden" onclick="addShoutboxEntry();" />
+</div>

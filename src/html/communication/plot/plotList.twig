@@ -1,0 +1,32 @@
+{% for plot in PLOT_LIST %}
+<div class="plotListItem">
+  <div>
+    <div class="plotTitle">
+      <a href="?SHOW_PLOT=1&plotid={{ plot.getId }}">{{ plot.getTitle }}</a>
+    </div>
+    <div>
+      {{ plot.getPostingCount }} Beiträg(e) von {{ plotgetMemberCount }} Spieler(n)
+    </div>
+  </div>
+  <div>
+    <div>
+      Gestartet: {{ plot.getStartDate|stuDate }}
+    </div>
+    <div>
+      <span>Status:</span>
+      {% if plot.isActive %}
+      <span>Aktiv</span>
+      {% else %}
+      <span>Beendet am {{ plot.getEndDate|stuDate }}</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="plotMember">
+    {% for member in plot.getMembers %}
+    {% set USER = member.getUser %}
+    {% from 'html/macros.twig' import userAvatar %}
+    {{ userAvatar(USER) }}
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}

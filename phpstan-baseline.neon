@@ -699,16 +699,6 @@ parameters:
 			path: src/Module/Colony/Lib/BuildingAction.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyLibFactory\\:\\:createBuildingFunctionTal\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonyLibFactory.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ColonyLibFactoryInterface\\:\\:createBuildingFunctionTal\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonyLibFactoryInterface.php
-
-		-
 			message: "#^Cannot call method getBuildableFields\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Colony/Lib/ColonySurface.php
@@ -749,11 +739,6 @@ parameters:
 			path: src/Module/Colony/Lib/PlanetColonization.php
 
 		-
-			message: "#^Parameter \\#1 \\$databaseEntry of method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTalFactoryInterface\\:\\:createDatabaseCategoryEntryTal\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowColony/ShowColony.php
-
-		-
 			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowField/ShowField.php
@@ -762,11 +747,6 @@ parameters:
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowGiveUp/ShowGiveUp.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleFab\\\\ModuleFabricationListItemTal\\:\\:getConstructionCosts\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleFab/ModuleFabricationListItemTal.php
 
 		-
 			message: "#^Cannot call method getFunction\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\|null\\.$#"
@@ -959,22 +939,12 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getGameStats\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setTemplateVar\\(\\) has parameter \\$variable with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameStats type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -1010,11 +980,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getGameConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getGameStats\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 
@@ -1102,16 +1067,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$crewRace of method Stu\\\\Orm\\\\Entity\\\\CrewInterface\\:\\:setRace\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface, Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Crew/Lib/CrewCreator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTal\\:\\:getEntries\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/Tal/DatabaseCategoryTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\Tal\\\\DatabaseCategoryTalInterface\\:\\:getEntries\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/Tal/DatabaseCategoryTalInterface.php
 
 		-
 			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null\\.$#"
@@ -1759,16 +1714,6 @@ parameters:
 			path: src/Module/Station/View/ShowSystemSensorScan/ShowSystemSensorScan.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Tal\\\\TalPage\\:\\:setVar\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Tal/TalPage.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tal\\\\TalPageInterface\\:\\:setVar\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Tal/TalPageInterface.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Tick/Process/FinishBuildJobs.php
@@ -1987,21 +1932,6 @@ parameters:
 			message: "#^Cannot call method getValue\\(\\) on Stu\\\\Orm\\\\Entity\\\\BasicTradeInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Trade/Lib/BasicTradeItem.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:getStorage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactory\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradeLibFactory.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradeLibFactoryInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$topics type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\>\\.$#"

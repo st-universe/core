@@ -47,7 +47,7 @@ final class ShowTakeOffer implements ViewControllerInterface
                 $selectedOffer
             );
 
-            $tradeAccount = $this->tradeLibFactory->createTradeAccountTal($selectedOffer->getTradePost(), $game->getUser()->getId());
+            $tradeAccount = $this->tradeLibFactory->createTradeAccountWrapper($selectedOffer->getTradePost(), $game->getUser()->getId());
             $isStorageExistent = array_key_exists($selectedOffer->getWantedCommodityId(), $tradeAccount->getStorage());
 
             $game->setTemplateVar('TRADE_ACCOUNT', $tradeAccount);

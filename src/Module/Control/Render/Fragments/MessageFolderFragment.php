@@ -8,7 +8,6 @@ use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -26,7 +25,7 @@ final class MessageFolderFragment implements RenderFragmentInterface
     #[Override]
     public function render(
         UserInterface $user,
-        TalPageInterface|TwigPageInterface $page,
+        TwigPageInterface $page,
         GameControllerInterface $game
     ): void {
         $userId = $user->getId();

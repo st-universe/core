@@ -40,7 +40,7 @@ final class ShowNote implements ViewControllerInterface
             ),
             $note->getTitle()
         );
-        $game->showMacro('html/notes.xhtml/note');
+        $game->showMacro('html/notes/note.twig');
         $game->setTemplateVar('NOTE', $note);
         $game->setTemplateVar('IS_NEW', false);
     }

@@ -1,0 +1,18 @@
+{% extends "html/sitedefaults.twig" %}
+
+{% block body %}
+{% if PLOTS %}
+<div class="divhead">Laufende Plots</div>
+<div class="plotList">
+  {% set PLOT_LIST = PLOTS %}
+  {% include 'html/communication/plot/plotList.twig' %}
+</div>
+{% endif %}
+{% if ENDED_PLOTS %}
+<div class="divhead">Beendete Plots</div>
+<div class="plotList">
+  {% set PLOT_LIST = ENDED_PLOTS %}
+  {% include 'html/communication/plot/plotList.twig' %}
+</div>
+{% endif %}
+{% endblock %}

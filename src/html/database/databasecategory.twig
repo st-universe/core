@@ -1,0 +1,206 @@
+{% block body %}
+    
+    {% if CATEGORY.isCategoryStarSystems %}
+        {{ _self.category_starsystems(CATEGORY) }}
+    {% endif %}
+    
+    {% if CATEGORY.isCategoryStarSystemTypes %}
+        {{ _self.category_starsystem_types(CATEGORY) }}
+    {% endif %}
+    
+    {% if CATEGORY.isCategoryTradePosts %}
+        {{ _self.category_tradeposts(CATEGORY) }}
+    {% endif %}
+    
+    {% if CATEGORY.isCategoryColonyClasses %}
+        {{ _self.category_colonyclasses(CATEGORY) }}
+    {% endif %}
+    
+    {% if CATEGORY.isCategoryRumpTypes %}
+        {{ _self.category_rumptypes(CATEGORY) }}
+    {% endif %}
+    
+    {% if CATEGORY.displayDefaultList %}
+        <table class="use">
+            <tr>
+                <th>Beschreibung</th>
+                <th>Entdeckung</th>
+            </tr>
+            {% for data in CATEGORY.getEntries %}
+                <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+                    {% if data.wasDiscovered %}
+                        <td>
+                            <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat={{ CATEGORY.getId }}&ent={{ data.getId }}', 'database.php');">
+                                {{ data.getDescription }}
+                            </a>
+                        </td>
+                        <td>{{ data.getDiscoveryDate|date('Y-m-d H:i:s') }}</td>
+                    {% else %}
+                        <td>???</td>
+                        <td>---</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
+
+{% macro category_starsystems(CATEGORY) %}
+    <table class="use">
+        <tr>
+            <th>System</th>
+            <th>Koordinaten</th>
+            <th>Entdeckung</th>
+        </tr>
+        {% for data in CATEGORY.getEntries %}
+            <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+                {% if data.wasDiscovered %}
+                    {% set system = data.getObject %}
+                    <td>
+                        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat={{ CATEGORY.getId }}&ent={{ data.getId }}');">
+                            {{ data.getDescription }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if not system.isWormhole %}
+                            <span>{{ system.getCx }}</span>|<span>{{ system.getCy }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ data.getDiscoveryDate|date('Y-m-d H:i:s') }}</td>
+                {% else %}
+                    <td>???</td>
+                    <td>???</td>
+                    <td>---</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro category_tradeposts(CATEGORY) %}
+    <table class="use">
+        <tr>
+            <th>Handelsposten</th>
+            <th>Koordinaten</th>
+            <th>Entdeckung</th>
+        </tr>
+        {% for data in CATEGORY.getEntries %}
+            <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+                {% if data.wasDiscovered %}
+                    <td>
+                        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat={{ CATEGORY.getId }}&ent={{ data.getId }}');">
+                            {{ data.getDescription }}
+                        </a>
+                    </td>
+                    <td>
+                        <span>{{ data.getObject.getMap.getCx }}</span>|<span>{{ data.getObject.getMap.getCy }}</span>
+                    </td>
+                    <td>{{ data.getDiscoveryDate|date('Y-m-d H:i:s') }}</td>
+                {% else %}
+                    <td>???</td>
+                    <td>???</td>
+                    <td>---</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro category_rumptypes(CATEGORY) %}
+    <table class="use">
+        <tr>
+            <th></th>
+            <th colspan="2">Beschreibung</th>
+            <th>Entdeckung</th>
+        </tr>
+        {% for data in CATEGORY.getEntries %}
+            <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+                {% if data.wasDiscovered %}
+                    <td>
+                        <img src="assets/ships/{{ data.getObjectId }}.png" />
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat={{ CATEGORY.getId }}&ent={{ data.getId }}');">
+                            {{ data.getDescription }}
+                        </a>
+                    </td>
+                    <td>{{ data.getDiscoveryDate|date('Y-m-d H:i:s') }}</td>
+                {% else %}
+                    <td></td>
+                    <td>???</td>
+                    <td>---</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro category_colonyclasses(CATEGORY) %}
+    <table class="use">
+        <tr>
+            <th></th>
+            <th colspan="2">Beschreibung</th>
+            <th>Entdeckung</th>
+        </tr>
+        {% for data in CATEGORY.getEntries %}
+            <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+                {% if data.wasDiscovered %}
+                    <td>
+                        {% if data.getObject.hasRing %}
+                            <div class="planet_ring" style="background-image: url(assets/planets/{{ data.getObject.getId }}.png)">
+                                <img src="assets/planets/{{ data.getObject.getId }}r.png" />
+                            </div>
+                        {% else %}
+                            <img src="assets/planets/{{ data.getObject.getId }}.png" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat={{ CATEGORY.getId }}&ent={{ data.getId }}');">
+                            {{ data.getDescription }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if data.getObject.isPlanet %}Planet{% endif %}
+                        {% if data.getObject.isMoon %}Mond{% endif %}
+                        {% if data.getObject.isAsteroid %}Asteroid{% endif %}
+                    </td>
+                    <td>{{ data.getDiscoveryDate|date('Y-m-d H:i:s') }}</td>
+                {% else %}
+                    <td></td>
+                    <td>???</td>
+                    <td></td>
+                    <td>---</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro category_starsystem_types(CATEGORY) %}
+    <table class="use">
+        <tr>
+            <th></th>
+            <th>Beschreibung</th>
+            <th>Entdeckung</th>
+        </tr>
+        {% for data in CATEGORY.getEntries %}
+            <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+                {% if data.wasDiscovered %}
+                    <td>
+                        <img src="assets/map/systemtypes/{{ data.getObjectId }}.png" />
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat={{ CATEGORY.getId }}&ent={{ data.getId }}');">
+                            {{ data.getDescription }}
+                        </a>
+                    </td>
+                    <td>{{ data.getDiscoveryDate|date('Y-m-d H:i:s') }}</td>
+                {% else %}
+                    <td></td>
+                    <td>???</td>
+                    <td>---</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowShuttleManagement;
 
 use Override;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -52,7 +53,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         $ship = $targetWrapper->get();
 
         $game->setPageTitle("Shuttle Management");
-        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/shuttlemanagement');
+        $game->setMacroInAjaxWindow('html/spacecraft/shuttleManagement.twig');
 
         $shuttles = [];
         $currentlyStored = 0;
@@ -83,8 +84,9 @@ final class ShowShuttleManagement implements ViewControllerInterface
             }
         }
 
+        $game->setTemplateVar('MODULE_VIEW', ModuleViewEnum::STATION);
         $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
-        $game->setTemplateVar('STATION', $station);
+        $game->setTemplateVar('MANAGER', $station);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
         $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);
         $game->setTemplateVar('ERROR', false);

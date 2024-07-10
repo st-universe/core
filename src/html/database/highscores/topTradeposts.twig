@@ -1,0 +1,33 @@
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in ACTIV_TRADEPOST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                    </div>
+                    <div class="userName">
+                        {{ entry.getName|bbcode }}
+                    </div>
+                    <div>
+                        <img src="assets/buttons/menu_trade0.png" title="Anzahl Transaktionen" />
+                        {{ entry.getTransactions }}
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Handelsposten</h1>
+        <p>In dieser Liste werden die 10 Handelsposten mit den meisten Transaktionen in den letzten 7 Tagen
+            aufgeführt.</p>
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>

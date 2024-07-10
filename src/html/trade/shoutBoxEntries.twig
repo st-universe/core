@@ -1,0 +1,18 @@
+<table class="tcal">
+    {% for data in SHOUTBOX %}
+    <tr>
+        <td style="width: 110px;">{{ data.getDate|stuDate }}</td>
+        <td>
+            &lt;{{ data.getUser.getName|bbcode }} ({{ data.getUserId }})&gt;
+            {% autoescape false %}
+            {{ data.getMessage }}
+            {% endautoescape %}
+        </td>
+    </tr>
+    {% endfor %}
+    {% if not SHOUTBOX %}
+    <tr>
+        <td class="darkbg">Keine Einträge vorhanden</td>
+    </tr>
+    {% endif %}
+</table>

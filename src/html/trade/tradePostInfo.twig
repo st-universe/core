@@ -1,0 +1,40 @@
+{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+
+<br />
+<table class="tcal">
+    {% set ship = TRADE_POST_INFO.getShip %}
+    <tr>
+        <th colspan="3">{{ TRADE_POST_INFO.getShip.getName|bbcode }}</th>
+    </tr>
+    <tr>
+        <td rowspan="5">
+            {{ shipImageWithoutWarp(ship) }}
+        </td>
+        <th>Standort</th>
+        <td>{{ ship.getSectorString }}</td>
+    </tr>
+    {% if IS_NPC_TRADEPOST %}
+    <tr>
+        <th>Handelsnetz</th>
+        <td>
+            <img src="/assets/rassen/{{ TRADE_POST_INFO.getTradeNetwork }}s.png" />
+        </td>
+    </tr>
+    <tr>
+        <th>Transferkapazität</th>
+        <td>
+            {{ TRADE_POST_INFO.getTransferCapacity }} pro Tag
+        </td>
+    </tr>
+    {% endif %}
+    <tr>
+        <th>Lagerraum</th>
+        <td>
+            {{ TRADE_POST_INFO.getStorageCapacity }} pro Siedler
+        </td>
+    </tr>
+    <tr>
+        <th>Ausgestellte Lizenzen</th>
+        <td>{{ TRADE_POST_INFO.getLicenseCount }}</td>
+    </tr>
+</table>

@@ -21,7 +21,7 @@ final class ShowImprint implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Impressum - Star Trek Universe'));
-        $game->setTemplateFile('html/index_impressum.xhtml');
+        $game->setTemplateFile('html/index/impressum.twig');
 
         $game->setTemplateVar('IMPRINT_NAME', $this->config->get('game.imprint.name'));
         $game->setTemplateVar('IMPRINT_ADDRESS', $this->config->get('game.imprint.address'));

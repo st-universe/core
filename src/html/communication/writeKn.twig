@@ -1,0 +1,90 @@
+<form action="comm.php" method="post">
+	<input type="hidden" name="WRITE_KN" value="1" />
+	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+	<table class="tcal">
+		{% if PREVIEW %}
+		<tr>
+			<th>
+				Vorschau
+				<a onmouseover="cp('translate','buttons/translate1', 'png')"
+					onmouseout="cp('translate','buttons/translate0', 'png')">
+					<img src="assets/buttons/translate0.png" alt="Übersetzen" style="cursor:pointer; margin-left: 5px;"
+						onclick="toggleTranslation('preview');" name="translate" />
+				</a>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<span id="preview" class="translatable-content" style="overflow-wrap: break-word;">
+					{% autoescape false %}
+					{{ PREVIEW|nl2br }}
+					{% endautoescape %}
+				</span>
+			</td>
+		</tr>
+		{% endif %}
+		<tr>
+			<td>
+				<div id="writekntitle" class="selected" style="float: left; padding: 5px;">Titel
+					(6 bis 80 Zeichen, bei Plots optional)
+				</div>
+				<br style="clear: both;" />
+				<div id="writekntitleinput" style="clear: both; margin: 5px;">
+					{% if TITLE %}
+					<input value="{{ TITLE }}" type="text" name="title" style="width: 100%;" maxlength="80" />
+					{% else %}
+					<input type="text" name="title" style="width: 100%;" maxlength="80" />
+					{% endif %}
+				</div>
+				<br style="clear: both;" />
+				<div id="writeknplot" class="selected" style="float: left; width: 300px; padding: 5px;">zu Plot
+					hinzufügen</div>
+				<br style="clear: both;" />
+				<div id="writeknplotselect" style="clear: both; margin: 5px;">
+					{% include 'html/communication/plot/plotSelect.twig' %}
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<th>Text</th>
+		</tr>
+		<tr>
+			<td>
+				{% if TEXT %}
+				<textarea name="text" style="width: 100%; height: 300px;">{{ TEXT }}</textarea>
+				{% else %}
+				<textarea name="text" style="width: 100%; height: 300px;"></textarea>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div style="display: grid; grid-template-columns: 50% 40% 30%">
+					<div>
+						<input type="submit" name="B_WRITE_KN" value="Hinzufügen" />
+						<input type="submit" name="B_PREVIEW_KN" value="Vorschau" />
+						{% if MARK %}
+						<input value="1" type="checkbox" name="markposting" checked="checked" />
+						{% else %}
+						<input value="1" type="checkbox" name="markposting" />
+						{% endif %}
+						Lesezeichen bei diesem Beitrag setzen
+					</div>
+					<div style="display: flex; justify-content: space-between; align-items: center;">
+						<div style="flex-grow: 1;">
+							<span>Character IDs (mit Komma getrennt): </span><input type="text" name="characterids"
+								placeholder="Character ID's" style="width: 150px;" />
+						</div>
+
+						<div style="flex-grow: 1; text-align: right;">
+							<a href="https://de.wikipedia.org/wiki/BBCode">BB-Code</a>:
+							{% for char in ALLOWED_BBCODE_CHARACTERS %}
+							[{{ char }}]
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</form>

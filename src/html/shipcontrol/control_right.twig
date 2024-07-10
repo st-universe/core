@@ -1,5 +1,5 @@
 {% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers) %}
-{% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
 
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
@@ -100,7 +100,7 @@
             <select name="transwarplayer">
                 {% for userlayer in userLayers %}
                 {% set selected = userlayer.getLayer == ship.getLayer %}
-                <option value="{{ userlayer.getLayer.getId }}" selected=" {{ selected }}">
+                <option value="{{ userlayer.getLayer.getId }}" selected="{{ selected }}">
                     {{ userlayer.getLayer.getName }}</option>
                 {% endfor %}
             </select>
@@ -307,7 +307,7 @@
                 <img src="/assets/buttons/phaser1.png" name="attacktracked" />
             </a>
             {% endif %}
-            {{ shipimagewithoutwarp(targetShip) }}
+            {{ shipImageWithoutWarp(targetShip) }}
         </td>
         <td>
             {{ targetShip.getSectorString }}

@@ -1,0 +1,14 @@
+{% if QUEUED_AMOUNT %}
+<div style="display: table-cell; vertical-align:middle;">
+  <input type="text" size="2" name="cancel_module[{{ MODULE_ID }}]" id="module_{{ MODULE_ID }}_count" value="{{ QUEUED_AMOUNT }}" />
+</div>
+<div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+  <a href="Javascript:cancelModuleQueueEntries({{ MODULE_ID }});"
+     onmouseover="cp('cancelModule{{ MODULE_ID }}','buttons/x2')"
+     onmouseout="cp('cancelModule{{ MODULE_ID }}','buttons/x1')">
+    <img src="/assets/buttons/x1.png" name="cancelModule{{ MODULE_ID }}" title="Anzahl löschen" />
+  </a>
+</div>
+{% else %}
+<div>-</div>
+{% endif %}

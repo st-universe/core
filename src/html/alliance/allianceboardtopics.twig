@@ -1,0 +1,57 @@
+{% block body %}
+{% if TOPICS %}
+<table class="tcal">
+    <tr>
+        <th>Thema</th>
+        <th>Beiträge</th>
+        <th>Letzter Beitrag</th>
+        {% if EDITABLE %}
+        <th></th>
+        {% endif %}
+    </tr>
+    {% for topic in TOPICS %}
+    {% set RECENT_POST = topic.getLatestPost %}
+    {% set PAGES = topic.getPages %}
+    <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+        <td>
+            <div style="display: table-cell; width: 100%">
+                {% if topic.getSticky %}
+                <img src="assets/buttons/board_important.png" title="Wichtig" />
+                {% endif %}
+                <a href="alliance.php?SHOW_TOPIC=1&bid={{ topic.getBoardId }}&tid={{ topic.getId }}&mark=0">{{
+                    topic.getName|raw }}</a>
+            </div>
+            {% if PAGES %}
+            <div style="white-space: nowrap;text-align: right;display: table-cell">
+                {% for page in PAGES %}
+                <a href="?SHOW_TOPIC=1&bid={{ topic.getBoardId }}&tid={{ topic.getId }}&mark={{ page }}"
+                    class="pages">{{ loop.index }}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </td>
+        <td>{{ topic.getPostCount }}</td>
+        <td>
+            {% if RECENT_POST %}
+            <span>{{ RECENT_POST.getDate|date('d.m.Y H:i') }}</span> von:<br />
+            <span>{{ RECENT_POST.getUser.getName|raw }}</span>
+            {% else %}
+            -
+            {% endif %}
+        </td>
+        {% if EDITABLE %}
+        {% set handle = this.getUniqId %}
+        <td style="width: 30px; text-align: center;">
+            <a href="javascript:void(0)" onclick="openTopicSettings(this,{{ topic.getId }},{{ topic.getBoardId }})"
+                onmouseover="cp('{{ handle }}','buttons/b_down2')" onmouseout="cp('{{ handle }}','buttons/b_down1')">
+                <img src="assets/buttons/b_down1.png" title="Editieren" name="{{ handle }}" />
+            </a>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+<br />
+{% endif %}
+<a href="alliance.php?SHOW_NEW_TOPIC=1&bid={{ BOARD_ID }}" class="linkbutton">Thema erstellen</a>
+{% endblock %}

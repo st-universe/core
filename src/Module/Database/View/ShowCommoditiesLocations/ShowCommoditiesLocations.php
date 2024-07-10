@@ -30,7 +30,7 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
         $commodityId = $this->showCommoditiesLocationsRequest->getCommodityId();
 
         $game->setPageTitle('Lagerorte der Ware');
-        $game->setMacroInAjaxWindow('html/databasemacros.xhtml/commodityLocations');
+        $game->setMacroInAjaxWindow('html/database/commodityLocations.twig');
 
         $game->setTemplateVar(
             'SHIP_LOCATIONS',

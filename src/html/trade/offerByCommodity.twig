@@ -1,0 +1,32 @@
+<div style="width: 250px;">
+    <table class="tcal">
+        <tr>
+            <td style="font-weight: bold;">Biete</td>
+            <td style="font-weight: bold;">Verlange</td>
+            <td style="font-weight: bold;">Anzahl</td>
+            <td style="font-weight: bold;"></td>
+        </tr>
+        {% for data in OFFER %}
+        <tr>
+            <td>
+                <img src="assets/commodities/{{ data.getOfferedCommodityId }}.png" />
+                {{ data.getOfferedCommodityCount }}
+            </td>
+            <td>
+                <img src="assets/commodities/{{ data.getWantedCommodityId }}.png" />
+                {{ data.getWantedCommodityCount }}
+            </td>
+            <td>
+                {{ data.getOfferCount }}
+            </td>
+            <td>
+                <a href="?B_CANCEL_OFFER=1&offerid={{ data.getId }}&view={{ VIEW }}&sstr={{ SESSIONSTRING }}"
+                    onmouseover="cp('del_{{ loop.index }}','buttons/x2')"
+                    onmouseout="cp('del_{{ loop.index }}','buttons/x1')">
+                    <img src="assets/buttons/x1.png" name="del_{{ loop.index }}" title="Angebot löschen" />
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

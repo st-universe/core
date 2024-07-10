@@ -37,7 +37,7 @@ final class ShowStationShiplist implements ViewControllerInterface
         $shipList = $this->shipWrapperFactory->wrapShips($station->getDockedShips()->toArray());
 
         $game->setPageTitle(_('Angedockte Schiffe'));
-        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/shiplist');
+        $game->setMacroInAjaxWindow('html/station/shipList.twig');
         $game->setTemplateVar('SHIP', $station);
         $game->setTemplateVar('WRAPPERS', $shipList);
         $game->setTemplateVar('CAN_UNDOCK', true);

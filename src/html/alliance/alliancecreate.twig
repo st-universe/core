@@ -1,0 +1,28 @@
+{% block body %}
+    <form action="alliance.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <div style="width: 505px; float: left;">
+            <div class="divhead">Name</div>
+            <div class="divbody">
+                <input type="text" style="width: 500px" name="name" />
+            </div>
+            <br />
+            <div class="divhead">Beschreibung</div>
+            <div class="divbody">
+                <textarea name="description" style="width: 500px; height: 150px;"></textarea>
+            </div>
+        </div>
+        <div style="margin-left: 5px; width: 200px; float: left;">
+            <div class="divhead">Rassenallianz</div>
+            <div class="divbody">
+                <img src="assets/rassen/{{ USER.getFactionId }}s.png" />
+                <input type="checkbox" name="factionid" />
+            </div>
+            <br />
+            <div class="divhead">Gründung</div>
+            <div class="divbody">
+                <input type="submit" class="button" name="B_CREATE_ALLIANCE" value="Allianz gründen" />
+            </div>
+        </div>
+    </form>
+{% endblock %}

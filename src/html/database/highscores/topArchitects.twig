@@ -1,0 +1,44 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
+
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in ARCHITECTS_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        {{ userAvatar(entry.getUser) }}
+                    </div>
+                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div>
+                        Punkte: {{ entry.getPoints }}
+                    </div>
+                    <div>
+                        {{ pmWindow(USER, entry.getUser.getId) }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Architekten</h1>
+        <p>In dieser Liste werden die 10 Spieler mit den imposantesten Koloniebuilds im Spiel aufgeführt.
+        </p>
+        <p>Der Wert aller gebauten Gebäude auf sämtlichen Kolonien wird aufsummiert und in Relation zu allen
+            Spielern gesetzt.
+            Der Punktestand kann jeden Tick variieren.</p>
+        <br />
+        <p>Dein eigener Punktestand:
+            {% if USER_POINTS %}
+            {{ USER_POINTS }}
+            {% else %}
+            0.00
+            {% endif %}
+        </p>
+        <br />
+    </div>
+</div>

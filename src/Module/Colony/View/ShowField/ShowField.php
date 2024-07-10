@@ -11,8 +11,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalStatusBar;
+use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\StatusBar;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
@@ -75,7 +75,7 @@ final class ShowField implements ViewControllerInterface
 
             $terraFormingBar = null;
             if ($terraFormingState !== null) {
-                $terraFormingBar = (new TalStatusBar())
+                $terraFormingBar = (new StatusBar())
                     ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
                     ->setLabel('Fortschritt')
                     ->setMaxValue($terraFormingState->getTerraforming()->getDuration())
@@ -105,7 +105,7 @@ final class ShowField implements ViewControllerInterface
         if ($field->hasBuilding()) {
             $game->setTemplateVar(
                 'BUILDING_FUNCTION',
-                $this->colonyLibFactory->createBuildingFunctionTal($field->getBuilding()->getFunctions()->toArray())
+                $this->colonyLibFactory->createBuildingFunctionWrapper($field->getBuilding()->getFunctions()->toArray())
             );
         }
         $game->setTemplateVar(

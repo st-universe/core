@@ -38,7 +38,7 @@ final class PirateWrathRanking implements ViewControllerInterface
             'Die 10 meistgehassten Siedler der Kazon'
         );
         $game->setPageTitle('/ Datenbank / Die 10 meistgehassten Siedler der Kazon');
-        $game->showMacro('html/database.xhtml/top_pirate_wrath_user');
+        $game->setViewTemplate('html/database/highscores/topPirateWrath.twig');
         $wrathList = $this->pirateWrathRepository->getPirateWrathTop10();
         $wrathData = array_map(
             function ($wrathEntity): array {

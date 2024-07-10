@@ -1,0 +1,93 @@
+{% block body %}
+    <div class="divhead">Abkommen erstellen</div>
+    <div class="divbody">
+        <form action="alliance.php" method="post">
+            <input type="hidden" name="SHOW_RELATIONS" value="1" />
+            <select name="oid">
+                {% for data in ALLIANCE_LIST %}
+                    <option value="{{ data.getId }}">{{ data.getName|bbcode2txt }}</option>
+                {% endfor %}
+            </select>
+            <select name="type">
+                {% for key, type in POSSIBLE_RELATION_TYPES %}
+                    <option value="{{ key }}">{{ type }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Erstellen" name="B_NEW_RELATION" />
+        </form>
+    </div>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th colspan="4">Beziehungen</th>
+        </tr>
+        <tr>
+            <td class="darkbg">Allianz</td>
+            <td class="darkbg">Abkommen</td>
+            <td class="darkbg">Zeitpunkt</td>
+            <td class="darkbg">Aktionen</td>
+        </tr>
+        {% if not RELATIONS %}
+            <tr>
+                <td colspan="4">Keine Beziehungen vorhanden</td>
+            </tr>
+        {% else %}
+            {% for data in RELATIONS %}
+                {% set opponent = data.getOpponent %}
+                {% set relation = data.getRelation %}
+                <tr class="row{{ loop.index0 % 2 }}">
+                    <form method="post" action="alliance.php">
+                        <input type="hidden" name="SHOW_RELATIONS" value="1" />
+                        <input type="hidden" name="oid" value="{{ opponent.getId }}" />
+                        <td>
+                            <a href="?id={{ opponent.getId }}">{{ opponent.getName|bbcode }}</a>
+                        </td>
+                        <td>
+                            <span>{{ relation.getTypeDescription }}</span>
+                            {% if not relation.isPending %}
+                                {% if not relation.isWar %}
+                                    (<a href="?SHOW_RELATIONS=1&B_CANCEL_CONTRACT=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">lösen</a>)
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not relation.isPending %}
+                                {{ relation.getDate|stuDateTime }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if relation.isPending %}
+                                {% if data.offerIsSend %}
+                                    Wird angeboten
+                                {% else %}
+                                    Wurde angeboten
+                                {% endif %}
+                            {% else %}
+                                {% if relation.isWar %}
+                                    <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Frieden vorschlagen</a>
+                                {% else %}
+                                    <select name="type">
+                                        {% for rels in relation.getPossibleTypes %}
+                                            <option value="{{ rels.value }}">{{ rels.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="submit" value="Anbieten" name="B_NEW_RELATION" />
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if relation.isPending %}
+                                {% if data.offerIsSend %}
+                                    <a href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Zurückziehen</a>
+                                {% else %}
+                                    <a href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Annehmen</a>
+                                    <a href="alliance.php?SHOW_RELATIONS=1&B_DECLINE_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Ablehnen</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </form>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+{% endblock %}

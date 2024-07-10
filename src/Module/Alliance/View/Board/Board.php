@@ -61,7 +61,7 @@ final class Board implements ViewControllerInterface
             ),
             $board->getName()
         );
-        $game->setTemplateFile('html/allianceboardtopics.xhtml');
+        $game->setViewTemplate('html/alliance/allianceboardtopics.twig');
         $game->setTemplateVar(
             'TOPICS',
             $this->allianceBoardTopicRepository->getByBoardIdOrdered($boardId)

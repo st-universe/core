@@ -10,7 +10,7 @@ use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -18,7 +18,7 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManagementProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory, private ColonyLibFactoryInterface $colonyLibFactory)
+    public function __construct(private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private OrbitShipListRetrieverInterface $orbitShipListRetriever, private ColonyFunctionManagerInterface $colonyFunctionManager, private ShipWrapperFactoryInterface $shipWrapperFactory, private ColonyLibFactoryInterface $colonyLibFactory)
     {
     }
 
@@ -34,7 +34,7 @@ final class ManagementProvider implements GuiComponentProviderInterface
 
         $systemDatabaseEntry = $host->getSystem()->getDatabaseEntry();
         if ($systemDatabaseEntry !== null) {
-            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($systemDatabaseEntry, $game->getUser());
+            $starsystem = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($systemDatabaseEntry, $game->getUser());
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
 

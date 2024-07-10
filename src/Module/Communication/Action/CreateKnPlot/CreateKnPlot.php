@@ -55,6 +55,7 @@ final class CreateKnPlot implements ActionControllerInterface
         $game->addInformation(_('Der Plot wurde erstellt'));
 
         $game->setView(ShowPlotList::VIEW_IDENTIFIER);
+        $game->addInformation(_('Der Plot wurde erstellt'));
     }
 
     #[Override]

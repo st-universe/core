@@ -1,0 +1,15 @@
+{% if ENTRY.getTypeObject %}
+<div style="width: 250px; display: table-cell; padding-right: 5px;">
+	{% include 'html/database/'~ ENTRY.getTypeObject.getMacro ~'.twig' %}
+</div>
+{% endif %}
+{% if ENTRY.getData %}
+<div style="display: table-cell; vertical-align: top;">
+	<div class="divhead">{{ ENTRY.getDescription }}</div>
+	<div class="divbody">
+		{% autoescape false %}
+		{{ ENTRY.getDataFormatted }}
+		{% endautoescape %}
+	</div>
+</div>
+{% endif %}

@@ -60,7 +60,7 @@ final class NewTopic implements ViewControllerInterface
             _('Thema erstellen')
         );
 
-        $game->setTemplateFile('html/allianceboardcreatetopic.xhtml');
+        $game->setViewTemplate('html/alliance/allianceboardcreatetopic.twig');
         $game->setTemplateVar('BOARD_ID', $boardId);
     }
 }

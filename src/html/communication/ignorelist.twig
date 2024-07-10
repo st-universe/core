@@ -1,0 +1,75 @@
+{% block body %}
+<script src="{{ javascriptPath }}/js/comm.js"></script>
+<form action="pm.php" method="post" name="contactlist" id="contactlist">
+    <input type="hidden" name="SHOW_IGNORELIST" value="1" />
+    <input type="hidden" id="formaction" value="1" />
+    <input type="hidden" name="deletion_mark" value="" />
+    <div style="float: left; width: 75%;">
+        <table class="tcal">
+            <tr>
+                <th colspan="3">Ignorierte Siedler</th>
+            </tr>
+            {% for contact in IGNORE_LIST %}
+            <tr>
+                <td style="width: 20px; text-align: center;">
+                    <input type="checkbox" name="deleted[]" value="{{ contact.getId }}" />
+                </td>
+                <td>
+                    <span>{{ contact.getRecipient.getName|bbcode }}</span> (<span>{{ contact.getRecipient.getId
+                        }}</span>)
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if REMOTE_IGNORES %}
+        <br /><br />
+        <table class="tcal">
+            <tr>
+                <th>Siedler die Dich ignorieren</th>
+            </tr>
+            {% for contact in REMOTE_IGNORES %}
+            <tr>
+                <td>
+                    <span>{{ contact.getUser.getName|bbcode }}</span> (<span>{{ contact.getUser.getId }}</span>)
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+    <div style="float: left; padding-left: 1%; width: 24%;">
+        <table class="tcal">
+            <tr>
+                <th>Hinzufügen</th>
+            </tr>
+            <tr>
+                <td>
+                    Siedler ID <input type="text" style="width: 50px;" name="recid" />
+                    <input type="submit" value="Hinzufügen" name="B_IGNORE_USER" />
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table class="tcal">
+            <tr>
+                <th>Aktionen</th>
+            </tr>
+            <tr>
+                <td>
+                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                        onclick="markAllContacts();">Alle selektieren</a>
+                    <br />
+                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                        onclick="unMarkAllContacts();">Alle deselektieren</a>
+                    <br /><br />
+                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                        onclick="deleteMarkedIgnores();">Alle selektierten löschen</a>
+                    <br /><br />
+                    <span style="color: #cecece">&gt;</span> <a
+                        href="?SHOW_IGNORELIST=1&B_DELETE_ALL_IGNORES=1&sstr={{ SESSIONSTRING }}">Alle löschen</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+{% endblock %}

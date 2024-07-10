@@ -36,7 +36,7 @@ final class ShowEditKn implements ViewControllerInterface
             throw new AccessViolation(sprintf(_('UserId %d tried to edit foreign kn post'), $game->getUser()->getId()));
         }
 
-        $game->setTemplateFile('html/editkn.xhtml');
+        $game->setViewTemplate('html/communication/editKn.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
         if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {

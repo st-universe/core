@@ -1,0 +1,44 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
+
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in EMPLOYER_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        {{ userAvatar(entry.getUser) }}
+                    </div>
+                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div>
+                        Punkte: {{ entry.getPoints }}
+                    </div>
+                    <div>
+                        {{ pmWindow(USER, entry.getUser.getId) }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Arbeitgeber</h1>
+        <p>In dieser Liste werden die 10 Spieler mit den meisten zufriedenen Arbeitnehmern im Spiel
+            aufgeführt.</p>
+        <p>Als zufriedene Arbeitnehmer werden alle Arbeiter auf Kolonien angesehen, welche durch hohen
+            Lebensstandard abgedeckt sind.</p>
+        <br />
+        <p>Dein eigener Punktestand:
+            {% if USER_POINTS %}
+            {{ USER_POINTS }}
+            {% else %}
+            0
+            {% endif %}
+        </p>
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>

@@ -20,7 +20,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -50,7 +50,7 @@ final class ShowShip implements ViewControllerInterface
         private SessionInterface $session,
         private ShipLoaderInterface $shipLoader,
         private ColonizationCheckerInterface $colonizationChecker,
-        private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
+        private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
         private AstroEntryRepositoryInterface $astroEntryRepository,
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private NbsUtilityInterface $nbsUtility,
@@ -107,7 +107,7 @@ final class ShowShip implements ViewControllerInterface
         //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann
         $starSystem = $ship->getSystem() ?? $ship->isOverSystem();
         if ($starSystem !== null && $starSystem->getDatabaseEntry() !== null) {
-            $starSystemEntryTal = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($starSystem->getDatabaseEntry(), $user);
+            $starSystemEntryTal = $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($starSystem->getDatabaseEntry(), $user);
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starSystemEntryTal);
         }
 

@@ -10,6 +10,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -20,9 +21,10 @@ use Stu\Orm\Entity\UserInterface;
 
 interface ColonyLibFactoryInterface
 {
-    public function createBuildingFunctionTal(
-        array $buildingFunctionIds
-    ): BuildingFunctionTalInterface;
+    /** @param array<BuildingFunctionInterface> $buildingfunctions */
+    public function createBuildingFunctionWrapper(
+        array $buildingfunctions
+    ): BuildingFunctionWrapperInterface;
 
     public function createColonySurface(
         PlanetFieldHostInterface $host,

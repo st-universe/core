@@ -22,7 +22,7 @@ final class ShowIgnoreList implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $game->setTemplateFile('html/ignorelist.xhtml');
+        $game->setViewTemplate('html/communication/ignorelist.twig');
         $game->appendNavigationPart(
             sprintf('pm.php?%s=1', static::VIEW_IDENTIFIER),
             _('Ignoreliste')

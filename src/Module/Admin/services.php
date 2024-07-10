@@ -54,8 +54,6 @@ use Stu\Module\Admin\View\Map\ShowSystem\ShowSystem;
 use Stu\Module\Admin\View\Map\ShowSystem\ShowSystemRequest;
 use Stu\Module\Admin\View\Map\ShowSystem\ShowSystemRequestInterface;
 use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditField;
-use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequest;
-use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequestInterface;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
@@ -75,7 +73,6 @@ return [
     EditFieldRequestInterface::class => autowire(EditFieldRequest::class),
     EditSystemTypeRequestInterface::class => autowire(EditSystemTypeRequest::class),
     ShowSystemRequestInterface::class => autowire(ShowSystemRequest::class),
-    ShowSystemEditFieldRequestInterface::class => autowire(ShowSystemEditFieldRequest::class),
     EditSystemFieldRequestInterface::class => autowire(EditSystemFieldRequest::class),
     EditRegionRequestInterface::class => autowire(EditRegionRequest::class),
     EditAdminRegionRequestInterface::class => autowire(EditAdminRegionRequest::class),

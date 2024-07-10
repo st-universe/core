@@ -27,7 +27,7 @@ final class ShowShoutBoxList implements ViewControllerInterface
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndNetwork($game->getUser()->getId(), $tradeNetworkId)) {
             throw new AccessViolation();
         }
-        $game->showMacro('html/trademacros.xhtml/shoutbox_entries');
+        $game->showMacro('html/trade/shoutBoxEntries.twig');
         $game->setTemplateVar('SHOUTBOX', $this->tradeShoutboxRepository->getByTradeNetwork($tradeNetworkId));
     }
 }

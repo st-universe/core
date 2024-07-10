@@ -1,0 +1,27 @@
+
+  <form name="editcat" method="post" action="pm.php">
+    <table class="tcal">
+      <tr>
+        <td>Name</td>
+        <td>
+          <input type="text" style="width: 100px;" id="catname" name="catname" value="{{ pm_category.getDescription }}" />
+          <input type="button" class="button" value="Ändern" onclick="changeCategoryName();" />
+        </td>
+      </tr>
+    </table>
+    <br />
+    <input type="hidden" name="pmcat" value="{{ PM_CATEGORY.getId }}" />
+    {% if PM_CATEGORY.isDeleteAble %}
+      <table class="tcal">
+        <tr>
+          <th>Löschen</th>
+        </tr>
+        <tr>
+          <td><span style="color: Red;">Warnung!</span> Alle Nachrichten in diesem Ordner werden gelöscht!</td>
+        </tr>
+        <tr>
+          <td><input type="submit" class="button" value="Ordner löschen" name="B_DELETE_PMCATEGORY" /></td>
+        </tr>
+      </table>
+    {% endif %}
+  </form>

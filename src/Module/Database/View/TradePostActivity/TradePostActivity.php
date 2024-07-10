@@ -33,7 +33,7 @@ final class TradePostActivity implements ViewControllerInterface
             ]
         ]);
         $game->setPageTitle(_('/ Datenbank / Die Top 10 der Handelsposten'));
-        $game->showMacro('html/database.xhtml/top_activ_tradeposts');
+        $game->setViewTemplate('html/database/highscores/topTradeposts.twig');
 
         $game->setTemplateVar(
             'ACTIV_TRADEPOST',

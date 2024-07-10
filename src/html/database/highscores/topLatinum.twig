@@ -1,0 +1,38 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
+
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in NAGUS_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        {{ userAvatar(entry.getUser) }}
+                    </div>
+                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div>
+                        <img class="commodity" src="assets/commodities/50.png" title="Latinum" />
+                        {{ entry.amount }}
+                    </div>
+                    <div>
+                        {{ pmWindow(USER, entry.getUser.getId) }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Latinum</h1>
+        <p>In dieser Liste werden die 10 Spieler mit dem höchsten Besitz an Latinum - der zentralen
+            Handelswährung im Spiel - aufgeführt.</p>
+        <p>Weitere Informationen zu Latinum findest Du <a
+                href="https://wiki.stuniverse.de/index.php?title=Waren#Latinum" target="_blank">hier</a>.
+        </p>
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>

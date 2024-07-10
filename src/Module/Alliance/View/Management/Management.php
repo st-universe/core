@@ -58,7 +58,7 @@ final class Management implements ViewControllerInterface
                 'title' => 'Verwaltung'
             ],
         ]);
-        $game->setTemplateFile('html/alliancemanagement.xhtml');
+        $game->setViewTemplate('html/alliance/alliancemanagement.twig');
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar('ALLIANCE_JOB_DIPLOMATIC', AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
         $game->setTemplateVar('ALLIANCE_JOB_SUCCESSOR', AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);

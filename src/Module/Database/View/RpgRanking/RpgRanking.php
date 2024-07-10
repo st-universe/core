@@ -34,7 +34,7 @@ final class RpgRanking implements ViewControllerInterface
             'Die 10 bestbewerteten RPG-Schreiber'
         );
         $game->setPageTitle('/ Datenbank / Die 10 bestbewerteten RPG-Schreiber');
-        $game->showMacro('html/database.xhtml/top_rpg_user');
+        $game->setViewTemplate('html/database/highscores/topRpg.twig');
         $game->setTemplateVar(
             'PRESTIGE_LIST',
             array_map(

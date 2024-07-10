@@ -1,0 +1,18 @@
+<table class="tcal" style="width: 400px;">
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Belegter Laderaum</th>
+    </tr>
+    {% for ship in LIST %}
+    <tr>
+        <td>
+            <a href="ship.php?SHOW_SHIP=1&id={{ ship.getId }}">
+                <img src="assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getRumpName }}" />
+            </a>
+        </td>
+        <td>{{ ship.getName|bbcode }}</td>
+        <td>{{ ship.getStorageSum }}/{{ ship.getMaxStorage }}</td>
+    </tr>
+    {% endfor %}
+</table>

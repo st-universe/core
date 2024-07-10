@@ -1,0 +1,35 @@
+{% if not ERROR %}
+{% set rump PLAN.getRump %}
+
+<table class="tcal">
+    <tr>
+        <td><img src="assets/ships/{{ rump.getId }}.png" title="{{ rump.getName }}" /></td>
+        <td>
+            <div style="padding-left: 5px; float: left; width: 205px">
+                <div class="divhead">Informationen (Basis-Werte)</div>
+                <div class="divbody">
+                    <span>Limit pro Spieler:</span> {{ LIMIT }}<br />
+                    <span>baubar:</span> {{ LOCATION }}<br />
+                    <span></span><br />
+                    <span>Crewanzahl:</span> {{ PLAN.getCrew }}<br />
+                    <span>Hüllenpunkte:</span> {{ rump.getBaseHull }}<br />
+                    <span>Schildpunkte:</span> {{ rump.getBaseShield }}<br />
+                    <span>EPS:</span> {{ rump.getBaseEps }}<br />
+                    <span>Reaktorleistung:</span> {{ rump.getBaseReactor }}<br />
+                    <span>Sensorreichtweite:</span> {{ rump.getBaseSensorRange }}<br />
+                    <span>Trefferchance (eff.):</span> {{ rump.getHitChance }}%<br />
+                    <span>Energiewaffenschaden:</span> {{ rump.getBaseDamage }}<br />
+                    <span>Energiewaffen-Salven:</span> {{ rump.getPhaserVolleys }}<br />
+                    <span>Torpedolevel</span>: {{ rump.getTorpedoLevel }}<br />
+                    <span>Torpedo-Salven</span>: {{ rump.getTorpedoVolleys }}<br />
+                    <span>Torpedolagerraum</span>: {{ rump.getBaseTorpedoStorage }}<br />
+                    <span>Beam-Faktor</span>: {{ rump.getBeamFactor }}<br />
+                    <span>Lagerraum:</span> {{ rump.getStorage }}<br />
+                    <span>Shuttlekapazität:</span> {{ rump.getShuttleSlots }}<br />
+                    <span>Andockplätze:</span> {{ rump.getDockingSlots }}<br />
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+{% endif %}

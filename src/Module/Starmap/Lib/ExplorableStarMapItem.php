@@ -122,7 +122,11 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     #[Override]
     public function getHref(): ?string
     {
-        return $this->exploreableStarMap->getMapped() ? sprintf('database.php?SHOW_ENTRY=1&cat=7&ent=%d', $this->exploreableStarMap->getMapped()) : null;
+        return $this->exploreableStarMap->getMapped()
+            ? sprintf(
+                'switchInnerContent(\'SHOW_ENTRY\', \'Systemkarte\', \'cat=7&ent=%d\', \'database.php\');',
+                $this->exploreableStarMap->getMapped()
+            ) : null;
     }
 
     private function getTradepost(): ?TradePostInterface

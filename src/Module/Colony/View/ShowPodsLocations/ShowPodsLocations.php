@@ -27,7 +27,7 @@ final class ShowPodsLocations implements ViewControllerInterface
         $crewAssignmentsAtTradeposts = $this->shipCrewRepository->getOrphanedSummaryByUserAtTradeposts($userId);
 
         $game->setPageTitle("Rettungskapsel/Tradeposts Scan");
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/orphanedcrewlocations');
+        $game->setMacroInAjaxWindow('html/colony/component/orphanedcrewlocations.twig');
 
         $game->setTemplateVar('PODS', $pods);
         $game->setTemplateVar('TRADEPOSTS', $crewAssignmentsAtTradeposts);

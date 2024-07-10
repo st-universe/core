@@ -1,0 +1,32 @@
+{% if not ERROR %}
+{% if PODS %}
+  <table class="tcal">
+    <tr>
+      <th>Crew-Anzahl</th>
+      <th>Koordinaten</th>
+    </tr>
+    {% for pod in PODS %}
+      <tr>
+        <td>{{ pod.getCrewCount }}</td>
+        <td>{{ pod.getSectorString }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+{% if TRADEPOSTS %}
+  <table class="tcal">
+    <tr>
+      <th>Crew-Anzahl</th>
+      <th>Koordinaten</th>
+      <th>Handelsposten</th>
+    </tr>
+    {% for post in TRADEPOSTS %}
+      <tr>
+        <td>{{ post.amount }}</td>
+        <td>(<span>{{ post.sector }}</span>)</td>
+        <td>{{ post.name|bbcode }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+{% endif %}

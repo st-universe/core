@@ -39,7 +39,7 @@ final class ShowModuleCancel implements ViewControllerInterface
             $module->getId()
         );
 
-        $game->showMacro('html/colonymacros.xhtml/queue_count');
+        $game->showMacro('html/colony/component/queuecount.twig');
         $game->setTemplateVar('MODULE', $module);
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('MODULE_ID', $module->getId());

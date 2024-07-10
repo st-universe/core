@@ -59,8 +59,8 @@ class CommoditiesOverviewTest extends StuTestCase
         $game->shouldReceive('setPageTitle')
             ->with('/ Datenbank / Warenübersicht')
             ->once();
-        $game->shouldReceive('showMacro')
-            ->with('html/database.xhtml/commodities_overview')
+        $game->shouldReceive('setViewTemplate')
+            ->with('html/database/commoditiesOverview.twig')
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with(

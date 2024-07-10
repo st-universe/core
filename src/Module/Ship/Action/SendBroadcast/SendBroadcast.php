@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SendBroadcast;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -31,17 +33,18 @@ final class SendBroadcast implements ActionControllerInterface
 
         $text = request::postStringFatal('text');
 
-        $usersToBroadcast = array_merge(
-            $this->searchBroadcastableColoniesInRange($ship),
-            $this->searchBroadcastableStationsInRange($ship)
-        );
+        /** @var Collection<int, UserInterface> */
+        $usersToBroadcast = new ArrayCollection();
 
-        if ($usersToBroadcast === []) {
+        $this->searchBroadcastableColoniesInRange($ship, $usersToBroadcast);
+        $this->searchBroadcastableStationsInRange($ship, $usersToBroadcast);
+
+        if ($usersToBroadcast->toArray() == []) {
             $game->addInformation(_("Keine Ziele in Reichweite"));
         } else {
             $this->privateMessageSender->sendBroadcast(
                 $ship->getUser(),
-                $usersToBroadcast,
+                $usersToBroadcast->toArray(),
                 $text
             );
             $game->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
@@ -51,47 +54,45 @@ final class SendBroadcast implements ActionControllerInterface
     }
 
     /**
-     * @return UserInterface[]
+     * @param Collection<int, UserInterface> $usersToBroadcast
      */
-    private function searchBroadcastableColoniesInRange(ShipInterface $ship): array
+    private function searchBroadcastableColoniesInRange(ShipInterface $ship, Collection $usersToBroadcast): void
     {
         $systemMap = $ship->getStarsystemMap();
 
         if ($systemMap === null) {
-            return [];
+            return;
         }
 
         $colonies = $this->colonyRepository->getForeignColoniesInBroadcastRange($systemMap, $ship->getUser());
 
         if ($colonies === []) {
-            return [];
+            return;
         }
 
-        $result = [];
         foreach ($colonies as $colony) {
-            $result[$colony->getUser()->getId()] = $colony->getUser();
+            if (!$usersToBroadcast->contains($colony->getUser())) {
+                $usersToBroadcast->add($colony->getUser());
+            }
         }
-
-        return $result;
     }
 
     /**
-     * @return UserInterface[]
+     * @param Collection<int, UserInterface> $usersToBroadcast
      */
-    private function searchBroadcastableStationsInRange(ShipInterface $ship): array
+    private function searchBroadcastableStationsInRange(ShipInterface $ship, Collection $usersToBroadcast): void
     {
         $stations = $this->shipRepository->getForeignStationsInBroadcastRange($ship);
 
         if ($stations === []) {
-            return [];
+            return;
         }
 
-        $result = [];
         foreach ($stations as $station) {
-            $result[$station->getUser()->getId()] = $station->getUser();
+            if (!$usersToBroadcast->contains($station->getUser())) {
+                $usersToBroadcast->add($station->getUser());
+            }
         }
-
-        return $result;
     }
 
     #[Override]

@@ -21,7 +21,7 @@ final class ShowHelp implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Hilfe - Star Trek Universe'));
-        $game->setTemplateFile('html/index_help.xhtml');
+        $game->setTemplateFile('html/index/help.twig');
 
         $game->setTemplateVar('FORUM', $this->config->get('board.base_url'));
         $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));

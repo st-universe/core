@@ -34,7 +34,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setMacroInAjaxWindow('html/commmacros.xhtml/write_quick_pm');
+        $game->setMacroInAjaxWindow('html/communication/writeQuickPm.twig');
         $game->setPageTitle(_('Neue private Nachricht'));
 
         $fromId = request::getIntFatal('fromid');

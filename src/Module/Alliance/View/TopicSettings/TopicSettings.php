@@ -33,7 +33,7 @@ final class TopicSettings implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Thema bearbeiten'));
-        $game->setMacroInAjaxWindow('html/alliancemacros.xhtml/topic_settings');
+        $game->setMacroInAjaxWindow('html/alliance/alliancetopicsettings.twig');
         $game->setTemplateVar('TOPIC', $topic);
     }
 }

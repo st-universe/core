@@ -1,0 +1,83 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow, userProfile %}
+
+{% block body %}
+<a href="?SHOW_NEW_POST=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}" class="linkbutton">Antwort erstellen</a>
+<br />
+<br />
+{{ _self.topicnavigation(TOPIC_NAVIGATION, TOPIC) }}
+<br />
+{% for post in POSTINGS %}
+<table class="tcal row{{ loop.index is odd ? 'odd' : '' }}">
+    <tr>
+        <td>
+            <img src="assets/rassen/{{ post.getUser.getFactionId }}s.png" />
+            <span>{{ post.getUser.getName|raw }}</span> ({{ post.getUser.getId }})
+        </td>
+        <td style="width: 100px;">
+            {% if post.getEditDate %}
+            <span class="knedit">zuletzt bearbeitet: {{ post.getEditDate|date('d.m.Y H:i') }}</span>
+            {% endif %}
+            {% if USERID == post.getUser.getId %}
+            <a href="?SHOW_EDIT_ALLY_POST=1&pid={{ post.getId }}"
+                onmouseover="cp('editPost{{ post.getId }}','buttons/knedit2')"
+                onmouseout="cp('editPost{{ post.getId }}','buttons/knedit1')">
+                <img src="/assets/buttons/knedit1.png" name="editPost{{ post.getId }}" title="editieren" />
+            </a>
+            {% endif %}
+            {% if IS_MODERATOR %}
+            <a href="?B_DEL_POSTING=1&bid={{ TOPIC.getBoardId }}&tid={{ post.getTopic.getId }}&pid={{ post.getId }}&sstr={{ SESSIONSTRING }}"
+                onmouseover="cp('delPost{{ post.getId }}','buttons/x2')"
+                onmouseout="cp('delPost{{ post.getId }}','buttons/x1')">
+                <img src="/assets/buttons/x1.png" name="delPost{{ post.getId }}" title="löschen" />
+            </a>
+            {% endif %}
+        </td>
+        <th style="width: 120px;">{{ post.getDate|date('d.m.Y H:i') }}</th>
+    </tr>
+</table>
+<table class="tcal">
+    <tr>
+        <td style="width: 150px; text-align: center; vertical-align: top;">
+            <div class="boardUserAvatar">
+                {{ userAvatar(post.getUser) }}
+            </div>
+            <br />
+            {% if not post.getUser.isOnline %}
+            <span style="color: Red;">Offline</span>
+            {% else %}
+            <span style="color: Green;">Online</span>
+            {% endif %}
+        </td>
+        <td style="vertical-align: top;">
+            <span>{{ post.getText|nl2br|bbcode2txt }}</span>
+        </td>
+    </tr>
+    <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
+        <td colspan="2">
+            <div>
+                {{ pmWindow(USER, post.getUser.getId) }}
+                {{ userProfile(post.getUser.getId) }}
+            </div>
+        </td>
+    </tr>
+</table>
+<br />
+{% endfor %}
+<br />
+{{ _self.topicnavigation(TOPIC_NAVIGATION, TOPIC) }}
+<br />
+<a href="?SHOW_NEW_POST=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}" class="linkbutton">Antwort erstellen</a>
+{% endblock %}
+
+{% macro topicnavigation(TOPIC_NAVIGATION, TOPIC) %}
+<table class="use">
+    <tr>
+        {% for item in TOPIC_NAVIGATION %}
+        <td>
+            <a href="?SHOW_TOPIC=1&bid={{ TOPIC.getBoardId }}&tid={{ TOPIC.getId }}&mark={{ item.mark }}"
+                class="{{ item.cssclass }}">{{ item.page }}</a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+{% endmacro %}

@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\View\ShowAccounts;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Trade\Lib\TradeAccountTalInterface;
+use Stu\Module\Trade\Lib\TradeAccountWrapperInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -26,7 +26,7 @@ final class ShowAccounts implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $list = array_map(
-            fn (TradePostInterface $tradePost): TradeAccountTalInterface => $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId),
+            fn (TradePostInterface $tradePost): TradeAccountWrapperInterface => $this->tradeLibFactory->createTradeAccountWrapper($tradePost, $userId),
             $this->tradePostRepository->getByUserLicense($userId)
         );
 
@@ -39,7 +39,7 @@ final class ShowAccounts implements ViewControllerInterface
             _('Warenkonten')
         );
         $game->setPageTitle(_('/ Handel'));
-        $game->setTemplateFile('html/tradeaccounts.xhtml');
+        $game->setTemplateFile('html/trade/tradeAccounts.twig');
 
         $game->setTemplateVar('ACCOUNTS', $list);
     }
