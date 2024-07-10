@@ -11,7 +11,7 @@
     <tr>
         <td>
             <img src="assets/rassen/{{ post.getUser.getFactionId }}s.png" />
-            <span>{{ post.getUser.getName|raw }}</span> ({{ post.getUser.getId }})
+            <span>{{ post.getUser.getName | bbcode }}</span> ({{ post.getUser.getId }})
         </td>
         <td style="width: 100px;">
             {% if post.getEditDate %}
@@ -49,7 +49,7 @@
             {% endif %}
         </td>
         <td style="vertical-align: top;">
-            <span>{{ post.getText|nl2br|bbcode2txt }}</span>
+            <span>{{ post.getText | bbcode }}</span>
         </td>
     </tr>
     <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
