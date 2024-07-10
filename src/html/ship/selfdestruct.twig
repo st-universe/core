@@ -1,0 +1,21 @@
+
+  <form action="ship.php" method="post">
+    <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <table class="tcal">
+      <tr>
+        <td colspan="2">Tippe folgenden Code in das Feld um die Selbstzerstörung zu bestätigen.</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; color: Red;">{{ SELF_DESTRUCT_CODE }}</td>
+        <td>
+          <input type="text" size="8" name="destructioncode" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" class="button" name="B_SELFDESTRUCT" value="Bestätigen" />
+        </td>
+      </tr>
+    </table>
+  </form>

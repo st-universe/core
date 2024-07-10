@@ -31,7 +31,7 @@ final class ShowShipStorage implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Schiffsfracht'));
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/shipstorage');
+        $game->setMacroInAjaxWindow('html/ship/shipstorage.twig');
 
         $game->setTemplateVar('SHIP', $ship);
     }

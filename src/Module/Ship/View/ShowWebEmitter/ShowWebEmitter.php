@@ -46,7 +46,7 @@ final class ShowWebEmitter implements ViewControllerInterface
         $ship = $wrapper->get();
 
         $game->setPageTitle(_('Webemitter'));
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/webemitter');
+        $game->setMacroInAjaxWindow('html/ship/webemitter.twig');
 
         $game->setTemplateVar('WRAPPER', $wrapper);
 

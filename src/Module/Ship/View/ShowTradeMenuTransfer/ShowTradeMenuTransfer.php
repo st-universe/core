@@ -37,8 +37,8 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
 
         $mode = request::getStringFatal('mode');
         match ($mode) {
-            'from' => $game->showMacro('html/shipmacros.xhtml/transferfromaccount'),
-            default => $game->showMacro('html/shipmacros.xhtml/transfertoaccount'),
+            'from' => $game->showMacro('html/ship/transferfromaccount.twig'),
+            default => $game->showMacro('html/ship/transfertoaccount.twig'),
         };
         /** @var TradePostInterface $tradepost */
         $tradepost = $this->tradePostRepository->find(request::getIntFatal('postid'));
