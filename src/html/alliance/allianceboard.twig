@@ -23,7 +23,7 @@
             <a href="?SHOW_TOPIC=1&bid={{ board.getId }}&tid={{ RECENT_POST.getTopicId }}">{{
                 RECENT_POST.getTopic.getName|raw }}</a><br />
             <span>{{ RECENT_POST.getDate|date('d.m.Y H:i') }}</span> von:<br />
-            <span>{{ RECENT_POST.getUser.getName|raw }}</span>
+            <span>{{ RECENT_POST.getUser.getName | bbcode }}</span>
             {% else %}
             -
             {% endif %}

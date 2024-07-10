@@ -34,7 +34,7 @@
         <td>
             {% if RECENT_POST %}
             <span>{{ RECENT_POST.getDate|date('d.m.Y H:i') }}</span> von:<br />
-            <span>{{ RECENT_POST.getUser.getName|raw }}</span>
+            <span>{{ RECENT_POST.getUser.getName | bbcode }}</span>
             {% else %}
             -
             {% endif %}
