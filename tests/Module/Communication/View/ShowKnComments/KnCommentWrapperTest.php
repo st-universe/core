@@ -11,7 +11,7 @@ use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
-class KnCommentTalTest extends StuTestCase
+class KnCommentWrapperTest extends StuTestCase
 {
     /** @var MockInterface&KnCommentInterface */
     private MockInterface $comment;
@@ -22,7 +22,7 @@ class KnCommentTalTest extends StuTestCase
     /** @var MockInterface&ConfigInterface */
     private MockInterface $config;
 
-    private KnCommentTal $tal;
+    private KnCommentWrapper $tal;
 
     #[Override]
     protected function setUp(): void
@@ -31,7 +31,7 @@ class KnCommentTalTest extends StuTestCase
         $this->user = $this->mock(UserInterface::class);
         $this->config = $this->mock(ConfigInterface::class);
 
-        $this->tal = new KnCommentTal(
+        $this->tal = new KnCommentWrapper(
             $this->config,
             $this->comment,
             $this->user

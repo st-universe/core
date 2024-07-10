@@ -13,7 +13,7 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
-final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
+final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterface
 {
     /**
      * @var array<StorageInterface>|null

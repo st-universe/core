@@ -4,7 +4,7 @@ namespace Stu\Module\Trade\Lib;
 
 use Stu\Orm\Entity\ShipInterface;
 
-interface DealAccountTalInterface
+interface DealAccountWrapperInterface
 {
     public function getId(): int;
 

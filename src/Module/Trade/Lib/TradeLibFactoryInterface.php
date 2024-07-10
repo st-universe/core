@@ -2,21 +2,23 @@
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 
 interface TradeLibFactoryInterface
 {
-    public function createTradeAccountTal(
+    public function createTradeAccountWrapper(
         TradePostInterface $tradePost,
         int $userId
-    ): TradeAccountTalInterface;
+    ): TradeAccountWrapperInterface;
 
-    public function createBasicTradeAccountTal(
+    /** @param array<BasicTradeInterface> $basicTrades */
+    public function createBasicTradeAccountWrapper(
         TradePostInterface $tradePost,
         array $basicTrades,
         int $userId
-    ): BasicTradeAccountTalInterface;
+    ): BasicTradeAccountWrapperInterface;
 
     public function createTradePostStorageManager(
         TradePostInterface $tradePost,

@@ -4,7 +4,7 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Stu\Orm\Entity\UserInterface;
 
-interface KnCommentTalInterface
+interface KnCommentWrapperInterface
 {
     public function getId(): int;
 

@@ -40,7 +40,7 @@ final class ShowTradePostInfo implements ViewControllerInterface
         $game->setTemplateVar('IS_NPC_TRADEPOST', $tradePost->isNpcTradepost());
         $game->setTemplateVar(
             'TRADE_POST_INFO',
-            $this->talFactory->createTradeAccountTal($tradePost, $userId)
+            $this->talFactory->createTradeAccountWrapper($tradePost, $userId)
         );
     }
 }

@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\View\ShowBasicTrade;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Trade\Lib\BasicTradeAccountTalInterface;
+use Stu\Module\Trade\Lib\BasicTradeAccountWrapperInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
@@ -29,7 +29,7 @@ final class ShowBasicTrade implements ViewControllerInterface
         $basicTrades = $this->basicTradeRepository->getBasicTrades($userId);
 
         $basicTradeAccounts = array_map(
-            fn (TradePostInterface $tradePost): BasicTradeAccountTalInterface => $this->tradeLibFactory->createBasicTradeAccountTal($tradePost, $basicTrades, $userId),
+            fn (TradePostInterface $tradePost): BasicTradeAccountWrapperInterface => $this->tradeLibFactory->createBasicTradeAccountWrapper($tradePost, $basicTrades, $userId),
             $this->tradePostRepository->getByUserLicenseOnlyNPC($userId)
         );
 

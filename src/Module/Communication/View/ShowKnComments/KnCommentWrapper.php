@@ -9,7 +9,7 @@ use Override;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 
-final class KnCommentTal implements KnCommentTalInterface
+final class KnCommentWrapper implements KnCommentWrapperInterface
 {
     public function __construct(private ConfigInterface $config, private KnCommentInterface $comment, private UserInterface $currentUser)
     {

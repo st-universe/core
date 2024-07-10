@@ -10,7 +10,7 @@ use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
-final class DealAccountTal implements DealAccountTalInterface
+final class DealAccountWrapper implements DealAccountWrapperInterface
 {
     /** @var array<StorageInterface> */
     private ?array $storage = null;

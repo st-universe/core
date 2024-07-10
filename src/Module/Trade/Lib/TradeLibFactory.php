@@ -16,16 +16,21 @@ use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 final class TradeLibFactory implements TradeLibFactoryInterface
 {
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository, private CommodityRepositoryInterface $commodityRepository)
-    {
+    public function __construct(
+        private TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        private TradeTransferRepositoryInterface $tradeTransferRepository,
+        private TradeOfferRepositoryInterface $tradeOfferRepository,
+        private StorageRepositoryInterface $storageRepository,
+        private CommodityRepositoryInterface $commodityRepository
+    ) {
     }
 
     #[Override]
-    public function createTradeAccountTal(
+    public function createTradeAccountWrapper(
         TradePostInterface $tradePost,
         int $userId
-    ): TradeAccountTalInterface {
-        return new TradeAccountTal(
+    ): TradeAccountWrapperInterface {
+        return new TradeAccountWrapper(
             $this->tradeLicenseRepository,
             $this->tradeTransferRepository,
             $this->tradeOfferRepository,
@@ -36,17 +41,17 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     }
 
     #[Override]
-    public function createBasicTradeAccountTal(
+    public function createBasicTradeAccountWrapper(
         TradePostInterface $tradePost,
         array $basicTrades,
         int $userId
-    ): BasicTradeAccountTalInterface {
+    ): BasicTradeAccountWrapperInterface {
         $filteredBasicTrades = array_filter(
             $basicTrades,
             fn (BasicTradeInterface $basicTrade): bool => $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork()
         );
 
-        return new BasicTradeAccountTal(
+        return new BasicTradeAccountWrapper(
             $this->storageRepository,
             $tradePost,
             $filteredBasicTrades,

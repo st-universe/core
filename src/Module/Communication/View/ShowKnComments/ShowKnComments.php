@@ -35,7 +35,7 @@ final class ShowKnComments implements ViewControllerInterface
         $list = [];
         foreach ($post->getComments() as $comment) {
             if (!$comment->isDeleted()) {
-                $list[] = new KnCommentTal(
+                $list[] = new KnCommentWrapper(
                     $this->config,
                     $comment,
                     $user

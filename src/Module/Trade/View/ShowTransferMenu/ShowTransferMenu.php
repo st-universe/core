@@ -59,7 +59,7 @@ final class ShowTransferMenu implements ViewControllerInterface
         $game->setTemplateVar('IS_DILITHIUM', $storage->getCommodityId() === CommodityTypeEnum::COMMODITY_DILITHIUM);
         $game->setTemplateVar(
             'TRADE_POST',
-            $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId)
+            $this->tradeLibFactory->createTradeAccountWrapper($tradePost, $userId)
         );
         $game->setTemplateVar('IS_NPC_POST', $tradePost->getUser()->isNpc());
         $game->setTemplateVar(

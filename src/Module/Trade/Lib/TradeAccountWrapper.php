@@ -13,7 +13,7 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
-final class TradeAccountTal implements TradeAccountTalInterface
+final class TradeAccountWrapper implements TradeAccountWrapperInterface
 {
     /**
      * @var StorageInterface[]|null

@@ -50,7 +50,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
             new AccessViolation();
         }
 
-        $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
+        $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountWrapper($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
     }
 }
