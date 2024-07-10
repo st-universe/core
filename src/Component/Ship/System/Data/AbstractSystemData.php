@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Data;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Tal\StatusBar;
-use Stu\Module\Tal\StatusBarInterface;
+use Stu\Module\Template\StatusBar;
+use Stu\Module\Template\StatusBarInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 

@@ -6,7 +6,7 @@ namespace Stu\Component\Ship\System\Data;
 
 use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarColorEnum;
 
 class EpsSystemData extends AbstractSystemData
 {

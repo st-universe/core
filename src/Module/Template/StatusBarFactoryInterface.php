@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Tal;
+namespace Stu\Module\Template;
 
 /**
  * Creates tal component classes (like the status bar)

@@ -14,8 +14,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use RuntimeException;
-use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\StatusBar;
+use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\StatusBar;
 use Stu\Orm\Repository\PlanetFieldRepository;
 
 #[Table(name: 'stu_colonies_fielddata')]

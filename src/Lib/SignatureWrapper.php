@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib;
 
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
-use Stu\Module\Tal\TalHelper;
 
 class SignatureWrapper
 {
@@ -45,8 +44,8 @@ class SignatureWrapper
         }
     }
 
-    public function getAge(): string
+    public function getAge(): int
     {
-        return TalHelper::formatSeconds((string) (time() - $this->signature->getTime()));
+        return time() - $this->signature->getTime();
     }
 }

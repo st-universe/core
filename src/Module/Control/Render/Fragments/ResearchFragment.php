@@ -6,8 +6,8 @@ namespace Stu\Module\Control\Render\Fragments;
 
 use Override;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\StatusBarFactoryInterface;
+use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;

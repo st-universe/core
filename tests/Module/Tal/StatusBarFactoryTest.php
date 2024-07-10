@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Tal;
+namespace Stu\Module\Template;
 
 use Override;
 use Stu\StuTestCase;
