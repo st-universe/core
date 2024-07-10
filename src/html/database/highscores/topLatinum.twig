@@ -10,15 +10,15 @@
                         <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
                     </div>
                     <div class="userprofile">
-                        {{ userAvatar(entry.getUser) }}
+                        {{ userAvatar(entry.user) }}
                     </div>
-                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div class="userName">{{ entry.user.getName|bbcode }}</div>
                     <div>
                         <img class="commodity" src="assets/commodities/50.png" title="Latinum" />
                         {{ entry.amount }}
                     </div>
                     <div>
-                        {{ pmWindow(USER, entry.getUser.getId) }}
+                        {{ pmWindow(USER, entry.user.getId) }}
                     </div>
                 </div>
             </li>

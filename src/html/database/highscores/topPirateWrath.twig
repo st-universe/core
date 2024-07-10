@@ -10,16 +10,16 @@
                         <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
                     </div>
                     <div class="userprofile">
-                        {{ userAvatar(entry.getUser) }}
+                        {{ userAvatar(entry.entry.getUser) }}
                     </div>
-                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div class="userName">{{ entry.entry.getUser.getName|bbcode }}</div>
                     {% if entry.entry.getGradientColor %}
                     <div
                         style="width: 20px; height: 20px; background-color: {{ entry.entry.getGradientColor }}; border: 1px solid black;">
                     </div>
                     {% endif %}
                     <div>
-                        {{ pmWindow(USER, entry.getUser.getId) }}
+                        {{ pmWindow(USER, entry.entry.getUser.getId) }}
                     </div>
                 </div>
             </li>
