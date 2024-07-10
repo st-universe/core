@@ -33,7 +33,6 @@
           <div style="margin: 5px">
             <div class="user_box_grid">
               <div class="user_box_avatar" onclick="event.stopPropagation();">
-                <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER THIS/getUser" />
               </div>
               <div class="user_box_details">
                 <div class="userBoxDetailName" tal:content="structure bbcode:THIS/getUser/getName">NAME</div>

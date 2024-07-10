@@ -1,44 +1,4 @@
 <html xmlns:stu="stu">
-<tal:block metal:define-macro="pmwindow" tal:define="handle THIS/getUniqId">
-  <a tal:condition="php: USER.getId() != id" href="javascript:void(0);"
-    onmouseover="cp('${handle}','buttons/msg2', 'png');" onmouseout="cp('${handle}','buttons/msg1', 'png');"
-    onclick="closePopup();openPmWindow(${USER/getId}, ${id}, 1,1);"><img src="/assets/buttons/msg1.png"
-      tal:attributes="name handle" title="Nachricht senden" /></a>
-</tal:block>
-<tal:block metal:define-macro="userprofile" tal:define="handle THIS/getUniqId">
-  <a href="/userprofile.php?uid=${id}" onmouseover="cp('${handle}','buttons/info2', 'png');"
-    onmouseout="cp('${handle}','buttons/info1', 'png');"><img src="/assets/buttons/info1.png"
-      tal:attributes="name handle" title="Siedlerprofil ansehen" /></a>
-</tal:block>
-<metal:block metal:define-macro="userinfo">
-  <span tal:replace="structure bbcode:user/getName">USER</span> (<span tal:replace="user/getId">ID</span>)
-  <img src="/assets/buttons/rpg${user/getRpgBehavior/value}.png" title="${user/getRpgBehavior/getDescription}" />
-  <tal:block tal:condition="user/isShowOnlineState">
-    <img tal:condition="user/isOnline" src="/assets/buttons/user_online.png" title="User ist online" />
-    <img tal:condition="not:user/isOnline" src="/assets/buttons/user_offline.png" title="User ist offline" />
-  </tal:block>
-</metal:block>
-<metal:block metal:define-macro="userbox">
-  <div class="divbody userbox">
-    <div style="float: left; width: 50px;">
-      <metal:macro metal:use-macro="useravatar" tal:define="USER data" />
-    </div>
-    <div style="float: left; width: 250px; margin-left: 5px;">
-      <div class="darkbg">
-        <span tal:replace="structure bbcode:data/getName">NAME</span>
-      </div>
-      <a href="alliance.php?id=${data/getAlliance/getId}" tal:condition="data/getAlliance"
-        tal:content="structure bbcode:data/getAlliance/getName">NAME</a>
-      <br />
-      Spielt seit: ${datetime:data/getCreationDate}
-    </div>
-    <div style="float: left; width: 15px; text-align: right;">
-      <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getId" />
-      <metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id data/getId" />
-      <img src="assets/rassen/${data/getFactionId}s.png" />
-    </div>
-  </div>
-</metal:block>
 <metal:macro metal:define-macro="commoditySelection">
   <table style="width: 100%;">
     <tr>
@@ -54,23 +14,6 @@
       </td>
     </tr>
   </table>
-</metal:macro>
-<metal:block metal:define-macro="crewimage">
-  <img phptal:cache="1d per crew/getId"
-    src="assets/crew/${crew/getRace/getGfxPath}/${crew/getGenderShort}/1_${crew/getType}.png" />
-</metal:block>
-<metal:macro metal:define-macro="useravatar">
-  <div class="userAvatar">
-    <a href="/userprofile.php?uid=${USER/getId}">
-      <img tal:condition="USER/getAvatar"
-        tal:attributes="src string:/${ASSET_PATHS/user}/${USER/getAvatar}.png; title bbcode2txt:USER/getName" />
-      <img tal:condition="not:USER/getAvatar"
-        tal:attributes="src string:/${ASSET_PATHS/faction}/${USER/getFactionId}kn.png; title bbcode2txt:USER/getName" />
-    </a>
-  </div>
-</metal:macro>
-<metal:macro metal:define-macro="table_cell">
-  <td id="${ID}">${INNERHTML}</td>
 </metal:macro>
 
 </html>
