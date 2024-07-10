@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Colony\Lib;
 
-interface BuildingFunctionTalInterface
+interface BuildingFunctionWrapperInterface
 {
     public function isTorpedoFab(): bool;
 

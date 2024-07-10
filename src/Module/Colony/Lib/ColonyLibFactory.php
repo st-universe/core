@@ -66,10 +66,10 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     #[Override]
-    public function createBuildingFunctionTal(
-        array $buildingFunctionIds
-    ): BuildingFunctionTalInterface {
-        return new BuildingFunctionTal($buildingFunctionIds);
+    public function createBuildingFunctionWrapper(
+        array $buildingfunctions
+    ): BuildingFunctionWrapperInterface {
+        return new BuildingFunctionWrapper($buildingfunctions);
     }
 
     #[Override]

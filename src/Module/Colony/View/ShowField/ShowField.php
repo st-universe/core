@@ -105,7 +105,7 @@ final class ShowField implements ViewControllerInterface
         if ($field->hasBuilding()) {
             $game->setTemplateVar(
                 'BUILDING_FUNCTION',
-                $this->colonyLibFactory->createBuildingFunctionTal($field->getBuilding()->getFunctions()->toArray())
+                $this->colonyLibFactory->createBuildingFunctionWrapper($field->getBuilding()->getFunctions()->toArray())
             );
         }
         $game->setTemplateVar(

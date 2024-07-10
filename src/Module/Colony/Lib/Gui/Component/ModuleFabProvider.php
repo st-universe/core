@@ -6,7 +6,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Module\Colony\View\ShowModuleFab\ModuleFabricationListItemTal;
+use Stu\Module\Colony\View\ShowModuleFab\ModuleFabricationListItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
@@ -38,7 +38,7 @@ final class ModuleFabProvider implements GuiComponentProviderInterface
 
         $list = [];
         foreach ($modules as $module) {
-            $list[] = new ModuleFabricationListItemTal(
+            $list[] = new ModuleFabricationListItem(
                 $this->moduleQueueRepository,
                 $module->getModule(),
                 $host

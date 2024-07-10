@@ -9,14 +9,11 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\BuildingFunctionInterface;
 
-final class BuildingFunctionTal implements BuildingFunctionTalInterface
+final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
 {
-    public function __construct(
-        /**
-         * @var BuildingFunctionInterface[]
-         */
-        private array $buildingfunctionIds
-    ) {
+    /** @param array<BuildingFunctionInterface> $buildingfunctions */
+    public function __construct(private array $buildingfunctions)
+    {
     }
 
     #[Override]
@@ -58,7 +55,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     #[Override]
     public function isShipyard(): bool
     {
-        foreach ($this->buildingfunctionIds as $func) {
+        foreach ($this->buildingfunctions as $func) {
             if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getShipyardOptions())) {
                 return true;
             }
@@ -69,7 +66,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     #[Override]
     public function getShipyardBuildingFunctionId(): ?int
     {
-        foreach ($this->buildingfunctionIds as $func) {
+        foreach ($this->buildingfunctions as $func) {
             if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getShipyardOptions())) {
                 return $func->getId();
             }
@@ -80,7 +77,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     #[Override]
     public function isModuleFab(): bool
     {
-        foreach ($this->buildingfunctionIds as $func) {
+        foreach ($this->buildingfunctions as $func) {
             if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
                 return true;
             }
@@ -103,7 +100,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     #[Override]
     public function getModuleFabBuildingFunctionId(): ?int
     {
-        foreach ($this->buildingfunctionIds as $func) {
+        foreach ($this->buildingfunctions as $func) {
             if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
                 return $func->getId();
             }
@@ -114,7 +111,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     #[Override]
     public function getFabHallBuildingFunctionId(): ?int
     {
-        foreach ($this->buildingfunctionIds as $func) {
+        foreach ($this->buildingfunctions as $func) {
             if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL) {
                 return $func->getId();
             }
@@ -125,7 +122,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     #[Override]
     public function getTechCenterBuildingFunctionId(): ?int
     {
-        foreach ($this->buildingfunctionIds as $func) {
+        foreach ($this->buildingfunctions as $func) {
             if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_TECH_CENTER) {
                 return $func->getId();
             }
@@ -136,7 +133,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     #[Override]
     public function getSubspaceTelescopeBuildingFunctionId(): ?int
     {
-        foreach ($this->buildingfunctionIds as $func) {
+        foreach ($this->buildingfunctions as $func) {
             if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE) {
                 return $func->getId();
             }
@@ -146,6 +143,6 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
 
     private function hasFunction(int $functionId): bool
     {
-        return array_key_exists($functionId, $this->buildingfunctionIds);
+        return array_key_exists($functionId, $this->buildingfunctions);
     }
 }

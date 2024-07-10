@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ModuleCostInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
-final class ModuleFabricationListItemTal
+final class ModuleFabricationListItem
 {
-    public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private ModuleInterface $module, private ColonyInterface $colony)
-    {
+    public function __construct(
+        private ModuleQueueRepositoryInterface $moduleQueueRepository,
+        private ModuleInterface $module,
+        private ColonyInterface $colony
+    ) {
     }
 
     public function getModule(): ModuleInterface
@@ -39,6 +43,7 @@ final class ModuleFabricationListItemTal
         return $this->module->getEcost();
     }
 
+    /** @return array<int, ModuleCostInterface> */
     public function getConstructionCosts(): array
     {
         return $this->module->getCostSorted();
