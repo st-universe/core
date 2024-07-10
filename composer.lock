@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2eac1b0508cb92bfad3689c117dabc86",
+    "content-hash": "46748c3c13c9d9b2f3104d1ab1de0d5e",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -3674,82 +3674,6 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/master"
             },
             "time": "2017-10-23T01:57:42+00:00"
-        },
-        {
-            "name": "scn/phptal",
-            "version": "v3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SC-Networks/PHPTAL.git",
-                "reference": "6f02a2d9748cb5a7405ba12acf1db9c8ffe043ec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SC-Networks/PHPTAL/zipball/6f02a2d9748cb5a7405ba12acf1db9c8ffe043ec",
-                "reference": "6f02a2d9748cb5a7405ba12acf1db9c8ffe043ec",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-gettext": "*",
-                "ext-simplexml": "*",
-                "php": "^7.3||^8.0",
-                "symfony/polyfill-mbstring": "^1.12"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.2"
-            },
-            "suggest": {
-                "ext-gettext": "Php gettext extension for i18n support",
-                "ext-mbstring": "Multibyte support is important for any non-english strings",
-                "scn/phptal-lint": "Linter for phptal template files"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PhpTal\\": "src/"
-                },
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1+"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel Jakob",
-                    "homepage": "https://www.sc-networks.com"
-                },
-                {
-                    "name": "Marcus Schwarz",
-                    "homepage": "https://www.sc-networks.com"
-                },
-                {
-                    "name": "Laurent Bédubourg",
-                    "email": "lbedubourg@motion-twin.com",
-                    "homepage": "http://labe.me"
-                },
-                {
-                    "name": "Kornel Lesiński",
-                    "email": "kornel@geekhood.net",
-                    "homepage": "http://pornel.net/"
-                }
-            ],
-            "description": "PHPTAL is a templating engine for PHP that implements Zope Page Templates syntax",
-            "homepage": "https://github.com/SC-Networks/PHPTAL/",
-            "keywords": [
-                "phptal",
-                "template engine",
-                "zope"
-            ],
-            "support": {
-                "issues": "https://github.com/SC-Networks/PHPTAL/issues",
-                "source": "https://github.com/SC-Networks/PHPTAL/tree/v3.1.0"
-            },
-            "time": "2021-05-18T10:15:39+00:00"
         },
         {
             "name": "st-universe/planet-generator",
