@@ -24,8 +24,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function setTemplateFile(string $tpl): void;
 
-    public function setMacroAndTemplate(string $macro, string $tpl): void;
-
     public function setMacroInAjaxWindow(string $macro): void;
 
     public function showMacro(string $macro): void;
@@ -121,11 +119,10 @@ interface GameControllerInterface extends InformationInterface
 
     public function triggerEvent(object $event): void;
 
+    /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
     public function getGameStats(): array;
 
     public function getGameStateTextual(): string;
-
-    public function getLoginError(): string;
 
     public function getBenchmarkResult(): array;
 }

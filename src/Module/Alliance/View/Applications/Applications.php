@@ -45,7 +45,7 @@ final class Applications implements ViewControllerInterface
             'alliance.php?SHOW_APPLICATIONS=1',
             _('Bewerbungen')
         );
-        $game->setTemplateFile('html/allianceapplications.xhtml');
+        $game->setViewTemplate('html/alliance/allianceapplications.twig');
         $game->setTemplateVar(
             'APPLICATIONS',
             $this->allianceJobRepository->getByAllianceAndType(

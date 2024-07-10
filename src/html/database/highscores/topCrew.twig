@@ -1,0 +1,35 @@
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in CREWS_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        <img src="assets/rassen/{{ entry.getFaction }}kn.png" />
+                    </div>
+                    <div class="userName">
+                        Unbekannt
+                    </div>
+                    <div>
+                        <img src="assets/buttons/crew.png" title="Crew auf Schiffen / Stationen" />
+                        {{ entry.getCrewCount }}
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Ausbilder</h1>
+        <p>In dieser Liste werden die 10 Spieler mit der meisten Crew auf Schiffen/Stationen dargestellt.
+        </p>
+        <p>Da es sich dabei um sensible Informationen handelt, werden keine Spielernamen angezeigt.</p>
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>

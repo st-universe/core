@@ -29,6 +29,30 @@
 {% endif %}
 {% endmacro %}
 
+{% macro userbox(data) %}
+<div class="divbody userbox">
+    <div style="float: left; width: 50px;">
+        {{ _self.userAvatar(data) }}
+    </div>
+    <div style="float: left; width: 250px; margin-left: 5px;">
+        <div class="darkbg">
+            <span>{{ data.getName|bbcode }}</span>
+        </div>
+        {% if data.getAlliance %}
+            <a href="alliance.php?id={{ data.getAlliance.getId }}">{{ data.getAlliance.getName|bbcode }}</a>
+        {% endif %}
+        <br />
+        Spielt seit: {{ data.getCreationDate|stuDateTime }}
+    </div>
+    <div style="float: left; width: 15px; text-align: right;">
+        {{ _self.pmWindow(USER, data.getId) }}
+        {{ _self.userProfile(data.getId) }}
+        <img src="assets/rassen/{{ data.getFactionId }}s.png" />
+    </div>
+</div>
+{% endmacro %}
+
+
 {% macro pmWindow(USER, id) %}
 {% set handle = getUniqId() %}
 {% if USER.getId != id %}
@@ -169,4 +193,21 @@ updateSelectedShipId('{{ id }}');"
 {% set id = colony.getId %}
 href="javascript:void(0);"
 onClick = "switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '/colony.php');"
+{% endmacro %}
+
+{% macro commoditySelection(name, commodityId, amount) %}
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 20px;">
+        <img src="/assets/commodities/{{ commodityId }}.png"
+          onclick="this.closest('tr').querySelector('.commodityAmount').value={{ amount }}" style="cursor: pointer;" title="{{ name }}" />
+      </td>
+      <td style="width: 60px; vertical-align: middle;">
+        {{ amount }}
+      </td>
+      <td>
+        <input type="text" size="3" name="count[]" class="commodityAmount" />
+      </td>
+    </tr>
+  </table>
 {% endmacro %}

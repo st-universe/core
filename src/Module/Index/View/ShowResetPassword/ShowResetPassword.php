@@ -28,7 +28,7 @@ final class ShowResetPassword implements ViewControllerInterface
                 $game->getUser()->getId()
             ));
         }
-        $game->setTemplateFile('html/index_resetpassword.xhtml');
+        $game->setTemplateFile('html/index/resetPassword.twig');
         $game->setPageTitle(_('Password zurücksetzen - Star Trek Universe'));
         $game->setTemplateVar('TOKEN', $user->getPasswordToken());
     }

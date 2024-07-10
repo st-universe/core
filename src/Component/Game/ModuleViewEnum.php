@@ -59,7 +59,7 @@ enum ModuleViewEnum: string
     public function getTemplate(): string
     {
         return match ($this) {
-            self::INDEX => 'html/index.xhtml',
+            self::INDEX => 'html/index/index.twig',
             self::GAME => 'html/game/game.twig',
             self::MAINDESK => 'html/view/maindesk.twig',
             self::COLONY => 'html/view/colonylist.twig',

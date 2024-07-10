@@ -42,8 +42,6 @@ use Stu\Module\Config\StuConfig;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Tal\TalPage;
-use Stu\Module\Tal\TalPageInterface;
 use Ubench;
 
 use function DI\autowire;
@@ -143,7 +141,6 @@ return [
             'charset' => 'utf8',
         ], $configuration);
     },
-    TalPageInterface::class => autowire(TalPage::class),
     GameControllerInterface::class => autowire(GameController::class),
     Parser::class => function (): Parser {
         $parser = new Parser();

@@ -1,0 +1,30 @@
+{% if not ERROR %}
+<table class="tcal">
+    <tr>
+        <td colspan="2" style="width: 250px;">Bauzeit in Ticks</td>
+        <td style="width: 100px; text-align: center;">
+            {{ PLAN.getRump.getBuildtime }}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="width: 250px;">Benötigte angedockte Workbees</td>
+        <td style="color: {{ WORKBEECOLOR }}; width: 100px; text-align: center;">
+            {{ DOCKED }}/{{ PLAN.getRump.getNeededWorkbees }}
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 50px;">Modul</th>
+        <th style="width: 100px;">Level</th>
+        <th style="width: 100px;">Anzahl</th>
+    </tr>
+    {% for mod in MODS %}
+    <tr style="text-align: center;">
+        <td><img src="assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" /></td>
+        <td>{{ mod.getLevel }}</td>
+        <td style="color: {{ mod.getColor }}">
+            {{ mod.getStoredAmount }}/{{ mod.getNeededAmount }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}

@@ -1,0 +1,88 @@
+{% if not RUMP.getIsNpc %}
+<table class="tcal">
+    <tr>
+        <th colspan="2">Rumpfdetails</th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="assets/ships/{{ RUMP.getId }}.png" title="{{ RUMP.getName }}" />
+        </td>
+    </tr>
+    <tr>
+        <td class="darkbg">Fraktion</td>
+        <td>
+            <img src="assets/rassen/{{ RUMP.getFractionId }}s.png" />
+        </td>
+    </tr>
+    <tr>
+        <td class="darkbg">Kategorie</td>
+        <td>{{ RUMP.getShipRumpCategory.getName }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Modullevel</td>
+        <td>{{ RUMP.getModuleLevel }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Flugkosten</td>
+        <td>{{ RUMP.getFlightEcost }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Lagerraum</td>
+        <td>{{ RUMP.getStorage }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Beamfaktor</td>{{ RUMP.getBeamFactor }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Raumschiffmasse</td>
+        <td>{{ RUMP.getTractorMass|numberWithThousandSeperator }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Traktortraglast</td>
+        <td>{{ RUMP.getTractorPayload|numberWithThousandSeperator }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Energiewaffensalven</td>
+        <td>{{ RUMP.getPhaserVolleys }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Torpedolevel</td>
+        <td>{{ RUMP.getTorpedoLevel }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Torpedosalven</td>
+        <td>{{ RUMP.getTorpedoVolleys }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Torpedokapazität</td>
+        <td>{{ RUMP.getBaseTorpedoStorage }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Sensorreichweite</td>
+        <td>{{ RUMP.getBaseSensorRange }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">max. Crew</td>
+        <td>{{ MAX_CREW_COUNT }}</td>
+    </tr>
+    <tr>
+        <td class="darkbg">Baukosten</td>
+        <td>
+            <div>
+                <img src="assets/buttons/e_trans2.png" title="Energie" /> {{ RUMP.getEpsCost }}
+            </div>
+            {% for data in RUMP.getBuildingCosts %}
+            <div>
+                <img src="assets/commodities/{{ data.getCommodity.getId }}.png"
+                    title="{{ data.getCommodity.getName }}" />
+                {{ data.getAmount }}
+            </div>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td class="darkbg">Bauzeit</td>
+        <td>{{ RUMP.getBuildTime|formatSeconds }}</td>
+    </tr>
+</table>
+{% endif %}

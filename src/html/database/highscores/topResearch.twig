@@ -1,0 +1,39 @@
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
+
+<div class="statisticsToplist">
+    <div>
+        <ul class="statistics">
+            {% for entry in RESEARCH_LIST %}
+            <li>
+                <div class="userGrid">
+                    <div class="placement">
+                        <span class="placement{{ loop.index }}">{{ loop.index }}.</span>
+                    </div>
+                    <div class="userprofile">
+                        {{ userAvatar(entry.getUser) }}
+                    </div>
+                    <div class="userName">{{ entry.getUser.getName|bbcode }}</div>
+                    <div title="{{ entry.getTime|stuDateTime }}">
+                        Punkte: {{ entry.getPoints }}
+                    </div>
+                    <div>
+                        {{ pmWindow(USER, entry.getUser.getId) }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h1>Entdecker</h1>
+        <p>In dieser Liste werden die 10 Spieler mit dem höchsten Forschungsstand im Spiel aufgeführt.</p>
+        <p>Forschungspunkte (Level 1) bringen einen Punkt.</p>
+        <p>Forschungspunkte (Level 2) bringen zwei Punkte.</p>
+        <p>Forschungspunkte (Level 3) bringen drei Punkte.</p>
+        <p>Alle fortgeschrittenen Forschungspunkte bringen vier Punkte.</p>
+        <br />
+        <p>Dein eigener Punktestand: {{ USER_POINTS }}</p>
+        <br />
+        <p>Diese Liste ist immer aktuell.</p>
+    </div>
+</div>

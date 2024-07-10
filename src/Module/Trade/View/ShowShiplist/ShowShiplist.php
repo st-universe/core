@@ -26,7 +26,7 @@ final class ShowShiplist implements ViewControllerInterface
         $userId = $game->getUser()->getId();
         $tradePostId = request::getIntFatal('id');
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradepostshiplist');
+        $game->setMacroInAjaxWindow('html/trade/tradePostShipList.twig');
         $game->setPageTitle(_('Schiffe vor Ort'));
 
         $license = $this->tradeLicenseRepository->getLatestActiveLicenseByUserAndTradePost($userId, $tradePostId);

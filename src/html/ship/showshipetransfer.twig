@@ -1,0 +1,24 @@
+  {% set ship = WRAPPER.get %}
+  {% set eps = WRAPPER.getEpsSystemData %}
+  <form action="ship.php" method="post">
+    <input type="hidden" name="id" value="{{ ship.getId }}" />
+    <input type="hidden" name="target" value="{{ targetShip.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <table class="tcal">
+      <tr>
+        <td>Ziel: <span>{{ targetShip.getName|bbcode }}</span></td>
+      </tr>
+      <tr>
+        <td>Verfügbare Energie: {{ eps.getEps }}/{{ eps.getMaxEps }}</td>
+      </tr>
+      <tr>
+        <td>
+          <img src="assets/buttons/e_trans2.png" title="Energietransfer" />
+          <input type="text" size="4" name="ecount" id="etransfer_value" />
+          <input type="submit" class="button" value="transferieren" name="B_ETRANSFER" id="etransfer_button" />
+          <input type="button" class="button" value="max" name="B_MAX_ETRANSFER"
+            onclick="document.getElementById('etransfer_value').value = '{{ eps.getEps }}'; document.getElementById('etransfer_button').click()" />
+        </td>
+      </tr>
+    </table>
+  </form>

@@ -41,7 +41,10 @@ final class DeletePost implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        if ($post->getTopic()->getPostCount() == 1) {
+        $postcount = $post->getTopic()->getPostCount();
+        $this->allianceBoardPostRepository->delete($post);
+
+        if ($postcount == 1) {
             $game->setView(Board::VIEW_IDENTIFIER);
 
             $this->allianceBoardTopicRepository->delete($post->getTopic());
@@ -52,7 +55,6 @@ final class DeletePost implements ActionControllerInterface
 
         $game->setView(Topic::VIEW_IDENTIFIER);
 
-        $this->allianceBoardPostRepository->delete($post);
 
         $game->addInformation(_('Der Beitrag wurde gelöscht'));
     }

@@ -33,7 +33,7 @@ final class ColonyProductionWorthRanking implements ViewControllerInterface
             ]
         ]);
         $game->setPageTitle('/ Datenbank / Die Top 10 der Produzenten');
-        $game->showMacro('html/database.xhtml/top_producers');
+        $game->setViewTemplate('html/database/highscores/topProducers.twig');
 
         $netWorthPerUserArray = $this->getProductionNetWorthPerUser($game);
 

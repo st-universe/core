@@ -53,9 +53,9 @@ final class ShowTradeMenu implements ViewControllerInterface
 
         $game->setPageTitle(_('Handelstransfermenü'));
         if ($game->getViewContext(ViewContextTypeEnum::NO_AJAX) === true) {
-            $game->showMacro('html/shipmacros.xhtml/trademenu');
+            $game->showMacro('html/ship/trademenu.twig');
         } else {
-            $game->setMacroInAjaxWindow('html/shipmacros.xhtml/trademenu');
+            $game->setMacroInAjaxWindow('html/ship/trademenu.twig');
         }
 
         $databaseEntryId = $tradepost->getShip()->getDatabaseId();
@@ -77,7 +77,7 @@ final class ShowTradeMenu implements ViewControllerInterface
             $licensedays = 0;
         }
 
-        $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
+        $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountWrapper($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(
             'HAS_LICENSE',

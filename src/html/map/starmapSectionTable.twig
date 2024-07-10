@@ -15,7 +15,7 @@
             {% if data.getIcon %}
             <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
                 {% if data.getHref %}
-                <a href="{{ data.getHref }}">
+                <a href="javascript:void(0);" onclick="{{ data.getHref }}">
                     <img src="/assets/map/{{ data.getIcon }}.png" style=" height: 28px; width: 28px;" />
                 </a>
                 {% else %}

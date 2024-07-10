@@ -1,0 +1,41 @@
+  <input type="hidden" name="pm_sstr" id="pm_sstr" value="{{ SESSIONSTRING }}" />
+  {% if RECIPIENT %}
+    <form id="quickpm">
+      <table class="tcal" id="quickpm_compose">
+        <tr>
+          <td>
+            <span>Empfänger:</span>
+            {{ RECIPIENT.getName | bbcode }}
+          </td>
+        </tr>
+        <tr>
+          <th>Text</th>
+        </tr>
+        <tr>
+          <td>
+            <textarea name="text" style="width: 100%; height: 300px;">{{ TEMPLATETEXT }}</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="button" class="button" onclick="sendQuickPM({{ RECIPIENT.getId }})" value="Absenden" />
+          </td>
+        </tr>
+      </table>
+      <div id="quickpm_done" style="display: none;">
+        <table class="tcal">
+          <tr>
+            <td>Die Nachricht wurde verschickt</td>
+          </tr>
+        </table>
+      </div>
+    </form>
+  {% else %}
+    <div>
+      <table class="tcal">
+        <tr>
+          <td>Aktion nicht gestattet</td>
+        </tr>
+      </table>
+    </div>
+  {% endif %}

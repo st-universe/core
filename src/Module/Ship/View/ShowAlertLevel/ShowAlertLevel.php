@@ -31,7 +31,7 @@ final class ShowAlertLevel implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Alarmstufe ändern'));
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_ship_alvl');
+        $game->setMacroInAjaxWindow('html/ship/showshipalvl.twig');
 
         $game->setTemplateVar('SHIP', $ship);
     }

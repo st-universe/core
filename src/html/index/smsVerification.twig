@@ -1,0 +1,24 @@
+{% extends "html/index/indexDefaults.twig" %}
+
+{% block body %}
+<form method="post" action="maindesk.php">
+	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+	<table class="use" style="width: 600px">
+		<tr>
+			{% if REASON %}
+			<th colspan="2">{{ REASON }}</th>
+			{% else %}
+			<th colspan="2">Account wurde noch nicht freigeschaltet</th>
+			{% endif %}
+		</tr>
+		<tr>
+			<td>SMS-Verifikation Code:</td>
+			<td><input type="text" style="width: 150px" name="smscode" /></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" name="B_SMS_VERIFICATION" value="Account verifizieren"
+					class="button" /></td>
+		</tr>
+	</table>
+</form>
+{% endblock %}

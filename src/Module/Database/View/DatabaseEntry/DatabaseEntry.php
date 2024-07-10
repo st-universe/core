@@ -89,7 +89,7 @@ final class DatabaseEntry implements ViewControllerInterface
             )
         );
         $game->setPageTitle(sprintf(_('/ Datenbankeintrag: %s'), $entry_name));
-        $game->setTemplateFile('html/databaseentry.xhtml');
+        $game->setViewTemplate('html/database/databaseEntry.twig');
 
         $this->addSpecialVars($game, $entry);
         $game->setTemplateVar('ENTRY', $entry);
@@ -128,7 +128,8 @@ final class DatabaseEntry implements ViewControllerInterface
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
 
                 $renderer = new SystemLayerRenderer();
-                $panel = new class () implements PanelAttributesInterface {
+                $panel = new class() implements PanelAttributesInterface
+                {
                     public function getHeightAndWidth(): string
                     {
                         return 'height: 30px; width: 30px;';

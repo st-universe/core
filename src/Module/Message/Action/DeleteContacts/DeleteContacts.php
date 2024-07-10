@@ -8,15 +8,17 @@ use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Tal\TalHelper;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class DeleteContacts implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_CONTACTS';
 
-    public function __construct(private DeleteContactsRequestInterface $deleteContactsRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
+    public function __construct(
+        private DeleteContactsRequestInterface $deleteContactsRequest,
+        private ContactRepositoryInterface $contactRepository,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {
     }
 
     #[Override]
@@ -34,7 +36,7 @@ final class DeleteContacts implements ActionControllerInterface
                 $contact->getRecipientId(),
                 sprintf(
                     'Der Siedler betrachtet Dich nun nicht mehr als %s',
-                    TalHelper::getContactListModeDescription($contact->getMode())
+                    $contact->getMode()->getTitle()
                 )
             );
 

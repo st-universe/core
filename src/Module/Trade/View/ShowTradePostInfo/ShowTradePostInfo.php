@@ -34,13 +34,13 @@ final class ShowTradePostInfo implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradepostinfo');
+        $game->setMacroInAjaxWindow('html/trade/tradePostInfo.twig');
         $game->setPageTitle(_('Handelsposten Details'));
 
         $game->setTemplateVar('IS_NPC_TRADEPOST', $tradePost->isNpcTradepost());
         $game->setTemplateVar(
             'TRADE_POST_INFO',
-            $this->talFactory->createTradeAccountTal($tradePost, $userId)
+            $this->talFactory->createTradeAccountWrapper($tradePost, $userId)
         );
     }
 }

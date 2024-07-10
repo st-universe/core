@@ -1,0 +1,30 @@
+<form method="post" action="trade.php">
+    <input type="hidden" name="tradepost" value="{{ TRADEPOST }}" />
+    <table class="tcal">
+        <tr>
+            <td style="vertical-align: middle;">Verlangte Ware</td>
+            <td>
+                <select name="wlgid">
+                    <option value="0">------------</option>
+                    {% for data in SELECTABLE_COMMODITIES %}
+                    <option value="{{ data.getId }}">{{ data.getName }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: middle;">Verlangte Menge</td>
+            <td>
+                <input type="text" size="5" name="wlcount" />
+            </td>
+        </tr>
+        <td style="vertical-align: middle;">Lizenzgültigkeit (Tage)</td>
+        <td>
+            <input type="text" size="5" name="ldays" />
+        </td>
+    </table>
+    <br />
+    <div style="width: 100%; text-align: center;">
+        <input type="submit" value="Einstellen" name="B_CREATE_LICENSE" />
+    </div>
+</form>

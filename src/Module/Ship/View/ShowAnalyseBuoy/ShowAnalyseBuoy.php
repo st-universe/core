@@ -30,7 +30,7 @@ final class ShowAnalyseBuoy implements ViewControllerInterface
 
 
         $game->setPageTitle("Boje analysieren");
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/analysebuoy');
+        $game->setMacroInAjaxWindow('html/ship/analysebuoy.twig');
 
         $game->setTemplateVar('ERROR', true);
 

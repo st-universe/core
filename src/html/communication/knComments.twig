@@ -1,0 +1,76 @@
+  <br />
+  <div id="writecomment" style="display: none;">
+    <table class="tcal">
+      <tr>
+        <th colspan="2">Kommentar schreiben</th>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <textarea style="width: 100%; height: 100px;" name="comment" id="comment"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 200px">
+          <span id="commentTextLength">0</span>/{{ CHARLIMIT }} <span>Zeichen</span>
+        </td>
+        <td style="text-align: right;">
+          <input type="button" class="button" onclick="postComment({{ POST.getId }})" value="Abschicken" id="postCommentButton" />
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div style="width: 100%; text-align: right;">
+    <input type="button" class="button" value="Kommentar schreiben" onclick="Element.hide(this.parentNode);Element.show(document.getElementById('writecomment'))" />
+  </div>
+  <br />
+  {% for data in COMMENTS %}
+    <table class="tcal">
+      <tr>
+        <td rowspan="2" style="width: 40px">
+          {% if data.getUserAvatarPath %}
+            <img src="{{ data.getUserAvatarPath }}" style="width: 40px" />
+          {% endif %}
+        </td>
+        <th style="text-align: center;">
+          {{ data.getUser.getName | bbcode }}
+        </th>
+        <th style="width: 120px; text-align: center;">{{ data.getDate | date("Y-m-d H:i:s") }}</th>
+        <th style="width: 20px">
+          {% if data.isDeleteable %}
+            <a href="javascript:void(0);" onclick="deletePostingComment({{ data.getPostId }}, {{ data.getId }})" title="Löschen"
+               onmouseover="cp('delComment{{ data.getId }}','buttons/x2')"
+               onmouseout="cp('delComment{{ data.getId }}','buttons/x1')">
+              <img src="/assets/buttons/x1.png" name="delComment{{ data.getId }}" />
+            </a>
+          {% endif %}
+        </th>
+      </tr>
+      <tr>
+        <td colspan="3">{{ data.getText|bbcode }}</td>
+      </tr>
+    </table>
+    {% if not loop.last %}
+      <br />
+    {% endif %}
+  {% else %}
+    <div class="divhead" style="text-align: center;">Keine Kommentare vorhanden</div>
+  {% endfor %}
+  <script>
+    document.getElementById('comment').addEventListener(
+      "keyup",
+      function () {
+        var limit = {{ CHARLIMIT }};
+        var length = this.value.length;
+        document.getElementById('commentTextLength').innerHTML = length;
+        if (length > limit) {
+          document.getElementById('commentTextLength').classList.add('error');
+          document.getElementById('postCommentButton').disabled = true;
+        } else {
+          document.getElementById('commentTextLength').classList.remove('error');
+          document.getElementById('postCommentButton').disabled = false;
+        }
+      },
+      false
+    );
+  </script>
+

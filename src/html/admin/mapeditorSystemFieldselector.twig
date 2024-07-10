@@ -1,0 +1,54 @@
+{% set field = SELECTED_MAP_FIELD %}
+
+<table class="use">
+  <tr>
+    <td style="vertical-align: top;">
+      {% for data in POSSIBLE_FIELD_TYPES.row_0 %}
+      <div>
+        <img src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;" title="{{ data.getName }}"
+          onclick="selectNewSystemMapField('{{ field.getId }}','{{ field.getSX }}','{{ field.getSY }}','{{ data.getId }}','{{ data.getType }}');" />
+      </div>
+      {% endfor %}
+    </td>
+    <td style="vertical-align: top;">
+      {% for data in POSSIBLE_FIELD_TYPES.row_1 %}
+      <div>
+        <img src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;" title="{{ data.getName }}"
+          onclick="selectNewSystemMapField('{{ field.getId }}','{{ field.getSX }}','{{ field.getSY }}','{{ data.getId }}','{{ data.getType }}');" />
+      </div>
+      {% endfor %}
+    </td>
+    <td style="vertical-align: top;">
+      {% for data in POSSIBLE_FIELD_TYPES.row_2 %}
+      <div>
+        <img src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;" title="{{ data.getName }}"
+          onclick="selectNewSystemMapField('{{ field.getId }}','{{ field.getSX }}','{{ field.getSY }}','{{ data.getId }}','{{ data.getType }}');" />
+      </div>
+      {% endfor %}
+    </td>
+    <td style="vertical-align: top;">
+      {% for data in POSSIBLE_FIELD_TYPES.row_3 %}
+      <div>
+        <img src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;" title="{{ data.getName }}"
+          onclick="selectNewSystemMapField('{{ field.getId }}','{{ field.getSX }}','{{ field.getSY }}','{{ data.getId }}','{{ data.getType }}');" />
+      </div>
+      {% endfor %}
+    </td>
+    <td style="vertical-align: top;">
+      {% for data in POSSIBLE_FIELD_TYPES.row_4 %}
+      <div>
+        <img src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;" title="{{ data.getName }}"
+          onclick="selectNewSystemMapField('{{ field.getId }}','{{ field.getSX }}','{{ field.getSY }}','{{ data.getId }}','{{ data.getType }}');" />
+      </div>
+      {% endfor %}
+    </td>
+    <td style="vertical-align: top;">
+      {% for data in POSSIBLE_FIELD_TYPES.row_5 %}
+      <div>
+        <img src="/assets/map/{{ data.getType }}.png" style="cursor: pointer;" title="{{ data.getName }}"
+          onclick="selectNewSystemMapField('{{ field.getId }}','{{ field.getSX }}','{{ field.getSY }}','{{ data.getId }}','{{ data.getType }}');" />
+      </div>
+      {% endfor %}
+    </td>
+  </tr>
+</table>

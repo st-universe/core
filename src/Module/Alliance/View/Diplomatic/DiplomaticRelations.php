@@ -48,7 +48,7 @@ final class DiplomaticRelations implements ViewControllerInterface
                 'title' => 'Diplomatische Beziehungen'
             ]
         ]);
-        $game->setTemplateFile('html/alliance_diplomatic_relations.xhtml');
+        $game->setViewTemplate('html/alliance/alliance_diplomatic_relations.twig');
         $game->setTemplateVar(
             'RELATIONS_IMAGE',
             $this->allianceRelationRenderer->render(

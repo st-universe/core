@@ -1,0 +1,63 @@
+{% block body %}
+<script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
+<div class="box" {% if not ACCOUNTS %}style="display: none;" <div class="box_title">Meldung</div>
+<div class="box_body">
+    <span>Keine Warenkonten vorhanden</span>
+</div>
+</div>
+{% endif %}>
+{% for data in ACCOUNTS %}
+<table class="tcal">
+    <tr>
+        <th colspan="7">{{ data.getShip.getName|bbcode }}</th>
+    </tr>
+    <tr>
+        <td rowspan="5" colspan="4" style="width: 66%;">
+            {% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+            {{ shipimagewithoutwarp(data.getShip) }}
+        </td>
+        <th title="auf diesem Warenposten lagernd">lagernd <img src="assets/buttons/info2.png" style="height:16px;" />
+        </th>
+        <th title="Für 1 Latinum bekommt man diese Anzahl der Ware">Kurs "Kaufen" <img src="assets/buttons/info2.png"
+                style="height:16px;" /></th>
+        <th title="1 Latinum kostet diese Anzahl der Ware">Kurs "Verkaufen" <img src="assets/buttons/info2.png"
+                style="height:16px;" /></th>
+    </tr>
+    {% for item in data.getBasicTradeItems %}
+    <tr>
+        <form method="post" action="trade.php">
+            <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+            <input type="hidden" name="uid" value="{{ item.getUniqId }}" />
+            <input type="hidden" name="tpid" value="{{ data.getId }}" />
+            <td><img src="assets/commodities/{{ item.getCommodity.getId }}.png"
+                    title="{{ item.getCommodity.getName }}" /> <span>{{ item.getStoredAmount }}</span></td>
+            <td><span>{{ item.getBuyValue }}</span> <button type="submit" name="B_BASIC_BUY" value="Ware kaufen"
+                    title="Ware kaufen">
+                    <img src="assets/buttons/b_from1.png" alt="Ware kaufen" />
+                </button></td>
+            <td><span>{{ item.getSellValue }}</span> <button type="submit" name="B_BASIC_SELL" value="Ware verkaufen"
+                    title="Ware verkaufen">
+                    <img src="assets/buttons/b_to1.png" alt="Ware verkaufen" />
+                </button></td>
+        </form>
+    </tr>
+    {% endfor %}
+    {% set latinum = data.getLatinumItem %}
+    <tr>
+        <td><img src="assets/commodities/{{ latinum.getCommodity.getId }}.png"
+                title="{{ latinum.getCommodity.getName }}" /> <span>{{ latinum.getStoredAmount }}</span></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="darkbg">Lagerraum</td>
+        <td>
+            <span class="{{ data.isOverStorage ? 'negative' : 'positive' }}">{{ data.getStorageSum }}</span>
+            (<span>{{ data.getStorageCapacity }}</span> pro Siedler)
+        </td>
+        <td class="darkbg" style="clear: both; width: 200px;">Standort</td>
+        <td style="width: 200px;">{{ data.getShip.getSectorString }}</td>
+    </tr>
+</table>
+{% endfor %}
+{% endblock %}

@@ -33,7 +33,7 @@ final class FlightRanking implements ViewControllerInterface
             ]
         ]);
         $game->setPageTitle('/ Datenbank / Die Top 10 der Vielflieger');
-        $game->showMacro('html/database.xhtml/top_flights_user');
+        $game->setViewTemplate('html/database/highscores/topFlights.twig');
 
         $game->setTemplateVar(
             'FLIGHTS_LIST',

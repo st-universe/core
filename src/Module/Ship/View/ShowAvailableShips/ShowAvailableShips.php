@@ -32,7 +32,7 @@ final class ShowAvailableShips implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Schiff(e) hinzufügen'));
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_available_ships');
+        $game->setMacroInAjaxWindow('html/ship/showavailableships.twig');
 
         $game->setTemplateVar('FLEET', $fleet);
         $game->setTemplateVar('AVAILABLE_SHIPS', $this->shipRepository->getPossibleFleetMembers($fleet->getLeadShip()));

@@ -1,0 +1,54 @@
+{% if not ERROR %}
+{% if SIGNATURES %}
+<table class="tcal">
+  <tr>
+    <th colspan="3">Signaturen</th>
+  </tr>
+  <tr>
+    <th>Rumpf</th>
+    <th>Schiffsname</th>
+    <th>Alter</th>
+  </tr>
+  {% for sig in SIGNATURES %}
+  <tr>
+    <td>
+      {% if sig.getRump %}
+      <img src="/assets/ships/{{ sig.getRump.getId }}.png" title="{{ sig.getRump.getName }}" />
+      {% else %}
+      <span>?</span>
+      {% endif %}
+    </td>
+    <td>
+      {% if sig.getShipName %}
+      <span>{{ sig.getShipName|bbcode }}</span>
+      {% else %}
+      <span>?</span>
+      {% endif %}
+    </td>
+    <td>
+      <span>{{ sig.getAge|formatSeconds }}</span>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% if OTHER_SIG_COUNT or OTHER_CLOAKED_COUNT %}
+<table class="tcal">
+  <tr>
+    <th colspan="2">verblasste Signaturen</th>
+  </tr>
+  {% if OTHER_SIG_COUNT %}
+  <tr>
+    <td>ungetarnt:</td>
+    <td>{{ OTHER_SIG_COUNT }}</td>
+  </tr>
+  {% endif %}
+  {% if OTHER_CLOAKED_COUNT %}
+  <tr>
+    <td>getarnt:</td>
+    <td>{{ OTHER_CLOAKED_COUNT }}</td>
+  </tr>
+  {% endif %}
+</table>
+{% endif %}
+{% endif %}

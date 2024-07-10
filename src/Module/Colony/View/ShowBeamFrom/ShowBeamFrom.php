@@ -49,7 +49,7 @@ final class ShowBeamFrom implements ViewControllerInterface
             return;
         }
 
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/show_ship_beamfrom');
+        $game->setMacroInAjaxWindow('html/colony/component/showShipBeamFrom.twig');
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('COLONY', $colony);
     }

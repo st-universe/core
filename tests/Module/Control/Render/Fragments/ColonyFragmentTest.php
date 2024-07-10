@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
@@ -26,24 +26,24 @@ class ColonyFragmentTest extends StuTestCase
     public function testRenderRendersSystemUserWithoutColonies(): void
     {
         $user = $this->mock(UserInterface::class);
-        $talPage = $this->mock(TalPageInterface::class);
+        $twigPage = $this->mock(TwigPageInterface::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn(UserEnum::USER_NOONE);
 
-        $talPage->shouldReceive('setVar')
+        $twigPage->shouldReceive('setVar')
             ->with('USER_COLONIES', [])
             ->once();
 
-        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
+        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
     }
 
     public function testRenderRendersNormalUserWithColonies(): void
     {
         $user = $this->mock(UserInterface::class);
-        $talPage = $this->mock(TalPageInterface::class);
+        $twigPage = $this->mock(TwigPageInterface::class);
         $colonies = $this->mock(Collection::class);
 
         $user->shouldReceive('getId')
@@ -55,10 +55,10 @@ class ColonyFragmentTest extends StuTestCase
             ->once()
             ->andReturn($colonies);
 
-        $talPage->shouldReceive('setVar')
+        $twigPage->shouldReceive('setVar')
             ->with('USER_COLONIES', $colonies)
             ->once();
 
-        $this->subject->render($user, $talPage, $this->mock(GameControllerInterface::class));
+        $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
     }
 }

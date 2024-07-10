@@ -6,7 +6,7 @@ namespace Stu\Component\Ship\System\Data;
 
 use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarColorEnum;
 
 class ShieldSystemData extends AbstractSystemData
 {
@@ -24,7 +24,7 @@ class ShieldSystemData extends AbstractSystemData
 
     public function getShieldStatusBar(): string
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Schilde'),
             $this->ship->getShield(),
             $this->ship->getMaxShield(),
@@ -35,7 +35,7 @@ class ShieldSystemData extends AbstractSystemData
 
     public function getShieldStatusBarBig(): String
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Schilde'),
             $this->ship->getShield(),
             $this->ship->getMaxShield(),

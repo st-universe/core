@@ -6,9 +6,8 @@ namespace Stu\Module\Control\Render\Fragments;
 
 use Override;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalComponentFactoryInterface;
-use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
@@ -19,14 +18,17 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
  */
 final class ResearchFragment implements RenderFragmentInterface
 {
-    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private TalComponentFactoryInterface $talComponentFactory, private BuildingCommodityRepositoryInterface $buildingCommodityRepository)
-    {
+    public function __construct(
+        private ResearchedRepositoryInterface $researchedRepository,
+        private StatusBarFactoryInterface $statusBarFactory,
+        private BuildingCommodityRepositoryInterface $buildingCommodityRepository
+    ) {
     }
 
     #[Override]
     public function render(
         UserInterface $user,
-        TalPageInterface|TwigPageInterface $page,
+        TwigPageInterface $page,
         GameControllerInterface $game
     ): void {
         $researchStatusBar = '';
@@ -37,8 +39,8 @@ final class ResearchFragment implements RenderFragmentInterface
             $researchPoints = $research->getPoints();
 
             $researchStatusBar = $this
-                ->talComponentFactory
-                ->createTalStatusBar()
+                ->statusBarFactory
+                ->createStatusBar()
                 ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
                 ->setLabel('Forschung')
                 ->setMaxValue($researchPoints)

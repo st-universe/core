@@ -30,8 +30,8 @@ final class ShowOfferCommodity implements ViewControllerInterface
             return;
         }
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/offerbycommodity');
-        $game->setPageTitle(sprintf(_('Angebote mit %d'), $commodity->getName()));
+        $game->setMacroInAjaxWindow('html/trade/offerByCommodity.twig');
+        $game->setPageTitle(sprintf(_('Angebote mit %s'), $commodity->getName()));
 
         $game->setTemplateVar(
             'OFFER',

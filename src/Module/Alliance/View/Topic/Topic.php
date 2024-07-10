@@ -81,7 +81,7 @@ final class Topic implements ViewControllerInterface
             $topic->getName()
         );
 
-        $game->setTemplateFile('html/allianceboardtopic.xhtml');
+        $game->setViewTemplate('html/alliance/allianceboardtopic.twig');
         $game->setTemplateVar('TOPIC', $topic);
         $game->setTemplateVar('TOPIC_NAVIGATION', $this->getTopicNavigation($topic));
         $game->setTemplateVar(

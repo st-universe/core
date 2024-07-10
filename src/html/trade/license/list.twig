@@ -1,0 +1,19 @@
+{% from 'html/macros.twig' import pmWindow %}
+
+<table class="tcal" style="width: 400px;">
+    <tr>
+        <th>Siedler</th>
+        <th>Kaufdatum</th>
+        <th>Ablaufdatum</th>
+    </tr>
+    {% for data in LIST %}
+    <tr>
+        <td>
+            {{ pmWindow(USER, data.getUserId) }}
+            {{ data.getUser.getName|bbcode }}
+        </td>
+        <td>{{ data.getDate|stuDate }}</td>
+        <td>{{ data.getExpired|stuDate }}</td>
+    </tr>
+    {% endfor %}
+</table>

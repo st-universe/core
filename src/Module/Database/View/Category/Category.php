@@ -7,7 +7,7 @@ namespace Stu\Module\Database\View\Category;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
@@ -15,7 +15,7 @@ final class Category implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_CATEGORY';
 
-    public function __construct(private CategoryRequestInterface $categoryRequest, private DatabaseCategoryRepositoryInterface $databaseCategoryRepository, private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory)
+    public function __construct(private CategoryRequestInterface $categoryRequest, private DatabaseCategoryRepositoryInterface $databaseCategoryRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory)
     {
     }
 
@@ -49,10 +49,10 @@ final class Category implements ViewControllerInterface
                 $category_description
             )
         );
-        $game->setTemplateFile('html/databasecategory.xhtml');
+        $game->setViewTemplate('html/database/databasecategory.twig');
         $game->setTemplateVar(
             'CATEGORY',
-            $this->databaseCategoryTalFactory->createDatabaseCategoryTal($category, $game->getUser())
+            $this->databaseCategoryWrapperFactory->createDatabaseCategoryWrapper($category, $game->getUser())
         );
     }
 }

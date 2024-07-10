@@ -54,7 +54,7 @@ final class ShowModuleFab implements ViewControllerInterface
             if (!isset($sortedModules[$moduleType][$moduleLevel])) {
                 $sortedModules[$moduleType][$moduleLevel] = [];
             }
-            $sortedModules[$moduleType][$moduleLevel][] = new ModuleFabricationListItemTal(
+            $sortedModules[$moduleType][$moduleLevel][] = new ModuleFabricationListItem(
                 $this->moduleQueueRepository,
                 $module->getModule(),
                 $colony

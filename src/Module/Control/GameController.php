@@ -19,7 +19,6 @@ use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
-use Stu\Exception\TickGameStateException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\Information\InformationInterface;
@@ -30,7 +29,6 @@ use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
-use Stu\Module\Control\Render\GameTalRendererInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
@@ -38,7 +36,6 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameRequestInterface;
@@ -63,8 +60,6 @@ final class GameController implements GameControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    private bool $isTwig = false;
-
     private InformationWrapper $gameInformations;
 
     private ?TargetLink $targetLink = null;
@@ -87,9 +82,8 @@ final class GameController implements GameControllerInterface
     /** @var array<int, mixed> $viewContext */
     private array $viewContext = [];
 
+    /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
     private ?array $gameStats = null;
-
-    private string $loginError = '';
 
     /** @var array<int, resource> */
     private array $semaphores = [];
@@ -102,7 +96,6 @@ final class GameController implements GameControllerInterface
     public function __construct(
         private SessionInterface $session,
         private SessionStringRepositoryInterface $sessionStringRepository,
-        private TalPageInterface $talPage,
         private TwigPageInterface $twigPage,
         private DatabaseUserRepositoryInterface $databaseUserRepository,
         private StuConfigInterface $stuConfig,
@@ -113,7 +106,6 @@ final class GameController implements GameControllerInterface
         private Ubench $benchmark,
         private CreateDatabaseEntryInterface $createDatabaseEntry,
         private GameRequestRepositoryInterface $gameRequestRepository,
-        private GameTalRendererInterface $gameTalRenderer,
         private GameTwigRendererInterface $gameTwigRenderer,
         private UuidGeneratorInterface $uuidGenerator,
         private EventDispatcherInterface $eventDispatcher,
@@ -175,20 +167,7 @@ final class GameController implements GameControllerInterface
     {
         $this->loggerUtil->log(sprintf('setTemplateFile: %s', $template));
 
-        if (str_ends_with($template, '.twig')) {
-            $this->isTwig = true;
-            $this->twigPage->setTemplate($template);
-        } else {
-            $this->isTwig = false;
-            $this->talPage->setTemplate($template);
-        }
-    }
-
-    #[Override]
-    public function setMacroAndTemplate(string $macro, string $tpl): void
-    {
-        $this->macro = $macro;
-        $this->setTemplateFile($tpl);
+        $this->twigPage->setTemplate($template);
     }
 
     #[Override]
@@ -196,11 +175,7 @@ final class GameController implements GameControllerInterface
     {
         $this->macro = $macro;
 
-        if (str_ends_with($macro, '.twig')) {
-            $this->setTemplateFile('html/ajaxwindow.twig');
-        } else {
-            $this->setTemplateFile('html/ajaxwindow.xhtml');
-        }
+        $this->setTemplateFile('html/ajaxwindow.twig');
     }
 
     #[Override]
@@ -210,11 +185,7 @@ final class GameController implements GameControllerInterface
 
         $this->macro = $macro;
 
-        if (str_ends_with($macro, '.twig')) {
-            $this->setTemplateFile('html/ajaxempty.twig');
-        } else {
-            $this->setTemplateFile('html/ajaxempty.xhtml');
-        }
+        $this->setTemplateFile('html/ajaxempty.twig');
     }
 
     #[Override]
@@ -296,7 +267,6 @@ final class GameController implements GameControllerInterface
     public function setTemplateVar(string $key, $variable): void
     {
         $this->twigPage->setVar($key, $variable);
-        $this->talPage->setVar($key, $variable);
     }
 
     #[Override]
@@ -584,39 +554,31 @@ final class GameController implements GameControllerInterface
             }
             return;
         } catch (LoginException $e) {
-            $this->loginError = $e->getMessage();
-            $this->setTemplateVar('THIS', $this);
-            $this->setTemplateFile('html/index.xhtml');
+            $this->setTemplateVar('LOGIN_ERROR', $e->getMessage());
+            $this->setTemplateFile('html/index/index.twig');
         } catch (UserLockedException $e) {
-            $this->loginError = $e->getMessage();
-
-            $this->setTemplateFile('html/accountlocked.xhtml');
-            $this->setTemplateVar('THIS', $this);
+            $this->setTemplateFile('html/index/accountLocked.twig');
+            $this->setTemplateVar('LOGIN_ERROR', $e->getMessage());
             $this->setTemplateVar('REASON', $e->getDetails());
         } catch (AccountNotVerifiedException $e) {
-            $this->setTemplateFile('html/smsverification.xhtml');
+            $this->setTemplateFile('html/index/smsVerification.twig');
             $this->setTemplateVar('THIS', $this);
             if ($e->getMessage() !== '') {
                 $this->setTemplateVar('REASON', $e->getMessage());
             }
-        } catch (TickGameStateException) {
-            $this->setPageTitle(_('Rundenwechsel aktiv'));
-            $this->setTemplateFile('html/tick.xhtml');
-
-            $this->setTemplateVar('THIS', $this);
         } catch (MaintenanceGameStateException) {
             $this->setPageTitle(_('Wartungsmodus'));
-            $this->setTemplateFile('html/maintenance.xhtml');
+            $this->setTemplateFile('html/index/maintenance.twig');
 
             $this->setTemplateVar('THIS', $this);
         } catch (ResetGameStateException) {
             $this->setPageTitle(_('Resetmodus'));
-            $this->setTemplateFile('html/gamereset.xhtml');
+            $this->setTemplateFile('html/index/gameReset.twig');
 
             $this->setTemplateVar('THIS', $this);
         } catch (RelocationGameStateException) {
             $this->setPageTitle(_('Umzugsmodus'));
-            $this->setTemplateFile('html/relocation.xhtml');
+            $this->setTemplateFile('html/index/relocation.twig');
 
             $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException) {
@@ -627,12 +589,12 @@ final class GameController implements GameControllerInterface
             $this->setViewTemplate('html/ship/ship.twig');
         } catch (ItemNotFoundException) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
-            $this->setTemplateFile('html/notfound.xhtml');
+            $this->setTemplateFile('html/notFound.twig');
         } catch (UnallowedUplinkOperation) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
             if (request::isAjaxRequest()) {
-                $this->setMacroInAjaxWindow('html/sitemacros.xhtml/systeminformation');
+                $this->setMacroInAjaxWindow('html/systeminformation.twig');
             } else {
                 $this->setViewTemplate('html/ship/ship.twig');
             }
@@ -640,10 +602,10 @@ final class GameController implements GameControllerInterface
             throw $e;
         }
 
-        $isTemplateSet = $this->isTwig ? $this->twigPage->isTemplateSet() : $this->talPage->isTemplateSet();
+        $isTemplateSet = $this->twigPage->isTemplateSet();
 
         if (!$isTemplateSet) {
-            $this->loggerUtil->init('tal', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init('template', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET'));
             $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
             $this->loggerUtil->init('stu');
@@ -656,7 +618,7 @@ final class GameController implements GameControllerInterface
         // RENDER!
         $startTime = hrtime(true);
 
-        $renderResult = $this->isTwig ? $this->gameTwigRenderer->render($this, $user, $this->twigPage) : $this->gameTalRenderer->render($this, $user, $this->talPage);
+        $renderResult = $this->gameTwigRenderer->render($this, $user, $this->twigPage);
 
         $renderMs = hrtime(true) - $startTime;
 
@@ -688,9 +650,6 @@ final class GameController implements GameControllerInterface
                 throw new AccountNotVerifiedException();
             }
             $gameState = $this->getGameState();
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
-                throw new TickGameStateException();
-            }
 
             if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->isAdmin()) {
                 throw new MaintenanceGameStateException();
@@ -807,9 +766,11 @@ final class GameController implements GameControllerInterface
     {
         if ($this->gameStats === null) {
             $this->gameStats = [
-                'turn' => $this->getCurrentRound(),
+                'currentTurn' => $this->getCurrentRound()->getTurn(),
                 'player' => $this->userRepository->getActiveAmount(),
                 'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
+                'gameState' => $this->getGameState(),
+                'gameStateTextual' => $this->getGameStateTextual()
             ];
         }
         return $this->gameStats;
@@ -819,12 +780,6 @@ final class GameController implements GameControllerInterface
     public function getGameStateTextual(): string
     {
         return GameEnum::gameStateTypeToDescription($this->getGameState());
-    }
-
-    #[Override]
-    public function getLoginError(): string
-    {
-        return $this->loginError;
     }
 
     /**

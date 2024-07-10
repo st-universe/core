@@ -1,0 +1,13 @@
+
+  <table class="tcal" style="width: 300px;">
+    <tr>
+      <th style="width: 60%;">Rumpfkategorie</th>
+      <th style="width: 40%;">Anzahl</th>
+    </tr>
+    {% for data in INFOS %}
+      <tr>
+        <td>{{ data.category_name }}</td>
+        <td>{{ data.amount }}</td>
+      </tr>
+    {% endfor %}
+  </table>

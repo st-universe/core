@@ -34,7 +34,7 @@ final class DiscovererRanking implements ViewControllerInterface
             'Die 10 besten Entdecker'
         );
         $game->setPageTitle('/ Datenbank / Die 10 besten Entdecker');
-        $game->showMacro('html/database.xhtml/top_discover_user');
+        $game->setViewTemplate('html/database/highscores/topDiscover.twig');
         $game->setTemplateVar(
             'DISCOVERER_LIST',
             array_map(

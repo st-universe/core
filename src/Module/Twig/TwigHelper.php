@@ -18,7 +18,7 @@ use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\ShipNfsItem;
-use Stu\Module\Tal\TalHelper;
+use Stu\Module\Template\TemplateHelperInterface;
 use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -28,8 +28,16 @@ use Twig\TwigFunction;
 
 class TwigHelper
 {
-    public function __construct(private Environment $environment, private Parser $parser, private ConfigInterface $config, private FightLibInterface $fightLib, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private GradientColorInterface $gradientColor)
-    {
+    public function __construct(
+        private Environment $environment,
+        private Parser $parser,
+        private ConfigInterface $config,
+        private FightLibInterface $fightLib,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private GradientColorInterface $gradientColor,
+        private TemplateHelperInterface $templateHelper
+    ) {
     }
 
     public function registerGlobalVariables(): void
@@ -61,32 +69,32 @@ class TwigHelper
         $bbcodeFilter = new TwigFilter('bbcode', fn ($string): string => $this->parser->parse($string)->getAsHTML(), ['is_safe' => ['html']]);
         $this->environment->addFilter($bbcodeFilter);
 
-        $jsquoteFilter = new TwigFilter('jsquote', fn ($string): string => TalHelper::jsquote($string));
+        $jsquoteFilter = new TwigFilter('jsquote', fn ($string): string => $this->templateHelper->jsquote($string));
         $this->environment->addFilter($jsquoteFilter);
 
         $addPlusCharacterFilter = new TwigFilter('addPlusCharacter', function ($value): string {
             if (is_int($value)) {
-                return TalHelper::addPlusCharacter((string) $value);
+                return $this->templateHelper->addPlusCharacter((string) $value);
             }
-            return TalHelper::addPlusCharacter($value);
+            return $this->templateHelper->addPlusCharacter($value);
         });
         $this->environment->addFilter($addPlusCharacterFilter);
 
         $formatSecondsFilter = new TwigFilter('formatSeconds', function ($value): string {
             if (is_int($value)) {
-                return TalHelper::formatSeconds((string) $value);
+                return $this->templateHelper->formatSeconds((string) $value);
             }
-            return TalHelper::formatSeconds($value);
+            return $this->templateHelper->formatSeconds($value);
         });
         $this->environment->addFilter($formatSecondsFilter);
 
-        $planetFieldTitleFilter = new TwigFilter('planetFieldTitle', fn ($planetField): string => TalHelper::getPlanetFieldTitle($planetField));
+        $planetFieldTitleFilter = new TwigFilter('planetFieldTitle', fn ($planetField): string => $this->templateHelper->getPlanetFieldTitle($planetField));
         $this->environment->addFilter($planetFieldTitleFilter);
 
-        $planetFieldTypeDescriptionFilter = new TwigFilter('planetFieldTypeDescription', fn ($id): string => TalHelper::getPlanetFieldTypeDescription($id));
+        $planetFieldTypeDescriptionFilter = new TwigFilter('planetFieldTypeDescription', fn ($id): string => $this->templateHelper->getPlanetFieldTypeDescription($id));
         $this->environment->addFilter($planetFieldTypeDescriptionFilter);
 
-        $formatProductionValueFilter = new TwigFilter('formatProductionValue', fn ($value): string => TalHelper::formatProductionValue($value));
+        $formatProductionValueFilter = new TwigFilter('formatProductionValue', fn ($value): string => $this->templateHelper->formatProductionValue($value));
         $this->environment->addFilter($formatProductionValueFilter);
 
         $isPositiveFilter = new TwigFilter('isPositive', fn (int $value): bool => $value > 0);
@@ -126,7 +134,7 @@ class TwigHelper
         $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn (ShipInterface $ship): int => $this->shipCrewCalculator->getMaxCrewCountByShip($ship));
         $this->environment->addFilter($getMaxCrewCountByShipFilter);
 
-        $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn ($value): string => TalHelper::getNumberWithThousandSeperator($value));
+        $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn ($value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
         $this->environment->addFilter($numberWithThousandSeperatorFilter);
     }
 

@@ -164,7 +164,7 @@
 						</tr>
 						{% for csl in COLONYSCANLIST %}
 						<tr id="colonyScan_{{ csl.getId }}">
-							<td><a href="javascript:void(0);" onclick="showColonySurface({{ csl.getId() }})"><img
+							<td><a href="javascript:void(0);" onclick="showColonySurface({{ csl.getId() }});"><img
 										src="assets/planets/{{ csl.getColony.getColonyClassId }}.png" /></a></td>
 							<td><span>{{ csl.getColonyName | bbcode }}</span></td>
 							<td>
@@ -179,8 +179,7 @@
 								{% endif %}
 								{% if csl.getUserId == USER.getId %}
 								{% set iconId = delColScan ~ csl.getId %}
-								<a tal:condition="php:  " href="javascript:void(0)"
-									onclick="deleteColonyScan({{ csl.getId }});"
+								<a href="javascript:void(0)" onclick="deleteColonyScan({{ csl.getId }});"
 									onmouseover="cp('{{ iconId }}','buttons/x2')"
 									onmouseout="cp('{{ iconId }}','buttons/x1')">
 									<img src="assets/buttons/x1.png" name="{{ iconId }}" title="Scan Löschen" />

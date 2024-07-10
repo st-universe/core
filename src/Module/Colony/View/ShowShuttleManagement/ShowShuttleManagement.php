@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShuttleManagement;
 
 use Override;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
@@ -48,7 +49,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         }
 
         $game->setPageTitle("Shuttle Management");
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/shuttlemanagement');
+        $game->setMacroInAjaxWindow('html/spacecraft/shuttleManagement.twig');
 
         $shuttles = [];
         $currentlyStored = 0;
@@ -79,8 +80,10 @@ final class ShowShuttleManagement implements ViewControllerInterface
             }
         }
 
+
+        $game->setTemplateVar('MODULE_VIEW', ModuleViewEnum::COLONY);
         $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
-        $game->setTemplateVar('COLONY', $colony);
+        $game->setTemplateVar('MANAGER', $colony);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
         $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);
         $game->setTemplateVar('ERROR', false);

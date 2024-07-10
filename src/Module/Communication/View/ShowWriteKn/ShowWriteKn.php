@@ -25,7 +25,7 @@ final class ShowWriteKn implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/writekn.xhtml');
+        $game->setViewTemplate('html/communication/writeKn.twig');
         $game->appendNavigationPart('comm.php', 'KommNet');
         $game->appendNavigationPart(
             sprintf('comm.php?%s=1', self::VIEW_IDENTIFIER),

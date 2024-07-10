@@ -1,0 +1,23 @@
+{% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+<form action="ship.php" method="post">
+    <input type="hidden" name="fleetid" value="{{ FLEET.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    {% if AVAILABLE_SHIPS is empty %}
+        <span>Keine Schiffe vorhanden</span>
+    {% else %}
+        <table class="tcal" id="availableShipsTable">
+            {% for ship in AVAILABLE_SHIPS %}
+                <tr>
+                    <td style="{{ ship.getHoldingWebBackgroundStyle }}" class="shiplistshipimage">
+                        {{ shipimagewithoutwarp(ship) }}
+                    </td>
+                    <td>
+                        <input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="{{ ship.getId }}" />
+                        <span>{{ ship.getName|bbcode }}</span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <a href="javascript:void(0);" onclick="joinFleetInShiplist({{ FLEET.getId }});" title="Schiffe hinzufügen" class="fabutton">Schiffe hinzufügen</a>
+    {% endif %}
+</form>

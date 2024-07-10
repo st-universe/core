@@ -23,7 +23,7 @@ final class Overview implements ViewControllerInterface
             _('Notizen')
         );
         $game->setPageTitle(_('/ Notizen'));
-        $game->setTemplateFile('html/notes.xhtml');
+        $game->setTemplateFile('html/notes/notes.twig');
         $game->setTemplateVar(
             'NOTE_LIST',
             $this->noteRepository->getByUserId($game->getUser()->getId())

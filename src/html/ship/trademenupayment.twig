@@ -1,0 +1,35 @@
+<div id="trademenucontent" style="width: 400px;">
+    <table class="tcal">
+      <tr>
+        <td>
+          Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu
+          begleichen.<br /><br />
+          <img src="assets/commodities/{{ LICENSECOMMODITY }}.png" title="{{ LICENSECOMMODITYNAME }}" /> {{ LICENSECOST }} für {{ LICENSEDAYS }} Tage.
+        </td>
+      </tr>
+    </table>
+    <br /><br />
+    <input type="hidden" name="sstrajax" id="sstrajax" value="{{ SESSIONSTRING }}" />
+    <table class="tcal">
+      <tr>
+        <th>Bezahlmethode wählen</th>
+      </tr>
+      <tr>
+        <td>
+          <div style="float: left; width: 190px;">
+            <strong>Angedockte Schiffe</strong>
+            {% for ship in DOCKED_SHIPS_FOR_LICENSE %}
+              - <a href="javascript:void(0);" onclick="payTradeLicense({{ TRADEPOST.getId }},'ship',{{ ship.getId }})">{{ ship.getName|bbcode }}</a>
+            {% endfor %}
+          </div>
+          <div style="padding-left: 6px; float: right; width: 190px;">
+            <strong>Warenkonten</strong>
+            {% for acc in ACCOUNTS_FOR_LICENSE %}
+              - <a href="javascript:void(0);" onclick="payTradeLicense({{ TRADEPOST.getId }},'account',{{ acc.getTradePost.getId }})">{{ acc.getTradePost.getName|bbcode }}</a>
+            {% endfor %}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+

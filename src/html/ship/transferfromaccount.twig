@@ -1,0 +1,29 @@
+{% from 'html/macros.twig' import commoditySelection %}
+  <input type="hidden" name="B_TRANSFER_FROM_ACCOUNT" value="1" />
+  <table class="tcal">
+    <tr>
+      <th>Waren im Konto</th>
+    </tr>
+    <tr>
+      <td>
+        {% set storage = TRADEPOST.getStorage %}
+        {% if storage %}
+          {% for stor in storage %}
+            <input type="hidden" name="commodities[]" value="{{ stor.getCommodity.getId }}" />
+            {% if not loop.index is odd %}
+              <div style="float: right; width: 50%;">
+                {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
+              </div>
+            {% else %}
+              <div style="float: left; width: 50%;">
+                {{ commoditySelection(stor.getCommodity.getName, stor.getCommodity.getId, stor.getAmount) }}
+              </div>
+              <br style="clear: both;" />
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          Keine Waren vorhanden
+        {% endif %}
+      </td>
+    </tr>
+  </table>

@@ -72,7 +72,7 @@ final class NewPost implements ViewControllerInterface
             _('Antwort erstellen')
         );
 
-        $game->setTemplateFile('html/allianceboardcreatepost.xhtml');
+        $game->setViewTemplate('html/alliance/allianceboardcreatepost.twig');
         $game->setTemplateVar('BOARD_ID', $boardId);
         $game->setTemplateVar('TOPIC', $topic);
     }

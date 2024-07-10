@@ -6,7 +6,7 @@ namespace Stu\Component\Ship\System\Data;
 
 use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarColorEnum;
 
 class EpsSystemData extends AbstractSystemData
 {
@@ -128,7 +128,7 @@ class EpsSystemData extends AbstractSystemData
 
     public function getEpsStatusBar(): string
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Energie'),
             $this->getEps(),
             $this->getMaxEps(),
@@ -139,7 +139,7 @@ class EpsSystemData extends AbstractSystemData
 
     public function getEpsStatusBarBig(): string
     {
-        return $this->getTalStatusBar(
+        return $this->getStatusBar(
             _('Energie'),
             $this->getEps(),
             $this->getMaxEps(),

@@ -21,7 +21,7 @@ final class ShowKnRating implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->showMacro('html/commmacros.xhtml/knrating');
+        $game->showMacro('html/communication/knRating.twig');
 
         $post = $game->getViewContext(ViewContextTypeEnum::KN_POST);
 

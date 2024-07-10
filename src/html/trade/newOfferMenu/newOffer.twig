@@ -1,0 +1,84 @@
+<table class="tcal">
+    {% if IS_NPC_POST %}
+    <tr>
+        <td style="vertical-align: middle;">Angebotene Menge</td>
+        <td>
+            <input type="text" name="gcount" size="5"
+                onchange="$('calcam').innerHTML = Math.floor({{ STOR.getAmount }}/parseInt(this.value))" />
+            ({{ STOR.getAmount }})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle;">Verlangte Ware</td>
+        <td>
+            {% if IS_LATINUM %}
+            <select name="wgid">
+                <option value="0">----------------------</option>
+                {% for data in SELECTABLE_COMMODITIES %}
+                {% if data.getId != STOR.getCommodityId %}
+                <option value="{{ data.getId }}">
+                    {{ data.getName }}
+                </option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            {% else %}
+            <input type="hidden" name="wgid" value="50" />
+            <img src="assets/commodities/50.png" title="Latinum" />
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle;">Verlangte Menge</td>
+        <td>
+            <input type="text" size="5" name="wcount" />
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle;">Anzahl Angebote</td>
+        <td>
+            <input type="test" size="2" name="amount" value="1" /> (max. 99/<span id="calcam">-</span>)
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td style="vertical-align: middle;">Angebotene Menge</td>
+        <td>
+            <input type="text" name="gcount" size="5"
+                onchange="$('calcam').innerHTML = Math.floor({{ STOR.getAmount }}/parseInt(this.value))" />
+            ({{ STOR.getAmount }})
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle;">Verlangte Ware</td>
+        <td>
+            <select name="wgid">
+                <option value="0">----------------------</option>
+                {% for data in SELECTABLE_COMMODITIES %}
+                {% if data.getId != STOR.getCommodityId %}
+                <option value="{{ data.getId }}">
+                    {{ data.getName }}
+                </option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle;">Verlangte Menge</td>
+        <td>
+            <input type="text" size="5" name="wcount" />
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle;">Anzahl Angebote</td>
+        <td>
+            <input type="test" size="2" name="amount" value="1" /> (max. 99/<span id="calcam">-</span>)
+        </td>
+    </tr>
+    <br />
+    {% endif %}
+</table>
+<div style="width: 100%; text-align: center;">
+    <input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
+</div>

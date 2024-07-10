@@ -51,7 +51,8 @@
             <div class="box_title">Sternensystem</div>
             <div class="box_body">
                 {% if STARSYSTEM_ENTRY_TAL.wasDiscovered %}
-                <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ STARSYSTEM_ENTRY_TAL.getId }}"
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=7&ent={{ STARSYSTEM_ENTRY_TAL.getId }}', 'database.php');"
                     title="Karte des Systems öffnen">
                     <img src="/assets/map/systemtypes/{{ COLONY.getSystem.getSystemType.getId }}.png"
                         title="{{ COLONY.getSystem.getSystemType.getDescription }}" />
@@ -201,7 +202,8 @@
                 <div class="colonyEffectGrid">
                     {% for data in EFFECTS %}
                     <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/{{ data.commodity.getId }}.png" title="{{ data.commodity.getName }}" />
+                        <img src="/assets/commodities/{{ data.commodity.getId }}.png"
+                            title="{{ data.commodity.getName }}" />
                         <span style="word-wrap: break-word; white-space: normal;">
                             {{ data.commodity.getName }}
                         </span>
@@ -213,7 +215,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
     {% endif %}
 </div>
 {% endblock %}

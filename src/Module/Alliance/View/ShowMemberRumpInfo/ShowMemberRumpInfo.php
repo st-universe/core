@@ -58,7 +58,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
 
         $memberNameAsText = $this->bbcodeParser->parse($member->getName())->getAsText();
         $game->setPageTitle(sprintf(_('%s von Mitglied %s'), $rump->getName(), $memberNameAsText));
-        $game->setMacroInAjaxWindow('html/alliancemacros.xhtml/memberrumpinfo');
+        $game->setMacroInAjaxWindow('html/alliance/alliancememberrumpinfo.twig');
 
         $ships = $this->shipRepository->getByUserAndRump($memberId, $rumpId);
 

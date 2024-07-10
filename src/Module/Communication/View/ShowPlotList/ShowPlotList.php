@@ -31,11 +31,11 @@ final class ShowPlotList implements ViewControllerInterface
             }
         }
 
-        $game->setTemplateFile('html/plotlist.xhtml');
+        $game->setTemplateFile('html/communication/plot/plots.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart(sprintf('comm.php?%s=1', static::VIEW_IDENTIFIER), _('Plots'));
         $game->setPageTitle(_('Plots'));
-        $game->setTemplateVar('PLOT_LIST', $active_plots);
-        $game->setTemplateVar('ENDED_PLOT_LIST', $ended_plots);
+        $game->setTemplateVar('PLOTS', $active_plots);
+        $game->setTemplateVar('ENDED_PLOTS', $ended_plots);
     }
 }

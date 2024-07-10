@@ -1,0 +1,27 @@
+<div class="box" style="width: fit-content;">
+  <div class="box_title">Zeiteinheit</div>
+  <div class="box_body">
+    <select onchange="openStatistics(this.value);">
+      {% for period in PERIODS %}
+      {% if period.divisor == SELECTEDPERIOD %}
+      <option value="{{ period.divisor }}" selected="1">
+        {{ period.text }}
+      </option>
+      {% else %}
+      <option value="{{ period.divisor }}">
+        {{ period.text }}
+      </option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+</div>
+<div>
+  {% for graph in GRAPHS %}
+  <div style="margin-left: 10px; margin-top: 10px; float:left;">
+    {% autoescape false %}
+    {{ graph }}
+    {% endautoescape %}
+  </div>
+  {% endfor %}
+</div>

@@ -27,7 +27,7 @@ final class RefreshColonyEps implements ViewControllerInterface
             false
         );
 
-        $game->showMacro('html/macros.xhtml/table_cell');
+        $game->showMacro('html/colony/component/tableCell.twig');
 
         $game->setTemplateVar('ID', 'current_energy');
         $game->setTemplateVar('INNERHTML', $colony->getEps());

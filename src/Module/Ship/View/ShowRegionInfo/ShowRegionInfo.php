@@ -50,7 +50,7 @@ final class ShowRegionInfo implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/regioninfo');
+        $game->setMacroInAjaxWindow('html/ship/regioninfo.twig');
         $game->setPageTitle(sprintf('Details: %s', $region->getDescription()));
 
         $game->setTemplateVar('REGION', $region);

@@ -40,7 +40,7 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
 
         $game->setPageTitle(_('Schiffe im Orbit'));
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/orbitshiplist');
+        $game->setMacroInAjaxWindow('html/colony/orbitShipList.twig');
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar(
             'WRAPPERS',

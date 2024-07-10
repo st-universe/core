@@ -48,15 +48,20 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('NAVIGATION', $game->getNavigation());
         $twigPage->setVar('PAGETITLE', $game->getPageTitle());
         $twigPage->setVar('INFORMATION', $game->getInformation());
+        $twigPage->setVar('TARGET_LINK', $game->getTargetLink());
         $twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
         $twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
         $twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));
         $twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
-        $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
         $twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath(), true);
         $twigPage->setVar('ISNPC', $game->isNpc());
         $twigPage->setVar('ISADMIN', $game->isAdmin());
         $twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
+        $twigPage->setVar('GAME_STATS', $game->getGameStats());
+
+        if ($game->hasUser()) {
+            $twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
+        }
     }
 
     private function setUserVariables(?UserInterface $user, TwigPageInterface $twigPage): void

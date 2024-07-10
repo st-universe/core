@@ -71,7 +71,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
         $this->colonyRepository->save($colony);
 
         $game->setPageTitle(sprintf(_('Subraum Teleskop Scan %d|%d'), $cx, $cy));
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/telescopescan');
+        $game->setMacroInAjaxWindow('html/colony/component/telescopescan.twig');
     }
 
     private function calculateScanCost(ColonyInterface $colony, int $cx, int $cy): int

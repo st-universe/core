@@ -51,7 +51,7 @@ final class ShowEpsTransfer implements ViewControllerInterface
             return;
         }
 
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_ship_etransfer');
+        $game->setMacroInAjaxWindow('html/ship/showshipetransfer.twig');
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('WRAPPER', $wrapper);

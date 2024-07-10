@@ -28,7 +28,7 @@ final class ShowShoutBox implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/shoutbox');
+        $game->setMacroInAjaxWindow('html/trade/shoutbox.twig');
         $game->setPageTitle(_('Schwarzes Brett'));
         $game->setTemplateVar('NETWORK', $tradeNetworkId);
         $game->setTemplateVar('SHOUTBOX', $this->tradeShoutboxRepository->getByTradeNetwork($tradeNetworkId));

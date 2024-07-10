@@ -1,0 +1,18 @@
+<table class="tcal">
+    <tr>
+        <th>Anzahl</th>
+        <th>Ware</th>
+    </tr>
+    {% for entry in COMMODITIES_LIST %}
+    <tr>
+        <td>{{ entry.getAmount }}</td>
+        <td>
+            <a href="javascript:void(0);" onclick="getCommodityLocations({{ entry.getCommodityId }});">
+                <img style="vertical-align: middle" src="assets/commodities/{{ entry.getCommodityId }}.png"
+                    title="{{ entry.getCommodity.getName }}" />
+                {{ entry.getCommodity.getName }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

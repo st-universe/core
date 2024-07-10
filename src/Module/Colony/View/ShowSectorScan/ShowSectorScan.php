@@ -38,7 +38,7 @@ final class ShowSectorScan implements ViewControllerInterface
         );
 
         $game->setPageTitle("Sektor Scan");
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/sectorscan');
+        $game->setMacroInAjaxWindow('html/colony/component/sectorscan.twig');
 
         $game->setTemplateVar('ERROR', true);
 

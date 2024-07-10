@@ -34,7 +34,7 @@ final class ShowShipCommunication implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Schiffskommunikation'));
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/shipcommunication');
+        $game->setMacroInAjaxWindow('html/ship/shipcommunication.twig');
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(

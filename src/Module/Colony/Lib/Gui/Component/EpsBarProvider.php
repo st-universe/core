@@ -5,7 +5,7 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 

@@ -20,7 +20,7 @@ final class ShowUserPlotList implements ViewControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/userplotlist.xhtml');
+        $game->setTemplateFile('html/communication/plot/userPlots.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart(sprintf('comm.php?%s=1', static::VIEW_IDENTIFIER), _('Eigene Plots'));
         $game->setPageTitle(_('Eigene Plots'));

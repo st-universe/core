@@ -30,7 +30,7 @@ final class ShowLottery implements ViewControllerInterface
             _('Lotterie')
         );
         $game->setPageTitle(_('/ Handel / Nagus Lotterie'));
-        $game->setTemplateFile('html/lottery.xhtml');
+        $game->setViewTemplate('html/trade/lottery.twig');
 
         $ticketCount = $this->lotteryFacade->getTicketAmount(false);
         $ownCount = $this->lotteryFacade->getTicketAmountByUser($game->getUser()->getId(), false);

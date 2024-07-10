@@ -1,4 +1,3 @@
-<script src="{{ THIS.getJavascriptPath }}/js/trade.js"></script>
 {% if not HAS_LICENSE %}
 <div style="display: flex;">
     <div class="divbody" style="width: 70%; border-style: none!important">
@@ -48,7 +47,7 @@
             <br />
             <span>Aktueller NAP gilt bis: {{ PROTECTIONTIME | date('d.m.Y H:i') }} Uhr</span>
             {% endif %}
-            <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+            <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 
         </form>
     </div>
@@ -76,7 +75,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen"
                             name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
@@ -102,7 +101,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen"
                             name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
@@ -127,7 +126,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
                         <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
@@ -158,7 +157,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
                         <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
@@ -187,7 +186,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
                         <img src="assets/buttons/bauplan.png" title="Bauplan" />
@@ -219,7 +218,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
                         <img src="assets/buttons/bauplan.png" title="Bauplan" />
@@ -270,7 +269,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
@@ -305,7 +304,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
@@ -338,7 +337,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
@@ -378,7 +377,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
@@ -416,7 +415,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
@@ -457,7 +456,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
@@ -512,7 +511,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
                         <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
@@ -546,7 +545,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
                         <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
@@ -578,7 +577,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
                         <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
@@ -617,7 +616,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
                         <img src="assets/ships/{{ data.getRumpId }}.png" title="{{ data.getBuildplanName }}" />
@@ -654,7 +653,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
                         <img src="assets/buttons/bauplan.png" title="Bauplan" />
@@ -694,7 +693,7 @@
             <tr class="row{{ loop.index is odd }}">
                 <form method="post" action="trade.php">
                     <input type="hidden" name="dealid" value="{{ data.getId }}" />
-                    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
                         <img src="assets/buttons/bauplan.png" title="Bauplan" />

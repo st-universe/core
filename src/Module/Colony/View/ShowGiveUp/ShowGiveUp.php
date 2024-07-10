@@ -26,7 +26,7 @@ final class ShowGiveUp implements ViewControllerInterface
         $code = substr(md5($colony->getName()), 0, 6);
 
         $game->setPageTitle(_('Kolonie aufgeben'));
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/giveup');
+        $game->setMacroInAjaxWindow('html/colony/component/giveup.twig');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('GIVE_UP_CODE', $code);

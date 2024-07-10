@@ -1,0 +1,37 @@
+    {% if not ERROR %}
+            {% if DEPOSITS is not empty %}
+                <table class="tcal">
+                    <tr>
+                        <th colspan="2">Ressourcenvorkommen</th>
+                    </tr>
+                    {% for deposit in DEPOSITS %}
+                        <tr>
+                            <td><img src="/assets/commodities/{{ deposit.getCommodity.getId }}.png" title="{{ deposit.getCommodity.getName }}" /></td>
+                            <td>min: {{ deposit.getMinAmount }}, max: {{ deposit.getMaxAmount }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            <div style="{{ SURFACE.getSurfaceTileStyle }}">
+                {% for field in SURFACE.getSurface %}
+                    {% if not field.hasBuilding %}
+                        <div class="{{ field.getCssClass }}" style="width: 40px; height: 40px;" id="field{{ field.getFieldId }}">
+                            <div>
+                                <div>
+                                    <img style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}" src="assets/generated/fields/{{ field.getDayNightPrefix }}{{ field.getFieldType }}.png" />
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="{{ field.getCssClass }}" style="width: 40px; height: 40px;" id="field{{ field.getFieldId }}">
+                            <div style="background-image: url(assets/generated/fields/{{ field.getDayNightPrefix }}{{ field.getFieldType }}.png); width: 40px; height: 40px;">
+                                <a href="?id={{ SHIP.getId }}&B_ATTACK_BUILDING=1&colid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ SESSIONSTRING }}">
+                                    <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: {{ field|planetFieldTitle }}" src="assets/generated/buildings/{{ field.getBuildingId }}/{{ field.getBuilding.getBuildingType }}{{ field.getBuildingState }}{{ field.getDayNightPrefix }}.png" />
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
