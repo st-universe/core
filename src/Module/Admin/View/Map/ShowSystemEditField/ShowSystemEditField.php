@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map\ShowSystemEditField;
 
 use Override;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
@@ -14,8 +15,10 @@ final class ShowSystemEditField implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SYSTEM_EDITFIELD';
 
-    public function __construct(private ShowSystemEditFieldRequestInterface $showSystemEditFieldRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
-    {
+    public function __construct(
+        private MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
+        private StarSystemMapRepositoryInterface $starSystemMapRepository
+    ) {
     }
 
     #[Override]
@@ -29,10 +32,14 @@ final class ShowSystemEditField implements ViewControllerInterface
             $possibleFieldTypes['row_' . ($key % 6)][] = $value;
         }
 
-        $field = $this->starSystemMapRepository->find($this->showSystemEditFieldRequest->getFieldId());
+        $field = $this->starSystemMapRepository->getByCoordinates(
+            request::getIntFatal('systemid'),
+            request::getIntFatal('x'),
+            request::getIntFatal('y')
+        );
 
         $game->setPageTitle(_('Feld wählen'));
-        $game->setMacroInAjaxWindow('html/admin/mapeditor_macros.xhtml/mapeditor_system_fieldselector');
+        $game->setMacroInAjaxWindow('html/admin/mapeditorSystemFieldselector.twig');
         $game->setTemplateVar('POSSIBLE_FIELD_TYPES', $possibleFieldTypes);
         $game->setTemplateVar('SELECTED_MAP_FIELD', $field);
     }

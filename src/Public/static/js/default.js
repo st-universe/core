@@ -371,10 +371,10 @@ function setNewSystemType(fieldid) {
         ajax_update(false, '/admin/?B_EDIT_SYSTEMTYPE_FIELD=1&field=' + fieldid + '&type=' + selectedSystemType);
 }
 
-function openSystemFieldSelector(fieldid) {
+function openSystemFieldSelector(x, y, systemId) {
         elt = 'fieldselector';
         openWindow(elt, 0);
-        ajax_update(elt, '/admin/?SHOW_SYSTEM_EDITFIELD=1&field=' + fieldid);
+        ajax_update(elt, `/admin/?SHOW_SYSTEM_EDITFIELD=1&systemid=${systemId}&x=${x}&y=${y}`);
 }
 function selectNewSystemMapField(fieldid, cx, cy, typeid, type) {
         ajax_update(false, '/admin/?B_EDIT_SYSTEM_FIELD=1&field=' + fieldid + '&type=' + typeid);
