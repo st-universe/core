@@ -1,7 +1,4 @@
-{% if THIS.getInformation %}
-<br />
-{{ macros.systeminformation() }}
-{% endif %}
+{% include 'html/systeminformation.twig' %}
 <br />
 {% if not ERROR %}
 <table class="tcal">

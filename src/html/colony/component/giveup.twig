@@ -1,20 +1,20 @@
-  <form action="colony.php" method="post">
-    <input type="hidden" name="id" value="{{ COLONY.getId }}" />
-    <input type="hidden" name="sstr" value="{{ THIS.getSessionString }}" />
-    <table class="tcal">
-      <tr>
-        <td colspan="2">Tippe folgenden Code in das Feld um die Kolonie-Aufgabe zu bestätigen.</td>
-      </tr>
-      <tr>
-        <td style="text-align: center; color: Red;">{{ GIVE_UP_CODE }}</td>
-        <td>
-          <input type="text" size="8" name="giveupcode" />
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input type="submit" class="button" name="B_GIVEUP_COLONY" value="Bestätigen" />
-        </td>
-      </tr>
-    </table>
-  </form>
+<form action="colony.php" method="post">
+  <input type="hidden" name="id" value="{{ COLONY.getId }}" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  <table class="tcal">
+    <tr>
+      <td colspan="2">Tippe folgenden Code in das Feld um die Kolonie-Aufgabe zu bestätigen.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center; color: Red;">{{ GIVE_UP_CODE }}</td>
+      <td>
+        <input type="text" size="8" name="giveupcode" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="submit" class="button" name="B_GIVEUP_COLONY" value="Bestätigen" />
+      </td>
+    </tr>
+  </table>
+</form>

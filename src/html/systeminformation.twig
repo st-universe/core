@@ -1,9 +1,9 @@
 {% if EXECUTEJSBEFORERENDER %}
-    <script>
-        {% for item in EXECUTEJSBEFORERENDER %}
-            {{ item|raw }}
-        {% endfor %}
-    </script>
+<script>
+    {% for item in EXECUTEJSBEFORERENDER %}
+        {{ item|raw }}
+    {% endfor %}
+</script>
 {% endif %}
 <div id="result">
     <table class="use">
@@ -17,9 +17,9 @@
                     {{ info|bbcode }}
                 </div>
                 {% endfor %}
-                {% if THIS.getTargetLink %}
-                <a href="{{ THIS.getTargetLink.getUrl }}" class="linkbutton">
-                    {{ THIS.getTargetLink.getTitle }}
+                {% if TARGET_LINK %}
+                <a href="{{ TARGET_LINK.getUrl }}" class="linkbutton">
+                    {{ TARGET_LINK.getTitle }}
                 </a>
                 {% endif %}
             </td>

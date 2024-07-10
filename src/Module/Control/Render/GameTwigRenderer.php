@@ -48,6 +48,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('NAVIGATION', $game->getNavigation());
         $twigPage->setVar('PAGETITLE', $game->getPageTitle());
         $twigPage->setVar('INFORMATION', $game->getInformation());
+        $twigPage->setVar('TARGET_LINK', $game->getTargetLink());
         $twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
         $twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
         $twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));

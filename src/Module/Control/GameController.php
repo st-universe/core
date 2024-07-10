@@ -85,8 +85,6 @@ final class GameController implements GameControllerInterface
     /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
     private ?array $gameStats = null;
 
-    private string $loginError = '';
-
     /** @var array<int, resource> */
     private array $semaphores = [];
 
@@ -556,14 +554,11 @@ final class GameController implements GameControllerInterface
             }
             return;
         } catch (LoginException $e) {
-            $this->loginError = $e->getMessage();
-            $this->setTemplateVar('THIS', $this);
+            $this->setTemplateVar('LOGIN_ERROR', $e->getMessage());
             $this->setTemplateFile('html/index/index.twig');
         } catch (UserLockedException $e) {
-            $this->loginError = $e->getMessage();
-
             $this->setTemplateFile('html/index/accountLocked.twig');
-            $this->setTemplateVar('THIS', $this);
+            $this->setTemplateVar('LOGIN_ERROR', $e->getMessage());
             $this->setTemplateVar('REASON', $e->getDetails());
         } catch (AccountNotVerifiedException $e) {
             $this->setTemplateFile('html/index/smsVerification.twig');
@@ -785,12 +780,6 @@ final class GameController implements GameControllerInterface
     public function getGameStateTextual(): string
     {
         return GameEnum::gameStateTypeToDescription($this->getGameState());
-    }
-
-    #[Override]
-    public function getLoginError(): string
-    {
-        return $this->loginError;
     }
 
     /**

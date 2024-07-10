@@ -59,7 +59,7 @@
                         <div id="gamestate_{{ GAME_STATS.gameState }}">{{ GAME_STATS.gameStateTextual }}</div>
                     </div>
                     <br />
-                    {% if THIS.hasUser %}
+                    {% if USER %}
                     <div class="sidebar_box_header">Willkommen zurück</div>
                     <div class="sidebar_box_content">
                         {% autoescape false %}
@@ -71,9 +71,9 @@
                     {% else %}
                     <div class="sidebar_box_header">Login</div>
                     <div class="sidebar_box_content">
-                        {% if THIS.getLoginError %}
+                        {% if LOGIN_ERROR %}
                         <div>
-                            <span style="color: red;">{{ THIS.getLoginError }}</span>
+                            <span style="color: red;">{{ LOGIN_ERROR }}</span>
                         </div>
                         {% endif %}
                         <form action="/index.php" method="post" name="f" id="defaultform">

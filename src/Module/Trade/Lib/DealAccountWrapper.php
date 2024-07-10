@@ -15,8 +15,11 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
     /** @var array<StorageInterface> */
     private ?array $storage = null;
 
-    public function __construct(private StorageRepositoryInterface $storageRepository, private TradePostInterface $tradePost, private int $userId)
-    {
+    public function __construct(
+        private StorageRepositoryInterface $storageRepository,
+        private TradePostInterface $tradePost,
+        private int $userId
+    ) {
     }
 
     #[Override]
@@ -31,6 +34,7 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
         return $this->tradePost->getShip();
     }
 
+    /** @return array<StorageInterface> */
     private function getStorage(): array
     {
         if ($this->storage === null) {
