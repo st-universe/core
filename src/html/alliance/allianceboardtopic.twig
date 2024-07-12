@@ -49,8 +49,10 @@
             {% endif %}
         </td>
         <td style="vertical-align: top;">
-            <span>{{ post.getText | bbcode }}</span>
-        </td>
+            {% autoescape false %}
+            <span>{{ post.getText | nl2br | bbcode }}</span>
+            {% endautoescape %}
+        </td>      
     </tr>
     <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
         <td colspan="2">
