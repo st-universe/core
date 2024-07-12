@@ -323,14 +323,10 @@ canColonize, closestAnomalyDistance) %}
             {% endif %}
             {% else %}
             {% if starSystemEntryTal.wasDiscovered %}
-            <a href="javascript:void(0);"
-                onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=7&ent={{ starSystemEntryTal.getId }}', 'database.php');"
-                target="_blank" title="Karte des Systems öffnen">
-                <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
-                    style="width: 15px; height: 15px;" />
-                <span>{{ starSystem.getName }}
-                    ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
-            </a>
+            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank" title="Karte des Systems öffnen">
+                <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png" style="width: 15px; height: 15px;" />
+                <span>{{ starSystem.getName }} ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
+            </a>            
             {% else %}
             <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
                 style="width: 15px; height: 15px;" title="{{ starSystem.getSystemType.getDescription }}" />
@@ -353,13 +349,10 @@ canColonize, closestAnomalyDistance) %}
         {% set systemTypeId = systemType.getId %}
         <td>
             {% if starSystemEntryTal.wasDiscovered %}
-            <a href="javascript:void(0);"
-                onclick="switchInnerContent('SHOW_ENTRY', 'Systemkarte', 'cat=7&ent={{ starSystemEntryTal.getId }}', 'database.php');"
-                target="_blank" title="Karte des Systems öffnen">
-                <img src="/assets/map/systemtypes/{{ systemTypeId }}.png" style="width: 15px; height: 15px;" />
-                <span>{{ overSystem.getName }}
-                    ({{ overSystem.getCx }}|{{ overSystem.getCy }})</span>
-            </a>
+            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank" title="Karte des Systems öffnen">
+                <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png" style="width: 15px; height: 15px;" />
+                <span>{{ starSystem.getName }} ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
+            </a> 
             {% else %}
             <img src="/assets/map/systemtypes/{{ systemTypeId  }}.png" style="width: 15px; height: 15px;"
                 title="{{ systemType.getDescription  }}" />

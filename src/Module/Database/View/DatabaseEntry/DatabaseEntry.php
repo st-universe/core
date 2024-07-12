@@ -219,20 +219,26 @@ final class DatabaseEntry implements ViewControllerInterface
             $unfilteredScans = $user->getColonyScans()->toArray();
         }
 
-
-        return $this->filterBySystem($unfilteredScans, $systemId);
-    }
-
-    /**
-     * @param array<int, ColonyScanInterface> $colonyScans
-     *
-     * @return array<int, ColonyScanInterface>
-     */
-    private function filterBySystem(array $colonyScans, int $systemId): array
-    {
-        return array_filter(
-            $colonyScans,
+        $filteredScans = array_filter(
+            $unfilteredScans,
             fn (ColonyScanInterface $scan): bool => $scan->getColony()->getSystemsId() === $systemId
         );
+
+        $scansByColony = [];
+        foreach ($filteredScans as $scan) {
+            $colonyId = $scan->getColony()->getId();
+            if (!isset($scansByColony[$colonyId])) {
+                $scansByColony[$colonyId] = [];
+            }
+            $scansByColony[$colonyId][] = $scan;
+        }
+
+        $latestScans = [];
+        foreach ($scansByColony as $colonyId => $scans) {
+            usort($scans, fn ($a, $b) => $b->getDate() <=> $a->getDate());
+            $latestScans[] = $scans[0];
+        }
+
+        return $latestScans;
     }
 }

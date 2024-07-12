@@ -80,9 +80,9 @@ final class UserProfileProvider implements ViewComponentProviderInterface
     }
 
     /**
-     * @return array<ColonyScanInterface>
+     * @return array<int, ColonyScanInterface>
      */
-    public function getColonyScanList(UserInterface $user, UserInterface $visitor): iterable
+    public function getColonyScanList(UserInterface $user, UserInterface $visitor): array
     {
         $alliance = $visitor->getAlliance();
 
@@ -92,9 +92,29 @@ final class UserProfileProvider implements ViewComponentProviderInterface
             $unfilteredScans = $visitor->getColonyScans()->toArray();
         }
 
+        $filteredScans = array_filter(
+            $unfilteredScans,
+            fn (ColonyScanInterface $scan): bool => $scan->getColonyUserId() === $user->getId()
+        );
 
-        return $this->filterByUser($unfilteredScans, $user);
+        $scansByColony = [];
+        foreach ($filteredScans as $scan) {
+            $colonyId = $scan->getColony()->getId();
+            if (!isset($scansByColony[$colonyId])) {
+                $scansByColony[$colonyId] = [];
+            }
+            $scansByColony[$colonyId][] = $scan;
+        }
+
+        $latestScans = [];
+        foreach ($scansByColony as $colonyId => $scans) {
+            usort($scans, fn ($a, $b) => $b->getDate() <=> $a->getDate());
+            $latestScans[] = $scans[0];
+        }
+
+        return $latestScans;
     }
+
 
     /**
      * @param array<int, ColonyScanInterface> $colonyScans
