@@ -70,9 +70,6 @@
             <td>{{ csl.getDate|stuDateTime }}</td>
             <td>{{ csl.getUser.getName|bbcode }}</td>
             <td>
-                {% if csl.isAbandoned %}
-                <span style="color: orange;">wurde verlassen</span><br />
-                {% endif %}
                 {% if csl.getUserId == USER.getId %}
                 <a href="javascript:void(0)" onclick="deleteColonyScan({{ scanId }});"
                     onmouseover="cp('delColScan{{ scanId }}','buttons/x2')"
