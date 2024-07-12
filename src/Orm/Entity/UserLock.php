@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use Stu\Orm\Repository\UserLockRepository;
@@ -37,7 +37,7 @@ class UserLock implements UserLockInterface
     #[Column(type: 'text')]
     private string $reason = '';
 
-    #[ManyToOne(targetEntity: 'User')]
+    #[OneToOne(targetEntity: 'User', inversedBy: 'userLock')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?UserInterface $user = null;
 
