@@ -83,6 +83,7 @@ class UserProfileProviderTest extends StuTestCase
     {
         $playerId = 666;
         $visitorId = 42;
+        $colonyId = 123;
         $parsedDescription = 'some-parsed-description';
         $description = 'some-description';
 
@@ -94,6 +95,7 @@ class UserProfileProviderTest extends StuTestCase
         $friend = $this->mock(UserInterface::class);
         $bbCodeParser = $this->mock(Parser::class);
         $colonyScan = $this->mock(ColonyScanInterface::class);
+        $colony = $this->mock(ColonyInterface::class);
         $this->mock(ColonyInterface::class);
 
         request::setMockVars(['uid' => $playerId]);
@@ -197,8 +199,20 @@ class UserProfileProviderTest extends StuTestCase
             ->once()
             ->andReturn($playerId);
 
+        $colonyScan->shouldReceive('getColony')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colony);
+
+        $colony->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colonyId);
+
         $game->shouldReceive('setTemplateVar')
-            ->with('COLONYSCANLIST', [123 => $colonyScan])
+            ->with('COLONYSCANLIST', \Mockery::on(function ($arg) use ($colonyScan) {
+                return is_array($arg) && count($arg) === 1 && $arg[0] === $colonyScan;
+            }))
             ->once();
 
         $this->subject->setTemplateVariables($game);
