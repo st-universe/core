@@ -114,18 +114,4 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
         return $latestScans;
     }
-
-
-    /**
-     * @param array<int, ColonyScanInterface> $colonyScans
-     *
-     * @return array<int, ColonyScanInterface>
-     */
-    private function filterByUser(array $colonyScans, UserInterface $user): array
-    {
-        return array_filter(
-            $colonyScans,
-            fn (ColonyScanInterface $scan): bool => $scan->getColonyUserId() === $user->getId()
-        );
-    }
 }
