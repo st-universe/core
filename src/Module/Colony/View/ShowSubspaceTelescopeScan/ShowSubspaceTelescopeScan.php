@@ -16,7 +16,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
+use Stu\Orm\Repository\LocationRepositoryInterface;
 
 final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 {
@@ -29,7 +29,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
     public function __construct(
         private ColonyLoaderInterface $colonyLoader,
-        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private LocationRepositoryInterface $locationRepository,
         private ColonyRepositoryInterface $colonyRepository,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -65,7 +65,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $game->setTemplateVar('INFOS', $this->starSystemMapRepository->getRumpCategoryInfo($layer, $cx, $cy));
+        $game->setTemplateVar('INFOS', $this->locationRepository->getRumpCategoryInfo($layer, $cx, $cy));
 
         $colony->setEps($colony->getEps() - $scanCost);
         $this->colonyRepository->save($colony);

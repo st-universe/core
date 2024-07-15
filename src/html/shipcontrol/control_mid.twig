@@ -224,7 +224,7 @@ canColonize, closestAnomalyDistance) %}
         {% else %}
         {% if ship.isOverSystem %}
         <th>Sternensystem</th>
-        {% elseif ship.isOverWormhole %}
+        {% elseif ship.getLocation.isOverWormhole %}
         <th>Wurmloch</th>
         {% endif %}
         {% endif %}
@@ -315,7 +315,7 @@ canColonize, closestAnomalyDistance) %}
             {% if starSystem.isWormhole %}
             <span>{{ starSystem.getName }}</span>
             <br />
-            {% if ship.getStarsystemMap.getRandomWormholeEntry %}
+            {% if ship.getLocation.getRandomWormholeEntry %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_LEAVE_WORMHOLE', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');">
                 <img src="/assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
@@ -323,10 +323,12 @@ canColonize, closestAnomalyDistance) %}
             {% endif %}
             {% else %}
             {% if starSystemEntryTal.wasDiscovered %}
-            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank" title="Karte des Systems öffnen">
-                <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png" style="width: 15px; height: 15px;" />
+            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank"
+                title="Karte des Systems öffnen">
+                <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
+                    style="width: 15px; height: 15px;" />
                 <span>{{ starSystem.getName }} ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
-            </a>            
+            </a>
             {% else %}
             <img src="/assets/map/systemtypes/{{ starSystem.getSystemType.getId }}.png"
                 style="width: 15px; height: 15px;" title="{{ starSystem.getSystemType.getDescription }}" />
@@ -349,7 +351,8 @@ canColonize, closestAnomalyDistance) %}
         {% set systemTypeId = systemType.getId %}
         <td>
             {% if starSystemEntryTal.wasDiscovered %}
-            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank" title="Karte des Systems öffnen">
+            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank"
+                title="Karte des Systems öffnen">
                 <img src="/assets/map/systemtypes/{{ systemTypeId }}.png" style="width: 15px; height: 15px;" />
                 <span>{{ overSystem.getName }}
                     ({{ overSystem.getCx }}|{{ overSystem.getCy }})</span>
@@ -369,7 +372,7 @@ canColonize, closestAnomalyDistance) %}
             {% endif %}
         </td>
         {% endif %}
-        {% set wormholeEntry = ship.getMap.getRandomWormholeEntry %}
+        {% set wormholeEntry = ship.getLocation.getRandomWormholeEntry %}
         {% if wormholeEntry %}
         <td>
             {{ wormholeEntry.getSystem.getName }}<br />

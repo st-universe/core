@@ -6,13 +6,12 @@ namespace Stu\Component\Anomaly;
 
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\LocationInterface;
 
 interface AnomalyCreationInterface
 {
     public function create(
         AnomalyTypeEnum $type,
-        MapInterface|StarSystemMapInterface $map
+        LocationInterface $location
     ): AnomalyInterface;
 }

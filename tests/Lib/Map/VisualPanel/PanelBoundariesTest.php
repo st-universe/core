@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
-use Stu\Lib\Map\Location;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -60,14 +59,8 @@ class PanelBoundariesTest extends StuTestCase
 
     public function testFromMapLocation(): void
     {
-        $location = mock(Location::class);
         $map = mock(MapInterface::class);
         $layer = mock(LayerInterface::class);
-
-        $location->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($map);
 
         $map->shouldReceive('getLayer')
             ->withNoArgs()
@@ -89,7 +82,7 @@ class PanelBoundariesTest extends StuTestCase
             ->andReturn(15);
 
         $result = PanelBoundaries::fromLocation(
-            $location,
+            $map,
             5
         );
 
@@ -102,14 +95,8 @@ class PanelBoundariesTest extends StuTestCase
 
     public function testFromSystemMapLocation(): void
     {
-        $location = mock(Location::class);
         $systemMap = mock(StarSystemMapInterface::class);
         $system = mock(StarSystemInterface::class);
-
-        $location->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($systemMap);
 
         $systemMap->shouldReceive('getSystem')
             ->withNoArgs()
@@ -131,7 +118,7 @@ class PanelBoundariesTest extends StuTestCase
             ->andReturn(15);
 
         $result = PanelBoundaries::fromLocation(
-            $location,
+            $systemMap,
             5
         );
 

@@ -66,6 +66,7 @@ use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostToPlotApplication;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\LotteryTicket;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapBorderType;
@@ -208,6 +209,7 @@ return [
     KnPostRepositoryInterface::class => fn (ContainerInterface $c): KnPostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(KnPost::class),
     KnPostToPlotApplicationRepositoryInterface::class => fn (ContainerInterface $c): KnPostToPlotApplicationRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(KnPostToPlotApplication::class),
     LayerRepositoryInterface::class => fn (ContainerInterface $c): LayerRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Layer::class),
+    LocationRepositoryInterface::class => fn (ContainerInterface $c): LocationRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Location::class),
     LotteryTicketRepositoryInterface::class => fn (ContainerInterface $c): LotteryTicketRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(LotteryTicket::class),
     MapBorderTypeRepositoryInterface::class => fn (ContainerInterface $c): MapBorderTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(MapBorderType::class),
     MapFieldTypeRepositoryInterface::class => fn (ContainerInterface $c): MapFieldTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(MapFieldType::class),

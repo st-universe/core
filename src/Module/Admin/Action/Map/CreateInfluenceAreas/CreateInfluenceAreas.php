@@ -114,8 +114,8 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
     private function spreadInCircle(MapInterface $map, StarSystemInterface $system): void
     {
-        $x = $map->getCx();
-        $y = $map->getCy();
+        $x = $map->getX();
+        $y = $map->getY();
 
         $circleNeighbours = [];
 
@@ -191,8 +191,8 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     private function loadMapByCoords(array $maps): void
     {
         foreach ($maps as $map) {
-            $x = $map->getCx();
-            $y = $map->getCy();
+            $x = $map->getX();
+            $y = $map->getY();
 
             if (!array_key_exists($x, $this->mapsByCoords)) {
                 $this->mapsByCoords[$x] = [];
@@ -203,8 +203,8 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
     private function getRandomFreeNeighbour(MapInterface $map): ?MapInterface
     {
-        $x = $map->getCx();
-        $y = $map->getCy();
+        $x = $map->getX();
+        $y = $map->getY();
 
         $freeNeighbours = [];
 
@@ -263,8 +263,8 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
     private function addUsedMap(MapInterface $map): void
     {
-        $x = $map->getCx();
-        $y = $map->getCy();
+        $x = $map->getX();
+        $y = $map->getY();
 
         if (!array_key_exists($x, $this->usedMaps)) {
             $this->usedMaps[$x] = [];

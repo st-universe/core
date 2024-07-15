@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer;
 
+use RuntimeException;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Render\LayerRendererInterface;
@@ -31,6 +32,10 @@ final class PanelLayer
              // throw new RuntimeException(print_r($this->data, true));
          }
          */
+
+        if (!array_key_exists($x, $this->data)) {
+            throw new RuntimeException('array index not available');
+        }
 
         return $this->renderer->render($this->data[$x][$y], $panel);
     }

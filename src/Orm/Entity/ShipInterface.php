@@ -7,7 +7,6 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Destruction\ShipDestroyerInterface;
@@ -219,8 +218,6 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function isOverSystem(): ?StarSystemInterface;
 
-    public function isOverWormhole(): bool;
-
     public function isWarpPossible(): bool;
 
     public function getTorpedo(): ?TorpedoTypeInterface;
@@ -256,7 +253,7 @@ interface ShipInterface extends ShipDestroyerInterface
      */
     public function getBeamableStorage(): array;
 
-    public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface;
+    public function setLocation(LocationInterface $location): ShipInterface;
 
     public function getTradePost(): ?TradePostInterface;
 
@@ -268,7 +265,7 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function getStarsystemMap(): ?StarSystemMapInterface;
 
-    public function getLocation(): Location;
+    public function getLocation(): MapInterface|StarSystemMapInterface;
 
     public function getInfluenceArea(): ?StarSystemInterface;
 
@@ -280,8 +277,6 @@ interface ShipInterface extends ShipDestroyerInterface
      * return "x|y (System-Name)"
      */
     public function getSectorString(): string;
-
-    public function getSectorId(): ?int;
 
     public function getBuildplan(): ?ShipBuildplanInterface;
 

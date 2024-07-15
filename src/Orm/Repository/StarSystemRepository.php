@@ -9,6 +9,7 @@ use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystem;
@@ -42,10 +43,13 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                     'SELECT s FROM %s s
                     JOIN %s m
                     WITH m.systems_id = s.id
-                    WHERE m.layer_id  = :layerId
+                    JOIN %s l
+                    WITH m.id = l.id
+                    WHERE l.layer_id  = :layerId
                     ORDER BY s.name ASC',
                     StarSystem::class,
-                    Map::class
+                    Map::class,
+                    Location::class
                 )
             )
             ->setParameters([
@@ -78,10 +82,13 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->createQuery(
                 sprintf(
                     'SELECT count(m.id) from %s m
-                    WHERE m.system_type_id IS NOT NULL
-                    AND m.systems_id IS NULL
-                    AND m.layer = :layer',
-                    Map::class
+                        JOIN %s l
+                        WITH m.id = l.id
+                        WHERE m.system_type_id IS NOT NULL
+                        AND m.systems_id IS NULL
+                        AND l.layer = :layer',
+                    Map::class,
+                    Location::class
                 )
             )
             ->setParameters([
@@ -97,13 +104,16 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->createQuery(
                 sprintf(
                     'SELECT ss FROM %s ss
-                    JOIN %s m
-                    WITH m.systems_id = ss.id
-                    WHERE ss.id < :currentId
-                    AND m.layer = :layer
-                    ORDER BY ss.id DESC',
+                        JOIN %s m
+                        WITH m.systems_id = ss.id
+                        JOIN %s l
+                        WITH m.id = l.id
+                        WHERE ss.id < :currentId
+                        AND l.layer = :layer
+                        ORDER BY ss.id DESC',
                     StarSystem::class,
-                    Map::class
+                    Map::class,
+                    Location::class
                 )
             )
             ->setParameters(['layer' => $current->getLayer(), 'currentId' => $current->getId()])
@@ -118,13 +128,16 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->createQuery(
                 sprintf(
                     'SELECT ss FROM %s ss
-                    JOIN %s m
-                    WITH m.systems_id = ss.id
-                    WHERE ss.id > :currentId
-                    AND m.layer = :layer
-                    ORDER BY ss.id ASC',
+                        JOIN %s m
+                        WITH m.systems_id = ss.id
+                        JOIN %s l
+                        WITH m.id = l.id
+                        WHERE ss.id > :currentId
+                        AND l.layer = :layer
+                        ORDER BY ss.id ASC',
                     StarSystem::class,
-                    Map::class
+                    Map::class,
+                    Location::class
                 )
             )
             ->setParameters(['layer' => $current->getLayer(), 'currentId' => $current->getId()])
@@ -148,11 +161,14 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 'SELECT ss FROM %s ss
                 JOIN %s m
                 WITH ss.id = m.systems_id
-                WHERE m.cx BETWEEN :minX AND :maxX
-                AND m.cy BETWEEN :minY AND :maxY
-                AND m.layer_id = :layerId',
+                JOIN %s l
+                WITH m.id = l.id
+                WHERE l.cx BETWEEN :minX AND :maxX
+                AND l.cy BETWEEN :minY AND :maxY
+                AND l.layer_id = :layerId',
                 StarSystem::class,
-                Map::class
+                Map::class,
+                Location::class
             )
         )
             ->setParameters([

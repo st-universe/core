@@ -8,9 +8,9 @@ use InvalidArgumentException;
 use Override;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\FlightSignatureInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 /**
@@ -34,26 +34,18 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
     public function createSignatures(
         ShipInterface $ship,
         int $flightDirection,
-        MapInterface|StarSystemMapInterface $currentField,
-        MapInterface|StarSystemMapInterface $nextField
+        LocationInterface $currentLocation,
+        LocationInterface $nextLocation
     ): void {
-        if ($currentField instanceof MapInterface !== $nextField instanceof MapInterface) {
+        if ($currentLocation instanceof MapInterface !== $nextLocation instanceof MapInterface) {
             throw new InvalidArgumentException('wayopints have different type');
         }
 
         $fromSignature = $this->createSignature($ship);
-        if ($currentField instanceof MapInterface) {
-            $fromSignature->setMap($currentField);
-        } else {
-            $fromSignature->setStarsystemMap($currentField);
-        }
+        $fromSignature->setLocation($currentLocation);
 
         $toSignature = $this->createSignature($ship);
-        if ($nextField instanceof MapInterface) {
-            $toSignature->setMap($nextField);
-        } else {
-            $toSignature->setStarsystemMap($nextField);
-        }
+        $toSignature->setLocation($nextLocation);
 
         $this->create(
             $flightDirection,

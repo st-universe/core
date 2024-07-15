@@ -39,7 +39,12 @@ final class RegenerateSystem implements ActionControllerInterface
             return;
         }
 
-        if ($map->getLayer()->isFinished()) {
+        $layer = $map->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        if ($layer->isFinished()) {
             $game->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
             return;
         }

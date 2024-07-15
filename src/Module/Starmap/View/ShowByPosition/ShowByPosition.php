@@ -34,7 +34,7 @@ final class ShowByPosition implements ViewControllerInterface
         );
 
         $layer = $ship->getLayer();
-        $section = $ship->getSectorId();
+        $section = $ship->getLocation()->getSectorId();
 
         if ($layer === null || $section === null) {
             throw new SanityCheckException('ship is in wormhole');

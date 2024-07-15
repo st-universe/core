@@ -71,12 +71,6 @@ final class NbsUtility implements NbsUtilityInterface
             $game->setTemplateVar('FLEET_NBS', $fleetNbs);
             $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
             $game->setTemplateVar('SHIP_NBS', $singleShipsNbs->count() > 0 ? $singleShipsNbs : null);
-        } else {
-            $game->setTemplateVar('HAS_NBS', false);
-            $game->setTemplateVar('CLOAK_NBS', false);
-            $game->setTemplateVar('FLEET_NBS', []);
-            $game->setTemplateVar('STATION_NBS', null);
-            $game->setTemplateVar('SHIP_NBS', null);
         }
     }
 

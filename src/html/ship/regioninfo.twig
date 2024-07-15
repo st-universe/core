@@ -1,8 +1,8 @@
-
 {# todo: show region information #}
+{% if INFORMATION %}
 {% include 'html/systeminformation.twig' %}
- {% if REGION %}
-    <br />
-    {{ macros.systeminformation(REGION) }}
-  {% endif %}
-
+{% endif %}
+{% if REGION %}
+<br />
+{{ macros.systeminformation(REGION) }}
+{% endif %}

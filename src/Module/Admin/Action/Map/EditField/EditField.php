@@ -33,7 +33,7 @@ final class EditField implements ActionControllerInterface
             return;
         }
 
-        $selectedField->setFieldId($type->getId());
+        $selectedField->setFieldType($type);
 
         $this->mapRepository->save($selectedField);
 

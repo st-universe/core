@@ -17,8 +17,6 @@ use Stu\Orm\Repository\FlightSignatureRepository;
 
 #[Table(name: 'stu_flight_sig')]
 #[Index(name: 'flight_sig_user_idx', columns: ['user_id'])]
-#[Index(name: 'flight_sig_map_idx', columns: ['map_id'])]
-#[Index(name: 'flight_sig_starsystem_map_idx', columns: ['starsystem_map_id'])]
 #[Index(name: 'flight_sig_sensor_result_idx', columns: ['from_direction', 'to_direction', 'time'])]
 #[Entity(repositoryClass: FlightSignatureRepository::class)]
 class FlightSignature implements FlightSignatureInterface
@@ -39,6 +37,9 @@ class FlightSignature implements FlightSignatureInterface
 
     #[Column(type: 'integer')]
     private int $time = 0;
+
+    #[Column(type: 'integer')]
+    private int $location_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
@@ -62,13 +63,9 @@ class FlightSignature implements FlightSignatureInterface
     #[JoinColumn(name: 'rump_id', referencedColumnName: 'id')]
     private ShipRumpInterface $rump;
 
-    #[ManyToOne(targetEntity: 'Map')]
-    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
-    private ?MapInterface $map = null;
-
-    #[ManyToOne(targetEntity: 'StarSystemMap')]
-    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?StarSystemMapInterface $starsystem_map = null;
+    #[ManyToOne(targetEntity: 'Location')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    private LocationInterface $location;
 
     #[Override]
     public function getId(): int
@@ -148,28 +145,16 @@ class FlightSignature implements FlightSignatureInterface
     }
 
     #[Override]
-    public function getMap(): ?MapInterface
+    public function getLocation(): LocationInterface
     {
-        return $this->map;
+        return $this->location;
     }
 
     #[Override]
-    public function setMap(?MapInterface $map): FlightSignatureInterface
+    public function setLocation(LocationInterface $location): FlightSignatureInterface
     {
-        $this->map = $map;
-        return $this;
-    }
+        $this->location = $location;
 
-    #[Override]
-    public function getStarsystemMap(): ?StarSystemMapInterface
-    {
-        return $this->starsystem_map;
-    }
-
-    #[Override]
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): FlightSignatureInterface
-    {
-        $this->starsystem_map = $starsystem_map;
         return $this;
     }
 

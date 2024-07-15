@@ -29,19 +29,18 @@ class Buoy implements BuoyInterface
     #[Column(type: 'text')]
     private string $text;
 
+    #[Column(type: 'integer')]
+    private int $location_id = 0;
+
     #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $sys_map_id = null;
 
-    #[ManyToOne(targetEntity: 'Map')]
-    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
-    private ?MapInterface $map = null;
-
-    #[ManyToOne(targetEntity: 'StarSystemMap')]
-    #[JoinColumn(name: 'sys_map_id', referencedColumnName: 'id')]
-    private ?StarSystemMapInterface $systemMap = null;
+    #[ManyToOne(targetEntity: 'Location')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    private LocationInterface $location;
 
     #[ManyToOne(targetEntity: 'User')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -78,51 +77,17 @@ class Buoy implements BuoyInterface
     }
 
     #[Override]
-    public function getMapId(): ?int
+    public function getLocation(): LocationInterface
     {
-        return $this->map_id;
+        return $this->location;
     }
 
     #[Override]
-    public function setMapId(?int $map_id): void
+    public function setLocation(LocationInterface $location): BuoyInterface
     {
-        $this->map_id = $map_id;
-    }
+        $this->location = $location;
 
-    #[Override]
-    public function getSysMapId(): ?int
-    {
-        return $this->sys_map_id;
-    }
-
-    #[Override]
-    public function setSysMapId(?int $sys_map_id): void
-    {
-        $this->sys_map_id = $sys_map_id;
-    }
-
-    #[Override]
-    public function getMap(): ?MapInterface
-    {
-        return $this->map;
-    }
-
-    #[Override]
-    public function setMap(?MapInterface $map): void
-    {
-        $this->map = $map;
-    }
-
-    #[Override]
-    public function getSystemMap(): ?StarSystemMapInterface
-    {
-        return $this->systemMap;
-    }
-
-    #[Override]
-    public function setSystemMap(?StarSystemMapInterface $systemMap): void
-    {
-        $this->systemMap = $systemMap;
+        return $this;
     }
 
     #[Override]

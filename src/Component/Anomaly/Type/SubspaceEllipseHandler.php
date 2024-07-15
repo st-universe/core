@@ -20,9 +20,8 @@ use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\AnomalyInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 //TODO unit tests
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
@@ -30,8 +29,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     public const int MASS_CALCULATION_THRESHOLD = 33_333_333;
 
     public function __construct(
-        private MapRepositoryInterface $mapRepository,
-        private StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private LocationRepositoryInterface $locationRepository,
         private AnomalyCreationInterface $anomalyCreation,
         private ShipRepositoryInterface $shipRepository,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
@@ -48,16 +46,10 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     {
         $subspaceEllipses = [];
 
-        foreach ($this->mapRepository->getForSubspaceEllipseCreation() as $map) {
+        foreach ($this->locationRepository->getForSubspaceEllipseCreation() as $location) {
             $subspaceEllipses[] = $this->anomalyCreation->create(
                 AnomalyTypeEnum::SUBSPACE_ELLIPSE,
-                $map
-            );
-        }
-        foreach ($this->starSystemMapRepository->getForSubspaceEllipseCreation() as $starsystemMap) {
-            $subspaceEllipses[] = $this->anomalyCreation->create(
-                AnomalyTypeEnum::SUBSPACE_ELLIPSE,
-                $starsystemMap
+                $location
             );
         }
 

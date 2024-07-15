@@ -69,7 +69,7 @@ final class ShowSectorScan implements ViewControllerInterface
             $game->checkDatabaseItem($mapField->getSystem()->getSystemType()->getDatabaseEntryId());
         }
 
-        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $ship->getSystem() !== null, $userId));
+        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->fadedSignaturesCloaked === [] ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
@@ -82,9 +82,9 @@ final class ShowSectorScan implements ViewControllerInterface
     /**
      * @return array<int, SignatureWrapper>
      */
-    private function getSignatures(int $fieldId, bool $isSystem, int $ignoreId): array
+    private function getSignatures(int $fieldId, int $ignoreId): array
     {
-        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($fieldId, $isSystem, $ignoreId);
+        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($fieldId, $ignoreId);
 
         $filteredSigs = [];
 
@@ -115,9 +115,10 @@ final class ShowSectorScan implements ViewControllerInterface
     private function getMapPath(ShipInterface $ship): string
     {
         $currentMapField = $ship->getCurrentMapField();
+        $layer = $currentMapField->getLayer();
 
-        if ($currentMapField instanceof MapInterface) {
-            return $this->encodedMap->getEncodedMapPath($currentMapField->getFieldId(), $currentMapField->getLayer());
+        if ($currentMapField instanceof MapInterface && $layer !== null) {
+            return $this->encodedMap->getEncodedMapPath($currentMapField->getFieldId(), $layer);
         } else {
             return sprintf('%d.png', $currentMapField->getFieldId());
         }

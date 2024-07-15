@@ -55,7 +55,7 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
                 $obj->getRumpId(),
                 $obj->getShipBuildplan()->getId()
             )
-                ->setLocation($shipyard->getLocation()->get())
+                ->setLocation($shipyard->getLocation())
                 ->finishConfiguration()
                 ->get();
 

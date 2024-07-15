@@ -68,7 +68,7 @@ class AnomalyCreationTest extends StuTestCase
         $anomaly->shouldReceive('setRemainingTicks')
             ->with(123)
             ->once();
-        $anomaly->shouldReceive('setMap')
+        $anomaly->shouldReceive('setLocation')
             ->with($map)
             ->once();
 
@@ -107,7 +107,7 @@ class AnomalyCreationTest extends StuTestCase
         $anomaly->shouldReceive('setRemainingTicks')
             ->with(123)
             ->once();
-        $anomaly->shouldReceive('setStarsystemMap')
+        $anomaly->shouldReceive('setLocation')
             ->with($map)
             ->once();
 

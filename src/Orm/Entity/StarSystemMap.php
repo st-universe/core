@@ -8,30 +8,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Override;
-use Stu\Component\Map\MapEnum;
-use Stu\Lib\SectorString;
 use Stu\Orm\Repository\StarSystemMapRepository;
 
 #[Table(name: 'stu_sys_map')]
 #[UniqueConstraint(name: 'system_coordinates_idx', columns: ['sx', 'sy', 'systems_id'])]
 #[Entity(repositoryClass: StarSystemMapRepository::class)]
-class StarSystemMap implements StarSystemMapInterface
+class StarSystemMap extends Location implements StarSystemMapInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
-
     #[Column(type: 'smallint')]
     private int $sx = 0;
 
@@ -41,44 +31,12 @@ class StarSystemMap implements StarSystemMapInterface
     #[Column(type: 'integer')]
     private int $systems_id = 0;
 
-    #[Column(type: 'integer')]
-    private int $field_id = 0;
-
     #[ManyToOne(targetEntity: 'StarSystem', inversedBy: 'fields')]
     #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
     private StarSystemInterface $starSystem;
 
     #[OneToOne(targetEntity: 'Colony', mappedBy: 'starsystem_map')]
     private ?ColonyInterface $colony = null;
-
-    #[ManyToOne(targetEntity: 'MapFieldType')]
-    #[JoinColumn(name: 'field_id', referencedColumnName: 'id')]
-    private MapFieldTypeInterface $mapFieldType;
-
-    /**
-     * @var ArrayCollection<int, BuoyInterface>
-     */
-    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'systemMap')]
-    private Collection $buoys;
-
-    /**
-     * @var ArrayCollection<int, ShipInterface>
-     */
-    #[OneToMany(targetEntity: 'Ship', mappedBy: 'starsystem_map', fetch: 'EXTRA_LAZY')]
-    private Collection $ships;
-
-    /**
-     * @var ArrayCollection<int, FlightSignatureInterface>
-     */
-    #[OneToMany(targetEntity: 'FlightSignature', mappedBy: 'starsystem_map')]
-    #[OrderBy(['time' => 'DESC'])]
-    private Collection $signatures;
-
-    /**
-     * @var ArrayCollection<int, AnomalyInterface>
-     */
-    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'starsystem_map', fetch: 'EXTRA_LAZY')]
-    private Collection $anomalies;
 
     /**
      * @var ArrayCollection<int, WormholeEntryInterface>
@@ -88,17 +46,14 @@ class StarSystemMap implements StarSystemMapInterface
 
     public function __construct()
     {
-        $this->ships = new ArrayCollection();
-        $this->signatures = new ArrayCollection();
-        $this->anomalies = new ArrayCollection();
+        parent::__construct();
         $this->wormholeEntries = new ArrayCollection();
-        $this->buoys = new ArrayCollection();
     }
 
     #[Override]
-    public function getId(): int
+    public function getLayer(): ?LayerInterface
     {
-        return $this->id;
+        return $this->layer;
     }
 
     #[Override]
@@ -162,26 +117,6 @@ class StarSystemMap implements StarSystemMapInterface
     }
 
     #[Override]
-    public function getFieldId(): int
-    {
-        return $this->field_id;
-    }
-
-    #[Override]
-    public function getFieldType(): MapFieldTypeInterface
-    {
-        return $this->mapFieldType;
-    }
-
-    #[Override]
-    public function setFieldType(MapFieldTypeInterface $mapFieldType): StarSystemMapInterface
-    {
-        $this->mapFieldType = $mapFieldType;
-
-        return $this;
-    }
-
-    #[Override]
     public function getColony(): ?ColonyInterface
     {
         return $this->colony;
@@ -205,6 +140,11 @@ class StarSystemMap implements StarSystemMapInterface
         return null;
     }
 
+    protected function getWormholeEntries(): Collection
+    {
+        return $this->wormholeEntries;
+    }
+
     #[Override]
     public function getFieldStyle(): string
     {
@@ -212,56 +152,25 @@ class StarSystemMap implements StarSystemMapInterface
     }
 
     #[Override]
-    public function getShips(): Collection
+    public function getSectorId(): ?int
     {
-        return $this->ships;
-    }
-
-    #[Override]
-    public function getSignatures(): Collection
-    {
-        return $this->signatures;
-    }
-
-    #[Override]
-    public function getAnomalies(): Collection
-    {
-        return $this->anomalies;
-    }
-
-    #[Override]
-    public function getRandomWormholeEntry(): ?WormholeEntryInterface
-    {
-        if ($this->wormholeEntries->isEmpty()) {
+        $parentMap = $this->getSystem()->getMap();
+        if ($parentMap === null) {
             return null;
         }
 
-        $usableEntries =  array_filter(
-            $this->wormholeEntries->toArray(),
-            function (WormholeEntryInterface $entry): bool {
-                $type = $entry->getType();
-
-                return $entry->isUsable() && ($type === MapEnum::WORMHOLE_ENTRY_TYPE_BOTH ||
-                    $type === MapEnum::WORMHOLE_ENTRY_TYPE_OUT);
-            }
-        );
-
-        return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
+        return $parentMap->getSectorId();
     }
 
     #[Override]
     public function getSectorString(): string
     {
-        return SectorString::getForStarSystemMap($this);
-    }
-
-
-    /**
-     * @return Collection<int, BuoyInterface>
-     */
-    #[Override]
-    public function getBuoys(): Collection
-    {
-        return $this->buoys;
+        return sprintf(
+            '%d|%d (%s-%s)',
+            $this->getSx(),
+            $this->getSy(),
+            $this->getSystem()->getName(),
+            $this->getSystem()->isWormhole() ? 'Wurmloch' : 'System'
+        );
     }
 }

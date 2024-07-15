@@ -55,7 +55,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         if ($anomaly->getAnomalyType()->getId() !== AnomalyTypeEnum::SPECIAL_ADVENT_DOOR->value) {
             throw new SanityCheckException('target is not an advent door', self::ACTION_IDENTIFIER);
         }
-        if ($anomaly->getMap() !== $ship->getMap()) {
+        if ($anomaly->getLocation() !== $ship->getLocation()) {
             throw new SanityCheckException('can not interact with target', self::ACTION_IDENTIFIER);
         }
 

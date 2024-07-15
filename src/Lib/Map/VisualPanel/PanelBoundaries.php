@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
-use Stu\Lib\Map\Location;
+use RuntimeException;
 use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 
 final class PanelBoundaries
 {
@@ -82,19 +84,54 @@ final class PanelBoundaries
         );
     }
 
-    public static function fromLocation(Location $location, int $range): PanelBoundaries
+    public static function fromLocation(MapInterface|StarSystemMapInterface $map, int $range): PanelBoundaries
     {
-        $map = $location->get();
+        if ($map instanceof MapInterface) {
+            return static::fromMap($map, $range);
+        }
 
-        $width = $map instanceof MapInterface ? $map->getLayer()->getWidth() : $map->getSystem()->getMaxX();
-        $height = $map instanceof MapInterface ? $map->getLayer()->getHeight() : $map->getSystem()->getMaxY();
-        $parent = $map instanceof MapInterface ? $map->getLayer() : $map->getSystem();
+        return static::fromSystemMap($map, $range);
+    }
 
+    private static function fromMap(MapInterface $map, int $range): PanelBoundaries
+    {
+        $layer = $map->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return static::createLocationWithRange(
+            $map,
+            $layer->getWidth(),
+            $layer->getHeight(),
+            $layer,
+            $range
+        );
+    }
+
+    private static function fromSystemMap(StarSystemMapInterface $systemMap, int $range): PanelBoundaries
+    {
+        return static::createLocationWithRange(
+            $systemMap,
+            $systemMap->getSystem()->getMaxX(),
+            $systemMap->getSystem()->getMaxY(),
+            $systemMap->getSystem(),
+            $range
+        );
+    }
+
+    private static function createLocationWithRange(
+        LocationInterface $location,
+        int $width,
+        int $height,
+        LayerInterface|StarSystemInterface $parent,
+        int $range
+    ): PanelBoundaries {
         return new PanelBoundaries(
-            max(1, $map->getX() - $range),
-            min($width, $map->getX() + $range),
-            max(1, $map->getY() - $range),
-            min($height, $map->getY() + $range),
+            max(1, $location->getX() - $range),
+            min($width, $location->getX() + $range),
+            max(1, $location->getY() - $range),
+            min($height, $location->getY() + $range),
             $parent
         );
     }

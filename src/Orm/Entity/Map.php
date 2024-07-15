@@ -8,52 +8,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\UniqueConstraint;
 use Override;
+use RuntimeException;
 use Stu\Component\Map\MapEnum;
-use Stu\Lib\SectorString;
 use Stu\Orm\Repository\MapRepository;
 
 #[Table(name: 'stu_map')]
-#[Index(name: 'coordinates_idx', columns: ['cx', 'cy'])]
-#[Index(name: 'coordinates_reverse_idx', columns: ['cy', 'cx'])]
-#[Index(name: 'map_field_type_idx', columns: ['field_id'])]
-#[Index(name: 'map_layer_idx', columns: ['layer_id'])]
 #[Index(name: 'map_system_idx', columns: ['systems_id'])]
 #[Index(name: 'map_system_type_idx', columns: ['system_type_id'])]
 #[Index(name: 'map_influence_area_idx', columns: ['influence_area_id'])]
 #[Index(name: 'map_bordertype_idx', columns: ['bordertype_id'])]
 #[Index(name: 'map_admin_region_idx', columns: ['admin_region_id'])]
-#[UniqueConstraint(name: 'map_coordinate_idx', columns: ['layer_id', 'cx', 'cy'])]
 #[Entity(repositoryClass: MapRepository::class)]
-class Map implements MapInterface
+class Map extends Location implements MapInterface
 {
-    #[Id]
-    #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
-
-    #[Column(type: 'integer')]
-    private int $cx = 0;
-
-    #[Column(type: 'integer')]
-    private int $cy = 0;
-
-    #[Column(type: 'integer')]
-    private int $layer_id;
-
-    #[Column(type: 'integer')]
-    private int $field_id = 0;
-
     #[Column(type: 'integer', nullable: true)]
     private ?int $system_type_id = null;
 
@@ -72,10 +46,6 @@ class Map implements MapInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $admin_region_id = null;
 
-    #[ManyToOne(targetEntity: 'Layer')]
-    #[JoinColumn(name: 'layer_id', referencedColumnName: 'id')]
-    private LayerInterface $layer;
-
     #[OneToOne(targetEntity: 'StarSystem', inversedBy: 'map')]
     #[JoinColumn(name: 'systems_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $starSystem = null;
@@ -83,10 +53,6 @@ class Map implements MapInterface
     #[ManyToOne(targetEntity: 'StarSystem')]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystemInterface $influenceArea = null;
-
-    #[ManyToOne(targetEntity: 'MapFieldType')]
-    #[JoinColumn(name: 'field_id', referencedColumnName: 'id')]
-    private MapFieldTypeInterface $mapFieldType;
 
     #[ManyToOne(targetEntity: 'StarSystemType')]
     #[JoinColumn(name: 'system_type_id', referencedColumnName: 'id')]
@@ -105,87 +71,42 @@ class Map implements MapInterface
     private ?MapRegionInterface $administratedRegion = null;
 
     /**
-     * @var ArrayCollection<int, BuoyInterface>
-     */
-    #[OneToMany(targetEntity: 'Buoy', mappedBy: 'map')]
-    private Collection $buoys;
-
-    /**
-     * @var ArrayCollection<int, ShipInterface>
-     */
-    #[OneToMany(targetEntity: 'Ship', mappedBy: 'map', fetch: 'EXTRA_LAZY')]
-    private Collection $ships;
-
-    /**
-     * @var ArrayCollection<int, FlightSignatureInterface>
-     */
-    #[OneToMany(targetEntity: 'FlightSignature', mappedBy: 'map')]
-    #[OrderBy(['time' => 'DESC'])]
-    private Collection $signatures;
-
-    /**
-     * @var ArrayCollection<int, AnomalyInterface>
-     */
-    #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'map', fetch: 'EXTRA_LAZY')]
-    private Collection $anomalies;
-
-    /**
      * @var ArrayCollection<int, WormholeEntryInterface>
      */
     #[OneToMany(targetEntity: 'WormholeEntry', mappedBy: 'map')]
     private Collection $wormholeEntries;
 
-
     public function __construct()
     {
-        $this->ships = new ArrayCollection();
-        $this->signatures = new ArrayCollection();
-        $this->anomalies = new ArrayCollection();
+        parent::__construct();
         $this->wormholeEntries = new ArrayCollection();
-        $this->buoys = new ArrayCollection();
     }
 
     #[Override]
-    public function getId(): int
+    public function getLayer(): ?LayerInterface
     {
-        return $this->id;
-    }
-
-    #[Override]
-    public function getCx(): int
-    {
-        return $this->cx;
+        if ($this->layer === null) {
+            throw new RuntimeException('Layer of Map can not be null');
+        }
+        return $this->layer;
     }
 
     #[Override]
     public function getX(): int
     {
+        if ($this->getCx() === null) {
+            throw new RuntimeException('Cx of Map can not be null');
+        }
         return $this->getCx();
-    }
-
-    #[Override]
-    public function getCy(): int
-    {
-        return $this->cy;
     }
 
     #[Override]
     public function getY(): int
     {
+        if ($this->getCy() === null) {
+            throw new RuntimeException('Cy of Map can not be null');
+        }
         return $this->getCy();
-    }
-
-    #[Override]
-    public function getFieldId(): int
-    {
-        return $this->field_id;
-    }
-
-    #[Override]
-    public function setFieldId(int $fieldId): MapInterface
-    {
-        $this->field_id = $fieldId;
-        return $this;
     }
 
     #[Override]
@@ -267,12 +188,6 @@ class Map implements MapInterface
     }
 
     #[Override]
-    public function getLayer(): LayerInterface
-    {
-        return $this->layer;
-    }
-
-    #[Override]
     public function getSystem(): ?StarSystemInterface
     {
         return $this->starSystem;
@@ -296,12 +211,6 @@ class Map implements MapInterface
     {
         $this->influenceArea = $influenceArea;
         return $this;
-    }
-
-    #[Override]
-    public function getFieldType(): MapFieldTypeInterface
-    {
-        return $this->mapFieldType;
     }
 
     #[Override]
@@ -337,57 +246,34 @@ class Map implements MapInterface
         return 'border: 1px solid ' . $borderType->getColor();
     }
 
-    #[Override]
-    public function getShips(): Collection
+    protected function getWormholeEntries(): Collection
     {
-        return $this->ships
-            ->filter(fn (ShipInterface $ship): bool => $ship->getStarsystemMap() === null);
+        return $this->wormholeEntries;
     }
 
     #[Override]
-    public function getAnomalies(): Collection
+    public function getSectorId(): ?int
     {
-        return $this->anomalies;
-    }
-
-    #[Override]
-    public function getSignatures(): Collection
-    {
-        return $this->signatures;
-    }
-
-    #[Override]
-    public function getRandomWormholeEntry(): ?WormholeEntryInterface
-    {
-        if ($this->wormholeEntries->isEmpty()) {
-            return null;
+        $layer = $this->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('Layer of Map can not be null');
         }
 
-        $usableEntries =  array_filter(
-            $this->wormholeEntries->toArray(),
-            function (WormholeEntryInterface $entry): bool {
-                $type = $entry->getType();
+        $cx = $this->getCx();
+        $cy = $this->getCy();
+        if ($cx === null || $cy === null) {
+            throw new RuntimeException('Cx and Cy of Map can not be null');
+        }
 
-                return $entry->isUsable() && ($type === MapEnum::WORMHOLE_ENTRY_TYPE_BOTH ||
-                    $type === MapEnum::WORMHOLE_ENTRY_TYPE_IN);
-            }
+        return $layer->getSectorId(
+            (int) ceil($cx / MapEnum::FIELDS_PER_SECTION),
+            (int) ceil($cy / MapEnum::FIELDS_PER_SECTION)
         );
-
-        return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
     }
 
     #[Override]
     public function getSectorString(): string
     {
-        return SectorString::getForMap($this);
-    }
-
-    /**
-     * @return Collection<int, BuoyInterface>
-     */
-    #[Override]
-    public function getBuoys(): Collection
-    {
-        return $this->buoys;
+        return  $this->getCx() . '|' . $this->getCy();
     }
 }

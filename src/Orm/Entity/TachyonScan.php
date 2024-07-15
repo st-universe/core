@@ -17,8 +17,6 @@ use Stu\Orm\Repository\TachyonScanRepository;
 
 #[Table(name: 'stu_tachyon_scan')]
 #[Index(name: 'tachyon_scan_user_idx', columns: ['user_id'])]
-#[Index(name: 'tachyon_scan_map_idx', columns: ['map_id'])]
-#[Index(name: 'tachyon_scan_sysmap_idx', columns: ['starsystem_map_id'])]
 #[Entity(repositoryClass: TachyonScanRepository::class)]
 class TachyonScan implements TachyonScanInterface
 {
@@ -33,6 +31,9 @@ class TachyonScan implements TachyonScanInterface
     #[Column(type: 'integer')]
     private int $scan_time = 0;
 
+    #[Column(type: 'integer')]
+    private int $location_id = 0;
+
     #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
@@ -43,13 +44,9 @@ class TachyonScan implements TachyonScanInterface
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private UserInterface $user;
 
-    #[ManyToOne(targetEntity: 'Map')]
-    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
-    private ?MapInterface $map = null;
-
-    #[ManyToOne(targetEntity: 'StarSystemMap')]
-    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
-    private ?StarSystemMapInterface $starsystem_map = null;
+    #[ManyToOne(targetEntity: 'Location')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    private LocationInterface $location;
 
     #[Override]
     public function getId(): int
@@ -89,28 +86,16 @@ class TachyonScan implements TachyonScanInterface
     }
 
     #[Override]
-    public function getMap(): ?MapInterface
+    public function getLocation(): LocationInterface
     {
-        return $this->map;
+        return $this->location;
     }
 
     #[Override]
-    public function setMap(?MapInterface $map): TachyonScanInterface
+    public function setLocation(LocationInterface $location): TachyonScanInterface
     {
-        $this->map = $map;
-        return $this;
-    }
+        $this->location = $location;
 
-    #[Override]
-    public function getStarsystemMap(): ?StarSystemMapInterface
-    {
-        return $this->starsystem_map;
-    }
-
-    #[Override]
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): TachyonScanInterface
-    {
-        $this->starsystem_map = $starsystem_map;
         return $this;
     }
 }

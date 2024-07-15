@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Module\Ship\Lib\TSpacecraftItemInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
@@ -49,17 +50,10 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable;
 
     /**
-     * @return iterable<ShipInterface>
-     */
-    public function getShipsForAlertRed(
-        ShipInterface $ship
-    ): iterable;
-
-    /**
      * @return array<ShipInterface>
      */
     public function getByLocationAndUser(
-        MapInterface|StarSystemMapInterface $field,
+        LocationInterface $location,
         UserInterface $user
     ): array;
 

@@ -61,19 +61,9 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
      */
     public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId): array;
 
-    /**
-     * @return array<array{category_name: string, amount: int}>
-     */
-    public function getRumpCategoryInfo(LayerInterface $layer, int $cx, int $cy): array;
-
     public function prototype(): StarSystemMapInterface;
 
     public function save(StarSystemMapInterface $starSystemMap): void;
-
-    /**
-     * @return array<StarSystemMapInterface>
-     */
-    public function getForSubspaceEllipseCreation(): array;
 
     public function truncateByStarSystem(StarSystemInterface $starSystem): void;
 }

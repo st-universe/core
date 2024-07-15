@@ -9,6 +9,7 @@ use Doctrine\ORM\NoResultException;
 use Override;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyInterface;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -70,17 +71,20 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
         try {
             $result = (int)$this->getEntityManager()->createQuery(
                 sprintf(
-                    'SELECT SQRT(ABS(m.cx - :x) * ABS(m.cx - :x) + ABS(m.cy - :y) * ABS(m.cy - :y)) as foo
+                    'SELECT SQRT(ABS(l.cx - :x) * ABS(l.cx - :x) + ABS(l.cy - :y) * ABS(l.cy - :y)) as foo
                     FROM %s a
                     JOIN %s m
-                    WITH a.map_id = m.id
+                    WITH a.location_id = m.id
+                    JOIN %s l
+                    WITH m.id = l.id
                     WHERE a.remaining_ticks > 0
-                    AND (m.cx BETWEEN :startX AND :endX)
-                    AND (m.cy BETWEEN :startY AND :endY)
-                    AND m.layer = :layer
+                    AND (l.cx BETWEEN :startX AND :endX)
+                    AND (l.cy BETWEEN :startY AND :endY)
+                    AND l.layer = :layer
                     ORDER BY foo ASC',
                     Anomaly::class,
-                    Map::class
+                    Map::class,
+                    Location::class
                 )
             )
                 ->setMaxResults(1)
