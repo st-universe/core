@@ -195,24 +195,31 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return $this->getEntityManager()->createNativeQuery(
             'SELECT l.cx as x, l.cy AS y,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
-                    WHERE b.location_id = m.id
+                    JOIN stu_location l2
+                    ON b.location_id = l2.id
+                    WHERE l2.layer_id = l.layer_id 
+                    AND l2.cx = l.cx
+                    AND l2.cy = l.cy
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
                                         WHERE b.id = ss.ship_id
                                         AND ss.system_type = :cloakSystemId
                                         AND ss.mode > 1)) AS shipcount,
                 (SELECT count(DISTINCT c.id) FROM stu_ships c
-                    WHERE c.location_id = m.id
+                    JOIN stu_location l2
+                    ON c.location_id = l2.id
+                    WHERE l2.layer_id = l.layer_id 
+                    AND l2.cx = l.cx
+                    AND l2.cy = l.cy
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ship_system ss2
                                         WHERE c.id = ss2.ship_id
                                         AND ss2.system_type = :cloakSystemId
                                         AND ss2.mode > 1)) AS cloakcount
-            FROM stu_map m
-            JOIN stu_location l
-            ON m.id = l.id
+            FROM stu_location l
             WHERE l.cx BETWEEN :xStart AND :xEnd AND l.cy BETWEEN :yStart AND :yEnd
-            AND l.layer_id = :layerId',
+            AND l.layer_id = :layerId
+            GROUP BY layer_id, x, y',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),
