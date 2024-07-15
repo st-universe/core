@@ -99,13 +99,7 @@ final class DropBuoy implements ActionControllerInterface
         $buoy = $this->buoyRepository->prototype();
         $buoy->setUser($game->getUser());
         $buoy->setText($text);
-
-
-        if ($ship->getStarsystemMap() !== null) {
-            $buoy->setSystemMap($ship->getStarsystemMap());
-        } else {
-            $buoy->setMap($ship->getMap());
-        }
+        $buoy->setLocation($ship->getLocation());
 
 
         $this->buoyRepository->save($buoy);

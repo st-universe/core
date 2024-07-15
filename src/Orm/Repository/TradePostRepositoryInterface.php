@@ -3,7 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Lib\Map\Location;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -43,7 +43,7 @@ interface TradePostRepositoryInterface extends ObjectRepository
      */
     public function getByUserLicenseOnlyFerg(int $userId): array;
 
-    public function getClosestNpcTradePost(Location $location): ?TradePostInterface;
+    public function getClosestNpcTradePost(LocationInterface $location): ?TradePostInterface;
 
     public function getFergTradePost(
         int $tradePostId

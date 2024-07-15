@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map\EditSection;
 
+use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Orm\Entity\MapInterface;
 
@@ -21,6 +22,9 @@ class MapItem
     public function getMapGraphicPath(): string
     {
         $layer = $this->map->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
 
         if ($layer->isEncoded()) {
             return $this->encodedMap->getEncodedMapPath(

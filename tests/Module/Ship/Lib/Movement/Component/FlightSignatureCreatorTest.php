@@ -108,7 +108,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->twice()
             ->andReturn($cloakState);
 
-        $fromSignature->shouldReceive('setMap')
+        $fromSignature->shouldReceive('setLocation')
             ->with($currentField)
             ->once();
         $fromSignature->shouldReceive('setUserId')
@@ -133,7 +133,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
 
-        $toSignature->shouldReceive('setMap')
+        $toSignature->shouldReceive('setLocation')
             ->with($nextField)
             ->once();
         $toSignature->shouldReceive('setUserId')
@@ -219,7 +219,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->twice()
             ->andReturn($cloakState);
 
-        $fromSignature->shouldReceive('setStarsystemMap')
+        $fromSignature->shouldReceive('setLocation')
             ->with($currentField)
             ->once();
         $fromSignature->shouldReceive('setUserId')
@@ -244,7 +244,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
 
-        $toSignature->shouldReceive('setStarsystemMap')
+        $toSignature->shouldReceive('setLocation')
             ->with($nextField)
             ->once();
         $toSignature->shouldReceive('setUserId')

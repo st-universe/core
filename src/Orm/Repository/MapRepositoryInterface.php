@@ -60,14 +60,30 @@ interface MapRepositoryInterface extends ObjectRepository
     /** @return array<CellDataInterface> */
     public function getShipCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
-    /** @return array<CellDataInterface> */
-    public function getAllianceShipcountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array;
+    /**
+     * @return array<ExploreableStarMapInterface>
+     */
+    public function getExplored(
+        int $userId,
+        int $layerId,
+        int $startX,
+        int $endX,
+        int $cy
+    ): array;
 
-    /** @return array<CellDataInterface> */
-    public function getUserShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+    /**
+     * @return array<MapInterface>
+     */
+    public function getWithEmptySystem(LayerInterface $layer): array;
 
-    /** @return array<CellDataInterface> */
-    public function getShipShipcountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
+
+    /**
+     * @return array<int>
+     */
+    public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage): array;
+
+
+    public function getRandomPassableUnoccupiedWithoutDamage(LayerInterface $layer, bool $isAtBorder = false): MapInterface;
 
     /** @return array<CellDataInterface> */
     public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
@@ -83,34 +99,4 @@ interface MapRepositoryInterface extends ObjectRepository
 
     /** @return array<CellDataInterface> */
     public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array;
-
-    /**
-     * @return array<ExploreableStarMapInterface>
-     */
-    public function getExplored(
-        int $userId,
-        int $layerId,
-        int $startX,
-        int $endX,
-        int $cy
-    ): array;
-
-    /**
-     * @return array<MapInterface>
-     */
-    public function getForSubspaceEllipseCreation(): array;
-
-    /**
-     * @return array<MapInterface>
-     */
-    public function getWithEmptySystem(LayerInterface $layer): array;
-
-
-    /**
-     * @return array<int>
-     */
-    public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage): array;
-
-
-    public function getRandomPassableUnoccupiedWithoutDamage(LayerInterface $layer, bool $isAtBorder = false): MapInterface;
 }

@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMap;
@@ -27,23 +28,20 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
     #[Override]
     public function isTachyonScanActiveByShipLocationAndOwner(ShipInterface $ship): bool
     {
-        $isSystem = $ship->getSystem() !== null;
-
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(ts.id)
                 FROM %s ts
-                JOIN %s mf
-                WITH ts.%s = mf.id
+                JOIN %s l
+                WITH ts.location_id = l.id
                 WHERE ts.scan_time > :theTime
-                AND mf.id = :mapId
+                AND l.id = :locationId
                 AND ts.user_id = :userId',
                 TachyonScan::class,
-                $isSystem ? StarSystemMap::class : Map::class,
-                $isSystem ? 'starsystem_map_id' : 'map_id'
+                Location::class
             )
         )->setParameters([
-            'mapId' => $ship->getCurrentMapField()->getId(),
+            'locationId' => $ship->getLocation()->getId(),
             'theTime' => time() - TachyonScannerShipSystem::DECLOAK_INTERVAL,
             'userId' => $ship->getUser()->getId()
         ])->getSingleScalarResult() > 0;

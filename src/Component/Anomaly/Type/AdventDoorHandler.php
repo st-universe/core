@@ -57,7 +57,7 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
             return;
         }
 
-        $anomaly->setMap($this->getRandomMap());
+        $anomaly->setLocation($this->getRandomMap());
     }
 
     private function getRandomMap(): MapInterface

@@ -7,7 +7,6 @@ use RuntimeException;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -24,7 +23,7 @@ class ShipConfigurator implements ShipConfiguratorInterface
     }
 
     #[Override]
-    public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipConfiguratorInterface
+    public function setLocation(MapInterface|StarSystemMapInterface $location): ShipConfiguratorInterface
     {
         $this->wrapper->get()->setLocation($location);
 

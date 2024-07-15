@@ -52,7 +52,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                     'SELECT count(DISTINCT CONCAT(fs.ship_id, fs.ship_name)) as count
                     FROM %s fs
                     JOIN %s ssm
-                    WITH fs.starsystem_map_id = ssm.id
+                    WITH fs.location_id = ssm.id
                     WHERE (fs.is_cloaked = false AND fs.time > :maxAgeUncloaked
                       OR fs.is_cloaked = true AND fs.time > :maxAgeCloaked)
                     AND ssm.sx = :sx
@@ -78,23 +78,22 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
 
 
     #[Override]
-    public function getVisibleSignatures(int $fieldId, bool $isSystem, int $ignoreId): array
+    public function getVisibleSignatures(int $locationId, int $ignoreId): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT fs FROM %s fs
                     WHERE fs.time > :maxAge
-                    AND fs.%s = :fieldId
+                    AND fs.location_id = :locationId
                     AND fs.user_id != :ignoreId
                     ORDER BY fs.time desc',
-                    FlightSignature::class,
-                    $isSystem ? "starsystem_map_id" : "map_id"
+                    FlightSignature::class
                 )
             )
             ->setParameters([
                 'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
-                'fieldId' => $fieldId,
+                'locationId' => $locationId,
                 'ignoreId' => $ignoreId
             ])
             ->getResult();
@@ -116,10 +115,10 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx,
-                    COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                'SELECT COALESCE(min(l.cx),0) as minx, COALESCE(max(l.cx),0) as maxx,
+                    COALESCE(min(l.cy),0) as miny, COALESCE(max(l.cy),0) as maxy
                 FROM stu_flight_sig fs
-                JOIN stu_map m ON m.id = fs.map_id',
+                JOIN stu_location l ON l.id = fs.location_id',
                 $this->createSignatureRangeResultMapping()
             )
             ->getResult();
@@ -130,9 +129,9 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                'SELECT COALESCE(min(l.cx),0) as minx, COALESCE(max(l.cx),0) as maxx, COALESCE(min(l.cy),0) as miny, COALESCE(max(l.cy),0) as maxy
                 FROM stu_flight_sig fs
-                JOIN stu_map m ON m.id = fs.map_id
+                JOIN stu_location l ON l.id = fs.location_id
                 WHERE fs.ship_id = :shipId',
                 $this->createSignatureRangeResultMapping()
             )
@@ -145,9 +144,9 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                'SELECT COALESCE(min(l.cx),0) as minx, COALESCE(max(l.cx),0) as maxx, COALESCE(min(l,cy),0) as miny, COALESCE(max(l.cy),0) as maxy
                 FROM stu_flight_sig fs
-                JOIN stu_map m ON m.id = fs.map_id
+                JOIN stu_location l ON l.id = fs.location_id
                 WHERE fs.user_id = :userId',
                 $this->createSignatureRangeResultMapping()
             )
@@ -160,9 +159,9 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                'SELECT COALESCE(min(l.cx),0) as minx, COALESCE(max(l.cx),0) as maxx, COALESCE(min(l.cy),0) as miny, COALESCE(max(l.cy),0) as maxy
                 FROM stu_flight_sig fs
-                JOIN stu_map m ON m.id = fs.map_id
+                JOIN stu_location l ON l.id = fs.location_id
                 JOIN stu_user u	ON fs.user_id = u.id
                 WHERE u.allys_id = :allyId',
                 $this->createSignatureRangeResultMapping()

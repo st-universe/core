@@ -77,7 +77,7 @@ final class ShowMapOverall implements ViewControllerInterface
             }
 
             $types[$data->getFieldId()] = imagecreatefrompng(
-                $webrootWithoutPublic . '/../../assets/map/' . $data->getLayer()->getId() . "/" . $data->getFieldType()->getType() . '.png'
+                $webrootWithoutPublic . '/../../assets/map/' . $layer->getId() . "/" . $data->getFieldType()->getType() . '.png'
             );
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
             $curx += 15;

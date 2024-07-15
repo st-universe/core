@@ -28,13 +28,9 @@ interface FlightSignatureInterface
 
     public function setTime(int $time): FlightSignatureInterface;
 
-    public function getMap(): ?MapInterface;
+    public function getLocation(): LocationInterface;
 
-    public function setMap(?MapInterface $map): FlightSignatureInterface;
-
-    public function getStarsystemMap(): ?StarSystemMapInterface;
-
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): FlightSignatureInterface;
+    public function setLocation(LocationInterface $location): FlightSignatureInterface;
 
     public function getFromDirection(): int;
 

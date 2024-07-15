@@ -2,24 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
-use Doctrine\Common\Collections\Collection;
-
-interface MapInterface
+interface MapInterface extends LocationInterface
 {
-    public function getId(): int;
-
-    public function getX(): int;
-
-    public function getCx(): int;
-
-    public function getY(): int;
-
-    public function getCy(): int;
-
-    public function getFieldId(): int;
-
-    public function setFieldId(int $fieldId): MapInterface;
-
     public function getSystemsId(): ?int;
 
     public function setSystemsId(?int $systems_id): MapInterface;
@@ -44,8 +28,6 @@ interface MapInterface
 
     public function setAdminRegionId(?int $admin_region_id): MapInterface;
 
-    public function getLayer(): LayerInterface;
-
     public function getSystem(): ?StarSystemInterface;
 
     public function setSystem(StarSystemInterface $starSystem): MapInterface;
@@ -63,28 +45,4 @@ interface MapInterface
     public function getMapRegion(): ?MapRegionInterface;
 
     public function getAdministratedRegion(): ?MapRegionInterface;
-
-    /**
-     * @return Collection<int, ShipInterface>
-     */
-    public function getShips(): Collection;
-
-    /**
-     * @return Collection<int, FlightSignatureInterface>
-     */
-    public function getSignatures(): Collection;
-
-    /**
-     * @return Collection<int, AnomalyInterface>
-     */
-    public function getAnomalies(): Collection;
-
-    public function getRandomWormholeEntry(): ?WormholeEntryInterface;
-
-    public function getSectorString(): string;
-
-    /**
-     * @return Collection<int, BuoyInterface>
-     */
-    public function getBuoys(): Collection;
 }

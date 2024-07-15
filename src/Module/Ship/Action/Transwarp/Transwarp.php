@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\Transwarp;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -99,7 +100,12 @@ final class Transwarp extends AbstractDirectedMovement
             return true;
         }
 
-        if ($map->getLayer()->isHidden()) {
+        $layer = $map->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        if ($layer->isHidden()) {
             throw new SanityCheckException('tried to access hidden layer');
         }
 

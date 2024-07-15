@@ -64,8 +64,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $tachyonScan = $this->tachyonScanRepository->prototype();
         $tachyonScan->setUser($ship->getUser());
-        $tachyonScan->setMap($ship->getMap());
-        $tachyonScan->setStarsystemMap($ship->getStarsystemMap());
+        $tachyonScan->setLocation($ship->getLocation());
         $tachyonScan->setScanTime(time());
 
         $this->tachyonScanRepository->save($tachyonScan);

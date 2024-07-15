@@ -16,11 +16,6 @@ final class MapEnum
     //SECTIONS
     public const int FIELDS_PER_SECTION = 20;
 
-    //WORMHOLE ENTRY TYPES
-    public const int WORMHOLE_ENTRY_TYPE_IN = 0;
-    public const int WORMHOLE_ENTRY_TYPE_OUT = 1;
-    public const int WORMHOLE_ENTRY_TYPE_BOTH = 2;
-
     //OTHER
     public const int MAPTYPE_INSERT = 1;
     public const int MAPTYPE_LAYER_EXPLORED = 2;

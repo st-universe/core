@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Component\Map\MapEnum;
+use Stu\Component\Map\WormholeEntryTypeEnum;
 use Stu\Orm\Repository\WormholeEntryRepository;
 
 #[Table(name: 'stu_wormhole_entry')]
@@ -33,8 +33,8 @@ class WormholeEntry implements WormholeEntryInterface
     #[Column(type: 'integer')]
     private int $system_map_id;
 
-    #[Column(type: 'smallint', length: 1)]
-    private int $type = MapEnum::WORMHOLE_ENTRY_TYPE_BOTH;
+    #[Column(type: 'string', length: 10, enumType: WormholeEntryTypeEnum::class)]
+    private WormholeEntryTypeEnum $type = WormholeEntryTypeEnum::BOTH;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $last_used = null;
@@ -79,12 +79,6 @@ class WormholeEntry implements WormholeEntryInterface
     }
 
     #[Override]
-    public function getType(): int
-    {
-        return $this->type;
-    }
-
-    #[Override]
     public function setLastUsed(int $lastUsed): WormholeEntryInterface
     {
         $this->last_used = $lastUsed;
@@ -93,9 +87,23 @@ class WormholeEntry implements WormholeEntryInterface
     }
 
     #[Override]
-    public function isUsable(): bool
+    public function isUsable(LocationInterface $location): bool
     {
-        return $this->last_used === null || $this->cooldown === null
-            || $this->last_used < time() - $this->cooldown * 60;
+        if (
+            $this->last_used !== null && $this->cooldown !== null
+            && $this->last_used + $this->cooldown * 60 > time()
+        ) {
+            return false;
+        }
+
+        if ($this->type === WormholeEntryTypeEnum::BOTH) {
+            return true;
+        }
+
+        if ($this->type === WormholeEntryTypeEnum::MAP_TO_W) {
+            return $location === $this->map;
+        }
+
+        return $location === $this->systemMap;
     }
 }

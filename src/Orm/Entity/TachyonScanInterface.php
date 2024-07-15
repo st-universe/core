@@ -16,11 +16,7 @@ interface TachyonScanInterface
 
     public function setScanTime(int $scanTime): TachyonScanInterface;
 
-    public function getMap(): ?MapInterface;
+    public function getLocation(): LocationInterface;
 
-    public function setMap(?MapInterface $map): TachyonScanInterface;
-
-    public function getStarsystemMap(): ?StarSystemMapInterface;
-
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): TachyonScanInterface;
+    public function setLocation(LocationInterface $location): TachyonScanInterface;
 }

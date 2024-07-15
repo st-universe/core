@@ -8,13 +8,17 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
+use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 abstract class AbstractPanelLayerDataProvider implements PanelLayerDataProviderInterface
 {
-    public function __construct(protected MapRepositoryInterface $mapRepository, protected StarSystemMapRepositoryInterface $starSystemMapRepository)
-    {
+    public function __construct(
+        protected LocationRepositoryInterface $locationRepository,
+        protected MapRepositoryInterface $mapRepository,
+        protected StarSystemMapRepositoryInterface $starSystemMapRepository
+    ) {
     }
 
     /**

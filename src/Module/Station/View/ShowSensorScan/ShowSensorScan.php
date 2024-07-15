@@ -145,7 +145,7 @@ final class ShowSensorScan implements ViewControllerInterface
         $this->nbsUtility->setNbsTemplateVars($station, $game, null, $tachyonActive, $mapField);
 
         $game->setTemplateVar('MAPFIELD', $mapField);
-        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId, $sysid !== 0));
+        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->fadedSignaturesCloaked === [] ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('WRAPPER', $wrapper);
@@ -155,9 +155,9 @@ final class ShowSensorScan implements ViewControllerInterface
     /**
      * @return array<int, SignatureWrapper>
      */
-    private function getSignatures(int $fieldId, int $ignoreId, bool $isSystem): array
+    private function getSignatures(int $fieldId, int $ignoreId): array
     {
-        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($fieldId, $isSystem, $ignoreId);
+        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($fieldId, $ignoreId);
 
         $filteredSigs = [];
 

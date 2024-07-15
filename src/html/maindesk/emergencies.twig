@@ -22,8 +22,8 @@
                 <td>{{ wrapper.get.getDate|stuDateTime }}</td>
                 {% else %}
                 <td>
-                    {% if ship.getSectorId %}
-                    <span>Sektor {{ ship.getSectorId }}</span>
+                    {% if ship.getLocation.getSectorId %}
+                    <span>Sektor {{ ship.getLocation.getSectorId }}</span>
                     {% endif %}
                 </td>
                 <td></td>

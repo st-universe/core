@@ -49,7 +49,7 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     /**
      * @return array<FlightSignatureInterface>
      */
-    public function getVisibleSignatures(int $fieldId, bool $isSystem, int $ignoreId): array;
+    public function getVisibleSignatures(int $locationId, int $ignoreId): array;
 
     public function deleteOldSignatures(int $threshold): void;
 

@@ -8,9 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Override;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Lib\Map\Location;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradeLicense;
@@ -118,7 +118,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
     }
 
     #[Override]
-    public function getClosestNpcTradePost(Location $location): ?TradePostInterface
+    public function getClosestNpcTradePost(LocationInterface $location): ?TradePostInterface
     {
         $layer = $location->getLayer();
         if ($layer === null) {
@@ -131,17 +131,17 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                 ->createQuery(
                     sprintf(
                         'SELECT tp
-                    FROM %s tp
-                    JOIN %s s
-                    WITH tp.ship_id = s.id
-                    JOIN %s m
-                    WITH s.map_id = m.id
-                    WHERE tp.user_id < :firstUserId
-                    AND m.layer_id = :layerId
-                    ORDER BY abs(m.cx - :cx) + abs(m.cy - :cy) ASC',
+                            FROM %s tp
+                            JOIN %s s
+                            WITH tp.ship_id = s.id
+                            JOIN %s l
+                            WITH s.location_id = l.id
+                            WHERE tp.user_id < :firstUserId
+                            AND l.layer_id = :layerId
+                            ORDER BY abs(l.cx - :cx) + abs(l.cy - :cy) ASC',
                         TradePost::class,
                         Ship::class,
-                        Map::class
+                        Location::class
                     )
                 )
                 ->setMaxResults(1)

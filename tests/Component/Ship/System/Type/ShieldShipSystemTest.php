@@ -10,9 +10,10 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\Map\Location;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -126,7 +127,7 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsFalseIfSubspaceEllipseIsExistent(): void
     {
-        $location = $this->mock(Location::class);
+        $location = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
@@ -163,7 +164,7 @@ class ShieldShipSystemTest extends StuTestCase
 
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
     {
-        $location = $this->mock(Location::class);
+        $location = $this->mock(MapInterface::class);
 
         $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()

@@ -13,13 +13,10 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
-use Stu\Lib\Map\Location;
 use Stu\Orm\Repository\AnomalyRepository;
 
 #[Table(name: 'stu_anomaly')]
 #[Index(name: 'anomaly_to_type_idx', columns: ['anomaly_type_id'])]
-#[Index(name: 'anomaly_map_idx', columns: ['map_id'])]
-#[Index(name: 'anomaly_starsystem_map_idx', columns: ['starsystem_map_id'])]
 #[Index(name: 'anomaly_remaining_idx', columns: ['remaining_ticks'])]
 #[Entity(repositoryClass: AnomalyRepository::class)]
 class Anomaly implements AnomalyInterface
@@ -35,6 +32,9 @@ class Anomaly implements AnomalyInterface
     #[Column(type: 'integer')]
     private int $anomaly_type_id;
 
+    #[Column(type: 'integer')]
+    private int $location_id = 0;
+
     #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
@@ -45,13 +45,9 @@ class Anomaly implements AnomalyInterface
     #[JoinColumn(name: 'anomaly_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AnomalyTypeInterface $anomalyType;
 
-    #[ManyToOne(targetEntity: 'Map')]
-    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
-    private ?MapInterface $map = null;
-
-    #[ManyToOne(targetEntity: 'StarSystemMap')]
-    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
-    private ?StarSystemMapInterface $starsystem_map = null;
+    #[ManyToOne(targetEntity: 'Location')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    private LocationInterface $location;
 
     #[Override]
     public function getId(): int
@@ -94,36 +90,16 @@ class Anomaly implements AnomalyInterface
     }
 
     #[Override]
-    public function getMap(): ?MapInterface
+    public function getLocation(): LocationInterface
     {
-        return $this->map;
+        return $this->location;
     }
 
     #[Override]
-    public function setMap(?MapInterface $map): AnomalyInterface
+    public function setLocation(LocationInterface $location): AnomalyInterface
     {
-        $this->map = $map;
+        $this->location = $location;
 
         return $this;
-    }
-
-    #[Override]
-    public function getStarsystemMap(): ?StarSystemMapInterface
-    {
-        return $this->starsystem_map;
-    }
-
-    #[Override]
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): AnomalyInterface
-    {
-        $this->starsystem_map = $starsystem_map;
-
-        return $this;
-    }
-
-    #[Override]
-    public function getLocation(): Location
-    {
-        return new Location($this->getMap(), $this->getStarsystemMap());
     }
 }

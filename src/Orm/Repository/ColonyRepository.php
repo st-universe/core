@@ -13,6 +13,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PirateWrath;
@@ -289,13 +290,15 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 WITH sm.systems_id = s.id
                 JOIN %s m
                 WITH s.id = m.systems_id
+                JOIN %s l
+                WITH m.id = l.id
                 JOIN %s u
                 WITH c.user_id = u.id
                 LEFT JOIN %s w
                 WITH u.id = w.user_id
-                WHERE m.cx BETWEEN :minX AND :maxX
-                AND m.cy BETWEEN :minY AND :maxY
-                AND m.layer_id = :layer
+                WHERE l.cx BETWEEN :minX AND :maxX
+                AND l.cy BETWEEN :minY AND :maxY
+                AND l.layer_id = :layer
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND u.creation < :fourMonthEarlier
@@ -305,6 +308,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 StarSystemMap::class,
                 StarSystem::class,
                 Map::class,
+                Location::class,
                 User::class,
                 PirateWrath::class
             )

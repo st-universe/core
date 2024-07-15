@@ -52,7 +52,7 @@ final class ShowSectorScan implements ViewControllerInterface
             return;
         }
 
-        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, true, $userId));
+        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->fadedSignaturesCloaked === [] ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('ERROR', false);
@@ -61,9 +61,9 @@ final class ShowSectorScan implements ViewControllerInterface
     /**
      * @return array<string, SignatureWrapper>
      */
-    private function getSignatures(StarSystemMapInterface $field, bool $isSystem, int $ignoreId): array
+    private function getSignatures(StarSystemMapInterface $field, int $ignoreId): array
     {
-        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field->getId(), $isSystem, $ignoreId);
+        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field->getId(), $ignoreId);
 
         $filteredSigs = [];
 

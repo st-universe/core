@@ -14,6 +14,7 @@ use Stu\Orm\Entity\GameTurnStatsInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRump;
+use Stu\Orm\Entity\StarSystemMap;
 
 /**
  * @extends EntityRepository<GameTurnStats>
@@ -108,9 +109,11 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(fs) FROM %s fs
-                WHERE fs.time > :threshold
-                AND fs.starsystem_map_id IS NOT NULL',
-                FlightSignature::class
+                JOIN %s sm
+                WITH fs.location_id = sm.id
+                WHERE fs.time > :threshold',
+                FlightSignature::class,
+                StarSystemMap::class
             )
         )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult() / 2;
     }

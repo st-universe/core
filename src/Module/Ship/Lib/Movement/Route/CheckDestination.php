@@ -57,6 +57,9 @@ final class CheckDestination implements CheckDestinationInterface
             $result = $this->starSystemMapRepository->getByCoordinates($system->getId(), $destinationX, $destinationY);
         } else {
             $layer = $start->getLayer();
+            if ($layer === null) {
+                throw new RuntimeException('this should not happen');
+            }
 
             if ($destinationX > $layer->getWidth()) {
                 $destinationX = $layer->getWidth();

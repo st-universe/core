@@ -20,7 +20,6 @@ use Doctrine\ORM\Mapping\Table;
 use Override;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
-use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -32,7 +31,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Component\Station\StationUtility;
-use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\FightLib;
@@ -40,8 +38,7 @@ use Stu\Orm\Repository\ShipRepository;
 
 #[Table(name: 'stu_ships')]
 #[Index(name: 'ship_fleet_idx', columns: ['fleets_id'])]
-#[Index(name: 'ship_map_idx', columns: ['map_id'])]
-#[Index(name: 'ship_starsystem_map_idx', columns: ['starsystem_map_id'])]
+#[Index(name: 'ship_location_idx', columns: ['location_id'])]
 #[Index(name: 'ship_rump_idx', columns: ['rumps_id'])]
 #[Index(name: 'ship_web_idx', columns: ['holding_web_id'])]
 #[Index(name: 'ship_user_idx', columns: ['user_id'])]
@@ -136,6 +133,9 @@ class Ship implements ShipInterface
     #[Column(type: 'boolean')]
     private bool $is_fleet_leader = false;
 
+    #[Column(type: 'integer')]
+    private int $location_id = 0;
+
     #[Column(type: 'integer', nullable: true)]
     private ?int $map_id = null;
 
@@ -219,13 +219,9 @@ class Ship implements ShipInterface
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    #[ManyToOne(targetEntity: 'Map')]
-    #[JoinColumn(name: 'map_id', referencedColumnName: 'id')]
-    private ?MapInterface $map = null;
-
-    #[ManyToOne(targetEntity: 'StarSystemMap')]
-    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id')]
-    private ?StarSystemMapInterface $starsystem_map = null;
+    #[ManyToOne(targetEntity: 'Location')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    private LocationInterface $location;
 
     #[ManyToOne(targetEntity: 'StarSystem')]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
@@ -838,25 +834,13 @@ class Ship implements ShipInterface
     #[Override]
     public function getPosX(): int
     {
-        $field = $this->getCurrentMapField();
-
-        if ($field instanceof MapInterface) {
-            return $field->getCx();
-        }
-
-        return $field->getSx();
+        return $this->location->getX();
     }
 
     #[Override]
     public function getPosY(): int
     {
-        $field = $this->getCurrentMapField();
-
-        if ($field instanceof MapInterface) {
-            return $field->getCy();
-        }
-
-        return $field->getSy();
+        return $this->location->getY();
     }
 
     #[Override]
@@ -1046,12 +1030,6 @@ class Ship implements ShipInterface
     }
 
     #[Override]
-    public function isOverWormhole(): bool
-    {
-        return $this->getMap() !== null && $this->getMap()->getRandomWormholeEntry() !== null;
-    }
-
-    #[Override]
     public function isWarpPossible(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->getSystem() === null;
@@ -1162,7 +1140,14 @@ class Ship implements ShipInterface
     #[Override]
     public function getMap(): ?MapInterface
     {
-        return $this->map;
+        if ($this->location instanceof MapInterface) {
+            return $this->location;
+        }
+        if ($this->location instanceof StarSystemMapInterface) {
+            return $this->location->getSystem()->getMap();
+        }
+
+        return null;
     }
 
     #[Override]
@@ -1182,24 +1167,9 @@ class Ship implements ShipInterface
     }
 
     #[Override]
-    public function setLocation(MapInterface|StarSystemMapInterface|Location $location): ShipInterface
+    public function setLocation(LocationInterface $location): ShipInterface
     {
-        if ($location instanceof MapInterface) {
-            $this->setMap($location);
-            $this->setStarsystemMap(null);
-        } elseif ($location instanceof StarSystemMapInterface) {
-            $this->setMap($location->getSystem()->getMap());
-            $this->setStarsystemMap($location);
-        } else {
-            $this->setLocation($location->get());
-        }
-
-        return $this;
-    }
-
-    private function setMap(?MapInterface $map): ShipInterface
-    {
-        $this->map = $map;
+        $this->location = $location;
 
         return $this;
     }
@@ -1207,20 +1177,24 @@ class Ship implements ShipInterface
     #[Override]
     public function getStarsystemMap(): ?StarSystemMapInterface
     {
-        return $this->starsystem_map;
-    }
+        if ($this->location instanceof StarSystemMapInterface) {
+            return $this->location;
+        }
 
-    private function setStarsystemMap(?StarSystemMapInterface $systemMap): ShipInterface
-    {
-        $this->starsystem_map = $systemMap;
-
-        return $this;
+        return null;
     }
 
     #[Override]
-    public function getLocation(): Location
+    public function getLocation(): MapInterface|StarSystemMapInterface
     {
-        return new Location($this->getMap(), $this->getStarsystemMap());
+        if (
+            $this->location instanceof MapInterface
+            || $this->location instanceof StarSystemMapInterface
+        ) {
+            return $this->location;
+        }
+
+        throw new RuntimeException('unknown type');
     }
 
     #[Override]
@@ -1246,36 +1220,6 @@ class Ship implements ShipInterface
     public function getSectorString(): string
     {
         return $this->getCurrentMapField()->getSectorString();
-    }
-
-    #[Override]
-    public function getSectorId(): ?int
-    {
-        $layer = $this->getLayer();
-        if ($layer === null) {
-            return null;
-        }
-
-        $location = $this->getLocation();
-
-        $cx = $location->getCx();
-        $cy = $location->getCy();
-        if ($cx === null || $cy === null) {
-            return null;
-        }
-
-        return $layer->getSectorId($this->getMapCX($cx), $this->getMapCY($cy));
-    }
-
-
-    private function getMapCX(int $cx): int
-    {
-        return (int) ceil($cx / MapEnum::FIELDS_PER_SECTION);
-    }
-
-    private function getMapCY(int $cy): int
-    {
-        return (int) ceil($cy / MapEnum::FIELDS_PER_SECTION);
     }
 
     #[Override]

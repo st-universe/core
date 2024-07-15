@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use Override;
+use RuntimeException;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -43,8 +44,12 @@ final class LoadWaypoints implements LoadWaypointsInterface
             $sortAscending = false;
         }
         if ($start instanceof MapInterface) {
+            $layer = $start->getLayer();
+            if ($layer === null) {
+                throw new RuntimeException('this should not happen');
+            }
             $waypoints = $this->mapRepository->getByCoordinateRange(
-                $start->getLayer()->getId(),
+                $layer->getId(),
                 min($startX, $destinationX),
                 max($startX, $destinationX),
                 min($startY, $destinationY),

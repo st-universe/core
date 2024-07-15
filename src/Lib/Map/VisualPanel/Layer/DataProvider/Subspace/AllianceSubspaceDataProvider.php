@@ -7,17 +7,23 @@ namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 use Crunz\Exception\NotImplementedException;
 use Override;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
+use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class AllianceSubspaceDataProvider extends AbstractSubspaceDataProvider
 {
-    public function __construct(#
+    public function __construct(
         private int $allianceId,
+        LocationRepositoryInterface $locationRepository,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
-        parent::__construct($mapRepository, $starSystemMapRepository);
+        parent::__construct(
+            $locationRepository,
+            $mapRepository,
+            $starSystemMapRepository
+        );
     }
 
     #[Override]
