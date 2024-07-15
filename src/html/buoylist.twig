@@ -27,15 +27,9 @@
             {{ buoy.getText|bbcode }}
         </td>
         <td></td>
-        {% if buoy.getSystemMap %}
         <td align="center">
-            {{ buoy.getSystemMap.getSectorString }}
+            {{ buoy.getLocation.getSectorString }}
         </td>
-        {% else %}
-        <td align="center">
-            ({{ buoy.getMap.getCx }}|{{ buoy.getMap.getCy }})
-        </td>
-        {% endif %}
     </tr>
     {% endfor %}
 </table>
