@@ -1,98 +1,92 @@
-
-  {% set SHIP = WRAPPER.get %}
-  {% set emitter = WRAPPER.getWebEmitterSystemData %}
-  <form action="ship.php" method="post">
-    <input type="hidden" name="id" value="{{ SHIP.getId }}" />
-    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-    {% if SHIP.isWebEmitterHealthy %}
-      <table class="tcal">
-        {% if OWNFINISHEDWEB %}
-          <tr>
-            <th colspan="2">
-              Eigenes Netz bei {{ OWNFINISHEDWEB.getWebShip.getSectorString }}
-            </th>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <input type="submit" class="button" name="B_IMPLODE_WEB" value="Netz implodieren lassen" />
-              <input type="submit" class="button" name="B_REMOVE_WEB" value="Netz auflösen" />
-            </td>
-          </tr>
-        {% endif %}
-        {% if WEBCONSTRUCT %}
-          <tr>
-            <td>Netz wird erstellt</td>
-            <td>
-              {% if ISOWNCONSTRUCT %}
-                <input type="submit" class="button" name="B_CANCEL_WEB" value="Abbrechen" />
-              {% else %}
-                <input type="submit" class="button" name="B_UNSUPPORT_WEB" value="Unterstützung abbrechen" />
-              {% endif %}
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">Fertigstellung {{ WEBCONSTRUCT.getFinishedTime|date('Y-m-d H:i:s') }}</td>
-          </tr>
-        {% endif %}
-        {% if CANHELP %}
-          <tr>
-            <td>Netzerstellung kann unterstützt werden</td>
-            <td><input type="submit" class="button" name="B_SUPPORT_WEB" value="Unterstützen" /></td>
-          </tr>
-        {% endif %}
-        {% if not OWNFINISHED is empty %}
-          <tr>
-            <td>Es existiert hier bereits ein Energienetz</td>
-          </tr>
-        {% endif %}
-        <tr>
-          <td colspan="2">
-            {% if AVAILABLE_SHIPS %}
-              <div class="box">
-                <div class="box_title">Zielauswahl</div>
-                <div class="box_body">
-                  {{ self.shipselector(AVAILABLE_SHIPS) }}
-                  <br />
-                  <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
-                </div>
-              </div>
-            {% endif %}
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            {% if COOLDOWN %}
-              <div class="box">
-                <div class="box_title">Zielauswahl</div>
-                <div class="box_body">
-                  Gesperrt bis {{ COOLDOWN|date('Y-m-d H:i:s') }}
-                </div>
-              </div>
-            {% endif %}
-          </td>
-        </tr>
-      </table>
+{% set SHIP = WRAPPER.get %}
+{% set emitter = WRAPPER.getWebEmitterSystemData %}
+<form action="ship.php" method="post">
+  <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  {% if SHIP.isWebEmitterHealthy %}
+  <table class="tcal">
+    {% if OWNFINISHEDWEB %}
+    <tr>
+      <th colspan="2">
+        Eigenes Netz bei {{ OWNFINISHEDWEB.getWebShip.getSectorString }}
+      </th>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="submit" class="button" name="B_IMPLODE_WEB" value="Netz implodieren lassen" />
+        <input type="submit" class="button" name="B_REMOVE_WEB" value="Netz auflösen" />
+      </td>
+    </tr>
     {% endif %}
-  </form>
-
-
-  {% macro shipselector(AVAILABLE_SHIPS) %}
-  {% if AVAILABLE_SHIPS is empty %}
-    <span>Keine Schiffe vorhanden</span>
-  {% else %}
-    <table class="tcal" id="availableShipsTable">
-      {% for ship in AVAILABLE_SHIPS %}
-        <tr>
-          <td style="{{ ship.getHoldingWebBackgroundStyle }}" class="shiplistshipimage">
-            {% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
-        {{ shipImageWithoutWarp(ship) }}
-          </td>
-          <td>
-            <input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="{{ ship.getId }}" />
-            <span>{{ ship.getName|bbcode }}</span>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
+    {% if WEBCONSTRUCT %}
+    <tr>
+      <td>Netz wird erstellt</td>
+      <td>
+        {% if ISOWNCONSTRUCT %}
+        <input type="submit" class="button" name="B_CANCEL_WEB" value="Abbrechen" />
+        {% else %}
+        <input type="submit" class="button" name="B_UNSUPPORT_WEB" value="Unterstützung abbrechen" />
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">Fertigstellung {{ WEBCONSTRUCT.getFinishedTime|date('Y-m-d H:i:s') }}</td>
+    </tr>
+    {% endif %}
+    {% if CANHELP %}
+    <tr>
+      <td>Netzerstellung kann unterstützt werden</td>
+      <td><input type="submit" class="button" name="B_SUPPORT_WEB" value="Unterstützen" /></td>
+    </tr>
+    {% endif %}
+    {% if not OWNFINISHED is empty %}
+    <tr>
+      <td>Es existiert hier bereits ein Energienetz</td>
+    </tr>
+    {% endif %}
+    {% if not COOLDOWN %}
+    <tr>
+      <td colspan="2">
+        <div class="box">
+          <div class="box_title">Zielauswahl</div>
+          <div class="box_body">
+            {% if not AVAILABLE_SHIPS %}
+            <span>Keine Schiffe vorhanden</span>
+            {% else %}
+            <table class="tcal" id="availableShipsTable">
+              {% for ship in AVAILABLE_SHIPS %}
+              <tr>
+                <td style="{{ ship.getHoldingWebBackgroundStyle }}" class="shiplistshipimage">
+                  {% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+                  {{ shipImageWithoutWarp(ship) }}
+                </td>
+                <td>
+                  <input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="{{ ship.getId }}" />
+                  <span>{{ ship.getName|bbcode }}</span>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+            {% endif %}
+            <br />
+            <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td colspan="2">
+        {% if COOLDOWN %}
+        <div class="box">
+          <div class="box_title">Zielauswahl</div>
+          <div class="box_body">
+            Gesperrt bis {{ COOLDOWN|date('Y-m-d H:i:s') }}
+          </div>
+        </div>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
   {% endif %}
-{% endmacro %}
+</form>
