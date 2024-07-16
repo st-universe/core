@@ -133,6 +133,19 @@ final class ShipCreator implements ShipCreatorInterface
         array $modules,
         ?ConstructionProgressInterface $progress
     ): void {
+        $systems = $this->getDefaultSystems($ship);
+
+        $this->addModuleSystems($modules, $systems);
+        $this->addProgressModuleSystems($progress, $systems);
+
+        foreach ($systems as $systemType => $module) {
+            $this->createShipSystem($systemType, $ship, $module);
+        }
+    }
+
+    /** @return array<int, ModuleInterface|null>  */
+    private function getDefaultSystems(ShipInterface $ship): array
+    {
         $systems = [];
 
         //default systems, that almost every ship should have
@@ -155,6 +168,15 @@ final class ShipCreator implements ShipCreatorInterface
             $systems[ShipSystemTypeEnum::SYSTEM_UPLINK->value] = null;
         }
 
+        return $systems;
+    }
+
+    /**
+     * @param array<BuildplanModuleInterface> $modules
+     * @param array<int, ModuleInterface|null> $systems
+     */
+    private function addModuleSystems(array $modules, array &$systems): void
+    {
         foreach ($modules as $buildplanmodule) {
             $module = $buildplanmodule->getModule();
 
@@ -179,24 +201,33 @@ final class ShipCreator implements ShipCreatorInterface
                     break;
             }
         }
+    }
+
+    /**
+     * @param array<int, ModuleInterface|null> $systems
+     */
+    private function addProgressModuleSystems(?ConstructionProgressInterface $progress, array &$systems): void
+    {
         if ($progress !== null) {
             foreach ($progress->getSpecialModules() as $mod) {
                 $this->addSpecialSystems($mod->getModule(), $systems);
             }
         }
-        foreach ($systems as $systemType => $module) {
-            $obj = $this->shipSystemRepository->prototype();
-            $obj->setShip($ship);
-            $ship->getSystems()->set($systemType, $obj);
-            $obj->setSystemType(ShipSystemTypeEnum::from($systemType));
-            if ($module !== null) {
-                $obj->setModule($module);
-            }
-            $obj->setStatus(100);
-            $obj->setMode(ShipSystemModeEnum::MODE_OFF);
+    }
 
-            $this->shipSystemRepository->save($obj);
+    private function createShipSystem(int $systemType, ShipInterface $ship, ?ModuleInterface $module): void
+    {
+        $shipSystem = $this->shipSystemRepository->prototype();
+        $shipSystem->setShip($ship);
+        $ship->getSystems()->set($systemType, $shipSystem);
+        $shipSystem->setSystemType(ShipSystemTypeEnum::from($systemType));
+        if ($module !== null) {
+            $shipSystem->setModule($module);
         }
+        $shipSystem->setStatus(100);
+        $shipSystem->setMode(ShipSystemModeEnum::MODE_OFF);
+
+        $this->shipSystemRepository->save($shipSystem);
     }
 
     /**
