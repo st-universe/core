@@ -1,14 +1,14 @@
 <div id="fachead_{{ factionId }}">
-    <img src="assets/rassen/{{ factionId }}s.png" /> <strong>{{ data.getName }}</strong>
-    {% if data.getPlayerLimit %}
-    ({{ data.getPlayerCount }}/{{ data.getPlayerLimit }})
+    <img src="assets/rassen/{{ factionId }}s.png" /> <strong>{{ faction.getName }}</strong>
+    {% if faction.getPlayerLimit %}
+    ({{ faction.getPlayerCount }}/{{ faction.getPlayerLimit }})
     {% endif %}
 </div>
 <div id="facinfo_{{ factionId }}" style="display: none;">
-    {% if not data.hasFreePlayerSlots %}
+    {% if not faction.hasFreePlayerSlots %}
     <div style="font-weight: bold"><br />Diese Fraktion kann nicht
         ausgewählt werden da alle vorgesehen Spielerslots belegt sind</div>
     {% endif %}
     <br />
-    {{ data.getDescription }}
+    {{ faction.getDescription }}
 </div>
