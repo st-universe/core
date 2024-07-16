@@ -35,12 +35,6 @@ class Anomaly implements AnomalyInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $map_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $starsystem_map_id = null;
-
     #[ManyToOne(targetEntity: 'AnomalyType')]
     #[JoinColumn(name: 'anomaly_type_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AnomalyTypeInterface $anomalyType;

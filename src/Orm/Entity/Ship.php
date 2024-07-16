@@ -137,12 +137,6 @@ class Ship implements ShipInterface
     private int $location_id = 0;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $map_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $starsystem_map_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
     private ?int $influence_area_id = null;
 
     #[Column(type: 'boolean')]

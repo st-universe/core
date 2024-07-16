@@ -41,12 +41,6 @@ class FlightSignature implements FlightSignatureInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $map_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $starsystem_map_id = null;
-
     #[Column(type: 'smallint', length: 1)]
     private int $from_direction = 0;
 
