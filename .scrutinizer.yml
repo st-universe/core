@@ -23,6 +23,10 @@ build:
 filter:
   paths:
     - 'src/'
+  excluded_paths:
+    - 'src/html/'
+    - 'src/OrmProxy/'
+    - 'src/Public/assets/'
 checks:
   php:
     code_rating: true
@@ -32,6 +36,10 @@ tools:
     filter:
       paths:
         - 'src/'
+      excluded_paths:
+        - 'src/html/'
+        - 'src/OrmProxy/'
+        - 'src/Public/assets/'
   php_code_sniffer:
     enabled: false
   php_pdepend:
@@ -43,6 +51,10 @@ tools:
     filter:
       paths:
         - 'src/'
+      excluded_paths:
+        - 'src/html/'
+        - 'src/OrmProxy/'
+        - 'src/Public/assets/'
   php_analyzer:
     enabled: true
     extensions:
@@ -50,6 +62,10 @@ tools:
     filter:
       paths:
         - 'src/'
+      excluded_paths:
+        - 'src/html/'
+        - 'src/OrmProxy/'
+        - 'src/Public/assets/'
     path_configs: {  }
   php_loc:
     enabled: true
@@ -57,9 +73,16 @@ tools:
       - 'vendor/*'
       - 'tests/*'
       - '.phpstorm.meta.php'
+      - 'src/html/'
+      - 'src/OrmProxy/'
+      - 'src/Public/assets/'
   php_cpd:
     enabled: true
     excluded_dirs: {  }
     filter:
       paths:
         - 'src/'
+      excluded_paths:
+        - 'src/html/'
+        - 'src/OrmProxy/'
+        - 'src/Public/assets/'
