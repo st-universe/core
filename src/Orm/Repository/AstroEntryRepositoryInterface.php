@@ -11,6 +11,7 @@ use Stu\Orm\Entity\ShipInterface;
  * @extends ObjectRepository<AstronomicalEntry>
  *
  * @method null|AstronomicalEntryInterface find(integer $id)
+ * @method AstronomicalEntryInterface[] findAll()
  */
 interface AstroEntryRepositoryInterface extends ObjectRepository
 {
