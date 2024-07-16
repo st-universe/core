@@ -49,12 +49,6 @@ abstract class Location implements LocationInterface
     #[Column(type: 'integer')]
     private int $field_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $map_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $starsystem_map_id = null;
-
     #[ManyToOne(targetEntity: 'Layer')]
     #[JoinColumn(name: 'layer_id', referencedColumnName: 'id')]
     protected ?LayerInterface $layer;

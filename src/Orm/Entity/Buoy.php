@@ -32,12 +32,6 @@ class Buoy implements BuoyInterface
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $map_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $sys_map_id = null;
-
     #[ManyToOne(targetEntity: 'Location')]
     #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
     private LocationInterface $location;
