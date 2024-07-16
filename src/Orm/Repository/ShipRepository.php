@@ -474,6 +474,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addFieldResult('s', 'isblocking', 'is_blocking');
         $this->addTShipItemFields($rsm);
 
+        $location = $field ?? $ship->getLocation();
+
         $query = $this->getEntityManager()->createNativeQuery(
             sprintf(
                 'SELECT f.id as fleetid, f.name as fleetname, f.defended_colony_id is not null as isdefending,
@@ -518,7 +520,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'locationId' => $ship->getLocation()->getId(),
+            'locationId' => $location->getId(),
             'ignoreId' => $ship->getId(),
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE->value,
@@ -540,6 +542,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(TShipItem::class, 's');
         $this->addTShipItemFields($rsm);
+
+        $location = $field ?? $ship->getLocation();
 
         $query = $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -584,7 +588,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'locationId' => $ship->getLocation()->getId(),
+            'locationId' => $location->getId(),
             'ignoreId' => $ship->getId(),
             'types' => $types,
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK->value,
