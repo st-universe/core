@@ -12,7 +12,7 @@
         <td style="vertical-align: middle;">Verlangte Ware</td>
         <td>
             {% if IS_LATINUM %}
-            <select name="wgid">
+            <select name="wgid" style="width: 100%; max-width: 100%;">
                 <option value="0">----------------------</option>
                 {% for data in SELECTABLE_COMMODITIES %}
                 {% if data.getId != STOR.getCommodityId %}
@@ -52,7 +52,7 @@
     <tr>
         <td style="vertical-align: middle;">Verlangte Ware</td>
         <td>
-            <select name="wgid">
+            <select name="wgid" style="width: 100%; max-width: 100%;">
                 <option value="0">----------------------</option>
                 {% for data in SELECTABLE_COMMODITIES %}
                 {% if data.getId != STOR.getCommodityId %}
