@@ -1,9 +1,6 @@
-{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
-
-{% extends "html/sitedefaults.twig" %}
-
 {% block body %}
-{% include 'html/breadcrumb.twig' %}
+{% from 'html/shipmacros.twig' import shipImageWithoutWarp %}
+<script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
 {% for data in ACCOUNTS %}
 {% set ship = data.getShip %}
 <form action="trade.php" method="post">
