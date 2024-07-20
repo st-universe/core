@@ -6,6 +6,7 @@ namespace Stu\Module\Control\Render\Fragments;
 
 use Override;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Twig\TwigPageInterface;
@@ -21,6 +22,7 @@ final class ResearchFragment implements RenderFragmentInterface
     public function __construct(
         private ResearchedRepositoryInterface $researchedRepository,
         private StatusBarFactoryInterface $statusBarFactory,
+        private TechlistRetrieverInterface $techlistRetriever,
         private BuildingCommodityRepositoryInterface $buildingCommodityRepository
     ) {
     }
@@ -59,8 +61,13 @@ final class ResearchFragment implements RenderFragmentInterface
             );
         }
 
+        $researchList = $this->techlistRetriever->getResearchList($user);
+        $hasResearchList = !empty($researchList);
+        $hasCurrentResearch = !empty($currentResearch);
+
         $page->setVar('CURRENT_RESEARCH', current($currentResearch));
         $page->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
         $page->setVar('WAITING_RESEARCH', count($currentResearch) === 2 ? $currentResearch[1] : null);
+        $page->setVar('RESEARCH_POSSIBLE', $hasResearchList || $hasCurrentResearch);
     }
 }
