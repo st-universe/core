@@ -77,10 +77,24 @@
 						</div>
 
 						<div style="flex-grow: 1; text-align: right;">
-							<a href="https://de.wikipedia.org/wiki/BBCode">BB-Code</a>:
-							{% for char in ALLOWED_BBCODE_CHARACTERS %}
-							[{{ char }}]
-							{% endfor %}
+							{% set KNoverlibText = "<table class='tcal' style='width:350px'>
+								<tr>
+									<th style='text-align: left'><img src='/assets/buttons/info2.png' /> Ein KN schreiben</th>
+								</tr>
+								<tr>
+									<td>In einem KN-Beitrag können folgende BBCodes verwendet werden:
+									</br>[b]fett[/b], [i]kursiv[/i]
+									</br>[u]unterstrichen[/u], [h2]Überschrift[/h2]
+									</br>[h3]Unterüberschrift[/h3], [quote]Zitat[/quote]
+									</br>[translate]Hello World[translation]Hallo Welt[/translate]
+									</br>
+									</br>Klicke auf das <img
+                    				style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos zum Thema KommunikationsNetzwerk.</td>
+								</tr>
+							</table>" %}
+							<a href="https://wiki.stuniverse.de/index.php?title=KN-Leitfaden" target="_blank"
+                onmouseover="return overlib('{{ KNoverlibText|e('js') }}', LEFT,  OFFSETX, 200, CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
+                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a>
 						</div>
 					</div>
 				</div>
