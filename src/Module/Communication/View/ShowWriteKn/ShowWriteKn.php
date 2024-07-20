@@ -37,12 +37,5 @@ final class ShowWriteKn implements ViewControllerInterface
             'ACTIVE_RPG_PLOTS',
             $this->rpgPlotRepository->getActiveByUser($game->getUser()->getId())
         );
-        $game->setTemplateVar(
-            'ALLOWED_BBCODE_CHARACTERS',
-            array_map(
-                fn (CodeDefinition $definition): string => $definition->getTagName(),
-                $this->codeDefinitionSet->getCodeDefinitions()
-            )
-        );
     }
 }
