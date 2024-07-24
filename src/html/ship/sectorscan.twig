@@ -77,18 +77,20 @@
             <th colspan="4">Bojen</th>
         </tr>
         {% for buoy in BUOYS %}
+<form action="ship.php" method="post">
+    <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <input type="hidden" name="buoy_id" value="{{ buoy.getId }}" />
+    <input type="hidden" name="B_TAKE_BUOY" value="1" />
+    <table class="tcal">
         <tr>
-            <td
-                style="background-image: url('assets/buttons/warp_1.png'); background-position: center; background-repeat: no-repeat;">
-                <img src="assets/ships/buoy/{{ buoy.getUser.getFaction.getId }}.png" title="Boje"
-                    style="display: block; margin-left: auto; margin-right: auto;" />
+            <td style="background-image: url('assets/buttons/warp_1.png'); background-position: center; background-repeat: no-repeat;">
+                <img src="assets/ships/buoy/{{ buoy.getUser.getFaction.getId }}.png" title="Boje" style="display: block; margin-left: auto; margin-right: auto;" />
             </td>
             <td style="width:80%;">
                 {{ buoy.getText|bbcode }}
             </td>
             <td>
-                <input type="hidden" name="buoy_id" value="{{ buoy.getId }}" />
-                <input type="hidden" name="B_TAKE_BUOY" value="1" />
                 <a href="javascript:void(0)" onclick="this.closest('form').submit()"
                     onmouseover="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_2.png';"
                     onmouseout="this.getElementsByTagName('img')[0].src='assets/buttons/take_buoy_1.png';">
@@ -104,7 +106,9 @@
                 </a>
             </td>
         </tr>
-        {% endfor %}
+    </table>
+</form>
+{% endfor %}
     </table>
     {% endif %}
 </form>
