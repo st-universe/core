@@ -16,7 +16,8 @@
             <div class="divhead">Rassenallianz</div>
             <div class="divbody">
                 <img src="assets/rassen/{{ USER.getFactionId }}s.png" />
-                <input type="checkbox" name="factionid" />
+                {% set checked = ALLIANCE.getFaction ? 'checked="true"' : '' %}
+                <input type="checkbox" name="factionid" value="1" {{ checked }} />
             </div>
             <br />
             <div class="divhead">Gründung</div>
