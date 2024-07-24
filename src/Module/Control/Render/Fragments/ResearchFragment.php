@@ -24,8 +24,7 @@ final class ResearchFragment implements RenderFragmentInterface
         private StatusBarFactoryInterface $statusBarFactory,
         private TechlistRetrieverInterface $techlistRetriever,
         private BuildingCommodityRepositoryInterface $buildingCommodityRepository
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function render(

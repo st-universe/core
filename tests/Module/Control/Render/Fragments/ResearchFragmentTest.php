@@ -7,6 +7,7 @@ namespace Stu\Module\Control\Render\Fragments;
 use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Template\StatusBarInterface;
@@ -29,6 +30,9 @@ class ResearchFragmentTest extends StuTestCase
     /** @var MockInterface&BuildingCommodityRepositoryInterface */
     private $buildingCommodityRepository;
 
+    /** @var MockInterface&TechlistRetrieverInterface */
+    private $techlistRetriever;
+
     private ResearchFragment $subject;
 
     #[Override]
@@ -37,10 +41,12 @@ class ResearchFragmentTest extends StuTestCase
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
         $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
         $this->buildingCommodityRepository = $this->mock(BuildingCommodityRepositoryInterface::class);
+        $this->techlistRetriever = $this->mock(TechlistRetrieverInterface::class);
 
         $this->subject = new ResearchFragment(
             $this->researchedRepository,
             $this->statusBarFactory,
+            $this->techlistRetriever,
             $this->buildingCommodityRepository
         );
     }
@@ -55,6 +61,11 @@ class ResearchFragmentTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
+        $this->techlistRetriever->shouldReceive('getResearchList')
+            ->with($user)
+            ->once()
+            ->andReturn([]);
+
         $twigPage->shouldReceive('setVar')
             ->with('CURRENT_RESEARCH', null)
             ->once();
@@ -63,6 +74,9 @@ class ResearchFragmentTest extends StuTestCase
             ->once();
         $twigPage->shouldReceive('setVar')
             ->with('WAITING_RESEARCH', null)
+            ->once();
+        $twigPage->shouldReceive('setVar')
+            ->with('RESEARCH_POSSIBLE', false)
             ->once();
 
         $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
@@ -86,6 +100,11 @@ class ResearchFragmentTest extends StuTestCase
             ->with($user)
             ->once()
             ->andReturn([$currentResearch, $waitingResearch]);
+
+        $this->techlistRetriever->shouldReceive('getResearchList')
+            ->with($user)
+            ->once()
+            ->andReturn([]);
 
         $research->shouldReceive('getPoints')
             ->withNoArgs()
@@ -150,6 +169,9 @@ class ResearchFragmentTest extends StuTestCase
                 'CURRENT_RESEARCH_PRODUCTION_COMMODITY',
                 $productionValue
             )
+            ->once();
+        $twigPage->shouldReceive('setVar')
+            ->with('RESEARCH_POSSIBLE', true)
             ->once();
 
         $this->subject->render($user, $twigPage, $this->mock(GameControllerInterface::class));
