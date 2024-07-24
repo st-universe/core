@@ -585,3 +585,13 @@ function checkForMatch() {
 function updateSelectedShipId(shipId) {
     document.getElementById('selshipid').value = shipId;
 }
+
+function toggleTransferMessage(type) {
+    var messageId = type + 'TransferMessage';
+    var message = document.getElementById(messageId);
+    if (message.style.display === 'none') {
+        message.style.display = 'block';
+    } else {
+        message.style.display = 'none';
+    }
+}

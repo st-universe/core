@@ -9,14 +9,12 @@ use Stu\Orm\Entity\ShipInterface;
 
 class TransferInformation
 {
-    public function __construct(private TransferTypeEnum $currentType, private ColonyInterface|ShipInterface $from, private ColonyInterface|ShipInterface $to, private bool $isUnload, private bool $isFriend)
-    {
-    }
+    public function __construct(private TransferTypeEnum $currentType, private ColonyInterface|ShipInterface $from, private ColonyInterface|ShipInterface $to, private bool $isUnload, private bool $isFriend) {}
 
     public function isCommodityTransferPossible(bool $isOtherTypeRequired = true): bool
     {
         return !($isOtherTypeRequired
-        && $this->currentType === TransferTypeEnum::COMMODITIES);
+            && $this->currentType === TransferTypeEnum::COMMODITIES);
     }
 
     public function isCrewTransferPossible(bool $isOtherTypeRequired = true): bool
@@ -47,19 +45,24 @@ class TransferInformation
             return false;
         }
 
-        if (
-            !$this->isFriend
-            && $this->from->getUser() !== $this->to->getUser()
-        ) {
-            return false;
-        }
-
         return $this->from instanceof ShipInterface
             && $this->to instanceof ShipInterface
             && $this->from->isTorpedoStorageHealthy()
             && (!$this->isUnload() || $this->from->getTorpedoCount() > 0)
             && ($this->to->hasTorpedo() || $this->to->isTorpedoStorageHealthy())
             && ($this->isUnload() || $this->to->getTorpedoCount() > 0);
+    }
+
+    public function isFriend(): bool
+    {
+        if (
+            !$this->isFriend
+            && $this->from->getUser() !== $this->to->getUser()
+        ) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function isOtherGoodTransferPossible(): bool

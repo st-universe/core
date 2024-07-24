@@ -1,6 +1,6 @@
 <tr>
     {% if TRANSFER_INFO.isOtherGoodTransferPossible %}
-
+    
     {% set isUnload = TRANSFER_INFO.isUnload ? 1 : 0 %}
     {% set isColonyTarget = TRANSFER_INFO.isColonyTarget ? 1 : 0 %}
     <td colspan="3">
@@ -20,13 +20,22 @@
         </a>
         {% endif %}
         {% if TRANSFER_INFO.isTorpedoTransferPossible %}
+        {% if TRANSFER_INFO.isFriend %}
         <a href="javascript:void(0);"
             onclick="showTransfer({{ TRANSFER_INFO.getTargetId }},3 , {{ isUnload }}, {{ isColonyTarget }}, true);"
             onmouseover="cp('torpedobeamtrigger','buttons/act_torp1');"
             onmouseout="cp('torpedobeamtrigger','buttons/torp');">
             <img src="assets/buttons/torp.png" name="torpedobeamtrigger" title="Torpedos beamen" />
         </a>
+        {% else %}
+        <a href="javascript:void(0);" onclick="toggleTransferMessage('torpedo');"
+            onmouseover="cp('torpedobeamtrigger','buttons/act_torp1');"
+            onmouseout="cp('torpedobeamtrigger','buttons/torp');">
+            <img src="assets/buttons/torp.png" name="torpedobeamtrigger" title="Torpedos beamen" />
+        </a>
         {% endif %}
+        {% endif %}
+        <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
     </td>
     {% endif %}
 </tr>
