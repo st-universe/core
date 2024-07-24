@@ -133,11 +133,7 @@ return [
         ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
         ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),
         ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
-        ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class)
-            ->constructorParameter(
-                'codeDefinitionSet',
-                autowire(KnBbCodeDefinitionSet::class)
-            ),
+        ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class),
         ShowEditKn::VIEW_IDENTIFIER => autowire(ShowEditKn::class),
         ShowKnRating::VIEW_IDENTIFIER => autowire(ShowKnRating::class),
         ShowSingleKn::VIEW_IDENTIFIER => autowire(ShowSingleKn::class),
