@@ -5,7 +5,7 @@
             <span style="font-size: larger;">Von Spieler: <span>{{ CHARACTER.getUser.getName|bbcode }}</span></span>
             <p></p>
             <p></p>
-            <span style="margin: 0;">{{ CHARACTER.getDescription|bbcode }}</span>
+            <span style="margin: 0;">{{ CHARACTER.getDescription| nl2br | bbcode}}</span>
         </div>
     </td>
 </table>
