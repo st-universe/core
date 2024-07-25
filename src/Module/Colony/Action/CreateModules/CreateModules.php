@@ -21,9 +21,14 @@ final class CreateModules implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_MODULES';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
+        private ModuleQueueRepositoryInterface $moduleQueueRepository,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ColonyStorageManagerInterface $colonyStorageManager,
+        private ColonyRepositoryInterface $colonyRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -52,6 +57,7 @@ final class CreateModules implements ActionControllerInterface
             return;
         }
         $prod = [];
+        $missingResources = [];
 
         /** @var ModuleBuildingFunctionInterface[] $modules_av */
         $modules_av = [];
@@ -69,28 +75,34 @@ final class CreateModules implements ActionControllerInterface
                 continue;
             }
             $module = $modules_av[$module_id]->getModule();
+            $initialCount = $count;
+
+
             if ($module->getEcost() * $count > $colony->getEps()) {
                 $count = (int) floor($colony->getEps() / $module->getEcost());
             }
             if ($count == 0) {
+                $missingResources[] = sprintf(
+                    _('Zur Herstellung von %s fehlt Energie.'),
+                    $module->getName()
+                );
                 continue;
             }
 
             $costs = $module->getCost();
 
             $isEnoughAvailable = true;
+            $missingForModule = [];
             foreach ($costs as $cost) {
                 $commodity = $cost->getCommodity();
                 $commodityId = $commodity->getId();
 
                 $stor = $storage[$commodityId] ?? null;
                 if ($stor === null || $stor->getAmount() < $cost->getAmount()) {
-                    $prod[] = sprintf(
-                        _('Zur Herstellung von %s wird %d %s benötigt - Vorhanden sind nur %d'),
-                        $module->getName(),
+                    $missingForModule[] = sprintf(
+                        '%d %s',
                         $cost->getAmount(),
-                        $commodity->getName(),
-                        $stor === null ? 0 : $stor->getAmount()
+                        $commodity->getName()
                     );
                     $isEnoughAvailable = false;
                     continue;
@@ -101,6 +113,11 @@ final class CreateModules implements ActionControllerInterface
             }
 
             if (!$isEnoughAvailable) {
+                $missingResources[] = sprintf(
+                    _('Zur Herstellung von %s fehlen: %s'),
+                    $module->getName(),
+                    implode(', ', $missingForModule)
+                );
                 continue;
             }
             foreach ($costs as $cost) {
@@ -127,6 +144,15 @@ final class CreateModules implements ActionControllerInterface
             }
 
             $prod[] = $count . ' ' . $module->getName();
+
+            if ($initialCount > $count) {
+                $missingResources[] = sprintf(
+                    _('Für die Herstellung von %d weiteren %s fehlen Ressourcen: %s'),
+                    $initialCount - $count,
+                    $module->getName(),
+                    implode(', ', $missingForModule)
+                );
+            }
         }
         if ($moduleAdded) {
             $game->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt'));
@@ -139,6 +165,13 @@ final class CreateModules implements ActionControllerInterface
             }
         } else {
             $game->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
+        }
+
+        if (!empty($missingResources)) {
+            $game->addInformation(_('Es konnten nicht alle gewünschten Module hergestellt werden:'));
+            foreach ($missingResources as $msg) {
+                $game->addInformation($msg);
+            }
         }
     }
 
