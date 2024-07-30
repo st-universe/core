@@ -27,9 +27,7 @@ final class EditKnPost implements ActionControllerInterface
     public const int EDIT_TIME = 600;
 
 
-    public function __construct(private EditKnPostRequestInterface $editKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharactersRepositoryInterface $knCharactersRepository, private UserCharactersRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private EditKnPostRequestInterface $editKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharactersRepositoryInterface $knCharactersRepository, private UserCharactersRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -47,6 +45,15 @@ final class EditKnPost implements ActionControllerInterface
         }
 
         $title = $this->editKnPostRequest->getTitle();
+        if (mb_strlen($title) < 6) {
+            $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+            return;
+        }
+        if (mb_strlen($title) > 80) {
+            $game->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+            return;
+        }
+
         $text = $this->editKnPostRequest->getText();
         $plotId = $this->editKnPostRequest->getPlotId();
 
@@ -69,7 +76,7 @@ final class EditKnPost implements ActionControllerInterface
 
         $href = sprintf('comm.php?%s=1&id=%d', ShowSingleKn::VIEW_IDENTIFIER, $post->getId());
         $currentCharacterEntities = $this->knCharactersRepository->findBy(['knPost' => $post]);
-        $currentCharacterIds = array_map(fn (KnCharactersInterface $character): int => $character->getUserCharacters()->getId(), $currentCharacterEntities);
+        $currentCharacterIds = array_map(fn(KnCharactersInterface $character): int => $character->getUserCharacters()->getId(), $currentCharacterEntities);
 
 
         $newCharacterIdsInput = $this->editKnPostRequest->getCharacterIds();
