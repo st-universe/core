@@ -13,14 +13,12 @@ final class ShowUserPlotList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MYPLOTS';
 
-    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository)
-    {
-    }
+    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/communication/plot/userPlots.twig');
+        $game->setViewTemplate('html/communication/plot/userPlots.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart(sprintf('comm.php?%s=1', static::VIEW_IDENTIFIER), _('Eigene Plots'));
         $game->setPageTitle(_('Eigene Plots'));
