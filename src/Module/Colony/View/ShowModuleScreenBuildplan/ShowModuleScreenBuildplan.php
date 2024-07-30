@@ -20,9 +20,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN_BUILDPLAN';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ShipBuildplanRepositoryInterface $shipBuildplanRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -77,7 +75,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         );
 
         $game->setPagetitle(_('Schiffbau'));
-        $game->setTemplateFile('html/ship/construction/moduleScreen.twig');
+        $game->setViewTemplate('html/ship/construction/moduleScreen.twig');
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('RUMP', $rump);
         $game->setTemplateVar('PLAN', $plan);
