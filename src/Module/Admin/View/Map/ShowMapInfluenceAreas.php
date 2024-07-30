@@ -18,9 +18,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_INFLUENCE_AREAS';
 
-    public function __construct(private MapRepositoryInterface $mapRepository, private LayerRepositoryInterface $layerRepository, private ImageCreationInterface $imageCreation)
-    {
-    }
+    public function __construct(private MapRepositoryInterface $mapRepository, private LayerRepositoryInterface $layerRepository, private ImageCreationInterface $imageCreation) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -48,7 +46,15 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
     private function buildImage(LayerInterface $layer, bool $showAllyAreas): mixed
     {
-        $img = imagecreatetruecolor($layer->getWidth() * 15, $layer->getHeight() * 15);
+        $width = $layer->getWidth() * 15;
+        $height = $layer->getHeight() * 15;
+
+        if ($width < 1 || $height < 1) {
+            throw new RuntimeException('Ungültige Dimensionen für die Bilderstellung');
+        }
+
+        $img = imagecreatetruecolor($width, $height);
+
 
         // mapfields
         $startY = 1;
