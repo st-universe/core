@@ -21,8 +21,7 @@ final class ShowMapOverall implements ViewControllerInterface
         private MapRepositoryInterface $mapRepository,
         private LayerRepositoryInterface $layerRepository,
         private StuConfigInterface $config
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -36,7 +35,15 @@ final class ShowMapOverall implements ViewControllerInterface
         }
 
         $types = [];
-        $img = imagecreatetruecolor($layer->getWidth() * 15, $layer->getHeight() * 15);
+        $width = $layer->getWidth() * 15;
+        $height = $layer->getHeight() * 15;
+
+        if ($width < 1 || $height < 1) {
+            throw new RuntimeException('Ungültige Dimensionen für die Bilderstellung');
+        }
+
+        $img = imagecreatetruecolor($width, $height);
+
 
         // mapfields
         $startY = 1;
