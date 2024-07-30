@@ -21,14 +21,7 @@ final class CreateModules implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_MODULES';
 
-    public function __construct(
-        private ColonyLoaderInterface $colonyLoader,
-        private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
-        private ModuleQueueRepositoryInterface $moduleQueueRepository,
-        private PlanetFieldRepositoryInterface $planetFieldRepository,
-        private ColonyStorageManagerInterface $colonyStorageManager,
-        private ColonyRepositoryInterface $colonyRepository
-    ) {}
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyStorageManagerInterface $colonyStorageManager, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -57,7 +50,6 @@ final class CreateModules implements ActionControllerInterface
             return;
         }
         $prod = [];
-        $missingResources = [];
 
         /** @var ModuleBuildingFunctionInterface[] $modules_av */
         $modules_av = [];
@@ -74,51 +66,40 @@ final class CreateModules implements ActionControllerInterface
             if ($count <= 0) {
                 continue;
             }
+            $initialcount = $count;
             $module = $modules_av[$module_id]->getModule();
-            $initialCount = $count;
-
-
-            if ($module->getEcost() * $count > $colony->getEps()) {
+            $missingcounteps = 0;
+            $missingeps = 0;
+            if ($module->getEcost() * $initialcount > $colony->getEps()) {
+                $missingeps = $initialcount * $module->getEcost() - $colony->getEps();
+                $missingcounteps = $initialcount - (int) floor($colony->getEps() / $module->getEcost());
                 $count = (int) floor($colony->getEps() / $module->getEcost());
             }
             if ($count == 0) {
-                $missingResources[] = sprintf(
-                    _('Zur Herstellung von %s fehlt Energie.'),
-                    $module->getName()
-                );
                 continue;
             }
 
             $costs = $module->getCost();
 
             $isEnoughAvailable = true;
-            $missingForModule = [];
+            $missingcount = 0;
             foreach ($costs as $cost) {
                 $commodity = $cost->getCommodity();
                 $commodityId = $commodity->getId();
 
-                $stor = $storage[$commodityId] ?? null;
-                if ($stor === null || $stor->getAmount() < $cost->getAmount()) {
-                    $missingForModule[] = sprintf(
-                        '%d %s',
-                        $cost->getAmount(),
-                        $commodity->getName()
-                    );
-                    $isEnoughAvailable = false;
-                    continue;
-                }
-                if ($stor->getAmount() < $cost->getAmount() * $count) {
-                    $count = (int) floor($stor->getAmount() / $cost->getAmount());
-                }
-            }
 
-            if (!$isEnoughAvailable) {
-                $missingResources[] = sprintf(
-                    _('Zur Herstellung von %s fehlen: %s'),
-                    $module->getName(),
-                    implode(', ', $missingForModule)
-                );
-                continue;
+                $stor = $storage[$commodityId] ?? null;
+                $availableAmount = ($stor !== null) ? $stor->getAmount() : 0;
+
+                if ($availableAmount < $cost->getAmount() * $initialcount) {
+                    if ($missingcount < $initialcount - (int) floor($availableAmount / $cost->getAmount())) {
+                        $missingcount = $initialcount - (int) floor($availableAmount / $cost->getAmount());
+                    }
+                    if ($count > $initialcount - $missingcount) {
+                        $count = $initialcount - $missingcount;
+                    }
+                    $isEnoughAvailable = false;
+                }
             }
             foreach ($costs as $cost) {
                 $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
@@ -126,7 +107,6 @@ final class CreateModules implements ActionControllerInterface
             $colony->lowerEps($count * $module->getEcost());
 
             $this->colonyRepository->save($colony);
-
             if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $module_id, $func)) !== null) {
                 $queue->setAmount($queue->getAmount() + $count);
 
@@ -143,19 +123,62 @@ final class CreateModules implements ActionControllerInterface
                 $moduleAdded = true;
             }
 
-            $prod[] = $count . ' ' . $module->getName();
+            if ($count < $initialcount) {
+                $missing = sprintf(_(' von %s'), $initialcount);
+            } else {
+                $missing = '';
+            }
 
-            if ($initialCount > $count) {
-                $missingResources[] = sprintf(
-                    _('Für die Herstellung von %d weiteren %s fehlen Ressourcen: %s'),
-                    $initialCount - $count,
+            $prod[] = $count . $missing . ' ' . $module->getName();
+            if ($missingeps > 0) {
+                $epsmessage = sprintf(
+                    _('%s Energie, '),
+                    $missingeps
+                );
+            } else {
+                $epsmessage = '';
+            }
+
+            if (!$isEnoughAvailable) {
+                $missingCommodities = [];
+
+                foreach ($costs as $cost) {
+                    $commodity = $cost->getCommodity();
+                    $commodityId = $commodity->getId();
+                    $stor = $storage[$commodityId] ?? null;
+                    $availableAmount = ($stor !== null) ? $stor->getAmount() : 0;
+
+                    $requiredAmount = $cost->getAmount() * $missingcount;
+                    $missingAmount = $requiredAmount - $availableAmount;
+
+                    if ($missingAmount > 0) {
+                        $missingCommodities[] = [
+                            'name' => $commodity->getName(),
+                            'missing' => $missingAmount
+                        ];
+                    }
+                }
+
+                $missingText = array_map(function ($commodity) {
+                    return sprintf(
+                        '%d %s',
+                        $commodity['missing'],
+                        $commodity['name']
+                    );
+                }, $missingCommodities);
+
+                $prod[] = sprintf(
+                    _('<div style="padding-left: 20px;">- Zur Herstellung von weiteren %d %s werden benötigt: %s%s</div>'),
+                    max($missingcount, $missingcounteps),
                     $module->getName(),
-                    implode(', ', $missingForModule)
+                    $epsmessage,
+                    implode(', ', $missingText)
                 );
             }
         }
+
         if ($moduleAdded) {
-            $game->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt'));
+            $game->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt:'));
             foreach ($prod as $msg) {
                 $game->addInformation($msg);
             }
@@ -165,13 +188,6 @@ final class CreateModules implements ActionControllerInterface
             }
         } else {
             $game->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
-        }
-
-        if (!empty($missingResources)) {
-            $game->addInformation(_('Es konnten nicht alle gewünschten Module hergestellt werden:'));
-            foreach ($missingResources as $msg) {
-                $game->addInformation($msg);
-            }
         }
     }
 
