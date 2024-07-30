@@ -8,6 +8,7 @@ use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -23,9 +24,7 @@ final class ShowModuleFab implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULEFAB';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleFabRequestInterface $showModuleFabRequest, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleFabRequestInterface $showModuleFabRequest, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,10 +38,21 @@ final class ShowModuleFab implements ViewControllerInterface
         );
 
         $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
+
+        if ($func === null) {
+            return;
+        }
+
         $modules = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
             $func->getFunction(),
             $userId
         );
+
+        $template = match ($func->getFunction()) {
+            BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL => 'html/colony/menu/componentFab.twig',
+            BuildingEnum::BUILDING_FUNCTION_TECH_CENTER => 'html/colony/menu/componentFab.twig',
+            default => ColonyMenuEnum::MENU_MODULEFAB->getTemplate(),
+        };
 
         $sortedModules = [];
         foreach ($modules as $module) {
@@ -179,7 +189,8 @@ final class ShowModuleFab implements ViewControllerInterface
             }
         }
 
-        $game->showMacro(ColonyMenuEnum::MENU_MODULEFAB->getTemplate());
+
+        $game->showMacro($template);
         $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_MODULEFAB);
 
         $game->setTemplateVar('HOST', $colony);
