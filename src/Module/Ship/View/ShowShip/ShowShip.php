@@ -312,7 +312,7 @@ final class ShowShip implements ViewControllerInterface
             ));
         }
 
-        if ($progress === null) {
+        if ($progress === null || $progress->getRemainingTicks() == 0) {
             $plans = $this->stationUtility->getStationBuildplansByUser($game->getUser()->getId());
             $game->setTemplateVar('POSSIBLE_STATIONS', $plans);
 
@@ -342,7 +342,7 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('CAN_REPAIR', true);
 
             $shipRepairProgress = array_map(
-                fn (StationShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
+                fn(StationShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
                 $this->stationShipRepairRepository->getByStation(
                     $ship->getId()
                 )
