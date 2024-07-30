@@ -15,9 +15,7 @@ final class CreateKnPlot implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_PLOT';
 
-    public function __construct(private CreateKnPlotRequestInterface $createKnPlotRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository)
-    {
-    }
+    public function __construct(private CreateKnPlotRequestInterface $createKnPlotRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -55,7 +53,6 @@ final class CreateKnPlot implements ActionControllerInterface
         $game->addInformation(_('Der Plot wurde erstellt'));
 
         $game->setView(ShowPlotList::VIEW_IDENTIFIER);
-        $game->addInformation(_('Der Plot wurde erstellt'));
     }
 
     #[Override]
