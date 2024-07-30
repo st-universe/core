@@ -749,11 +749,6 @@ parameters:
 			path: src/Module/Colony/View/ShowGiveUp/ShowGiveUp.php
 
 		-
-			message: "#^Cannot call method getFunction\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFab.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesCloaked type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php

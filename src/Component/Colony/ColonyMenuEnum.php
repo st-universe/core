@@ -138,8 +138,8 @@ enum ColonyMenuEnum: int
             self::MENU_TORPEDOFAB => 'html/colony/menu/torpedoFab.twig',
             self::MENU_ACADEMY => 'html/colony/menu/academy.twig',
             self::MENU_WASTE => 'html/colony/menu/waste.twig',
-            self::MENU_FAB_HALL => 'html/colony/menu/moduleFab.twig',
-            self::MENU_TECH_CENTER => 'html/colony/menu/moduleFab.twig',
+            self::MENU_FAB_HALL => 'html/colony/menu/componentFab.twig',
+            self::MENU_TECH_CENTER => 'html/colony/menu/componentFab.twig',
             self::MENU_SUBSPACE_TELESCOPE => 'html/colony/menu/telescope.twig',
             self::MENU_SHIP_DISASSEMBLY => 'html/colony/menu/shipDisassembly.twig',
             self::MENU_SHIP_REPAIR => 'html/colony/menu/shipRepair.twig'
