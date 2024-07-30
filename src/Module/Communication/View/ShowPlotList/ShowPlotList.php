@@ -13,9 +13,7 @@ final class ShowPlotList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_PLOTLIST';
 
-    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository)
-    {
-    }
+    public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,7 +29,7 @@ final class ShowPlotList implements ViewControllerInterface
             }
         }
 
-        $game->setTemplateFile('html/communication/plot/plots.twig');
+        $game->setViewTemplate('html/communication/plot/plots.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart(sprintf('comm.php?%s=1', static::VIEW_IDENTIFIER), _('Plots'));
         $game->setPageTitle(_('Plots'));
