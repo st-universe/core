@@ -59,6 +59,7 @@
             <div class="plotMemberListItemPm">
               {{ pmWindow(USER, member.getUserId) }}
             </div>
+            {% if PLOT.isActive %}
             <div class="plotMemberListItemDelete">
               {% if MAY_EDIT %}
               <a href="?SHOW_PLOT=1&plotid={{ PLOT.getId }}&B_DEL_PLOTMEMBER=1&memid={{ member.getUserId }}&sstr={{ SESSIONSTRING }}"
@@ -68,6 +69,7 @@
               </a>
               {% endif %}
             </div>
+            {% endif %}
           </div>
         </div>
         {% endfor %}
