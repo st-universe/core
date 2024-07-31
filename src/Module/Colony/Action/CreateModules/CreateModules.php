@@ -107,20 +107,22 @@ final class CreateModules implements ActionControllerInterface
             $colony->lowerEps($count * $module->getEcost());
 
             $this->colonyRepository->save($colony);
-            if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $module_id, $func)) !== null) {
-                $queue->setAmount($queue->getAmount() + $count);
+            if ($count > 0) {
+                if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $module_id, $func)) !== null) {
+                    $queue->setAmount($queue->getAmount() + $count);
 
-                $this->moduleQueueRepository->save($queue);
-                $moduleAdded = true;
-            } else {
-                $queue = $this->moduleQueueRepository->prototype();
-                $queue->setColony($colony);
-                $queue->setBuildingFunction($func);
-                $queue->setModule($module);
-                $queue->setAmount($count);
+                    $this->moduleQueueRepository->save($queue);
+                    $moduleAdded = true;
+                } else {
+                    $queue = $this->moduleQueueRepository->prototype();
+                    $queue->setColony($colony);
+                    $queue->setBuildingFunction($func);
+                    $queue->setModule($module);
+                    $queue->setAmount($count);
 
-                $this->moduleQueueRepository->save($queue);
-                $moduleAdded = true;
+                    $this->moduleQueueRepository->save($queue);
+                    $moduleAdded = true;
+                }
             }
 
             if ($count < $initialcount) {
