@@ -17,6 +17,7 @@ use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
@@ -225,7 +226,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $this->loggerUtil->log('J');
 
         $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
-        request::setVar('planid', $plan->getId());
+        $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $plan->getId());
 
         $this->loggerUtil->log('K');
     }

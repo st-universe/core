@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Exception\SanityCheckException;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -28,13 +29,15 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
+        $planId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('planid');
+
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
             $userId,
             false
         );
 
-        $plan = $this->shipBuildplanRepository->find(request::indInt('planid'));
+        $plan = $this->shipBuildplanRepository->find($planId);
         if ($plan === null || $plan->getUserId() !== $userId) {
             throw new SanityCheckException('This buildplan belongs to someone else', null, self::VIEW_IDENTIFIER);
         }

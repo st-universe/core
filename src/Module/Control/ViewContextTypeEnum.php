@@ -13,4 +13,5 @@ enum ViewContextTypeEnum: int
     case TACHYON_SCAN_JUST_HAPPENED = 7;
     case FILTER_ACTIVE = 8;
     case NO_AJAX = 9;
+    case BUILDPLAN = 10;
 }
