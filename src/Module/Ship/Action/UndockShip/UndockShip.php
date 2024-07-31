@@ -18,9 +18,7 @@ final class UndockShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UNDOCK';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private CancelRepairInterface $cancelRepair)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private CancelRepairInterface $cancelRepair) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -65,7 +63,7 @@ final class UndockShip implements ActionControllerInterface
                 $epsSystem = $wrapper->getEpsSystemData();
                 if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
-                    continue;
+                    break;
                 }
                 if ($this->cancelRepair->cancelRepair($ship)) {
                     $msg[] = $ship->getName() . _(": Die Reparatur wurde abgebrochen");

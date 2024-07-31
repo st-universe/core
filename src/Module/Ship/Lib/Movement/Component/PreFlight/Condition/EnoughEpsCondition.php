@@ -13,12 +13,11 @@ use Stu\Module\Ship\Lib\Movement\Route\RouteModeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Component\Ship\ShipEnum;
 
 class EnoughEpsCondition implements PreFlightConditionInterface
 {
-    public function __construct(private ShipSystemManagerInterface $shipSystemManager)
-    {
-    }
+    public function __construct(private ShipSystemManagerInterface $shipSystemManager) {}
 
     #[Override]
     public function check(
@@ -65,6 +64,10 @@ class EnoughEpsCondition implements PreFlightConditionInterface
 
         if ($flightRoute->isTranswarpCoilNeeded()) {
             $result += $this->getEnergyUsageForActivation($ship, ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL);
+        }
+
+        if ($ship->getDockedTo() !== null) {
+            $result += ShipEnum::SYSTEM_ECOST_DOCK;
         }
 
         return $result;

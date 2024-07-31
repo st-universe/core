@@ -173,7 +173,7 @@ final class DockShip implements ActionControllerInterface
             $epsSystem = $fleetShipWrapper->getEpsSystemData();
             if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");
-                continue;
+                break;
             }
 
             if ($fleetShip->getCloakState()) {
