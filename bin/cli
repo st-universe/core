@@ -53,7 +53,7 @@ Init::run(
         $app->logo($logo);
 
         // user
-        $app->add(new UserCreateCommand($dic));
+        $app->add($dic->get(UserCreateCommand::class));
 
         // tick
         $app->add(new ColonyTickCommand($dic));
