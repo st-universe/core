@@ -26,9 +26,7 @@ final class DockShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DOCK';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private DockPrivilegeUtilityInterface $dockPrivilegeUtility, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private InteractionCheckerInterface $interactionChecker, private CancelRepairInterface $cancelRepair)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private DockPrivilegeUtilityInterface $dockPrivilegeUtility, private PrivateMessageSenderInterface $privateMessageSender, private ShipSystemManagerInterface $shipSystemManager, private InteractionCheckerInterface $interactionChecker, private CancelRepairInterface $cancelRepair) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -161,6 +159,14 @@ final class DockShip implements ActionControllerInterface
 
             $fleetShip = $fleetShipWrapper->get();
             if ($fleetShip->getDockedTo() !== null) {
+                continue;
+            }
+
+            if (!$fleetShip->hasEnoughCrew()) {
+                $msg[] = sprintf(
+                    _('%s: Nicht genügend Crew vorhanden'),
+                    $fleetShip->getName()
+                );
                 continue;
             }
 
