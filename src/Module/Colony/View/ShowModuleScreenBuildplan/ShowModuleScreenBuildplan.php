@@ -21,26 +21,32 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN_BUILDPLAN';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyLibFactoryInterface $colonyLibFactory, private ShipCrewCalculatorInterface $shipCrewCalculator, private ShipBuildplanRepositoryInterface $shipBuildplanRepository) {}
+    public function __construct(
+        private ColonyLoaderInterface $colonyLoader,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository
+    ) {
+    }
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $userId = $user->getId();
-
-        $planId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('planid');
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
-            $userId,
+            $user->getId(),
             false
         );
 
+        $planId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('planid');
+
         $plan = $this->shipBuildplanRepository->find($planId);
-        if ($plan === null || $plan->getUserId() !== $userId) {
+        if ($plan === null || $plan->getUser() !== $user) {
             throw new SanityCheckException('This buildplan belongs to someone else', null, self::VIEW_IDENTIFIER);
         }
+
         $rump = $plan->getRump();
 
         $moduleSelectors = [];
