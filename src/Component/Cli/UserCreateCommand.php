@@ -6,7 +6,6 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
 use InvalidArgumentException;
-use Psr\Container\ContainerInterface;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Player\Register\LocalPlayerCreator;
 use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePassword;
@@ -19,7 +18,8 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
 final class UserCreateCommand extends Command
 {
     public function __construct(
-        private ContainerInterface $dic
+        private readonly LocalPlayerCreator $playerCreator,
+        private readonly FactionRepositoryInterface $factionRepository,
     ) {
         parent::__construct(
             'user:create',
@@ -75,11 +75,11 @@ final class UserCreateCommand extends Command
         $io->info('passwort validated', true);
 
         /** @var FactionInterface $faction */
-        $faction = $this->dic->get(FactionRepositoryInterface::class)->find($factionId);
+        $faction = $this->factionRepository->find($factionId);
 
         $io->info('faction exists', true);
 
-        $player = $this->dic->get(LocalPlayerCreator::class)->createPlayer(
+        $player = $this->playerCreator->createPlayer(
             $username,
             $email,
             $faction,
