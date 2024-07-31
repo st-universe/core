@@ -29,9 +29,7 @@ final class UserList implements ViewControllerInterface
 
     private const int LIST_LIMIT = 25;
 
-    public function __construct(private UserListRequestInterface $userListRequest, private UserRepositoryInterface $userRepository, private Parser $parser)
-    {
-    }
+    public function __construct(private UserListRequestInterface $userListRequest, private UserRepositoryInterface $userRepository, private Parser $parser) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -80,8 +78,8 @@ final class UserList implements ViewControllerInterface
 
         $game->setTemplateVar('USER_LIST_NAVIGATION', $this->getUserListNavigation());
         $game->setTemplateVar('LIST', $user_list);
-        $game->setTemplateVar('SORT_ORDER', $sort_field);
-        $game->setTemplateVar('ORDER_BY', $sort_order);
+        $game->setTemplateVar('SORT_ORDER', $sort_order);
+        $game->setTemplateVar('ORDER_BY', $sort_field);
         $game->setTemplateVar('PAGINATION', $pagination);
         $game->setTemplateVar('SEARCH', $search !== false ? request::indString('search') : '');
     }
