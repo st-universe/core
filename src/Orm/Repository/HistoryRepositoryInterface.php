@@ -26,18 +26,16 @@ interface HistoryRepositoryInterface extends ObjectRepository
     public function getRecentWithoutPirate(): array;
 
     /**
-     * @param false|string $search
      *
      * @return array<HistoryInterface>
      */
-    public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array;
+    public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit): array;
 
     /**
-     * @param false|string $search
      *
      * @return array<HistoryInterface>
      */
-    public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit, $search): array;
+    public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit): array;
 
     public function getAmountByType(int $typeId): int;
 

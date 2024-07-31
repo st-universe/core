@@ -9,6 +9,7 @@ use request;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
+use JBBCode\Parser;
 
 final class HistoryProvider implements ViewComponentProviderInterface
 {
@@ -16,8 +17,13 @@ final class HistoryProvider implements ViewComponentProviderInterface
 
     private const int LIMIT = 50;
 
-    public function __construct(private HistoryRepositoryInterface $historyRepository)
+    private HistoryRepositoryInterface $historyRepository;
+    private Parser $bbcodeParser;
+
+    public function __construct(HistoryRepositoryInterface $historyRepository, Parser $bbcodeParser)
     {
+        $this->historyRepository = $historyRepository;
+        $this->bbcodeParser = $bbcodeParser;
     }
 
     #[Override]
@@ -29,7 +35,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
         if ($count === 0) {
             $count = self::LIMIT;
         }
-        $search = request::indString('hsearch');
+        $search = request::indString('hsearch') ?: '';
 
         if ($count < 1 || $count > self::MAX_LIMIT) {
             $count = self::MAX_LIMIT;
@@ -61,21 +67,22 @@ final class HistoryProvider implements ViewComponentProviderInterface
         );
         $game->setTemplateVar(
             'HISTORY_SEARCH',
-            $search ?: ''
+            $search
         );
 
-        if ($user->isShowPirateHistoryEntrys()) {
-            $game->setTemplateVar(
-                'HISTORY',
-                $this->historyRepository->getByTypeAndSearch($type, $count, $search)
-            );
-            return;
-        } else {
-            $game->setTemplateVar(
-                'HISTORY',
-                $this->historyRepository->getByTypeAndSearchWithoutPirate($type, $count, $search)
-            );
-            return;
-        }
+        $historyEntries = $user->isShowPirateHistoryEntrys()
+            ? $this->historyRepository->getByTypeAndSearch($type, $count)
+            : $this->historyRepository->getByTypeAndSearchWithoutPirate($type, $count);
+
+        $filteredEntries = array_filter($historyEntries, function ($entry) use ($search) {
+            $this->bbcodeParser->parse($entry->getText());
+            $plainText = $this->bbcodeParser->getAsText() ?: '';
+            return stripos($plainText, $search) !== false;
+        });
+
+        $game->setTemplateVar(
+            'HISTORY',
+            $filteredEntries
+        );
     }
 }

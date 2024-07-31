@@ -46,53 +46,44 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
 
 
     #[Override]
-    public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit, $search): array
+    public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit): array
     {
-        $searchCriteria = $search ? 'AND UPPER(h.text) like UPPER(:search)' : '';
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT h FROM %s h
                     WHERE h.type = :typeId
-                    %s
                     ORDER BY h.id desc',
-                    History::class,
-                    $searchCriteria
+                    History::class
                 )
             )->setParameters(
-                $search ? [
-                    'typeId' => $type->value,
-                    'search' => sprintf('%%%s%%', $search)
-                ] : ['typeId' => $type->value]
+                [
+                    'typeId' => $type->value
+                ]
             )
             ->setMaxResults($limit)
             ->getResult();
     }
 
     #[Override]
-    public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit, $search): array
+    public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit): array
     {
-        $searchCriteria = $search ? 'AND UPPER(h.text) like UPPER(:search)' : '';
 
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT h FROM %s h
                     WHERE h.type = :typeId
-                    %s
                     AND COALESCE(h.source_user_id, 0) != :pirateId 
                     AND COALESCE(h.target_user_id, 0) != :pirateId
                     ORDER BY h.id desc',
-                    History::class,
-                    $searchCriteria
+                    History::class
                 )
             )->setParameters(
-                $search ? [
+                [
                     'typeId' => $type->value,
-                    'pirateId' => UserEnum::USER_NPC_KAZON,
-                    'search' => sprintf('%%%s%%', $search)
-                ] : ['typeId' => $type->value, 'pirateId' => UserEnum::USER_NPC_KAZON]
+                    'pirateId' => UserEnum::USER_NPC_KAZON
+                ]
             )
             ->setMaxResults($limit)
             ->getResult();
