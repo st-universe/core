@@ -66,6 +66,7 @@ final class CreateModules implements ActionControllerInterface
             if ($count <= 0) {
                 continue;
             }
+            $isEnoughAvailable = false;
             $initialcount = $count;
             $module = $modules_av[$module_id]->getModule();
             $missingcounteps = 0;
@@ -75,13 +76,8 @@ final class CreateModules implements ActionControllerInterface
                 $missingcounteps = $initialcount - (int) floor($colony->getEps() / $module->getEcost());
                 $count = (int) floor($colony->getEps() / $module->getEcost());
             }
-            if ($count == 0) {
-                continue;
-            }
-
             $costs = $module->getCost();
 
-            $isEnoughAvailable = true;
             $missingcount = 0;
             foreach ($costs as $cost) {
                 $commodity = $cost->getCommodity();
@@ -92,38 +88,43 @@ final class CreateModules implements ActionControllerInterface
                 $availableAmount = ($stor !== null) ? $stor->getAmount() : 0;
 
                 if ($availableAmount < $cost->getAmount() * $initialcount) {
-                    if ($missingcount < $initialcount - (int) floor($availableAmount / $cost->getAmount())) {
-                        $missingcount = $initialcount - (int) floor($availableAmount / $cost->getAmount());
+                    $missing = $initialcount - (int) floor($availableAmount / $cost->getAmount());
+                    if ($missingcount < $missing) {
+                        $missingcount = $missing;
                     }
                     if ($count > $initialcount - $missingcount) {
                         $count = $initialcount - $missingcount;
                     }
-                    $isEnoughAvailable = false;
                 }
             }
-            foreach ($costs as $cost) {
-                $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
+            if ($count > 0) {
+                foreach ($costs as $cost) {
+                    $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
+                }
+                $colony->lowerEps($count * $module->getEcost());
+
+                $this->colonyRepository->save($colony);
+                if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $module_id, $func)) !== null) {
+                    $queue->setAmount($queue->getAmount() + $count);
+
+                    $this->moduleQueueRepository->save($queue);
+                    $moduleAdded = true;
+                } else {
+                    $queue = $this->moduleQueueRepository->prototype();
+                    $queue->setColony($colony);
+                    $queue->setBuildingFunction($func);
+                    $queue->setModule($module);
+                    $queue->setAmount($count);
+
+                    $this->moduleQueueRepository->save($queue);
+                    $moduleAdded = true;
+                }
             }
-            $colony->lowerEps($count * $module->getEcost());
-
-            $this->colonyRepository->save($colony);
-            if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $module_id, $func)) !== null) {
-                $queue->setAmount($queue->getAmount() + $count);
-
-                $this->moduleQueueRepository->save($queue);
-                $moduleAdded = true;
-            } else {
-                $queue = $this->moduleQueueRepository->prototype();
-                $queue->setColony($colony);
-                $queue->setBuildingFunction($func);
-                $queue->setModule($module);
-                $queue->setAmount($count);
-
-                $this->moduleQueueRepository->save($queue);
-                $moduleAdded = true;
+            if ($count == $initialcount) {
+                $isEnoughAvailable = true;
             }
 
-            if ($count < $initialcount) {
+            if (!$isEnoughAvailable) {
                 $missing = sprintf(_(' von %s'), $initialcount);
             } else {
                 $missing = '';
