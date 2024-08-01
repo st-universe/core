@@ -9,11 +9,9 @@ use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Player\Register\LocalPlayerCreator;
-use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -21,18 +19,23 @@ use Stu\StuTestCase;
 
 class UserCreateCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ContainerInterface */
-    private MockInterface $dic;
+    /** @var MockInterface&FactionRepositoryInterface */
+    private MockInterface $factionRepository;
+
+    /** @var MockInterface&LocalPlayerCreator */
+    private MockInterface $playerCreator;
 
     private UserCreateCommand $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->dic = $this->mock(ContainerInterface::class);
+        $this->factionRepository = $this->mock(FactionRepositoryInterface::class);
+        $this->playerCreator = $this->mock(LocalPlayerCreator::class);
 
         $this->subject = new UserCreateCommand(
-            $this->dic
+            $this->playerCreator,
+            $this->factionRepository
         );
     }
 
@@ -117,8 +120,6 @@ class UserCreateCommandTest extends StuTestCase
     {
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
-        $factionRepository = $this->mock(FactionRepositoryInterface::class);
-        $playerCreator = $this->mock(PlayerCreatorInterface::class);
         $faction = $this->mock(FactionInterface::class);
         $user = $this->mock(UserInterface::class);
 
@@ -159,21 +160,12 @@ class UserCreateCommandTest extends StuTestCase
         $interactor->shouldReceive('info')
             ->zeroOrMoreTimes();
 
-        $this->dic->shouldReceive('get')
-            ->with(FactionRepositoryInterface::class)
-            ->once()
-            ->andReturn($factionRepository);
-        $this->dic->shouldReceive('get')
-            ->with(LocalPlayerCreator::class)
-            ->once()
-            ->andReturn($playerCreator);
-
-        $factionRepository->shouldReceive('find')
+        $this->factionRepository->shouldReceive('find')
             ->with(FactionEnum::FACTION_KLINGON)
             ->once()
             ->andReturn($faction);
 
-        $playerCreator->shouldReceive('createPlayer')
+        $this->playerCreator->shouldReceive('createPlayer')
             ->with(
                 $userName,
                 $emailAddress,
