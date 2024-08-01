@@ -16,8 +16,10 @@ final class RenameBuildplan implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUILDPLAN_CHANGE_NAME';
 
-    public function __construct(private RenameBuildplanRequestInterface $renameBuildplanRequest, private ShipBuildplanRepositoryInterface $shipBuildplanRepository)
-    {
+    public function __construct(
+        private RenameBuildplanRequestInterface $renameBuildplanRequest,
+        private ShipBuildplanRepositoryInterface $shipBuildplanRepository
+    ) {
     }
 
     #[Override]

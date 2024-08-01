@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use Override;
-use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
@@ -36,13 +35,11 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         }
 
         if ($this->buildplan !== null) {
-            $module_id_list = array_map(
-                fn (BuildplanModuleInterface $buildplanModule): int => $buildplanModule->getModuleId(),
+
+            return array_key_exists(
+                $this->module->getId(),
                 $this->buildplan->getModulesByType($this->module->getType())
             );
-            if (in_array($this->module->getId(), $module_id_list)) {
-                return true;
-            }
         }
 
         return false;

@@ -213,14 +213,16 @@ final class CreateBuildplan implements ActionControllerInterface
         $this->loggerUtil->log('I');
 
 
-        foreach ($modules as $obj) {
-            $mod = $this->buildplanModuleRepository->prototype();
-            $mod->setModuleType($obj->getType());
-            $mod->setBuildplan($plan);
-            $mod->setModule($obj);
-            $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
+        foreach ($modules as $module) {
+            $buildplanModule = $this->buildplanModuleRepository->prototype();
+            $buildplanModule->setModuleType($module->getType());
+            $buildplanModule->setBuildplan($plan);
+            $buildplanModule->setModule($module);
+            $buildplanModule->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($module->getSpecials()));
 
-            $this->buildplanModuleRepository->save($mod);
+            $this->buildplanModuleRepository->save($buildplanModule);
+
+            $plan->getModules()->set($module->getId(), $buildplanModule);
         }
 
         $this->loggerUtil->log('J');
