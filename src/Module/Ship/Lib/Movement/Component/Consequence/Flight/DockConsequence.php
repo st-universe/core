@@ -28,7 +28,6 @@ class DockConsequence extends AbstractFlightConsequence
         $ship = $wrapper->get();
 
         if ($ship->getDockedTo() !== null) {
-            $ship->setDockedTo(null);
 
             $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
             $messages->add($message);

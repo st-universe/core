@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Component\Consequence\Flight;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Ship\Lib\Message\MessageInterface;
@@ -87,7 +88,20 @@ class DockConsequenceTest extends StuTestCase
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
+        $epssystem = $this->mock(EpsSystemData::class);
 
+        $epssystem->shouldReceive('getEps')
+            ->andReturn(100);
+
+        $this->wrapper->shouldReceive('getEpsSystemData')
+            ->andReturn($epssystem);
+        $epssystem->shouldReceive('lowerEps')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+        $epssystem->shouldReceive('update')
+            ->withNoArgs()
+            ->once();
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
@@ -131,11 +145,25 @@ class DockConsequenceTest extends StuTestCase
             $messages
         );
     }
+
     public function testTriggerExpectUndockingWhenShipDockedAndTractored(): void
     {
         $messages = $this->mock(MessageCollectionInterface::class);
         $message = $this->mock(MessageInterface::class);
+        $epssystem = $this->mock(EpsSystemData::class);
 
+        $epssystem->shouldReceive('getEps')
+            ->andReturn(100);
+
+        $this->wrapper->shouldReceive('getEpsSystemData')
+            ->andReturn($epssystem);
+        $epssystem->shouldReceive('lowerEps')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+        $epssystem->shouldReceive('update')
+            ->withNoArgs()
+            ->once();
         $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()

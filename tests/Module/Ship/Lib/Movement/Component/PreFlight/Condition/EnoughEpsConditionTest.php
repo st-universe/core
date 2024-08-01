@@ -76,6 +76,8 @@ class EnoughEpsConditionTest extends StuTestCase
     ): void {
         $epsSystemData = $this->mock(EpsSystemData::class);
 
+        $this->ship->shouldReceive('getDockedTo')
+            ->andReturn(null);
         $this->ship->shouldReceive('hasShipSystem')
             ->with($expectedSystemId)
             ->andReturn(true);
@@ -133,6 +135,8 @@ class EnoughEpsConditionTest extends StuTestCase
             ->with($expectedSystemId)
             ->andReturn(false);
 
+        $this->ship->shouldReceive('getDockedTo')
+            ->andReturn(null);
         $this->flightRoute->shouldReceive('isImpulseDriveNeeded')
             ->withNoArgs()
             ->andReturn($isImpulsNeeded);
@@ -175,6 +179,8 @@ class EnoughEpsConditionTest extends StuTestCase
     ): void {
         $epsSystem = $this->mock(EpsSystemData::class);
 
+        $this->ship->shouldReceive('getDockedTo')
+            ->andReturn(null);
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->andReturn($epsSystem);
@@ -249,6 +255,8 @@ class EnoughEpsConditionTest extends StuTestCase
     {
         $epsSystemData = $this->mock(EpsSystemData::class);
 
+        $this->ship->shouldReceive('getDockedTo')
+            ->andReturn(null);
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
             ->andReturn(true);
@@ -301,6 +309,8 @@ class EnoughEpsConditionTest extends StuTestCase
     {
         $epsSystemData = $this->mock(EpsSystemData::class);
 
+        $this->ship->shouldReceive('getDockedTo')
+            ->andReturn(null);
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)
             ->andReturn(true);
