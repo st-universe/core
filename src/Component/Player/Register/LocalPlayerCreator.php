@@ -11,7 +11,7 @@ use Stu\Orm\Entity\UserInterface;
 /**
  * Creates players without any registration/validation
  */
-final class LocalPlayerCreator extends PlayerCreator
+class LocalPlayerCreator extends PlayerCreator
 {
     #[Override]
     public function createPlayer(
