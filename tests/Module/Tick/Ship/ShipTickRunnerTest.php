@@ -78,7 +78,7 @@ class ShipTickRunnerTest extends StuTestCase
             ->times(5);
 
         $this->shipTickManager->shouldReceive('work')
-            ->withNoArgs()
+            ->with(true)
             ->times(5)
             ->andThrow($error);
 
@@ -102,15 +102,9 @@ class ShipTickRunnerTest extends StuTestCase
         $this->entityManager->shouldReceive('beginTransaction')
             ->withNoArgs()
             ->once();
-        $this->entityManager->shouldReceive('flush')
-            ->withNoArgs()
-            ->once();
-        $this->entityManager->shouldReceive('commit')
-            ->withNoArgs()
-            ->once();
 
         $this->shipTickManager->shouldReceive('work')
-            ->withNoArgs()
+            ->with(true)
             ->once();
 
         $this->subject->run(1, 1);

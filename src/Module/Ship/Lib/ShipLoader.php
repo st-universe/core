@@ -22,8 +22,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipLoader implements ShipLoaderInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository, private SemaphoreUtilInterface $semaphoreUtil, private GameControllerInterface $game, private ShipWrapperFactoryInterface $shipWrapperFactory, private LockManagerInterface $lockManager)
-    {
+    public function __construct(
+        private ShipRepositoryInterface $shipRepository,
+        private SemaphoreUtilInterface $semaphoreUtil,
+        private GameControllerInterface $game,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private LockManagerInterface $lockManager
+    ) {
     }
 
     #[Override]

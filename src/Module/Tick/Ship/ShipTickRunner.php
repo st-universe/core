@@ -88,10 +88,7 @@ final class ShipTickRunner implements TickRunnerInterface
         try {
             $this->entityManager->beginTransaction();
 
-            $this->shipTickManager->work();
-
-            $this->entityManager->flush();
-            $this->entityManager->commit();
+            $this->shipTickManager->work(true);
 
             return null;
         } catch (Throwable $e) {
