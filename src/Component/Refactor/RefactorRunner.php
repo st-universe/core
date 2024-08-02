@@ -24,8 +24,7 @@ final class RefactorRunner
         private LocationRepositoryInterface $locationRepository,
         private MapRepositoryInterface $mapRepository,
         private StarSystemMapRepositoryInterface $starSystemMapRepository,
-    ) {
-    }
+    ) {}
 
     public function refactor(): void
     {
@@ -40,7 +39,7 @@ final class RefactorRunner
                 continue;
             }
 
-            $locations = $fieldIds->map(fn (int $id) => $this->locationRepository->find($id));
+            $locations = $fieldIds->map(fn(int $id) => $this->locationRepository->find($id));
 
             $lost = false;
             $isMap = false;
@@ -100,14 +99,14 @@ final class RefactorRunner
 
     private function obtainMeasurementFieldsForSystem(StarSystemInterface $system, AstronomicalEntryInterface $entry): void
     {
-        $idArray = $this->starSystemMapRepository->getRandomSystemMapIdsForAstroMeasurement($system->getId());
+        $idArray = $this->starSystemMapRepository->getRandomSystemMapIdsForAstroMeasurement($system->getId(), 0);
 
         $entry->setFieldIds(serialize($idArray));
     }
 
     private function obtainMeasurementFieldsForRegion(MapRegionInterface $mapRegion, AstronomicalEntryInterface $entry): void
     {
-        $mapIds = $this->mapRepository->getRandomMapIdsForAstroMeasurement($mapRegion->getId(), 25);
+        $mapIds = $this->mapRepository->getRandomMapIdsForAstroMeasurement($mapRegion->getId(), 25, 0);
 
         $entry->setFieldIds(serialize($mapIds));
     }
