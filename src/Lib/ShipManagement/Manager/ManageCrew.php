@@ -8,24 +8,32 @@ use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 class ManageCrew implements ManagerInterface
 {
-    public function __construct(private ShipSystemManagerInterface $shipSystemManager, private TroopTransferUtilityInterface $troopTransferUtility, private ShipShutdownInterface $shipShutdown, private ShipLeaverInterface $shipLeaver)
-    {
-    }
+    public function __construct(
+        private ShipSystemManagerInterface $shipSystemManager,
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private ShipShutdownInterface $shipShutdown,
+        private ShipLeaverInterface $shipLeaver,
+        private ActivatorDeactivatorHelperInterface $helper
+    ) {}
 
     #[Override]
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];
+        $informations = new InformationWrapper();
 
         $newCrewCountArray = $values['crew'] ?? null;
         if ($newCrewCountArray === null) {
@@ -44,37 +52,43 @@ class ManageCrew implements ManagerInterface
         ) {
             $newCrewCount = (int)$newCrewCountArray[$ship->getId()];
             if ($ship->getCrewCount() !== $newCrewCount) {
-                $this->setNewCrew($newCrewCount, $wrapper, $buildplan, $managerProvider, $msg);
+                $this->setNewCrew($newCrewCount, $wrapper, $buildplan, $managerProvider, $msg, $informations);
             }
         }
 
-        return $msg;
+        return array_merge($msg, $informations->getInformations());
     }
 
-    /** @param array<string> $msg */
+    /**
+     * @param array<string> $msg
+     */
     private function setNewCrew(
         int $newCrewCount,
         ShipWrapperInterface $wrapper,
         ShipBuildplanInterface $buildplan,
         ManagerProviderInterface $managerProvider,
-        array &$msg
+        array &$msg,
+        InformationWrapper $informations
     ): void {
         $ship = $wrapper->get();
 
         if ($newCrewCount > $ship->getCrewCount()) {
-            $this->increaseCrew($newCrewCount, $wrapper, $buildplan, $managerProvider, $msg);
+            $this->increaseCrew($newCrewCount, $wrapper, $buildplan, $managerProvider, $msg, $informations);
         } else {
             $this->descreaseCrew($newCrewCount, $wrapper, $managerProvider, $msg);
         }
     }
 
-    /** @param array<string> $msg */
+    /**
+     * @param array<string> $msg
+     */
     private function increaseCrew(
         int $newCrewCount,
         ShipWrapperInterface $wrapper,
         ShipBuildplanInterface $buildplan,
         ManagerProviderInterface $managerProvider,
-        array &$msg
+        array &$msg,
+        InformationWrapper $informations
     ): void {
         $ship = $wrapper->get();
 
@@ -91,6 +105,12 @@ class ManageCrew implements ManagerInterface
                 $managerProvider->getFreeCrewAmount()
             );
 
+            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
+                && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))) {
+                $additionalCrew  = 0;
+            }
+
             $managerProvider->addShipCrew($ship, $additionalCrew);
             $msg[] = sprintf(
                 _('%s: %d Crewman wurde(n) hochgebeamt'),
@@ -104,18 +124,18 @@ class ManageCrew implements ManagerInterface
         }
     }
 
-    /** @param array<string> $msg */
+    /**
+     * @param array<string> $msg
+     */
     private function descreaseCrew(
         int $newCrewCount,
         ShipWrapperInterface $wrapper,
         ManagerProviderInterface $managerProvider,
         array &$msg
     ): void {
-
         $ship = $wrapper->get();
         $user = $managerProvider->getUser();
 
-        //check if there is enough space for crew on colony
         if ($managerProvider->getFreeCrewStorage() == 0) {
             $msg[] = sprintf(
                 _('%s: Kein Platz für die Crew auf der %s'),

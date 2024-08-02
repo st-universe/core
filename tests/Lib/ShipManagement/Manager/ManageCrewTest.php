@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Stu\Lib\ShipManagement\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery;
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Ship\Lib\Auxiliary\ShipShutdownInterface;
 use Stu\Module\Ship\Lib\Crew\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
@@ -24,42 +26,47 @@ use Stu\StuTestCase;
 
 class ManageCrewTest extends StuTestCase
 {
-    /** @var MockInterface&ShipSystemManagerInterface */
+    /** @var MockInterface|ShipSystemManagerInterface */
     private MockInterface $shipSystemManager;
 
-    /** @var MockInterface&TroopTransferUtilityInterface */
+    /** @var MockInterface|TroopTransferUtilityInterface */
     private MockInterface $troopTransferUtility;
 
-    /** @var MockInterface&ShipShutdownInterface */
+    /** @var MockInterface|ShipShutdownInterface */
     private MockInterface $shipShutdown;
 
-    /** @var MockInterface&ShipLeaverInterface */
+    /** @var MockInterface|ShipLeaverInterface */
     private MockInterface $shipLeaver;
 
-    /** @var MockInterface&ShipWrapperInterface */
+    /** @var MockInterface|ActivatorDeactivatorHelperInterface */
+    private MockInterface $helper;
+
+    /** @var MockInterface|ShipWrapperInterface */
     private MockInterface $wrapper;
 
-    /** @var MockInterface&ShipBuildplanInterface */
+    /** @var MockInterface|ShipBuildplanInterface */
     private MockInterface $buildplan;
 
-    /** @var MockInterface&ShipInterface */
+    /** @var MockInterface|ShipInterface */
     private MockInterface $ship;
 
-    /** @var MockInterface&ManagerProviderInterface */
+    /** @var MockInterface|ManagerProviderInterface */
     private MockInterface $managerProvider;
 
     private int $shipId = 555;
-    private UserInterface $user;
+
+    /** @var MockInterface|UserInterface */
+    private MockInterface $user;
 
     private ManageCrew $subject;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->shipShutdown = $this->mock(ShipShutdownInterface::class);
         $this->shipLeaver = $this->mock(ShipLeaverInterface::class);
+        $this->helper = $this->mock(ActivatorDeactivatorHelperInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
@@ -71,8 +78,14 @@ class ManageCrewTest extends StuTestCase
             $this->shipSystemManager,
             $this->troopTransferUtility,
             $this->shipShutdown,
-            $this->shipLeaver
+            $this->shipLeaver,
+            $this->helper
         );
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
     }
 
     public function testManageExpectErrorWhenValuesNotPresent(): void
@@ -314,6 +327,21 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('name');
         $this->ship->shouldReceive('hasShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->once()
+            ->andReturn(true);
+
+        $shipSystemMock = $this->mock(\Stu\Orm\Entity\ShipSystemInterface::class);
+        $shipSystemMock->shouldReceive('getMode')
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->once()
+            ->andReturn($shipSystemMock);
+
+        $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
             ->once()
             ->andReturn(true);
@@ -322,6 +350,11 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(42);
 
+        $this->helper->shouldReceive('activate')
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, \Mockery::type(\Stu\Lib\Information\InformationWrapper::class))
+            ->once()
+            ->andReturn(true);
+
         $this->shipSystemManager->shouldReceive('activate')
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
 
@@ -329,7 +362,6 @@ class ManageCrewTest extends StuTestCase
 
         $this->assertEquals(['name: 10 Crewman wurde(n) hochgebeamt'], $msg);
     }
-
     public function testManageExpectMannedShip(): void
     {
         $values = ['crew' => ['555' => '42']];
@@ -372,6 +404,21 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn('name');
         $this->ship->shouldReceive('hasShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->once()
+            ->andReturn(true);
+
+        $shipSystemMock = $this->mock(\Stu\Orm\Entity\ShipSystemInterface::class);
+        $shipSystemMock->shouldReceive('getMode')
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            ->once()
+            ->andReturn($shipSystemMock);
+
+        $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
             ->once()
             ->andReturn(true);
@@ -379,6 +426,11 @@ class ManageCrewTest extends StuTestCase
         $this->buildplan->shouldReceive('getCrew')
             ->withNoArgs()
             ->andReturn(42);
+
+        $this->helper->shouldReceive('activate')
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, \Mockery::type(\Stu\Lib\Information\InformationWrapper::class))
+            ->once()
+            ->andReturn(true);
 
         $this->shipSystemManager->shouldReceive('activate')
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
@@ -625,7 +677,6 @@ class ManageCrewTest extends StuTestCase
         $this->shipShutdown->shouldReceive('shutdown')
             ->with($this->wrapper)
             ->once();
-
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
