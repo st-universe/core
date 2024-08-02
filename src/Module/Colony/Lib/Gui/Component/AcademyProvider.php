@@ -11,9 +11,7 @@ use Stu\Orm\Entity\ColonyInterface;
 
 final class AcademyProvider implements GuiComponentProviderInterface
 {
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever)
-    {
-    }
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
     /** @param ColonyInterface&PlanetFieldHostInterface $host */
     #[Override]
@@ -31,9 +29,7 @@ final class AcademyProvider implements GuiComponentProviderInterface
         if ($trainableCrew > $crewRemainingCount) {
             $trainableCrew = $crewRemainingCount;
         }
-        if ($trainableCrew < 0) {
-            $trainableCrew = 0;
-        }
+
         if ($trainableCrew > $host->getWorkless()) {
             $trainableCrew = $host->getWorkless();
         }
@@ -42,8 +38,22 @@ final class AcademyProvider implements GuiComponentProviderInterface
             $host
         )->getFreeAssignmentCount();
 
+        $localcrewlimit = $this->colonyLibFactory->createColonyPopulationCalculator(
+            $host
+        )->getCrewLimit();
+
+        $crewinlocalpool = $host->getCrewAssignmentAmount();
+
+        if ($localcrewlimit - $crewinlocalpool < $trainableCrew) {
+            $trainableCrew = $localcrewlimit - $crewinlocalpool;
+        }
+
         if ($trainableCrew > $freeAssignmentCount) {
             $trainableCrew = $freeAssignmentCount;
+        }
+
+        if ($trainableCrew < 0) {
+            $trainableCrew = 0;
         }
 
         $game->setTemplateVar('TRAINABLE_CREW_COUNT_PER_TICK', $trainableCrew);
