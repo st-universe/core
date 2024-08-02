@@ -10,6 +10,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
@@ -17,6 +18,7 @@ use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class ManageReactorTest extends StuTestCase
@@ -36,6 +38,9 @@ class ManageReactorTest extends StuTestCase
     /** @var MockInterface&ManagerProviderInterface */
     private MockInterface $managerProvider;
 
+    /** @var MockInterface&PlayerRelationDeterminatorInterface */
+    private MockInterface $playerRelationDeterminator;
+
     private int $shipId = 555;
 
     private ManageReactor $subject;
@@ -48,10 +53,12 @@ class ManageReactorTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
+        $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
 
         $this->subject = new ManageReactor(
             $this->reactorUtil,
-            $this->commodityCache
+            $this->commodityCache,
+            $this->playerRelationDeterminator
         );
     }
 
@@ -164,6 +171,20 @@ class ManageReactorTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('name');
 
+        $userMock = $this->mock(UserInterface::class);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(true);
+
         $this->managerProvider->shouldReceive('getStorage')
             ->withNoArgs()
             ->andReturn($storage);
@@ -202,6 +223,7 @@ class ManageReactorTest extends StuTestCase
         ], $msg);
     }
 
+
     public function testManageExpectLoadingWhenValueIsNumeric(): void
     {
         $reactorWrapper = $this->mock(ReactorWrapperInterface::class);
@@ -223,6 +245,20 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
+
+        $userMock = $this->mock(UserInterface::class);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getStorage')
             ->withNoArgs()
@@ -261,6 +297,20 @@ class ManageReactorTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
+
+        $userMock = $this->mock(UserInterface::class);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getStorage')
             ->withNoArgs()
