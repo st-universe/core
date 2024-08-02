@@ -260,6 +260,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($amount > 0
             && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
             && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))) {
+            $amount = 0;
             throw new SystemNotActivatableException();
         }
 
@@ -304,6 +305,15 @@ class TroopTransferStrategy implements TransferStrategyInterface
         );
 
         $assignments = $ship->getCrewAssignments()->getValues();
+
+        if (
+            $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            && ($target->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+                && !$this->helper->activate($this->shipWrapperFactory->wrapShip($target), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))
+        ) {
+            $amount = 0;
+            throw new SystemNotActivatableException();
+        }
 
         for ($i = 0; $i < $amount; $i++) {
             $this->transferUtility->assignCrew($assignments[$i], $target);
@@ -351,6 +361,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             && ($ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
                 && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))
         ) {
+            $amount = 0;
             throw new SystemNotActivatableException();
         }
 
