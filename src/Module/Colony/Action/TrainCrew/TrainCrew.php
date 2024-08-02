@@ -21,9 +21,7 @@ final class TrainCrew implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRAIN_CREW';
 
-    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ColonyLoaderInterface $colonyLoader, private CrewTrainingRepositoryInterface $crewTrainingRepository, private ColonyRepositoryInterface $colonyRepository, private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever)
-    {
-    }
+    public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ColonyLoaderInterface $colonyLoader, private CrewTrainingRepositoryInterface $crewTrainingRepository, private ColonyRepositoryInterface $colonyRepository, private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -38,7 +36,19 @@ final class TrainCrew implements ActionControllerInterface
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
+
+        $localcrewlimit = $this->colonyLibFactory->createColonyPopulationCalculator(
+            $colony
+        )->getCrewLimit();
+
+        $crewinlocalpool = $colony->getCrewAssignmentAmount();
+
         $trainableCrewPerTick = $this->crewCountRetriever->getTrainableCount($user) - $this->crewCountRetriever->getInTrainingCount($user);
+
+        if ($localcrewlimit - $crewinlocalpool < $trainableCrewPerTick) {
+            $trainableCrewPerTick = $localcrewlimit - $crewinlocalpool;
+        }
+
         if ($trainableCrewPerTick > $crewRemainingCount) {
             $trainableCrewPerTick = $crewRemainingCount;
         }
