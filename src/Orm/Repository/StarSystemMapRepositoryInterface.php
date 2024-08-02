@@ -59,7 +59,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     /**
      * @return array<int>
      */
-    public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId): array;
+    public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId, int $location): array;
 
     public function prototype(): StarSystemMapInterface;
 

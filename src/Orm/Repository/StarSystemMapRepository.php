@@ -225,7 +225,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId): array
+    public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId, int $location): array
     {
         $result = [];
 
@@ -237,6 +237,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 'SELECT sm.id as id
                 FROM stu_sys_map sm
                 WHERE sm.systems_id = :systemId
+                AND sm.id != :location
                 AND EXISTS (SELECT c.id
                             FROM stu_colonies c
                             WHERE c.starsystem_map_id = sm.id
@@ -247,6 +248,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             )
             ->setParameters([
                 'systemId' => $starSystemId,
+                'location'  => $location,
                 'noOne' => UserEnum::USER_NOONE
             ])
             ->getResult();
@@ -305,7 +307,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             $result = array_merge($result, $otherFields);
         }
 
-        return array_map(fn (array $data) => $data['id'], $result);
+        return array_map(fn(array $data) => $data['id'], $result);
     }
 
     #[Override]

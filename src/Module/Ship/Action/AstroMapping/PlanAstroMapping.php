@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\AstronomicalEntryInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
@@ -25,9 +26,7 @@ final class PlanAstroMapping implements ActionControllerInterface
 
     private const int REGION_MAP_PERCENTAGE = 25;
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private StarSystemMapRepositoryInterface $starSystemMapRepository, private MapRepositoryInterface $mapRepository, private AstroEntryRepositoryInterface $astroEntryRepository)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private StarSystemMapRepositoryInterface $starSystemMapRepository, private MapRepositoryInterface $mapRepository, private AstroEntryRepositoryInterface $astroEntryRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -40,6 +39,8 @@ final class PlanAstroMapping implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
+
+        $location = $ship->getLocation();
 
         $system = $ship->getSystem();
         $mapRegion = $ship->getMapRegion();
@@ -64,7 +65,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         $astroEntry = $this->astroEntryRepository->prototype();
         $astroEntry->setUser($game->getUser());
         $astroEntry->setState(AstronomicalMappingEnum::PLANNED);
-        $this->obtainMeasurementFields($system, $mapRegion, $astroEntry);
+        $this->obtainMeasurementFields($system, $mapRegion, $astroEntry, $location);
 
         $this->astroEntryRepository->save($astroEntry);
 
@@ -76,28 +77,29 @@ final class PlanAstroMapping implements ActionControllerInterface
     private function obtainMeasurementFields(
         ?StarSystemInterface $system,
         ?MapRegionInterface $mapRegion,
-        AstronomicalEntryInterface $entry
+        AstronomicalEntryInterface $entry,
+        Locationinterface $location
     ): void {
         if ($system !== null) {
             $entry->setSystem($system);
-            $this->obtainMeasurementFieldsForSystem($system, $entry);
+            $this->obtainMeasurementFieldsForSystem($system, $entry, $location);
         }
         if ($mapRegion !== null) {
             $entry->setRegion($mapRegion);
-            $this->obtainMeasurementFieldsForRegion($mapRegion, $entry);
+            $this->obtainMeasurementFieldsForRegion($mapRegion, $entry, $location);
         }
     }
 
-    private function obtainMeasurementFieldsForSystem(StarSystemInterface $system, AstronomicalEntryInterface $entry): void
+    private function obtainMeasurementFieldsForSystem(StarSystemInterface $system, AstronomicalEntryInterface $entry, LocationInterface $location): void
     {
-        $idArray = $this->starSystemMapRepository->getRandomSystemMapIdsForAstroMeasurement($system->getId());
+        $idArray = $this->starSystemMapRepository->getRandomSystemMapIdsForAstroMeasurement($system->getId(), $location->getFieldId());
 
         $entry->setFieldIds(serialize($idArray));
     }
 
-    private function obtainMeasurementFieldsForRegion(MapRegionInterface $mapRegion, AstronomicalEntryInterface $entry): void
+    private function obtainMeasurementFieldsForRegion(MapRegionInterface $mapRegion, AstronomicalEntryInterface $entry, LocationInterface $location): void
     {
-        $mapIds = $this->mapRepository->getRandomMapIdsForAstroMeasurement($mapRegion->getId(), self::REGION_MAP_PERCENTAGE);
+        $mapIds = $this->mapRepository->getRandomMapIdsForAstroMeasurement($mapRegion->getId(), self::REGION_MAP_PERCENTAGE, $location->getFieldId());
 
         $entry->setFieldIds(serialize($mapIds));
     }

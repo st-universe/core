@@ -328,7 +328,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[Override]
-    public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage): array
+    public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage, int $location): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
@@ -342,18 +342,20 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 ON l.field_id = mf.id
                 WHERE m.region_id = :regionId
                 AND mf.passable IS true
+                AND m.id != :loc
                 ORDER BY RANDOM()',
                 $rsm
             )
             ->setParameters([
                 'regionId' => $regionId,
+                'loc' => $location,
             ])
             ->getResult();
 
         $amount = (int)ceil(count($mapIdResultSet) * $maxPercentage / 100);
         $subset = array_slice($mapIdResultSet, 0, $amount);
 
-        return array_map(fn (array $data) => $data['id'], $subset);
+        return array_map(fn(array $data) => $data['id'], $subset);
     }
 
     #[Override]
