@@ -2002,16 +2002,6 @@ parameters:
 			path: src/Orm/Entity/MapFieldType.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getResearchId\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:hasSpecial\\(\\) has parameter \\$special_id with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:hasSpecial\\(\\) has parameter \\$special_id with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleInterface.php

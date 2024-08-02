@@ -29,9 +29,7 @@ class ModuleSelector implements ModuleSelectorInterface
     private ?array $moduleSelectorEntries = null;
     private ?ShipRumpModuleLevelInterface $shipRumpModuleLevel = null;
 
-    public function __construct(private ModuleRepositoryInterface $moduleRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private TwigPageInterface $twigPage, private ShipModuleTypeEnum $moduleType, private ColonyInterface|ShipInterface $host, private ShipRumpInterface $rump, private UserInterface $user, private ?ModuleSelectorAddonInterface $addon, private ?ShipBuildplanInterface $buildplan = null)
-    {
-    }
+    public function __construct(private ModuleRepositoryInterface $moduleRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private TwigPageInterface $twigPage, private ShipModuleTypeEnum $moduleType, private ColonyInterface|ShipInterface $host, private ShipRumpInterface $rump, private UserInterface $user, private ?ModuleSelectorAddonInterface $addon, private ?ShipBuildplanInterface $buildplan = null) {}
 
     #[Override]
     public function isMandatory(): bool
@@ -147,6 +145,7 @@ class ModuleSelector implements ModuleSelectorInterface
                     $this->getShipRumpModuleLevel(),
                     $this->getHost(),
                     $this->user,
+                    $this->moduleRepository,
                     $this->getBuildplan()
                 );
             }
@@ -171,7 +170,7 @@ class ModuleSelector implements ModuleSelectorInterface
     {
         return array_filter(
             $this->getAvailableModules(),
-            fn (ModuleSelectorEntryInterface $entry): bool => $entry->isChosen()
+            fn(ModuleSelectorEntryInterface $entry): bool => $entry->isChosen()
         );
     }
 
