@@ -7,6 +7,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 use Override;
 use RuntimeException;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ReactorWrapperInterface;
@@ -15,9 +16,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 class ManageReactor implements ManagerInterface
 {
-    public function __construct(private ReactorUtilInterface $reactorUtil, private CommodityCacheInterface $commodityCache)
-    {
-    }
+    public function __construct(private ReactorUtilInterface $reactorUtil, private CommodityCacheInterface $commodityCache, private PlayerRelationDeterminatorInterface $playerRelationDeterminator) {}
 
     #[Override]
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
@@ -42,20 +41,29 @@ class ManageReactor implements ManagerInterface
             return [];
         }
 
-        $storage = $managerProvider->getStorage();
-
-        if ($this->reactorUtil->storageContainsNeededCommodities($storage, $reactor)) {
-            $load = $values[$ship->getId()] == 'm' ? PHP_INT_MAX : (int)$values[$ship->getId()];
-            $loadMessage = $this->reactorUtil->loadReactor($ship, $load, $managerProvider, $reactor);
-
-            if ($loadMessage !== null) {
-                return [$loadMessage];
-            }
+        if (!$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser()) && $ship->getShieldState()) {
+            $msg[] = sprintf(
+                _('%s: Warpkern konnte wegen aktivierter Schilde nicht aufgeladen werden.'),
+                $ship->getName()
+            );
+            return $msg;
         } else {
-            return $this->createMissingCommoditiesMessage($ship, $reactor);
-        }
 
-        return [];
+            $storage = $managerProvider->getStorage();
+
+            if ($this->reactorUtil->storageContainsNeededCommodities($storage, $reactor)) {
+                $load = $values[$ship->getId()] == 'm' ? PHP_INT_MAX : (int)$values[$ship->getId()];
+                $loadMessage = $this->reactorUtil->loadReactor($ship, $load, $managerProvider, $reactor);
+
+                if ($loadMessage !== null) {
+                    return [$loadMessage];
+                }
+            } else {
+                return $this->createMissingCommoditiesMessage($ship, $reactor);
+            }
+
+            return [];
+        }
     }
 
     /**

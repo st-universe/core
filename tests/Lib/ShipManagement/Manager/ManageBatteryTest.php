@@ -8,11 +8,13 @@ use Mockery\MockInterface;
 use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class ManageBatteryTest extends StuTestCase
@@ -32,6 +34,10 @@ class ManageBatteryTest extends StuTestCase
     /** @var MockInterface&ManagerProviderInterface */
     private MockInterface $managerProvider;
 
+    /** @var MockInterface&PlayerRelationDeterminatorInterface */
+    private MockInterface $playerRelationDeterminator;
+
+
     private int $shipId = 555;
     private int $shipUserId = 777;
     private int $managerProviderUserId = 123;
@@ -46,8 +52,9 @@ class ManageBatteryTest extends StuTestCase
         $this->epsSystemData = $this->mock(EpsSystemData::class);
         $this->ship = $this->mock(ShipInterface::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
+        $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
 
-        $this->subject = new ManageBattery($this->privateMessageSender);
+        $this->subject = new ManageBattery($this->privateMessageSender, $this->playerRelationDeterminator);
     }
 
     public function testManageExpectErrorWhenValuesNotPresent(): void
@@ -79,6 +86,17 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($this->ship->getUser(), $this->managerProvider->getUser())
+            ->andReturn(true);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -102,6 +120,18 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($this->ship->getUser(), $this->managerProvider->getUser())
+            ->andReturn(true);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -125,6 +155,18 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($this->ship->getUser(), $this->managerProvider->getUser())
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
@@ -135,7 +177,6 @@ class ManageBatteryTest extends StuTestCase
 
         $this->assertEmpty($msg);
     }
-
     public function testManageExpectNothingWhenEpsAlreadyFull(): void
     {
         $values = ['batt' => ['555' => '42']];
@@ -153,6 +194,18 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->shipId);
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($this->mock(UserInterface::class));
+
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($this->ship->getUser(), $this->managerProvider->getUser())
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
@@ -172,60 +225,88 @@ class ManageBatteryTest extends StuTestCase
 
         $this->assertEmpty($msg);
     }
-
     public function testManageExpectLoadToMaxWhenValueIsLetterM(): void
     {
         $values = ['batt' => ['555' => 'm']];
+
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
             ->andReturn($this->epsSystemData);
 
+
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
+
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
-        $this->ship->shouldReceive('getUser->getId')
+
+        $userMock = $this->mock(UserInterface::class);
+        $userMock->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($this->shipUserId);
+
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn($this->managerProviderUserId);
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
             ->andReturn(100);
+
         $this->managerProvider->shouldReceive('lowerEps')
             ->with(37)
             ->once();
-        $this->managerProvider->shouldReceive('getUser->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->managerProviderUserId);
+
         $this->managerProvider->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('providerName');
+
         $this->managerProvider->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
             ->andReturn('SECTOR');
 
+
         $this->epsSystemData->shouldReceive('getBattery')
             ->withNoArgs()
             ->andReturn(5);
+
         $this->epsSystemData->shouldReceive('getMaxBattery')
             ->withNoArgs()
             ->andReturn(42);
+
         $this->epsSystemData->shouldReceive('setBattery')
             ->with(42)
             ->once()
             ->andReturn($this->epsSystemData);
+
         $this->epsSystemData->shouldReceive('update')
             ->withNoArgs()
             ->once();
@@ -244,7 +325,6 @@ class ManageBatteryTest extends StuTestCase
 
         $this->assertEquals(['name: Batterie um 37 Einheiten aufgeladen'], $msg);
     }
-
     public function testManageExpectLoadingWhenValueIsNumeric(): void
     {
         $values = ['batt' => ['555' => '22']];
@@ -253,6 +333,7 @@ class ManageBatteryTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
@@ -261,28 +342,50 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
+
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
-        $this->ship->shouldReceive('getUser->getId')
+
+        $userMock = $this->mock(UserInterface::class);
+        $userMock->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($this->shipUserId);
+
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn($this->managerProviderUserId);
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
             ->andReturn(100);
+
         $this->managerProvider->shouldReceive('lowerEps')
             ->with(22)
             ->once();
-        $this->managerProvider->shouldReceive('getUser->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->managerProviderUserId);
+
         $this->managerProvider->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('providerName');
+
         $this->managerProvider->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
@@ -291,13 +394,16 @@ class ManageBatteryTest extends StuTestCase
         $this->epsSystemData->shouldReceive('getBattery')
             ->withNoArgs()
             ->andReturn(5);
+
         $this->epsSystemData->shouldReceive('getMaxBattery')
             ->withNoArgs()
             ->andReturn(42);
+
         $this->epsSystemData->shouldReceive('setBattery')
             ->with(27)
             ->once()
             ->andReturn($this->epsSystemData);
+
         $this->epsSystemData->shouldReceive('update')
             ->withNoArgs()
             ->once();
@@ -316,7 +422,6 @@ class ManageBatteryTest extends StuTestCase
 
         $this->assertEquals(['name: Batterie um 22 Einheiten aufgeladen'], $msg);
     }
-
     public function testManageExpectPartialLoadingWhenProviderInsufficient(): void
     {
         $values = ['batt' => ['555' => '22']];
@@ -336,25 +441,46 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
-        $this->ship->shouldReceive('getUser->getId')
+
+        $userMock = $this->mock(UserInterface::class);
+        $userMock->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($this->shipUserId);
+
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn($this->managerProviderUserId);
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
             ->andReturn(20);
+
         $this->managerProvider->shouldReceive('lowerEps')
             ->with(20)
             ->once();
-        $this->managerProvider->shouldReceive('getUser->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->managerProviderUserId);
+
         $this->managerProvider->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('providerName');
+
         $this->managerProvider->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
@@ -363,13 +489,16 @@ class ManageBatteryTest extends StuTestCase
         $this->epsSystemData->shouldReceive('getBattery')
             ->withNoArgs()
             ->andReturn(5);
+
         $this->epsSystemData->shouldReceive('getMaxBattery')
             ->withNoArgs()
             ->andReturn(42);
+
         $this->epsSystemData->shouldReceive('setBattery')
             ->with(25)
             ->once()
             ->andReturn($this->epsSystemData);
+
         $this->epsSystemData->shouldReceive('update')
             ->withNoArgs()
             ->once();
@@ -408,25 +537,46 @@ class ManageBatteryTest extends StuTestCase
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('name');
-        $this->ship->shouldReceive('getUser->getId')
+
+        $userMock = $this->mock(UserInterface::class);
+        $userMock->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($this->shipUserId);
+
+        $this->ship->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($userMock);
+
+        $this->ship->shouldReceive('getShieldState')
+            ->withNoArgs()
+            ->andReturn(false);
+
+        $managerProviderUserMock = $this->mock(UserInterface::class);
+        $managerProviderUserMock->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn($this->managerProviderUserId);
+
+        $this->managerProvider->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($managerProviderUserMock);
+
+        $this->playerRelationDeterminator->shouldReceive('isFriend')
+            ->with($userMock, $managerProviderUserMock)
+            ->andReturn(true);
 
         $this->managerProvider->shouldReceive('getEps')
             ->withNoArgs()
             ->andReturn(20);
+
         $this->managerProvider->shouldReceive('lowerEps')
             ->with(12)
             ->once();
-        $this->managerProvider->shouldReceive('getUser->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->managerProviderUserId);
+
         $this->managerProvider->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('providerName');
+
         $this->managerProvider->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
@@ -435,13 +585,16 @@ class ManageBatteryTest extends StuTestCase
         $this->epsSystemData->shouldReceive('getBattery')
             ->withNoArgs()
             ->andReturn(30);
+
         $this->epsSystemData->shouldReceive('getMaxBattery')
             ->withNoArgs()
             ->andReturn(42);
+
         $this->epsSystemData->shouldReceive('setBattery')
             ->with(42)
             ->once()
             ->andReturn($this->epsSystemData);
+
         $this->epsSystemData->shouldReceive('update')
             ->withNoArgs()
             ->once();

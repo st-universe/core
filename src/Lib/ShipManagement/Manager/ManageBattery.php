@@ -7,6 +7,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 use Override;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -16,9 +17,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 class ManageBattery implements ManagerInterface
 {
-    public function __construct(private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator
+    ) {}
 
     #[Override]
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
@@ -34,31 +36,39 @@ class ManageBattery implements ManagerInterface
         $shipId = $ship->getId();
         $epsSystem = $wrapper->getEpsSystemData();
 
-        if (
-            $epsSystem !== null
-            && array_key_exists(
-                $shipId,
-                $batt
-            )
-            && $managerProvider->getEps() > 0
-            && $epsSystem->getBattery() < $epsSystem->getMaxBattery()
-        ) {
-            $load = $this->determineLoad($batt[$shipId], $epsSystem, $managerProvider);
+        if (!$this->playerRelationDeterminator->isFriend($ship->getUser(), $managerProvider->getUser()) && $ship->getShieldState()) {
+            $msg[] = sprintf(
+                _('%s: Batterie konnte wegen aktivierter Schilde nicht aufgeladen werden.'),
+                $ship->getName()
+            );
+            return $msg;
+        } else {
+            if (
+                $epsSystem !== null
+                && array_key_exists(
+                    $shipId,
+                    $batt
+                )
+                && $managerProvider->getEps() > 0
+                && $epsSystem->getBattery() < $epsSystem->getMaxBattery()
+            ) {
+                $load = $this->determineLoad($batt[$shipId], $epsSystem, $managerProvider);
 
-            if ($load > 0) {
-                $epsSystem->setBattery($epsSystem->getBattery() + $load)->update();
-                $managerProvider->lowerEps($load);
-                $msg[] = sprintf(
-                    _('%s: Batterie um %d Einheiten aufgeladen'),
-                    $ship->getName(),
-                    $load
-                );
+                if ($load > 0) {
+                    $epsSystem->setBattery($epsSystem->getBattery() + $load)->update();
+                    $managerProvider->lowerEps($load);
+                    $msg[] = sprintf(
+                        _('%s: Batterie um %d Einheiten aufgeladen'),
+                        $ship->getName(),
+                        $load
+                    );
 
-                $this->sendMessageToOwner($ship, $managerProvider, $load);
+                    $this->sendMessageToOwner($ship, $managerProvider, $load);
+                }
             }
-        }
 
-        return $msg;
+            return $msg;
+        }
     }
 
     private function determineLoad(
