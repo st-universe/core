@@ -14,16 +14,17 @@ use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Doctrine\Common\Collections\Collection;
 
 class AllianceDeletionHandlerTest extends MockeryTestCase
 {
     /**
-     * @var null|MockInterface|AllianceJobRepositoryInterface
+     * @var AllianceJobRepositoryInterface|MockInterface|null
      */
     private $allianceJobRepository;
 
     /**
-     * @var null|MockInterface|AllianceActionManagerInterface
+     * @var AllianceActionManagerInterface|MockInterface|null
      */
     private $allianceActionManager;
 
@@ -32,7 +33,10 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
     #[Override]
     public function setUp(): void
     {
+        /** @var AllianceJobRepositoryInterface|MockInterface $allianceJobRepository */
         $this->allianceJobRepository = Mockery::mock(AllianceJobRepositoryInterface::class);
+
+        /** @var AllianceActionManagerInterface|MockInterface $allianceActionManager */
         $this->allianceActionManager = Mockery::mock(AllianceActionManagerInterface::class);
 
         $this->handler = new AllianceDeletionHandler(
@@ -43,7 +47,10 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteDoesNotTouchAllianceIfNotFounder(): void
     {
+        /** @var UserInterface|MockInterface $user */
         $user = Mockery::mock(UserInterface::class);
+
+        /** @var AllianceJobInterface|MockInterface $job */
         $job = Mockery::mock(AllianceJobInterface::class);
 
         $userId = 666;
@@ -71,9 +78,17 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteDeletesAllianceIfNoSuccessor(): void
     {
+        /** @var UserInterface|MockInterface $user */
         $user = Mockery::mock(UserInterface::class);
+
+        /** @var AllianceJobInterface|MockInterface $job */
         $job = Mockery::mock(AllianceJobInterface::class);
+
+        /** @var AllianceInterface|MockInterface $alliance */
         $alliance = Mockery::mock(AllianceInterface::class);
+
+        /** @var Collection<int, UserInterface>|MockInterface $members */
+        $members = Mockery::mock(Collection::class);
 
         $userId = 666;
         $allianceId = 42;
@@ -108,9 +123,23 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->withNoArgs()
             ->once()
             ->andReturnNull();
+        $alliance->shouldReceive('getDiplomatic')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
+        $alliance->shouldReceive('getMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($members);
+
+        $members->shouldReceive('removeElement')
+            ->with($user)
+            ->once();
+        $members->shouldReceive('getIterator')
+            ->andReturn(new \ArrayIterator([]));
 
         $this->allianceActionManager->shouldReceive('delete')
-            ->with($allianceId, false)
+            ->with($allianceId, true)
             ->once();
 
         $this->handler->delete($user);
@@ -118,10 +147,20 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteMakesSuccessorFounder(): void
     {
+        /** @var UserInterface|MockInterface $user */
         $user = Mockery::mock(UserInterface::class);
+
+        /** @var AllianceJobInterface|MockInterface $job */
         $job = Mockery::mock(AllianceJobInterface::class);
+
+        /** @var AllianceJobInterface|MockInterface $successorJob */
         $successorJob = Mockery::mock(AllianceJobInterface::class);
+
+        /** @var AllianceInterface|MockInterface $alliance */
         $alliance = Mockery::mock(AllianceInterface::class);
+
+        /** @var Collection<int, UserInterface>|MockInterface $members */
+        $members = Mockery::mock(Collection::class);
 
         $userId = 666;
         $successorUserId = 33;
@@ -157,6 +196,20 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($successorJob);
+        $alliance->shouldReceive('getDiplomatic')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
+        $alliance->shouldReceive('getMembers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($members);
+
+        $members->shouldReceive('removeElement')
+            ->with($user)
+            ->once();
+        $members->shouldReceive('getIterator')
+            ->andReturn(new \ArrayIterator([]));
 
         $successorJob->shouldReceive('getUserId')
             ->withNoArgs()
