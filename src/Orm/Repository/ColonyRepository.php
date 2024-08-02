@@ -241,7 +241,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT user_id, SUM(satisfied)
+                'SELECT user_id, SUM(satisfied) AS satisfied
                 FROM ( SELECT c.user_id,
                             LEAST( COALESCE(c.bev_work, 0),
                             ( SELECT COALESCE(SUM(bc.count), 0)
