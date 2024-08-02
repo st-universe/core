@@ -241,25 +241,23 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT c.user_id,
-                    LEAST(
-                        COALESCE(SUM(c.bev_work), 0),
-                        (SELECT COALESCE(SUM(bc.count), 0)
-                        FROM stu_colonies c2
-                        JOIN stu_colonies_fielddata cf
-                        ON cf.colonies_id = c2.id
-                        JOIN stu_buildings b
-                        ON cf.buildings_id = b.id
-                        JOIN stu_buildings_commodity bc
-                        ON b.id = bc.buildings_id
-                        WHERE c2.user_id = c.user_id
-                        AND bc.commodity_id = :lifeStandard
-                        AND cf.aktiv = 1)
-                    ) AS satisfied
-                FROM stu_colonies c
-                WHERE c.user_id >= :firstUserId
-                GROUP BY c.user_id
-                ORDER BY satisfied DESC
+                'SELECT user_id, SUM(satisfied)
+                FROM ( SELECT c.user_id,
+                            LEAST( COALESCE(c.bev_work, 0),
+                            ( SELECT COALESCE(SUM(bc.count), 0)
+                                FROM stu_colonies_fielddata cf
+                                JOIN stu_buildings b
+                                ON cf.buildings_id = b.id
+                                JOIN stu_buildings_commodity bc
+                                ON b.id = bc.buildings_id
+                                WHERE cf.colonies_id = c.id
+                                AND bc.commodity_id = :lifeStandard
+                                AND cf.aktiv = 1
+                            )) AS satisfied
+                        FROM stu_colonies c
+                        WHERE c.user_id >= :firstUserId) AS colonies
+                GROUP BY user_id
+                ORDER BY 2 DESC
                 LIMIT 10',
                 $rsm
             )
