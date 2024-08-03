@@ -12,6 +12,8 @@ use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePassword;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
+// ToDo: Revert this comment
+
 /**
  * Provides cli method for user creation
  */
