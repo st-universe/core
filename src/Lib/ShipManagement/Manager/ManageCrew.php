@@ -6,6 +6,7 @@ namespace Stu\Lib\ShipManagement\Manager;
 
 use Override;
 use RuntimeException;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -22,6 +23,7 @@ use Stu\Orm\Entity\ShipInterface;
 class ManageCrew implements ManagerInterface
 {
     public function __construct(
+        private ShipCrewCalculatorInterface $shipCrewCalculator,
         private ShipSystemManagerInterface $shipSystemManager,
         private TroopTransferUtilityInterface $troopTransferUtility,
         private ShipShutdownInterface $shipShutdown,
@@ -105,10 +107,19 @@ class ManageCrew implements ManagerInterface
                 $managerProvider->getFreeCrewAmount()
             );
 
-            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
-                && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
-                && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))) {
-                $additionalCrew  = 0;
+            if ($ship->getBuildplan() != null) {
+                $mincrew = $ship->getBuildplan()->getCrew();
+                $actualcrew = $ship->getCrewCount();
+                $maxcrew = $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump());
+
+                if ($actualcrew >= $mincrew && $actualcrew + $additionalCrew > $maxcrew) {
+
+                    if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) && ($additionalCrew > 0
+                        && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() === ShipSystemModeEnum::MODE_OFF
+                        && !$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $informations))) {
+                        $additionalCrew  = 0;
+                    }
+                }
             }
 
             $managerProvider->addShipCrew($ship, $additionalCrew);

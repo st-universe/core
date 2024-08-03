@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use RuntimeException;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -22,10 +23,15 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
 
 class ManageCrewTest extends StuTestCase
 {
+    /** @var MockInterface|ShipCrewCalculatorInterface */
+    private MockInterface $shipCrewCalculator;
+
     /** @var MockInterface|ShipSystemManagerInterface */
     private MockInterface $shipSystemManager;
 
@@ -62,6 +68,7 @@ class ManageCrewTest extends StuTestCase
 
     protected function setUp(): void
     {
+        $this->shipCrewCalculator = $this->mock(ShipCrewCalculatorInterface::class);
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->shipShutdown = $this->mock(ShipShutdownInterface::class);
@@ -75,6 +82,7 @@ class ManageCrewTest extends StuTestCase
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
         $this->subject = new ManageCrew(
+            $this->shipCrewCalculator,
             $this->shipSystemManager,
             $this->troopTransferUtility,
             $this->shipShutdown,
@@ -289,6 +297,9 @@ class ManageCrewTest extends StuTestCase
     {
         $values = ['crew' => ['555' => '42']];
 
+
+        $rumpMock = $this->mock(ShipRumpInterface::class);
+
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($this->ship);
@@ -320,7 +331,7 @@ class ManageCrewTest extends StuTestCase
             ->andReturn($this->user);
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
-            ->once()
+            ->times(3)
             ->andReturn($this->buildplan);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -331,7 +342,17 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $shipSystemMock = $this->mock(\Stu\Orm\Entity\ShipSystemInterface::class);
+        $this->ship->shouldReceive('getRump')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($rumpMock);
+
+        $this->shipCrewCalculator->shouldReceive('getMaxCrewCountByRump')
+            ->with($rumpMock)
+            ->once()
+            ->andReturn(35);
+
+        $shipSystemMock = $this->mock(ShipSystemInterface::class);
         $shipSystemMock->shouldReceive('getMode')
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_OFF);
@@ -348,7 +369,7 @@ class ManageCrewTest extends StuTestCase
 
         $this->buildplan->shouldReceive('getCrew')
             ->withNoArgs()
-            ->andReturn(42);
+            ->andReturn(25);
 
         $this->helper->shouldReceive('activate')
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, \Mockery::type(\Stu\Lib\Information\InformationWrapper::class))
@@ -366,6 +387,9 @@ class ManageCrewTest extends StuTestCase
     {
         $values = ['crew' => ['555' => '42']];
 
+
+        $rumpMock = $this->mock(ShipRumpInterface::class);
+
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($this->ship);
@@ -378,12 +402,12 @@ class ManageCrewTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(42);
         $this->managerProvider->shouldReceive('addShipCrew')
-            ->with($this->ship, 42)
+            ->with($this->ship, 22)
             ->once();
 
         $this->ship->shouldReceive('getCrewCount')
             ->withNoArgs()
-            ->andReturn(0);
+            ->andReturn(20);
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
@@ -397,7 +421,7 @@ class ManageCrewTest extends StuTestCase
             ->andReturn($this->user);
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
-            ->once()
+            ->times(3)
             ->andReturn($this->buildplan);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -408,7 +432,17 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $shipSystemMock = $this->mock(\Stu\Orm\Entity\ShipSystemInterface::class);
+        $this->ship->shouldReceive('getRump')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($rumpMock);
+
+        $this->shipCrewCalculator->shouldReceive('getMaxCrewCountByRump')
+            ->with($rumpMock)
+            ->once()
+            ->andReturn(40);
+
+        $shipSystemMock = $this->mock(ShipSystemInterface::class);
         $shipSystemMock->shouldReceive('getMode')
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_OFF);
@@ -425,7 +459,7 @@ class ManageCrewTest extends StuTestCase
 
         $this->buildplan->shouldReceive('getCrew')
             ->withNoArgs()
-            ->andReturn(42);
+            ->andReturn(20);
 
         $this->helper->shouldReceive('activate')
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, \Mockery::type(\Stu\Lib\Information\InformationWrapper::class))
@@ -437,7 +471,7 @@ class ManageCrewTest extends StuTestCase
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
-        $this->assertEquals(['name: 42 Crewman wurde(n) hochgebeamt'], $msg);
+        $this->assertEquals(['name: 22 Crewman wurde(n) hochgebeamt'], $msg);
     }
 
     public function testManageExpectNothingWhenCrewCountUnchanged(): void
