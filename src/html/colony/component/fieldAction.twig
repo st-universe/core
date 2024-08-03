@@ -224,7 +224,7 @@
                 <div>
                     <table class="tcal">
                         <tr>
-                            <th colspan="4">{{ data.getDescription }}</th>
+                            <th colspan="5">{{ data.getDescription }}</th>
                         </tr>
                         <tr>
                             <td style="width: 50px; height: 45px; text-align: center; vertical-align: middle">
@@ -236,8 +236,8 @@
                             <td style="width: 50px; height: 45px; text-align: center; vertical-align: middle">
                                 <img src="/assets/generated/buildings/{{ data.getUpgradeToBuildingId }}/0at.png" />
                             </td>
-                            <td style="vertical-align: top; width: 100px;">
-                                <strong>Kosten</strong><br />
+                            <td style="vertical-align: top; width: 150px;">
+                                <strong>Baukosten</strong><br />
                                 <img src="/assets/buttons/e_trans2.png" title="Energie" />
                                 {{ data.getBuilding.getEpsCost }}
                                 {% for cost in data.getUpgradeCosts %}
@@ -248,9 +248,30 @@
                                 </div>
                                 {% endfor %}
                             </td>
+                            <td style="vertical-align: top; width: 100px;">
+                                {% include 'html/colony/component/buildingConsequences.twig' with { 'building': data.getBuilding } %}
+                                <br />
+                                <strong>Produktion</strong>
+                                {% if data.getBuilding.getEpsProduction %}
+                                <div>
+                                    <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                                    {{ data.getBuilding.getEpsProduction|addPlusCharacter }}
+                                </div>
+                                {% endif %}
+                                {% for data in data.getBuilding.getCommodities %}
+                                <div class="action"
+                                    onclick="clearAjaxCallbacks(); switchColonySubmenu(1, 'cid={{ data.getCommodityId }}');"
+                                    title="Baumenü nach '{{ data.getCommodity.getName }}' filtern">
+                                    <img src="/assets/commodities/{{ data.getCommodityId }}.png" />
+                                    {{ data.getAmount|addPlusCharacter }}
+                                </div>
+                                {% endfor %}
+                                <br />
+
+                        </td>
                         </tr>
                         <tr>
-                            <td colspan="4" style="text-align: center;">
+                            <td colspan="5" style="text-align: center;">
                                 <a href="javascript:void(0);"
                                     onClick="buildOnField('B_UPGRADE_BUILDING', {{ fieldId }}, {{ data.getId }});"
                                     class="linkbutton">Durchführen</a>
