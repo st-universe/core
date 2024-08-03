@@ -2002,11 +2002,6 @@ parameters:
 			path: src/Orm/Entity/MapFieldType.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:hasSpecial\\(\\) has parameter \\$special_id with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleInterface.php
-
-		-
 			message: "#^Cannot call method getBuildTime\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
