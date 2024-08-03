@@ -40,7 +40,7 @@ interface ModuleInterface
 
     public function setType(ShipModuleTypeEnum $type): ModuleInterface;
 
-    public function getResearchId(): int;
+    public function getResearchId(): ?int;
 
     public function setResearchId(int $researchId): ModuleInterface;
 
@@ -62,7 +62,7 @@ interface ModuleInterface
 
     public function setEcost(int $energyCosts): ModuleInterface;
 
-    public function hasSpecial($special_id): bool;
+    public function hasSpecial(int $special_id): bool;
 
     /**
      * @return Collection<int, ModuleSpecialInterface>

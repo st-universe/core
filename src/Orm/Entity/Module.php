@@ -264,7 +264,7 @@ class Module implements ModuleInterface
     }
 
     #[Override]
-    public function getResearchId(): int
+    public function getResearchId(): ?int
     {
         return $this->research_id;
     }
@@ -360,11 +360,11 @@ class Module implements ModuleInterface
     }
 
     #[Override]
-    public function hasSpecial($special_id): bool
+    public function hasSpecial(int $special_id): bool
     {
         if ($this->specialAbilities === null) {
             $this->specialAbilities = array_map(
-                fn (ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId(),
+                fn(ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId(),
                 $this->getSpecials()->toArray()
             );
         }
@@ -390,7 +390,7 @@ class Module implements ModuleInterface
 
         usort(
             $array,
-            fn (ModuleCostInterface $a, ModuleCostInterface $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
+            fn(ModuleCostInterface $a, ModuleCostInterface $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
         );
 
         return $array;
