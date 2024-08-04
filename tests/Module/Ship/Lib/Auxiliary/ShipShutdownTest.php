@@ -74,9 +74,6 @@ class ShipShutdownTest extends StuTestCase
         $ship->shouldReceive('setAlertStateGreen')
             ->withNoArgs()
             ->once();
-        $ship->shouldReceive('setDockedTo')
-            ->with(null)
-            ->once();
 
         $this->shipSystemManager->shouldReceive('deactivateAll')
             ->with($wrapper)

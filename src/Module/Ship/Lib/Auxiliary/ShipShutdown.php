@@ -15,9 +15,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipShutdown implements ShipShutdownInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private LeaveFleetInterface $leaveFleet, private ShipStateChangerInterface $shipStateChanger, private ShipUndockingInterface $shipUndocking)
-    {
-    }
+    public function __construct(private ShipRepositoryInterface $shipRepository, private ShipSystemManagerInterface $shipSystemManager, private LeaveFleetInterface $leaveFleet, private ShipStateChangerInterface $shipStateChanger, private ShipUndockingInterface $shipUndocking) {}
 
     #[Override]
     public function shutdown(ShipWrapperInterface $wrapper, bool $doLeaveFleet = false): void
@@ -33,7 +31,6 @@ final class ShipShutdown implements ShipShutdownInterface
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
 
         $ship->setAlertStateGreen();
-        $ship->setDockedTo(null);
         $this->shipRepository->save($ship);
     }
 }
