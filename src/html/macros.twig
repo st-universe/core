@@ -189,9 +189,10 @@ updateSelectedShipId('{{ id }}');"
 
 {% macro onClickColony(colony) %}
 {% set id = colony.getId %}
-href="javascript:void(0);"
-onClick = "switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '/colony.php');"
+href="/colony.php?id={{ id }}"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '/colony.php'); event.preventDefault(); }"
 {% endmacro %}
+
 
 {% macro commoditySelection(name, commodityId, amount) %}
   <table style="width: 100%;">

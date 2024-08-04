@@ -81,15 +81,16 @@
                 </div>
             </div>
             {% endif %}
-            <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')"
-                onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')"
-                onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+            <div class="header_box header_box_settings border_box action" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')"
+            onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+            <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }; event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
                 <div>
                     <img style="width: 40px; height: 40px;" id="header_menu_settings"
                         src="/assets/navigation/menu_option0.png" title="Einstellungen" />
                     <div style="margin-top: 5px">Einstellungen</div>
                 </div>
-            </div>
+            </a>
+        </div>        
             <div class="headerBottom"> </div>
         </div>
         <div style="margin-top: 80px;">
