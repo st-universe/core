@@ -68,14 +68,14 @@
 {% set view = getView(viewValue) %}
 {% set viewTitle = view.getTitle %}
 {% set viewUrl = view.getPhpPage %}
+<a class="navitem_link" href="{{ viewUrl }}" onclick="if(event.button === 0) { switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}'); event.preventDefault(); }">
 <div class="navigation_item border_box" onmouseover="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}1', 'png')"
     onmouseout="cp('{{ linkid }}','navigation/menu_{{ iconUrl }}0', 'png')">
-    <a class="navitem_link" href="{{ viewUrl }}" onclick="if(event.button === 0) { switchView('{{ viewValue }}', '{{ viewTitle }}', '{{ viewUrl }}'); event.preventDefault(); }">
         <img class="navitem_img" src="/assets/navigation/menu_{{ iconUrl }}0.png" id="{{ linkid }}"
             title="{{ title }}" />
         <div class="navitem_title">{{ title }}</div>
-    </a>
 </div>
+</a>
 {% endmacro %}
 
 {% macro navigation(hasStationsNavigation, isAdmin, isNpc) %}
