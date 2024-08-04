@@ -62,7 +62,7 @@
                         <div class="knUserAvatar">
                             {{ userAvatar(postUser) }}
                         </div>
-                        <span title="Beitrag-ID">{{ post.getId }}</span>
+                        <a href="?SHOW_SINGLE_KN=1&id={{ post.getId }}" title="Beitrag-ID">{{ post.getId }}</a>
                         <br />
                     </div>
                     {% if post.displayContactLinks %}
