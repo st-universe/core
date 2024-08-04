@@ -16,13 +16,17 @@ final class ModuleRumpWrapperSpecial extends ModuleRumpWrapperBase implements Mo
     }
 
     #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): ?int
+    {
+        return null;
+    }
+
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return ShipModuleTypeEnum::SPECIAL;
     }
 
     #[Override]
-    public function apply(ShipWrapperInterface $wrapper): void
-    {
-    }
+    public function apply(ShipWrapperInterface $wrapper): void {}
 }

@@ -29,6 +29,16 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
     }
 
     #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): ?int
+    {
+        $module ??= current($this->getModule());
+        if ($module === false) {
+            return null;
+        }
+        return (int) round($this->getValue($module) / 3);
+    }
+
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return ShipModuleTypeEnum::EPS;

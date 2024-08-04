@@ -22,6 +22,8 @@ interface ModuleSelectorEntryInterface
 
     public function getValue(): int;
 
+    public function getSecondvalue(): ?int;
+
     /** @return array<mixed> */
     public function getAddonValues(): array;
 }

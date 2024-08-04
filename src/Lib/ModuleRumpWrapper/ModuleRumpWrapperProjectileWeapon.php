@@ -29,6 +29,12 @@ final class ModuleRumpWrapperProjectileWeapon extends ModuleRumpWrapperBase impl
     }
 
     #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): ?int
+    {
+        return null;
+    }
+
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return ShipModuleTypeEnum::TORPEDO;

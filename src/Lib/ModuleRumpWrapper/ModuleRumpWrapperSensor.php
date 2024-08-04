@@ -28,6 +28,12 @@ final class ModuleRumpWrapperSensor extends ModuleRumpWrapperBase implements Mod
     }
 
     #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): ?int
+    {
+        return null;
+    }
+
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return ShipModuleTypeEnum::SENSOR;
