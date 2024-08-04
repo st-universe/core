@@ -104,6 +104,12 @@
 					<td style="vertical-align: middle">
 						{{ data.getBuilding.getName }} - Fertigstellung:
 						{{ data.getBuildtime|stuDateTime }}
+					</br>
+					{% if data.getActivateAfterBuild %}
+					<span style="color: #4fc202; font-size:80%;">Wird nach dem Bau aktiviert</span>
+					{% else %}
+					<span style="color: #ce0000; font-size:80%;">Wird nach dem Bau deaktiviert</span>
+					{% endif %}
 					</td>
 				</tr>
 				{% endfor %}
