@@ -10,6 +10,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ModuleInterface;
+use Stu\Module\Ship\Lib\ReactorWrapperInterface;
 
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
@@ -26,6 +27,16 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
             $module,
             $this->rump->getBaseReactor()
         );
+    }
+
+    #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): ?int
+    {
+        $module ??= current($this->getModule());
+        if ($module === false) {
+            return null;
+        }
+        return $this->getValue($module) * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
     }
 
     #[Override]

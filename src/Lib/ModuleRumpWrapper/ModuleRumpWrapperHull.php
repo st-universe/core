@@ -28,6 +28,12 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
     }
 
     #[Override]
+    public function getSecondValue(?ModuleInterface $module = null): ?int
+    {
+        return null;
+    }
+
+    #[Override]
     public function getModuleType(): ShipModuleTypeEnum
     {
         return ShipModuleTypeEnum::HULL;

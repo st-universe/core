@@ -106,6 +106,15 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     }
 
     #[Override]
+    public function getSecondvalue(): ?int
+    {
+        return $this->module
+            ->getType()
+            ->getModuleRumpWrapperCallable()($this->rump, $this->buildplan)
+            ->getSecondValue($this->module);
+    }
+
+    #[Override]
     public function getModuleLevelClass(): string
     {
         $moduleLevels = $this->shipRumpModuleLevel;
