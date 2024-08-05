@@ -83,6 +83,12 @@ abstract class Location implements LocationInterface
     #[OneToMany(targetEntity: 'Anomaly', mappedBy: 'location', fetch: 'EXTRA_LAZY')]
     private Collection $anomalies;
 
+    /**
+     * @var ArrayCollection<int, LocationMiningInterface>
+     */
+    #[OneToMany(targetEntity: 'LocationMining', mappedBy: 'location')]
+    private Collection $locationMinings;
+
     public function __construct()
     {
         $this->ships = new ArrayCollection();
@@ -145,14 +151,14 @@ abstract class Location implements LocationInterface
     public function getAnomalies(bool $onlyActive = true): Collection
     {
         return $this->anomalies
-            ->filter(fn (AnomalyInterface $anomaly): bool => !$onlyActive || $anomaly->isActive());
+            ->filter(fn(AnomalyInterface $anomaly): bool => !$onlyActive || $anomaly->isActive());
     }
 
     #[Override]
     public function hasAnomaly(AnomalyTypeEnum $type): bool
     {
         return $this->getAnomalies()
-            ->exists(fn (int $key, AnomalyInterface $anomaly): bool => $anomaly->getAnomalyType()->getId() === $type->value);
+            ->exists(fn(int $key, AnomalyInterface $anomaly): bool => $anomaly->getAnomalyType()->getId() === $type->value);
     }
 
     #[Override]
@@ -175,7 +181,7 @@ abstract class Location implements LocationInterface
         }
 
         $usableEntries = $wormholeEntries
-            ->filter(fn (WormholeEntryInterface $entry): bool => $entry->isUsable($this))
+            ->filter(fn(WormholeEntryInterface $entry): bool => $entry->isUsable($this))
             ->toArray();
 
         return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
@@ -191,5 +197,11 @@ abstract class Location implements LocationInterface
     public function isOverWormhole(): bool
     {
         return $this->isMap() && $this->getRandomWormholeEntry() !== null;
+    }
+
+    #[Override]
+    public function getLocationMinings(): Collection
+    {
+        return $this->locationMinings;
     }
 }
