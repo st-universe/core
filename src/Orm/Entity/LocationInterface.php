@@ -58,4 +58,9 @@ interface LocationInterface
     public function isOverWormhole(): bool;
 
     public function getSectorString(): string;
+
+    /**
+     * @return Collection<int, LocationMiningInterface>
+     */
+    public function getLocationMinings(): Collection;
 }
