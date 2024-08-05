@@ -94,10 +94,6 @@
                 ...
                 {% endblock %}
             </div>
-            <div class="footer">
-                {% set benchmark = BENCHMARK %}
-                Rendered in {{ benchmark.executionTime }} - Memory usage: {{ benchmark.memoryPeakUsage }}
-            </div>
         </div>
     </div>
     {% include 'html/executeJavascriptAfterRender.twig' %}
