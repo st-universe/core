@@ -67,6 +67,6 @@ final class ResearchFragment implements RenderFragmentInterface
         $page->setVar('CURRENT_RESEARCH', current($currentResearch));
         $page->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
         $page->setVar('WAITING_RESEARCH', count($currentResearch) === 2 ? $currentResearch[1] : null);
-        $page->setVar('RESEARCH_POSSIBLE', true);
+        $page->setVar('RESEARCH_POSSIBLE', $hasResearchList || $hasCurrentResearch);
     }
 }
