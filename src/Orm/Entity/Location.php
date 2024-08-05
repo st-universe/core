@@ -25,6 +25,7 @@ use Stu\Orm\Repository\LocationRepository;
 
 #[Table(name: 'stu_location')]
 #[Index(name: 'location_coords_idx', columns: ['layer_id', 'cx', 'cy'])]
+#[Index(name: 'location_coords_reverse_idx', columns: ['layer_id', 'cy', 'cx'])]
 #[Index(name: 'location_field_type_idx', columns: ['field_id'])]
 #[Entity(repositoryClass: LocationRepository::class)]
 #[InheritanceType('JOINED')]
