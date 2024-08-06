@@ -6,7 +6,7 @@
     <input type="hidden" name="is_unload" value="{{ TRANSFER_INFO.isUnload ? 1 : 0 }}" />
     <input type="hidden" name="is_colony" value="{{ TRANSFER_INFO.isColonyTarget ? 1 : 0 }}" />
 
-    <table class="tcal">
+    <table class="tcal" style="width:100%;">
         {% set targetId = TARGET.getId %}
 
         {% include "html/transfer/transferTypeSelection.twig" %}
