@@ -1,6 +1,6 @@
 {% embed "html/colony/menu/container.twig" %}
 {% block containment %}
-<div style="width: 40vw;">
+<div style="width: 40vw; max-width: 100%;">
     <table class="tcal">
         <tr>
             <th colspan="2">Torpedoherstellung</th>
@@ -24,13 +24,13 @@
                 <img src="/assets/commodities/{{ data.getCommodityId }}.png" class="center" />
                 {{ data.getName }}
             </td>
-            <td>
-                <img src="/assets/buttons/e_trans2.png" class="center" title="Energiekosten" />
-                {{ data.getEnergyCost }}
+            <td style="display: flex; flex-wrap: wrap; align-items: center;">
+                <img src="/assets/buttons/e_trans2.png" class="center" title="Energiekosten" />&nbsp;
+                {{ data.getEnergyCost }} &nbsp;
                 {% for cost in data.getProductionCosts %}
                 <img src="/assets/commodities/{{ cost.getCommodityId }}.png" class="center"
-                    title="{{ cost.getCommodity.getName }}" />
-                {{ cost.getAmount }}
+                    title="{{ cost.getCommodity.getName }}" style="margin-right: 5px;" />
+                {{ cost.getAmount }}&nbsp;
                 {% endfor %}
             </td>
         </tr>
