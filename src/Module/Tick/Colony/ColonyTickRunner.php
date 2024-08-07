@@ -11,7 +11,7 @@ use Stu\Module\Tick\TransactionTickRunnerInterface;
 /**
  * Executes the colony tick (energy and commodity production, etc)
  */
-final class ColonyTickRunner implements TickRunnerInterface
+class ColonyTickRunner implements TickRunnerInterface
 {
     private const string TICK_DESCRIPTION = "colonytick";
 

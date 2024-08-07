@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
-use Psr\Container\ContainerInterface;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Module\Tick\Colony\ColonyTickRunner;
 final class ColonyTickCommand extends Command
 {
     public function __construct(
-        private ContainerInterface $dic
+        private readonly ColonyTickRunner $tickRunner,
     ) {
         parent::__construct(
             'tick:colony',
@@ -29,8 +28,7 @@ final class ColonyTickCommand extends Command
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(ColonyTickRunner::class);
-        $tickRunner->run(1, 1);
+        $this->tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Colony tick has been executed',

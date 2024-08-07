@@ -7,26 +7,24 @@ namespace Stu\Component\Cli;
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
 use Override;
-use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
-use Stu\Module\Tick\TickRunnerInterface;
 use Stu\StuTestCase;
 
 class ColonyTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ContainerInterface */
-    private MockInterface $dic;
+    /** @var MockInterface&ColonyTickRunner */
+    private MockInterface $colonyTickRunner;
 
     private ColonyTickCommand $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->dic = $this->mock(ContainerInterface::class);
+        $this->colonyTickRunner = $this->mock(ColonyTickRunner::class);
 
         $this->subject = new ColonyTickCommand(
-            $this->dic
+            $this->colonyTickRunner
         );
     }
 
@@ -34,7 +32,6 @@ class ColonyTickCommandTest extends StuTestCase
     {
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
-        $colonyTickRunner = $this->mock(TickRunnerInterface::class);
 
         $this->subject->bind($app);
 
@@ -50,12 +47,7 @@ class ColonyTickCommandTest extends StuTestCase
             )
             ->once();
 
-        $this->dic->shouldReceive('get')
-            ->with(ColonyTickRunner::class)
-            ->once()
-            ->andReturn($colonyTickRunner);
-
-        $colonyTickRunner->shouldReceive('run')
+        $this->colonyTickRunner->shouldReceive('run')
             ->with(1, 1)
             ->once();
 
