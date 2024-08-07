@@ -693,3 +693,7 @@ function collectModuleData() {
 	document.body.appendChild(form);
 	form.submit();
 }
+function syncInputs(id1, id2) {
+    const value = document.getElementById(id1).value;
+    document.getElementById(id2).value = value;
+}
