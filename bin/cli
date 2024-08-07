@@ -56,7 +56,7 @@ Init::run(
         $app->add($dic->get(UserCreateCommand::class));
 
         // tick
-        $app->add(new ColonyTickCommand($dic));
+        $app->add($dic->get(ColonyTickCommand::class));
         $app->add(new ShipTickCommand($dic));
         $app->add(new MaintenanceTickCommand($dic));
         $app->add(new ProcessTickCommand($dic));
