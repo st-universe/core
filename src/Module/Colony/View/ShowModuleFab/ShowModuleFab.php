@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -24,7 +25,7 @@ final class ShowModuleFab implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULEFAB';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleFabRequestInterface $showModuleFabRequest, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository) {}
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleFabRequestInterface $showModuleFabRequest, private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository, private ShipBuildplanRepositoryInterface $shipBuildplanRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private ModuleRepositoryInterface $moduleRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -82,19 +83,61 @@ final class ShowModuleFab implements ViewControllerInterface
         }
         $rumpModules = [];
         $rumpModules[0] = $sortedModules;
+
         foreach ($shipRumps as $rump) {
             $rumpId = $rump->getId();
             $rumpModules[$rumpId] = [];
 
             foreach ($sortedModules as $type => $levels) {
                 $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump($rumpId);
+                $rumpRoleId = $rump->getRoleId();
+                $hasMatchingRoleModule = false;
+
+                foreach ($levels as $level => $modules) {
+                    foreach ($modules as $module) {
+                        if ($module->getModule()->getShipRumpRoleId() === $rumpRoleId) {
+                            $hasMatchingRoleModule = true;
+                            break 2;
+                        }
+                    }
+                }
 
                 if ($type === ShipModuleTypeEnum::SPECIAL->value) {
+                    $addedModules = [];
+
                     foreach ($levels as $level => $modules) {
                         if (!isset($rumpModules[$rumpId][$type])) {
                             $rumpModules[$rumpId][$type] = [];
                         }
-                        $rumpModules[$rumpId][$type][$level] = $modules;
+
+                        if ($rumpRoleId !== null) {
+                            $specialModules = $this->moduleRepository->getBySpecialTypeAndRump(
+                                $colony,
+                                ShipModuleTypeEnum::SPECIAL,
+                                $rumpId,
+                                $rumpRoleId
+                            );
+
+                            foreach ($specialModules as $specialModule) {
+                                $moduleName = $specialModule->getName();
+                                $matchingModule = null;
+
+                                foreach ($sortedModules[$type][$level] as $sortedModule) {
+                                    if ($sortedModule->getModule()->getName() === $moduleName) {
+                                        $matchingModule = $sortedModule;
+                                        break;
+                                    }
+                                }
+
+                                if ($matchingModule !== null && !in_array($matchingModule->getModule()->getId(), $addedModules)) {
+                                    $rumpModules[$rumpId][$type][$level][] = $matchingModule;
+                                    $addedModules[] = $matchingModule->getModule()->getId();
+                                }
+                            }
+                        }
+                    }
+                    if (empty($rumpModules[$rumpId][$type])) {
+                        unset($rumpModules[$rumpId][$type]);
                     }
                 } else {
                     $min_level_method = 'getModuleLevel' . $type . 'Min';
@@ -106,12 +149,31 @@ final class ShowModuleFab implements ViewControllerInterface
 
                         foreach ($levels as $level => $modules) {
                             if ($level >= $min_level && $level <= $max_level) {
-                                if (!isset($rumpModules[$rumpId][$type])) {
-                                    $rumpModules[$rumpId][$type] = [];
+                                $filteredModules = [];
+
+                                foreach ($modules as $module) {
+                                    if ($hasMatchingRoleModule) {
+                                        if ($module->getModule()->getShipRumpRoleId() === $rumpRoleId) {
+                                            $filteredModules[] = $module;
+                                        }
+                                    } else {
+                                        if ($module->getModule()->getShipRumpRoleId() === null) {
+                                            $filteredModules[] = $module;
+                                        }
+                                    }
                                 }
-                                $rumpModules[$rumpId][$type][$level] = $modules;
+
+                                if (!empty($filteredModules)) {
+                                    if (!isset($rumpModules[$rumpId][$type])) {
+                                        $rumpModules[$rumpId][$type] = [];
+                                    }
+                                    $rumpModules[$rumpId][$type][$level] = $filteredModules;
+                                }
                             }
                         }
+                    }
+                    if (empty($rumpModules[$rumpId][$type])) {
+                        unset($rumpModules[$rumpId][$type]);
                     }
                 }
             }
