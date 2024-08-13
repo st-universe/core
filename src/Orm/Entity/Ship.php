@@ -192,6 +192,13 @@ class Ship implements ShipInterface
     private ?TorpedoStorageInterface $torpedoStorage = null;
 
     /**
+     * @var DatabaseEntryInterface|null
+     */
+    #[OneToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
+    private ?DatabaseEntryInterface $databaseEntry;
+
+    /**
      * @var ArrayCollection<int, ShipSystemInterface>
      */
     #[OneToMany(targetEntity: 'ShipSystem', mappedBy: 'ship', indexBy: 'system_type')]
@@ -628,9 +635,9 @@ class Ship implements ShipInterface
     }
 
     #[Override]
-    public function setDatabaseId(int $databaseEntryId): ShipInterface
+    public function setDatabaseEntry(DatabaseEntryInterface $entry): ShipInterface
     {
-        $this->database_id = $databaseEntryId;
+        $this->databaseEntry = $entry;
         return $this;
     }
 
@@ -1097,7 +1104,7 @@ class Ship implements ShipInterface
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            fn (int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
+            fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -1113,7 +1120,7 @@ class Ship implements ShipInterface
     {
         return array_filter(
             $this->getStorage()->getValues(),
-            fn (StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
+            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
     }
 

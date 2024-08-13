@@ -598,13 +598,6 @@ class ShipRump implements ShipRumpInterface
     }
 
     #[Override]
-    public function setDatabaseId(?int $databaseId): ShipRumpInterface
-    {
-        $this->database_id = $databaseId;
-        return $this;
-    }
-
-    #[Override]
     public function getCommodityId(): ?int
     {
         return $this->commodity_id;

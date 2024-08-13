@@ -53,7 +53,7 @@ interface ColonyInterface extends PlanetFieldHostInterface
 
     public function getDatabaseId(): ?int;
 
-    public function setDatabaseId(?int $database_id): ColonyInterface;
+    public function setDatabaseEntry(?DatabaseEntryInterface $entry): ColonyInterface;
 
     public function getPopulationlimit(): int;
 

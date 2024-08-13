@@ -104,14 +104,6 @@ class StarSystemType implements StarSystemTypeInterface
     }
 
     #[Override]
-    public function setDatabaseEntryId(?int $databaseEntryId): StarSystemTypeInterface
-    {
-        $this->database_id = $databaseEntryId;
-
-        return $this;
-    }
-
-    #[Override]
     public function getDatabaseEntry(): ?DatabaseEntryInterface
     {
         return $this->databaseEntry;

@@ -62,14 +62,6 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
         return $this->database_id;
     }
 
-    #[Override]
-    public function setDatabaseId(int $databaseId): ShipRumpCategoryInterface
-    {
-        $this->database_id = $databaseId;
-
-        return $this;
-    }
-
     //@deprecated
     #[Override]
     public function getPoints(): int

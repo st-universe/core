@@ -128,6 +128,13 @@ class Colony implements ColonyInterface
     private ?TorpedoTypeInterface $torpedo = null;
 
     /**
+     * @var DatabaseEntryInterface|null
+     */
+    #[OneToOne(targetEntity: 'DatabaseEntry')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
+    private ?DatabaseEntryInterface $databaseEntry;
+
+    /**
      * @var ArrayCollection<int, FleetInterface>
      */
     #[OneToMany(targetEntity: 'Fleet', mappedBy: 'defendedColony')]
@@ -345,9 +352,9 @@ class Colony implements ColonyInterface
     }
 
     #[Override]
-    public function setDatabaseId(?int $database_id): ColonyInterface
+    public function setDatabaseEntry(?DatabaseEntryInterface $entry): ColonyInterface
     {
-        $this->database_id = $database_id;
+        $this->databaseEntry = $entry;
         return $this;
     }
 
@@ -564,7 +571,7 @@ class Colony implements ColonyInterface
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            fn (int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
+            fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -615,7 +622,7 @@ class Colony implements ColonyInterface
     {
         return array_filter(
             $this->getStorage()->getValues(),
-            fn (StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
+            fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
     }
 

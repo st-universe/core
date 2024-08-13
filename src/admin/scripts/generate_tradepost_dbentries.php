@@ -29,7 +29,7 @@ Init::run(function (ContainerInterface $dic): void {
 
         $repository->save($db);
 
-        $obj->setDatabaseId($db->getId());
+        $obj->setDatabaseEntry($db);
 
         $shipRepo->save($obj);
     }

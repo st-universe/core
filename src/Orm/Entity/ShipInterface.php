@@ -123,7 +123,7 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function getDatabaseId(): int;
 
-    public function setDatabaseId(int $databaseEntryId): ShipInterface;
+    public function setDatabaseEntry(DatabaseEntryInterface $entry): ShipInterface;
 
     public function isDestroyed(): bool;
 

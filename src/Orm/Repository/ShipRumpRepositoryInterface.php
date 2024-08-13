@@ -14,6 +14,8 @@ use Stu\Orm\Entity\UserInterface;
  */
 interface ShipRumpRepositoryInterface extends ObjectRepository
 {
+    public function save(ShipRumpInterface $obj): void;
+
     /**
      * @return array<array{rump_id: int, amount: int, name: string}>
      */

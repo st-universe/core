@@ -63,7 +63,7 @@ class ColonyClass implements ColonyClassInterface
      */
     #[OneToOne(targetEntity: 'DatabaseEntry')]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry;
 
     /**
      * @var ArrayCollection<int, ColonyClassDepositInterface>
@@ -127,9 +127,9 @@ class ColonyClass implements ColonyClassInterface
     }
 
     #[Override]
-    public function setDatabaseId(?int $databaseId): ColonyClassInterface
+    public function setDatabaseEntry(?DatabaseEntryInterface $entry): ColonyClassInterface
     {
-        $this->database_id = $databaseId;
+        $this->databaseEntry = $entry;
 
         return $this;
     }

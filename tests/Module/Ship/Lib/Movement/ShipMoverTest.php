@@ -73,7 +73,7 @@ class ShipMoverTest extends StuTestCase
             ->andReturn("SHIP");
         $ship->shouldReceive('isFleetLeader')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn(false);
         $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
@@ -93,7 +93,7 @@ class ShipMoverTest extends StuTestCase
             ->andReturn($ship);
         $wrapper->shouldReceive('getFleetWrapper')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn(null);
 
         $map->shouldReceive('getFieldType->getPassable')
