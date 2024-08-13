@@ -12,6 +12,7 @@ use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
+use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\UserInterface;
@@ -21,6 +22,14 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ShipRumpRepository extends EntityRepository implements ShipRumpRepositoryInterface
 {
+    #[Override]
+    public function save(ShipRumpInterface $post): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($post);
+    }
+
     #[Override]
     public function getGroupedInfoByUser(UserInterface $user): array
     {

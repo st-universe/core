@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Crunz\Schedule;
 use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Manager\TickManagerRunner;
@@ -15,7 +16,12 @@ use Stu\Module\Tick\Ship\ShipTickRunner;
 $schedule = new Schedule();
 
 //split colony tick into groups
-$colonyTickGroupCount = 3;
+$colonyTickGroupCount = Init::getContainer()
+    ->get(StuConfigInterface::class)
+    ->getGameSettings()
+    ->getColonySettings()
+    ->getTickWorker();
+
 for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
     $schedule
         ->run(function () use ($groupId, $colonyTickGroupCount): void {

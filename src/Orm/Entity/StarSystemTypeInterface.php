@@ -12,8 +12,6 @@ interface StarSystemTypeInterface
 
     public function getDatabaseEntryId(): ?int;
 
-    public function setDatabaseEntryId(?int $databaseEntryId): StarSystemTypeInterface;
-
     public function getDatabaseEntry(): ?DatabaseEntryInterface;
 
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemTypeInterface;

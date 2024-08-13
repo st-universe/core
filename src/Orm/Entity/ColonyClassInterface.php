@@ -22,7 +22,7 @@ interface ColonyClassInterface
 
     public function getDatabaseId(): ?int;
 
-    public function setDatabaseId(?int $databaseId): ColonyClassInterface;
+    public function setDatabaseEntry(?DatabaseEntryInterface $entry): ColonyClassInterface;
 
     /**
      * @return array<int>

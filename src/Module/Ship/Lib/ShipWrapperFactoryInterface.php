@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -13,7 +14,7 @@ interface ShipWrapperFactoryInterface
     /**
      * @param array<ShipInterface> $ships
      *
-     * @return Collection<int, ShipWrapperInterface>
+     * @return ArrayCollection<int, ShipWrapperInterface>
      */
     public function wrapShips(array $ships): Collection;
 

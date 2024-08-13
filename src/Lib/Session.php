@@ -82,77 +82,107 @@ final class Session implements SessionInterface
     {
         $this->destroyLoginCookies();
 
-        $result = $this->userRepository->getByLogin(mb_strtolower($login));
-        if ($result === null) {
+        $user = $this->loadUser($login);
+
+        $this->checkPassword($user, $password);
+        $this->checkUser($user);
+        $this->updateUser($user);
+        $this->setUser($user);
+
+        $this->sessionStringRepository->truncate($user);
+
+        if (!$user->isSaveLogin()) {
+            $cookieString = $this->buildCookieString($user);
+            $this->loggerUtil->log(sprintf('noSaveLogin, set cookieString: %s', $cookieString));
+            setcookie('sstr', $cookieString, ['expires' => time() + TimeConstants::TWO_DAYS_IN_SECONDS]);
+        }
+
+        // register login
+        $this->addIpTableEntry($user);
+
+        return true;
+    }
+
+    private function loadUser(string $login): UserInterface
+    {
+        $user = $this->userRepository->getByLogin(mb_strtolower($login));
+        if ($user === null) {
             if (is_numeric($login)) {
-                $result = $this->userRepository->find((int)$login);
+                $user = $this->userRepository->find((int)$login);
             }
 
-            if ($result === null) {
+            if ($user === null) {
                 throw new LoginException(_('Login oder Passwort inkorrekt'));
             }
         }
 
-        $password_hash = $result->getPassword();
+        return $user;
+    }
+
+    private function checkPassword(UserInterface $user, string $password): void
+    {
+        $password_hash = $user->getPassword();
 
         if (!password_verify($password, $password_hash)) {
             throw new LoginException(_('Login oder Passwort inkorrekt'));
         }
 
         if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
-            $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
+            $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
-            $this->userRepository->save($result);
+            $this->userRepository->save($user);
         }
+    }
 
-        if ($result->getState() === UserEnum::USER_STATE_NEW) {
-            $result->setState(UserEnum::USER_STATE_UNCOLONIZED);
-
-            $this->userRepository->save($result);
-        }
-        if ($result->isLocked()) {
+    private function checkUser(UserInterface $user): void
+    {
+        if ($user->isLocked()) {
             /** @var UserLockInterface $userLock */
-            $userLock = $result->getUserLock();
+            $userLock = $user->getUserLock();
 
             throw new UserLockedException(
                 _('Dein Spieleraccount wurde gesperrt'),
                 sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
             );
         }
-        if ($result->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
+        if ($user->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
             throw new LoginException(_('Dein Spieleraccount ist zur Löschung vorgesehen'));
         }
+    }
 
-        if ($result->isVacationMode()) {
-            $result->setVacationMode(false);
+    private function updateUser(UserInterface $user): void
+    {
+        if ($user->getState() === UserEnum::USER_STATE_NEW) {
+            $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
+
+            $this->userRepository->save($user);
         }
 
-        $this->userRepository->save($result);
+        if ($user->isVacationMode()) {
+            $user->setVacationMode(false);
+        }
 
-        $_SESSION['uid'] = $result->getId();
+        $this->userRepository->save($user);
+    }
+
+    private function setUser(UserInterface $user): void
+    {
+        $_SESSION['uid'] = $user->getId();
         $_SESSION['login'] = 1;
 
-        $this->user = $result;
+        $this->user = $user;
+    }
 
-        $this->sessionStringRepository->truncate($result);
-
-        if (!$result->isSaveLogin()) {
-            $cookieString = $this->buildCookieString($result);
-            $this->loggerUtil->log(sprintf('noSaveLogin, set cookieString: %s', $cookieString));
-            setcookie('sstr', $cookieString, ['expires' => time() + TimeConstants::TWO_DAYS_IN_SECONDS]);
-        }
-
-        // Login verzeichnen
+    private function addIpTableEntry(UserInterface $user): void
+    {
         $ipTableEntry = $this->userIpTableRepository->prototype();
-        $ipTableEntry->setUser($result);
+        $ipTableEntry->setUser($user);
         $ipTableEntry->setIp((string) getenv('REMOTE_ADDR'));
         $ipTableEntry->setSessionId((string) session_id());
         $ipTableEntry->setUserAgent((string) getenv('HTTP_USER_AGENT'));
         $ipTableEntry->setStartDate(new DateTime());
 
         $this->userIpTableRepository->save($ipTableEntry);
-
-        return true;
     }
 
     private function buildCookieString(UserInterface $user): string
@@ -195,50 +225,40 @@ final class Session implements SessionInterface
             $this->destroySession();
             return;
         }
-        $result = $this->userRepository->find($uid);
-        if ($result === null) {
+        $user = $this->userRepository->find($uid);
+        if ($user === null) {
             $this->destroySession();
             return;
         }
-        if ($this->buildCookieString($result) !== $sstr) {
+        if ($this->buildCookieString($user) !== $sstr) {
             $this->destroySession();
             return;
         }
-        if ($result->getState() == UserEnum::USER_STATE_NEW) {
+        if ($user->getState() == UserEnum::USER_STATE_NEW) {
             throw new SessionInvalidException("Aktivierung");
         }
-        if ($result->isLocked()) {
+        if ($user->isLocked()) {
             throw new SessionInvalidException("Gesperrt");
         }
-        if ($result->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
+        if ($user->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
             throw new SessionInvalidException("Löschung");
         }
-        if ($result->isVacationMode() === true) {
-            $result->setVacationMode(false);
+        if ($user->isVacationMode() === true) {
+            $user->setVacationMode(false);
         }
-        $this->userRepository->save($result);
+        $this->userRepository->save($user);
 
-        $_SESSION['uid'] = $result->getId();
-        $_SESSION['login'] = 1;
+        $this->setUser($user);
 
-        $this->user = $result;
-
-        $this->sessionStringRepository->truncate($result);
+        $this->sessionStringRepository->truncate($user);
 
         //start session if not already active
         if (session_id() == '') {
             session_start();
         }
 
-        // Login verzeichnen
-        $ipTableEntry = $this->userIpTableRepository->prototype();
-        $ipTableEntry->setUser($result);
-        $ipTableEntry->setIp(getenv('REMOTE_ADDR'));
-        $ipTableEntry->setSessionId(session_id());
-        $ipTableEntry->setUserAgent(getenv('HTTP_USER_AGENT'));
-        $ipTableEntry->setStartDate(new DateTime());
-
-        $this->userIpTableRepository->save($ipTableEntry);
+        // register login
+        $this->addIpTableEntry($user);
     }
 
     private function chklogin(): void

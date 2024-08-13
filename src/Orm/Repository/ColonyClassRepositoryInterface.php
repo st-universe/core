@@ -13,6 +13,8 @@ use Stu\Orm\Entity\ColonyClassInterface;
  */
 interface ColonyClassRepositoryInterface extends ObjectRepository
 {
+    public function save(ColonyClassInterface $obj): void;
+
     /**
      * @return list<ColonyClassInterface>
      */

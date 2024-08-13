@@ -184,11 +184,6 @@ parameters:
 			path: src/Lib/Session.php
 
 		-
-			message: "#^Parameter \\#1 \\$ip of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setIp\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
 			message: "#^Parameter \\#1 \\$name of function setcookie expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Lib/Session.php
@@ -199,22 +194,12 @@ parameters:
 			path: src/Lib/Session.php
 
 		-
-			message: "#^Parameter \\#1 \\$sessionId of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setSessionId\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
 			message: "#^Parameter \\#1 \\$sessionId of method Stu\\\\Orm\\\\Repository\\\\UserIpTableRepositoryInterface\\:\\:findBySessionId\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Lib/Session.php
 
 		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Repository\\\\SessionStringRepositoryInterface\\:\\:truncate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Parameter \\#1 \\$userAgent of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setUserAgent\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Lib/Session.php
 
@@ -2195,16 +2180,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$sql of method Doctrine\\\\DBAL\\\\Connection\\:\\:executeQuery\\(\\) expects literal\\-string, non\\-falsy\\-string given\\.$#"
 			count: 1
 			path: src/Orm/Repository/UserMapRepository.php
-
-		-
-			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\:\\:save\\(\\)\\.$#"
-			count: 1
-			path: src/admin/scripts/generate_colonyclass_dbentries.php
-
-		-
-			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\:\\:save\\(\\)\\.$#"
-			count: 1
-			path: src/admin/scripts/generate_rump_dbentries.php
 
 		-
 			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"
