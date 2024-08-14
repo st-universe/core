@@ -144,7 +144,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COALESCE(min(l.cx),0) as minx, COALESCE(max(l.cx),0) as maxx, COALESCE(min(l,cy),0) as miny, COALESCE(max(l.cy),0) as maxy
+                'SELECT COALESCE(min(l.cx),0) as minx, COALESCE(max(l.cx),0) as maxx, COALESCE(min(l.cy),0) as miny, COALESCE(max(l.cy),0) as maxy
                 FROM stu_flight_sig fs
                 JOIN stu_location l ON l.id = fs.location_id
                 WHERE fs.user_id = :userId',
