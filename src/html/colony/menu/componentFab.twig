@@ -1,119 +1,135 @@
-{% embed "html/colony/menu/container.twig" %}
+{% embed "html/colony/menu/submenuForm.twig" %}
 {% block containment %}
 
 <div class="box" style="width: 40vw;">
     <input type="hidden" name="func" id="func" value="{{ FUNC.getFunction }}" />
     <input type="hidden" id="colony-id" value="{{ HOST.getId }}" />
     <div class="box_title">Komponentenbaumenü</div>
-</br>    
+    </br>
     <div id="module-container">
         {% for rumpId, modulesByType in COMBINED_MODULES %}
-        <div class="rump-modules" id="rump-modules-{{ rumpId }}" style="display: {% if rumpId == 0 %}block{% else %}none{% endif %};">
-                {% for type, levels in modulesByType.no_buildplan %}
-                    {% set moduleType = type %}
-                    
-                    {% for level, modules in levels %}
-                        <div id="module-level-{{ type }}-{{ level }}-{{ rumpId }}" class="module-level" style="display: block;">
+        <div class="rump-modules" id="rump-modules-{{ rumpId }}"
+            style="display: {% if rumpId == 0 %}block{% else %}none{% endif %};">
+            {% for type, levels in modulesByType.no_buildplan %}
+            {% set moduleType = type %}
+
+            {% for level, modules in levels %}
+            <div id="module-level-{{ type }}-{{ level }}-{{ rumpId }}" class="module-level" style="display: block;">
+                <table class="tcal">
+                    <tr>
+                        <th>Verfügbare Komponenten</th>
+                        <th class="responsive-hide">In Bau</th>
+                        <th class="responsive-hide">Lagernd</th>
+                        <th class="responsive-hide">Anzahl</th>
+                    </tr>
+                    {% for data in modules %}
+                    {% set moduleId = data.getModuleId %}
+                    <tr class="row" data-rump-ids="{{ data.getModule.getRumpIds | join(',') }}"
+                        data-module-type="{{ type }}" data-module-level="{{ level }}" data-module-id="{{ moduleId }}">
+                        <td>
+                            <div style="margin-bottom: 5px;">
+                                <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
+                            </div>
+                            <div style="display: table-cell;">
+                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                                {{ data.getEnergyCost }}
+                            </div>
+                            {% for cost in data.getConstructionCosts %}
+                            <div style="display: table-cell; padding-left: 4px;">
+                                <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png"
+                                    title="{{ cost.getCommodity.getName }}" />
+                            </div>
+                            <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
+                            {% endfor %}
+                        </td>
+                        <td id="module_{{ moduleId }}_action_{{ rumpId }}" class="responsive-hide"
+                            style="vertical-align: middle; text-align: center;">
+                            {% if data.getAmountQueued %}
+                            <div>
+                                <div style="display: table-cell; vertical-align:middle;">
+                                    <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
+                                        id="module_{{ moduleId }}_count_{{ rumpId }}"
+                                        value="{{ data.getAmountQueued }}" />
+                                </div>
+                                <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
+                                        onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
+                                        onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
+                                        <img src="/assets/buttons/x1.png"
+                                            name="cancelModuleList{{ moduleId }}_{{ rumpId }}" title="Anzahl löschen" />
+                                    </a>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div>-</div>
+                            {% endif %}
+                        </td>
+                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                            {{ data.getAmountInStock }}
+                        </td>
+                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}"
+                                onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                                oninput="setModuleInput(this)" />
+                        </td>
+                    </tr>
+                    <tr class="responsive-show">
+                        <td colspan="3">
                             <table class="tcal">
                                 <tr>
-                                    <th>Verfügbare Komponenten</th>
-                                    <th class="responsive-hide">In Bau</th>
-                                    <th class="responsive-hide">Lagernd</th>
-                                    <th class="responsive-hide">Anzahl</th>
+                                    <th>In Bau</th>
+                                    <th>Lagernd</th>
+                                    <th>Anzahl</th>
                                 </tr>
-                                {% for data in modules %}
-                                    {% set moduleId = data.getModuleId %}
-                                    <tr class="row" data-rump-ids="{{ data.getModule.getRumpIds | join(',') }}" data-module-type="{{ type }}" data-module-level="{{ level }}" data-module-id="{{ moduleId }}">
-                                        <td>
-                                            <div style="margin-bottom: 5px;">
-                                                <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
+                                <tr>
+                                    <td id="module_{{ moduleId }}_action_{{ rumpId }}"
+                                        style="vertical-align: middle; text-align: center;">
+                                        {% if data.getAmountQueued %}
+                                        <div>
+                                            <div style="display: table-cell; vertical-align:middle;">
+                                                <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
+                                                    id="module_{{ moduleId }}_count_{{ rumpId }}"
+                                                    value="{{ data.getAmountQueued }}" />
                                             </div>
-                                            <div style="display: table-cell;">
-                                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
-                                                {{ data.getEnergyCost }}
+                                            <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                                <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
+                                                    onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
+                                                    onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
+                                                    <img src="/assets/buttons/x1.png"
+                                                        name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
+                                                        title="Anzahl löschen" />
+                                                </a>
                                             </div>
-                                            {% for cost in data.getConstructionCosts %}
-                                                <div style="display: table-cell; padding-left: 4px;">
-                                                    <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png" title="{{ cost.getCommodity.getName }}" />
-                                                </div>
-                                                <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
-                                            {% endfor %}
-                                        </td>
-                                        <td id="module_{{ moduleId }}_action_{{ rumpId }}" class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                            {% if data.getAmountQueued %}
-                                                <div>
-                                                    <div style="display: table-cell; vertical-align:middle;">
-                                                        <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ rumpId }}" value="{{ data.getAmountQueued }}" />
-                                                    </div>
-                                                    <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                        <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
-                                                            onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
-                                                            onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
-                                                            <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
-                                                                title="Anzahl löschen" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            {% else %}
-                                                <div>-</div>
-                                            {% endif %}
-                                        </td>
-                                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                            {{ data.getAmountInStock }}
-                                        </td>
-                                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
-                                        </td>
-                                    </tr>
-                                    <tr class="responsive-show">
-                                        <td colspan="3">
-                                            <table class="tcal">
-                                                <tr>
-                                                    <th>In Bau</th>
-                                                    <th>Lagernd</th>
-                                                    <th>Anzahl</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="module_{{ moduleId }}_action_{{ rumpId }}" style="vertical-align: middle; text-align: center;">
-                                                        {% if data.getAmountQueued %}
-                                                            <div>
-                                                                <div style="display: table-cell; vertical-align:middle;">
-                                                                    <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ rumpId }}" value="{{ data.getAmountQueued }}" />
-                                                                </div>
-                                                                <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
-                                                                        onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
-                                                                        onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
-                                                                        <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
-                                                                            title="Anzahl löschen" />
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        {% else %}
-                                                            <div>-</div>
-                                                        {% endif %}
-                                                    </td>
-                                                    <td style="vertical-align: middle; text-align: center;">
-                                                        {{ data.getAmountInStock }}
-                                                    </td>
-                                                    <td style="vertical-align: middle; text-align: center;">
-                                                        <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                                        </div>
+                                        {% else %}
+                                        <div>-</div>
+                                        {% endif %}
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        {{ data.getAmountInStock }}
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        <input type="text" size="2" name="module[{{ moduleId }}]"
+                                            data-module-id="{{ moduleId }}"
+                                            onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                                            oninput="setModuleInput(this);" />
+                                    </td>
+                                </tr>
                             </table>
-                        </div>
+                        </td>
+                    </tr>
                     {% endfor %}
-                {% endfor %}
+                </table>
             </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
         {% endfor %}
     </div>
-    
-    <div style="text-align: center; margin-top: 10px;">
-        <input type="submit" style="cursor: pointer;" id="producebutton" name="B_CREATE_MODULES" value="Herstellen" onclick="collectModuleData()" />
+
+    <div style="text-align: center; margin-top: 10px;" class="fabutton">
+        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); startModuleProduction();"
+            class="fabutton">Modulherstellung</a>
     </div>
 
 </div>
@@ -123,19 +139,21 @@
         .responsive-hide {
             display: none;
         }
+
         .responsive-show {
             display: table-row;
         }
     }
+
     @media (min-width: 1201px) {
         .responsive-show {
             display: none;
         }
     }
+
     .level-box button.active {
-        background-color: #d3d3d3; 
+        background-color: #d3d3d3;
     }
 </style>
 {% endblock %}
 {% endembed %}
-

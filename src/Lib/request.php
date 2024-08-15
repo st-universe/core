@@ -140,6 +140,14 @@ class request
     /**
      * @return array<int|string, mixed>
      */
+    public static function getArrayFatal(string $var): array
+    {
+        return self::returnArray(self::getVarByMethod(self::getvars(), $var, true));
+    }
+
+    /**
+     * @return array<int|string, mixed>
+     */
     public static function postArray(string $var): array
     {
         return self::returnArray(self::getVarByMethod(self::postvars(), $var));

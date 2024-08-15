@@ -531,6 +531,35 @@ function calculateLocalCrew() {
 	document.getElementById('calculatedCrew').innerText = result.toString();
 	document.getElementById('calculatedCrewResponsive').innerText = result.toString();
 }
+
+function syncInputs(id1, id2) {
+	const value = document.getElementById(id1).value;
+	document.getElementById(id2).value = value;
+}
+
+/**
+ * All module production functionality
+ */
+
+var moduleProductionInputs = new Map();
+function clearModuleInputs() {
+	moduleProductionInputs.clear();
+}
+
+function setModuleInput(input) {
+	moduleProductionInputs.set(input.getAttribute('data-module-id'), input.value);
+}
+
+function startModuleProduction() {
+
+	let colonyId = document.getElementById('colony-id').value;
+	let func = document.getElementById('func').value;
+	let moduleIds = [...moduleProductionInputs.keys()].join("&moduleids[]=");
+	let values = [...moduleProductionInputs.values()].join("&values[]=");
+
+	actionToInnerContent('B_CREATE_MODULES', `id=${colonyId}&func=${func}&moduleids[]=${moduleIds}&values[]=${values}&sstr=${sstr}`);
+}
+
 function filterByRump() {
 	const selectedRump = document.getElementById('rump-select').value;
 	const allRumpModules = document.querySelectorAll('.rump-modules');
@@ -642,58 +671,4 @@ function toggleModuleLevel(type, level, rumpId = 'all', event) {
 		event.target.classList.remove('active');
 		moduleLevelDiv.style.display = 'none';
 	}
-}
-
-function syncAllInputFields(input) {
-	const moduleId = input.getAttribute('data-module-id');
-	const value = input.value;
-
-	const inputs = document.querySelectorAll(`input[data-module-id="${moduleId}"]`);
-	inputs.forEach(inp => {
-		inp.value = value;
-	});
-}
-
-function collectModuleData() {
-	const moduleData = {};
-
-	const inputs = document.querySelectorAll('input[data-module-id]');
-	inputs.forEach(input => {
-		const value = input.value;
-		if (value) {
-			const moduleId = input.getAttribute('data-module-id');
-			moduleData[moduleId] = value;
-		}
-	});
-
-	const form = document.createElement('form');
-	form.method = 'POST';
-	form.action = 'colony.php';
-
-	const funcInput = document.createElement('input');
-	funcInput.type = 'hidden';
-	funcInput.name = 'func';
-	funcInput.value = document.getElementById('func').value;
-	form.appendChild(funcInput);
-
-	const colonyIdInput = document.createElement('input');
-	colonyIdInput.type = 'hidden';
-	colonyIdInput.name = 'id';
-	colonyIdInput.value = document.getElementById('colony-id').value;
-	form.appendChild(colonyIdInput);
-
-	for (const moduleId in moduleData) {
-		const input = document.createElement('input');
-		input.type = 'hidden';
-		input.name = `module[${moduleId}]`;
-		input.value = moduleData[moduleId];
-		form.appendChild(input);
-	}
-
-	document.body.appendChild(form);
-	form.submit();
-}
-function syncInputs(id1, id2) {
-    const value = document.getElementById(id1).value;
-    document.getElementById(id2).value = value;
 }
