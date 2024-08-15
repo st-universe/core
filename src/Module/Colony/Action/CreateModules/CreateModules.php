@@ -39,8 +39,9 @@ final class CreateModules implements ActionControllerInterface
 
         $colonyId = $colony->getId();
 
-        $modules = request::postArrayFatal('module');
-        $func = request::postIntFatal('func');
+        $moduleIds = request::getArrayFatal('moduleids');
+        $values = request::getArrayFatal('values');
+        $func = request::getIntFatal('func');
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $colony,
@@ -58,17 +59,17 @@ final class CreateModules implements ActionControllerInterface
         }
 
         $storage = $colony->getStorage();
-        foreach ($modules as $module_id => $count) {
-            if (!array_key_exists($module_id, $modules_av)) {
+        foreach ($moduleIds as $key => $moduleId) {
+            if (!array_key_exists($moduleId, $modules_av)) {
                 continue;
             }
-            $count = (int)$count;
+            $count = (int)$values[$key];
             if ($count <= 0) {
                 continue;
             }
             $isEnoughAvailable = false;
             $initialcount = $count;
-            $module = $modules_av[$module_id]->getModule();
+            $module = $modules_av[$moduleId]->getModule();
             $missingcounteps = 0;
             $missingeps = 0;
             if ($module->getEcost() * $initialcount > $colony->getEps()) {
@@ -104,7 +105,7 @@ final class CreateModules implements ActionControllerInterface
                 $colony->lowerEps($count * $module->getEcost());
 
                 $this->colonyRepository->save($colony);
-                if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $module_id, $func)) !== null) {
+                if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $moduleId, $func)) !== null) {
                     $queue->setAmount($queue->getAmount() + $count);
 
                     $this->moduleQueueRepository->save($queue);

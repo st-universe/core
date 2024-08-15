@@ -1,14 +1,14 @@
-{% embed "html/colony/menu/container.twig" %}
+{% embed "html/colony/menu/submenuForm.twig" %}
 {% block containment %}
 
 <div class="box" style="width: 40vw;">
     <input type="hidden" name="func" id="func" value="{{ FUNC.getFunction }}" />
     <input type="hidden" id="colony-id" value="{{ HOST.getId }}" />
     <div class="box_title">Modulbaumenü</div>
-</br>
+    </br>
     <div id="ship-rumps">
         <select style="width:40%" id="rump-select" onchange="filterByRump()">
-            <option value="0" >Alle Rümpfe</option>
+            <option value="0">Alle Rümpfe</option>
             {% for rump in SHIP_RUMPS %}
             <option value="{{ rump.getId }}">{{ rump.getName }}</option>
             {% endfor %}
@@ -16,272 +16,320 @@
         <select style="width:55%" id="buildplan-select" onchange="filterByBuildplan()">
             <option value="0" selected>Alle Baupläne</option>
             {% for rumpId, plans in BUILDPLANS %}
-                {% for plan in plans %}
-                <option style="display: none;" value="{{ plan.getId }}" data-rump-id="{{ rumpId }}">{{ plan.getName }}</option>
-                {% endfor %}
+            {% for plan in plans %}
+            <option style="display: none;" value="{{ plan.getId }}" data-rump-id="{{ rumpId }}">{{ plan.getName }}
+            </option>
+            {% endfor %}
             {% endfor %}
         </select>
     </div>
-    
+
     <div id="module-container">
         {% for rumpId, modulesByType in COMBINED_MODULES %}
-        <div class="rump-modules" id="rump-modules-{{ rumpId }}" style="display: {% if rumpId == 0 %}block{% else %}none{% endif %};">
-                {% for type, levels in modulesByType.no_buildplan %}
-                    {% set moduleType = type %}
-                    <div id="module_tab_{{ moduleType }}_{{ rumpId }}" class="border_box {{ MODULE_TYPES[type].cssClass }}" style="margin-top: 5px" onclick="toggleModuleType({{ moduleType }}, {{ rumpId }});">
-                        <div class="module-header" style="display: flex; align-items: center; cursor: pointer;">
-                            <img src="{{ MODULE_TYPES[type].image }}" id="tab_image_mod_{{ moduleType }}_{{ rumpId }}" alt="{{ MODULE_TYPES[type].name }}" />
-                            <span> {{ MODULE_TYPES[type].name }}</span>
-                        </div>
-                        
-                        <div class="level-box" id="level-box-{{ moduleType }}_{{ rumpId }}" style="display: none; flex-wrap: wrap; gap: 10px; margin-left: 20px; margin-top: 10px;" onclick="event.stopPropagation();">
-                            <span>Level:</span>
-                            {% for level, modules in levels %}
-                                <button type="button" class="level-button" onclick="toggleModuleLevel({{ type }}, {{ level }}, {{ rumpId }}, event)" style="cursor: pointer; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px;">{{ level }}</button>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    
+        <div class="rump-modules" id="rump-modules-{{ rumpId }}"
+            style="display: {% if rumpId == 0 %}block{% else %}none{% endif %};">
+            {% for type, levels in modulesByType.no_buildplan %}
+            {% set moduleType = type %}
+            <div id="module_tab_{{ moduleType }}_{{ rumpId }}" class="border_box {{ MODULE_TYPES[type].cssClass }}"
+                style="margin-top: 5px" onclick="toggleModuleType({{ moduleType }}, {{ rumpId }});">
+                <div class="module-header" style="display: flex; align-items: center; cursor: pointer;">
+                    <img src="{{ MODULE_TYPES[type].image }}" id="tab_image_mod_{{ moduleType }}_{{ rumpId }}"
+                        alt="{{ MODULE_TYPES[type].name }}" />
+                    <span> {{ MODULE_TYPES[type].name }}</span>
+                </div>
+
+                <div class="level-box" id="level-box-{{ moduleType }}_{{ rumpId }}"
+                    style="display: none; flex-wrap: wrap; gap: 10px; margin-left: 20px; margin-top: 10px;"
+                    onclick="event.stopPropagation();">
+                    <span>Level:</span>
                     {% for level, modules in levels %}
-                        <div id="module-level-{{ type }}-{{ level }}-{{ rumpId }}" class="module-level" style="display: none;">
-                            <table class="tcal">
-                                <tr>
-                                    <th>Verfügbare Module</th>
-                                    <th class="responsive-hide">In Bau</th>
-                                    <th class="responsive-hide">Lagernd</th>
-                                    <th class="responsive-hide">Anzahl</th>
-                                </tr>
-                                {% for data in modules %}
-                                    {% set moduleId = data.getModuleId %}
-                                    <tr class="row" data-rump-ids="{{ data.getModule.getRumpIds | join(',') }}" data-module-type="{{ type }}" data-module-level="{{ level }}" data-module-id="{{ moduleId }}">
-                                        <td>
-                                            <div style="margin-bottom: 5px;">
-                                                <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
-                                            </div>
-                                            <div style="display: table-cell;">
-                                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
-                                                {{ data.getEnergyCost }}
-                                            </div>
-                                            {% for cost in data.getConstructionCosts %}
-                                                <div style="display: table-cell; padding-left: 4px;">
-                                                    <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png" title="{{ cost.getCommodity.getName }}" />
-                                                </div>
-                                                <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
-                                            {% endfor %}
-                                        </td>
-                                        <td id="module_{{ moduleId }}_action_{{ rumpId }}" class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                            {% if data.getAmountQueued %}
-                                                <div>
-                                                    <div style="display: table-cell; vertical-align:middle;">
-                                                        <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ rumpId }}" value="{{ data.getAmountQueued }}" />
-                                                    </div>
-                                                    <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                        <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
-                                                            onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
-                                                            onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
-                                                            <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
-                                                                title="Anzahl löschen" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            {% else %}
-                                                <div>-</div>
-                                            {% endif %}
-                                        </td>
-                                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                            {{ data.getAmountInStock }}
-                                        </td>
-                                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
-                                        </td>
-                                    </tr>
-                                    <tr class="responsive-show">
-                                        <td colspan="3">
-                                            <table class="tcal">
-                                                <tr>
-                                                    <th>In Bau</th>
-                                                    <th>Lagernd</th>
-                                                    <th>Anzahl</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="module_{{ moduleId }}_action_{{ rumpId }}" style="vertical-align: middle; text-align: center;">
-                                                        {% if data.getAmountQueued %}
-                                                            <div>
-                                                                <div style="display: table-cell; vertical-align:middle;">
-                                                                    <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ rumpId }}" value="{{ data.getAmountQueued }}" />
-                                                                </div>
-                                                                <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
-                                                                        onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
-                                                                        onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
-                                                                        <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
-                                                                            title="Anzahl löschen" />
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        {% else %}
-                                                            <div>-</div>
-                                                        {% endif %}
-                                                    </td>
-                                                    <td style="vertical-align: middle; text-align: center;">
-                                                        {{ data.getAmountInStock }}
-                                                    </td>
-                                                    <td style="vertical-align: middle; text-align: center;">
-                                                        <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            {% for buildplanId, modulesByType in modulesByType.buildplans %}
-                <div class="buildplan-modules" id="buildplan-modules-{{ buildplanId }}" style="display: none;">
-                    {% for type, levels in modulesByType %}
-                        {% set moduleType = type %}
-                        <div id="module_tab_{{ moduleType }}_{{ buildplanId }}" class="border_box {{ MODULE_TYPES[type].cssClass }}" style="margin-top: 5px" onclick="toggleModuleType({{ moduleType }}, {{ buildplanId }});">
-                            <div class="module-header" style="display: flex; align-items: center; cursor: pointer;">
-                                <img src="{{ MODULE_TYPES[type].image }}" id="tab_image_mod_{{ moduleType }}_{{ buildplanId }}" alt="{{ MODULE_TYPES[type].name }}" />
-                                <span> {{ MODULE_TYPES[type].name }}</span>
-                            </div>
-                            
-                            <div class="level-box" id="level-box-{{ moduleType }}_{{ buildplanId }}" style="display: none; flex-wrap: wrap; gap: 10px; margin-left: 20px; margin-top: 10px;" onclick="event.stopPropagation();">
-                                <span>Level:</span>
-                                {% for level, modules in levels %}
-                                    <button type="button" class="level-button" onclick="toggleModuleLevel({{ type }}, {{ level }}, {{ buildplanId }}, event)" style="cursor: pointer; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px;">{{ level }}</button>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-                        {% for level, modules in levels %}
-                            <div id="module-level-{{ type }}-{{ level }}-{{ buildplanId }}" class="module-level" style="display: none;">
-                                <table class="tcal">
-                                    <tr>
-                                        <th>Verfügbare Module</th>
-                                        <th class="responsive-hide">In Bau</th>
-                                        <th class="responsive-hide">Lagernd</th>
-                                        <th class="responsive-hide">Anzahl</th>
-                                    </tr>
-                                    {% for data in modules %}
-                                        {% set moduleId = data.getModuleId %}
-                                        <tr class="row" data-rump-ids="{{ data.getModule.getRumpIds | join(',') }}" data-module-type="{{ type }}" data-module-level="{{ level }}" data-module-id="{{ moduleId }}">
-                                            <td>
-                                                <div style="margin-bottom: 5px;">
-                                                    <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
-                                                </div>
-                                                <div style="display: table-cell;">
-                                                    <img src="/assets/buttons/e_trans2.png" title="Energie" />
-                                                    {{ data.getEnergyCost }}
-                                                </div>
-                                                {% for cost in data.getConstructionCosts %}
-                                                    <div style="display: table-cell; padding-left: 4px;">
-                                                        <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png" title="{{ cost.getCommodity.getName }}" />
-                                                    </div>
-                                                    <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
-                                                {% endfor %}
-                                            </td>
-                                            <td id="module_{{ moduleId }}_action_{{ buildplanId }}" class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                                {% if data.getAmountQueued %}
-                                                    <div>
-                                                        <div style="display: table-cell; vertical-align:middle;">
-                                                            <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ buildplanId }}" value="{{ data.getAmountQueued }}" />
-                                                        </div>
-                                                        <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                            <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ buildplanId }});"
-                                                                onmouseover="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x2')"
-                                                                onmouseout="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x1')">
-                                                                <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ buildplanId }}"
-                                                                    title="Anzahl löschen" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                {% else %}
-                                                    <div>-</div>
-                                                {% endif %}
-                                            </td>
-                                            <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                                {{ data.getAmountInStock }}
-                                            </td>
-                                            <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                                                <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
-                                            </td>
-                                        </tr>
-                                        <tr class="responsive-show">
-                                            <td colspan="3">
-                                                <table class="tcal">
-                                                    <tr>
-                                                        <th>In Bau</th>
-                                                        <th>Lagernd</th>
-                                                        <th>Anzahl</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="module_{{ moduleId }}_action_{{ buildplanId }}" style="vertical-align: middle; text-align: center;">
-                                                            {% if data.getAmountQueued %}
-                                                                <div>
-                                                                    <div style="display: table-cell; vertical-align:middle;">
-                                                                        <input type="text" size="2" name="cancel_module[{{ moduleId }}]" id="module_{{ moduleId }}_count_{{ buildplanId }}" value="{{ data.getAmountQueued }}" />
-                                                                    </div>
-                                                                    <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-                                                                        <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ buildplanId }});"
-                                                                            onmouseover="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x2')"
-                                                                            onmouseout="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x1')">
-                                                                            <img src="/assets/buttons/x1.png" name="cancelModuleList{{ moduleId }}_{{ buildplanId }}"
-                                                                                title="Anzahl löschen" />
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            {% else %}
-                                                                <div>-</div>
-                                                            {% endif %}
-                                                        </td>
-                                                        <td style="vertical-align: middle; text-align: center;">
-                                                            {{ data.getAmountInStock }}
-                                                        </td>
-                                                        <td style="vertical-align: middle; text-align: center;">
-                                                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}" onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncAllInputFields(this)" />
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            </div>
-                        {% endfor %}
+                    <button type="button" class="level-button"
+                        onclick="toggleModuleLevel({{ type }}, {{ level }}, {{ rumpId }}, event)"
+                        style="cursor: pointer; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px;">{{
+                        level }}</button>
                     {% endfor %}
                 </div>
+            </div>
+
+            {% for level, modules in levels %}
+            <div id="module-level-{{ type }}-{{ level }}-{{ rumpId }}" class="module-level" style="display: none;">
+                <table class="tcal">
+                    <tr>
+                        <th>Verfügbare Module</th>
+                        <th class="responsive-hide">In Bau</th>
+                        <th class="responsive-hide">Lagernd</th>
+                        <th class="responsive-hide">Anzahl</th>
+                    </tr>
+                    {% for data in modules %}
+                    {% set moduleId = data.getModuleId %}
+                    <tr class="row" data-rump-ids="{{ data.getModule.getRumpIds | join(',') }}"
+                        data-module-type="{{ type }}" data-module-level="{{ level }}" data-module-id="{{ moduleId }}">
+                        <td>
+                            <div style="margin-bottom: 5px;">
+                                <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
+                            </div>
+                            <div style="display: table-cell;">
+                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                                {{ data.getEnergyCost }}
+                            </div>
+                            {% for cost in data.getConstructionCosts %}
+                            <div style="display: table-cell; padding-left: 4px;">
+                                <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png"
+                                    title="{{ cost.getCommodity.getName }}" />
+                            </div>
+                            <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
+                            {% endfor %}
+                        </td>
+                        <td id="module_{{ moduleId }}_action_{{ rumpId }}" class="responsive-hide"
+                            style="vertical-align: middle; text-align: center;">
+                            {% if data.getAmountQueued %}
+                            <div>
+                                <div style="display: table-cell; vertical-align:middle;">
+                                    <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
+                                        id="module_{{ moduleId }}_count_{{ rumpId }}"
+                                        value="{{ data.getAmountQueued }}" />
+                                </div>
+                                <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
+                                        onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
+                                        onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
+                                        <img src="/assets/buttons/x1.png"
+                                            name="cancelModuleList{{ moduleId }}_{{ rumpId }}" title="Anzahl löschen" />
+                                    </a>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div>-</div>
+                            {% endif %}
+                        </td>
+                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                            {{ data.getAmountInStock }}
+                        </td>
+                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}"
+                                onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                                oninput="setModuleInput(this);" />
+                        </td>
+                    </tr>
+                    <tr class="responsive-show">
+                        <td colspan="3">
+                            <table class="tcal">
+                                <tr>
+                                    <th>In Bau</th>
+                                    <th>Lagernd</th>
+                                    <th>Anzahl</th>
+                                </tr>
+                                <tr>
+                                    <td id="module_{{ moduleId }}_action_{{ rumpId }}"
+                                        style="vertical-align: middle; text-align: center;">
+                                        {% if data.getAmountQueued %}
+                                        <div>
+                                            <div style="display: table-cell; vertical-align:middle;">
+                                                <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
+                                                    id="module_{{ moduleId }}_count_{{ rumpId }}"
+                                                    value="{{ data.getAmountQueued }}" />
+                                            </div>
+                                            <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                                <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ rumpId }});"
+                                                    onmouseover="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x2')"
+                                                    onmouseout="cp('cancelModuleList{{ moduleId }}_{{ rumpId }}','buttons/x1')">
+                                                    <img src="/assets/buttons/x1.png"
+                                                        name="cancelModuleList{{ moduleId }}_{{ rumpId }}"
+                                                        title="Anzahl löschen" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <div>-</div>
+                                        {% endif %}
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        {{ data.getAmountInStock }}
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        <input type="text" size="2" name="module[{{ moduleId }}]"
+                                            data-module-id="{{ moduleId }}"
+                                            onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                                            oninput="setModuleInput(this);" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
             {% endfor %}
+            {% endfor %}
+        </div>
+        {% for buildplanId, modulesByType in modulesByType.buildplans %}
+        <div class="buildplan-modules" id="buildplan-modules-{{ buildplanId }}" style="display: none;">
+            {% for type, levels in modulesByType %}
+            {% set moduleType = type %}
+            <div id="module_tab_{{ moduleType }}_{{ buildplanId }}" class="border_box {{ MODULE_TYPES[type].cssClass }}"
+                style="margin-top: 5px" onclick="toggleModuleType({{ moduleType }}, {{ buildplanId }});">
+                <div class="module-header" style="display: flex; align-items: center; cursor: pointer;">
+                    <img src="{{ MODULE_TYPES[type].image }}" id="tab_image_mod_{{ moduleType }}_{{ buildplanId }}"
+                        alt="{{ MODULE_TYPES[type].name }}" />
+                    <span> {{ MODULE_TYPES[type].name }}</span>
+                </div>
+
+                <div class="level-box" id="level-box-{{ moduleType }}_{{ buildplanId }}"
+                    style="display: none; flex-wrap: wrap; gap: 10px; margin-left: 20px; margin-top: 10px;"
+                    onclick="event.stopPropagation();">
+                    <span>Level:</span>
+                    {% for level, modules in levels %}
+                    <button type="button" class="level-button"
+                        onclick="toggleModuleLevel({{ type }}, {{ level }}, {{ buildplanId }}, event)"
+                        style="cursor: pointer; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px;">{{
+                        level }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% for level, modules in levels %}
+            <div id="module-level-{{ type }}-{{ level }}-{{ buildplanId }}" class="module-level" style="display: none;">
+                <table class="tcal">
+                    <tr>
+                        <th>Verfügbare Module</th>
+                        <th class="responsive-hide">In Bau</th>
+                        <th class="responsive-hide">Lagernd</th>
+                        <th class="responsive-hide">Anzahl</th>
+                    </tr>
+                    {% for data in modules %}
+                    {% set moduleId = data.getModuleId %}
+                    <tr class="row" data-rump-ids="{{ data.getModule.getRumpIds | join(',') }}"
+                        data-module-type="{{ type }}" data-module-level="{{ level }}" data-module-id="{{ moduleId }}">
+                        <td>
+                            <div style="margin-bottom: 5px;">
+                                <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
+                            </div>
+                            <div style="display: table-cell;">
+                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
+                                {{ data.getEnergyCost }}
+                            </div>
+                            {% for cost in data.getConstructionCosts %}
+                            <div style="display: table-cell; padding-left: 4px;">
+                                <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png"
+                                    title="{{ cost.getCommodity.getName }}" />
+                            </div>
+                            <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
+                            {% endfor %}
+                        </td>
+                        <td id="module_{{ moduleId }}_action_{{ buildplanId }}" class="responsive-hide"
+                            style="vertical-align: middle; text-align: center;">
+                            {% if data.getAmountQueued %}
+                            <div>
+                                <div style="display: table-cell; vertical-align:middle;">
+                                    <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
+                                        id="module_{{ moduleId }}_count_{{ buildplanId }}"
+                                        value="{{ data.getAmountQueued }}" />
+                                </div>
+                                <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                    <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ buildplanId }});"
+                                        onmouseover="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x2')"
+                                        onmouseout="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x1')">
+                                        <img src="/assets/buttons/x1.png"
+                                            name="cancelModuleList{{ moduleId }}_{{ buildplanId }}"
+                                            title="Anzahl löschen" />
+                                    </a>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div>-</div>
+                            {% endif %}
+                        </td>
+                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                            {{ data.getAmountInStock }}
+                        </td>
+                        <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
+                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}"
+                                onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                                oninput="setModuleInput(this);" />
+                        </td>
+                    </tr>
+                    <tr class="responsive-show">
+                        <td colspan="3">
+                            <table class="tcal">
+                                <tr>
+                                    <th>In Bau</th>
+                                    <th>Lagernd</th>
+                                    <th>Anzahl</th>
+                                </tr>
+                                <tr>
+                                    <td id="module_{{ moduleId }}_action_{{ buildplanId }}"
+                                        style="vertical-align: middle; text-align: center;">
+                                        {% if data.getAmountQueued %}
+                                        <div>
+                                            <div style="display: table-cell; vertical-align:middle;">
+                                                <input type="text" size="2" name="cancel_module[{{ moduleId }}]"
+                                                    id="module_{{ moduleId }}_count_{{ buildplanId }}"
+                                                    value="{{ data.getAmountQueued }}" />
+                                            </div>
+                                            <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+                                                <a href="Javascript:cancelModuleQueueEntries({{ moduleId }}, {{ buildplanId }});"
+                                                    onmouseover="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x2')"
+                                                    onmouseout="cp('cancelModuleList{{ moduleId }}_{{ buildplanId }}','buttons/x1')">
+                                                    <img src="/assets/buttons/x1.png"
+                                                        name="cancelModuleList{{ moduleId }}_{{ buildplanId }}"
+                                                        title="Anzahl löschen" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <div>-</div>
+                                        {% endif %}
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        {{ data.getAmountInStock }}
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        <input type="text" size="2" name="module[{{ moduleId }}]"
+                                            data-module-id="{{ moduleId }}"
+                                            onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                                            oninput="setModuleInput(this);" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+        {% endfor %}
         {% endfor %}
     </div>
-    
-    <div style="text-align: center; margin-top: 10px;">
-        <input type="submit" style="cursor: pointer;" id="producebutton" name="B_CREATE_MODULES" value="Herstellen" onclick="collectModuleData()" />
+
+    <div style="text-align: center; margin-top: 10px;" class="fabutton">
+        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); startModuleProduction();"
+            class="fabutton">Modulherstellung</a>
     </div>
 
 </div>
-
+{% include 'html/executeJavascriptAfterRender.twig' %}
 <style>
     @media (max-width: 1200px) {
         .responsive-hide {
             display: none;
         }
+
         .responsive-show {
             display: table-row;
         }
     }
+
     @media (min-width: 1201px) {
         .responsive-show {
             display: none;
         }
     }
+
     .level-box button.active {
-        background-color: #d3d3d3; 
+        background-color: #d3d3d3;
     }
 </style>
 {% endblock %}
 {% endembed %}
-

@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -264,5 +265,7 @@ final class ShowModuleFab implements ViewControllerInterface
         $game->setTemplateVar('BUILDPLANS', $buildplans);
         $game->setTemplateVar('BUILDPLAN_MODULES', $buildplanModules);
         $game->setTemplateVar('COMBINED_MODULES', $combinedModules);
+
+        $game->addExecuteJS('clearModuleInputs();', GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }
