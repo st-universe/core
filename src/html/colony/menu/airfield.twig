@@ -1,4 +1,4 @@
-{% embed "html/colony/menu/container.twig" %}
+{% embed "html/colony/menu/submenuForm.twig" %}
 {% block containment %}
 <div style="width: 40vw;">
   <table class="tcal">
@@ -95,14 +95,15 @@
         {% for cost in data.getBuildingCosts %}
         <div style="display: inline-block;">
           <div style="display: inline-block; vertical-align: middle;">
-            <img src="/assets/commodities/{{ cost.getCommodityId }}.png" title="{{ cost.getCommodity.getName }}" style="margin-right: 5px;" />
+            <img src="/assets/commodities/{{ cost.getCommodityId }}.png" title="{{ cost.getCommodity.getName }}"
+              style="margin-right: 5px;" />
             {{ cost.getAmount }}
           </div>
         </div>
         {% endfor %}
       </td>
     </tr>
-    
+
     {% endfor %}
     {% if not BUILDABLE_SHIPS %}
     <tr>
