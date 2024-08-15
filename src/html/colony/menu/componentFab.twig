@@ -68,7 +68,7 @@
                             {{ data.getAmountInStock }}
                         </td>
                         <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                            <input type="text" size="2" name="module[{{ moduleId }}]" data-module-id="{{ moduleId }}"
+                            <input type="text" size="2" data-module-id="{{ moduleId }}"
                                 onkeydown="event.key == 'Enter' && $('producebutton').click()"
                                 oninput="setModuleInput(this)" />
                         </td>
@@ -109,8 +109,7 @@
                                         {{ data.getAmountInStock }}
                                     </td>
                                     <td style="vertical-align: middle; text-align: center;">
-                                        <input type="text" size="2" name="module[{{ moduleId }}]"
-                                            data-module-id="{{ moduleId }}"
+                                        <input type="text" size="2" data-module-id="{{ moduleId }}"
                                             onkeydown="event.key == 'Enter' && $('producebutton').click()"
                                             oninput="setModuleInput(this);" />
                                     </td>
