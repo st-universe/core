@@ -93,7 +93,7 @@
 			<td class="darkbg">Ausgestellte Lizenzen</td>
 			<td>
 				{{ data.getLicenseCount }}
-				(<a href="javascript:void(0)" onclick="showTradeLicenseList(this, {{ data.getId }});">
+				(<a href="javascript:void(0);" onclick="showTradeLicenseList(this, {{ data.getId }});">
 					Liste anzeigen
 				</a>)
 			</td>
@@ -103,11 +103,11 @@
 			<td>
 				{% if data.getTradePostbyUser %}
 				<span>
-					<a href="javascript:void(0)" onclick="showLicenseMenu({{ data.getId }});">Bearbeiten</a>
+					<a href="javascript:void(0);" onclick="showLicenseMenu({{ data.getId }});">Bearbeiten</a>
 				</span>
 				{% else %}
 				<span>
-					<a href="javascript:void(0)" onclick="showLicenseInfo({{ data.getId }});">Anzeigen</a>
+					<a href="javascript:void(0);" onclick="showLicenseInfo({{ data.getId }});">Anzeigen</a>
 				</span>
 				{% endif %}
 			</td>

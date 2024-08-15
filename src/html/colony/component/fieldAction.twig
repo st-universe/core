@@ -89,79 +89,79 @@
                     {% if BUILDING_FUNCTION.isShipyard %}
                     {% if BUILDING_FUNCTION.isFighterShipyard %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(10);"
+                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(10);"
                             class="fabutton">Schiffbau</a>
                     </div>
                     {% else %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)"
+                        <a href="javascript:void(0);"
                             onclick="clearAjaxCallbacks(); switchColonySubmenu(8, null, {{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }});"
                             class="fabutton">Schiffbau</a>
                     </div>
                     <div class="fabutton">
-                        <a href="javascript:void(0)"
+                        <a href="javascript:void(0);"
                             onclick="clearAjaxCallbacks(); switchColonySubmenu(17, null,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }}, {{ fieldId }});"
                             class="fabutton">Schiffsdemontage</a>
                     </div>
                     {% endif %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)"
+                        <a href="javascript:void(0);"
                             onclick="clearAjaxCallbacks(); switchColonySubmenu(18, null,{{ BUILDING_FUNCTION.getShipyardBuildingFunctionId }},{{ fieldId }});"
                             class="fabutton">Schiffsreparatur</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isAirfield %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(6);"
+                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(6);"
                             class="fabutton">Hangar</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isModuleFab %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)"
+                        <a href="javascript:void(0);"
                             onclick="clearAjaxCallbacks(); switchColonySubmenu(7, null,{{ BUILDING_FUNCTION.getModuleFabBuildingFunctionId }});"
                             class="fabutton">Modulherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isTorpedoFab %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(11);"
+                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(11);"
                             class="fabutton">Torpedoherstellung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isAcademy %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(12);"
+                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(12);"
                             class="fabutton">Akademie</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isWarehouse %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="goToUrl('database.php?SHOW_COMMODITIES_OVERVIEW=1')"
+                        <a href="javascript:void(0);" onclick="goToUrl('database.php?SHOW_COMMODITIES_OVERVIEW=1')"
                             class="fabutton">Warenübersicht</a>
                     </div>
                     <div class="fabutton">
-                        <a href="javascript:void(0)" onclick="clearAjaxCallbacks(); switchColonySubmenu(13);"
+                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(13);"
                             class="fabutton">Müllverbrennung</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isFabHall %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)"
+                        <a href="javascript:void(0);"
                             onclick="clearAjaxCallbacks(); switchColonySubmenu(14, null, {{ BUILDING_FUNCTION.getFabHallBuildingFunctionId }});"
                             class="fabutton">Fabrikationshallen-Produktion</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isTechCenter %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)"
+                        <a href="javascript:void(0);"
                             onclick="clearAjaxCallbacks(); switchColonySubmenu(15, null, {{ BUILDING_FUNCTION.getTechCenterBuildingFunctionId }});"
                             class="fabutton">Technologiecenter-Produktion</a>
                     </div>
                     {% endif %}
                     {% if BUILDING_FUNCTION.isSubspaceTelescope %}
                     <div class="fabutton">
-                        <a href="javascript:void(0)"
+                        <a href="javascript:void(0);"
                             onclick="switchColonyMenu(16, {{ BUILDING_FUNCTION.getSubspaceTelescopeBuildingFunctionId }});"
                             class="fabutton">Subraumteleskop</a>
                     </div>
@@ -249,7 +249,8 @@
                                 {% endfor %}
                             </td>
                             <td style="vertical-align: top; width: 100px;">
-                                {% include 'html/colony/component/buildingConsequences.twig' with { 'building': data.getBuilding } %}
+                                {% include 'html/colony/component/buildingConsequences.twig' with { 'building':
+                                data.getBuilding } %}
                                 <br />
                                 <strong>Produktion</strong>
                                 {% if data.getBuilding.getEpsProduction %}
@@ -268,7 +269,7 @@
                                 {% endfor %}
                                 <br />
 
-                        </td>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="5" style="text-align: center;">
