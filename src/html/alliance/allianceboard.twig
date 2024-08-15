@@ -31,7 +31,7 @@
         {% if EDITABLE %}
         {% set handle = this.getUniqId %}
         <td style="text-align: center;">
-            <a href="javascript:void(0)" onclick="openBoardSettings(this,{{ board.getId }})"
+            <a href="javascript:void(0);" onclick="openBoardSettings(this,{{ board.getId }})"
                 onmouseover="cp('{{ handle }}','buttons/b_down2')" onmouseout="cp('{{ handle }}','buttons/b_down1')">
                 <img src="assets/buttons/b_down1.png" title="Editieren" name="{{ handle }}" />
             </a>

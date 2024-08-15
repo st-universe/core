@@ -71,7 +71,7 @@
             <td>{{ csl.getUser.getName|bbcode }}</td>
             <td>
                 {% if csl.getUserId == USER.getId %}
-                <a href="javascript:void(0)" onclick="deleteColonyScan({{ scanId }});"
+                <a href="javascript:void(0);" onclick="deleteColonyScan({{ scanId }});"
                     onmouseover="cp('delColScan{{ scanId }}','buttons/x2')"
                     onmouseout="cp('delColScan{{ scanId }}','buttons/x1')">
                     <img src="assets/buttons/x1.png" name="delColScan{{ scanId }}" title="Scan Löschen" />

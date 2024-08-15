@@ -15,7 +15,7 @@
             {% if data.getIcon %}
             <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
                 {% if data.getHref %}
-                <a href="javascript:void(0)" onmouseover="updateTelescopeEnergy({{ data.getCx }}, {{ data.getCy }});"
+                <a href="javascript:void(0);" onmouseover="updateTelescopeEnergy({{ data.getCx }}, {{ data.getCy }});"
                     onclick="showTelescopeScan({{ data.getCx }}, {{ data.getCy }});">
                     <img src="/assets/map/{{ data.getIcon }}.png" style=" height: 28px; width: 28px;" />
                 </a>
