@@ -36,4 +36,6 @@
     </div>
     {% endif %}
 </div>
-{% include SELECTED_COLONY_SUB_MENU_TEMPLATE %}
+<div id="submenu" class="colonymenu_container" onkeydown="return event.key != 'Enter';">
+    {% include SELECTED_COLONY_SUB_MENU_TEMPLATE %}
+</div>

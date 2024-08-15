@@ -1,4 +1,4 @@
-{% embed "html/colony/menu/container.twig" %}
+{% embed "html/colony/menu/submenuForm.twig" %}
 {% block containment %}
 <div style="width: 40vw; max-width: 100%;">
     <table class="tcal" style="border-spacing: 0 2px;">
@@ -19,7 +19,8 @@
         <tr class="row responsive-hide">
             <td>
                 <input type="text" size="3" name="torp[{{ data.getId }}]" id="torp-{{ data.getId }}-desktop"
-                    onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncInputs('torp-{{ data.getId }}-desktop', 'torp-{{ data.getId }}-mobile')" /> x <span>{{
+                    onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                    oninput="syncInputs('torp-{{ data.getId }}-desktop', 'torp-{{ data.getId }}-mobile')" /> x <span>{{
                     data.getProductionAmount }}</span>
                 <img src="/assets/commodities/{{ data.getCommodityId }}.png" class="center" />
                 {{ data.getName }}
@@ -46,7 +47,9 @@
             <td style="padding-bottom: 2px;">
                 <div>
                     <input type="text" size="3" name="torp[{{ data.getId }}]" id="torp-{{ data.getId }}-mobile"
-                        onkeydown="event.key == 'Enter' && $('producebutton').click()" oninput="syncInputs('torp-{{ data.getId }}-mobile', 'torp-{{ data.getId }}-desktop')" /> x <span>{{
+                        onkeydown="event.key == 'Enter' && $('producebutton').click()"
+                        oninput="syncInputs('torp-{{ data.getId }}-mobile', 'torp-{{ data.getId }}-desktop')" /> x
+                    <span>{{
                         data.getProductionAmount }}</span>
                     <img src="/assets/commodities/{{ data.getCommodityId }}.png" class="center" />
                     {{ data.getName }}
