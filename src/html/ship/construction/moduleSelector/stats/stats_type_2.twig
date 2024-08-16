@@ -1,10 +1,11 @@
 <div>
-    <div style="float: left;"><img src=" assets/buttons/modul_screen_2.png" title="{{ module.getDescription }}" />
+    <div style="float: left;">
+        <img src=" assets/buttons/modul_screen_2.png" title="{{ module.getDescription }}" />
         <span>Schildkapazität</span>: {{ moduleSelectorEntry.getValue }}
     </div>
     {% set data = moduleSelectorEntry.getAddonValues %}
     {% if data %}
-    <div style="float: left;">
+    <div style="float: left; padding-left: 10px;">
         {% for addonValue in data %}
         <div style="display: table-cell; padding-left: 4px;">
             <img src="assets/rassen/{{ addonValue.factionId }}_s.png"
@@ -12,6 +13,10 @@
                 title="Modifikator: {{ addonValue.modificator }}%" />
         </div>
         {% endfor %}
+        <div style="display: table-cell; padding-left: 4px;">
+            <img title="niedriger Modifikator (grün) bedeutet höhere Resistenz" src="/assets/buttons/info2.png"
+                style="height: 20px;" />
+        </div>
     </div>
     {% endif %}
 </div>
