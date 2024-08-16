@@ -408,8 +408,15 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function checkDatabaseItem($databaseEntryId): void
+    public function checkDatabaseItem(?int $databaseEntryId): void
     {
+        if (
+            $databaseEntryId === null
+            || $databaseEntryId === 0
+        ) {
+            return;
+        }
+
         $userId = $this->getUser()->getId();
 
         if (

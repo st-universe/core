@@ -85,7 +85,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function getJavascriptPath(): string;
 
-    public function checkDatabaseItem($databaseEntryId): void;
+    public function checkDatabaseItem(?int $databaseEntryId): void;
 
     public function getAchievements(): array;
 

@@ -904,11 +904,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:checkDatabaseItem\\(\\) has parameter \\$databaseEntryId with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -940,11 +935,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:addSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:checkDatabaseItem\\(\\) has parameter \\$databaseEntryId with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 

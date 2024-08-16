@@ -103,8 +103,8 @@ class Ship implements ShipInterface
     #[Column(type: 'smallint', length: 1, enumType: SpacecraftTypeEnum::class)]
     private SpacecraftTypeEnum $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
 
-    #[Column(type: 'integer')]
-    private int $database_id = 0;
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $database_id = null;
 
     #[Column(type: 'boolean')]
     private bool $is_destroyed = false;
@@ -629,7 +629,7 @@ class Ship implements ShipInterface
     }
 
     #[Override]
-    public function getDatabaseId(): int
+    public function getDatabaseId(): ?int
     {
         return $this->database_id;
     }

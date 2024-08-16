@@ -27,8 +27,7 @@ final class ShowScan implements ViewControllerInterface
         private InteractionCheckerInterface $interactionChecker,
         private PirateReactionInterface $pirateReaction,
         private PrivateMessageSenderInterface $privateMessageSender
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -75,12 +74,8 @@ final class ShowScan implements ViewControllerInterface
 
         $epsSystem->lowerEps(1)->update();
 
-        if ($target->getDatabaseId() !== 0) {
-            $game->checkDatabaseItem($target->getDatabaseId());
-        }
-        if ($target->getRump()->getDatabaseId()) {
-            $game->checkDatabaseItem($target->getRump()->getDatabaseId());
-        }
+        $game->checkDatabaseItem($target->getDatabaseId());
+        $game->checkDatabaseItem($target->getRump()->getDatabaseId());
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
 

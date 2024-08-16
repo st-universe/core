@@ -121,7 +121,7 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function setSpacecraftType(SpacecraftTypeEnum $type): ShipInterface;
 
-    public function getDatabaseId(): int;
+    public function getDatabaseId(): ?int;
 
     public function setDatabaseEntry(DatabaseEntryInterface $entry): ShipInterface;
 
