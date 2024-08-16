@@ -23,14 +23,9 @@
                 {% endif %}
             </div>
             {% else %}
-            {% if data.getTitle %}
             <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
                 &nbsp;
             </div>
-            {% else %}
-            <div class="starmapInner" style="cursor: auto ! important;">&nbsp;
-            </div>
-            {% endif %}
             {% endif %}
         </td>
         {% endfor %}
