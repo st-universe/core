@@ -1,5 +1,6 @@
 <div>
-  <div style="float: left;"><img src="assets/buttons/modul_screen_1.png" title="{{ module.getDescription }}" />
+  <div style="float: left;">
+    <img src="assets/buttons/modul_screen_1.png" title="{{ module.getDescription }}" />
     <span>Hüllenstärke</span>: {{ moduleSelectorEntry.getValue }}
   </div>
   {% set data = moduleSelectorEntry.getAddonValues %}
@@ -12,6 +13,10 @@
         title="{{ addonValue.torpedoType.getName }} | Modifikator: {{ addonValue.modificator }}%" />
     </div>
     {% endfor %}
+    <div style="display: table-cell; padding-left: 4px;">
+      <img title="niedriger Modifikator (grün) bedeutet höhere Resistenz" src="/assets/buttons/info2.png"
+        style="height: 20px;" />
+    </div>
   </div>
   {% endif %}
 </div>
