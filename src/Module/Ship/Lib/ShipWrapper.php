@@ -6,10 +6,8 @@ namespace Stu\Module\Ship\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use JBBCode\Parser;
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -33,6 +31,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Interaction\ShipTakeoverManagerInterface;
+use Stu\Module\Ship\Lib\Ui\StateIconAndTitle;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\ShipTakeoverInterface;
@@ -60,7 +59,7 @@ final class ShipWrapper implements ShipWrapperInterface
         private ShipWrapperFactoryInterface $shipWrapperFactory,
         private ShipStateChangerInterface $shipStateChanger,
         private RepairUtilInterface $repairUtil,
-        private Parser $bbCodeParser
+        private StateIconAndTitle $stateIconAndTitle,
     ) {
 
         $this->shipSystemDataCache = new ArrayCollection();
@@ -353,57 +352,7 @@ final class ShipWrapper implements ShipWrapperInterface
     #[Override]
     public function getStateIconAndTitle(): ?array
     {
-        $ship = $this->ship;
-
-        $state = $ship->getState();
-
-        if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
-            $isBase = $ship->isBase();
-            return ['rep2', sprintf('%s repariert die Station', $isBase ? 'Stationscrew' : 'Schiffscrew')];
-        }
-
-        if ($state === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $isBase = $ship->isBase();
-            $repairDuration = $this->getRepairDuration();
-            return ['rep2', sprintf('%s wird repariert (noch %d Runden)', $isBase ? 'Station' : 'Schiff', $repairDuration)];
-        }
-
-        $currentTurn = $this->game->getCurrentRound()->getTurn();
-        $astroLab = $this->getAstroLaboratorySystemData();
-        if (
-            $state === ShipStateEnum::SHIP_STATE_ASTRO_FINALIZING
-            && $astroLab !== null
-        ) {
-            return ['map1', sprintf(
-                'Schiff kartographiert (noch %d Runden)',
-                $astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH - $currentTurn
-            )];
-        }
-
-        $takeover = $ship->getTakeoverActive();
-        if (
-            $state === ShipStateEnum::SHIP_STATE_ACTIVE_TAKEOVER
-            && $takeover !== null
-        ) {
-            $targetNamePlainText = $this->bbCodeParser->parse($takeover->getTargetShip()->getName())->getAsText();
-            return ['take2', sprintf(
-                'Schiff übernimmt die "%s" (noch %d Runden)',
-                $targetNamePlainText,
-                $this->getTakeoverTicksLeft($takeover)
-            )];
-        }
-
-        $takeover = $ship->getTakeoverPassive();
-        if ($takeover !== null) {
-            $sourceUserNamePlainText = $this->bbCodeParser->parse($takeover->getSourceShip()->getUser()->getName())->getAsText();
-            return ['untake2', sprintf(
-                'Schiff wird von Spieler "%s" übernommen (noch %d Runden)',
-                $sourceUserNamePlainText,
-                $this->getTakeoverTicksLeft($takeover)
-            )];
-        }
-
-        return null;
+        return $this->stateIconAndTitle->getStateIconAndTitle($this);
     }
 
     #[Override]

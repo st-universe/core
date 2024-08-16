@@ -303,6 +303,7 @@ use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManager;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
+use Stu\Module\Ship\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Ship\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
@@ -381,7 +382,8 @@ return [
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
     ClearTorpedoInterface::class => autowire(ClearTorpedo::class),
     ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),
-    ShipWrapperFactoryInterface::class => autowire(ShipWrapperFactory::class),
+    ShipWrapperFactoryInterface::class => autowire(ShipWrapperFactory::class)
+        ->constructorParameter('stateIconAndTitle', autowire(StateIconAndTitle::class)),
     TholianWebUtilInterface::class => autowire(TholianWebUtil::class),
     ShipStateChangerInterface::class => autowire(ShipStateChanger::class),
     ShipTakeoverManagerInterface::class => autowire(ShipTakeoverManager::class),

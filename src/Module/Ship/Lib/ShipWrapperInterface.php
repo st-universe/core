@@ -14,6 +14,7 @@ use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Entity\ShipTakeoverInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 
 interface ShipWrapperInterface
@@ -72,7 +73,7 @@ interface ShipWrapperInterface
      */
     public function getStateIconAndTitle(): ?array;
 
-    public function getTakeoverTicksLeft(): int;
+    public function getTakeoverTicksLeft(?ShipTakeoverInterface $takeover = null): int;
 
     public function canBeScrapped(): bool;
 

@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Ui\StateIconAndTitle;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -36,7 +37,7 @@ class ShipWrapperFactoryTest extends StuTestCase
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private Parser $bbCodeParser;
+    private StateIconAndTitle $stateIconAndTitle;
 
     private SystemDataDeserializerInterface $systemDataDeserializer;
 
@@ -51,7 +52,7 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
         $this->repairUtil = $this->mock(RepairUtilInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
-        $this->bbCodeParser = $this->mock(Parser::class);
+        $this->stateIconAndTitle = $this->mock(StateIconAndTitle::class);
         $this->systemDataDeserializer = $this->mock(SystemDataDeserializerInterface::class);
 
         $this->shipWrapperFactory = new ShipWrapperFactory(
@@ -62,7 +63,7 @@ class ShipWrapperFactoryTest extends StuTestCase
             $this->shipStateChanger,
             $this->repairUtil,
             $this->userRepository,
-            $this->bbCodeParser,
+            $this->stateIconAndTitle,
             $this->systemDataDeserializer
         );
     }

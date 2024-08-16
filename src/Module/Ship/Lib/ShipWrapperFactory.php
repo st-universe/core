@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Lib;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
-use JBBCode\Parser;
 use Override;
 use RuntimeException;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
@@ -15,6 +14,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Ui\StateIconAndTitle;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -31,10 +31,9 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         private ShipStateChangerInterface $shipStateChanger,
         private RepairUtilInterface $repairUtil,
         private UserRepositoryInterface $userRepository,
-        private Parser $bbCodeParser,
+        private StateIconAndTitle $stateIconAndTitle,
         private SystemDataDeserializerInterface $systemDataDeserializer
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function wrapShip(ShipInterface $ship): ShipWrapperInterface
@@ -49,7 +48,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $this,
             $this->shipStateChanger,
             $this->repairUtil,
-            $this->bbCodeParser
+            $this->stateIconAndTitle
         );
     }
 
@@ -105,7 +104,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     public function wrapFleets(array $fleets): array
     {
         return array_map(
-            fn (FleetInterface $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
+            fn(FleetInterface $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
             $fleets
         );
     }
