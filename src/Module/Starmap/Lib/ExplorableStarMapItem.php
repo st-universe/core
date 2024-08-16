@@ -17,9 +17,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
     private bool $hide = false;
 
-    public function __construct(private TradePostRepositoryInterface $tradePostRepository, private EncodedMapInterface $encodedMap, private Parser $bbCodeParser, private ExploreableStarMapInterface $exploreableStarMap, private LayerInterface $layer)
-    {
-    }
+    public function __construct(private TradePostRepositoryInterface $tradePostRepository, private EncodedMapInterface $encodedMap, private Parser $bbCodeParser, private ExploreableStarMapInterface $exploreableStarMap, private LayerInterface $layer) {}
 
     #[Override]
     public function getCx(): int
@@ -58,11 +56,13 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
         if ($tradepost !== null) {
             $result .= $this->getTradepostTitle($tradepost);
-            $result .= ' über ';
         }
 
         $isSystemNameSet = false;
         if ($this->exploreableStarMap->getMapped() !== null) {
+            if ($result != '') {
+                $result .= ' über ';
+            }
             $isSystemNameSet = true;
             $result .= $this->exploreableStarMap->getSystemName() . '-System';
         }
