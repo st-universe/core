@@ -79,6 +79,9 @@ abstract class StuTestCase extends MockeryTestCase
         $loggerUtil->shouldReceive('log')
             ->withSomeOfArgs()
             ->zeroOrMoreTimes();
+        $loggerUtil->shouldReceive('logf')
+            ->withSomeOfArgs()
+            ->zeroOrMoreTimes();
 
         return $loggerUtil;
     }
