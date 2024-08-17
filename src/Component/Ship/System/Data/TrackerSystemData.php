@@ -10,6 +10,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Interaction\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
@@ -21,9 +22,10 @@ class TrackerSystemData extends AbstractSystemData
     public function __construct(
         private ShipRepositoryInterface $shipRepository,
         private ShipWrapperFactoryInterface $shipWrapperFactory,
-        ShipSystemRepositoryInterface $shipSystemRepository
+        ShipSystemRepositoryInterface $shipSystemRepository,
+        StatusBarFactoryInterface $statusBarFactory
     ) {
-        parent::__construct($shipSystemRepository);
+        parent::__construct($shipSystemRepository, $statusBarFactory);
     }
 
     #[Override]

@@ -9,7 +9,7 @@ use JBBCode\Parser;
 use Override;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Module\Template\StatusBar;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -21,9 +21,13 @@ final class KnItem implements KnItemInterface
 
     private bool $isHighlighted = false;
 
-    public function __construct(private Parser $bbcodeParser, private KnCommentRepositoryInterface $knCommentRepository, private KnPostInterface $post, private UserInterface $currentUser)
-    {
-    }
+    public function __construct(
+        private Parser $bbcodeParser,
+        private KnCommentRepositoryInterface $knCommentRepository,
+        private StatusBarFactoryInterface $statusBarFactory,
+        private KnPostInterface $post,
+        private UserInterface $currentUser
+    ) {}
 
     #[Override]
     public function getId(): int
@@ -158,7 +162,7 @@ final class KnItem implements KnItemInterface
         return (int) array_sum(
             array_filter(
                 $this->post->getRatings(),
-                static fn (int $value): bool => $value > 0
+                static fn(int $value): bool => $value > 0
             )
         );
     }
@@ -172,9 +176,10 @@ final class KnItem implements KnItemInterface
             return '';
         }
 
-        return (new StatusBar())
+        return $this->statusBarFactory
+            ->createStatusBar()
             ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
-            ->setLabel(_('Bewertung'))
+            ->setLabel('Bewertung')
             ->setMaxValue($ratingAmount)
             ->setValue($this->getRating())
             ->render();

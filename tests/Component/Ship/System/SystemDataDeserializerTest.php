@@ -6,12 +6,14 @@ namespace Stu\Component\Ship\System;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JsonMapper\JsonMapperFactory;
+use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -95,7 +97,10 @@ class SystemDataDeserializerTest extends StuTestCase
     public function testGetEpsSystemDataWithDataEmptyExpectDefaultValues(): void
     {
         $shipSystemRepo = $this->mock(ShipSystemRepositoryInterface::class);
-        $epsSystemData = new EpsSystemData($shipSystemRepo);
+        $epsSystemData = new EpsSystemData(
+            $shipSystemRepo,
+            $this->mock(StatusBarFactoryInterface::class)
+        );
 
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_EPS)
@@ -133,7 +138,10 @@ class SystemDataDeserializerTest extends StuTestCase
     public function testGetEpsSystemDataWithDataNotEmptyExpectCorrectValues(): void
     {
         $shipSystemRepo = $this->mock(ShipSystemRepositoryInterface::class);
-        $epsSystemData = new EpsSystemData($shipSystemRepo);
+        $epsSystemData = new EpsSystemData(
+            $shipSystemRepo,
+            $this->mock(StatusBarFactoryInterface::class)
+        );
 
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_EPS)

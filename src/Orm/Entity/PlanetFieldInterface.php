@@ -75,6 +75,4 @@ interface PlanetFieldInterface
     public function getPictureType(): string;
 
     public function isColonizeAble(): bool;
-
-    public function getConstructionStatusBar(): string;
 }

@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Module\Template\StatusBar;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ResearchDependencyInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
@@ -28,9 +28,16 @@ final class SelectedTech implements SelectedTechInterface
     /** @var null|array<string, TechDependency> */
     private ?array $dependencies = null;
 
-    public function __construct(private ResearchRepositoryInterface $researchRepository, private ResearchedRepositoryInterface $researchedRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository, private BuildingRepositoryInterface $buildingRepository, private ResearchInterface $research, private UserInterface $currentUser, private ConfigInterface $config)
-    {
-    }
+    public function __construct(
+        private ResearchRepositoryInterface $researchRepository,
+        private ResearchedRepositoryInterface $researchedRepository,
+        private ResearchDependencyRepositoryInterface $researchDependencyRepository,
+        private BuildingRepositoryInterface $buildingRepository,
+        private StatusBarFactoryInterface $statusBarFactory,
+        private ResearchInterface $research,
+        private UserInterface $currentUser,
+        private ConfigInterface $config
+    ) {}
 
     #[Override]
     public function getResearch(): ResearchInterface
@@ -151,7 +158,8 @@ final class SelectedTech implements SelectedTechInterface
             throw new RuntimeException('can not call when no researchState present');
         }
 
-        return (new StatusBar())
+        return $this->statusBarFactory
+            ->createStatusBar()
             ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
             ->setLabel(_('Forschung'))
             ->setMaxValue($this->research->getPoints())

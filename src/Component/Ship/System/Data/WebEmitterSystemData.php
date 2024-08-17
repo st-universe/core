@@ -6,6 +6,7 @@ namespace Stu\Component\Ship\System\Data;
 
 use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -17,9 +18,10 @@ class WebEmitterSystemData extends AbstractSystemData
 
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
-        private TholianWebRepositoryInterface $tholianWebRepository
+        private TholianWebRepositoryInterface $tholianWebRepository,
+        StatusBarFactoryInterface $statusBarFactory
     ) {
-        parent::__construct($shipSystemRepository);
+        parent::__construct($shipSystemRepository, $statusBarFactory);
     }
 
     #[Override]
