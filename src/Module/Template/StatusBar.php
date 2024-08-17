@@ -6,7 +6,7 @@ namespace Stu\Module\Template;
 
 use Override;
 
-final class StatusBar implements StatusBarInterface
+class StatusBar implements StatusBarInterface
 {
     private string $color = '';
 

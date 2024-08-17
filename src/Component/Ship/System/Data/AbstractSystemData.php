@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Data;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Template\StatusBar;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Template\StatusBarInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -14,9 +14,10 @@ abstract class AbstractSystemData
 {
     protected ShipInterface $ship;
 
-    public function __construct(private ShipSystemRepositoryInterface $shipSystemRepository)
-    {
-    }
+    public function __construct(
+        private ShipSystemRepositoryInterface $shipSystemRepository,
+        private StatusBarFactoryInterface $statusBarFactory
+    ) {}
 
     public function setShip(ShipInterface $ship): void
     {
@@ -37,7 +38,8 @@ abstract class AbstractSystemData
 
     protected function getStatusBar(string $label, int $value, int $maxValue, string $color): StatusBarInterface
     {
-        return (new StatusBar())
+        return $this->statusBarFactory
+            ->createStatusBar()
             ->setColor($color)
             ->setLabel($label)
             ->setMaxValue($maxValue)

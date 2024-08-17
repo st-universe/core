@@ -6,15 +6,18 @@ namespace Stu\Component\Communication\Kn;
 
 use JBBCode\Parser;
 use Override;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class KnFactory implements KnFactoryInterface
 {
-    public function __construct(private Parser $bbcodeParser, private KnCommentRepositoryInterface $knCommentRepository)
-    {
-    }
+    public function __construct(
+        private Parser $bbcodeParser,
+        private KnCommentRepositoryInterface $knCommentRepository,
+        private StatusBarFactoryInterface $statusBarFactory
+    ) {}
 
     #[Override]
     public function createKnItem(
@@ -24,6 +27,7 @@ final class KnFactory implements KnFactoryInterface
         return new KnItem(
             $this->bbcodeParser,
             $this->knCommentRepository,
+            $this->statusBarFactory,
             $knPost,
             $currentUser
         );

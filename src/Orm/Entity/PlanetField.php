@@ -14,8 +14,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Override;
 use RuntimeException;
-use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Module\Template\StatusBar;
 use Stu\Orm\Repository\PlanetFieldRepository;
 
 #[Table(name: 'stu_colonies_fielddata')]
@@ -338,14 +336,24 @@ class PlanetField implements PlanetFieldInterface
     #[Override]
     public function getBuildProgress(): int
     {
-        $start = $this->getBuildtime() - $this->getBuilding()->getBuildTime();
+        $building = $this->getBuilding();
+        if ($building === null) {
+            return 0;
+        }
+
+        $start = $this->getBuildtime() - $building->getBuildTime();
         return time() - $start;
     }
 
     #[Override]
     public function getOverlayWidth(): int
     {
-        $buildtime = $this->getBuilding()->getBuildtime();
+        $building = $this->getBuilding();
+        if ($building === null) {
+            throw new RuntimeException('building is null');
+        }
+
+        $buildtime = $building->getBuildtime();
         $perc = max(0, @round((100 / $buildtime) * min($this->getBuildProgress(), $buildtime)));
         return (int) round((40 / 100) * $perc);
     }
@@ -360,19 +368,5 @@ class PlanetField implements PlanetFieldInterface
     public function isColonizeAble(): bool
     {
         return in_array($this->getFieldType(), $this->getHost()->getColonyClass()->getColonizeableFields());
-    }
-
-    /**
-     * @todo temporary, remove it.
-     */
-    #[Override]
-    public function getConstructionStatusBar(): string
-    {
-        return (new StatusBar())
-            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
-            ->setLabel(_('Fortschritt'))
-            ->setMaxValue($this->getBuilding()->getBuildtime())
-            ->setValue($this->getBuildProgress())
-            ->render();
     }
 }

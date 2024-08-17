@@ -9,7 +9,7 @@ use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Module\Template\StatusBar;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -22,9 +22,14 @@ final class ColonyListItem implements ColonyListItemInterface
 
     private ?ColonyPopulationCalculatorInterface $colonyPopulationCalculator = null;
 
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private PlanetFieldRepositoryInterface $planetFieldRepository, private CommodityConsumptionInterface $commodityConsumption, private ColonyInterface $colony, private int $signatureCount)
-    {
-    }
+    public function __construct(
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private CommodityConsumptionInterface $commodityConsumption,
+        private StatusBarFactoryInterface $statusBarFactory,
+        private ColonyInterface $colony,
+        private int $signatureCount
+    ) {}
 
     #[Override]
     public function getId(): int
@@ -192,7 +197,8 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getStorageStatusBar(): string
     {
-        return (new StatusBar())
+        return $this->statusBarFactory
+            ->createStatusBar()
             ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
             ->setLabel(_('Lager'))
             ->setMaxValue($this->colony->getMaxStorage())
@@ -203,7 +209,8 @@ final class ColonyListItem implements ColonyListItemInterface
     #[Override]
     public function getEpsStatusBar(): string
     {
-        return (new StatusBar())
+        return $this->statusBarFactory
+            ->createStatusBar()
             ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
             ->setLabel(_('Energie'))
             ->setMaxValue($this->colony->getMaxEps())

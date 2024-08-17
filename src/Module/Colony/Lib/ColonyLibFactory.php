@@ -21,6 +21,7 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -61,9 +62,9 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory,
-        private CommodityCacheInterface $commodityCache
-    ) {
-    }
+        private CommodityCacheInterface $commodityCache,
+        private StatusBarFactoryInterface $statusBarFactory
+    ) {}
 
     #[Override]
     public function createBuildingFunctionWrapper(
@@ -100,6 +101,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this,
             $this->planetFieldRepository,
             $this->commodityConsumption,
+            $this->statusBarFactory,
             $colony,
             $this->flightSignatureRepository->getVisibleSignatureCount($colony)
         );

@@ -7,16 +7,17 @@ namespace Stu\Component\Ship\System\Data;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\StuTestCase;
 
 class EpsSystemDataTest extends StuTestCase
 {
-    /**
-     * @var MockInterface|ShipSystemRepositoryInterface
-     */
+    /** @var MockInterface|ShipSystemRepositoryInterface */
     private $shipSystemRepository;
+    /** @var MockInterface|StatusBarFactoryInterface */
+    private $statusBarFactory;
 
     /**
      * @var MockInterface|ShipInterface
@@ -29,10 +30,12 @@ class EpsSystemDataTest extends StuTestCase
     public function setUp(): void
     {
         $this->shipSystemRepository = $this->mock(ShipSystemRepositoryInterface::class);
+        $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
 
         $this->subject = new EpsSystemData(
-            $this->shipSystemRepository
+            $this->shipSystemRepository,
+            $this->statusBarFactory
         );
     }
 

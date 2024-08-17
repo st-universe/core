@@ -7,6 +7,7 @@ namespace Stu\Component\Communication\Kn;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
@@ -14,19 +15,13 @@ use Stu\StuTestCase;
 
 class KnFactoryTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|Parser
-     */
+    /** @var MockInterface|Parser */
     private $bbcodeParser;
-
-    /**
-     * @var null|MockInterface|KnCommentRepositoryInterface
-     */
+    /** @var MockInterface|KnCommentRepositoryInterface */
     private $knCommentRepository;
+    /** @var MockInterface|StatusBarFactoryInterface */
+    private $statusBarFactory;
 
-    /**
-     * @var null|KnFactory
-     */
     private KnFactoryInterface $factory;
 
     #[Override]
@@ -34,10 +29,12 @@ class KnFactoryTest extends StuTestCase
     {
         $this->bbcodeParser = $this->mock(Parser::class);
         $this->knCommentRepository = $this->mock(KnCommentRepositoryInterface::class);
+        $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
 
         $this->factory = new KnFactory(
             $this->bbcodeParser,
-            $this->knCommentRepository
+            $this->knCommentRepository,
+            $this->statusBarFactory
         );
     }
 

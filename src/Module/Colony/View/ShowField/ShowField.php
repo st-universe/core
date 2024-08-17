@@ -12,9 +12,11 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Module\Template\StatusBar;
+use Stu\Module\Template\StatusBarFactoryInterface;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -25,9 +27,17 @@ final class ShowField implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_FIELD';
 
-    public function __construct(private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository, private ColonyLibFactoryInterface $colonyLibFactory, private PlanetFieldHostProviderInterface $planetFieldHostProvider, private TerraformingRepositoryInterface $terraformingRepository, private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository, private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private ShipWrapperFactoryInterface $shipWrapperFactory)
-    {
-    }
+    public function __construct(
+        private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        private ColonyLibFactoryInterface $colonyLibFactory,
+        private PlanetFieldHostProviderInterface $planetFieldHostProvider,
+        private TerraformingRepositoryInterface $terraformingRepository,
+        private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
+        private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
+        private ShipWrapperFactoryInterface $shipWrapperFactory,
+        private StatusBarFactoryInterface $statusBarFactory
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -36,6 +46,7 @@ final class ShowField implements ViewControllerInterface
 
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser(), false);
         $host = $field->getHost();
+        $building = $field->getBuilding();
 
         $terraformingOptions = $this->terraformingRepository->getBySourceFieldTypeAndUser(
             $field->getFieldType(),
@@ -45,11 +56,11 @@ final class ShowField implements ViewControllerInterface
 
         if (
             !$field->isUnderConstruction()
-            && $field->getBuilding() !== null
+            && $building !== null
         ) {
             $upgradeOptions = $this
                 ->buildingUpgradeRepository
-                ->getByBuilding((int) $field->getBuildingId(), $userId);
+                ->getByBuilding($building->getId(), $userId);
         } else {
             $upgradeOptions = [];
         }
@@ -60,7 +71,7 @@ final class ShowField implements ViewControllerInterface
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColony($host->getId()));
 
             $shipRepairProgress = array_map(
-                fn (ColonyShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
+                fn(ColonyShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
                 $this->colonyShipRepairRepository->getByColonyField(
                     $host->getId(),
                     $field->getFieldId()
@@ -75,7 +86,8 @@ final class ShowField implements ViewControllerInterface
 
             $terraFormingBar = null;
             if ($terraFormingState !== null) {
-                $terraFormingBar = (new StatusBar())
+                $terraFormingBar = $this->statusBarFactory
+                    ->createStatusBar()
                     ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
                     ->setLabel('Fortschritt')
                     ->setMaxValue($terraFormingState->getTerraforming()->getDuration())
@@ -102,11 +114,14 @@ final class ShowField implements ViewControllerInterface
         $game->setTemplateVar('FIELD', $field);
         $game->setTemplateVar('HOST', $host);
 
-        if ($field->hasBuilding()) {
+        if ($building !== null) {
             $game->setTemplateVar(
                 'BUILDING_FUNCTION',
-                $this->colonyLibFactory->createBuildingFunctionWrapper($field->getBuilding()->getFunctions()->toArray())
+                $this->colonyLibFactory->createBuildingFunctionWrapper($building->getFunctions()->toArray())
             );
+            if ($field->isUnderConstruction()) {
+                $game->setTemplateVar('CONSTRUCTION_STATUS_BAR', $this->getConstructionStatusBar($field, $building));
+            }
         }
         $game->setTemplateVar(
             'HAS_UPGRADE_OR_TERRAFORMING_OPTION',
@@ -126,5 +141,16 @@ final class ShowField implements ViewControllerInterface
             'UPGRADE_OPTIONS',
             $upgradeOptions
         );
+    }
+
+    private function getConstructionStatusBar(PlanetFieldInterface $field, BuildingInterface $building): string
+    {
+        return $this->statusBarFactory
+            ->createStatusBar()
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Fortschritt'))
+            ->setMaxValue($building->getBuildtime())
+            ->setValue($field->getBuildProgress())
+            ->render();
     }
 }

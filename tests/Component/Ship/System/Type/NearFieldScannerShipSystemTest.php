@@ -18,6 +18,7 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -106,7 +107,8 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $trackerSystemData = new TrackerSystemData(
             $this->mock(ShipRepositoryInterface::class),
             $this->mock(ShipWrapperFactoryInterface::class),
-            $this->mock(ShipSystemRepositoryInterface::class)
+            $this->mock(ShipSystemRepositoryInterface::class),
+            $this->mock(StatusBarFactoryInterface::class)
         );
         $trackerSystemData->setTarget(42);
 

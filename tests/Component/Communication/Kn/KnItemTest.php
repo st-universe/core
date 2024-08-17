@@ -7,6 +7,9 @@ namespace Stu\Component\Communication\Kn;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
+use Stu\Module\Template\StatusBar;
+use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -15,24 +18,15 @@ use Stu\StuTestCase;
 
 class KnItemTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|Parser
-     */
+    /** @var MockInterface|Parser */
     private $bbcodeParser;
-
-    /**
-     * @var null|MockInterface|KnCommentRepositoryInterface
-     */
+    /** @var MockInterface|KnCommentRepositoryInterface */
     private $knCommentRepository;
-
-    /**
-     * @var null|MockInterface|KnPostInterface
-     */
+    /** @var MockInterface|StatusBarFactoryInterface */
+    private $statusBarFactory;
+    /** @var MockInterface|KnPostInterface */
     private $post;
-
-    /**
-     * @var null|MockInterface|UserInterface
-     */
+    /** @var null|MockInterface|UserInterface */
     private $currentUser;
 
     private KnItemInterface $item;
@@ -42,12 +36,14 @@ class KnItemTest extends StuTestCase
     {
         $this->bbcodeParser = $this->mock(Parser::class);
         $this->knCommentRepository = $this->mock(KnCommentRepositoryInterface::class);
+        $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
         $this->post = $this->mock(KnPostInterface::class);
         $this->currentUser = $this->mock(UserInterface::class);
 
         $this->item = new KnItem(
             $this->bbcodeParser,
             $this->knCommentRepository,
+            $this->statusBarFactory,
             $this->post,
             $this->currentUser
         );
@@ -429,10 +425,38 @@ class KnItemTest extends StuTestCase
 
     public function testGetRatingBarReturnsBar(): void
     {
+        $statusBar = $this->mock(StatusBar::class);
+
+        $this->statusBarFactory->shouldReceive('createStatusBar')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($statusBar);
+
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
             ->twice()
             ->andReturn([666 => 1]);
+
+        $statusBar->shouldReceive('setColor')
+            ->with(StatusBarColorEnum::STATUSBAR_YELLOW)
+            ->once()
+            ->andReturnSelf();
+        $statusBar->shouldReceive('setLabel')
+            ->with('Bewertung')
+            ->once()
+            ->andReturnSelf();
+        $statusBar->shouldReceive('setMaxValue')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+        $statusBar->shouldReceive('setValue')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+        $statusBar->shouldReceive('render')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('balken');
 
         $this->assertStringContainsString(
             'balken',

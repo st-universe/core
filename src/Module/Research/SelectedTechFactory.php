@@ -6,6 +6,7 @@ namespace Stu\Module\Research;
 
 use Noodlehaus\ConfigInterface;
 use Override;
+use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -15,9 +16,14 @@ use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class SelectedTechFactory implements SelectedTechFactoryInterface
 {
-    public function __construct(private ResearchRepositoryInterface $researchRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository, private ResearchedRepositoryInterface $researchedRepository, private BuildingRepositoryInterface $buildingRepository, private ConfigInterface $config)
-    {
-    }
+    public function __construct(
+        private ResearchRepositoryInterface $researchRepository,
+        private ResearchDependencyRepositoryInterface $researchDependencyRepository,
+        private ResearchedRepositoryInterface $researchedRepository,
+        private BuildingRepositoryInterface $buildingRepository,
+        private StatusBarFactoryInterface $statusBarFactory,
+        private ConfigInterface $config
+    ) {}
 
     #[Override]
     public function createSelectedTech(
@@ -29,6 +35,7 @@ final class SelectedTechFactory implements SelectedTechFactoryInterface
             $this->researchedRepository,
             $this->researchDependencyRepository,
             $this->buildingRepository,
+            $this->statusBarFactory,
             $research,
             $currentUser,
             $this->config
