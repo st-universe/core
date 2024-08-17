@@ -9,12 +9,21 @@ use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Throwable;
 
 final class TransactionTickRunner implements TransactionTickRunnerInterface
 {
-    public function __construct(private GameControllerInterface $game, protected EntityManagerInterface $entityManager, protected FailureEmailSenderInterface $failureEmailSender)
-    {
+    private LoggerUtilInterface $logger;
+
+    public function __construct(
+        private FailureEmailSenderInterface $failureEmailSender,
+        private GameControllerInterface $game,
+        private EntityManagerInterface $entityManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory
+    ) {
+        $this->logger = $loggerUtilFactory->getLoggerUtil(true);
     }
 
     #[Override]
@@ -42,15 +51,24 @@ final class TransactionTickRunner implements TransactionTickRunnerInterface
         } catch (Throwable $e) {
             $this->entityManager->rollback();
 
+            $subject = sprintf('stu %s failure', $tickDescription);
+            $message = sprintf(
+                "Current system time: %s\nThe %s cron caused an error:\n\n%s\n\n%s",
+                date('Y-m-d H:i:s'),
+                $tickDescription,
+                $e->getMessage(),
+                $e->getTraceAsString()
+            );
+
             $this->failureEmailSender->sendMail(
-                sprintf('stu %s failure', $tickDescription),
-                sprintf(
-                    "Current system time: %s\nThe %s cron caused an error:\n\n%s\n\n%s",
-                    date('Y-m-d H:i:s'),
-                    $tickDescription,
-                    $e->getMessage(),
-                    $e->getTraceAsString()
-                )
+                $subject,
+                $message
+            );
+
+            $this->logger->logf(
+                '%s, %s',
+                $subject,
+                $message
             );
 
             throw $e;

@@ -15,28 +15,27 @@ use Stu\StuTestCase;
 
 class TransactionTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&GameControllerInterface */
-    private MockInterface $game;
-
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
-
     /** @var MockInterface&FailureEmailSenderInterface */
     private MockInterface $failureEmailSender;
+    /** @var MockInterface&GameControllerInterface */
+    private MockInterface $game;
+    /** @var MockInterface&EntityManagerInterface */
+    private MockInterface $entityManager;
 
     private TransactionTickRunnerInterface $subject;
 
     #[Override]
     protected function setUp(): void
     {
+        $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
-        $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
 
         $this->subject = new TransactionTickRunner(
+            $this->failureEmailSender,
             $this->game,
             $this->entityManager,
-            $this->failureEmailSender
+            $this->initLoggerUtil()
         );
     }
 
@@ -47,7 +46,7 @@ class TransactionTickRunnerTest extends StuTestCase
             ->once()
             ->andReturn(GameEnum::CONFIG_GAMESTATE_VALUE_RESET);
 
-        $this->subject->runWithResetCheck(fn (): bool => true, "", 1, 2);
+        $this->subject->runWithResetCheck(fn(): bool => true, "", 1, 2);
     }
 
     public function testRunWithResetCheckExpectRollbackWhenExceptionOccurs(): void
