@@ -28,11 +28,15 @@
     <table class="tcal">
         <tr>
             <td style="width: 70px;">
-                <img src="assets/buttons/amp_down.png" class="button-img" style="display: inline-block; margin: 0; padding: 0;" title="Amplitude verringern" onclick="decreaseDynamicAmplitude()" />
-                <img src="assets/buttons/amp_up.png" class="button-img" style="display: inline-block; margin: 0; padding: 0;" title="Amplitude erhöhen" onclick="increaseDynamicAmplitude()" />
+                <img src="assets/buttons/amp_down.png" class="button-img"
+                    style="display: inline-block; margin: 0; padding: 0;" title="Amplitude verringern"
+                    onclick="decreaseDynamicAmplitude()" />
+                <img src="assets/buttons/amp_up.png" class="button-img"
+                    style="display: inline-block; margin: 0; padding: 0;" title="Amplitude erhöhen"
+                    onclick="increaseDynamicAmplitude()" />
             </td>
             <td class="dynamicValueCell">
-                <img src="assets/buttons/amp.png" title="Dynamische Amplitude" /> 
+                <img src="assets/buttons/amp.png" title="Dynamische Amplitude" />
                 <span id="dynamicAmplitude"></span> µV/m<br />
             </td>
             <td class="analysisResultCell">
@@ -41,21 +45,24 @@
         </tr>
         <tr>
             <td>
-                <img src="assets/buttons/lambda_down.png" class="button-img" title="Wellenlänge verringern" style="display: inline-block; margin: 0; padding: 0;" onclick="decreaseDynamicWavelength()" />
-                <img src="assets/buttons/lambda_up.png" class="button-img" style="display: inline-block; margin: 0; padding: 0;" title="Wellenlänge erhöhen" onclick="increaseDynamicWavelength()" />
+                <img src="assets/buttons/lambda_down.png" class="button-img" title="Wellenlänge verringern"
+                    style="display: inline-block; margin: 0; padding: 0;" onclick="decreaseDynamicWavelength()" />
+                <img src="assets/buttons/lambda_up.png" class="button-img"
+                    style="display: inline-block; margin: 0; padding: 0;" title="Wellenlänge erhöhen"
+                    onclick="increaseDynamicWavelength()" />
             </td>
             <td>
-                <img src="assets/buttons/lambda.png" title="Dynamische Wellenlänge" /> 
+                <img src="assets/buttons/lambda.png" title="Dynamische Wellenlänge" />
                 <span id="dynamicWavelength"></span> nm
             </td>
             <td>
-                <div id="matchNotification">Besitzer: 
+                <div id="matchNotification">Besitzer:
                     <span id="ownerId">{{ BUOY.getUser.getName|bbcode }}</span>
                 </div>
             </td>
         </tr>
     </table>
 </div>
-<script type="text/javascript">
+<script>
     initialiseBuoyAnalysis({{ AMPLITUDE }}, {{ WAVELENGTH }});
 </script>
