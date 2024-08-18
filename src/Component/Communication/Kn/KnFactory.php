@@ -14,7 +14,7 @@ use Stu\Orm\Repository\KnCommentRepositoryInterface;
 final class KnFactory implements KnFactoryInterface
 {
     public function __construct(
-        private Parser $bbcodeParser,
+        private Parser $bbCodeParser,
         private KnCommentRepositoryInterface $knCommentRepository,
         private StatusBarFactoryInterface $statusBarFactory
     ) {}
@@ -25,7 +25,7 @@ final class KnFactory implements KnFactoryInterface
         UserInterface $currentUser
     ): KnItemInterface {
         return new KnItem(
-            $this->bbcodeParser,
+            $this->bbCodeParser,
             $this->knCommentRepository,
             $this->statusBarFactory,
             $knPost,

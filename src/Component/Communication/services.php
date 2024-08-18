@@ -8,9 +8,8 @@ use JBBCode\Parser;
 use Stu\Component\Communication\Kn\KnBbCodeDefinitionSet;
 use Stu\Component\Communication\Kn\KnFactory;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
-use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
-use function DI\create;
+use function DI\autowire;
 use function DI\get;
 
 return [
@@ -19,8 +18,8 @@ return [
         $parser->addCodeDefinitionSet(new KnBbCodeDefinitionSet());
         return $parser;
     },
-    KnFactoryInterface::class => create(KnFactory::class)->constructor(
-        get('kn_bbcode_parser'),
-        get(KnCommentRepositoryInterface::class)
-    ),
+    KnFactoryInterface::class => autowire(KnFactory::class)->constructorParameter(
+        'bbCodeParser',
+        get('kn_bbcode_parser')
+    )
 ];
