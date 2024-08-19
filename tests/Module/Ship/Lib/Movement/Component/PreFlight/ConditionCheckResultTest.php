@@ -105,6 +105,49 @@ class ConditionCheckResultTest extends StuTestCase
         $this->assertEquals(['REASON', 'Die SHIP hat die Flotte verlassen (22|33)'], $subject->getInformations());
     }
 
+    public function testAddBlockedShipExpectNoLeaveFleetWhenNotFixedFleetButLeaderBlocked(): void
+    {
+        $leaderShip = $this->mock(ShipInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+
+        $leaderShip->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(55);
+        $leaderShip->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
+        $ship->shouldReceive('isFleetLeader')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $ship->shouldReceive('getFleet')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(FleetInterface::class));
+
+        $this->leader->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($leaderShip);
+
+        $subject = new ConditionCheckResult($this->leaveFleet, $this->leader, false);
+
+        $this->assertTrue($subject->isNotBlocked($ship));
+
+        $subject->addBlockedShip($leaderShip, 'LEADER_REASON');
+        $subject->addBlockedShip($ship, 'REASON');
+        $subject->addBlockedShip($ship, 'REASON');
+
+        $this->assertFalse($subject->isNotBlocked($ship));
+        $this->assertFalse($subject->isFlightPossible());
+        $this->assertEquals(['LEADER_REASON', 'REASON'], $subject->getInformations());
+    }
+
     public function testAddBlockedShipExpectNoLeaveFleetWhenLeader(): void
     {
         $ship = $this->mock(ShipInterface::class);
