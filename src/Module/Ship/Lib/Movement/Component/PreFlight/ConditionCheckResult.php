@@ -36,9 +36,10 @@ class ConditionCheckResult
                 $this->isLeaderBlocked = true;
             } elseif (
                 !$this->isFixedFleetMode
+                && !$this->isLeaderBlocked
                 && $ship !== $this->leader->get()
             ) {
-                $this->leaveFleet($ship, );
+                $this->leaveFleet($ship);
             }
         }
     }
