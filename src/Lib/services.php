@@ -49,6 +49,8 @@ use Stu\Lib\Pirate\Component\ReloadMinimalEps;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Lib\Pirate\Component\SafeFlightRoute;
 use Stu\Lib\Pirate\Component\SafeFlightRouteInterface;
+use Stu\Lib\Pirate\Component\TrapDetection;
+use Stu\Lib\Pirate\Component\TrapDetectionInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
@@ -132,5 +134,6 @@ return [
     PirateNavigationInterface::class => autowire(PirateNavigation::class),
     ReloadMinimalEpsInterface::class => autowire(ReloadMinimalEps::class),
     PirateWrathManagerInterface::class => autowire(PirateWrathManager::class),
-    PirateAttackInterface::class => autowire(PirateAttack::class)
+    PirateAttackInterface::class => autowire(PirateAttack::class),
+    TrapDetectionInterface::class => autowire(TrapDetection::class)
 ];
