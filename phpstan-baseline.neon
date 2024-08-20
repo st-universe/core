@@ -2012,11 +2012,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getCurrentMapField\\(\\) should return Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but returns Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php

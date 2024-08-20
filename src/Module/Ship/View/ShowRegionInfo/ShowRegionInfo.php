@@ -6,18 +6,18 @@ namespace Stu\Module\Ship\View\ShowRegionInfo;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\MapInterface;
 
 final class ShowRegionInfo implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_REGION_INFO';
 
-    public function __construct(private ShipLoaderInterface $shipLoader)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -33,7 +33,10 @@ final class ShowRegionInfo implements ViewControllerInterface
 
         $regionId = request::getIntFatal('region');
 
-        $mapField = $ship->getCurrentMapField();
+        $mapField = $ship->getLocation();
+        if (!$mapField instanceof MapInterface) {
+            throw new RuntimeException('region info only available for map fields');
+        }
 
         $mapRegion = $mapField->getMapRegion();
         $adminRegion = $mapField->getAdministratedRegion();

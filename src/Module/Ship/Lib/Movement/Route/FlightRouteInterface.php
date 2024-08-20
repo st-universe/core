@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Movement\Route;
 
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -29,9 +30,9 @@ interface FlightRouteInterface
         int $y
     ): FlightRouteInterface;
 
-    public function getCurrentWaypoint(): MapInterface|StarSystemMapInterface;
+    public function getCurrentWaypoint(): LocationInterface;
 
-    public function getNextWaypoint(): MapInterface|StarSystemMapInterface;
+    public function getNextWaypoint(): LocationInterface;
 
     public function stepForward(): void;
 
@@ -54,7 +55,7 @@ interface FlightRouteInterface
 
     public function isTranswarpCoilNeeded(): bool;
 
-    public function isRouteDangerous(): bool;
+    public function hasSpecialDamageOnField(): bool;
 
     /** @param array<int> $regionIds */
     public function isDestinationInAdminRegion(array $regionIds): bool;

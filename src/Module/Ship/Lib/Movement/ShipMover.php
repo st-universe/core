@@ -336,7 +336,7 @@ final class ShipMover implements ShipMoverInterface
             ), $messages);
         }
         // add info about buyos
-        foreach ($leadShipWrapper->get()->getCurrentMapField()->getBuoys() as $buoy) {
+        foreach ($leadShipWrapper->get()->getLocation()->getBuoys() as $buoy) {
             $this->addInformation(sprintf('[b][color=yellow]Boje entdeckt: [/color][/b]%s', $buoy->getText()), $messages);
         }
     }

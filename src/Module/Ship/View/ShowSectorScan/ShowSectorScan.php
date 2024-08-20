@@ -12,6 +12,7 @@ use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
@@ -26,9 +27,7 @@ final class ShowSectorScan implements ViewControllerInterface
     /** @var array<int> */
     private array $fadedSignaturesCloaked = [];
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private FlightSignatureRepositoryInterface $flightSignatureRepository, private EncodedMapInterface $encodedMap)
-    {
-    }
+    public function __construct(private ShipLoaderInterface $shipLoader, private FlightSignatureRepositoryInterface $flightSignatureRepository, private EncodedMapInterface $encodedMap) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -59,24 +58,37 @@ final class ShowSectorScan implements ViewControllerInterface
 
         $epsSystem->lowerEps(1)->update();
 
-        $mapField = $ship->getCurrentMapField();
+        $mapField = $ship->getLocation();
 
         $colonyClass = $mapField->getFieldType()->getColonyClass();
         if ($colonyClass !== null) {
             $game->checkDatabaseItem($colonyClass->getDatabaseId());
         }
-        if ($mapField->getSystem() !== null && $mapField->getFieldType()->getIsSystem()) {
-            $game->checkDatabaseItem($mapField->getSystem()->getSystemType()->getDatabaseEntryId());
-        }
+        $this->checkDatabaseItemForMap($mapField, $game);
 
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->fadedSignaturesCloaked === [] ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('MAP_PATH', $this->getMapPath($ship));
-        $game->setTemplateVar('BUOYS', $ship->getCurrentMapField()->getBuoys());
+        $game->setTemplateVar('BUOYS', $ship->getLocation()->getBuoys());
 
         $game->setTemplateVar('ERROR', false);
+    }
+
+    private function checkDatabaseItemForMap(LocationInterface $location, GameControllerInterface $game): void
+    {
+        if (!$location instanceof MapInterface) {
+            return;
+        }
+
+        $system = $location->getSystem();
+        if (
+            $system !== null
+            && $location->getFieldType()->getIsSystem()
+        ) {
+            $game->checkDatabaseItem($system->getSystemType()->getDatabaseEntryId());
+        }
     }
 
     /**
@@ -114,7 +126,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private function getMapPath(ShipInterface $ship): string
     {
-        $currentMapField = $ship->getCurrentMapField();
+        $currentMapField = $ship->getLocation();
         $layer = $currentMapField->getLayer();
 
         if ($currentMapField instanceof MapInterface && $layer !== null) {

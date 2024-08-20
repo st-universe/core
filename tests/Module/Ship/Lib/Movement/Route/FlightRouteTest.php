@@ -252,7 +252,7 @@ class FlightRouteTest extends StuTestCase
         $start = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 
@@ -279,7 +279,7 @@ class FlightRouteTest extends StuTestCase
         $waypoints->add($first);
         $waypoints->add($destination);
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 
@@ -382,7 +382,7 @@ class FlightRouteTest extends StuTestCase
         $this->assertEquals(6, count(get('postFlightConsequences')->resolve($container)));
     }
 
-    public function testIsRouteDangerousExpectFalseIfWaypointsWithoutSpecialDamage(): void
+    public function testhasSpecialDamageOnFieldExpectFalseIfWaypointsWithoutSpecialDamage(): void
     {
         $start = $this->mock(MapInterface::class);
         $destination = $this->mock(MapInterface::class);
@@ -392,7 +392,7 @@ class FlightRouteTest extends StuTestCase
 
         $waypoints->add($destination);
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 
@@ -417,12 +417,12 @@ class FlightRouteTest extends StuTestCase
 
         $this->subject->setDestinationViaCoordinates($ship, 42, 5);
 
-        $result = $this->subject->isRouteDangerous();
+        $result = $this->subject->hasSpecialDamageOnField();
 
         $this->assertFalse($result);
     }
 
-    public function testIsRouteDangerousExpectTrueIfWaypointWithSpecialDamage(): void
+    public function testhasSpecialDamageOnFieldExpectTrueIfWaypointWithSpecialDamage(): void
     {
         $start = $this->mock(MapInterface::class);
         $first = $this->mock(MapInterface::class);
@@ -434,7 +434,7 @@ class FlightRouteTest extends StuTestCase
         $waypoints->add($first);
         $waypoints->add($destination);
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 
@@ -459,7 +459,7 @@ class FlightRouteTest extends StuTestCase
 
         $this->subject->setDestinationViaCoordinates($ship, 42, 5);
 
-        $result = $this->subject->isRouteDangerous();
+        $result = $this->subject->hasSpecialDamageOnField();
 
         $this->assertTrue($result);
     }
@@ -474,7 +474,7 @@ class FlightRouteTest extends StuTestCase
 
         $waypoints->add($destination);
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 
@@ -514,7 +514,7 @@ class FlightRouteTest extends StuTestCase
 
         $waypoints->add($destination);
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 

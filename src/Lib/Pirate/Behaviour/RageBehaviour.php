@@ -10,6 +10,7 @@ use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
@@ -24,6 +25,7 @@ class RageBehaviour implements PirateBehaviourInterface
         private ShipRepositoryInterface $shipRepository,
         private InteractionCheckerInterface $interactionChecker,
         private FightLibInterface $fightLib,
+        private PrestigeCalculationInterface $prestigeCalculation,
         private PirateAttackInterface $pirateAttack,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -47,12 +49,12 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn (ShipInterface $target): bool =>
+            fn(ShipInterface $target): bool =>
             $this->interactionChecker->checkPosition($leadShip, $target)
                 && $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && !$target->getUser()->isProtectedAgainstPirates()
                 && ($target === $triggerShip
-                    || $this->targetHasPositivePrestige($target))
+                    || $this->prestigeCalculation->targetHasPositivePrestige($target))
         );
 
         $this->logger->log(sprintf('    %d filtered targets in reach', count($filteredTargets)));
@@ -71,7 +73,7 @@ class RageBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn (ShipInterface $a, ShipInterface $b): int =>
+            fn(ShipInterface $a, ShipInterface $b): int =>
             $this->fightLib->calculateHealthPercentage($a) -  $this->fightLib->calculateHealthPercentage($b)
         );
 
@@ -89,19 +91,5 @@ class RageBehaviour implements PirateBehaviourInterface
         );
 
         return null;
-    }
-
-    private function targetHasPositivePrestige(ShipInterface $target): bool
-    {
-        $fleet = $target->getFleet();
-        if ($fleet !== null) {
-            foreach ($fleet->getShips() as $ship) {
-                if ($ship->getRump()->getPrestige() > 0) {
-                    return true;
-                }
-            }
-        }
-
-        return $target->getRump()->getPrestige() > 0;
     }
 }

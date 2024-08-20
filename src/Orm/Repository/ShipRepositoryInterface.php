@@ -60,7 +60,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return array<ShipInterface>
      */
-    public function getByLocation(MapInterface|StarSystemMapInterface $field): array;
+    public function getByLocation(LocationInterface $location): array;
 
     /**
      * @return array<ShipInterface>

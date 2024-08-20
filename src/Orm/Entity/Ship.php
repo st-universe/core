@@ -1186,16 +1186,9 @@ class Ship implements ShipInterface
     }
 
     #[Override]
-    public function getLocation(): MapInterface|StarSystemMapInterface
+    public function getLocation(): LocationInterface
     {
-        if (
-            $this->location instanceof MapInterface
-            || $this->location instanceof StarSystemMapInterface
-        ) {
-            return $this->location;
-        }
-
-        throw new RuntimeException('unknown type');
+        return $this->location;
     }
 
     #[Override]
@@ -1220,7 +1213,7 @@ class Ship implements ShipInterface
     #[Override]
     public function getSectorString(): string
     {
-        return $this->getCurrentMapField()->getSectorString();
+        return $this->getLocation()->getSectorString();
     }
 
     #[Override]
@@ -1419,12 +1412,6 @@ class Ship implements ShipInterface
         }
 
         return $icon;
-    }
-
-    #[Override]
-    public function getCurrentMapField(): StarSystemMapInterface|MapInterface
-    {
-        return $this->getStarsystemMap() ?? $this->getMap();
     }
 
     private function getShieldRegenerationPercentage(): int

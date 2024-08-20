@@ -15,9 +15,7 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class CheckDestination implements CheckDestinationInterface
 {
-    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
-    {
-    }
+    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository) {}
 
     #[Override]
     public function validate(
@@ -25,7 +23,7 @@ final class CheckDestination implements CheckDestinationInterface
         int $destinationX,
         int $destinationY
     ): MapInterface|StarSystemMapInterface {
-        $start = $ship->getCurrentMapField();
+        $start = $ship->getLocation();
 
         if ($start->getX() !== $destinationX && $start->getY() !== $destinationY) {
             throw new SanityCheckException(

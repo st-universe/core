@@ -10,20 +10,17 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 class ShipConfigurator implements ShipConfiguratorInterface
 {
-    public function __construct(private ShipWrapperInterface $wrapper, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private ShipTorpedoManagerInterface $torpedoManager, private CrewCreatorInterface $crewCreator, private ShipCrewRepositoryInterface $shipCrewRepository, private ShipRepositoryInterface $shipRepository, private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper, private GameControllerInterface $game)
-    {
-    }
+    public function __construct(private ShipWrapperInterface $wrapper, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private ShipTorpedoManagerInterface $torpedoManager, private CrewCreatorInterface $crewCreator, private ShipCrewRepositoryInterface $shipCrewRepository, private ShipRepositoryInterface $shipRepository, private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper, private GameControllerInterface $game) {}
 
     #[Override]
-    public function setLocation(MapInterface|StarSystemMapInterface $location): ShipConfiguratorInterface
+    public function setLocation(LocationInterface $location): ShipConfiguratorInterface
     {
         $this->wrapper->get()->setLocation($location);
 

@@ -17,8 +17,7 @@ class AlertDetection implements AlertDetectionInterface
         private BattlePartyFactoryInterface $battlePartyFactory,
         private TrojanHorseNotifierInterface $trojanHorseNotifier,
         private AlertedShipInformationInterface $alertedShipInformation
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function detectAlertedBattleParties(
@@ -27,7 +26,10 @@ class AlertDetection implements AlertDetectionInterface
         ?ShipInterface $tractoringShip = null
     ): array {
 
-        $alertedWrappers = $this->alertedShipsDetection->getAlertedShipsOnLocation($incomingShip);
+        $alertedWrappers = $this->alertedShipsDetection->getAlertedShipsOnLocation(
+            $incomingShip->getLocation(),
+            $incomingShip->getUser()
+        );
         if ($alertedWrappers->isEmpty()) {
             return [];
         }

@@ -11,7 +11,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Station\Lib\StationUiFactoryInterface;
-use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowSystemSensorScan implements ViewControllerInterface
@@ -23,8 +22,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         private MapRepositoryInterface $mapRepository,
         private StationUiFactoryInterface $stationUiFactory,
         private LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -42,14 +40,9 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         $cy = request::getIntFatal('cy');
 
 
-        $field = $ship->getCurrentMapField();
-        if ($field instanceof MapInterface) {
-            $shipCx = $field->getCx();
-            $shipCy = $field->getCy();
-        } else {
-            $shipCx = $field->getSystem()->getCx();
-            $shipCy = $field->getSystem()->getCy();
-        }
+        $field = $ship->getLocation();
+        $shipCx = $field->getCx();
+        $shipCy = $field->getCy();
 
         if (
             $cx < $shipCx - $ship->getSensorRange()

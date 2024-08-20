@@ -98,7 +98,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getCurrentMapField')
+        $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
             ->andReturn($oldWaypoint);
@@ -124,7 +124,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->ship->shouldReceive('getCurrentMapField')
+        $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
             ->andReturn($oldWaypoint);

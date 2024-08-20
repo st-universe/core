@@ -8,13 +8,13 @@
         <td rowspan="2" style="width: 30px; vertical-align: top;">
             <img src="assets/map/{{ MAP_PATH }}" />
         </td>
-        <th>{{ SHIP.getCurrentMapField.getFieldType.getName }}</th>
+        <th>{{ SHIP.getLocation.getFieldType.getName }}</th>
     </tr>
     <tr>
         <td>
-            Energiekosten: {{ SHIP.getCurrentMapField.getFieldType.getEnergyCosts }}<br />
-            Schaden: {{ SHIP.getCurrentMapField.getFieldType.getSpecialDamage }} ({{
-            SHIP.getCurrentMapField.getFieldType.getDamage }})
+            Energiekosten: {{ SHIP.getLocation.getFieldType.getEnergyCosts }}<br />
+            Schaden: {{ SHIP.getLocation.getFieldType.getSpecialDamage }} ({{
+            SHIP.getLocation.getFieldType.getDamage }})
         </td>
     </tr>
 </table>

@@ -3,12 +3,11 @@
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\LocationInterface;
 
 interface ShipConfiguratorInterface
 {
-    public function setLocation(MapInterface|StarSystemMapInterface $location): ShipConfiguratorInterface;
+    public function setLocation(LocationInterface $location): ShipConfiguratorInterface;
 
     public function loadEps(int $percentage): ShipConfiguratorInterface;
 

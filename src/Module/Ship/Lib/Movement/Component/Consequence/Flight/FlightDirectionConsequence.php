@@ -16,9 +16,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 
 class FlightDirectionConsequence extends AbstractFlightConsequence
 {
-    public function __construct(private UpdateFlightDirectionInterface $updateFlightDirection)
-    {
-    }
+    public function __construct(private UpdateFlightDirectionInterface $updateFlightDirection) {}
 
     #[Override]
     protected function triggerSpecific(
@@ -31,7 +29,7 @@ class FlightDirectionConsequence extends AbstractFlightConsequence
 
         //leaving star system
         if ($flightRoute->getRouteMode() === RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT) {
-            $oldWaypoint = $ship->getCurrentMapField();
+            $oldWaypoint = $ship->getLocation();
             if (!$oldWaypoint instanceof StarSystemMapInterface) {
                 throw new RuntimeException('this should not happen');
             }

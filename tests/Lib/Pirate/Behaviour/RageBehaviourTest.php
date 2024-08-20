@@ -11,6 +11,7 @@ use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
+use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Interaction\InteractionCheckerInterface;
@@ -28,6 +29,8 @@ class RageBehaviourTest extends StuTestCase
     private $interactionChecker;
     /** @var MockInterface|FightLibInterface */
     private $fightLib;
+    /** @var MockInterface|PrestigeCalculationInterface */
+    private $prestigeCalculation;
     /** @var MockInterface|PirateAttackInterface */
     private $pirateAttack;
 
@@ -48,6 +51,7 @@ class RageBehaviourTest extends StuTestCase
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->interactionChecker = $this->mock(InteractionCheckerInterface::class);
         $this->fightLib = $this->mock(FightLibInterface::class);
+        $this->prestigeCalculation = $this->mock(PrestigeCalculationInterface::class);
         $this->pirateAttack = $this->mock(PirateAttackInterface::class);
 
         $this->fleetWrapper = mock(FleetWrapperInterface::class);
@@ -62,6 +66,7 @@ class RageBehaviourTest extends StuTestCase
             $this->shipRepository,
             $this->interactionChecker,
             $this->fightLib,
+            $this->prestigeCalculation,
             $this->pirateAttack,
             $this->initLoggerUtil()
         );
@@ -270,6 +275,11 @@ class RageBehaviourTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
+        $this->prestigeCalculation->shouldReceive('targetHasPositivePrestige')
+            ->with($target)
+            ->once()
+            ->andReturn(true);
+
         $this->pirateAttack->shouldReceive('attackShip')
             ->with($this->fleetWrapper, $target)
             ->once();
@@ -350,6 +360,7 @@ class RageBehaviourTest extends StuTestCase
         $target3_2 = $this->mock(ShipInterface::class);
         $targetFleet3 = $this->mock(FleetInterface::class);
 
+        $target4 = $this->mock(ShipInterface::class);
 
         $this->fightLib->shouldReceive('calculateHealthPercentage')
             ->with($target)
@@ -372,6 +383,8 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn($targetFleet3);
         $targetFleet3->shouldReceive('getShips')
             ->andReturn(new ArrayCollection([$target3_1, $target3_2]));
+        $target4->shouldReceive('getFleet')
+            ->andReturn(null);
 
         $target->shouldReceive('getId')
             ->withNoArgs()
@@ -383,16 +396,18 @@ class RageBehaviourTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(44);
 
-        $target->shouldReceive('getRump->getPrestige')
-            ->withNoArgs()
-            ->andReturn(1);
-        $target2->shouldReceive('getRump->getPrestige')
-            ->withNoArgs()
-            ->andReturn(1);
-        $target3_1->shouldReceive('getRump->getPrestige')
-            ->withNoArgs()
-            ->andReturn(1);
-
+        $this->prestigeCalculation->shouldReceive('targetHasPositivePrestige')
+            ->with($target)
+            ->andReturn(true);
+        $this->prestigeCalculation->shouldReceive('targetHasPositivePrestige')
+            ->with($target2)
+            ->andReturn(true);
+        $this->prestigeCalculation->shouldReceive('targetHasPositivePrestige')
+            ->with($target3_1)
+            ->andReturn(true);
+        $this->prestigeCalculation->shouldReceive('targetHasPositivePrestige')
+            ->with($target4)
+            ->andReturn(false);
 
         $this->fleetWrapper->shouldReceive('getLeadWrapper')
             ->andReturn($wrapper);
@@ -403,7 +418,7 @@ class RageBehaviourTest extends StuTestCase
         $this->shipRepository->shouldReceive('getPirateTargets')
             ->with($ship)
             ->once()
-            ->andReturn([$target, $target2, $target3_1]);
+            ->andReturn([$target, $target2, $target3_1, $target4]);
 
         $this->interactionChecker->shouldReceive('checkPosition')
             ->with($ship, $target)
@@ -415,6 +430,10 @@ class RageBehaviourTest extends StuTestCase
             ->andReturn(true);
         $this->interactionChecker->shouldReceive('checkPosition')
             ->with($ship, $target3_1)
+            ->once()
+            ->andReturn(true);
+        $this->interactionChecker->shouldReceive('checkPosition')
+            ->with($ship, $target4)
             ->once()
             ->andReturn(true);
 
@@ -430,6 +449,10 @@ class RageBehaviourTest extends StuTestCase
             ->with($ship, $target3_1, true, false, false)
             ->once()
             ->andReturn(true);
+        $this->fightLib->shouldReceive('canAttackTarget')
+            ->with($ship, $target4, true, false, false)
+            ->once()
+            ->andReturn(true);
 
         $target->shouldReceive('getUser->isProtectedAgainstPirates')
             ->withNoArgs()
@@ -438,6 +461,9 @@ class RageBehaviourTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
         $target3_1->shouldReceive('getUser->isProtectedAgainstPirates')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target4->shouldReceive('getUser->isProtectedAgainstPirates')
             ->withNoArgs()
             ->andReturn(false);
 

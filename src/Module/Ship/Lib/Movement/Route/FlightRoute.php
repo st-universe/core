@@ -11,6 +11,7 @@ use RuntimeException;
 use Stu\Module\Ship\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Ship\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -23,12 +24,12 @@ final class FlightRoute implements FlightRouteInterface
 
     private RouteModeEnum $routeMode = RouteModeEnum::ROUTE_MODE_FLIGHT;
 
-    private MapInterface|StarSystemMapInterface $current;
+    private LocationInterface $current;
 
     private ?WormholeEntryInterface $wormholeEntry = null;
 
     /**
-     * @var Collection<int, MapInterface|StarSystemMapInterface>
+     * @var Collection<int, LocationInterface>
      */
     private Collection $waypoints;
 
@@ -84,7 +85,7 @@ final class FlightRoute implements FlightRouteInterface
     #[Override]
     public function setDestinationViaCoordinates(ShipInterface $ship, int $x, int $y): FlightRouteInterface
     {
-        $start = $ship->getCurrentMapField();
+        $start = $ship->getLocation();
         $this->current = $start;
         $destination = $this->checkDestination->validate($ship, $x, $y);
 
@@ -97,13 +98,13 @@ final class FlightRoute implements FlightRouteInterface
     }
 
     #[Override]
-    public function getCurrentWaypoint(): MapInterface|StarSystemMapInterface
+    public function getCurrentWaypoint(): LocationInterface
     {
         return $this->current;
     }
 
     #[Override]
-    public function getNextWaypoint(): MapInterface|StarSystemMapInterface
+    public function getNextWaypoint(): LocationInterface
     {
         if ($this->waypoints->isEmpty()) {
             throw new RuntimeException('isDestinationArrived has to be called beforehand');
@@ -162,7 +163,7 @@ final class FlightRoute implements FlightRouteInterface
     ): void {
         array_walk(
             $consequences,
-            fn (FlightConsequenceInterface $consequence) => $consequence->trigger($wrapper, $this, $messages)
+            fn(FlightConsequenceInterface $consequence) => $consequence->trigger($wrapper, $this, $messages)
         );
     }
 
@@ -223,7 +224,7 @@ final class FlightRoute implements FlightRouteInterface
     }
 
     #[Override]
-    public function isRouteDangerous(): bool
+    public function hasSpecialDamageOnField(): bool
     {
         foreach ($this->waypoints as $waypoint) {
             if ($waypoint->getFieldType()->getSpecialDamage() > 0) {
@@ -249,6 +250,6 @@ final class FlightRoute implements FlightRouteInterface
         $destination = $this->waypoints->last();
 
         return $destination instanceof MapInterface
-            && $destination->getShips()->exists(fn (int $key, ShipInterface $ship): bool => $ship->getTradePost() !== null);
+            && $destination->getShips()->exists(fn(int $key, ShipInterface $ship): bool => $ship->getTradePost() !== null);
     }
 }

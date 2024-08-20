@@ -9,7 +9,7 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
@@ -30,7 +30,7 @@ class PirateNavigation implements PirateNavigationInterface
     #[Override]
     public function navigateToTarget(
         FleetWrapperInterface $fleet,
-        MapInterface|StarSystemMapInterface|StarSystemInterface $target
+        LocationInterface|StarSystemInterface $target
     ): bool {
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
@@ -59,7 +59,7 @@ class PirateNavigation implements PirateNavigationInterface
         }
 
         // move to target
-        $currentLocation = $leadShip->getCurrentMapField();
+        $currentLocation = $leadShip->getLocation();
         if ($currentLocation !== $target && !$this->moveOnLayer->move($leadWrapper, $target)) {
             $this->logger->log('    did not reach target');
             return false;
@@ -68,7 +68,7 @@ class PirateNavigation implements PirateNavigationInterface
         return true;
     }
 
-    private function getTargetSystem(MapInterface|StarSystemMapInterface|StarSystemInterface $target): ?StarSystemInterface
+    private function getTargetSystem(LocationInterface|StarSystemInterface $target): ?StarSystemInterface
     {
         if ($target instanceof StarSystemInterface) {
             return $target;

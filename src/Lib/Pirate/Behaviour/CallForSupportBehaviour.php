@@ -74,15 +74,15 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $filteredFriends = array_filter(
             $friends,
-            fn (ShipInterface $friend): bool =>
+            fn(ShipInterface $friend): bool =>
             !$friend->isDestroyed()
                 && $friend->isFleetLeader()
-                && $friend->getCurrentMapField() !== $leadShip->getCurrentMapField()
+                && $friend->getLocation() !== $leadShip->getLocation()
         );
 
         usort(
             $filteredFriends,
-            fn (ShipInterface $a, ShipInterface $b): int =>
+            fn(ShipInterface $a, ShipInterface $b): int =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
@@ -107,7 +107,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
         $fleetWrapper = $this->shipWrapperFactory->wrapFleet($supportFleet);
 
         $this->reloadMinimalEps->reload($fleetWrapper, 75);
-        if (!$this->pirateNavigation->navigateToTarget($fleetWrapper, $leadShip->getCurrentMapField())) {
+        if (!$this->pirateNavigation->navigateToTarget($fleetWrapper, $leadShip->getLocation())) {
             return $this->createSupportFleet($leadShip, $reactionMetadata);
         }
 

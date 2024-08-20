@@ -7,8 +7,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\LocationInterface;
 
 class MoveOnLayer implements MoveOnLayerInterface
 {
@@ -24,8 +23,10 @@ class MoveOnLayer implements MoveOnLayerInterface
     }
 
     #[Override]
-    public function move(ShipWrapperInterface $wrapper, MapInterface|StarSystemMapInterface|null $target): bool
-    {
+    public function move(
+        ShipWrapperInterface $wrapper,
+        ?LocationInterface $target
+    ): bool {
         if ($target === null) {
             return false;
         }
@@ -34,9 +35,9 @@ class MoveOnLayer implements MoveOnLayerInterface
 
         $this->logger->log(sprintf('    navigateToTarget: %s', $target->getSectorString()));
 
-        while ($ship->getCurrentMapField() !== $target) {
+        while ($ship->getLocation() !== $target) {
 
-            $lastPosition = $ship->getCurrentMapField();
+            $lastPosition = $ship->getLocation();
 
             $this->logger->log(sprintf('    currentPosition: %s', $lastPosition->getSectorString()));
 
@@ -47,7 +48,7 @@ class MoveOnLayer implements MoveOnLayerInterface
 
             $flightRoute = $this->safeFlightRoute->getSafeFlightRoute(
                 $ship,
-                fn (): Coordinate => new Coordinate(
+                fn(): Coordinate => new Coordinate(
                     $this->getTargetX($isInXDirection, $lastPosition->getX(), $xDistance),
                     $this->getTargetY($isInXDirection, $lastPosition->getY(), $yDistance)
                 )
@@ -59,7 +60,7 @@ class MoveOnLayer implements MoveOnLayerInterface
 
             $this->pirateFlight->movePirate($wrapper, $flightRoute);
 
-            $newPosition = $ship->getCurrentMapField();
+            $newPosition = $ship->getLocation();
 
             $this->logger->log(sprintf('    newPosition: %s', $newPosition->getSectorString()));
 

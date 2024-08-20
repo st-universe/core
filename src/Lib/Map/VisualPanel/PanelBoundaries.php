@@ -13,9 +13,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 
 final class PanelBoundaries
 {
-    public function __construct(private int $minX, private int $maxX, private int $minY, private int $maxY, private LayerInterface|StarSystemInterface $parent)
-    {
-    }
+    public function __construct(private int $minX, private int $maxX, private int $minY, private int $maxY, private LayerInterface|StarSystemInterface $parent) {}
 
     /** @return array<int> */
     public function getColumnRange(): array
@@ -84,13 +82,16 @@ final class PanelBoundaries
         );
     }
 
-    public static function fromLocation(MapInterface|StarSystemMapInterface $map, int $range): PanelBoundaries
+    public static function fromLocation(LocationInterface $location, int $range): PanelBoundaries
     {
-        if ($map instanceof MapInterface) {
-            return static::fromMap($map, $range);
+        if ($location instanceof MapInterface) {
+            return static::fromMap($location, $range);
+        }
+        if ($location instanceof StarSystemMapInterface) {
+            return static::fromSystemMap($location, $range);
         }
 
-        return static::fromSystemMap($map, $range);
+        throw new RuntimeException('unsupported location type');
     }
 
     private static function fromMap(MapInterface $map, int $range): PanelBoundaries

@@ -18,9 +18,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 //TODO unit tests
 final class LaunchEscapePods implements LaunchEscapePodsInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository, private MapRepositoryInterface $mapRepository, private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private ShipRepositoryInterface $shipRepository, private UserRepositoryInterface $userRepository, private ShipRumpRepositoryInterface $shipRumpRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository, private MapRepositoryInterface $mapRepository, private EntityManagerInterface $entityManager) {}
 
     #[Override]
     public function launch(ShipInterface $ship): ?ShipInterface
@@ -52,7 +50,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
 
     private function returnToSafety(ShipInterface $pods, ShipInterface $ship): void
     {
-        $field = $pods->getCurrentMapField();
+        $field = $pods->getLocation();
 
         if ($field->getFieldType()->getSpecialDamage() !== 0) {
             $met = 'fly' . $ship->getFlightDirection();

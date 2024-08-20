@@ -15,7 +15,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -82,14 +81,9 @@ final class ShowSensorScan implements ViewControllerInterface
 
         $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
 
-        $field = $station->getCurrentMapField();
-        if ($field instanceof MapInterface) {
-            $stationCx = $field->getCx();
-            $stationCy = $field->getCy();
-        } else {
-            $stationCx = $field->getSystem()->getCx();
-            $stationCy = $field->getSystem()->getCy();
-        }
+        $field = $station->getLocation();
+        $stationCx = $field->getCx();
+        $stationCy = $field->getCy();
 
         if ($sysid === 0) {
 

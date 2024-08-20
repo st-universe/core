@@ -23,8 +23,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
         private AstroEntryRepositoryInterface $astroEntryRepository,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private MessageFactoryInterface $messageFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     protected function triggerSpecific(
@@ -48,7 +47,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence
             return;
         }
 
-        $fieldId = $ship->getCurrentMapField()->getId();
+        $fieldId = $ship->getLocation()->getId();
 
         $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
         $messages->add($message);
