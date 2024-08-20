@@ -80,8 +80,8 @@ final class ShowWebEmitter implements ViewControllerInterface
                 $this->loggerUtil->log('C');
                 $possibleTargetList =
                     array_filter(
-                        $this->shipRepository->getByLocation($ship->getCurrentMapField()),
-                        fn (ShipInterface $target): bool => !$target->getCloakState() && !$target->isWarped() && $target !== $ship
+                        $this->shipRepository->getByLocation($ship->getLocation()),
+                        fn(ShipInterface $target): bool => !$target->getCloakState() && !$target->isWarped() && $target !== $ship
                     );
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);

@@ -15,7 +15,7 @@ use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
@@ -43,7 +43,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $currentLocation = $leadShip->getCurrentMapField();
+        $currentLocation = $leadShip->getLocation();
 
         if (
             $currentLocation instanceof StarSystemMapInterface
@@ -55,12 +55,12 @@ class FlyBehaviour implements PirateBehaviourInterface
             $this->logger->logf('    left star system: %s', $mapField !== null ? $mapField->getSectorString() : $currentLocation->getSectorString());
         }
 
-        $currentLocation = $leadShip->getCurrentMapField();
+        $currentLocation = $leadShip->getLocation();
         $this->logger->logf('    currentPosition: %s', $currentLocation->getSectorString());
 
         $flightRoute = $this->safeFlightRoute->getSafeFlightRoute(
             $leadShip,
-            fn (): Coordinate => $this->getCoordinate($leadShip, $currentLocation)
+            fn(): Coordinate => $this->getCoordinate($leadShip, $currentLocation)
         );
         if ($flightRoute === null) {
             $this->logger->log('    no safe flight route found');
@@ -69,7 +69,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
         $this->pirateFlight->movePirate($leadWrapper, $flightRoute);
 
-        $newLocation = $leadShip->getCurrentMapField();
+        $newLocation = $leadShip->getLocation();
         $this->logger->logf('    newLocation: %s', $newLocation->getSectorString());
 
         return null;
@@ -77,7 +77,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
     private function getCoordinate(
         ShipInterface $leadShip,
-        MapInterface|StarSystemMapInterface $currentLocation
+        LocationInterface $currentLocation
     ): Coordinate {
         $isInXDirection = $this->stuRandom->rand(0, 1) === 0;
         $maxFields = $leadShip->getSensorRange() * 2;

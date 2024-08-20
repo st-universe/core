@@ -24,7 +24,7 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class VisualNavPanel extends AbstractVisualPanel
 {
-    private MapInterface|StarSystemMapInterface|null $panelCenter = null;
+    private LocationInterface|null $panelCenter = null;
 
     private ?bool $isOnShipLevel = null;
 
@@ -78,7 +78,7 @@ class VisualNavPanel extends AbstractVisualPanel
     #[Override]
     protected function getEntryCallable(): callable
     {
-        return fn (int $x, int $y): VisualNavPanelEntry => new VisualNavPanelEntry(
+        return fn(int $x, int $y): VisualNavPanelEntry => new VisualNavPanelEntry(
             $x,
             $y,
             $this->isOnShipLevel(),
@@ -102,7 +102,7 @@ class VisualNavPanel extends AbstractVisualPanel
         return $this->isOnShipLevel;
     }
 
-    private function getPanelCenter(): MapInterface|StarSystemMapInterface
+    private function getPanelCenter(): LocationInterface
     {
         if ($this->panelCenter === null) {
             $this->panelCenter = $this->determinePanelCenter();
@@ -111,7 +111,7 @@ class VisualNavPanel extends AbstractVisualPanel
         return $this->panelCenter;
     }
 
-    private function determinePanelCenter(): MapInterface|StarSystemMapInterface
+    private function determinePanelCenter(): LocationInterface
     {
         $location = $this->currentShip->getLocation();
         if ($location instanceof MapInterface) {

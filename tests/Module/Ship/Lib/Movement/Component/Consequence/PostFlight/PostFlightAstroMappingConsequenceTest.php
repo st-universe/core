@@ -195,7 +195,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->ship->shouldReceive('getCurrentMapField')
+        $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
             ->andReturn($map);
@@ -301,7 +301,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->ship->shouldReceive('getCurrentMapField')
+        $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
             ->andReturn($map);
@@ -410,7 +410,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->ship->shouldReceive('getCurrentMapField')
+        $this->ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
             ->andReturn($map);

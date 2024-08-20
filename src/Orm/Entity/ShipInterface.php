@@ -265,7 +265,7 @@ interface ShipInterface extends ShipDestroyerInterface
 
     public function getStarsystemMap(): ?StarSystemMapInterface;
 
-    public function getLocation(): MapInterface|StarSystemMapInterface;
+    public function getLocation(): LocationInterface;
 
     public function getInfluenceArea(): ?StarSystemInterface;
 
@@ -334,8 +334,6 @@ interface ShipInterface extends ShipDestroyerInterface
     public function setHoldingWeb(?TholianWebInterface $web): ShipInterface;
 
     public function getHoldingWebBackgroundStyle(): string;
-
-    public function getCurrentMapField(): StarSystemMapInterface|MapInterface;
 
     public function getShieldRegenerationRate(): int;
 

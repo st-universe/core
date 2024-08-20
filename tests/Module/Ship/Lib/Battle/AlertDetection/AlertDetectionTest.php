@@ -12,7 +12,9 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\Battle\Party\AlertStateBattleParty;
 use Stu\Module\Ship\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class AlertDetectionTest extends StuTestCase
@@ -57,8 +59,20 @@ class AlertDetectionTest extends StuTestCase
 
     public function testDetectAlertedBattlePartiesExpectEmptyArrayWhenNoShipsOnLocation(): void
     {
+        $location = $this->mock(LocationInterface::class);
+        $user = $this->mock(UserInterface::class);
+
+        $this->incomingShip->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($location);
+        $this->incomingShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         $this->alertedShipsDetection->shouldReceive('getAlertedShipsOnLocation')
-            ->with($this->incomingShip)
+            ->with($location, $user)
             ->once()
             ->andReturn(new ArrayCollection());
 
@@ -75,6 +89,8 @@ class AlertDetectionTest extends StuTestCase
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(ShipInterface::class);
+        $location = $this->mock(LocationInterface::class);
+        $user = $this->mock(UserInterface::class);
         $battleParty = $this->mock(AlertStateBattleParty::class);
         $wrapperToSkip = $this->mock(ShipWrapperInterface::class);
         $shipToSkip = $this->mock(ShipInterface::class);
@@ -86,8 +102,17 @@ class AlertDetectionTest extends StuTestCase
             ->once()
             ->andReturn(123);
 
+        $this->incomingShip->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($location);
+        $this->incomingShip->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         $this->alertedShipsDetection->shouldReceive('getAlertedShipsOnLocation')
-            ->with($this->incomingShip)
+            ->with($location, $user)
             ->once()
             ->andReturn(new ArrayCollection([$wrapperToSkip, $wrapper]));
 

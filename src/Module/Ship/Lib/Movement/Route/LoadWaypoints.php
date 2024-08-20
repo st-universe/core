@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use Override;
 use RuntimeException;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -16,14 +17,12 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class LoadWaypoints implements LoadWaypointsInterface
 {
-    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository)
-    {
-    }
+    public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository) {}
 
     #[Override]
     public function load(
-        MapInterface|StarSystemMapInterface $start,
-        MapInterface|StarSystemMapInterface $destination
+        LocationInterface $start,
+        LocationInterface $destination
     ): Collection {
         if ($start instanceof MapInterface !== $destination instanceof MapInterface) {
             throw new InvalidArgumentException('start and destination have different type');
@@ -43,13 +42,9 @@ final class LoadWaypoints implements LoadWaypointsInterface
         if ($startX > $destinationX) {
             $sortAscending = false;
         }
-        if ($start instanceof MapInterface) {
-            $layer = $start->getLayer();
-            if ($layer === null) {
-                throw new RuntimeException('this should not happen');
-            }
-            $waypoints = $this->mapRepository->getByCoordinateRange(
-                $layer->getId(),
+        if ($start instanceof StarSystemMapInterface) {
+            $waypoints = $this->starSystemMapRepository->getByCoordinateRange(
+                $start->getSystem(),
                 min($startX, $destinationX),
                 max($startX, $destinationX),
                 min($startY, $destinationY),
@@ -57,8 +52,12 @@ final class LoadWaypoints implements LoadWaypointsInterface
                 $sortAscending
             );
         } else {
-            $waypoints = $this->starSystemMapRepository->getByCoordinateRange(
-                $start->getSystem(),
+            $layer = $start->getLayer();
+            if ($layer === null) {
+                throw new RuntimeException('this should not happen');
+            }
+            $waypoints = $this->mapRepository->getByCoordinateRange(
+                $layer->getId(),
                 min($startX, $destinationX),
                 max($startX, $destinationX),
                 min($startY, $destinationY),

@@ -4,6 +4,7 @@ canColonize, closestAnomalyDistance) %}
 {% from 'html/macros.twig' import onClickShip %}
 
 {% set ship = wrapper.get %}
+{% set location = ship.getLocation %}
 {% set shipId = ship.getId %}
 {% set starSystem = ship.getSystem %}
 <table class="tcal">
@@ -224,7 +225,7 @@ canColonize, closestAnomalyDistance) %}
         {% else %}
         {% if ship.isOverSystem %}
         <th>Sternensystem</th>
-        {% elseif ship.getLocation.isOverWormhole %}
+        {% elseif location.isOverWormhole %}
         <th>Wurmloch</th>
         {% endif %}
         {% endif %}
@@ -277,7 +278,7 @@ canColonize, closestAnomalyDistance) %}
             </a>
             {% endif %}
             {% endif %}
-            {% set administratedRegion = ship.getCurrentMapField.getAdministratedRegion %}
+            {% set administratedRegion = location.getAdministratedRegion %}
             {% if administratedRegion %}
             <br />
             <a href="javascript:void(0);" onclick="showRegionInfo({{ administratedRegion.getId }})"
@@ -287,7 +288,7 @@ canColonize, closestAnomalyDistance) %}
                 {{ administratedRegion.getDescription }}
             </a>
             {% endif %}
-            {% set mapRegion = ship.getCurrentMapField.getMapRegion %}
+            {% set mapRegion = location.getMapRegion %}
             {% if mapRegion %}
             <a href="javascript:void(0);" onclick="showRegionInfo({{ mapRegion.getId }})"
                 onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
@@ -295,10 +296,10 @@ canColonize, closestAnomalyDistance) %}
                 {{ mapRegion.getDescription }}
             </a>
             {% endif %}
-            {% if ship.getCurrentMapField.getInfluenceArea and ship.getCurrentMapField.getInfluenceArea.getBase %}
-            {{ _self.influenceArea(ship.getCurrentMapField.getInfluenceArea.getBase.getUser) }}
+            {% if location.getInfluenceArea and location.getInfluenceArea.getBase %}
+            {{ _self.influenceArea(location.getInfluenceArea.getBase.getUser, ship) }}
             {% endif %}
-            {% set anomalies = ship.getLocation.getAnomalies %}
+            {% set anomalies = location.getAnomalies %}
             {% if not anomalies.isEmpty %}
             {% for anomaly in anomalies %}
             <br />
@@ -315,7 +316,7 @@ canColonize, closestAnomalyDistance) %}
             {% if starSystem.isWormhole %}
             <span>{{ starSystem.getName }}</span>
             <br />
-            {% if ship.getLocation.getRandomWormholeEntry %}
+            {% if location.getRandomWormholeEntry %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_LEAVE_WORMHOLE', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');">
                 <img src="/assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
@@ -372,7 +373,7 @@ canColonize, closestAnomalyDistance) %}
             {% endif %}
         </td>
         {% endif %}
-        {% set wormholeEntry = ship.getLocation.getRandomWormholeEntry %}
+        {% set wormholeEntry = location.getRandomWormholeEntry %}
         {% if wormholeEntry %}
         <td>
             {{ wormholeEntry.getSystem.getName }}<br />
@@ -578,16 +579,17 @@ canColonize, closestAnomalyDistance) %}
 {% endmacro %}
 
 
-{% macro influenceArea(user) %}
+{% macro influenceArea(user, ship) %}
 {% from 'html/macros.twig' import userAvatar %}
 {% from 'html/alliancemacros.twig' import alliance_avatar %}
 {% set alliance = user.getAlliance %}
+{% set location = ship.getLocation %}
 {% if alliance %}
 <a href="alliance.php?id={{ alliance.getId }}">
     <div class="shipTerritoryView">
         {{ alliance_avatar(alliance) }}
     </div>
-    {% if ship.getCurrentMapField.getAdministratedRegion %}
+    {% if location.getAdministratedRegion %}
     <span>Einflussbereich der Allianz {{ alliance.getName|bbcode }}</span>
     {% else %}
     <span>Territorium der Allianz {{ alliance.getName|bbcode }}</span>
@@ -597,7 +599,7 @@ canColonize, closestAnomalyDistance) %}
 <div class="userTerritory">
     {{ userAvatar(user) }}
     <a href="userprofile.php?uid={{ user.getId }}">
-        {% if ship.getCurrentMapField.getAdministratedRegion %}
+        {% if location.getAdministratedRegion %}
         <span>Territorium des Siedlers {{ user.getName|bbcode }}</span>
         {% else %}
         <span>Einflussbereich des Siedlers {{ user.getName|bbcode }}</span>

@@ -6,11 +6,13 @@ use Override;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
+use Stu\Lib\Pirate\Component\TrapDetectionInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -25,7 +27,9 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         private DistanceCalculationInterface $distanceCalculation,
         private PirateNavigationInterface $pirateNavigation,
         private FightLibInterface $fightLib,
+        private PrestigeCalculationInterface $prestigeCalculation,
         private PirateAttackInterface $pirateAttack,
+        private TrapDetectionInterface $trapDetection,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -41,7 +45,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $leadWrapper = $fleet->getLeadWrapper();
         $leadShip = $leadWrapper->get();
 
-        $piratePrestige = $this->prestigeOfShipOrFleet($leadShip);
+        $piratePrestige = $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($leadShip);
 
         $this->logger->log(sprintf('    piratePrestige %d', $piratePrestige));
 
@@ -51,8 +55,9 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn (ShipInterface $target): bool =>
+            fn(ShipInterface $target): bool =>
             $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
+                && !$this->trapDetection->isAlertTrap($target->getLocation(), $leadShip)
                 && ($target === $triggerShip
                     || $this->targetHasEnoughPrestige($piratePrestige, $target))
         );
@@ -65,13 +70,13 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn (ShipInterface $a, ShipInterface $b): int =>
+            fn(ShipInterface $a, ShipInterface $b): int =>
             $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
         );
 
         $closestShip = current($filteredTargets);
 
-        if ($this->pirateNavigation->navigateToTarget($fleet, $closestShip->getCurrentMapField())) {
+        if ($this->pirateNavigation->navigateToTarget($fleet, $closestShip->getLocation())) {
             $this->pirateAttack->attackShip($fleet, $closestShip);
         }
 
@@ -80,23 +85,9 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
     private function targetHasEnoughPrestige(int $piratePrestige, ShipInterface $target): bool
     {
-        $targetPrestige = $this->prestigeOfShipOrFleet($target);
+        $targetPrestige = $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($target);
         $this->logger->log(sprintf('      targetPrestige %d', $targetPrestige));
 
         return $targetPrestige >= 0.33 * $piratePrestige;
-    }
-
-    private function prestigeOfShipOrFleet(ShipInterface $ship): int
-    {
-        $fleet = $ship->getFleet();
-        if ($fleet !== null) {
-            return array_reduce(
-                $fleet->getShips()->toArray(),
-                fn (int $value, ShipInterface $fleetShip): int => $value + $fleetShip->getRump()->getPrestige(),
-                0
-            );
-        }
-
-        return $ship->getRump()->getPrestige();
     }
 }

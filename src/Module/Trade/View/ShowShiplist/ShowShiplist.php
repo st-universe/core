@@ -16,9 +16,7 @@ final class ShowShiplist implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIPLIST';
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private ShipRepositoryInterface $shipRepository)
-    {
-    }
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private ShipRepositoryInterface $shipRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -38,7 +36,7 @@ final class ShowShiplist implements ViewControllerInterface
         $station = $license->getTradePost()->getShip();
 
         $game->setTemplateVar('LIST', $this->shipRepository->getByLocationAndUser(
-            $station->getCurrentMapField(),
+            $station->getLocation(),
             $game->getUser()
         ));
     }

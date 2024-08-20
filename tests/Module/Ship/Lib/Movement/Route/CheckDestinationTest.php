@@ -76,7 +76,7 @@ class CheckDestinationTest extends StuTestCase
         $layer = $this->mock(LayerInterface::class);
         $destination = $returnResult ? $this->mock(MapInterface::class) : null;
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 
@@ -174,7 +174,7 @@ class CheckDestinationTest extends StuTestCase
         $system = $this->mock(StarSystemInterface::class);
         $destination = $returnResult ? $this->mock(StarSystemMapInterface::class) : null;
 
-        $ship->shouldReceive('getCurrentMapField')
+        $ship->shouldReceive('getLocation')
             ->withNoArgs()
             ->andReturn($start);
 

@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Movement\Route;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\LocationInterface;
 
 interface LoadWaypointsInterface
 {
     /**
-     * @return Collection<int, MapInterface|StarSystemMapInterface>
+     * @return Collection<int, LocationInterface>
      */
     public function load(
-        MapInterface|StarSystemMapInterface $start,
-        MapInterface|StarSystemMapInterface $destination
+        LocationInterface $start,
+        LocationInterface $destination
     ): Collection;
 }

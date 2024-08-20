@@ -14,8 +14,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
 
     public function __construct(
         private FlightRouteFactoryInterface $flightRouteFactory
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function getSafeFlightRoute(
@@ -39,7 +38,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
                 $coordinate->getY()
             );
         } while (
-            $flightRoute->isRouteDangerous()
+            $flightRoute->hasSpecialDamageOnField()
             || $flightRoute->isDestinationInAdminRegion(PirateCreation::FORBIDDEN_ADMIN_AREAS)
             || $flightRoute->isDestinationAtTradepost()
         );

@@ -123,7 +123,7 @@ class PirateCreation implements PirateCreationInterface
     /** @return array<ShipInterface> */
     private function createShips(PirateSetupInterface $pirateSetup, ?ShipInterface $supportCaller): array
     {
-        $randomLocation = $supportCaller === null ? $this->getRandomMapLocation() : $supportCaller->getCurrentMapField();
+        $randomLocation = $supportCaller === null ? $this->getRandomMapLocation() : $supportCaller->getLocation();
 
         $randomAlertLevel = ShipAlertStateEnum::getRandomAlertLevel();
 
@@ -173,7 +173,7 @@ class PirateCreation implements PirateCreationInterface
     {
         $pirateSetups = $this->pirateSetupRepository->findAll();
 
-        $pirateProbabilities = array_map(fn (PirateSetupInterface $setup): int => $setup->getProbabilityWeight(), $pirateSetups);
+        $pirateProbabilities = array_map(fn(PirateSetupInterface $setup): int => $setup->getProbabilityWeight(), $pirateSetups);
 
         return $pirateSetups[$this->stuRandom->randomKeyOfProbabilities($pirateProbabilities)];
     }

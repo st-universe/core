@@ -43,7 +43,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         $filteredFriends = array_filter(
             $this->shipRepository->getPirateFriends($leadShip),
-            fn (ShipInterface $friend): bool =>
+            fn(ShipInterface $friend): bool =>
             !$friend->isDestroyed() && $friend->isFleetLeader()
         );
 
@@ -55,7 +55,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredFriends,
-            fn (ShipInterface $a, ShipInterface $b): int =>
+            fn(ShipInterface $a, ShipInterface $b): int =>
             $this->fightLib->calculateHealthPercentage($a) -  $this->fightLib->calculateHealthPercentage($b)
         );
 
@@ -69,7 +69,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         $this->reloadMinimalEps->reload($fleet, 50);
 
-        if ($this->pirateNavigation->navigateToTarget($fleet, $weakestFriend->getCurrentMapField())) {
+        if ($this->pirateNavigation->navigateToTarget($fleet, $weakestFriend->getLocation())) {
 
             $this->logger->log('    reached weakest friend, now raging');
 
