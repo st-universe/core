@@ -10,7 +10,7 @@ use Override;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\LocationInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
@@ -20,8 +20,8 @@ class AlertedShipsDetectionTest extends StuTestCase
     /** @var MockInterface|ShipWrapperFactoryInterface */
     private $shipWrapperFactory;
 
-    /** @var MockInterface|ShipInterface */
-    private $incomingShip;
+    /** @var MockInterface|LocationInterface */
+    private $location;
 
     private AlertedShipsDetectionInterface $subject;
 
@@ -30,7 +30,7 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
 
-        $this->incomingShip = $this->mock(ShipInterface::class);
+        $this->location = $this->mock(LocationInterface::class);
 
         $this->subject = new AlertedShipsDetection(
             $this->shipWrapperFactory
@@ -39,20 +39,14 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenNoShipsOnLocation(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
-
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection());
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -60,15 +54,10 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenUserOnVacation(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
+        $user = $this->mock(UserInterface::class);
         $ship = $this->mock(ShipInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -79,7 +68,8 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn(true);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -87,26 +77,16 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenSameUser(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
 
         $ship->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($user);
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
             ->andReturn($user);
 
         $user->shouldReceive('isVacationRequestOldEnough')
@@ -115,7 +95,8 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $user
         );
 
         $this->assertTrue($result->isEmpty());
@@ -123,16 +104,10 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenNotFleetLeader(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -147,18 +122,14 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($this->mock(FleetInterface::class));
 
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
-
         $user->shouldReceive('isVacationRequestOldEnough')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -166,16 +137,10 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenAlertGreen(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -190,18 +155,14 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
-
         $user->shouldReceive('isVacationRequestOldEnough')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -209,16 +170,10 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenWarped(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -236,18 +191,14 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
-
         $user->shouldReceive('isVacationRequestOldEnough')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -255,16 +206,10 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectEmptyCollectionWhenCloaked(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -284,11 +229,6 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->andReturn(true);
-
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
 
         $user->shouldReceive('isVacationRequestOldEnough')
             ->withNoArgs()
@@ -296,7 +236,8 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn(false);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertTrue($result->isEmpty());
@@ -304,17 +245,11 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectWrapperWhenFleetLeader(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -334,11 +269,6 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->andReturn(false);
-
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
 
         $user->shouldReceive('isVacationRequestOldEnough')
             ->withNoArgs()
@@ -351,7 +281,8 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn($wrapper);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertEquals(1, $result->count());
@@ -360,17 +291,11 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     public function testGetAlertedShipsOnLocationExpectWrapperWhenSingleton(): void
     {
-        $currentMapField = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
         $user = $this->mock(UserInterface::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
 
-        $this->incomingShip->shouldReceive('getCurrentMapField')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentMapField);
-
-        $currentMapField->shouldReceive('getShips')
+        $this->location->shouldReceive('getShips')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$ship]));
@@ -394,11 +319,6 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $this->incomingShip->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
-
         $user->shouldReceive('isVacationRequestOldEnough')
             ->withNoArgs()
             ->once()
@@ -410,7 +330,8 @@ class AlertedShipsDetectionTest extends StuTestCase
             ->andReturn($wrapper);
 
         $result = $this->subject->getAlertedShipsOnLocation(
-            $this->incomingShip,
+            $this->location,
+            $this->mock(UserInterface::class)
         );
 
         $this->assertEquals(1, $result->count());
