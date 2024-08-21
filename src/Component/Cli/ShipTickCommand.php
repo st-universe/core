@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
-use Psr\Container\ContainerInterface;
 use Stu\Module\Tick\Ship\ShipTickRunner;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Module\Tick\Ship\ShipTickRunner;
 final class ShipTickCommand extends Command
 {
     public function __construct(
-        private ContainerInterface $dic
+        private readonly ShipTickRunner $tickRunner,
     ) {
         parent::__construct(
             'tick:ship',
@@ -29,8 +28,7 @@ final class ShipTickCommand extends Command
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(ShipTickRunner::class);
-        $tickRunner->run(1, 1);
+        $this->tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Ship tick has been executed',

@@ -7,26 +7,24 @@ namespace Stu\Component\Cli;
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
 use Override;
-use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Ship\ShipTickRunner;
-use Stu\Module\Tick\TickRunnerInterface;
 use Stu\StuTestCase;
 
 class ShipTickCommandTest extends StuTestCase
 {
-    /** @var MockInterface&ContainerInterface */
-    private MockInterface $dic;
+    /** @var MockInterface&ShipTickRunner */
+    private MockInterface $shipTickRunner;
 
     private ShipTickCommand $subject;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->dic = $this->mock(ContainerInterface::class);
+        $this->shipTickRunner = $this->mock(ShipTickRunner::class);
 
         $this->subject = new ShipTickCommand(
-            $this->dic
+            $this->shipTickRunner
         );
     }
 
@@ -34,7 +32,6 @@ class ShipTickCommandTest extends StuTestCase
     {
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
-        $shipTickRunner = $this->mock(TickRunnerInterface::class);
 
         $this->subject->bind($app);
 
@@ -50,12 +47,7 @@ class ShipTickCommandTest extends StuTestCase
             )
             ->once();
 
-        $this->dic->shouldReceive('get')
-            ->with(ShipTickRunner::class)
-            ->once()
-            ->andReturn($shipTickRunner);
-
-        $shipTickRunner->shouldReceive('run')
+        $this->shipTickRunner->shouldReceive('run')
             ->with(1, 1)
             ->once();
 
