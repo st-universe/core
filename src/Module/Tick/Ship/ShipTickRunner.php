@@ -17,7 +17,7 @@ use Throwable;
 /**
  * Executes the shiptick
  */
-final class ShipTickRunner implements TickRunnerInterface
+class ShipTickRunner implements TickRunnerInterface
 {
     /** @var int */
     private const int ATTEMPTS = 5;
