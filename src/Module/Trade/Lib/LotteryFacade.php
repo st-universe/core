@@ -15,9 +15,7 @@ use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 
 final class LotteryFacade implements LotteryFacadeInterface
 {
-    public function __construct(private LotteryTicketRepositoryInterface $lotteryTicketRepository, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime)
-    {
-    }
+    public function __construct(private LotteryTicketRepositoryInterface $lotteryTicketRepository, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime) {}
 
     #[Override]
     public function createLotteryTicket(UserInterface $user, bool $sendPm): void
@@ -63,11 +61,14 @@ final class LotteryFacade implements LotteryFacadeInterface
     private function getCurrentOrLastPeriod(bool $isLastPeriod): string
     {
         $time = $this->stuTime->time();
-
         if ($isLastPeriod) {
-            return date("Y.m", $time - TimeConstants::ONE_DAY_IN_SECONDS);
-        } else {
-            return date("Y.m", $time);
+            $time -= TimeConstants::ONE_DAY_IN_SECONDS;
         }
+
+        return sprintf(
+            '%d.%s',
+            (int)date("Y", $time) + StuTime::STU_YEARS_IN_FUTURE_OFFSET,
+            date("m", $time)
+        );
     }
 }
