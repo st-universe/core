@@ -1129,11 +1129,6 @@ parameters:
 			path: src/Module/Maintenance/DatabaseBackup.php
 
 		-
-			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Maintenance/EndLotteryPeriod.php
-
-		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Maintenance/OldTradeLicenseDeletion.php

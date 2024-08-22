@@ -36,9 +36,9 @@ class TwigHelper
         private ColonyLibFactoryInterface $colonyLibFactory,
         private ShipCrewCalculatorInterface $shipCrewCalculator,
         private GradientColorInterface $gradientColor,
-        private TemplateHelperInterface $templateHelper
-    ) {
-    }
+        private TemplateHelperInterface $templateHelper,
+        private StuTime $stuTime
+    ) {}
 
     public function registerGlobalVariables(): void
     {
@@ -63,13 +63,13 @@ class TwigHelper
 
     private function registerFilters(): void
     {
-        $bbcode2txtFilter = new TwigFilter('bbcode2txt', fn ($string): string => $this->parser->parse($string)->getAsText());
+        $bbcode2txtFilter = new TwigFilter('bbcode2txt', fn($string): string => $this->parser->parse($string)->getAsText());
         $this->environment->addFilter($bbcode2txtFilter);
 
-        $bbcodeFilter = new TwigFilter('bbcode', fn ($string): string => $this->parser->parse($string)->getAsHTML(), ['is_safe' => ['html']]);
+        $bbcodeFilter = new TwigFilter('bbcode', fn($string): string => $this->parser->parse($string)->getAsHTML(), ['is_safe' => ['html']]);
         $this->environment->addFilter($bbcodeFilter);
 
-        $jsquoteFilter = new TwigFilter('jsquote', fn ($string): string => $this->templateHelper->jsquote($string));
+        $jsquoteFilter = new TwigFilter('jsquote', fn($string): string => $this->templateHelper->jsquote($string));
         $this->environment->addFilter($jsquoteFilter);
 
         $addPlusCharacterFilter = new TwigFilter('addPlusCharacter', function ($value): string {
@@ -88,77 +88,68 @@ class TwigHelper
         });
         $this->environment->addFilter($formatSecondsFilter);
 
-        $planetFieldTitleFilter = new TwigFilter('planetFieldTitle', fn ($planetField): string => $this->templateHelper->getPlanetFieldTitle($planetField));
+        $planetFieldTitleFilter = new TwigFilter('planetFieldTitle', fn($planetField): string => $this->templateHelper->getPlanetFieldTitle($planetField));
         $this->environment->addFilter($planetFieldTitleFilter);
 
-        $planetFieldTypeDescriptionFilter = new TwigFilter('planetFieldTypeDescription', fn ($id): string => $this->templateHelper->getPlanetFieldTypeDescription($id));
+        $planetFieldTypeDescriptionFilter = new TwigFilter('planetFieldTypeDescription', fn($id): string => $this->templateHelper->getPlanetFieldTypeDescription($id));
         $this->environment->addFilter($planetFieldTypeDescriptionFilter);
 
-        $formatProductionValueFilter = new TwigFilter('formatProductionValue', fn ($value): string => $this->templateHelper->formatProductionValue($value));
+        $formatProductionValueFilter = new TwigFilter('formatProductionValue', fn($value): string => $this->templateHelper->formatProductionValue($value));
         $this->environment->addFilter($formatProductionValueFilter);
 
-        $isPositiveFilter = new TwigFilter('isPositive', fn (int $value): bool => $value > 0);
+        $isPositiveFilter = new TwigFilter('isPositive', fn(int $value): bool => $value > 0);
         $this->environment->addFilter($isPositiveFilter);
 
-        $stuDateTimeFilter = new TwigFilter('stuDateTime', fn ($value): string => sprintf(
-            '%s%s %s',
-            date('d.m.', $value),
-            (int)date("Y", $value) + StuTime::STU_YEARS_IN_FUTURE_OFFSET,
-            date("H:i", $value)
-        ));
+        $stuDateTimeFilter = new TwigFilter('stuDateTime', fn($value): string => $this->stuTime->transformToStuDateTime($value));
         $this->environment->addFilter($stuDateTimeFilter);
 
-        $stuDateFilter = new TwigFilter('stuDate', fn ($value): string => sprintf(
-            '%s%s',
-            date('d.m.', $value),
-            (int)date("Y", $value) + StuTime::STU_YEARS_IN_FUTURE_OFFSET
-        ));
+        $stuDateFilter = new TwigFilter('stuDate', fn($value): string => $this->stuTime->transformToStuDate($value));
         $this->environment->addFilter($stuDateFilter);
 
-        $nl2brFilter = new TwigFilter('nl2br', fn (string $value): string => nl2br($value));
+        $nl2brFilter = new TwigFilter('nl2br', fn(string $value): string => nl2br($value));
         $this->environment->addFilter($nl2brFilter);
 
-        $htmlSafeFilter = new TwigFilter('htmlSafe', fn (string $text): string => htmlspecialchars($text));
+        $htmlSafeFilter = new TwigFilter('htmlSafe', fn(string $text): string => htmlspecialchars($text));
         $this->environment->addFilter($htmlSafeFilter);
 
-        $adventDoorFilter = new TwigFilter('adventDoor', fn (AnomalyInterface $anomaly): int => (int)((120 - $anomaly->getRemainingTicks()) / 5) + 1);
+        $adventDoorFilter = new TwigFilter('adventDoor', fn(AnomalyInterface $anomaly): int => (int)((120 - $anomaly->getRemainingTicks()) / 5) + 1);
         $this->environment->addFilter($adventDoorFilter);
 
-        $shortNameFilter = new TwigFilter('shortName', fn (string $name): string => array_reduce(
+        $shortNameFilter = new TwigFilter('shortName', fn(string $name): string => array_reduce(
             array_keys(NameAbbreviations::ABBREVIATIONS),
-            fn (string $value, string $from): string => str_replace($from, NameAbbreviations::ABBREVIATIONS[$from], $value),
+            fn(string $value, string $from): string => str_replace($from, NameAbbreviations::ABBREVIATIONS[$from], $value),
             $name
         ));
         $this->environment->addFilter($shortNameFilter);
 
-        $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn (ShipInterface $ship): int => $this->shipCrewCalculator->getMaxCrewCountByShip($ship));
+        $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn(ShipInterface $ship): int => $this->shipCrewCalculator->getMaxCrewCountByShip($ship));
         $this->environment->addFilter($getMaxCrewCountByShipFilter);
 
-        $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn ($value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
+        $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn($value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
         $this->environment->addFilter($numberWithThousandSeperatorFilter);
     }
 
     private function registerFunctions(): void
     {
-        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn (ShipInterface $ship, ShipInterface|ShipNfsItem $target): bool => $this->fightLib->canAttackTarget($ship, $target));
+        $canAttackTargetFunction = new TwigFunction('canAttackTarget', fn(ShipInterface $ship, ShipInterface|ShipNfsItem $target): bool => $this->fightLib->canAttackTarget($ship, $target));
         $this->environment->addFunction($canAttackTargetFunction);
 
-        $getEpsProductionPreviewFunction = new TwigFunction('getEpsProductionPreview', fn (PlanetFieldHostInterface $host, BuildingInterface $building): ColonyEpsProductionPreviewWrapper => $this->colonyLibFactory->createEpsProductionPreviewWrapper($host, $building));
+        $getEpsProductionPreviewFunction = new TwigFunction('getEpsProductionPreview', fn(PlanetFieldHostInterface $host, BuildingInterface $building): ColonyEpsProductionPreviewWrapper => $this->colonyLibFactory->createEpsProductionPreviewWrapper($host, $building));
         $this->environment->addFunction($getEpsProductionPreviewFunction);
 
-        $getCommodityProductionPreviewFunction = new TwigFunction('getCommodityProductionPreview', fn (PlanetFieldHostInterface $host, BuildingInterface $building): ColonyProductionPreviewWrapper => $this->colonyLibFactory->createColonyProductionPreviewWrapper($building, $host));
+        $getCommodityProductionPreviewFunction = new TwigFunction('getCommodityProductionPreview', fn(PlanetFieldHostInterface $host, BuildingInterface $building): ColonyProductionPreviewWrapper => $this->colonyLibFactory->createColonyProductionPreviewWrapper($building, $host));
         $this->environment->addFunction($getCommodityProductionPreviewFunction);
 
-        $getColonyMenuClassFunction = new TwigFunction('getColonyMenuClass', fn (ColonyMenuEnum $currentMenu, int $value): string => ColonyMenuEnum::getMenuClass($currentMenu, $value));
+        $getColonyMenuClassFunction = new TwigFunction('getColonyMenuClass', fn(ColonyMenuEnum $currentMenu, int $value): string => ColonyMenuEnum::getMenuClass($currentMenu, $value));
         $this->environment->addFunction($getColonyMenuClassFunction);
 
-        $getViewFunction = new TwigFunction('getView', fn (string $value): ModuleViewEnum => ModuleViewEnum::from($value));
+        $getViewFunction = new TwigFunction('getView', fn(string $value): ModuleViewEnum => ModuleViewEnum::from($value));
         $this->environment->addFunction($getViewFunction);
 
-        $getUniqIdFunction = new TwigFunction('getUniqId', fn (): string => uniqid());
+        $getUniqIdFunction = new TwigFunction('getUniqId', fn(): string => uniqid());
         $this->environment->addFunction($getUniqIdFunction);
 
-        $gradientColorFunction = new TwigFunction('gradientColor', fn (int $value, int $lowest, int $highest): string => $this->gradientColor->calculateGradientColor($value, $lowest, $highest));
+        $gradientColorFunction = new TwigFunction('gradientColor', fn(int $value, int $lowest, int $highest): string => $this->gradientColor->calculateGradientColor($value, $lowest, $highest));
         $this->environment->addFunction($gradientColorFunction);
     }
 }
