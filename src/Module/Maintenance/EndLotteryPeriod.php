@@ -3,28 +3,46 @@
 namespace Stu\Module\Maintenance;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\LotteryWinnerBuildplanInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
+use Stu\Orm\Repository\LotteryWinnerBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class EndLotteryPeriod implements MaintenanceHandlerInterface
 {
-    public function __construct(private LotteryTicketRepositoryInterface $lotteryTicketRepository, private TradePostRepositoryInterface $tradepostRepository, private AwardRepositoryInterface $awardRepository, private LotteryFacadeInterface $lotteryFacade, private UserRepositoryInterface $userRepository, private TradeLibFactoryInterface $tradeLibFactory, private CreateUserAwardInterface $createUserAward, private CreatePrestigeLogInterface $createPrestigeLog, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime)
-    {
-    }
+    public function __construct(
+        private LotteryTicketRepositoryInterface $lotteryTicketRepository,
+        private TradePostRepositoryInterface $tradepostRepository,
+        private AwardRepositoryInterface $awardRepository,
+        private LotteryWinnerBuildplanRepositoryInterface $lotteryWinnerBuildplanRepository,
+        private UserRepositoryInterface $userRepository,
+        private LotteryFacadeInterface $lotteryFacade,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private CreateUserAwardInterface $createUserAward,
+        private ShipCreatorInterface $shipCreator,
+        private CreatePrestigeLogInterface $createPrestigeLog,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private StuTime $stuTime,
+        private StuRandom $stuRandom
+    ) {}
 
     #[Override]
     public function handle(): void
@@ -43,6 +61,11 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             return;
         }
 
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        if ($tradePost === null) {
+            throw new RuntimeException('no deals ferg tradepost found');
+        }
+
         $jackpot = (int)ceil($ticketCount / 100 * 80);
 
         $winnerIndex = random_int(0, $ticketCount - 1);
@@ -58,10 +81,10 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
                 $ticket->setIsWinner(true);
                 $winner = $user;
 
-                $this->createAwardAndPrestige($winner, $time);
-
                 //jackpot to winner
-                $this->payOutLatinum($winner, $jackpot);
+                $this->createAwardAndPrestige($winner, $time);
+                $this->payOutLatinum($winner, $jackpot, $ticketCount, $tradePost);
+                $this->transmitShip($winner, $tradePost);
             } else {
                 $ticket->setIsWinner(false);
 
@@ -75,18 +98,6 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             return;
         }
 
-        //PM to winner
-        $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
-            $winner->getId(),
-            sprintf(
-                "Du hast %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nDer Gewinn wartet auf dich am Handelsposten 'Zur goldenen Kugel'",
-                $jackpot,
-                $ticketCount
-            ),
-            PrivateMessageFolderTypeEnum::SPECIAL_TRADE
-        );
-
         //PM to all losers
         foreach ($losers as $loserId => $user) {
             //skip winner if he had more than one ticket
@@ -95,7 +106,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             }
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                $tradePost->getUserId(),
                 $loserId,
                 sprintf(
                     "%s hat %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nViel Glück beim nächsten Mal!",
@@ -142,14 +153,63 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         );
     }
 
-    private function payOutLatinum(UserInterface $winner, int $jackpot): void
+    private function payOutLatinum(UserInterface $winner, int $jackpot, int $ticketCount, TradePostInterface $tradePost): void
     {
-        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $winner);
 
         $storageManagerUser->upperStorage(
             CommodityTypeEnum::COMMODITY_LATINUM,
             $jackpot
+        );
+
+        $this->privateMessageSender->send(
+            $tradePost->getUserId(),
+            $winner->getId(),
+            sprintf(
+                "Du hast %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nDer Gewinn wartet auf dich am Handelsposten 'Zur goldenen Kugel'",
+                $jackpot,
+                $ticketCount
+            ),
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE
+        );
+    }
+
+    private function transmitShip(UserInterface $winner, TradePostInterface $tradePost): void
+    {
+        /** @var array<int, LotteryWinnerBuildplanInterface> */
+        $winnerBuildplans = $this->lotteryWinnerBuildplanRepository->findAll();
+        if (empty($winnerBuildplans)) {
+            return;
+        }
+
+        $chances = array_map(fn(LotteryWinnerBuildplanInterface $winnerBuildplan) => $winnerBuildplan->getChance(), $winnerBuildplans);
+
+        $randomKey = $this->stuRandom->randomKeyOfProbabilities($chances);
+        $buildplan = $winnerBuildplans[$randomKey]->getBuildplan();
+
+        $wrapper = $this->shipCreator
+            ->createBy(
+                $winner->getId(),
+                $buildplan->getRumpId(),
+                $buildplan->getId()
+            )->setLocation($tradePost->getShip()->getLocation())
+            ->setShipName(sprintf(
+                'Lotteriegewinn (%s)',
+                $this->stuTime->transformToStuDate(time())
+            ))
+            ->finishConfiguration();
+
+        $ship = $wrapper->get();
+
+        $this->privateMessageSender->send(
+            $tradePost->getUserId(),
+            $winner->getId(),
+            sprintf(
+                "Als zusätzlicher Lotteriegewinn wurde dir ein Schiff der %s-Klasse zu den Koordinaten %s am Handelsposten 'Zur goldenen Kugel' überstellt.",
+                $ship->getRumpName(),
+                $ship->getSectorString()
+            ),
+            PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );
     }
 }
