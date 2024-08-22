@@ -8,6 +8,8 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\LotteryTicketInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -44,12 +46,42 @@ class LotteryFacadeTest extends StuTestCase
         );
     }
 
+    public function testCreateLotteryTicket(): void
+    {
+        $user = $this->mock(UserInterface::class);
+        $ticket = $this->mock(LotteryTicketInterface::class);
+
+        $time = 1672575107;
+
+        $this->lotteryTicketRepository->shouldReceive('prototype')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($ticket);
+        $this->lotteryTicketRepository->shouldReceive('save')
+            ->with($ticket)
+            ->once();
+
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($time);
+
+        $ticket->shouldReceive('setUser')
+            ->with($user)
+            ->once();
+        $ticket->shouldReceive('setPeriod')
+            ->with('2393.01')
+            ->once();
+
+        $this->lotteryFacade->createLotteryTicket($user, false);
+    }
+
     public function testGetTicketAmount(): void
     {
         $time = 1672575107;
 
         $this->lotteryTicketRepository->shouldReceive('getAmountByPeriod')
-            ->with('2023.01')
+            ->with('2393.01')
             ->once()
             ->andReturn(123);
 
@@ -66,7 +98,7 @@ class LotteryFacadeTest extends StuTestCase
         $time = 1672575107;
 
         $this->lotteryTicketRepository->shouldReceive('getAmountByPeriodAndUser')
-            ->with('2023.01', 42)
+            ->with('2393.01', 42)
             ->once()
             ->andReturn(123);
 
@@ -84,7 +116,7 @@ class LotteryFacadeTest extends StuTestCase
         $tickets = [];
 
         $this->lotteryTicketRepository->shouldReceive('getByPeriod')
-            ->with('2022.12')
+            ->with('2392.12')
             ->once()
             ->andReturn($tickets);
 
